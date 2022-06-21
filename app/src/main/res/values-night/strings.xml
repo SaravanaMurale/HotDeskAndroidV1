@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_locate">Locate</string>
+    <string name="title_book">Book</string>
+    <string name="title_teams">Teams</string>
+    <string name="title_wellbeing">Wellbeing</string>
+</resources>

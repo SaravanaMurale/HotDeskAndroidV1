@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:elevation="@dimen/_5sdp">
 
     <View
         android:layout_width="match_parent"
@@ -18,7 +19,7 @@
         android:padding="@dimen/_5sdp">
 
         <LinearLayout
-            android:id="@+id/ll_home"
+            android:id="@+id/ll_locate_nav"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -26,22 +27,23 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/iv_home"
+                android:id="@+id/iv_home_nav"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:adjustViewBounds="true"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/locatee_nav_icon"
+                />
 
             <TextView
-                android:id="@+id/txt_home"
+                android:id="@+id/txt_locate_nav"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_25sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:gravity="top|center"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/_9sdp"
-                android:visibility="visible"
-                app:fontName="@string/font_regular" />
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -52,7 +54,7 @@
             android:background="@color/colorGrey300" />
 
         <LinearLayout
-            android:id="@+id/ll_explore"
+            android:id="@+id/ll_book_nav"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -60,21 +62,22 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/iv_explore"
+                android:id="@+id/iv_book_nav"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:adjustViewBounds="true"
+                android:src="@drawable/cal_nav_icon"
                 android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/txt_explore"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_25sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:gravity="top|center"
+                android:visibility="gone"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/_9sdp"
-                app:fontName="@string/font_regular" />
+                android:textSize="@dimen/_9sdp" />
 
         </LinearLayout>
 
@@ -85,7 +88,7 @@
             android:background="@color/colorGrey300" />
 
         <LinearLayout
-            android:id="@+id/ll_buy"
+            android:id="@+id/ll_hotdesk"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -93,21 +96,22 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/iv_cart"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
+                android:id="@+id/iv_hotdesk_nav"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_35sdp"
                 android:adjustViewBounds="true"
+                android:src="@drawable/hotdesk_nav_logo"
                 android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/txt_cart"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_25sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:gravity="top|center"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/_9sdp"
-                app:fontName="@string/font_regular" />
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -118,7 +122,7 @@
             android:background="@color/colorGrey300" />
 
         <LinearLayout
-            android:id="@+id/ll_chat"
+            android:id="@+id/ll_teams"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -126,21 +130,22 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/iv_chat"
+                android:id="@+id/iv_teams"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:adjustViewBounds="true"
+                android:src="@drawable/team_nav_icon"
                 android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/txt_chat"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_25sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:gravity="top|center"
+                android:visibility="gone"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/_9sdp"
-                app:fontName="@string/font_regular" />
+                android:textSize="@dimen/_9sdp" />
 
         </LinearLayout>
 
@@ -163,17 +168,18 @@
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:adjustViewBounds="true"
+                android:src="@drawable/wellbeing_nav_icon"
                 android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/txt_settings"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_25sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:gravity="top|center"
+                android:visibility="gone"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/_9sdp"
-                app:fontName="@string/font_regular" />
+                android:textSize="@dimen/_9sdp" />
 
         </LinearLayout>
     </LinearLayout>

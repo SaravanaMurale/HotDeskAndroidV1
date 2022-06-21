@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_locate"
+        android:icon="@drawable/locatee_nav_icon"
+        android:title="@string/title_locate" />
+
+    <item
+        android:id="@+id/navigation_book"
+        android:icon="@drawable/cal_nav_icon"
+        android:title="@string/title_book" />
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/hotdesk_nav_logo"
+        android:title="@string/title_home"
+        android:iconTint="@null"
+        />
+    <item
+        android:id="@+id/navigation_teams"
+        android:icon="@drawable/team_nav_icon"
+        android:title="@string/title_teams" />
+    <item
+        android:id="@+id/navigation_wellbeing"
+        android:icon="@drawable/wellbeing_nav_icon"
+        android:title="@string/title_wellbeing" />
+
+</menu>

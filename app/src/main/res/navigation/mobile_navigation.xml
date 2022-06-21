@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="dream.guys.hotdeskandroid.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_locate"
+        android:name="dream.guys.hotdeskandroid.ui.locate.LocateFragment"
+        android:label="@string/title_locate"
+        tools:layout="@layout/fragment_locate" />
+
+    <fragment
+        android:id="@+id/navigation_book"
+        android:name="dream.guys.hotdeskandroid.ui.book.BookFragment"
+        android:label="@string/title_book"
+        tools:layout="@layout/fragment_book" />
+
+    <fragment
+        android:id="@+id/navigation_teams"
+        android:name="dream.guys.hotdeskandroid.ui.teams.TeamsFragment"
+        android:label="@string/title_teams"
+        tools:layout="@layout/fragment_teams" />
+    <fragment
+        android:id="@+id/navigation_wellbeing"
+        android:name="dream.guys.hotdeskandroid.ui.wellbeing.WellbeingFragment"
+        android:label="@string/title_wellbeing"
+        tools:layout="@layout/fragment_wellbeing" />
+</navigation>

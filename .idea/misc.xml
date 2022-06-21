@@ -4,7 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_main.xml" value="0.1859375" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_main2.xml" value="0.2" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/fragment_book.xml" value="0.2" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/fragment_dashboard.xml" value="0.2" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/fragment_teams.xml" value="0.2" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/include_footer.xml" value="0.2" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2" />
       </map>
     </option>
   </component>
