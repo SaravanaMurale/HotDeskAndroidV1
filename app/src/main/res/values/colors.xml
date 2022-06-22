@@ -10,4 +10,7 @@
 
     <color name="colorGrey300">#E0E0E0</color>
 
+    <color name="blue">#0f62ab</color>
+    <color name="grey">#b1b1b1</color>
+
 </resources>

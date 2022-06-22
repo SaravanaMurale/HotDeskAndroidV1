@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+<<<<<<< HEAD
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable-night/book_nav_selected_icon.xml" value="0.1475" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable-night/bottom_nav_selector.xml" value="0.1" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable-night/drawable.xml" value="0.1475" />
@@ -20,8 +21,22 @@
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/fragment_locate.xml" value="0.2" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/fragment_teams.xml" value="0.2" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/fragment_wellbeing.xml" value="0.2" />
+=======
+        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable-xhdpi/button_blue_bg.xml" value="0.126" />
+        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/book_nav_selector.xml" value="0.126" />
+        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/bottom_nav_selector.xml" value="0.126" />
+        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/ic_launcher_background.xml" value="0.126" />
+        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_login.xml" value="0.14" />
+        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_signin.xml" value="0.2" />
+        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/fragment_book.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/fragment_locate.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/include_footer.xml" value="0.1" />
+        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/layout_sso.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/menu/bottom_nav_menu.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_main.xml" value="0.1859375" />
+>>>>>>> d205bccf3a36657afc467406af392fb76b047fec
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/include_footer.xml" value="0.2" />
-        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/menu/bottom_nav_menu.xml" value="0.2" />
       </map>
     </option>
   </component>
