@@ -67,7 +67,6 @@
             android:id="@+id/ivGmail"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
-            android:src="@drawable/hotdesk_nav_logo"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/_10sdp"
             />
