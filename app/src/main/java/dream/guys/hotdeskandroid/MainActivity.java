@@ -60,11 +60,9 @@ public class MainActivity extends AppCompatActivity {
     private void nightModeConfig() {
         int nightModeFlags = getApplicationContext().getResources().getConfiguration().uiMode &
                 Configuration.UI_MODE_NIGHT_MASK;
-        Menu menu = navView.getMenu();
 
         switch (nightModeFlags) {
             case Configuration.UI_MODE_NIGHT_YES:
-
                 break;
             case Configuration.UI_MODE_NIGHT_NO:
                 break;

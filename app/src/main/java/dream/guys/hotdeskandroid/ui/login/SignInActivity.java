@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
 
 public class SignInActivity extends AppCompatActivity {
