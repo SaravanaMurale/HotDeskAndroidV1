@@ -26,6 +26,10 @@ import android.content.SharedPreferences;
  * Created by user on 17-06-2022.
  */
 public class SessionHandler {
+
+    public static final String PREF_NAME="HOTDESK";
+
+
     private static final SessionHandler ourInstance = new SessionHandler();
 
     public static SessionHandler getInstance() {
