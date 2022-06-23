@@ -81,6 +81,8 @@ import dream.guys.hotdeskandroid.R;
  */
 
 public class Utils {
+
+
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
 
@@ -102,6 +104,14 @@ public class Utils {
 
     public static boolean isNetworkAvailable(final Context context) {
         return ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo() != null;
+    }
+
+    public static String getToken() {
+        String token = "";
+        if (SessionHandler.getInstance().get(MyApp.getContext(), AppConstants.USERTOKEN) != null) {
+            token = SessionHandler.getInstance().get(MyApp.getContext(), AppConstants.USERTOKEN);
+        }
+        return token;
     }
 
 
