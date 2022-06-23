@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -38,6 +39,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.ConnectivityManager;
@@ -59,11 +61,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -75,6 +83,7 @@ import java.util.NoSuchElementException;
 import java.util.TimeZone;
 
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.example.DummyActivity;
 
 /**
  * Created by bala on 17/06/2022.
@@ -83,6 +92,8 @@ import dream.guys.hotdeskandroid.R;
 public class Utils {
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
+    private static int hour;
+    private static int minutes;
 
     public static void closeKeyboard(Context context, View view) {
         if (view != null) {
@@ -98,6 +109,22 @@ public class Utils {
 
     public static void toastMessage(Context mContext, String message) {
         Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+    }
+    public static void bottomSheetTimePicker(Context mContext, Activity activity, String title, String date) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet,
+                new RelativeLayout(activity)));
+        TimePicker simpleTimePicker = bottomSheetDialog.findViewById(R.id.simpleTimePicker);
+        TextView titleTv = bottomSheetDialog.findViewById(R.id.title);
+        TextView dateTv = bottomSheetDialog.findViewById(R.id.date);
+        titleTv.setText(title);
+        dateTv.setText(date);
+
+        simpleTimePicker.setCurrentHour(5); // before api level 23
+//        simpleTimePicker.setHour(5); // from api level 23
+//        pickerint hours =simpleTimePicker.getCurrentHour(); // before api level 23
+//        int hours =simpleTimePicker.getHour();
+        bottomSheetDialog.show();
     }
 
     public static boolean isNetworkAvailable(final Context context) {
