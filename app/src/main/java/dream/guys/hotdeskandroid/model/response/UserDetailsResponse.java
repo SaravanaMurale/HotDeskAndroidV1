@@ -1,4 +1,4 @@
-package dream.guys.hotdeskandroid.model;
+package dream.guys.hotdeskandroid.model.response;
 
 import com.google.gson.annotations.SerializedName;
 
