@@ -55,8 +55,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 //Validate Input User Details
                 //validateLoginDetails(companyName,email,password);
-
-                doLogin(companyName,email,password);
+                launchHomeActivity();
+//                doLogin(companyName,email,password);
 
             }
         });
@@ -88,8 +88,6 @@ public class LoginActivity extends AppCompatActivity {
                     }else {
                         Utils.toastMessage(LoginActivity.this,"You have entered wrong username or password");
                     }
-
-
 
                 }
 
