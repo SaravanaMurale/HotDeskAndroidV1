@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
-            android:visibility="visible"
+            android:visibility="gone"
             >
 
             <ImageView
@@ -39,13 +39,12 @@
                 android:id="@+id/bookingDeskName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Space-001"
-                android:layout_toRightOf="@+id/bookingIvIcon"
                 android:layout_marginLeft="@dimen/_30sdp"
+                android:layout_toRightOf="@+id/bookingIvIcon"
+                android:text="Space-001"
                 android:textColor="@color/black"
-                android:textStyle="bold"
                 android:textSize="@dimen/_15sdp"
-                />
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/bookingIvLocation"
@@ -63,10 +62,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/bookingDeskName"
                 android:layout_marginLeft="@dimen/_30sdp"
-                android:layout_toRightOf="@+id/bookingIvIcon"
-                android:text="40 Bank Street -30th Floor"
                 android:layout_marginTop="@dimen/_5sdp"
-                />
+                android:layout_toRightOf="@+id/bookingIvIcon"
+                android:text="40 Bank Street -30th Floor" />
 
             <ImageView
                 android:id="@+id/bookingCheckInIcon"
@@ -82,11 +80,11 @@
                 android:id="@+id/bookingCheckInTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="8:00"
                 android:layout_below="@+id/bookingAddress"
                 android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_toRightOf="@+id/bookingCheckInIcon"
                 android:layout_marginTop="@dimen/_5sdp"
+                android:layout_toRightOf="@+id/bookingCheckInIcon"
+                android:text="8:00"
                 android:textSize="@dimen/_13sdp" />
 
 
@@ -139,15 +137,14 @@
                 android:id="@+id/bookingBtnCheckIn"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_30sdp"
-                android:text="@string/checkin"
-                android:background="@drawable/button_blue_bg"
                 android:layout_below="@+id/bookingCheckInIcon"
                 android:layout_marginLeft="@dimen/_30sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_toRightOf="@+id/bookingIvIcon"
-                android:visibility="visible"
+                android:background="@drawable/button_blue_bg"
                 android:drawableRight="@drawable/checkin"
-                />
+                android:text="@string/checkin"
+                android:visibility="visible" />
 
 
 
@@ -164,7 +161,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/_3sdp"
             android:layout_marginTop="@dimen/_3sdp"
-            android:visibility="gone"
+            android:visibility="visible"
             >
 
             <ImageView
@@ -179,7 +176,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/bookingRemoteHome"
-                android:text="@string/covid19"
+                android:text="@string/remote"
                 android:theme="@style/TextBold" />
 
             <TextView
