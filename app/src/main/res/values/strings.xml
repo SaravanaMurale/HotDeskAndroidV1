@@ -18,5 +18,11 @@
     <string name="password">Password</string>
     <string name="forget_password">Forgot your password?</string>
     <string name="signinwith">Or sign in with</string>
+    <string name="welcome">Welcome</string>
+    <string name="logout">Logout</string>
+    <string name="covid19">Covid-19 self certification</string>
+    <string name="pls_complete">Please complete your covid self certification</string>
+    <string name="checkout">Check Out</string>
+    <string name="checkin">Check In</string>
 
 </resources>

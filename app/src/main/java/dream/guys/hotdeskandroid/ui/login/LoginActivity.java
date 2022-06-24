@@ -49,23 +49,46 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String companyName=etCompanyName.getText().toString();
-                String email=etEmail.getText().toString();
-                String password=etPassword.getText().toString();
+                String companyName = etCompanyName.getText().toString();
+                String email = etEmail.getText().toString();
+                String password = etPassword.getText().toString();
 
                 //Validate Input User Details
-                //validateLoginDetails(companyName,email,password);
-                launchHomeActivity();
-//                doLogin(companyName,email,password);
+                if(validateLoginDetails(companyName, email, password)){
+                    doLogin(companyName,email,password);
+                }
 
             }
         });
     }
 
+    private boolean validateLoginDetails(String companyName, String email, String password) {
+
+        boolean userDetailStatus = false;
+
+        if (Utils.isValiedText(companyName)) {
+            if (Utils.isValidEmail(email)) {
+                if (Utils.isValiedText(password)) {
+                    userDetailStatus=true;
+                } else {
+                    Utils.toastMessage(LoginActivity.this, "Pls Enter Valid Password");
+                }
+            } else {
+                Utils.toastMessage(LoginActivity.this, "Pls Enter Valid Email");
+            }
+        } else {
+            Utils.toastMessage(LoginActivity.this, "Pls Enter Valid CompanyName");
+        }
+
+
+        return userDetailStatus;
+
+    }
+
     private void doLogin(String companyName, String email, String password) {
 
         if (Utils.isNetworkAvailable(this)) {
-            GetTokenRequest getTokenRequest=new GetTokenRequest(companyName,email,password);
+            GetTokenRequest getTokenRequest = new GetTokenRequest(companyName, email, password);
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<GetTokenResponse> call = apiService.getLoginToken(getTokenRequest);
@@ -73,20 +96,20 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<GetTokenResponse> call, Response<GetTokenResponse> response) {
 
-                    GetTokenResponse getTokenResponse=response.body();
+                    GetTokenResponse getTokenResponse = response.body();
 
-                    if(getTokenResponse!=null){
-                        SessionHandler.getInstance().save(LoginActivity.this, AppConstants.USERTOKEN,getTokenResponse.getToken());
+                    if (getTokenResponse != null) {
+                        SessionHandler.getInstance().save(LoginActivity.this, AppConstants.USERTOKEN, getTokenResponse.getToken());
 
-                        Log.e("LoginActivity",getTokenResponse.getToken());
-                        Log.e("LoginActivity",getTokenResponse.getExpiration());
+                        Log.e("LoginActivity", getTokenResponse.getToken());
+                        Log.e("LoginActivity", getTokenResponse.getExpiration());
 
-                        System.out.println("ReceivedToken"+ getTokenResponse.getToken());
-                        System.out.println("ReceivedExpiration"+ getTokenResponse.getExpiration());
+                        System.out.println("ReceivedToken" + getTokenResponse.getToken());
+                        System.out.println("ReceivedExpiration" + getTokenResponse.getExpiration());
 
                         getUserDetailsUsingToken(getTokenResponse.getToken());
-                    }else {
-                        Utils.toastMessage(LoginActivity.this,"You have entered wrong username or password");
+                    } else {
+                        Utils.toastMessage(LoginActivity.this, "You have entered wrong username or password");
                     }
 
                 }
@@ -94,13 +117,13 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<GetTokenResponse> call, Throwable t) {
 
-                    Utils.toastMessage(LoginActivity.this,"You have entered wrong username or password");
+                    Utils.toastMessage(LoginActivity.this, "You have entered wrong username or password");
 
                 }
             });
 
 
-        }else {
+        } else {
             Utils.toastMessage(this, "Please Enable Internet");
         }
 
@@ -116,16 +139,26 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<UserDetailsResponse> call, Response<UserDetailsResponse> response) {
 
-                    UserDetailsResponse userDetailsResponse=response.body();
+                    UserDetailsResponse userDetailsResponse = response.body();
 
-                    if(userDetailsResponse!=null){
-                        System.out.println("UserDetails"+userDetailsResponse.getFirstName()+" "+userDetailsResponse.getEmail());
-                        launchHomeActivity();
-                    }else {
-                        Utils.toastMessage(LoginActivity.this,"User Details Not Found");
+                    if (userDetailsResponse != null) {
+                        System.out.println("UserDetails" + userDetailsResponse.getFirstName() + " " + userDetailsResponse.getEmail());
+
+                        //Save UserId
+                        SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.USER_ID,userDetailsResponse.getId());
+
+                        //Check welcome screen viewed status
+                        boolean welcomeViewStatus=SessionHandler.getInstance().getBoolean(LoginActivity.this,AppConstants.WELCOME_VIEWED_STATUS);
+                        if(welcomeViewStatus){
+                            launchHomeActivity();
+                        }else {
+                            launchWelcomeActivity();
+                        }
+
+
+                    } else {
+                        Utils.toastMessage(LoginActivity.this, "User Details Not Found");
                     }
-
-
 
 
                 }
@@ -135,11 +168,9 @@ public class LoginActivity extends AppCompatActivity {
 
                 }
             });
-        }else {
+        } else {
             Utils.toastMessage(this, "Please Enable Internet");
         }
-
-
 
 
     }
@@ -148,6 +179,15 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
+        finish();
+
+    }
+
+    private void launchWelcomeActivity() {
+
+        Intent intent = new Intent(LoginActivity.this, WelcomeActivity.class);
+        startActivity(intent);
+        finish();
 
     }
 }

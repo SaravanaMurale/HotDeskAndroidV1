@@ -17,8 +17,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
+
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -42,6 +42,7 @@
                 </androidx.appcompat.widget.Toolbar>
             </com.google.android.material.appbar.AppBarLayout>
 
+            <!--Notification,Search-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
@@ -72,6 +73,8 @@
                     android:src="@drawable/user_profile_icon"
                     />
             </LinearLayout>
+
+            <!--User Image and other-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -102,7 +105,7 @@
                                 android:layout_height="@dimen/_50sdp"
                                 android:layout_centerInParent="true"
                                 android:background="@drawable/bg_circle_vector"
-                                android:src="@drawable/ic_baseline_account_circle_24" />
+                                android:src="@drawable/mygirl" />
                         </RelativeLayout>
                         <LinearLayout
                             android:layout_width="0dp"
@@ -169,6 +172,71 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
+
+            <!--Covid-19 self certification-->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/_5sdp"
+                app:cardElevation="@dimen/_5sdp"
+                android:layout_margin="@dimen/_8sdp">
+
+
+                <RelativeLayout
+                    android:id="@+id/covidCertificationBlock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_3sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:visibility="visible"
+
+                    >
+
+                    <ImageView
+                        android:id="@+id/ivNotiCovid"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:src="@drawable/notification_icon"
+                        android:layout_marginHorizontal="@dimen/_15sdp"/>
+
+                    <TextView
+                        android:id="@+id/tvCovidCertificate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/ivNotiCovid"
+                        android:text="@string/covid19"
+
+                        android:theme="@style/TextBold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/ivNotiCovid"
+                        android:text="@string/pls_complete"
+                        android:layout_below="@+id/tvCovidCertificate"
+                        android:textColor="@color/figmaGrey"
+                        />
+
+
+
+
+                </RelativeLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <!--Home Bookig Recyclerview-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvHomeBooking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_8sdp"
+                />
+
+
+
+
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
