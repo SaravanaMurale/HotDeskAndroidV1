@@ -42,7 +42,6 @@ public class HomeFragment extends Fragment {
     ImageView userProfile;
     Toolbar toolbar;
 
-    @BindView(R.id.rvHomeBooking)
     RecyclerView rvHomeBooking;
 
     HomeBookingListAdapter homeBookingListAdapter;
@@ -59,7 +58,9 @@ public class HomeFragment extends Fragment {
         toolbar = root.findViewById(R.id.toolbar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
+
         userProfile=root.findViewById(R.id.user_profile_pic);
+        rvHomeBooking=root.findViewById(R.id.rvHomeBooking);
         userProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,7 +76,7 @@ public class HomeFragment extends Fragment {
         });
 */
 
-        bookingListResponseList=new ArrayList<>();
+        bookingListResponseList=new ArrayList<BookingListResponse>();
 
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
