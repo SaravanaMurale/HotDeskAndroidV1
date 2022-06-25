@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.MainActivity;
@@ -21,9 +23,11 @@ import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
+import okhttp3.Headers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Header;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -57,11 +61,113 @@ public class LoginActivity extends AppCompatActivity {
                 if(validateLoginDetails(companyName, email, password)){
                     doLogin(companyName,email,password);
                 }
-                launchWelcomeActivity();
 
             }
         });
     }
+
+
+
+    //GetToken
+    private void doLogin(String companyName, String email, String password) {
+
+        if (Utils.isNetworkAvailable(this)) {
+            GetTokenRequest getTokenRequest = new GetTokenRequest(companyName, email, password);
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<GetTokenResponse> call = apiService.getLoginToken(getTokenRequest);
+            call.enqueue(new Callback<GetTokenResponse>() {
+                @Override
+                public void onResponse(Call<GetTokenResponse> call, Response<GetTokenResponse> response) {
+
+                    if(response.code()==200){
+                        GetTokenResponse getTokenResponse = response.body();
+                        if (getTokenResponse != null) {
+                            //Save token
+                            SessionHandler.getInstance().save(LoginActivity.this, AppConstants.USERTOKEN, getTokenResponse.getToken());
+
+                            //System.out.println("ReceivedToken" + getTokenResponse.getToken());
+                            //System.out.println("ReceivedExpiration" + getTokenResponse.getExpiration());
+                            //String token=getTokenResponse.getExpiration();
+
+                            //GetUser Details Using Token
+                            getUserDetailsUsingToken(getTokenResponse.getToken());
+                        } else {
+                            Utils.toastMessage(LoginActivity.this, "No Token Found");
+                        }
+                    }else if(response.code()==401){
+                        Utils.toastMessage(LoginActivity.this, "Wrong userName or password");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<GetTokenResponse> call, Throwable t) {
+                    Utils.toastMessage(LoginActivity.this, "You have entered wrong username or password");
+
+                }
+            });
+
+
+        } else {
+            Utils.toastMessage(this, "Please Enable Internet");
+        }
+
+
+    }
+
+    //By Passing Token Get User Details
+    private void getUserDetailsUsingToken(String token) {
+
+        if (Utils.isNetworkAvailable(this)) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<UserDetailsResponse> call = apiService.getLoginUserDetails();
+            call.enqueue(new Callback<UserDetailsResponse>() {
+                @Override
+                public void onResponse(Call<UserDetailsResponse> call, Response<UserDetailsResponse> response) {
+
+                    if(response.code()==200){
+                        UserDetailsResponse userDetailsResponse = response.body();
+
+                        if (userDetailsResponse != null) {
+                            //Save User credential for Biometric access
+                            String companyName = etCompanyName.getText().toString();
+                            String email = etEmail.getText().toString();
+                            String password = etPassword.getText().toString();
+
+                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.COMPANY_NAME,companyName);
+                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.EMAIL,email);
+                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.PASSWORD,password);
+                            SessionHandler.getInstance().saveBoolean(LoginActivity.this,AppConstants.USER_DETAILS_SAVED_STATUS,true);
+
+                            //Save UserId
+                            SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.USER_ID,userDetailsResponse.getId());
+
+                            //Check welcome screen viewed status
+                            //boolean welcomeViewStatus=SessionHandler.getInstance().getBoolean(LoginActivity.this,AppConstants.WELCOME_VIEWED_STATUS);
+                            launchWelcomeActivity();
+
+                        } else {
+                            Utils.toastMessage(LoginActivity.this, "User Details Not Found");
+                        }
+
+                    }else if(response.code()==401){
+                        Utils.toastMessage(LoginActivity.this, "Please Try Again");
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<UserDetailsResponse> call, Throwable t) {
+
+                }
+            });
+        } else {
+            Utils.toastMessage(this, "Please Enable Internet");
+        }
+
+
+    }
+
 
     private boolean validateLoginDetails(String companyName, String email, String password) {
 
@@ -83,96 +189,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
         return userDetailStatus;
-
-    }
-
-    private void doLogin(String companyName, String email, String password) {
-
-        if (Utils.isNetworkAvailable(this)) {
-            GetTokenRequest getTokenRequest = new GetTokenRequest(companyName, email, password);
-
-            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<GetTokenResponse> call = apiService.getLoginToken(getTokenRequest);
-            call.enqueue(new Callback<GetTokenResponse>() {
-                @Override
-                public void onResponse(Call<GetTokenResponse> call, Response<GetTokenResponse> response) {
-
-                    GetTokenResponse getTokenResponse = response.body();
-
-                    if (getTokenResponse != null) {
-                        SessionHandler.getInstance().save(LoginActivity.this, AppConstants.USERTOKEN, getTokenResponse.getToken());
-
-                        Log.e("LoginActivity", getTokenResponse.getToken());
-                        Log.e("LoginActivity", getTokenResponse.getExpiration());
-
-                        System.out.println("ReceivedToken" + getTokenResponse.getToken());
-                        System.out.println("ReceivedExpiration" + getTokenResponse.getExpiration());
-
-                        getUserDetailsUsingToken(getTokenResponse.getToken());
-                    } else {
-                        Utils.toastMessage(LoginActivity.this, "You have entered wrong username or password");
-                    }
-
-                }
-
-                @Override
-                public void onFailure(Call<GetTokenResponse> call, Throwable t) {
-
-                    Utils.toastMessage(LoginActivity.this, "You have entered wrong username or password");
-
-                }
-            });
-
-
-        } else {
-            Utils.toastMessage(this, "Please Enable Internet");
-        }
-
-
-    }
-
-    private void getUserDetailsUsingToken(String token) {
-
-        if (Utils.isNetworkAvailable(this)) {
-            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<UserDetailsResponse> call = apiService.getLoginUserDetails();
-            call.enqueue(new Callback<UserDetailsResponse>() {
-                @Override
-                public void onResponse(Call<UserDetailsResponse> call, Response<UserDetailsResponse> response) {
-
-                    UserDetailsResponse userDetailsResponse = response.body();
-
-                    if (userDetailsResponse != null) {
-                        System.out.println("UserDetails" + userDetailsResponse.getFirstName() + " " + userDetailsResponse.getEmail());
-
-                        //Save UserId
-                        SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.USER_ID,userDetailsResponse.getId());
-
-                        //Check welcome screen viewed status
-                        boolean welcomeViewStatus=SessionHandler.getInstance().getBoolean(LoginActivity.this,AppConstants.WELCOME_VIEWED_STATUS);
-                        if(welcomeViewStatus){
-                            launchHomeActivity();
-                        }else {
-                            launchWelcomeActivity();
-                        }
-
-
-                    } else {
-                        Utils.toastMessage(LoginActivity.this, "User Details Not Found");
-                    }
-
-
-                }
-
-                @Override
-                public void onFailure(Call<UserDetailsResponse> call, Throwable t) {
-
-                }
-            });
-        } else {
-            Utils.toastMessage(this, "Please Enable Internet");
-        }
-
 
     }
 

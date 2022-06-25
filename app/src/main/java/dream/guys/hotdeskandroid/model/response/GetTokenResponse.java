@@ -2,7 +2,7 @@ package dream.guys.hotdeskandroid.model.response;
 
 import com.google.gson.annotations.SerializedName;
 
-public class GetTokenResponse {
+public class GetTokenResponse extends BaseResponse {
 
     @SerializedName("token")
     private String token;

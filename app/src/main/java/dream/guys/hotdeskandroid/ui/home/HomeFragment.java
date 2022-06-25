@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,6 +30,8 @@ import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import dream.guys.hotdeskandroid.ui.login.LoginActivity;
+import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
@@ -88,9 +91,27 @@ public class HomeFragment extends Fragment {
 
 
 
+
+        //doTokenExpiryHere();
+
+
+
         return root;
     }
 
+    private void doTokenExpiryHere() {
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                SessionHandler.getInstance().saveBoolean(getContext(),AppConstants.TOKEN_EXPIRY_STATUS,true);
+                Utils.finishAllActivity(getContext());
+            }
+        },5000);
+
+
+
+    }
 
 
     @Override
