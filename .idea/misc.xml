@@ -14,6 +14,7 @@
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.141" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.1475" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/locate_nav_selector.xml" value="0.143" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/rectangle_bg_with_corner.xml" value="0.141" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/selected_nav_item_selector.xml" value="0.143" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/team_nav_selector.xml" value="0.143" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/top_round_corner_white.xml" value="0.141" />
@@ -23,6 +24,7 @@
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_main2.xml" value="0.2" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/booking_list_recycler_layout.xml" value="0.2" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet.xml" value="0.2" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet_edit_booking.xml" value="0.22" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/fragment_book.xml" value="0.2" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/fragment_dashboard.xml" value="0.2" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/fragment_home.xml" value="0.22" />

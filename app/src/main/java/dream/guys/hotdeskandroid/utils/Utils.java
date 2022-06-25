@@ -72,6 +72,8 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -112,6 +114,21 @@ public class Utils {
     public static void toastMessage(Context mContext, String message) {
         Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
     }
+
+    public static boolean isNetworkAvailable(final Context context) {
+        return ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo() != null;
+    }
+
+    public static String getToken() {
+        String token = "";
+        if (SessionHandler.getInstance().get(MyApp.getContext(), AppConstants.USERTOKEN) != null) {
+            token = SessionHandler.getInstance().get(MyApp.getContext(), AppConstants.USERTOKEN);
+        }
+        return token;
+    }
+
+
+    //Bottom Sheet Designs
     public static void bottomSheetTimePicker(Context mContext, Activity activity, String title, String date) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet,
@@ -128,18 +145,83 @@ public class Utils {
 //        int hours =simpleTimePicker.getHour();
         bottomSheetDialog.show();
     }
+    public static void bottomSheetEditYourBooking(Context mContext, Activity activity, String title, String date) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_booking,
+                new RelativeLayout(activity)));
 
-    public static boolean isNetworkAvailable(final Context context) {
-        return ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo() != null;
-    }
-
-    public static String getToken() {
-        String token = "";
-        if (SessionHandler.getInstance().get(MyApp.getContext(), AppConstants.USERTOKEN) != null) {
-            token = SessionHandler.getInstance().get(MyApp.getContext(), AppConstants.USERTOKEN);
+        TextView startTime = bottomSheetDialog.findViewById(R.id.start_time);
+        TextView endTime = bottomSheetDialog.findViewById(R.id.end_time);
+        ChipGroup chipGroup = bottomSheetDialog.findViewById(R.id.list_item);
+        for (int i=0; i<5; i++){
+            Chip chip = new Chip(activity);
+            chip.setId(i);
+            chip.setText("ABC "+i);
+            chip.setChipBackgroundColorResource(R.color.figmaGrey);
+            chip.setCloseIconVisible(false);
+            chip.setTextColor(activity.getResources().getColor(R.color.white));
+//            chip.setTextAppearance(R.style.ChipTextAppearance);
+            chipGroup.addView(chip);
         }
-        return token;
+
+        startTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popUpTimePicker(activity,startTime);
+            }
+        });
+
+        endTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popUpTimePicker(activity,endTime);
+            }
+        });
+        bottomSheetDialog.show();
     }
 
+    private static void popUpTimePicker(Activity activity, TextView v) {
+//        TextView startTime = v;
+        TimePickerDialog timePickerDialog=new TimePickerDialog(activity,
+                android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                        hour=hourOfDay;
+                        minutes=minute;
+                        String time=hourOfDay+":"+minute;
+
+                        SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
+
+                        try {
+                            Date date=f24hours.parse(time);
+                            SimpleDateFormat f12hours=new SimpleDateFormat("hh:mm aa");
+//                            return String.valueOf(f12hours.format(date));
+                            v.setText(""+f12hours.format(date));
+                            System.out.println("ReceivedDate"+f12hours.format(date));
+
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },12,0,false);
+
+
+        timePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE,"Continue",timePickerDialog);
+        timePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"Back",timePickerDialog);
+
+        //timePickerDialog.setContentView(R.layout.layout_sso);
+        timePickerDialog.setTitle("Start\nWed, 10th August,2022");
+
+
+
+        timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        timePickerDialog.updateTime(hour,minutes);
+        timePickerDialog.show();
+
+    }
 
 }

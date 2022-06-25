@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ import dream.guys.hotdeskandroid.utils.Utils;
 public class HomeFragment extends Fragment {
     FragmentHomeBinding binding;
     TextView text;
+    ImageView userProfile;
     Toolbar toolbar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,6 +35,13 @@ public class HomeFragment extends Fragment {
         toolbar = root.findViewById(R.id.toolbar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
+        userProfile=root.findViewById(R.id.user_profile_pic);
+        userProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.bottomSheetEditYourBooking(getContext(),getActivity(),"message","dad");
+            }
+        });
 /*
         text.setOnClickListener(new View.OnClickListener() {
             @Override

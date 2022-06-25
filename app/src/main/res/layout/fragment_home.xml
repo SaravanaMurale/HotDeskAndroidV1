@@ -98,6 +98,7 @@
                             >
 
                             <ImageView
+                                android:id="@+id/user_profile_pic"
                                 android:layout_width="@dimen/_50sdp"
                                 android:layout_height="@dimen/_50sdp"
                                 android:layout_centerInParent="true"
