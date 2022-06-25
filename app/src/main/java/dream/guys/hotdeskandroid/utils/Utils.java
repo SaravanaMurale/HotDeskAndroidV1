@@ -111,6 +111,10 @@ public class Utils {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
+    public static boolean isValiedText(String text){
+        return !TextUtils.isEmpty(text) && !text.equals("") && text!=null;
+    }
+
     public static void toastMessage(Context mContext, String message) {
         Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
     }

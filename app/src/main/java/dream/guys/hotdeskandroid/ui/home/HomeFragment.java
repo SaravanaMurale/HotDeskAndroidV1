@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,15 +19,37 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
 import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
+import dream.guys.hotdeskandroid.model.response.BookingListResponse;
+import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
+import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.utils.Utils;
+import dream.guys.hotdeskandroid.webservice.ApiClient;
+import dream.guys.hotdeskandroid.webservice.ApiInterface;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
     FragmentHomeBinding binding;
     TextView text;
     ImageView userProfile;
     Toolbar toolbar;
+
+    @BindView(R.id.rvHomeBooking)
+    RecyclerView rvHomeBooking;
+
+    HomeBookingListAdapter homeBookingListAdapter;
+    LinearLayoutManager linearLayoutManager;
+
+    List<BookingListResponse> bookingListResponseList;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,8 +74,24 @@ public class HomeFragment extends Fragment {
             }
         });
 */
+
+        bookingListResponseList=new ArrayList<>();
+
+
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvHomeBooking.setLayoutManager(linearLayoutManager);
+        rvHomeBooking.setHasFixedSize(true);
+
+        homeBookingListAdapter=new HomeBookingListAdapter();
+        rvHomeBooking.setAdapter(homeBookingListAdapter);
+
+
+
         return root;
     }
+
+
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.option_menu, menu);

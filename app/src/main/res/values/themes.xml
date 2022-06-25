@@ -25,7 +25,6 @@
     </style>
 
 
-    //Text Style
     <style name="TextBold" parent="Theme.MaterialComponents.DayNight">
         <!-- Alternatively, reference this font with the name "aspergit" -->
         <!-- Note that only our own TextView's will use the font attribute -->
@@ -34,6 +33,7 @@
         <item name="android:textSize">@dimen/_12sdp</item>
         <item name="android:textColor">@color/figmaBlack</item>
     </style>
+
     <style name="TextRegular" parent="Theme.MaterialComponents.DayNight">
         <!-- Alternatively, reference this font with the name "aspergit" -->
         <!-- Note that only our own TextView's will use the font attribute -->
