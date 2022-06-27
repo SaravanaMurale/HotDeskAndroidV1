@@ -1,7 +1,5 @@
 package dream.guys.hotdeskandroid.ui.home;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,29 +10,21 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.os.Handler;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import butterknife.BindView;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
 import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
-import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
-import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
-import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
-import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
@@ -52,7 +42,6 @@ public class HomeFragment extends Fragment {
     Toolbar toolbar;
 
     RecyclerView rvHomeBooking;
-
     HomeBookingListAdapter homeBookingListAdapter;
     LinearLayoutManager linearLayoutManager;
 
@@ -85,18 +74,6 @@ public class HomeFragment extends Fragment {
         });
 */
 
-        bookingListResponseList=new ArrayList<BookingListResponse>();
-
-
-        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvHomeBooking.setLayoutManager(linearLayoutManager);
-        rvHomeBooking.setHasFixedSize(true);
-
-        homeBookingListAdapter=new HomeBookingListAdapter();
-        rvHomeBooking.setAdapter(homeBookingListAdapter);
-
-
-
 
         //doTokenExpiryHere();
 
@@ -128,14 +105,13 @@ public class HomeFragment extends Fragment {
         if (Utils.isNetworkAvailable(getActivity())) {
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-06-25T16:48:07.422","true");
+            Date date = new Date();
+            Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-06-25",true);
             call.enqueue(new Callback<BookingListResponse>() {
                 @Override
                 public void onResponse(Call<BookingListResponse> call, Response<BookingListResponse> response) {
                     System.out.println("response Success bala");
-                    createRecyclerList();
                 }
-
                 @Override
                 public void onFailure(Call<BookingListResponse> call, Throwable t) {
                     System.out.println("response failure bala");
@@ -147,7 +123,92 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void createRecyclerList() {
+    private void createRecyclerList(BookingListResponse body) {
+        BookingListResponse bookingListResponses = body;
+        ArrayList<BookingListResponse.DayGroup> recyclerModelArrayList = new ArrayList<>();
+//        ArrayList<BookingListResponse> recyclerModelArrayList = new ArrayList<>();
+        for (int i=0; i<bookingListResponses.getDayGroups().size(); i++){
+            boolean dateCheck =true;
+            Date date = bookingListResponses.getDayGroups().get(i).getDate();
+            ArrayList<BookingListResponse.DayGroup.CalendarEntry> calendarEntries = null;
+            ArrayList<BookingListResponse.DayGroup.MeetingBooking> meetingEntries = null;
+            ArrayList<BookingListResponse.DayGroup.CarParkBooking> carParkEntries = null;
+
+            if (bookingListResponses.getDayGroups().get(i).getCalendarEntries()!=null){
+                calendarEntries =
+                        bookingListResponses.getDayGroups().get(i).getCalendarEntries();
+            }
+            if (bookingListResponses.getDayGroups().get(i).getMeetingBookings()!=null){
+                meetingEntries =
+                        bookingListResponses.getDayGroups().get(i).getMeetingBookings();
+            }
+            if (bookingListResponses.getDayGroups().get(i).getCarParkBookings()!=null){
+                carParkEntries =
+                        bookingListResponses.getDayGroups().get(i).getCarParkBookings();
+            }
+
+            if (calendarEntries!=null){
+                for (int j=0; j < calendarEntries.size(); j++){
+                    BookingListResponse.DayGroup momdel = new BookingListResponse.DayGroup();
+                    if (dateCheck){
+                        momdel.setDateStatus(true);
+                        momdel.setCalDeskStatus(1);
+                        momdel.setDate(date);
+                        momdel.setCalendarEntriesModel(calendarEntries.get(j));
+                        dateCheck=false;
+                    }else {
+                        momdel.setDateStatus(false);
+                        momdel.setCalDeskStatus(1);
+                        momdel.setCalendarEntriesModel(calendarEntries.get(j));
+                    }
+                    recyclerModelArrayList.add(momdel);
+                }
+            }
+            if (meetingEntries!=null){
+                for (int j=0; j < meetingEntries.size(); j++){
+                    BookingListResponse.DayGroup momdel = new BookingListResponse.DayGroup();
+                    if (dateCheck){
+                        momdel.setDateStatus(true);
+                        momdel.setCalDeskStatus(1);
+                        momdel.setDate(date);
+                        momdel.setMeetingBookingsModel(meetingEntries.get(j));
+                        dateCheck=false;
+                    }else {
+                        momdel.setDateStatus(false);
+                        momdel.setCalDeskStatus(1);
+                        momdel.setMeetingBookingsModel(meetingEntries.get(j));
+                    }
+
+                    recyclerModelArrayList.add(momdel);
+                }
+            }
+            if (carParkEntries!=null){
+                for (int j=0; j < carParkEntries.size(); j++){
+                    BookingListResponse.DayGroup momdel = new BookingListResponse.DayGroup();
+                    if (dateCheck){
+                        momdel.setDateStatus(true);
+                        momdel.setCalDeskStatus(1);
+                        momdel.setDate(date);
+                        momdel.setCarParkBookingsModel(carParkEntries.get(j));
+                        dateCheck=false;
+                    }else {
+                        momdel.setDateStatus(false);
+                        momdel.setCalDeskStatus(1);
+                        momdel.setCarParkBookingsModel(carParkEntries.get(j));
+                    }
+                    recyclerModelArrayList.add(momdel);
+                }
+            }
+
+
+        }
+
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvHomeBooking.setLayoutManager(linearLayoutManager);
+        rvHomeBooking.setHasFixedSize(true);
+
+        homeBookingListAdapter=new HomeBookingListAdapter(getContext(), getActivity(), recyclerModelArrayList);
+        rvHomeBooking.setAdapter(homeBookingListAdapter);
 
     }
 

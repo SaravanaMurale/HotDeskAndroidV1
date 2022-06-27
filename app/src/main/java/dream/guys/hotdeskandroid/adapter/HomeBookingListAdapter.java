@@ -1,32 +1,38 @@
 package dream.guys.hotdeskandroid.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
+import butterknife.Action;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 
 public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingListAdapter.HomeBookingListViewHolder> {
 
     Context context;
+    Activity activity;
+    ArrayList<BookingListResponse.DayGroup> list;
 
-
-
-    public HomeBookingListAdapter() {
-
-        this.context=context;
-
+    public HomeBookingListAdapter(Context context, FragmentActivity activity, ArrayList<BookingListResponse.DayGroup> recyclerModelArrayList) {
+        this.context= context;
+        this.activity= activity;
+        this.list = recyclerModelArrayList;
 
     }
-
 
 
     @NonNull
@@ -39,15 +45,20 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
     @Override
     public void onBindViewHolder(@NonNull HomeBookingListViewHolder holder, int position) {
-
-
-
+        if (list.get(position).isDateStatus()){
+            holder.dateLayout.setVisibility(View.VISIBLE);
+            holder.lineLayout.setVisibility(View.GONE);
+        }
+        else {
+            holder.dateLayout.setVisibility(View.VISIBLE);
+            holder.lineLayout.setVisibility(View.GONE);
+        }
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return list.size();
     }
 
     class HomeBookingListViewHolder extends RecyclerView.ViewHolder{
@@ -62,6 +73,12 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         TextView bookingCheckOutTime;
         @BindView(R.id.bookingBtnCheckIn)
         Button bookingBtnCheckIn;
+
+        @BindView(R.id.rlDateLayout)
+        RelativeLayout dateLayout;
+        @BindView(R.id.rlLineLayout)
+        RelativeLayout lineLayout;
+
 
         public HomeBookingListViewHolder(@NonNull View itemView) {
             super(itemView);

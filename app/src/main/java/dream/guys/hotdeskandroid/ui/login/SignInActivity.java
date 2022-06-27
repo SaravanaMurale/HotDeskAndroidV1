@@ -2,8 +2,6 @@ package dream.guys.hotdeskandroid.ui.login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.biometric.BiometricManager;
-import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
@@ -13,14 +11,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
 import java.util.concurrent.Executor;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
-import dream.guys.hotdeskandroid.example.BioMetricActivity;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
@@ -89,7 +87,7 @@ public class SignInActivity extends AppCompatActivity {
 
 
     private void enableBioMetricAccessHere() {
-        BiometricManager biometricManager=BiometricManager.from(this);
+        BiometricManager biometricManager= BiometricManager.from(this);
 
         switch (biometricManager.canAuthenticate()){
 
@@ -132,8 +130,7 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
-        promptInfo=new BiometricPrompt.PromptInfo.Builder().setTitle("HotDesk")
-                .setDescription("Use Fingerprint To Login").setDeviceCredentialAllowed(true).build();
+        promptInfo=new BiometricPrompt.PromptInfo.Builder().setTitle("HotDesk").setDescription("Use Fingerprint To Login").setDeviceCredentialAllowed(true).build();
 
         biometricPrompt.authenticate(promptInfo);
 

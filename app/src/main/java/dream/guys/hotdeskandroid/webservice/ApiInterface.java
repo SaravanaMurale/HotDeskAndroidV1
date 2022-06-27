@@ -1,5 +1,7 @@
 package dream.guys.hotdeskandroid.webservice;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
@@ -26,8 +28,8 @@ public interface ApiInterface {
 
     @GET("api/MyWork/UserMyWorkStatus/{dayOfTheWeek}/{includeNonWorkingDays}")
     Call<BookingListResponse>  getUserMyWorkDetails(
-            @Path("dayOfTheWeek") String dayOfTheWeek,
-            @Path("includeNonWorkingDays") String subId
+            @Query("dayOfTheWeek") String dayOfTheWeek,
+            @Query("includeNonWorkingDays") boolean subId
     );
 
 
