@@ -30,5 +30,8 @@
     <string name="internet">Please Check Internet</string>
     <string name="check_out_success">Check-out successful</string>
     <string name="close">Close</string>
+    <string name="search">Search</string>
+    <string name="back">Back</string>
+
 
 </resources>
