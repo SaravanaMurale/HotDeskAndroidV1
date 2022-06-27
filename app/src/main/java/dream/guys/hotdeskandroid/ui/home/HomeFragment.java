@@ -74,8 +74,6 @@ public class HomeFragment extends Fragment {
             }
         });
 */
-
-
         //doTokenExpiryHere();
 
         loadHomeList();

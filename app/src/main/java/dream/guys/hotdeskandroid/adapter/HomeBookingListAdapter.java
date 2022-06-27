@@ -50,9 +50,11 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.lineLayout.setVisibility(View.GONE);
         }
         else {
-            holder.dateLayout.setVisibility(View.VISIBLE);
-            holder.lineLayout.setVisibility(View.GONE);
+            holder.dateLayout.setVisibility(View.GONE);
+            holder.lineLayout.setVisibility(View.VISIBLE);
         }
+
+        
 
     }
 
