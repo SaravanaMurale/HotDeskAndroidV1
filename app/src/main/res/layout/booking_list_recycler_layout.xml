@@ -51,10 +51,12 @@
             android:layout_weight="3.8"
             android:layout_margin="@dimen/_5sdp"
             app:cardCornerRadius="@dimen/_5sdp"
-            android:elevation="@dimen/_5sdp">
+            android:elevation="@dimen/_5sdp"
+            >
 
             <!--Booking Detail-->
             <RelativeLayout
+                android:id="@+id/rlInOffice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_10sdp"
@@ -65,16 +67,14 @@
                     android:id="@+id/bookingIvIcon"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    android:src="@drawable/car"
-                    />
+                    android:src="@drawable/car" />
 
                 <ImageView
                     android:id="@+id/bookingIvEdit"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    android:src="@drawable/edit"
                     android:layout_alignParentRight="true"
-                    />
+                    android:src="@drawable/edit" />
 
                 <TextView
                     android:id="@+id/bookingDeskName"

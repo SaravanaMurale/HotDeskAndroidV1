@@ -55,6 +55,11 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
     //RecyclerView
     implementation "androidx.recyclerview:recyclerview:1.2.1"
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+
+
 
     //BioMetric
     implementation 'androidx.biometric:biometric:1.0.1'

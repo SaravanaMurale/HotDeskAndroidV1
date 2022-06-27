@@ -106,8 +106,6 @@ public class HomeFragment extends Fragment {
         if (Utils.isNetworkAvailable(getActivity())) {
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Date date = new Date();
-           // "2022-06-25"
             Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-06-25",true);
             call.enqueue(new Callback<BookingListResponse>() {
                 @Override
@@ -183,13 +181,13 @@ public class HomeFragment extends Fragment {
                     BookingListResponse.DayGroup momdel = new BookingListResponse.DayGroup();
                     if (dateCheck){
                         momdel.setDateStatus(true);
-                        momdel.setCalDeskStatus(1);
+                        momdel.setCalDeskStatus(2);
                         momdel.setDate(date);
                         momdel.setMeetingBookingsModel(meetingEntries.get(j));
                         dateCheck=false;
                     }else {
                         momdel.setDateStatus(false);
-                        momdel.setCalDeskStatus(1);
+                        momdel.setCalDeskStatus(2);
                         momdel.setMeetingBookingsModel(meetingEntries.get(j));
                     }
 
@@ -201,13 +199,13 @@ public class HomeFragment extends Fragment {
                     BookingListResponse.DayGroup momdel = new BookingListResponse.DayGroup();
                     if (dateCheck){
                         momdel.setDateStatus(true);
-                        momdel.setCalDeskStatus(1);
+                        momdel.setCalDeskStatus(3);
                         momdel.setDate(date);
                         momdel.setCarParkBookingsModel(carParkEntries.get(j));
                         dateCheck=false;
                     }else {
                         momdel.setDateStatus(false);
-                        momdel.setCalDeskStatus(1);
+                        momdel.setCalDeskStatus(3);
                         momdel.setCarParkBookingsModel(carParkEntries.get(j));
                     }
                     recyclerModelArrayList.add(momdel);
