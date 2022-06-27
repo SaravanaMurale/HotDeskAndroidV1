@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
+import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
@@ -23,16 +24,7 @@ public interface ApiInterface {
     @GET("api/Account/LoggedInUser")
     Call<UserDetailsResponse>  getLoginUserDetails();
 
-    @GET("/api/Booking/Bookings")
-    Call<List<BookingListResponse>> getHomeBookingDetails(@Query("teamMembershipId") int teamMembershipId,@Query("fromDate") String fromDate,@Query("toDate") String toDate);
-
-    @GET("api/MyWork/UserMyWorkStatus/{dayOfTheWeek}/{includeNonWorkingDays}")
-    Call<BookingListResponse>  getUserMyWorkDetails(
-            @Query("dayOfTheWeek") String dayOfTheWeek,
-            @Query("includeNonWorkingDays") boolean subId
-    );
-
-
-
+    @GET("api/MyWork/UserMyWorkStatus")
+    Call<BookingListResponse> getUserMyWorkDetails(@Query("dayOfTheWeek") String dayOfTheWeek, @Query("includeNonWorkingDays") boolean includeNonWorkingDays);
 
 }

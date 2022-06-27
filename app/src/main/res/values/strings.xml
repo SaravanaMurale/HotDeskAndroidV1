@@ -28,5 +28,7 @@
     <string name="skip">Skip</string>
     <string name="check_in_now">Check in now</string>
     <string name="internet">Please Check Internet</string>
+    <string name="check_out_success">Check-out successful</string>
+    <string name="close">Close</string>
 
 </resources>

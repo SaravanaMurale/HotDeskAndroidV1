@@ -57,8 +57,8 @@
 
 
 
-        <!--<activity
-            android:name=".example.BioMetricActivity"
+       <!-- <activity
+            android:name=".example.DummyCalendarActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

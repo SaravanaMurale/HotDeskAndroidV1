@@ -23,6 +23,7 @@ import java.util.List;
 
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
+
 import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
@@ -77,6 +78,8 @@ public class HomeFragment extends Fragment {
 
         //doTokenExpiryHere();
 
+        loadHomeList();
+
 
 
         return root;
@@ -85,7 +88,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadHomeList();
+        //loadHomeList();
     }
     private void doTokenExpiryHere() {
 
@@ -106,11 +109,23 @@ public class HomeFragment extends Fragment {
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Date date = new Date();
+           // "2022-06-25"
             Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-06-25",true);
             call.enqueue(new Callback<BookingListResponse>() {
                 @Override
                 public void onResponse(Call<BookingListResponse> call, Response<BookingListResponse> response) {
                     System.out.println("response Success bala");
+
+                    if(response.code()==200){
+
+                        BookingListResponse bookingListResponse  =response.body();
+                        createRecyclerList(bookingListResponse);
+
+                    }else if(response.code()==401){
+                        //Handle if token got expired
+                        redirectToBioMetricAccess();
+
+                    }
                 }
                 @Override
                 public void onFailure(Call<BookingListResponse> call, Throwable t) {
@@ -122,6 +137,7 @@ public class HomeFragment extends Fragment {
             Utils.toastMessage(getActivity(), "Please Enable Internet");
         }
     }
+
 
     private void createRecyclerList(BookingListResponse body) {
         BookingListResponse bookingListResponses = body;
@@ -210,6 +226,12 @@ public class HomeFragment extends Fragment {
         homeBookingListAdapter=new HomeBookingListAdapter(getContext(), getActivity(), recyclerModelArrayList);
         rvHomeBooking.setAdapter(homeBookingListAdapter);
 
+    }
+
+
+    private void redirectToBioMetricAccess() {
+        SessionHandler.getInstance().saveBoolean(getContext(),AppConstants.TOKEN_EXPIRY_STATUS,true);
+        Utils.finishAllActivity(getContext());
     }
 
 
