@@ -4,12 +4,15 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,9 +29,13 @@ import butterknife.BindView;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
 import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
+import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
+import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import dream.guys.hotdeskandroid.ui.login.LoginActivity;
+import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
@@ -37,6 +44,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
+
     FragmentHomeBinding binding;
     TextView text;
     ImageView userProfile;
@@ -91,8 +99,41 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        loadHomeList();
+    }
+
+    private void loadHomeList(){
+        if (Utils.isNetworkAvailable(getActivity())) {
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-06-25T16:48:07.422","true");
+            call.enqueue(new Callback<BookingListResponse>() {
+                @Override
+                public void onResponse(Call<BookingListResponse> call, Response<BookingListResponse> response) {
+                    System.out.println("response Success bala");
+                    createRecyclerList();
+                }
+
+                @Override
+                public void onFailure(Call<BookingListResponse> call, Throwable t) {
+                    System.out.println("response failure bala");
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
+    }
+
+    private void createRecyclerList() {
+
+    }
 
 
+    /*
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.option_menu, menu);
@@ -106,5 +147,5 @@ public class HomeFragment extends Fragment {
                 searchManager.getSearchableInfo(getActivity().getComponentName()));
 
     }
-
+*/
 }

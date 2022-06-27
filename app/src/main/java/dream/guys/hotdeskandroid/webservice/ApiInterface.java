@@ -10,6 +10,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
@@ -23,9 +24,11 @@ public interface ApiInterface {
     @GET("/api/Booking/Bookings")
     Call<List<BookingListResponse>> getHomeBookingDetails(@Query("teamMembershipId") int teamMembershipId,@Query("fromDate") String fromDate,@Query("toDate") String toDate);
 
-
-
-
+    @GET("api/MyWork/UserMyWorkStatus/{dayOfTheWeek}/{includeNonWorkingDays}")
+    Call<BookingListResponse>  getUserMyWorkDetails(
+            @Path("dayOfTheWeek") String dayOfTheWeek,
+            @Path("includeNonWorkingDays") String subId
+    );
 
 
 

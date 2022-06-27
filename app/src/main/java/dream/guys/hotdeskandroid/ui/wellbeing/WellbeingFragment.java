@@ -30,7 +30,7 @@ public class WellbeingFragment extends Fragment {
         binding = FragmentWellbeingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        btnLogout.setOnClickListener(new View.OnClickListener() {
+        binding.btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
