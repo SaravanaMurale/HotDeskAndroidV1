@@ -61,6 +61,10 @@ public class LoginActivity extends AppCompatActivity {
                 if(validateLoginDetails(companyName, email, password)){
                     doLogin(companyName,email,password);
                 }
+<<<<<<< HEAD
+//                launchWelcomeActivity();
+=======
+>>>>>>> 8ce333e21dde75c244d13c1dadc98997416f0b66
 
             }
         });

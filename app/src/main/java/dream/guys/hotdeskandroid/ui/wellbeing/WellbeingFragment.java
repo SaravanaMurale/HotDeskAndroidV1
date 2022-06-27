@@ -15,6 +15,7 @@ import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
 import dream.guys.hotdeskandroid.databinding.FragmentWellbeingBinding;
+import dream.guys.hotdeskandroid.ui.login.SignInActivity;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 
 public class WellbeingFragment extends Fragment {
@@ -33,15 +34,14 @@ public class WellbeingFragment extends Fragment {
         binding.btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 SessionHandler.getInstance().removeAll(getContext());
 
-                Intent intent=new Intent(getContext(), MainActivity.class);
+                Intent intent=new Intent(getContext(), SignInActivity.class);
                 startActivity(intent);
-
-
             }
         });
+
+
 
         return root;
     }

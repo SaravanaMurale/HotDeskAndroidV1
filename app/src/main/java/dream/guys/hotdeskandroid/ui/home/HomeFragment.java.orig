@@ -12,8 +12,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+<<<<<<< HEAD
 import android.util.Log;
+=======
 import android.os.Handler;
+>>>>>>> 8ce333e21dde75c244d13c1dadc98997416f0b66
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -105,23 +108,11 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
+<<<<<<< HEAD
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loadHomeList();
-    }
-    private void doTokenExpiryHere() {
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                SessionHandler.getInstance().saveBoolean(getContext(),AppConstants.TOKEN_EXPIRY_STATUS,true);
-                Utils.finishAllActivity(getContext());
-            }
-        },5000);
-
-
-
     }
 
     private void loadHomeList(){
@@ -148,6 +139,19 @@ public class HomeFragment extends Fragment {
     }
 
     private void createRecyclerList() {
+=======
+    private void doTokenExpiryHere() {
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                SessionHandler.getInstance().saveBoolean(getContext(),AppConstants.TOKEN_EXPIRY_STATUS,true);
+                Utils.finishAllActivity(getContext());
+            }
+        },5000);
+
+
+>>>>>>> 8ce333e21dde75c244d13c1dadc98997416f0b66
 
     }
 

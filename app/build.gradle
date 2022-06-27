@@ -56,5 +56,8 @@ dependencies {
     //RecyclerView
     implementation "androidx.recyclerview:recyclerview:1.2.1"
 
+    //BioMetric
+    implementation 'androidx.biometric:biometric:1.0.1'
+
 
 }

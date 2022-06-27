@@ -2,8 +2,13 @@ package dream.guys.hotdeskandroid.utils;
 
 public class AppConstants {
 
-    //public static final String BASE_URL="https://hotdeskplus-dev-api.azurewebsites.net";
+<<<<<<< HEAD
+//    public static final String BASE_URL="https://hotdeskplus-dev-api.azurewebsites.net";
     public static final String BASE_URL="https://dev-api.hotdeskplus.com/";
+=======
+    //public static final String BASE_URL="https://hotdeskplus-dev-api.azurewebsites.net";
+    public static final String BASE_URL = "https://dev-api.hotdeskplus.com/";
+>>>>>>> 8ce333e21dde75c244d13c1dadc98997416f0b66
 
     //SharedPreference Constant
     public static final String USERTOKEN = "USERTOKEN";

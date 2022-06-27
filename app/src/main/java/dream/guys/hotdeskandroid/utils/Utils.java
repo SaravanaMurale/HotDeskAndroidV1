@@ -78,6 +78,8 @@ import com.google.android.material.chip.ChipGroup;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -86,6 +88,8 @@ import java.util.TimeZone;
 
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.example.DummyActivity;
+import dream.guys.hotdeskandroid.ui.login.LoginActivity;
+import dream.guys.hotdeskandroid.ui.login.SignInActivity;
 
 /**
  * Created by bala on 17/06/2022.
@@ -226,6 +230,83 @@ public class Utils {
         timePickerDialog.updateTime(hour,minutes);
         timePickerDialog.show();
 
+    }
+
+    public static String getCurrentDate(){
+         String date= null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDateTime now = LocalDateTime.now();
+            //System.out.println(dtf.format(now));
+            date=dtf.format(now);
+
+        }
+        return date;
+    }
+
+    public static String getCurrentTime(){
+         String time= null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+            //System.out.println(dtf.format(now));
+            time=dtf.format(now);
+        }
+        return time;
+    }
+
+    public static boolean checkTokenExpiry() {
+
+        boolean tokenExpiryStatus = false;
+        String date=SessionHandler.getInstance().get(MyApp.getContext(), AppConstants.EXPIRY_TOKEN_DATE);
+
+        if (getToken() != null && date!=null) {
+            //if (date.equals(getCurrentDate()))
+            if (date.equals(getCurrentDate())) {
+
+                tokenExpiryStatus = true;
+            } else {
+                SessionHandler.getInstance().remove(MyApp.getContext(), AppConstants.USERTOKEN);
+                tokenExpiryStatus = false;
+            }
+        }
+
+
+        return  tokenExpiryStatus;
+
+    }
+
+    public static void saveTokenDateAndTimeInPreference(String token){
+
+        String expiryTokenDate="",expiryTokenTime="",expiryTokenTimeWithZ="";
+        String[] words=token.split("T");
+
+        for (int i = 0; i <words.length ; i++) {
+
+            if(i==0){
+                expiryTokenDate=words[i];
+            }
+
+            if(i==1){
+                expiryTokenTimeWithZ=words[i];
+            }
+
+            String[] tokenTime=expiryTokenTimeWithZ.split("Z");
+            System.out.println("TokenSplitData"+tokenTime[0]);
+
+        }
+
+        System.out.println("FinalTokenDateAndTime"+expiryTokenDate+" "+expiryTokenTime);
+
+        SessionHandler.getInstance().save(MyApp.getContext(),AppConstants.EXPIRY_TOKEN_DATE,expiryTokenDate);
+        SessionHandler.getInstance().save(MyApp.getContext(),AppConstants.EXPIRY_TOKEN_TIME,expiryTokenTime);
+
+    }
+
+    public static void finishAllActivity(Context context){
+        Intent intent = new Intent(context, SignInActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(intent);
     }
 
 }
