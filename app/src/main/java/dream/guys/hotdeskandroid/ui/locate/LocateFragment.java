@@ -1,11 +1,17 @@
 package dream.guys.hotdeskandroid.ui.locate;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +27,8 @@ import java.util.List;
 import butterknife.BindView;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
-import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
 import dream.guys.hotdeskandroid.databinding.FragmentLocateBinding;
-import dream.guys.hotdeskandroid.utils.Utils;
+import dream.guys.hotdeskandroid.example.CanvasView;
 
 public class LocateFragment extends Fragment {
 
@@ -42,6 +47,8 @@ public class LocateFragment extends Fragment {
     @BindView(R.id.searchLocate)
     EditText searchLocate;
 
+    CanvasView canvasView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,7 +63,12 @@ public class LocateFragment extends Fragment {
             }
         });*/
 
-
+        Bitmap bitmap = Bitmap.createBitmap(100,100, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        RectF rect = new RectF();
+        Paint paint = new Paint();
+        canvas.drawBitmap(bitmap, null, rect, paint);
+//        paint.set(paint);
         binding.searchLocate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
