@@ -145,11 +145,11 @@ public class BookingListResponse {
             private String usageTypeName;
             private String usageTypeAbbreviation;
             private String usageTypeColorCode;
-            private Date from;
+            private String from;
             @SerializedName("to")
-            private Date myto;
-            private Date fromUTC;
-            private Date toUTC;
+            private String myto;
+            private String fromUTC;
+            private String toUTC;
             private String timeZoneId;
             private Booking booking;
 
@@ -185,35 +185,35 @@ public class BookingListResponse {
                 this.usageTypeColorCode = usageTypeColorCode;
             }
 
-            public Date getFrom() {
+            public String getFrom() {
                 return from;
             }
 
-            public void setFrom(Date from) {
+            public void setFrom(String from) {
                 this.from = from;
             }
 
-            public Date getMyto() {
+            public String getMyto() {
                 return myto;
             }
 
-            public void setMyto(Date myto) {
+            public void setMyto(String myto) {
                 this.myto = myto;
             }
 
-            public Date getFromUTC() {
+            public String getFromUTC() {
                 return fromUTC;
             }
 
-            public void setFromUTC(Date fromUTC) {
+            public void setFromUTC(String fromUTC) {
                 this.fromUTC = fromUTC;
             }
 
-            public Date getToUTC() {
+            public String getToUTC() {
                 return toUTC;
             }
 
-            public void setToUTC(Date toUTC) {
+            public void setToUTC(String toUTC) {
                 this.toUTC = toUTC;
             }
 
@@ -344,11 +344,11 @@ public class BookingListResponse {
         public class CarParkBooking{
             private int id;
             private int parkingSlotId;
-            private Date from;
+            private String from;
             @SerializedName("to")
-            private Date myto;
-            private Date fromUtc;
-            private Date toUtc;
+            private String myto;
+            private String fromUtc;
+            private String toUtc;
             private String timeZoneId;
             private String vehicleRegNumber;
             private String parkingSlotCode;
@@ -370,37 +370,6 @@ public class BookingListResponse {
                 this.parkingSlotId = parkingSlotId;
             }
 
-            public Date getFrom() {
-                return from;
-            }
-
-            public void setFrom(Date from) {
-                this.from = from;
-            }
-
-            public Date getMyto() {
-                return myto;
-            }
-
-            public void setMyto(Date myto) {
-                this.myto = myto;
-            }
-
-            public Date getFromUtc() {
-                return fromUtc;
-            }
-
-            public void setFromUtc(Date fromUtc) {
-                this.fromUtc = fromUtc;
-            }
-
-            public Date getToUtc() {
-                return toUtc;
-            }
-
-            public void setToUtc(Date toUtc) {
-                this.toUtc = toUtc;
-            }
 
             public String getTimeZoneId() {
                 return timeZoneId;
@@ -433,6 +402,38 @@ public class BookingListResponse {
             public void setRequestStatus(String requestStatus) {
                 this.requestStatus = requestStatus;
             }
+
+            public String getFrom() {
+                return from;
+            }
+
+            public void setFrom(String from) {
+                this.from = from;
+            }
+
+            public String getMyto() {
+                return myto;
+            }
+
+            public void setMyto(String myto) {
+                this.myto = myto;
+            }
+
+            public String getFromUtc() {
+                return fromUtc;
+            }
+
+            public void setFromUtc(String fromUtc) {
+                this.fromUtc = fromUtc;
+            }
+
+            public String getToUtc() {
+                return toUtc;
+            }
+
+            public void setToUtc(String toUtc) {
+                this.toUtc = toUtc;
+            }
         }
 
 
@@ -440,11 +441,11 @@ public class BookingListResponse {
             private int id;
             private int meetingRoomId;
             private String meetingRoomName;
-            private Date from;
+            private String  from;
             @SerializedName("to")
-            private Date myto;
-            private Date fromUtc;
-            private Date toUtc;
+            private String myto;
+            private String fromUtc;
+            private String toUtc;
             private String timeZoneId;
             private String subject;
 
@@ -472,35 +473,35 @@ public class BookingListResponse {
                 this.meetingRoomName = meetingRoomName;
             }
 
-            public Date getFrom() {
+            public String getFrom() {
                 return from;
             }
 
-            public void setFrom(Date from) {
+            public void setFrom(String from) {
                 this.from = from;
             }
 
-            public Date getMyto() {
+            public String getMyto() {
                 return myto;
             }
 
-            public void setMyto(Date myto) {
+            public void setMyto(String myto) {
                 this.myto = myto;
             }
 
-            public Date getFromUtc() {
+            public String getFromUtc() {
                 return fromUtc;
             }
 
-            public void setFromUtc(Date fromUtc) {
+            public void setFromUtc(String fromUtc) {
                 this.fromUtc = fromUtc;
             }
 
-            public Date getToUtc() {
+            public String getToUtc() {
                 return toUtc;
             }
 
-            public void setToUtc(Date toUtc) {
+            public void setToUtc(String toUtc) {
                 this.toUtc = toUtc;
             }
 

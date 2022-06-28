@@ -303,6 +303,44 @@ public class Utils {
 
     }
 
+    public static void splitDate(String dateWithTandZ){
+        String date="";
+        String[] words=dateWithTandZ.split("T");
+
+        for (int i = 0; i <words.length ; i++) {
+
+            if (i == 0) {
+                date = words[i];
+            }
+
+        }
+
+    }
+
+    public static String splitTime(String dateWithTandZ){
+
+        String timeWithZ="";
+        String time="";
+
+        String[] words=dateWithTandZ.split("T");
+
+        for (int i = 0; i <words.length ; i++) {
+
+
+            if(i==1){
+                timeWithZ=words[i];
+            }
+
+            String[] tokenTime=timeWithZ.split("Z");
+            time=tokenTime[0];
+            System.out.println("TokenSplitData"+tokenTime[0]);
+
+        }
+
+        return time;
+
+    }
+
     public static void finishAllActivity(Context context){
         Intent intent = new Intent(context, SignInActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -23,6 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
+import dream.guys.hotdeskandroid.utils.Utils;
 
 public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingListAdapter.HomeBookingListViewHolder> {
 
@@ -64,32 +65,35 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             // TODO: 27-06-2022
             System.out.println("check bava"+position);
             String name = String.valueOf(list.get(position).getCalendarEntriesModel().getBooking().getId());
-            holder.bookingDeskName.setText(" "+name);
-
+            holder.bookingDeskName.setText("Name");
+            holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom()));
+            holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getToUTC()));
         } else if (list.get(position).getCalDeskStatus() == 2){
+            //Meeting Room
             Glide.with(context)
                     .load(R.drawable.room)
                     .placeholder(R.drawable.room)
                     .into(holder.bookingImage);
 
             holder.bookingDeskName.setText(""+list.get(position).getMeetingBookingsModel().getMeetingRoomName());
+            holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getMeetingBookingsModel().getFrom()));
+            holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getMeetingBookingsModel().getMyto()));
         } else if (list.get(position).getCalDeskStatus() == 3){
+            //Car Parking
             Glide.with(context)
                     .load(R.drawable.car)
                     .placeholder(R.drawable.car)
                     .into(holder.bookingImage);
 
             holder.bookingDeskName.setText(""+list.get(position).getCarParkBookingsModel().getParkingSlotCode());
+            //holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getCarParkBookingsModel().getFrom()));
+            //holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
         }
 
         if (list.get(position).getCalendarEntriesModel() != null && !list.get(position).getCalendarEntriesModel().getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
             holder.rlBookingRemoteBlock.setVisibility(View.VISIBLE);
             holder.rlInOffice.setVisibility(View.GONE);
         }
-
-
-
-
     }
 
     @Override

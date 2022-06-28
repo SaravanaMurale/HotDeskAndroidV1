@@ -110,7 +110,6 @@ public class HomeFragment extends Fragment {
             call.enqueue(new Callback<BookingListResponse>() {
                 @Override
                 public void onResponse(Call<BookingListResponse> call, Response<BookingListResponse> response) {
-                    System.out.println("response Success bala");
 
                     if(response.code()==200){
 
@@ -125,7 +124,7 @@ public class HomeFragment extends Fragment {
                 }
                 @Override
                 public void onFailure(Call<BookingListResponse> call, Throwable t) {
-                    System.out.println("response failure bala");
+
                 }
             });
 
