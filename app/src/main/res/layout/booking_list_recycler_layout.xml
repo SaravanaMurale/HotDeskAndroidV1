@@ -94,7 +94,7 @@
                     android:layout_width="@dimen/_15sdp"
                     android:layout_height="@dimen/_15sdp"
                     android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_marginTop="1dp"
                     android:layout_toRightOf="@id/bookingDeskName"
                     android:src="@drawable/blue_location"
 
@@ -114,8 +114,8 @@
 
                 <ImageView
                     android:id="@+id/bookingCheckInIcon"
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
+                    android:layout_width="@dimen/_13sdp"
+                    android:layout_height="@dimen/_13sdp"
                     android:layout_below="@+id/bookingAddress"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_3sdp"
@@ -137,8 +137,8 @@
 
                 <ImageView
                     android:id="@+id/bookingCheckOutIcon"
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
+                    android:layout_width="@dimen/_13sdp"
+                    android:layout_height="@dimen/_13sdp"
                     android:layout_below="@+id/bookingAddress"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_3sdp"
@@ -159,8 +159,8 @@
 
                 <ImageView
                     android:id="@+id/bookingRefreshIcon"
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
+                    android:layout_width="@dimen/_13sdp"
+                    android:layout_height="@dimen/_13sdp"
                     android:layout_below="@+id/bookingAddress"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_3sdp"

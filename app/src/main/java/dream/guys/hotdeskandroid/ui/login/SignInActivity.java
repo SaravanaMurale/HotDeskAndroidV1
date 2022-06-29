@@ -206,4 +206,10 @@ public class SignInActivity extends AppCompatActivity {
         },1000);
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

@@ -394,9 +394,12 @@ public class Utils {
     }
 
     public static void finishAllActivity(Context context){
-        Intent intent = new Intent(context, SignInActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        context.startActivity(intent);
+        Intent i = new Intent(context, SignInActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
+        //finishAllActivity(context);
     }
 
     public static Date getCurrentDateInDateFormet(){

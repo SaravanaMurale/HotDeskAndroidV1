@@ -17,6 +17,7 @@ import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
 import dream.guys.hotdeskandroid.databinding.FragmentWellbeingBinding;
 import dream.guys.hotdeskandroid.ui.login.SignInActivity;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
+import dream.guys.hotdeskandroid.utils.Utils;
 
 public class WellbeingFragment extends Fragment {
     FragmentWellbeingBinding binding;
@@ -36,8 +37,8 @@ public class WellbeingFragment extends Fragment {
             public void onClick(View v) {
                 SessionHandler.getInstance().removeAll(getContext());
 
-                Intent intent=new Intent(getContext(), SignInActivity.class);
-                startActivity(intent);
+                Utils.finishAllActivity(getContext());
+
             }
         });
 

@@ -73,14 +73,14 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.lineLayout.setVisibility(View.VISIBLE);
         }
         if (list.get(position).getCalDeskStatus() ==1 && list.get(position).getCalendarEntriesModel().getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
+            //Desk Booking
             Glide.with(context)
                     .load(R.drawable.chair)
                     .placeholder(R.drawable.chair)
                     .into(holder.bookingImage);
             // TODO: 27-06-2022
-            System.out.println("check bava"+position);
             String name = String.valueOf(list.get(position).getCalendarEntriesModel().getBooking().getId());
-            holder.bookingDeskName.setText("Name");
+            holder.bookingDeskName.setText(list.get(position).getCalendarEntriesModel().getUsageTypeName());
             holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getFromUTC()));
             holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getToUTC()));
         } else if (list.get(position).getCalDeskStatus() == 2){
@@ -101,8 +101,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     .into(holder.bookingImage);
 
             holder.bookingDeskName.setText(""+list.get(position).getCarParkBookingsModel().getParkingSlotCode());
-            //holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getCarParkBookingsModel().getFrom()));
-            //holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
+            holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getCarParkBookingsModel().getFromUtc()));
+            holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getCarParkBookingsModel().getToUtc()));
         }
 
         if (list.get(position).getCalendarEntriesModel() != null && !list.get(position).getCalendarEntriesModel().getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
@@ -117,15 +117,15 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                 if (list.get(position).getCalendarEntriesModel()!=null){
                     boolean clickedStatus=true;
                 onCheckInClickable.onCheckInClick(list.get(position).getCalendarEntriesModel(),clickedStatus);
-                    Toast.makeText(context, "DESKCLICKED", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
                 }else if(list.get(position).getMeetingBookingsModel()!=null){
                     boolean clickedStatus=true;
                     onCheckInClickable.onCheckInClick(list.get(position).getMeetingBookingsModel(),clickedStatus);
-                    Toast.makeText(context, "ROOMCLICKED", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "ROOM CLICKED", Toast.LENGTH_SHORT).show();
                 }else if(list.get(position).getCarParkBookingsModel()!=null){
                     boolean clickedStatus=true;
                     onCheckInClickable.onCheckInClick(list.get(position).getCarParkBookingsModel(),clickedStatus);
-                    Toast.makeText(context, "CARLICKED", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "CAR CLICKED", Toast.LENGTH_SHORT).show();
                 }
 
             }
