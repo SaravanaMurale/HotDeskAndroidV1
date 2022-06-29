@@ -2,6 +2,7 @@ package dream.guys.hotdeskandroid;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -63,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
     private void uiInit() {
         navView = findViewById(R.id.nav_view);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
-        NavigationUI.setupWithNavController(binding.navView, navController);
 
+        NavigationUI.setupWithNavController(binding.navView, navController);
         navView.setItemIconTintList(null);
 
 
@@ -73,6 +74,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
+       // finish();
     }
 }

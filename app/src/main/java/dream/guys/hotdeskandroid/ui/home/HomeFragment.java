@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
 
@@ -35,18 +38,23 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnCheckInClickable {
 
     FragmentHomeBinding binding;
     TextView text;
     ImageView userProfile;
     Toolbar toolbar;
 
+    @BindView(R.id.homeUserName)
+    TextView homeUserName;
+
     RecyclerView rvHomeBooking;
     HomeBookingListAdapter homeBookingListAdapter;
     LinearLayoutManager linearLayoutManager;
 
     List<BookingListResponse> bookingListResponseList;
+
+    View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,6 +74,8 @@ public class HomeFragment extends Fragment {
                 Utils.bottomSheetEditYourBooking(getContext(),getActivity(),"message","dad");
             }
         });
+
+        binding.homeUserName.setText(SessionHandler.getInstance().get(getContext(),AppConstants.USERNAME));
 /*
         text.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +97,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //loadHomeList();
+        this.view=view;
     }
     private void doTokenExpiryHere() {
 
@@ -218,7 +229,8 @@ public class HomeFragment extends Fragment {
         rvHomeBooking.setLayoutManager(linearLayoutManager);
         rvHomeBooking.setHasFixedSize(true);
 
-        homeBookingListAdapter=new HomeBookingListAdapter(getContext(), getActivity(), recyclerModelArrayList);
+       // homeBookingListAdapter=new HomeBookingListAdapter(getContext(), getActivity(), recyclerModelArrayList);
+        homeBookingListAdapter=new HomeBookingListAdapter(getContext(),this,recyclerModelArrayList);
         rvHomeBooking.setAdapter(homeBookingListAdapter);
 
     }
@@ -227,6 +239,48 @@ public class HomeFragment extends Fragment {
     private void redirectToBioMetricAccess() {
         SessionHandler.getInstance().saveBoolean(getContext(),AppConstants.TOKEN_EXPIRY_STATUS,true);
         Utils.finishAllActivity(getContext());
+    }
+
+    @Override
+    public void onCheckInClick(BookingListResponse.DayGroup.CalendarEntry calendarEntriesModel, boolean s) {
+
+        System.out.println("BookingNameDest"+calendarEntriesModel.getUsageTypeName());
+
+        NavController navController= Navigation.findNavController(view);
+        Bundle bundle=new Bundle();
+        bundle.putString("BOOK_NAME",calendarEntriesModel.getUsageTypeName());
+        bundle.putString("BOOK_ADDRESS","address");
+        //String checkInTime=calendarEntriesModel.getFromUTC();
+        //String checkOutTime=calendarEntriesModel.getFromUTC();
+        bundle.putString("CHECK_IN_TIME",Utils.splitTime(calendarEntriesModel.getFromUTC()));
+        bundle.putString("CHECK_OUT_TIME",Utils.splitTime(calendarEntriesModel.getToUTC()));
+        navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment,bundle);
+
+
+    }
+
+    @Override
+    public void onCheckInClick(BookingListResponse.DayGroup.MeetingBooking meetingEntriesModel, boolean s) {
+        System.out.println("BookingNameMeeting"+meetingEntriesModel.getMeetingRoomName());
+        NavController navController= Navigation.findNavController(view);
+        Bundle bundle=new Bundle();
+        bundle.putString("BOOK_NAME",meetingEntriesModel.getMeetingRoomName());
+        bundle.putString("BOOK_ADDRESS","Address");
+        bundle.putString("CHECK_IN_TIME",Utils.splitTime(meetingEntriesModel.getFromUtc()));
+        bundle.putString("CHECK_OUT_TIME",Utils.splitTime(meetingEntriesModel.getToUtc()));
+        navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment,bundle);
+    }
+
+    @Override
+    public void onCheckInClick(BookingListResponse.DayGroup.CarParkBooking carParkingEntriesModel, boolean s) {
+        System.out.println("BookingNameCar"+carParkingEntriesModel.getParkingSlotCode());
+        NavController navController= Navigation.findNavController(view);
+        Bundle bundle=new Bundle();
+        bundle.putString("BOOK_NAME",carParkingEntriesModel.getParkingSlotCode());
+        bundle.putString("BOOK_ADDRESS","Addresss");
+        bundle.putString("CHECK_IN_TIME",Utils.splitTime(carParkingEntriesModel.getFromUtc()));
+        bundle.putString("CHECK_OUT_TIME",Utils.splitTime(carParkingEntriesModel.getToUtc()));
+        navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment,bundle);
     }
 
 

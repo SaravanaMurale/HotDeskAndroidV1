@@ -9,16 +9,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-import butterknife.Action;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
@@ -31,11 +30,20 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
     Activity activity;
     ArrayList<BookingListResponse.DayGroup> list;
 
-    public HomeBookingListAdapter(Context context, FragmentActivity activity, ArrayList<BookingListResponse.DayGroup> recyclerModelArrayList) {
-        this.context= context;
-        this.activity= activity;
-        this.list = recyclerModelArrayList;
+    public OnCheckInClickable onCheckInClickable;
 
+
+    public HomeBookingListAdapter(Context context, OnCheckInClickable onCheckInClickable, ArrayList<BookingListResponse.DayGroup> recyclerModelArrayList) {
+        this.context = context;
+        this.onCheckInClickable =  onCheckInClickable;
+        this.list = recyclerModelArrayList;
+    }
+
+
+    public interface  OnCheckInClickable{
+        public void onCheckInClick(BookingListResponse.DayGroup.CalendarEntry calendarEntriesModel, boolean s);
+        public void onCheckInClick(BookingListResponse.DayGroup.MeetingBooking meetingEntriesModel, boolean s);
+        public void onCheckInClick(BookingListResponse.DayGroup.CarParkBooking carParkingEntriesModel, boolean s);
     }
 
 
@@ -49,8 +57,15 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
     @Override
     public void onBindViewHolder(@NonNull HomeBookingListViewHolder holder, int position) {
+
         if (list.get(position).isDateStatus()){
             holder.dateLayout.setVisibility(View.VISIBLE);
+
+
+            System.out.println("DateFormatPrintHere"+list.get(position).getDate());
+            System.out.println("DayInTextAndNumber"+Utils.getDayAndDateFromDateFormat(list.get(position).getDate()));
+
+            holder.today_date.setText(""+Utils.getDayAndDateFromDateFormat(list.get(position).getDate()));
             holder.lineLayout.setVisibility(View.GONE);
         }
         else {
@@ -66,7 +81,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             System.out.println("check bava"+position);
             String name = String.valueOf(list.get(position).getCalendarEntriesModel().getBooking().getId());
             holder.bookingDeskName.setText("Name");
-            holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom()));
+            holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getFromUTC()));
             holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getToUTC()));
         } else if (list.get(position).getCalDeskStatus() == 2){
             //Meeting Room
@@ -76,8 +91,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     .into(holder.bookingImage);
 
             holder.bookingDeskName.setText(""+list.get(position).getMeetingBookingsModel().getMeetingRoomName());
-            holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getMeetingBookingsModel().getFrom()));
-            holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getMeetingBookingsModel().getMyto()));
+            holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getMeetingBookingsModel().getFromUtc()));
+            holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getMeetingBookingsModel().getToUtc()));
         } else if (list.get(position).getCalDeskStatus() == 3){
             //Car Parking
             Glide.with(context)
@@ -94,6 +109,32 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.rlBookingRemoteBlock.setVisibility(View.VISIBLE);
             holder.rlInOffice.setVisibility(View.GONE);
         }
+
+        holder.bookingBtnCheckIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (list.get(position).getCalendarEntriesModel()!=null){
+                    boolean clickedStatus=true;
+                onCheckInClickable.onCheckInClick(list.get(position).getCalendarEntriesModel(),clickedStatus);
+                    Toast.makeText(context, "DESKCLICKED", Toast.LENGTH_SHORT).show();
+                }else if(list.get(position).getMeetingBookingsModel()!=null){
+                    boolean clickedStatus=true;
+                    onCheckInClickable.onCheckInClick(list.get(position).getMeetingBookingsModel(),clickedStatus);
+                    Toast.makeText(context, "ROOMCLICKED", Toast.LENGTH_SHORT).show();
+                }else if(list.get(position).getCarParkBookingsModel()!=null){
+                    boolean clickedStatus=true;
+                    onCheckInClickable.onCheckInClick(list.get(position).getCarParkBookingsModel(),clickedStatus);
+                    Toast.makeText(context, "CARLICKED", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+
+
+
+
     }
 
     @Override
@@ -115,9 +156,12 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         Button bookingBtnCheckIn;
         @BindView(R.id.bookingIvIcon)
         ImageView bookingImage;
-
         @BindView(R.id.rlDateLayout)
         RelativeLayout dateLayout;
+
+        @BindView(R.id.today_date)
+        TextView today_date;
+
         @BindView(R.id.rlLineLayout)
         RelativeLayout lineLayout;
         @BindView(R.id.rlInOffice)
@@ -129,6 +173,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         public HomeBookingListViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+
         }
     }
 

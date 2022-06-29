@@ -303,6 +303,43 @@ public class Utils {
 
     }
 
+
+    public static String getDayAndDateFromDateFormat(Date date){
+
+        String dayInTextWithComma=""; String dayInText=""; String dayInNumber="";
+
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        String strDate = formatter.format(date);
+
+        formatter = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z");
+        strDate = formatter.format(date);
+        System.out.println("Date Format with E, dd MMM yyyy HH:mm:ss z : "+strDate);
+
+        String[] words=strDate.split(" ");
+
+        for (int i = 0; i <words.length ; i++) {
+
+            if(i==0){
+                dayInTextWithComma=words[i];
+            }
+
+            if(i==1){
+                dayInNumber=words[i];
+            }
+
+        }
+
+        String[] day=dayInTextWithComma.split(",");
+
+           dayInText=day[0];
+
+
+
+
+        return dayInText+" "+dayInNumber;
+
+    }
+
     public static void splitDate(String dateWithTandZ){
         String date="";
         String[] words=dateWithTandZ.split("T");
@@ -337,7 +374,22 @@ public class Utils {
 
         }
 
-        return time;
+        String[] timeWithColon=time.split(":");
+
+        String hour="";String min="";String hourMinFormet="";
+        for (int i = 0; i <timeWithColon.length ; i++) {
+
+            if(i==0){
+                hour=timeWithColon[i];
+            }
+            if(i==1){
+                min=timeWithColon[i];
+            }
+        }
+
+        hourMinFormet=hour+":"+min;
+
+        return hourMinFormet;
 
     }
 

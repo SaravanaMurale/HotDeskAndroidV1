@@ -2,6 +2,7 @@ package dream.guys.hotdeskandroid.model.response;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -140,7 +141,7 @@ public class BookingListResponse {
             this.carParkBookings = carParkBookings;
         }
 
-        public class CalendarEntry{
+        public class CalendarEntry {
             private int id;
             private String usageTypeName;
             private String usageTypeAbbreviation;
