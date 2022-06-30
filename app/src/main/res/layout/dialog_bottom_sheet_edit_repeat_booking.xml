@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/repeat"
+        android:textStyle="bold"
+        android:textSize="@dimen/_15sdp"
+        android:layout_margin="@dimen/_10sdp"
+        android:theme="@style/TextBold"
+        />
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_50sdp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <!--None-->
+            <RelativeLayout
+                android:id="@+id/repeatNoneBlock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_10sdp"
+                android:background="@color/bg_grey">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="None"
+                    android:layout_alignParentLeft="true"
+                    android:textColor="@color/black"
+                    android:theme="@style/TextBold" />
+
+                <ImageView
+                    android:id="@+id/noneTickIv"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="end"
+                    android:src="@drawable/tick" />
+
+            </RelativeLayout>
+
+            <!--Daily-->
+            <RelativeLayout
+                android:id="@+id/repeatDailyBlock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@color/bg_grey">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Daily"
+                    android:layout_alignParentLeft="true"
+                    android:textColor="@color/black"
+                    android:theme="@style/TextBold" />
+
+                <ImageView
+                    android:id="@+id/dailyTickIv"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="end"
+                    android:src="@drawable/tick"
+                    android:visibility="invisible" />
+
+            </RelativeLayout>
+
+            <!--weekly-->
+            <RelativeLayout
+                android:id="@+id/repeatWeeklyBlock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@color/bg_grey">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Weekly"
+                    android:layout_alignParentLeft="true"
+                    android:textColor="@color/black"
+                    android:theme="@style/TextBold" />
+
+                <ImageView
+                    android:id="@+id/weeklyTickIv"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="end"
+                    android:src="@drawable/tick"
+                    android:visibility="invisible" />
+
+            </RelativeLayout>
+
+            <!--Monthly-->
+            <RelativeLayout
+                android:id="@+id/repeatMonthlyBlock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@color/bg_grey">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Monthly"
+                    android:layout_alignParentLeft="true"
+                    android:textColor="@color/black"
+                    android:theme="@style/TextBold" />
+
+                <ImageView
+                    android:id="@+id/monthlyTickIv"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="end"
+                    android:src="@drawable/tick"
+                    android:visibility="invisible" />
+
+            </RelativeLayout>
+
+            <!--Yearly-->
+            <RelativeLayout
+                android:id="@+id/repeatYearlyBlock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@color/bg_grey">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Yearly"
+                    android:layout_alignParentLeft="true"
+                    android:textColor="@color/black"
+                    android:theme="@style/TextBold" />
+
+                <ImageView
+                    android:id="@+id/yearlyTickIv"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="end"
+                    android:src="@drawable/tick"
+                    android:visibility="invisible" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/bsRepeatBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/back"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_alignParentBottom="true"
+        android:theme="@style/TextBold"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/_20sdp"/>
+
+
+</RelativeLayout>

@@ -4,12 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
@@ -33,9 +35,14 @@ import retrofit2.Response;
 
 
 public class SignInActivity extends AppCompatActivity {
+
+
     BiometricPrompt biometricPrompt;
     BiometricPrompt.PromptInfo promptInfo;
 
+
+    @BindView(R.id.signInRoot)
+    RelativeLayout signInRoot;
     @BindView(R.id.btnSignIn)
     Button btnSignIn;
 
@@ -75,7 +82,11 @@ public class SignInActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("ResourceAsColor")
     private void enableBioMetricAccessHere() {
+
+        signInRoot.setBackgroundColor(R.color.biometric_bg);
+
         BiometricManager biometricManager= BiometricManager.from(this);
 
         switch (biometricManager.canAuthenticate()){

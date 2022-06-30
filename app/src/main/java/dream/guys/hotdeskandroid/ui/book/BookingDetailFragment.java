@@ -18,11 +18,16 @@ import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.databinding.FragmentBookingDetailBinding;
 import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
+import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.SessionHandler;
 
 
 public class BookingDetailFragment extends Fragment {
 
     FragmentBookingDetailBinding fragmentBookingDetailBinding;
+
+    @BindView(R.id.bookDetailUserName)
+    TextView bookDetailUserName;
 
     @BindView(R.id.bookingDetailDeskName)
     TextView bookingDetailDeskName;
@@ -61,6 +66,8 @@ public class BookingDetailFragment extends Fragment {
             bookChecInTime = bundle.getString("CHECK_IN_TIME", null);
             bookCheckOutTime = bundle.getString("CHECK_OUT_TIME", null);
         }
+
+        fragmentBookingDetailBinding.bookDetailUserName.setText(SessionHandler.getInstance().get(getContext(), AppConstants.USERNAME));
 
         fragmentBookingDetailBinding.bookingDetailDeskName.setText(bookName);
         //fragmentBookingDetailBinding.bookingDetailAddress.setText("");
