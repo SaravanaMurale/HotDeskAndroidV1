@@ -10,4 +10,12 @@
 
     <color name="colorGrey300">#E0E0E0</color>
 
+
+    //Figma
+    <color name="figmaGrey">#777777</color>
+    <color name="figmaBgGrey">#F2F2F2</color>
+    <color name="figmaBlack">#F2F2F2</color>
+    <color name="figmaBlue">#0F62AB</color>
+    <color name="bg_grey">#fafafa</color>
+    <color name="line_gray">#dcdcdc</color>
 </resources>
