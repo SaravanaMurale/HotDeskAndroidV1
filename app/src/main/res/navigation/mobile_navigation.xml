@@ -9,7 +9,11 @@
         android:id="@+id/navigation_home"
         android:name="dream.guys.hotdeskandroid.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_bookingDetailFragment"
+            app:destination="@id/bookingDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_locate"
@@ -33,4 +37,11 @@
         android:name="dream.guys.hotdeskandroid.ui.wellbeing.WellbeingFragment"
         android:label="fragment_wellbeing"
         tools:layout="@layout/fragment_wellbeing" />
+
+    <fragment
+        android:id="@+id/bookingDetailFragment"
+        android:name="dream.guys.hotdeskandroid.ui.book.BookingDetailFragment"
+        android:label="fragment_booking_detail"
+        tools:layout="@layout/fragment_booking_detail" />
+
 </navigation>

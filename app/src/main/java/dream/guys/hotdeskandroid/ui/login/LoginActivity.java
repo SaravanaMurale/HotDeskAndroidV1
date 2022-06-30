@@ -134,6 +134,10 @@ public class LoginActivity extends AppCompatActivity {
                             String email = etEmail.getText().toString();
                             String password = etPassword.getText().toString();
 
+
+                            userDetailsResponse.getFullName();
+
+                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.USERNAME,userDetailsResponse.getFullName());
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.COMPANY_NAME,companyName);
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.EMAIL,email);
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.PASSWORD,password);

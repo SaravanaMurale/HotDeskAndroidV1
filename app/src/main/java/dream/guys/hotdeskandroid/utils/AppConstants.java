@@ -18,4 +18,5 @@ public class AppConstants {
     public static final String EMAIL = "EMAIL";
     public static final String PASSWORD = "PASSWORD";
     public static final String TOKEN_EXPIRY_STATUS="TOKEN_EXPIRY_STATUS";
+    public static final String USERNAME="USERNAME";
 }
