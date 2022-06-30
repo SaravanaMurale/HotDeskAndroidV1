@@ -33,14 +33,11 @@ import retrofit2.Response;
 
 
 public class SignInActivity extends AppCompatActivity {
-
-
     BiometricPrompt biometricPrompt;
     BiometricPrompt.PromptInfo promptInfo;
 
     @BindView(R.id.btnSignIn)
     Button btnSignIn;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,43 +45,35 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signin);
         ButterKnife.bind(this);
 
-
-        boolean tokenStatus=SessionHandler.getInstance().getBoolean(MyApp.getContext(), AppConstants.TOKEN_EXPIRY_STATUS);
+        boolean tokenStatus =
+                SessionHandler.getInstance().getBoolean(
+                        MyApp.getContext(),
+                        AppConstants.TOKEN_EXPIRY_STATUS);
 
         //Already loggedin user
         if(tokenStatus){
             //If token expired enable fingerprint
             enableBioMetricAccessHere();
-        }else {
+        } else {
             //NormalFlow
             int userId=SessionHandler.getInstance().getInt(SignInActivity.this, AppConstants.USER_ID);
-
-            if(userId>0){
+            if(userId > 0){
                 launchHomeActivity();
-
             }else if(userId==0) {
                 visibleSignInButton();
             }
-
-
         }
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 Intent intent=new Intent(SignInActivity.this,LoginActivity.class);
                 startActivity(intent);
                 finish();
-
-
-
             }
         });
 
     }
-
 
     private void enableBioMetricAccessHere() {
         BiometricManager biometricManager= BiometricManager.from(this);
@@ -116,11 +105,7 @@ public class SignInActivity extends AppCompatActivity {
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
 
-                //Toast.makeText(SignInActivity.this, "BioMetric Success", Toast.LENGTH_SHORT).show();
-
                 sendSavedLoginCredentialToServer();
-
-
 
             }
 
@@ -161,33 +146,22 @@ public class SignInActivity extends AppCompatActivity {
 
                         //Token is updated so Set Token Expiry Status false here
                         SessionHandler.getInstance().saveBoolean(SignInActivity.this,AppConstants.TOKEN_EXPIRY_STATUS,false);
-
                         launchHomeActivity();
 
                     } else {
-
-
-
                         Utils.toastMessage(SignInActivity.this, "CantFetch");
                     }
-
                 }
 
                 @Override
                 public void onFailure(Call<GetTokenResponse> call, Throwable t) {
-
                     System.out.println("WrongDataReceived"+t.getMessage().toString());
-
                     Utils.toastMessage(SignInActivity.this, "You have entered wrong username or password");
-
                 }
             });
-
-
         } else {
             Utils.toastMessage(this, "Please Enable Internet");
         }
-
     }
 
     private void visibleSignInButton() {

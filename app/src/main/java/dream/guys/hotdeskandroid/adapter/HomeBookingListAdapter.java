@@ -37,7 +37,6 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
     }
 
-
     @NonNull
     @Override
     public HomeBookingListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -56,6 +55,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.dateLayout.setVisibility(View.GONE);
             holder.lineLayout.setVisibility(View.VISIBLE);
         }
+
         if (list.get(position).getCalDeskStatus() ==1 && list.get(position).getCalendarEntriesModel().getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
             Glide.with(context)
                     .load(R.drawable.chair)
