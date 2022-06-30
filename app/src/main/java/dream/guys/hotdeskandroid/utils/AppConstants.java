@@ -19,4 +19,9 @@ public class AppConstants {
     public static final String PASSWORD = "PASSWORD";
     public static final String TOKEN_EXPIRY_STATUS="TOKEN_EXPIRY_STATUS";
     public static final String USERNAME="USERNAME";
+
+    //Should Not Change(Clickable Constant)
+    public static final String CHECKIN="CHCKIN";
+    public static final String EDIT="EDIT";
+
 }

@@ -33,7 +33,7 @@ import dream.guys.hotdeskandroid.example.CanvasView;
 public class LocateFragment extends Fragment {
 
     //BottomSheetData
-    TextView country,state,street,floor;
+    TextView country,state,street,floor,back;
     RecyclerView rvCountry,rvState,rvStreet;
     ShowCountryAdapter showCountryAdapter;
     LinearLayoutManager linearLayoutManager;
@@ -110,6 +110,16 @@ public class LocateFragment extends Fragment {
         rvCountry=bottomSheetDialog.findViewById(R.id.rvCountry);
         rvState=bottomSheetDialog.findViewById(R.id.rvState);
         rvStreet=bottomSheetDialog.findViewById(R.id.rvStreet);
+
+        back=bottomSheetDialog.findViewById(R.id.bsBack);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                bottomSheetDialog.dismiss();
+            }
+        });
 
 
         country.setOnClickListener(new View.OnClickListener() {

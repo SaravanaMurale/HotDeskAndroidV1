@@ -188,7 +188,7 @@ public class Utils {
         bottomSheetDialog.show();
     }
 
-    private static void popUpTimePicker(Activity activity, TextView v) {
+    public static void popUpTimePicker(Activity activity, TextView v) {
 //        TextView startTime = v;
         TimePickerDialog timePickerDialog=new TimePickerDialog(activity,
                 android.R.style.Theme_Holo_Light_Dialog_MinWidth,

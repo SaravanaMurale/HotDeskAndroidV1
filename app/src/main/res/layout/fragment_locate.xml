@@ -5,14 +5,22 @@
     android:layout_height="match_parent"
     tools:context=".ui.locate.LocateFragment">
 
-
-    <dream.guys.hotdeskandroid.example.CanvasView
+    <EditText
         android:id="@+id/searchLocate"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/search"
+        android:layout_margin="@dimen/_10sdp"
+        />
+
+
+    <!--<dream.guys.hotdeskandroid.example.CanvasView
+        android:id="@+id/searchLocate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
         android:hint="@string/search"
-        />
+        />-->
 
 
 
