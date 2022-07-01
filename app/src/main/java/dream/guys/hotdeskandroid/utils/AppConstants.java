@@ -23,5 +23,11 @@ public class AppConstants {
     //Should Not Change(Clickable Constant)
     public static final String CHECKIN="CHCKIN";
     public static final String EDIT="EDIT";
+    public static final String REMOTE="REMOTE";
+
+
+
+    public static final String OFFICE_TODAY="You are in the office today";
+    public static final String WORKING_REMOTE="You are working remotely today";
 
 }

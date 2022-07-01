@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.etPassword)
     EditText etPassword;
 
-    @BindView(R.id.btnSignIn)
+    @BindView(R.id.btnSignInLogin)
     Button signIn;
 
 

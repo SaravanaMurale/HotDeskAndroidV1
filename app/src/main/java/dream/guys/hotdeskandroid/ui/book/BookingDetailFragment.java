@@ -11,13 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.databinding.FragmentBookingDetailBinding;
-import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 
@@ -37,13 +38,27 @@ public class BookingDetailFragment extends Fragment {
     TextView bookingDetailCheckInTime;
     @BindView(R.id.bookingCheckOutTime)
     TextView bookingCheckOutTime;
+    @BindView(R.id.checkInText)
+    TextView checkInText;
+
+    @BindView(R.id.centerLayoutBlock)
+    RelativeLayout centerLayoutBlock;
+    @BindView(R.id.centerBlock)
+    RelativeLayout centerBlock;
+    @BindView(R.id.ivWorkingRemote)
+    ImageView ivWorkingRemote;
+    @BindView(R.id.ivNotWorking)
+    ImageView ivNotWorking;
+
+    @BindView(R.id.bookingDetailsBlock)
+    RelativeLayout bookingDetailsBlock;
 
     @BindView(R.id.btnCheckInNow)
     Button btnCheckInNow;
 
     Dialog dialog;
 
-    String bookName,bookAdddress,bookChecInTime,bookCheckOutTime;
+    String action, bookName, bookAdddress, bookChecInTime, bookCheckOutTime;
 
 
     public BookingDetailFragment() {
@@ -57,28 +72,48 @@ public class BookingDetailFragment extends Fragment {
         fragmentBookingDetailBinding = FragmentBookingDetailBinding.inflate(inflater, container, false);
         View root = fragmentBookingDetailBinding.getRoot();
 
-        dialog=new Dialog(getContext());
+        dialog = new Dialog(getContext());
+        fragmentBookingDetailBinding.bookDetailUserName.setText(SessionHandler.getInstance().get(getContext(), AppConstants.USERNAME));
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-             bookName = bundle.getString("BOOK_NAME", null);
+            action = bundle.getString("ACTION", null);
+            bookName = bundle.getString("BOOK_NAME", null);
             bookAdddress = bundle.getString("BOOK_ADDRESS", null);
             bookChecInTime = bundle.getString("CHECK_IN_TIME", null);
             bookCheckOutTime = bundle.getString("CHECK_OUT_TIME", null);
         }
 
-        fragmentBookingDetailBinding.bookDetailUserName.setText(SessionHandler.getInstance().get(getContext(), AppConstants.USERNAME));
+        if (action.equals(AppConstants.CHECKIN)) {
 
-        fragmentBookingDetailBinding.bookingDetailDeskName.setText(bookName);
-        //fragmentBookingDetailBinding.bookingDetailAddress.setText("");
-        fragmentBookingDetailBinding.bookingDetailCheckInTime.setText(bookChecInTime);
-        fragmentBookingDetailBinding.bookingCheckOutTime.setText(bookCheckOutTime);
+            fragmentBookingDetailBinding.bookingDetailDeskName.setText(bookName);
+            fragmentBookingDetailBinding.bookingDetailAddress.setText(bookAdddress);
+            fragmentBookingDetailBinding.bookingDetailCheckInTime.setText(bookChecInTime);
+            fragmentBookingDetailBinding.bookingCheckOutTime.setText(bookCheckOutTime);
+            fragmentBookingDetailBinding.centerLayoutBlock.setVisibility(View.VISIBLE);
+            fragmentBookingDetailBinding.centerBlock.setVisibility(View.GONE);
+            fragmentBookingDetailBinding.checkInText.setText(AppConstants.OFFICE_TODAY);
+
+        } else if (action.equals(AppConstants.REMOTE)) {
+            fragmentBookingDetailBinding.bookingDetailDeskName.setText(bookName);
+            fragmentBookingDetailBinding.bookingDetailCheckInTime.setVisibility(View.INVISIBLE);
+            fragmentBookingDetailBinding.bookingCheckOutTime.setVisibility(View.INVISIBLE);
+            fragmentBookingDetailBinding.bookingDetailAddress.setVisibility(View.INVISIBLE);
+            fragmentBookingDetailBinding.checkInText.setText(AppConstants.WORKING_REMOTE);
+            fragmentBookingDetailBinding.centerLayoutBlock.setVisibility(View.GONE);
+            fragmentBookingDetailBinding.centerBlock.setVisibility(View.VISIBLE);
+            fragmentBookingDetailBinding.ivWorkingRemote.setVisibility(View.VISIBLE);
+            fragmentBookingDetailBinding.ivNotWorking.setVisibility(View.GONE);
+            fragmentBookingDetailBinding.bookingDetailsBlock.setVisibility(View.INVISIBLE);
 
 
-        fragmentBookingDetailBinding. btnCheckInNow.setOnClickListener(new View.OnClickListener() {
+        }
+
+
+        fragmentBookingDetailBinding.btnCheckInNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
                 openCheckoutDialog();
 
             }
@@ -92,7 +127,7 @@ public class BookingDetailFragment extends Fragment {
         dialog.setContentView(R.layout.layout_checkout_success);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        TextView checkDialogClose=dialog.findViewById(R.id.checkDialogClose);
+        TextView checkDialogClose = dialog.findViewById(R.id.checkDialogClose);
 
         checkDialogClose.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -85,7 +85,7 @@ public class SignInActivity extends AppCompatActivity {
     @SuppressLint("ResourceAsColor")
     private void enableBioMetricAccessHere() {
 
-        signInRoot.setBackgroundColor(R.color.biometric_bg);
+        //signInRoot.setBackgroundColor(R.color.biometric_bg);
 
         BiometricManager biometricManager= BiometricManager.from(this);
 

@@ -136,6 +136,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<BookingListResponse> call = apiService.getUserMyWorkDetails(Utils.getCurrentDate(),true);
+            //Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-07-04",true);
             call.enqueue(new Callback<BookingListResponse>() {
                 @Override
                 public void onResponse(Call<BookingListResponse> call, Response<BookingListResponse> response) {
@@ -243,7 +244,6 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 }
             }
 
-
         }
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -267,17 +267,22 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     @Override
     public void onCheckInDeskClick(BookingListResponse.DayGroup.CalendarEntry calendarEntriesModel, String click) {
 
-        if(click.equals(AppConstants.CHECKIN)){
+        if(click.equals(AppConstants.CHECKIN) || click.equals(AppConstants.REMOTE)){
             //Checkin
             System.out.println("BookingNameDest"+calendarEntriesModel.getUsageTypeName());
             NavController navController= Navigation.findNavController(view);
             Bundle bundle=new Bundle();
-            bundle.putString("BOOK_NAME",calendarEntriesModel.getUsageTypeName());
-            bundle.putString("BOOK_ADDRESS","address");
-            //String checkInTime=calendarEntriesModel.getFromUTC();
-            //String checkOutTime=calendarEntriesModel.getFromUTC();
-            bundle.putString("CHECK_IN_TIME",Utils.splitTime(calendarEntriesModel.getFromUTC()));
-            bundle.putString("CHECK_OUT_TIME",Utils.splitTime(calendarEntriesModel.getToUTC()));
+            if(click.equals(AppConstants.CHECKIN)){
+                bundle.putString("ACTION",AppConstants.CHECKIN);
+                bundle.putString("BOOK_NAME",calendarEntriesModel.getBooking().getDeskCode());
+                bundle.putString("BOOK_ADDRESS","address");
+                bundle.putString("CHECK_IN_TIME",Utils.splitTime(calendarEntriesModel.getFromUTC()));
+                bundle.putString("CHECK_OUT_TIME",Utils.splitTime(calendarEntriesModel.getToUTC()));
+            } else if(click.equals(AppConstants.REMOTE)){
+                bundle.putString("ACTION",AppConstants.REMOTE);
+                bundle.putString("BOOK_NAME",calendarEntriesModel.getUsageTypeName());
+
+            }
             navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment,bundle);
         } else if(click.equals(AppConstants.EDIT)){
             //Edit

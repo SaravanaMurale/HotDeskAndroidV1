@@ -5,6 +5,7 @@ public class EditBookingDetails {
     String editStartTTime;
     String editEndTime;
     String date;
+    String abbrevation;
 
     public EditBookingDetails() {
     }

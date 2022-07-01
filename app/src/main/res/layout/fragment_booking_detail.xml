@@ -178,12 +178,11 @@
         android:id="@+id/checkInText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-       android:layout_below="@+id/bookDetailHeadBlock"
+        android:layout_below="@+id/bookDetailHeadBlock"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_10sdp"
         android:text="You are in the office today"
-        android:textColor="@color/black"
-        />
+        android:textColor="@color/black" />
 
 
 
@@ -194,7 +193,7 @@
         android:layout_above="@+id/bookingDetailsBlock"
         android:background="@color/figmaBgGrey"
         android:layout_marginBottom="@dimen/_20sdp"
-        android:visibility="visible"
+        android:visibility="gone"
         >
 
         <TextView
@@ -208,7 +207,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bookingDetailsBlock"
-        android:visibility="gone"
+        android:visibility="visible"
         >
 
         <ImageView
