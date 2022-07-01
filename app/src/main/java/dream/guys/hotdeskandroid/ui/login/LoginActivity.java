@@ -2,6 +2,7 @@ package dream.guys.hotdeskandroid.ui.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,7 @@ import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
@@ -31,6 +33,9 @@ import retrofit2.http.Header;
 
 
 public class LoginActivity extends AppCompatActivity {
+
+
+    Dialog dialog;
 
     @BindView(R.id.etCompanyName)
     EditText etCompanyName;
@@ -48,6 +53,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
+        dialog = new Dialog(LoginActivity.this);
 
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,8 +79,9 @@ public class LoginActivity extends AppCompatActivity {
     private void doLogin(String companyName, String email, String password) {
 
         if (Utils.isNetworkAvailable(this)) {
-            GetTokenRequest getTokenRequest = new GetTokenRequest(companyName, email, password);
 
+           dialog=ProgressDialog.showProgressBar(LoginActivity.this);
+            GetTokenRequest getTokenRequest = new GetTokenRequest(companyName, email, password);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<GetTokenResponse> call = apiService.getLoginToken(getTokenRequest);
             call.enqueue(new Callback<GetTokenResponse>() {
@@ -90,18 +98,23 @@ public class LoginActivity extends AppCompatActivity {
                             //System.out.println("ReceivedExpiration" + getTokenResponse.getExpiration());
                             //String token=getTokenResponse.getExpiration();
 
+                            ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+
                             //GetUser Details Using Token
                             getUserDetailsUsingToken(getTokenResponse.getToken());
                         } else {
+                            ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
                             Utils.toastMessage(LoginActivity.this, "No Token Found");
                         }
                     }else if(response.code()==401){
+                        ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
                         Utils.toastMessage(LoginActivity.this, "Wrong userName or password");
                     }
                 }
 
                 @Override
                 public void onFailure(Call<GetTokenResponse> call, Throwable t) {
+                    ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
                     Utils.toastMessage(LoginActivity.this, "You have entered wrong username or password");
 
                 }
@@ -119,6 +132,7 @@ public class LoginActivity extends AppCompatActivity {
     private void getUserDetailsUsingToken(String token) {
 
         if (Utils.isNetworkAvailable(this)) {
+            dialog=ProgressDialog.showProgressBar(LoginActivity.this);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<UserDetailsResponse> call = apiService.getLoginUserDetails();
             call.enqueue(new Callback<UserDetailsResponse>() {
@@ -146,15 +160,19 @@ public class LoginActivity extends AppCompatActivity {
                             //Save UserId
                             SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.USER_ID,userDetailsResponse.getId());
 
+                            ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+
                             //Check welcome screen viewed status
                             //boolean welcomeViewStatus=SessionHandler.getInstance().getBoolean(LoginActivity.this,AppConstants.WELCOME_VIEWED_STATUS);
                             launchWelcomeActivity();
 
                         } else {
+                            ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
                             Utils.toastMessage(LoginActivity.this, "User Details Not Found");
                         }
 
                     }else if(response.code()==401){
+                        ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
                         Utils.toastMessage(LoginActivity.this, "Please Try Again");
                     }
 
@@ -162,7 +180,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<UserDetailsResponse> call, Throwable t) {
-
+                    ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
                 }
             });
         } else {

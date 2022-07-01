@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -22,6 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
+import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.Utils;
 
 public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingListAdapter.HomeBookingListViewHolder> {
@@ -33,17 +35,18 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
     public OnCheckInClickable onCheckInClickable;
 
 
-    public HomeBookingListAdapter(Context context, OnCheckInClickable onCheckInClickable, ArrayList<BookingListResponse.DayGroup> recyclerModelArrayList) {
+    public HomeBookingListAdapter(Context context, OnCheckInClickable onCheckInClickable, ArrayList<BookingListResponse.DayGroup> recyclerModelArrayList, FragmentActivity activity) {
         this.context = context;
         this.onCheckInClickable =  onCheckInClickable;
         this.list = recyclerModelArrayList;
+        this.activity =activity;
     }
 
 
     public interface  OnCheckInClickable{
-        public void onCheckInClick(BookingListResponse.DayGroup.CalendarEntry calendarEntriesModel, boolean s);
-        public void onCheckInClick(BookingListResponse.DayGroup.MeetingBooking meetingEntriesModel, boolean s);
-        public void onCheckInClick(BookingListResponse.DayGroup.CarParkBooking carParkingEntriesModel, boolean s);
+        public void onCheckInDeskClick(BookingListResponse.DayGroup.CalendarEntry calendarEntriesModel, String click);
+        public void onCheckInMeetingRoomClick(BookingListResponse.DayGroup.MeetingBooking meetingEntriesModel, String click);
+        public void onCheckInCarParkingClick(BookingListResponse.DayGroup.CarParkBooking carParkingEntriesModel, String click);
     }
 
     @NonNull
@@ -110,21 +113,43 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.rlInOffice.setVisibility(View.GONE);
         }
 
+        //CheckIn Button Click
         holder.bookingBtnCheckIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (list.get(position).getCalendarEntriesModel()!=null){
-                    boolean clickedStatus=true;
-                onCheckInClickable.onCheckInClick(list.get(position).getCalendarEntriesModel(),clickedStatus);
+                    String clickedStatus="CHECKIN";
+                onCheckInClickable.onCheckInDeskClick(list.get(position).getCalendarEntriesModel(), AppConstants.CHECKIN);
                     Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
                 }else if(list.get(position).getMeetingBookingsModel()!=null){
-                    boolean clickedStatus=true;
-                    onCheckInClickable.onCheckInClick(list.get(position).getMeetingBookingsModel(),clickedStatus);
+                    String clickedStatus="CHECKIN";
+                    onCheckInClickable.onCheckInMeetingRoomClick(list.get(position).getMeetingBookingsModel(),AppConstants.CHECKIN);
                     Toast.makeText(context, "ROOM CLICKED", Toast.LENGTH_SHORT).show();
                 }else if(list.get(position).getCarParkBookingsModel()!=null){
-                    boolean clickedStatus=true;
-                    onCheckInClickable.onCheckInClick(list.get(position).getCarParkBookingsModel(),clickedStatus);
+                    String clickedStatus="CHECKIN";
+                    onCheckInClickable.onCheckInCarParkingClick(list.get(position).getCarParkBookingsModel(),AppConstants.CHECKIN);
+                    Toast.makeText(context, "CAR CLICKED", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        holder.bookingIvEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (list.get(position).getCalendarEntriesModel()!=null){
+                    String clickedStatus="EDIT";
+                    onCheckInClickable.onCheckInDeskClick(list.get(position).getCalendarEntriesModel(), AppConstants.EDIT);
+                    Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
+                }else if(list.get(position).getMeetingBookingsModel()!=null){
+                    String clickedStatus="EDIT";
+                    onCheckInClickable.onCheckInMeetingRoomClick(list.get(position).getMeetingBookingsModel(),AppConstants.EDIT);
+                    Toast.makeText(context, "ROOM CLICKED", Toast.LENGTH_SHORT).show();
+                }else if(list.get(position).getCarParkBookingsModel()!=null){
+                    String clickedStatus="EDIT";
+                    onCheckInClickable.onCheckInCarParkingClick(list.get(position).getCarParkBookingsModel(),AppConstants.EDIT);
                     Toast.makeText(context, "CAR CLICKED", Toast.LENGTH_SHORT).show();
                 }
 
@@ -168,6 +193,9 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         RelativeLayout rlInOffice;
         @BindView(R.id.bookingWorkingRemoteBlock)
         RelativeLayout rlBookingRemoteBlock;
+
+        @BindView(R.id.bookingIvEdit)
+        ImageView bookingIvEdit;
 
 
         public HomeBookingListViewHolder(@NonNull View itemView) {

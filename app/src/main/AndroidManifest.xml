@@ -57,7 +57,7 @@
 
 
 
-       <!-- <activity
+        <!--<activity
             android:name=".example.DummyCalendarActivity"
             android:exported="true">
             <intent-filter>

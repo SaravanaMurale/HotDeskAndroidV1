@@ -1,5 +1,6 @@
 package dream.guys.hotdeskandroid.ui.home;
 
+import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,7 +18,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,8 +34,10 @@ import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
 
 import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
+import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
@@ -45,16 +53,22 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     ImageView userProfile;
     Toolbar toolbar;
 
+    //Header
     @BindView(R.id.homeUserName)
     TextView homeUserName;
 
+    //HomeBooking
     RecyclerView rvHomeBooking;
     HomeBookingListAdapter homeBookingListAdapter;
     LinearLayoutManager linearLayoutManager;
-
     List<BookingListResponse> bookingListResponseList;
 
+    //EditBooking
+    TextView startTime,endTime,repeat;
+    String repeatValue="None";
+
     View view;
+    Dialog dialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,6 +79,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         toolbar = root.findViewById(R.id.toolbar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
+
+        dialog = new Dialog(getContext());
 
         userProfile=root.findViewById(R.id.user_profile_pic);
         rvHomeBooking=root.findViewById(R.id.rvHomeBooking);
@@ -116,6 +132,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     private void loadHomeList(){
         if (Utils.isNetworkAvailable(getActivity())) {
 
+            dialog= ProgressDialog.showProgressBar(getContext());
+
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-06-25",true);
             call.enqueue(new Callback<BookingListResponse>() {
@@ -124,18 +142,21 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
                     if(response.code()==200){
 
+
                         BookingListResponse bookingListResponse  =response.body();
                         createRecyclerList(bookingListResponse);
 
+
                     }else if(response.code()==401){
                         //Handle if token got expired
+                        ProgressDialog.dismisProgressBar(getContext(),dialog);
                         redirectToBioMetricAccess();
 
                     }
                 }
                 @Override
                 public void onFailure(Call<BookingListResponse> call, Throwable t) {
-
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
                 }
             });
 
@@ -230,8 +251,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         rvHomeBooking.setHasFixedSize(true);
 
        // homeBookingListAdapter=new HomeBookingListAdapter(getContext(), getActivity(), recyclerModelArrayList);
-        homeBookingListAdapter=new HomeBookingListAdapter(getContext(),this,recyclerModelArrayList);
+        homeBookingListAdapter=new HomeBookingListAdapter(getContext(),this,recyclerModelArrayList,getActivity());
         rvHomeBooking.setAdapter(homeBookingListAdapter);
+
+        ProgressDialog.dismisProgressBar(getContext(),dialog);
 
     }
 
@@ -242,45 +265,260 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     }
 
     @Override
-    public void onCheckInClick(BookingListResponse.DayGroup.CalendarEntry calendarEntriesModel, boolean s) {
+    public void onCheckInDeskClick(BookingListResponse.DayGroup.CalendarEntry calendarEntriesModel, String click) {
 
-        System.out.println("BookingNameDest"+calendarEntriesModel.getUsageTypeName());
+        if(click.equals(AppConstants.CHECKIN)){
+            //Checkin
+            System.out.println("BookingNameDest"+calendarEntriesModel.getUsageTypeName());
+            NavController navController= Navigation.findNavController(view);
+            Bundle bundle=new Bundle();
+            bundle.putString("BOOK_NAME",calendarEntriesModel.getUsageTypeName());
+            bundle.putString("BOOK_ADDRESS","address");
+            //String checkInTime=calendarEntriesModel.getFromUTC();
+            //String checkOutTime=calendarEntriesModel.getFromUTC();
+            bundle.putString("CHECK_IN_TIME",Utils.splitTime(calendarEntriesModel.getFromUTC()));
+            bundle.putString("CHECK_OUT_TIME",Utils.splitTime(calendarEntriesModel.getToUTC()));
+            navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment,bundle);
+        } else if(click.equals(AppConstants.EDIT)){
+            //Edit
+            System.out.println("BookingEditClicked");
 
-        NavController navController= Navigation.findNavController(view);
-        Bundle bundle=new Bundle();
-        bundle.putString("BOOK_NAME",calendarEntriesModel.getUsageTypeName());
-        bundle.putString("BOOK_ADDRESS","address");
-        //String checkInTime=calendarEntriesModel.getFromUTC();
-        //String checkOutTime=calendarEntriesModel.getFromUTC();
-        bundle.putString("CHECK_IN_TIME",Utils.splitTime(calendarEntriesModel.getFromUTC()));
-        bundle.putString("CHECK_OUT_TIME",Utils.splitTime(calendarEntriesModel.getToUTC()));
-        navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment,bundle);
+            EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
+            editDeskBookingDetails.setEditStartTTime(Utils.splitTime(calendarEntriesModel.getFromUTC()));
+            editDeskBookingDetails.setEditEndTime(Utils.splitTime(calendarEntriesModel.getToUTC()));
+            //editDeskBookingDetails.setDate(calendarEntriesModel.get);
 
 
+            editBookingUsingBottomSheet(editDeskBookingDetails);
+
+        }
     }
 
     @Override
-    public void onCheckInClick(BookingListResponse.DayGroup.MeetingBooking meetingEntriesModel, boolean s) {
-        System.out.println("BookingNameMeeting"+meetingEntriesModel.getMeetingRoomName());
-        NavController navController= Navigation.findNavController(view);
-        Bundle bundle=new Bundle();
-        bundle.putString("BOOK_NAME",meetingEntriesModel.getMeetingRoomName());
-        bundle.putString("BOOK_ADDRESS","Address");
-        bundle.putString("CHECK_IN_TIME",Utils.splitTime(meetingEntriesModel.getFromUtc()));
-        bundle.putString("CHECK_OUT_TIME",Utils.splitTime(meetingEntriesModel.getToUtc()));
-        navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment,bundle);
+    public void onCheckInMeetingRoomClick(BookingListResponse.DayGroup.MeetingBooking meetingEntriesModel, String click) {
+
+        if(click.equals(AppConstants.CHECKIN)) {
+            //Checkin
+            System.out.println("BookingNameMeeting" + meetingEntriesModel.getMeetingRoomName());
+            NavController navController = Navigation.findNavController(view);
+            Bundle bundle = new Bundle();
+            bundle.putString("BOOK_NAME", meetingEntriesModel.getMeetingRoomName());
+            bundle.putString("BOOK_ADDRESS", "Address");
+            bundle.putString("CHECK_IN_TIME", Utils.splitTime(meetingEntriesModel.getFromUtc()));
+            bundle.putString("CHECK_OUT_TIME", Utils.splitTime(meetingEntriesModel.getToUtc()));
+            navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment, bundle);
+
+        }else if(click.equals(AppConstants.EDIT)){
+            //Edit
+            System.out.println("MeetingEditClicked");
+
+            EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
+            editDeskBookingDetails.setEditStartTTime(Utils.splitTime(meetingEntriesModel.getFromUtc()));
+            editDeskBookingDetails.setEditEndTime(Utils.splitTime(meetingEntriesModel.getToUtc()));
+
+            editBookingUsingBottomSheet(editDeskBookingDetails);
+        }
     }
 
     @Override
-    public void onCheckInClick(BookingListResponse.DayGroup.CarParkBooking carParkingEntriesModel, boolean s) {
-        System.out.println("BookingNameCar"+carParkingEntriesModel.getParkingSlotCode());
-        NavController navController= Navigation.findNavController(view);
-        Bundle bundle=new Bundle();
-        bundle.putString("BOOK_NAME",carParkingEntriesModel.getParkingSlotCode());
-        bundle.putString("BOOK_ADDRESS","Addresss");
-        bundle.putString("CHECK_IN_TIME",Utils.splitTime(carParkingEntriesModel.getFromUtc()));
-        bundle.putString("CHECK_OUT_TIME",Utils.splitTime(carParkingEntriesModel.getToUtc()));
-        navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment,bundle);
+    public void onCheckInCarParkingClick(BookingListResponse.DayGroup.CarParkBooking carParkingEntriesModel, String click) {
+
+        if(click.equals(AppConstants.CHECKIN)) {
+            //Checkin
+            System.out.println("BookingNameCar" + carParkingEntriesModel.getParkingSlotCode());
+            NavController navController = Navigation.findNavController(view);
+            Bundle bundle = new Bundle();
+            bundle.putString("BOOK_NAME", carParkingEntriesModel.getParkingSlotCode());
+            bundle.putString("BOOK_ADDRESS", "Addresss");
+            bundle.putString("CHECK_IN_TIME", Utils.splitTime(carParkingEntriesModel.getFromUtc()));
+            bundle.putString("CHECK_OUT_TIME", Utils.splitTime(carParkingEntriesModel.getToUtc()));
+            navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment, bundle);
+
+        }else if(click.equals(AppConstants.EDIT)){
+            //Edit
+            System.out.println("CarParkingEditClicked");
+            EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
+            editDeskBookingDetails.setEditStartTTime(Utils.splitTime(carParkingEntriesModel.getFromUtc()));
+            editDeskBookingDetails.setEditEndTime(Utils.splitTime(carParkingEntriesModel.getToUtc()));
+            editBookingUsingBottomSheet(editDeskBookingDetails);
+        }
+    }
+
+    private void editBookingUsingBottomSheet(EditBookingDetails editDeskBookingDetails) {
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_booking,
+                new RelativeLayout(getContext()))));
+
+
+        startTime = bottomSheetDialog.findViewById(R.id.start_time);
+        endTime = bottomSheetDialog.findViewById(R.id.end_time);
+        repeat=bottomSheetDialog.findViewById(R.id.repeat);
+        TextView back=bottomSheetDialog.findViewById(R.id.editBookingBack);
+        TextView continueEditBook=bottomSheetDialog.findViewById(R.id.editBookingContinue);
+        RelativeLayout repeatBlock=bottomSheetDialog.findViewById(R.id.bsRepeatBlock);
+
+        startTime.setText(editDeskBookingDetails.getEditStartTTime());
+        endTime.setText(editDeskBookingDetails.getEditEndTime());
+
+
+        ChipGroup chipGroup = bottomSheetDialog.findViewById(R.id.list_item);
+        for (int i=0; i<5; i++){
+            Chip chip = new Chip(getContext());
+            chip.setId(i);
+            chip.setText("ABC "+i);
+            chip.setChipBackgroundColorResource(R.color.figmaGrey);
+            chip.setCloseIconVisible(false);
+            chip.setTextColor(getContext().getResources().getColor(R.color.white));
+//            chip.setTextAppearance(R.style.ChipTextAppearance);
+            chipGroup.addView(chip);
+        }
+
+        startTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.popUpTimePicker(getActivity(),startTime);
+            }
+        });
+
+        endTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.popUpTimePicker(getActivity(),endTime);
+            }
+        });
+
+        repeatBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                callRepeatBottomSheetDialog();
+
+
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+
+        bottomSheetDialog.show();
+
+    }
+
+    private void callRepeatBottomSheetDialog() {
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_repeat_booking,
+                new RelativeLayout(getContext()))));
+
+        RelativeLayout repeatNoneBlock,repeatDailyBlock,repeatWeeklyBlock,repeatMonthlyBlock,repeatYearlyBlock;
+        ImageView noneTickIv,dailyTickIv,weeklyTickIv,monthlyTickIv,yearlyTickIv;
+        TextView bsRepeatBack;
+
+        repeatNoneBlock=bottomSheetDialog.findViewById(R.id.repeatNoneBlock);
+        repeatDailyBlock=bottomSheetDialog.findViewById(R.id.repeatDailyBlock);
+        repeatWeeklyBlock=bottomSheetDialog.findViewById(R.id.repeatWeeklyBlock);
+        repeatMonthlyBlock=bottomSheetDialog.findViewById(R.id.repeatMonthlyBlock);
+        repeatYearlyBlock=bottomSheetDialog.findViewById(R.id.repeatYearlyBlock);
+
+        noneTickIv=bottomSheetDialog.findViewById(R.id.noneTickIv);
+        dailyTickIv=bottomSheetDialog.findViewById(R.id.dailyTickIv);
+        weeklyTickIv=bottomSheetDialog.findViewById(R.id.weeklyTickIv);
+        monthlyTickIv=bottomSheetDialog.findViewById(R.id.monthlyTickIv);
+        yearlyTickIv=bottomSheetDialog.findViewById(R.id.yearlyTickIv);
+
+        bsRepeatBack=bottomSheetDialog.findViewById(R.id.bsRepeatBack);
+
+        repeatNoneBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                repeat.setText("None");
+                noneTickIv.setVisibility(View.VISIBLE);
+                dailyTickIv.setVisibility(View.INVISIBLE);
+                weeklyTickIv.setVisibility(View.INVISIBLE);
+                monthlyTickIv.setVisibility(View.INVISIBLE);
+                yearlyTickIv.setVisibility(View.INVISIBLE);
+
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        repeatDailyBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                repeat.setText("Daily");
+                noneTickIv.setVisibility(View.INVISIBLE);
+                dailyTickIv.setVisibility(View.VISIBLE);
+                weeklyTickIv.setVisibility(View.INVISIBLE);
+                monthlyTickIv.setVisibility(View.INVISIBLE);
+                yearlyTickIv.setVisibility(View.INVISIBLE);
+
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        repeatWeeklyBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                repeat.setText("Weekly");
+                noneTickIv.setVisibility(View.INVISIBLE);
+                dailyTickIv.setVisibility(View.INVISIBLE);
+                weeklyTickIv.setVisibility(View.VISIBLE);
+                monthlyTickIv.setVisibility(View.INVISIBLE);
+                yearlyTickIv.setVisibility(View.INVISIBLE);
+
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        repeatMonthlyBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                repeat.setText("Monthly");
+                noneTickIv.setVisibility(View.INVISIBLE);
+                dailyTickIv.setVisibility(View.INVISIBLE);
+                weeklyTickIv.setVisibility(View.INVISIBLE);
+                monthlyTickIv.setVisibility(View.VISIBLE);
+                yearlyTickIv.setVisibility(View.INVISIBLE);
+
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        repeatYearlyBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                repeat.setText("Yearly");
+                noneTickIv.setVisibility(View.INVISIBLE);
+                dailyTickIv.setVisibility(View.INVISIBLE);
+                weeklyTickIv.setVisibility(View.INVISIBLE);
+                monthlyTickIv.setVisibility(View.INVISIBLE);
+                yearlyTickIv.setVisibility(View.VISIBLE);
+
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        bsRepeatBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        bottomSheetDialog.show();
+
+
     }
 
 
