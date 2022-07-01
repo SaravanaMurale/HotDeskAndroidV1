@@ -78,6 +78,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         if (list.get(position).getCalDeskStatus() ==1 &&
                 list.get(position).getCalendarEntriesModel()
                         .getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
+            holder.rlBookingRemoteBlock.setVisibility(View.GONE);
+            holder.rlInOffice.setVisibility(View.VISIBLE);
             //Desk Booking
             Glide.with(context)
                     .load(R.drawable.chair)
