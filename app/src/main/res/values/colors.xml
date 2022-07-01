@@ -6,7 +6,7 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#FFFFFF</color>
 
     <color name="colorGrey300">#E0E0E0</color>
 
@@ -17,7 +17,9 @@
     <color name="figmaGrey">#777777</color>
     <color name="figmaBgGrey">#F2F2F2</color>
     <color name="figmaBlack">#1b1b1b</color>
+    <color name="figmaBlackGrey">#323232</color>
     <color name="figmaBlue">#0F62AB</color>
+    <color name="figmaBackground">#fafafa</color>
     <color name="bg_grey">#fafafa</color>
     <color name="line_gray">#dcdcdc</color>
     <color name="biometric_bg">#bcbcbc</color>

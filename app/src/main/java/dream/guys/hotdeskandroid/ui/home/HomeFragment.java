@@ -135,7 +135,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             dialog= ProgressDialog.showProgressBar(getContext());
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-06-25",true);
+            Call<BookingListResponse> call = apiService.getUserMyWorkDetails(Utils.getCurrentDate(),true);
             call.enqueue(new Callback<BookingListResponse>() {
                 @Override
                 public void onResponse(Call<BookingListResponse> call, Response<BookingListResponse> response) {

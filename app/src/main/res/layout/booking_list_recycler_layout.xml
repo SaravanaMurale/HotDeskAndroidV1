@@ -66,7 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_5sdp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/bookingIvIcon"
@@ -193,12 +193,14 @@
                     android:layout_marginTop="@dimen/_3sdp"
                     android:layout_toRightOf="@+id/bookingIvIcon"
                     android:background="@drawable/button_blue_bg"
+                    android:backgroundTint="@color/figmaBlue"
                     android:drawableRight="@drawable/scan_3px"
+                    android:fontFamily="@font/sen"
                     android:maxHeight="@dimen/_35sdp"
                     android:minHeight="@dimen/_15sdp"
                     android:text="@string/checkin"
                     android:textAllCaps="false"
-                    android:theme="@style/TextBold"
+                    android:theme="@style/TextBoldButton"
                     android:visibility="visible" />
 
 
@@ -213,29 +215,32 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_3sdp"
                 android:layout_marginTop="@dimen/_3sdp"
-                android:visibility="gone"
+                android:visibility="visible"
                 >
 
                 <ImageView
                     android:id="@+id/bookingRemoteHome"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
                     android:src="@drawable/home"
-                    android:layout_marginHorizontal="@dimen/_15sdp"/>
+                    app:tint="@color/figmaBlackGrey" />
 
                 <TextView
                     android:id="@+id/tvBookingWorkingRemote"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/bookingRemoteHome"
+                    android:layout_toLeftOf="@+id/tv_change"
                     android:text="@string/remote"
                     android:theme="@style/TextBold" />
 
                 <TextView
+                    android:id="@+id/tv_change"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Change"
                     android:layout_alignParentRight="true"
+                    android:text="Change"
                     android:textColor="@color/blue"
                     android:textSize="@dimen/_12sdp"
 
@@ -245,14 +250,10 @@
                     android:id="@+id/tvSubBookingWorkingRemote"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvBookingWorkingRemote"
                     android:layout_toRightOf="@id/bookingRemoteHome"
                     android:text="All Day"
-                    android:layout_below="@+id/tvBookingWorkingRemote"
-                    android:textColor="@color/figmaGrey"
-                    />
-
-
-
+                    android:textColor="@color/figmaGrey" />
 
             </RelativeLayout>
 

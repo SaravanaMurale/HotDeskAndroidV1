@@ -77,12 +77,14 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                app:cardElevation="@dimen/_3sdp"
+                android:layout_marginBottom="@dimen/_3sdp"
                 >
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:background="@color/white"
                     >
                     <RelativeLayout
                         android:layout_width="0dp"
@@ -180,13 +182,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="@dimen/_10sdp"
+        android:fillViewport="true"
         >
 
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/figmaBackground"
+            >
 
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
