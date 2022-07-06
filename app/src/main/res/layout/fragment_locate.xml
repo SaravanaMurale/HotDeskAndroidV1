@@ -1,29 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.locate.LocateFragment">
 
-<!--
-    <EditText
-        android:id="@+id/searchLocate"
+
+    <!--Floor Layout-->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="2dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_150sdp">
+
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1000dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/first"
+                        android:layout_width="800dp"
+                        android:layout_height="@dimen/_150sdp" />
+
+                </LinearLayout>
+
+
+            </HorizontalScrollView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </ScrollView>
+
+    <!--Locate Header-->
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/search"
-        android:layout_margin="@dimen/_10sdp"
-        />
--->
+        tools:ignore="MissingConstraints">
+
+        <!--Search-->
+        <TextView
+            android:id="@+id/searchLocate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_9sdp"
+            android:background="@drawable/rectangle_bg_with_corner"
+            android:hint="@string/search"
+            android:padding="@dimen/_10sdp" />
+
+        <!--Calender-->
+        <TextView
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/searchLocate"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/rectangle_bg_with_corner"
+            android:padding="@dimen/_10sdp"
+            android:text="Wed 4 May"
+            tools:ignore="MissingConstraints" />
+
+        <!--StartAndEndTime-->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/searchLocate"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/rectangle_bg_with_corner"
+            android:padding="@dimen/_5sdp"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:id="@+id/tvStartLocate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Start" />
+
+            <TextView
+                android:id="@+id/locateStartTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_toRightOf="@id/tvStartLocate"
+                android:text="8:00" />
+
+            <view
+                class="android.widget.TextView"
+                android:layout_width="@dimen/_2sdp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginVertical="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_toRightOf="@id/locateStartTime"
+                android:background="@color/figmaGrey" />
+
+            <TextView
+                android:id="@+id/tvLocateEndTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_toRightOf="@id/locateStartTime"
+                android:text="End"
+
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_toRightOf="@+id/tvLocateEndTime"
+                android:text="17:30" />
 
 
-    <dream.guys.hotdeskandroid.example.CanvasView
-        android:id="@+id/searchLocate"
-        android:layout_width="match_parent"
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+
+    <!--Bottom Filter-->
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_10sdp"
-        android:hint="@string/search"
-        />
+        tools:ignore="MissingConstraints"
+
+        >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="@dimen/_10sdp"
+
+            >
+
+            <ImageView
+                android:id="@+id/ivLocateMyTeam"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:src="@drawable/locate_myteam" />
+
+            <ImageView
+                android:id="@+id/ivLocateFilter"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_below="@+id/ivLocateMyTeam"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:src="@drawable/locate_filter" />
+
+            <ImageView
+                android:id="@+id/ivLocateKey"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:src="@drawable/locate_key"
+                android:layout_below="@+id/ivLocateFilter"
+                android:layout_marginBottom="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                />
+
+        </RelativeLayout>
 
 
+    </RelativeLayout>
 
-</FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

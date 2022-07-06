@@ -150,13 +150,14 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1">
+
                         <view
                             class="android.widget.TextView"
-                            android:layout_height="match_parent"
                             android:layout_width="@dimen/_2sdp"
-                            android:background="@color/figmaGrey"
+                            android:layout_height="match_parent"
                             android:layout_marginVertical="@dimen/_5sdp"
-                            />
+                            android:background="@color/figmaGrey" />
+
                         <ImageView
                             android:layout_width="@dimen/_50sdp"
                             android:layout_height="@dimen/_50sdp"

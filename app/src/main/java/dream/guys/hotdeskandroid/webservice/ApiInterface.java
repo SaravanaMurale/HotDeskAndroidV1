@@ -8,6 +8,8 @@ import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
+import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
+import dream.guys.hotdeskandroid.model.response.LocateFloorResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -26,5 +28,19 @@ public interface ApiInterface {
 
     @GET("api/MyWork/UserMyWorkStatus")
     Call<BookingListResponse> getUserMyWorkDetails(@Query("dayOfTheWeek") String dayOfTheWeek, @Query("includeNonWorkingDays") boolean includeNonWorkingDays);
+
+    @GET("api/locate/ImmediateChildLocations")
+    Call<List<LocateCountryRespose>> getLocationCountryList();
+
+    @GET("api/locate/ImmediateChildLocations")
+    Call<List<LocateCountryRespose>> getCountrysChild(@Query("parentId") int parentId);
+
+
+    @GET("api/locate/ImmediateChildLocations")
+    Call<List<LocateFloorResponse>> getFloorDetails(@Query("parentId") int parentId);
+
+
+
+
 
 }
