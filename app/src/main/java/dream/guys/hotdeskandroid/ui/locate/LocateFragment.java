@@ -123,7 +123,15 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         return root;
     }
 
+    //MyTeamBottomSheet
     private void callMyTeamBottomSheet() {
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_myteam_bottomsheet,
+                new RelativeLayout(getContext())));
+
+
+
     }
 
     private void getLocateCountryList() {
