@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -220,6 +221,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //"2022-07-05T00:00:00.000Z"
         //"2000-01-01T15:50:38.000Z"
         //"2000-01-01T18:00:00.000Z"
+
+        Date date=Utils.convertStringToDateFormet("2022-07-05");
+        System.out.println("DateFormatInLocate"+date);
         Call<List<DeskAvaliabilityResponse>> call = apiService.getAvaliableDeskDetails(4,Utils.convertStringToDateFormet("2022-07-05"),Utils.convertStringToDateFormet("2000-01-01"),Utils.convertStringToDateFormet("2000-01-01"));
         call.enqueue(new Callback<List<DeskAvaliabilityResponse>>() {
             @Override
