@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="@dimen/_2sdp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5sdp"
+            android:padding="@dimen/_10sdp"
+            >
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/locateMyTeamProfile"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:src="@drawable/mygirl"
+                android:layout_centerVertical="true"
+                app:tint="@color/figmaBlack" />
+
+
+            <ImageView
+                android:id="@+id/locateMyTeamFireIv"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_toRightOf="@+id/locateMyTeamProfile"
+                android:src="@drawable/fire" />
+
+
+            <TextView
+                android:id="@+id/locateMyTeamName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_toRightOf="@+id/locateMyTeamFireIv"
+                android:text="Space-001"
+                android:textStyle="bold"
+                android:theme="@style/TextBold" />
+
+            <ImageView
+                android:id="@+id/locateMyTeamPlusIv"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="1dp"
+                android:layout_toRightOf="@id/locateMyTeamName"
+                android:src="@drawable/plus"
+
+                />
+
+            <TextView
+                android:id="@+id/locateMyTeamDeskName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/locateMyTeamName"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_toRightOf="@+id/locateMyTeamProfile"
+                android:text="Desk-001"
+                android:textColor="@color/figmaGrey" />
+
+            <ImageView
+                android:id="@+id/locateMyTeamLocation"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/blue_location"
+                android:layout_below="@+id/locateMyTeamName"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/_5sdp"
+                />
+
+            <ImageView
+                android:id="@+id/locateMyTeamNameCheckInIcon"
+                android:layout_width="@dimen/_13sdp"
+                android:layout_height="@dimen/_13sdp"
+                android:layout_below="@+id/locateMyTeamDeskName"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_toRightOf="@+id/locateMyTeamProfile"
+                android:src="@drawable/checkin"
+                app:tint="@color/figmaBlack" />
+
+            <TextView
+                android:id="@+id/locateMyTeamCheckInTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/locateMyTeamDeskName"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_toRightOf="@+id/locateMyTeamNameCheckInIcon"
+                android:text="8:00"
+                android:textColor="@color/figmaBlack"
+                android:textSize="@dimen/_10sdp" />
+
+
+            <ImageView
+                android:id="@+id/locateMyTeamCheckOutIcon"
+                android:layout_width="@dimen/_13sdp"
+                android:layout_height="@dimen/_13sdp"
+                android:layout_below="@+id/locateMyTeamDeskName"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_toRightOf="@+id/locateMyTeamCheckInTime"
+                android:src="@drawable/checkout"
+                app:tint="@color/figmaBlack" />
+
+            <TextView
+                android:id="@+id/locateMyTeamCheckOutTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/locateMyTeamDeskName"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_toRightOf="@+id/locateMyTeamCheckOutIcon"
+                android:text="8:00"
+                android:textColor="@color/figmaBlack"
+                android:textSize="@dimen/_10sdp" />
+
+        </RelativeLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

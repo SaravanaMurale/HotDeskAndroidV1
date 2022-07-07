@@ -31,8 +31,10 @@ public interface ApiInterface {
     @GET("api/MyWork/UserMyWorkStatus")
     Call<BookingListResponse> getUserMyWorkDetails(@Query("dayOfTheWeek") String dayOfTheWeek, @Query("includeNonWorkingDays") boolean includeNonWorkingDays);
 
+<<<<<<< HEAD
     @PUT("api/booking/bookings")
     Call<BaseResponse> bookingBookings(@Body BookingsRequest body);
+=======
     @GET("api/locate/ImmediateChildLocations")
     Call<List<LocateCountryRespose>> getLocationCountryList();
 
@@ -46,5 +48,6 @@ public interface ApiInterface {
 
 
 
+>>>>>>> 8458affcb387e0171e69bcf0ab0c14cc8f333518
 
 }

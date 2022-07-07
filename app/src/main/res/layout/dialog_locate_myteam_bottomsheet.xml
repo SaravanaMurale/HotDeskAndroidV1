@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/_10sdp"
+    android:layout_marginRight="@dimen/_10sdp"
+    android:layout_marginTop="@dimen/_20sdp">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvMyTeam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MyTeam"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_15sdp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PMO Office"
+            android:layout_below="@id/tvMyTeam"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="All teams"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/blue"
+            android:textStyle="bold"
+            />
+
+
+
+
+    </RelativeLayout>
+
+    <!--Search-->
+    <EditText
+        android:id="@+id/locateMyTeamSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/search"
+        android:layout_below="@id/header"
+        android:layout_marginTop="@dimen/_10sdp"
+        />
+
+
+    <!--RecyclerView-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/locateMyTeamSearch"
+        android:layout_marginTop="@dimen/_10sdp"
+        />
+
+
+
+</RelativeLayout>

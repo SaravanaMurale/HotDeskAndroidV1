@@ -20,10 +20,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_150sdp">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -131,7 +127,6 @@
                 android:text="End"
 
                 />
-        </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -141,6 +136,12 @@
                 android:layout_toRightOf="@+id/tvLocateEndTime"
                 android:text="17:30" />
 
+<<<<<<< HEAD
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+=======
 
         </RelativeLayout>
 
@@ -190,7 +191,24 @@
                 />
 
         </RelativeLayout>
+>>>>>>> 8458affcb387e0171e69bcf0ab0c14cc8f333518
 
+        <RelativeLayout
+            android:id="@+id/searchLocate"
+            android:layout_width="800dp"
+            android:layout_height="1500dp"
+            android:src="@drawable/notification_icon"
+            android:layout_margin="@dimen/_10sdp"
+            android:hint="@string/search" >
+            <TextView
+                android:layout_width="800dp"
+                android:layout_height="1555dp"
+                android:text="vosvsjdnvsjvlsn   vosvsjdnvsjvlsn   vosvsjdnvsjvlsn   vosvsjdnvsjvlsn   vosvsjdnvsjvlsn   vosvsjdnvsjvlsn   vosvsjdnvsjvlsn   "
+                android:textSize="@dimen/_15sdp"
+                />
+        </RelativeLayout>
+
+    </ScrollView>
 
     </RelativeLayout>
 

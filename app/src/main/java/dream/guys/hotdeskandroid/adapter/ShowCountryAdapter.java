@@ -14,22 +14,27 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 
 public class ShowCountryAdapter extends RecyclerView.Adapter<ShowCountryAdapter.ShowCountryViewHolder> {
 
     Context context;
-    List<String> countryList;
+    List<LocateCountryRespose> countryList;
+    OnSelectListener onSelectListener;
+    String identifier="";
 
 
-    interface  OnSelectListener{
+    public interface  OnSelectListener{
 
-        public void onSelect();
+        public void onSelect(LocateCountryRespose locateCountryRespose, String identifier);
     }
 
-    public ShowCountryAdapter(Context context, List<String> countryList) {
+    public ShowCountryAdapter(Context context, List<LocateCountryRespose> countryList, OnSelectListener onSelectListener, String identifier) {
 
         this.context=context;
         this.countryList=countryList;
+        this.onSelectListener=onSelectListener;
+        this.identifier=identifier;
 
     }
 
@@ -43,13 +48,13 @@ public class ShowCountryAdapter extends RecyclerView.Adapter<ShowCountryAdapter.
     @Override
     public void onBindViewHolder(@NonNull ShowCountryViewHolder holder, int position) {
 
-        holder.tvCountryName.setText(countryList.get(position));
+        holder.tvCountryName.setText(countryList.get(position).getName());
 
         holder.tvCountryName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                countryList.get(position);
+                onSelectListener.onSelect( countryList.get(holder.getAbsoluteAdapterPosition()),identifier);
 
             }
         });
