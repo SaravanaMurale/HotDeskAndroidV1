@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
@@ -34,7 +35,9 @@ import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
 
 import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
+import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
+import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
@@ -69,7 +72,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
     View view;
     Dialog dialog;
-
+    int teamId=0,teamMembershipId=0;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -129,6 +132,50 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
     }
 
+    public void changeCheckIn(BookingListResponse.DayGroup data) {
+        if (Utils.isNetworkAvailable(getActivity())) {
+            dialog= ProgressDialog.showProgressBar(getContext());
+
+            BookingsRequest bookingsRequest = new BookingsRequest();
+            bookingsRequest.setTeamId(teamId);
+            bookingsRequest.setTeamMembershipId(teamMembershipId);
+            ArrayList<BookingsRequest.ChangeSets> list =new ArrayList<>();
+            ArrayList<Integer> list1 =new ArrayList<>();
+            list1.add(0);
+            BookingsRequest.ChangeSets changeSets = new BookingsRequest.ChangeSets();
+            changeSets.setId(data.getCalendarEntriesModel().getId());
+            changeSets.setDate(""+Utils.getISO8601format(data.getDate()));
+
+            BookingsRequest.ChangeSets.Changes changes= new BookingsRequest.ChangeSets.Changes();
+            changes.setBookingStatus("IN");
+            changeSets.setChanges(changes);
+            list.add(changeSets);
+
+            bookingsRequest.setChangeSets(list);
+            bookingsRequest.setDeletedIds(list1);
+            // TODO: 06-07-2022
+            System.out.println("booking req check"+bookingsRequest.getChangeSets());
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call = apiService.bookingBookings(bookingsRequest);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                    Toast.makeText(getActivity(), "Success Bala", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    Toast.makeText(getActivity(), "fail Bala"+t.getMessage(), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
+    }
     private void loadHomeList(){
         if (Utils.isNetworkAvailable(getActivity())) {
 
@@ -140,13 +187,12 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             call.enqueue(new Callback<BookingListResponse>() {
                 @Override
                 public void onResponse(Call<BookingListResponse> call, Response<BookingListResponse> response) {
-
                     if(response.code()==200){
 
-
                         BookingListResponse bookingListResponse  =response.body();
+                        teamId = bookingListResponse.getTeamId();
+                        teamMembershipId = bookingListResponse.getTeamMembershipId();
                         createRecyclerList(bookingListResponse);
-
 
                     }else if(response.code()==401){
                         //Handle if token got expired
@@ -173,7 +219,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 //        ArrayList<BookingListResponse> recyclerModelArrayList = new ArrayList<>();
         for (int i=0; i<bookingListResponses.getDayGroups().size(); i++){
             boolean dateCheck =true;
+            System.out.println("bala time format"+bookingListResponses.getDayGroups().get(i).getDate());
             Date date = bookingListResponses.getDayGroups().get(i).getDate();
+            System.out.println("bala time format"+date);
             ArrayList<BookingListResponse.DayGroup.CalendarEntry> calendarEntries = null;
             ArrayList<BookingListResponse.DayGroup.MeetingBooking> meetingEntries = null;
             ArrayList<BookingListResponse.DayGroup.CarParkBooking> carParkEntries = null;
@@ -203,6 +251,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     }else {
                         momdel.setDateStatus(false);
                         momdel.setCalDeskStatus(1);
+                        momdel.setDate(date);
                         momdel.setCalendarEntriesModel(calendarEntries.get(j));
                     }
                     recyclerModelArrayList.add(momdel);
@@ -220,6 +269,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     }else {
                         momdel.setDateStatus(false);
                         momdel.setCalDeskStatus(2);
+                        momdel.setDate(date);
                         momdel.setMeetingBookingsModel(meetingEntries.get(j));
                     }
 
@@ -238,6 +288,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     }else {
                         momdel.setDateStatus(false);
                         momdel.setCalDeskStatus(3);
+                        momdel.setDate(date);
                         momdel.setCarParkBookingsModel(carParkEntries.get(j));
                     }
                     recyclerModelArrayList.add(momdel);
@@ -251,7 +302,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         rvHomeBooking.setHasFixedSize(true);
 
        // homeBookingListAdapter=new HomeBookingListAdapter(getContext(), getActivity(), recyclerModelArrayList);
-        homeBookingListAdapter=new HomeBookingListAdapter(getContext(),this,recyclerModelArrayList,getActivity());
+        homeBookingListAdapter=new HomeBookingListAdapter(getContext(),this,recyclerModelArrayList,getActivity(),this);
         rvHomeBooking.setAdapter(homeBookingListAdapter);
 
         ProgressDialog.dismisProgressBar(getContext(),dialog);
@@ -265,7 +316,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     }
 
     @Override
-    public void onCheckInDeskClick(BookingListResponse.DayGroup.CalendarEntry calendarEntriesModel, String click) {
+    public void onCheckInDeskClick(BookingListResponse.DayGroup.CalendarEntry calendarEntriesModel, String click, String date) {
 
         if(click.equals(AppConstants.CHECKIN) || click.equals(AppConstants.REMOTE)){
             //Checkin
@@ -278,6 +329,12 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 bundle.putString("BOOK_ADDRESS","address");
                 bundle.putString("CHECK_IN_TIME",Utils.splitTime(calendarEntriesModel.getFromUTC()));
                 bundle.putString("CHECK_OUT_TIME",Utils.splitTime(calendarEntriesModel.getToUTC()));
+
+                bundle.putInt("TEAM_ID",teamId);
+                bundle.putInt("TEAM_MEMBERSHIP_ID",teamMembershipId);
+                bundle.putString("DATE",date);
+                bundle.putInt("ID",calendarEntriesModel.getId());
+
             } else if(click.equals(AppConstants.REMOTE)){
                 bundle.putString("ACTION",AppConstants.REMOTE);
                 bundle.putString("BOOK_NAME",calendarEntriesModel.getUsageTypeName());

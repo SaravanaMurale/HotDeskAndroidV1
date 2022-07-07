@@ -14,13 +14,26 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.databinding.FragmentBookingDetailBinding;
+import dream.guys.hotdeskandroid.model.request.BookingsRequest;
+import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
+import dream.guys.hotdeskandroid.utils.Utils;
+import dream.guys.hotdeskandroid.webservice.ApiClient;
+import dream.guys.hotdeskandroid.webservice.ApiInterface;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class BookingDetailFragment extends Fragment {
@@ -58,7 +71,8 @@ public class BookingDetailFragment extends Fragment {
 
     Dialog dialog;
 
-    String action, bookName, bookAdddress, bookChecInTime, bookCheckOutTime;
+    String action, bookName, bookAdddress, bookChecInTime, bookCheckOutTime, date;
+    int teamId, teamMembershipId, calendarId;
 
 
     public BookingDetailFragment() {
@@ -82,10 +96,15 @@ public class BookingDetailFragment extends Fragment {
             bookAdddress = bundle.getString("BOOK_ADDRESS", null);
             bookChecInTime = bundle.getString("CHECK_IN_TIME", null);
             bookCheckOutTime = bundle.getString("CHECK_OUT_TIME", null);
+
+            teamId = bundle.getInt("TEAM_ID", 0);
+            teamMembershipId = bundle.getInt("TEAM_MEMBERSHIP_ID",0);
+            calendarId = bundle.getInt("ID",0);
+            date = bundle.getString("DATE","");
+
         }
 
         if (action.equals(AppConstants.CHECKIN)) {
-
             fragmentBookingDetailBinding.bookingDetailDeskName.setText(bookName);
             fragmentBookingDetailBinding.bookingDetailAddress.setText(bookAdddress);
             fragmentBookingDetailBinding.bookingDetailCheckInTime.setText(bookChecInTime);
@@ -113,8 +132,7 @@ public class BookingDetailFragment extends Fragment {
         fragmentBookingDetailBinding.btnCheckInNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                openCheckoutDialog();
+                changeCheckIn();
 
             }
         });
@@ -122,6 +140,50 @@ public class BookingDetailFragment extends Fragment {
         return root;
     }
 
+    public void changeCheckIn() {
+        if (Utils.isNetworkAvailable(getActivity())) {
+            dialog= ProgressDialog.showProgressBar(getContext());
+
+            BookingsRequest bookingsRequest = new BookingsRequest();
+            bookingsRequest.setTeamId(teamId);
+            bookingsRequest.setTeamMembershipId(teamMembershipId);
+            ArrayList<BookingsRequest.ChangeSets> list =new ArrayList<>();
+
+            BookingsRequest.ChangeSets changeSets = new BookingsRequest.ChangeSets();
+            changeSets.setId(calendarId);
+            changeSets.setDate(date);
+
+            BookingsRequest.ChangeSets.Changes changes= new BookingsRequest.ChangeSets.Changes();
+            changes.setBookingStatus("IN");
+            changeSets.setChanges(changes);
+            list.add(changeSets);
+
+            bookingsRequest.setChangeSets(list);
+//            bookingsRequest.setDeletedIds(list1);
+            // TODO: 06-07-2022
+            System.out.println("booking req check"+bookingsRequest.getChangeSets());
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call = apiService.bookingBookings(bookingsRequest);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                    Toast.makeText(getActivity(), "Success Bala", Toast.LENGTH_SHORT).show();
+                    openCheckoutDialog();
+                    dialog.dismiss();
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    Toast.makeText(getActivity(), "fail "+t.getMessage(), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
+    }
     private void openCheckoutDialog() {
 
         dialog.setContentView(R.layout.layout_checkout_success);
@@ -136,8 +198,6 @@ public class BookingDetailFragment extends Fragment {
                 dialog.dismiss();
             }
         });
-
-
         dialog.show();
     }
 }
