@@ -66,7 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_5sdp"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <ImageView
                     android:id="@+id/bookingIvIcon"
@@ -174,12 +174,18 @@
                 <Button
                     android:id="@+id/bookingBtnCheckOut"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_30sdp"
+                    android:layout_height="wrap_content"
                     android:text="@string/checkout"
                     android:background="@drawable/button_blue_bg"
+                    android:backgroundTint="@color/figmaBlue"
+                    android:fontFamily="@font/sen"
+                    android:maxHeight="@dimen/_35sdp"
+                    android:minHeight="@dimen/_15sdp"
                     android:layout_below="@+id/bookingCheckInIcon"
-                    android:layout_marginLeft="@dimen/_30sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_8sdp"
+                    android:textAllCaps="false"
+                    android:theme="@style/TextBoldButton"
                     android:layout_toRightOf="@+id/bookingIvIcon"
                     android:visibility="gone"
                     />
@@ -194,7 +200,6 @@
                     android:layout_toRightOf="@+id/bookingIvIcon"
                     android:background="@drawable/button_blue_bg"
                     android:backgroundTint="@color/figmaBlue"
-                    android:drawableRight="@drawable/scan_3px"
                     android:fontFamily="@font/sen"
                     android:maxHeight="@dimen/_35sdp"
                     android:minHeight="@dimen/_15sdp"
@@ -215,7 +220,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_3sdp"
                 android:layout_marginTop="@dimen/_3sdp"
-                android:visibility="visible"
+                android:visibility="gone"
                 >
 
                 <ImageView

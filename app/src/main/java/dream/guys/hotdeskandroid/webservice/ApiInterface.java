@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
@@ -13,6 +14,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -26,5 +28,8 @@ public interface ApiInterface {
 
     @GET("api/MyWork/UserMyWorkStatus")
     Call<BookingListResponse> getUserMyWorkDetails(@Query("dayOfTheWeek") String dayOfTheWeek, @Query("includeNonWorkingDays") boolean includeNonWorkingDays);
+
+    @PUT("api/booking/bookings")
+    Call<BaseResponse> bookingBookings(@Body BookingsRequest body);
 
 }

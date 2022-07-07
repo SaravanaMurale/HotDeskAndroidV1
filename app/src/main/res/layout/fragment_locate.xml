@@ -15,15 +15,27 @@
         />
 -->
 
-
-    <dream.guys.hotdeskandroid.example.CanvasView
-        android:id="@+id/searchLocate"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_10sdp"
-        android:hint="@string/search"
-        />
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
+        <RelativeLayout
+            android:id="@+id/searchLocate"
+            android:layout_width="800dp"
+            android:layout_height="1500dp"
+            android:src="@drawable/notification_icon"
+            android:layout_margin="@dimen/_10sdp"
+            android:hint="@string/search" >
+            <TextView
+                android:layout_width="800dp"
+                android:layout_height="1555dp"
+                android:text="vosvsjdnvsjvlsn   vosvsjdnvsjvlsn   vosvsjdnvsjvlsn   vosvsjdnvsjvlsn   vosvsjdnvsjvlsn   vosvsjdnvsjvlsn   vosvsjdnvsjvlsn   "
+                android:textSize="@dimen/_15sdp"
+                />
+        </RelativeLayout>
+
+    </ScrollView>
 
 
 </FrameLayout>
