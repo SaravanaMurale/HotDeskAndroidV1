@@ -5,7 +5,11 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,6 +79,7 @@ public class BookingDetailFragment extends Fragment {
     int teamId, teamMembershipId, calendarId;
 
 
+    View view;
     public BookingDetailFragment() {
         // Required empty public constructor
     }
@@ -140,6 +145,12 @@ public class BookingDetailFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        this.view =view;
+    }
+
     public void changeCheckIn() {
         if (Utils.isNetworkAvailable(getActivity())) {
             dialog= ProgressDialog.showProgressBar(getContext());
@@ -188,13 +199,14 @@ public class BookingDetailFragment extends Fragment {
 
         dialog.setContentView(R.layout.layout_checkout_success);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        NavController navController= Navigation.findNavController(view);
 
         TextView checkDialogClose = dialog.findViewById(R.id.checkDialogClose);
 
         checkDialogClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                navController.navigate(R.id.navigation_home);
                 dialog.dismiss();
             }
         });

@@ -147,7 +147,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             changeSets.setDate(""+Utils.getISO8601format(data.getDate()));
 
             BookingsRequest.ChangeSets.Changes changes= new BookingsRequest.ChangeSets.Changes();
-            changes.setBookingStatus("IN");
+            changes.setBookingStatus("OUT");
             changeSets.setChanges(changes);
             list.add(changeSets);
 
