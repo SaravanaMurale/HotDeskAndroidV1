@@ -164,6 +164,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             public void onClick(View v) {
 
                 callCheckInBottomSheetToBook();
+                System.out.println("");
 
             }
         });
