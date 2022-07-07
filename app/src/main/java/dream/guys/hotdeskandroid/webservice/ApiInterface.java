@@ -7,6 +7,7 @@ import java.util.List;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
+import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.LocateFloorResponse;
@@ -36,8 +37,11 @@ public interface ApiInterface {
     Call<List<LocateCountryRespose>> getCountrysChild(@Query("parentId") int parentId);
 
 
-    @GET("api/locate/ImmediateChildLocations")
-    Call<List<LocateFloorResponse>> getFloorDetails(@Query("parentId") int parentId);
+    @GET("api/deskLayouts/LocationDesksWithUser")
+    Call<List<DeskAvaliabilityResponse>> getAvaliableDeskDetails(@Query("parentId") int parentId,
+                                                                 @Query("toDate") Date toDate,
+                                                                 @Query("fromTime") Date fromTime,
+                                                                 @Query("toTime") Date toTime);
 
 
 

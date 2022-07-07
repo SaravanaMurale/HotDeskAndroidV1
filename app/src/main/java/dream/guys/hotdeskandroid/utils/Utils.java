@@ -419,7 +419,7 @@ public class Utils {
         //String sDate1="31/12/1998";
         Date date1= null;
         try {
-            date1 = new SimpleDateFormat("dd/MM/yyyy").parse(dateInString);
+            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(dateInString);
         } catch (ParseException e) {
             e.printStackTrace();
         }
