@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
             case Configuration.UI_MODE_NIGHT_UNDEFINED:
                 break;
         }
-
     }
 
     private void uiInit() {
@@ -67,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationUI.setupWithNavController(binding.navView, navController);
         navView.setItemIconTintList(null);
+
 
 
     }

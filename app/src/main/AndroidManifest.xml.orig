@@ -19,42 +19,54 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HotDeskAndroid">
 
-<<<<<<< HEAD
 
-
+        <activity
+            android:name=".ui.login.WelcomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SearchResultsActivity"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
-
+            android:exported="false">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
         <activity
-=======
-        <!--<activity
->>>>>>> 10f1e02b5e9c8f8c58c43d77f2c4b0d1733339b6
-            android:name=".ui.login.LoginActivity"
-            android:exported="false" />-->
-
-        <activity
-<<<<<<< HEAD
             android:name=".example.DummyActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.login.SignInActivity"
-=======
-            android:name=".ui.login.SignInActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.login.LoginActivity"
->>>>>>> 10f1e02b5e9c8f8c58c43d77f2c4b0d1733339b6
+
+            <activity
+                android:name=".ui.login.SignInActivity"
+                android:exported="true">
+                <intent-filter>
+                    <action android:name="android.intent.action.MAIN" />
+
+                    <category android:name="android.intent.category.LAUNCHER" />
+                </intent-filter>
+            </activity>
+
+       <!-- <activity
+            android:name=".example.CanvasActivity"
             android:exported="true">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            </intent-filter>-->
+        </activity>-->
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

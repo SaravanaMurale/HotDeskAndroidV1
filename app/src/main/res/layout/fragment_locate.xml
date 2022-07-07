@@ -21,6 +21,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_150sdp">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -301,6 +305,7 @@
                 android:text="End"
 
                 />
+        </RelativeLayout>
 
             <TextView
                 android:id="@+id/locateEndTime"

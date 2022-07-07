@@ -233,6 +233,11 @@ public class Utils {
 
     }
 
+    public static String getISO8601format(Date date){
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        return df.format(date);
+    }
+
     public static String getCurrentDate(){
          String date= null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -248,7 +253,7 @@ public class Utils {
     public static String getCurrentTime(){
          String time= null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
             LocalDateTime now = LocalDateTime.now();
             //System.out.println(dtf.format(now));
             time=dtf.format(now);
@@ -353,6 +358,16 @@ public class Utils {
 
         }
 
+    }
+
+    public static boolean compareTimeIfCheckInEnable(String startTime, String endTime){
+        startTime = startTime.replace(":",".");
+        endTime = endTime.replace(":",".");
+        System.out.println(startTime+" balas "+endTime);
+        if (Double.parseDouble(startTime) >= Double.parseDouble(endTime))
+            return true;
+        else
+            return false;
     }
 
     public static String splitTime(String dateWithTandZ){
