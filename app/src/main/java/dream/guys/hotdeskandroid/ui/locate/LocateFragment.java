@@ -16,13 +16,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.adapter.LocateMyTeamAdapter;
 import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
 import dream.guys.hotdeskandroid.databinding.FragmentLocateBinding;
 import dream.guys.hotdeskandroid.example.CanvasView;
+import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.LocateFloorResponse;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
@@ -43,6 +46,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     RelativeLayout countryBlock,statBlock,streetBlock,floorBlock;
 
 
+    //MyTeamBottomSheet
+    RecyclerView rvMyTeam;
+    LocateMyTeamAdapter locateMyTeamAdapter;
+
+
     FragmentLocateBinding binding;
     TextView locateText,title;
 
@@ -56,6 +64,17 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     ImageView ivLocateFilter;
     @BindView(R.id.ivLocateKey)
     ImageView ivLocateKey;
+
+    @BindView(R.id.locateStartTime)
+    TextView locateStartTime;
+    @BindView(R.id.locateEndTime)
+    TextView locateEndTime;
+
+    @BindView(R.id.first)
+    ImageView first;
+
+
+
 
 
     CanvasView canvasView;
@@ -85,6 +104,26 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         Paint paint = new Paint();
         canvas.drawBitmap(bitmap, null, rect, paint);*/
 //        paint.set(paint);
+
+
+        binding.locateStartTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Utils.bottomSheetTimePicker(getContext(),getActivity(),"","");
+
+            }
+        });
+
+        binding.locateEndTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Utils.bottomSheetTimePicker(getContext(),getActivity(),"","");
+
+            }
+        });
+
         binding.searchLocate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,16 +158,121 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         });
 
+        binding.first.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                callCheckInBottomSheetToBook();
+
+            }
+        });
+
+
+        getLocateDeskRoomCarDesign();
 
         return root;
+    }
+
+    private void callCheckInBottomSheetToBook() {
+
+        BottomSheetDialog locateCheckInBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        locateCheckInBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_checkin_bottomsheet,
+                new RelativeLayout(getContext())));
+
+        locateCheckInBottomSheet.show();
+    }
+
+    private void getLocateDeskRoomCarDesign() {
+
+        dialog = ProgressDialog.showProgressBar(getContext());
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(4);
+        call.enqueue(new Callback<List<LocateCountryRespose>>() {
+            @Override
+            public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
+
+                List<LocateCountryRespose> locateCountryResposeList=response.body();
+                int totalDeskSize=locateCountryResposeList.get(0).getLocationItemLayout().getDesks().size();
+                System.out.println("TotalDeskSize "+totalDeskSize);
+
+                ProgressDialog.dismisProgressBar(getContext(),dialog);
+
+                getAvaliableDeskDetails(locateCountryResposeList.get(0).getLocationItemLayout().getDesks());
+
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
+
+                ProgressDialog.dismisProgressBar(getContext(),dialog);
+
+            }
+        });
+    }
+
+    private void getAvaliableDeskDetails(List<LocateCountryRespose.LocationItemLayout.Desks> desks) {
+
+        dialog = ProgressDialog.showProgressBar(getContext());
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        //"2022-07-05T00:00:00.000Z"
+        //"2000-01-01T15:50:38.000Z"
+        //"2000-01-01T18:00:00.000Z"
+        Call<List<DeskAvaliabilityResponse>> call = apiService.getAvaliableDeskDetails(4,Utils.convertStringToDateFormet("2022-07-05"),Utils.convertStringToDateFormet("2000-01-01"),Utils.convertStringToDateFormet("2000-01-01"));
+        call.enqueue(new Callback<List<DeskAvaliabilityResponse>>() {
+            @Override
+            public void onResponse(Call<List<DeskAvaliabilityResponse>> call, Response<List<DeskAvaliabilityResponse>> response) {
+
+                List<DeskAvaliabilityResponse> deskAvaliabilityResponseList=response.body();
+
+                for (int i = 0; i <deskAvaliabilityResponseList.size() ; i++) {
+
+                    if(desks.contains(deskAvaliabilityResponseList.get(0).getLocationDesksList().get(i).getCode()))
+                    {
+                        System.out.println("AvaliableDesks"+deskAvaliabilityResponseList.get(0).getLocationDesksList().get(i).getCode());
+                    }
+                }
+
+                ProgressDialog.dismisProgressBar(getContext(),dialog);
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<DeskAvaliabilityResponse>> call, Throwable t) {
+                ProgressDialog.dismisProgressBar(getContext(),dialog);
+            }
+        });
+
     }
 
     //MyTeamBottomSheet
     private void callMyTeamBottomSheet() {
 
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        bottomSheetDialog.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_myteam_bottomsheet,
+        BottomSheetDialog myTeamBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        myTeamBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_myteam_bottomsheet,
                 new RelativeLayout(getContext())));
+
+        rvMyTeam=myTeamBottomSheet.findViewById(R.id.rvLocateMyTeam);
+
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvMyTeam.setLayoutManager(linearLayoutManager);
+        rvMyTeam.setHasFixedSize(true);
+
+        List<String> stringName=new ArrayList<>();
+        stringName.add("Bessie Cooper");
+        stringName.add("Francene Vandyne");
+        stringName.add("Cody Fisher");
+
+
+        locateMyTeamAdapter=new LocateMyTeamAdapter(getContext(),stringName);
+        rvMyTeam.setAdapter(locateMyTeamAdapter);
+
+
+        myTeamBottomSheet.show();
 
 
 
@@ -175,7 +319,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     private void CallFloorBottomSheet(List<LocateCountryRespose> locateCountryResposes) {
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        bottomSheetDialog.setContentView(getLayoutInflater().inflate(R.layout.bottom_sheet_locate_floor_filter,
+        bottomSheetDialog.setContentView(getLayoutInflater().
+                inflate(R.layout.bottom_sheet_locate_floor_filter,
                 new RelativeLayout(getContext())));
 
         countryBlock=bottomSheetDialog.findViewById(R.id.bsCountryBlock);

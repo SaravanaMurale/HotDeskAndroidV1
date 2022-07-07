@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/figmaBgGrey"
     tools:context=".ui.locate.LocateFragment">
 
 
@@ -26,15 +27,173 @@
                 android:layout_height="match_parent"
                 android:scrollbars="none">
 
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="1000dp"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="@dimen/_50sdp"
+                    >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/first"
-                        android:layout_width="800dp"
-                        android:layout_height="@dimen/_150sdp" />
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/desk_avaliable"
+                        />
+
+                    <ImageView
+                        android:id="@+id/two"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/desk_avaliable"
+                        />
+
+                    <ImageView
+                        android:id="@+id/three"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/desk_avaliable"
+                        />
+
+                    <ImageView
+                        android:id="@+id/four"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/desk_avaliable"
+                        />
+
+                    <ImageView
+                        android:id="@+id/five"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/desk_avaliable"
+                        />
+
+                    <ImageView
+                        android:id="@+id/six"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/desk_avaliable"
+                        />
+
+                    <ImageView
+                        android:id="@+id/seevan"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/desk_avaliable"
+                        />
+
+                    <ImageView
+                        android:id="@+id/eight"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/desk_avaliable"
+                        />
+
+                    <ImageView
+                        android:id="@+id/nine"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/desk_avaliable"
+                        />
+
+                    <ImageView
+                        android:id="@+id/ten"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/desk_avaliable"
+                        />
+
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="1500dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_40sdp"
+                    >
+
+                    <ImageView
+                        android:id="@+id/first_s"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/desk_avaliable"
+                        />
+
+                    <ImageView
+                        android:id="@+id/two_s"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/desk_avaliable"
+                        />
+
+                    <ImageView
+                        android:id="@+id/three_s"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/desk_avaliable"
+                        />
+
+                    <ImageView
+                        android:id="@+id/four_s"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/desk_avaliable"
+                        />
+
+                    <ImageView
+                        android:id="@+id/five_s"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/desk_avaliable"
+                        />
+
+                    <ImageView
+                        android:id="@+id/six_s"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/desk_avaliable"
+                        />
+
+                    <ImageView
+                        android:id="@+id/seevan_s"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/desk_avaliable"
+                        />
+
+                    <ImageView
+                        android:id="@+id/eight_s"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/desk_avaliable"
+                        />
+
+                    <ImageView
+                        android:id="@+id/nine_s"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/desk_avaliable"
+                        />
+
+                    <ImageView
+                        android:id="@+id/ten_s"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/desk_avaliable"
+                        />
+
+
+                </LinearLayout>
 
                 </LinearLayout>
 
@@ -51,7 +210,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+
+        >
 
         <!--Search-->
         <TextView
@@ -60,11 +221,12 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:layout_marginRight="@dimen/_9sdp"
             android:background="@drawable/rectangle_bg_with_corner"
-            android:hint="@string/search"
-            android:padding="@dimen/_10sdp" />
+            android:drawableRight="@drawable/locate_location"
+            android:hint="40th Bank Street 30th Floor"
+            android:padding="@dimen/_8sdp" />
 
         <!--Calender-->
         <TextView
@@ -75,7 +237,11 @@
             android:layout_marginLeft="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/rectangle_bg_with_corner"
-            android:padding="@dimen/_10sdp"
+            android:drawableRight="@drawable/locate_calender"
+            android:paddingLeft="@dimen/_8sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingRight="@dimen/_8sdp"
+            android:paddingBottom="@dimen/_5sdp"
             android:text="Wed 4 May"
             tools:ignore="MissingConstraints" />
 
@@ -88,8 +254,12 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_10sdp"
             android:background="@drawable/rectangle_bg_with_corner"
-            android:padding="@dimen/_5sdp"
+            android:paddingLeft="@dimen/_8sdp"
+            android:paddingTop="2dp"
+            android:paddingRight="@dimen/_8sdp"
             tools:ignore="MissingConstraints">
+
+
 
             <TextView
                 android:id="@+id/tvStartLocate"
@@ -104,8 +274,12 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_10sdp"
                 android:layout_toRightOf="@id/tvStartLocate"
-                android:text="8:00" />
+                android:text="8:00"
+                android:textColor="@color/black" />
+
+
 
             <view
                 class="android.widget.TextView"
@@ -115,32 +289,33 @@
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_toRightOf="@id/locateStartTime"
-                android:background="@color/figmaGrey" />
+                android:background="@color/grey" />
 
             <TextView
                 android:id="@+id/tvLocateEndTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_toRightOf="@id/locateStartTime"
                 android:text="End"
 
                 />
 
             <TextView
+                android:id="@+id/locateEndTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_toRightOf="@+id/tvLocateEndTime"
-                android:text="17:30" />
+                android:text="17:30"
+                android:textColor="@color/black" />
 
 
         </RelativeLayout>
 
     </RelativeLayout>
-
 
 
     <!--Bottom Filter-->
@@ -178,11 +353,10 @@
                 android:id="@+id/ivLocateKey"
                 android:layout_width="44dp"
                 android:layout_height="44dp"
-                android:src="@drawable/locate_key"
                 android:layout_below="@+id/ivLocateFilter"
-                android:layout_marginBottom="@dimen/_30sdp"
                 android:layout_marginTop="@dimen/_5sdp"
-                />
+                android:layout_marginBottom="@dimen/_30sdp"
+                android:src="@drawable/locate_key" />
 
         </RelativeLayout>
 
