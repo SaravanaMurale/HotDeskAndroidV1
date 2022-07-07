@@ -3,21 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
+    <TextView
         android:id="@+id/bsLocationSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_5sdp"
-        />
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_9sdp"
+        android:background="@drawable/rectangle_greybg_with_corner"
+        android:drawableRight="@drawable/locate_location"
+        android:hint="40th Bank Street 30th Floor"
+        android:padding="@dimen/_8sdp" />
 
-    <EditText
+    <TextView
         android:id="@+id/bsGeneralSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/search"
         android:layout_below="@+id/bsLocationSearch"
-        android:layout_margin="@dimen/_5sdp"
-        />
+        android:layout_marginLeft="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_9sdp"
+        android:background="@drawable/rectangle_greybg_with_corner"
+        android:hint="@string/search"
+        android:padding="@dimen/_8sdp" />
 
     <LinearLayout
         android:layout_width="match_parent"
