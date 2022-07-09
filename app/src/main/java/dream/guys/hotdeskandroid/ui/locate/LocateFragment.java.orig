@@ -314,26 +314,18 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         });
     }
 
-    private void getDeskaxis(List<String> deskId) {
-        GetCoordinator getCoordinator=new GetCoordinator();
-        getCoordinator.setCoordination(deskId);
-
-        dialog = ProgressDialog.showProgressBar(getContext());
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(4);
-    }
-    private void addView(List<LocateCountryRespose> i) {
-        //https://www.youtube.com/watch?v=PynfI_9CSqA
+<<<<<<< HEAD
+    private void addView(int i) {
         View deskView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
         ImageView iv1=deskView.findViewById(R.id.deskkk);
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 334;
-            relativeLayout.topMargin = 171;
-            relativeLayout.width = 100;
-            relativeLayout.height = 100;
-            iv1.setLayoutParams(relativeLayout);
 
-/*
+        if(i==0) {
+//            iv1.layout(100,200,100,200);
+            iv1.setX(10);
+            iv1.setY(17);
+        }
+
+//
 //        if(i==1) {
 //            iv1.setX(10);
 //            iv1.setY(40);
@@ -355,6 +347,48 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 //            iv1.setX(54);
 //            iv1.setY(17);
 //        }
+
+
+    /*    if(i==1) {
+            iv1.setX(38);
+            iv1.setY(70);
+        }
+        if(i==2) {
+            iv1.setX(43);
+            iv1.setY(17);
+=======
+    private void getDeskaxis(List<String> deskId) {
+
+        GetCoordinator getCoordinator=new GetCoordinator();
+        getCoordinator.setCoordination(deskId);
+
+
+        dialog = ProgressDialog.showProgressBar(getContext());
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(4);
+
+    }
+
+    private void addView(List<LocateCountryRespose> i) {
+
+        //https://www.youtube.com/watch?v=PynfI_9CSqA
+
+        View deskView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
+        ImageView iv1=deskView.findViewById(R.id.deskkk);
+
+
+
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 334;
+            relativeLayout.topMargin = 171;
+            relativeLayout.width = 100;
+            relativeLayout.height = 100;
+            iv1.setLayoutParams(relativeLayout);
+
+
+
+
+/*
 
         if(i==0) {
 
@@ -382,6 +416,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             relativeLayout.width=100;
             relativeLayout.height=100;
             iv1.setLayoutParams(relativeLayout);
+
+>>>>>>> 2714a46fd639f8ef7dafe1d462b8b9c6f41eea6c
         }
         if(i==3){
             RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -390,6 +426,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             relativeLayout.width=100;
             relativeLayout.height=100;
             iv1.setLayoutParams(relativeLayout);
+
         }
         if(i==4){
             RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -398,6 +435,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             relativeLayout.width=100;
             relativeLayout.height=100;
             iv1.setLayoutParams(relativeLayout);
+
         }
         if(i==5){
             RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

@@ -43,7 +43,7 @@
         <activity
             android:name=".example.DummyActivity"
             android:exported="false" />
-        <activity
+<activity
             android:name=".ui.login.SignInActivity"
             android:exported="true">
             <intent-filter>
@@ -61,7 +61,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>-->
 -->
         <meta-data
             android:name="preloaded_fonts"

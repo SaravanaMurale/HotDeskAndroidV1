@@ -1,5 +1,9 @@
 package dream.guys.hotdeskandroid.webservice;
 
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
+
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -54,6 +58,10 @@ public interface ApiInterface {
                                                                  @Query("toDate") LocalDateTime toDate,
                                                                  @Query("fromTime") LocalDateTime fromTime,
                                                                  @Query("toTime") LocalDateTime toTime);
+
+
+    @GET("api/locate/ImmediateChildLocations")
+    Call<JSONObject> getItemJsonObject(@Query("parentId") int parentId);
 
 
 
