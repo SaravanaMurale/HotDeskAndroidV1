@@ -17,7 +17,9 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +37,7 @@ import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
 
 import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
+import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
 import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
@@ -67,12 +70,13 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     List<BookingListResponse> bookingListResponseList;
 
     //EditBooking
-    TextView startTime,endTime,repeat;
+    TextView startTime,endTime,repeat,date;
     String repeatValue="None";
 
     View view;
     Dialog dialog;
     int teamId=0,teamMembershipId=0;
+    ArrayList<BookingListResponse.DayGroup> recyclerModelArrayList;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -132,7 +136,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
     }
 
-    public void changeCheckIn(BookingListResponse.DayGroup data) {
+    public void editBookingCall(BookingListResponse.DayGroup data) {
         if (Utils.isNetworkAvailable(getActivity())) {
             dialog= ProgressDialog.showProgressBar(getContext());
 
@@ -168,6 +172,40 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 @Override
                 public void onFailure(Call<BaseResponse> call, Throwable t) {
                     Toast.makeText(getActivity(), "fail Bala"+t.getMessage(), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
+    }
+
+    public void changeCheckOut(BookingListResponse.DayGroup data, int pos) {
+        if (Utils.isNetworkAvailable(getActivity())) {
+            dialog= ProgressDialog.showProgressBar(getContext());
+
+            BookingStatusRequest bookingsRequest = new BookingStatusRequest();
+            bookingsRequest.setCalendarEntryId(data.getCalendarEntriesModel().getId());
+            bookingsRequest.setBookingStatus("OUT");
+
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call = apiService.bookingStatus(bookingsRequest);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                    Toast.makeText(getActivity(), ""+response.body().getResultCode(), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    BookingListResponse.DayGroup.CalendarEntry.Booking.Status calendarEntry = recyclerModelArrayList.get(pos).getCalendarEntriesModel().getBooking().getStatus();
+                    calendarEntry.setId(1);
+                    homeBookingListAdapter.notifyItemChanged(pos);
+//                    openCheckoutDialog();
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    Toast.makeText(getActivity(), "fail "+t.getMessage(), Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 }
             });
@@ -215,7 +253,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
     private void createRecyclerList(BookingListResponse body) {
         BookingListResponse bookingListResponses = body;
-        ArrayList<BookingListResponse.DayGroup> recyclerModelArrayList = new ArrayList<>();
+        recyclerModelArrayList = new ArrayList<>();
 //        ArrayList<BookingListResponse> recyclerModelArrayList = new ArrayList<>();
         for (int i=0; i<bookingListResponses.getDayGroups().size(); i++){
             boolean dateCheck =true;
@@ -272,7 +310,6 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         momdel.setDate(date);
                         momdel.setMeetingBookingsModel(meetingEntries.get(j));
                     }
-
                     recyclerModelArrayList.add(momdel);
                 }
             }
@@ -316,7 +353,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     }
 
     @Override
-    public void onCheckInDeskClick(BookingListResponse.DayGroup.CalendarEntry calendarEntriesModel, String click, String date) {
+    public void onCheckInDeskClick(BookingListResponse.DayGroup.CalendarEntry calendarEntriesModel, String click, Date date) {
 
         if(click.equals(AppConstants.CHECKIN) || click.equals(AppConstants.REMOTE)){
             //Checkin
@@ -327,12 +364,12 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 bundle.putString("ACTION",AppConstants.CHECKIN);
                 bundle.putString("BOOK_NAME",calendarEntriesModel.getBooking().getDeskCode());
                 bundle.putString("BOOK_ADDRESS","address");
-                bundle.putString("CHECK_IN_TIME",Utils.splitTime(calendarEntriesModel.getFromUTC()));
-                bundle.putString("CHECK_OUT_TIME",Utils.splitTime(calendarEntriesModel.getToUTC()));
+                bundle.putString("CHECK_IN_TIME",Utils.splitTime(calendarEntriesModel.getFrom()));
+                bundle.putString("CHECK_OUT_TIME",Utils.splitTime(calendarEntriesModel.getMyto()));
 
                 bundle.putInt("TEAM_ID",teamId);
                 bundle.putInt("TEAM_MEMBERSHIP_ID",teamMembershipId);
-                bundle.putString("DATE",date);
+                bundle.putString("DATE",""+Utils.getISO8601format(date));
                 bundle.putInt("ID",calendarEntriesModel.getId());
 
             } else if(click.equals(AppConstants.REMOTE)){
@@ -346,18 +383,17 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             System.out.println("BookingEditClicked");
 
             EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
-            editDeskBookingDetails.setEditStartTTime(Utils.splitTime(calendarEntriesModel.getFromUTC()));
-            editDeskBookingDetails.setEditEndTime(Utils.splitTime(calendarEntriesModel.getToUTC()));
-            //editDeskBookingDetails.setDate(calendarEntriesModel.get);
-
-
-            editBookingUsingBottomSheet(editDeskBookingDetails);
+            editDeskBookingDetails.setEditStartTTime(Utils.splitTime(calendarEntriesModel.getFrom()));
+            editDeskBookingDetails.setEditEndTime(Utils.splitTime(calendarEntriesModel.getMyto()));
+            editDeskBookingDetails.setDate(date);
+            editDeskBookingDetails.setDeskStatus(calendarEntriesModel.getBooking().getStatus().getId());
+            editBookingUsingBottomSheet(editDeskBookingDetails,1);
 
         }
     }
 
     @Override
-    public void onCheckInMeetingRoomClick(BookingListResponse.DayGroup.MeetingBooking meetingEntriesModel, String click) {
+    public void onCheckInMeetingRoomClick(BookingListResponse.DayGroup.MeetingBooking meetingEntriesModel, String click, Date date) {
 
         if(click.equals(AppConstants.CHECKIN)) {
             //Checkin
@@ -366,8 +402,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             Bundle bundle = new Bundle();
             bundle.putString("BOOK_NAME", meetingEntriesModel.getMeetingRoomName());
             bundle.putString("BOOK_ADDRESS", "Address");
-            bundle.putString("CHECK_IN_TIME", Utils.splitTime(meetingEntriesModel.getFromUtc()));
-            bundle.putString("CHECK_OUT_TIME", Utils.splitTime(meetingEntriesModel.getToUtc()));
+            bundle.putString("CHECK_IN_TIME", Utils.splitTime(meetingEntriesModel.getFrom()));
+            bundle.putString("CHECK_OUT_TIME", Utils.splitTime(meetingEntriesModel.getMyto()));
             navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment, bundle);
 
         }else if(click.equals(AppConstants.EDIT)){
@@ -375,15 +411,16 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             System.out.println("MeetingEditClicked");
 
             EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
-            editDeskBookingDetails.setEditStartTTime(Utils.splitTime(meetingEntriesModel.getFromUtc()));
-            editDeskBookingDetails.setEditEndTime(Utils.splitTime(meetingEntriesModel.getToUtc()));
+            editDeskBookingDetails.setEditStartTTime(Utils.splitTime(meetingEntriesModel.getFrom()));
+            editDeskBookingDetails.setEditEndTime(Utils.splitTime(meetingEntriesModel.getMyto()));
+            editDeskBookingDetails.setDate(date);
 
-            editBookingUsingBottomSheet(editDeskBookingDetails);
+            editBookingUsingBottomSheet(editDeskBookingDetails,2);
         }
     }
 
     @Override
-    public void onCheckInCarParkingClick(BookingListResponse.DayGroup.CarParkBooking carParkingEntriesModel, String click) {
+    public void onCheckInCarParkingClick(BookingListResponse.DayGroup.CarParkBooking carParkingEntriesModel, String click, Date date) {
 
         if(click.equals(AppConstants.CHECKIN)) {
             //Checkin
@@ -392,21 +429,22 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             Bundle bundle = new Bundle();
             bundle.putString("BOOK_NAME", carParkingEntriesModel.getParkingSlotCode());
             bundle.putString("BOOK_ADDRESS", "Addresss");
-            bundle.putString("CHECK_IN_TIME", Utils.splitTime(carParkingEntriesModel.getFromUtc()));
-            bundle.putString("CHECK_OUT_TIME", Utils.splitTime(carParkingEntriesModel.getToUtc()));
+            bundle.putString("CHECK_IN_TIME", Utils.splitTime(carParkingEntriesModel.getFrom()));
+            bundle.putString("CHECK_OUT_TIME", Utils.splitTime(carParkingEntriesModel.getMyto()));
             navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment, bundle);
 
         }else if(click.equals(AppConstants.EDIT)){
             //Edit
             System.out.println("CarParkingEditClicked");
             EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
-            editDeskBookingDetails.setEditStartTTime(Utils.splitTime(carParkingEntriesModel.getFromUtc()));
-            editDeskBookingDetails.setEditEndTime(Utils.splitTime(carParkingEntriesModel.getToUtc()));
-            editBookingUsingBottomSheet(editDeskBookingDetails);
+            editDeskBookingDetails.setEditStartTTime(Utils.splitTime(carParkingEntriesModel.getFrom()));
+            editDeskBookingDetails.setEditEndTime(Utils.splitTime(carParkingEntriesModel.getMyto()));
+            editDeskBookingDetails.setDate(date);
+            editBookingUsingBottomSheet(editDeskBookingDetails,3);
         }
     }
 
-    private void editBookingUsingBottomSheet(EditBookingDetails editDeskBookingDetails) {
+    private void editBookingUsingBottomSheet(EditBookingDetails editDeskBookingDetails,int dskRoomParkStatus) {
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_booking,
@@ -416,15 +454,43 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         startTime = bottomSheetDialog.findViewById(R.id.start_time);
         endTime = bottomSheetDialog.findViewById(R.id.end_time);
         repeat=bottomSheetDialog.findViewById(R.id.repeat);
+        date=bottomSheetDialog.findViewById(R.id.date);
         TextView back=bottomSheetDialog.findViewById(R.id.editBookingBack);
         TextView continueEditBook=bottomSheetDialog.findViewById(R.id.editBookingContinue);
-        RelativeLayout repeatBlock=bottomSheetDialog.findViewById(R.id.bsRepeatBlock);
+        EditText commentRegistration=bottomSheetDialog.findViewById(R.id.ed_registration);
+        RelativeLayout repeatBlock=bottomSheetDialog.findViewById(R.id.rl_repeat_block);
+        RelativeLayout teamsBlock=bottomSheetDialog.findViewById(R.id.rl_teams_layout);
+        LinearLayout statusCheckLayout=bottomSheetDialog.findViewById(R.id.status_check_layout);
+
+        ChipGroup chipGroup = bottomSheetDialog.findViewById(R.id.list_item);
+
+        if (editDeskBookingDetails.getDeskStatus() == 1){
+            startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
+            endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
+            statusCheckLayout.setVisibility(View.GONE);
+            chipGroup.setVisibility(View.GONE);
+        }else if (editDeskBookingDetails.getDeskStatus() == 2){
+            startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
+            endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
+            statusCheckLayout.setVisibility(View.VISIBLE);
+            chipGroup.setVisibility(View.VISIBLE);
+        } else {
+            startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlue));
+            endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlue));
+            chipGroup.setVisibility(View.GONE);
+        }
+
+        if (dskRoomParkStatus == 1){
+            repeatBlock.setVisibility(View.GONE);
+            teamsBlock.setVisibility(View.GONE);
+            commentRegistration.setHint("Comments");
+        }
 
         startTime.setText(editDeskBookingDetails.getEditStartTTime());
         endTime.setText(editDeskBookingDetails.getEditEndTime());
+        date.setText(""+Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
 
 
-        ChipGroup chipGroup = bottomSheetDialog.findViewById(R.id.list_item);
         for (int i=0; i<5; i++){
             Chip chip = new Chip(getContext());
             chip.setId(i);
@@ -439,17 +505,24 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.popUpTimePicker(getActivity(),startTime);
+                if (editDeskBookingDetails.getDeskStatus() != 1)
+                    Utils.popUpTimePicker(getActivity(),startTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
             }
         });
 
         endTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.popUpTimePicker(getActivity(),endTime);
+                if (editDeskBookingDetails.getDeskStatus() != 1)
+                    Utils.popUpTimePicker(getActivity(),endTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
             }
         });
+        continueEditBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
         repeatBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -466,7 +539,6 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 bottomSheetDialog.dismiss();
             }
         });
-
 
         bottomSheetDialog.show();
 

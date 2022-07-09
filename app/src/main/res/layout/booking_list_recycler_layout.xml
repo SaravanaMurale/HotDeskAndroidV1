@@ -52,10 +52,11 @@
 
         <!--BookingDetail-->
         <androidx.cardview.widget.CardView
+            android:id="@+id/card"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="10"
-            android:layout_margin="@dimen/_3sdp"
+            android:layout_margin="@dimen/_5sdp"
             app:cardCornerRadius="@dimen/_5sdp"
             android:elevation="@dimen/_5sdp"
             >
@@ -70,8 +71,8 @@
 
                 <ImageView
                     android:id="@+id/bookingIvIcon"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
+                    android:layout_width="@dimen/_21sdp"
+                    android:layout_height="@dimen/_21sdp"
                     android:src="@drawable/car"
                     app:tint="@color/figmaBlack" />
 
@@ -225,8 +226,8 @@
 
                 <ImageView
                     android:id="@+id/bookingRemoteHome"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:src="@drawable/home"
                     app:tint="@color/figmaBlackGrey" />
@@ -238,7 +239,10 @@
                     android:layout_toRightOf="@id/bookingRemoteHome"
                     android:layout_toLeftOf="@+id/tv_change"
                     android:text="@string/remote"
-                    android:theme="@style/TextBold" />
+                    android:theme="@style/TextRegular"
+                    android:textStyle="bold"
+                    android:textColor="@color/figmaBlack"
+                    />
 
                 <TextView
                     android:id="@+id/tv_change"

@@ -1,19 +1,30 @@
 package dream.guys.hotdeskandroid.model.request;
 
+import java.util.Date;
+
 public class EditBookingDetails {
 
     String editStartTTime;
     String editEndTime;
-    String date;
+    int deskStatus=0;
+    Date date;
     String abbrevation;
 
     public EditBookingDetails() {
     }
 
-    public EditBookingDetails(String editStartTTime, String editEndTime, String date) {
+    public EditBookingDetails(String editStartTTime, String editEndTime, Date date) {
         this.editStartTTime = editStartTTime;
         this.editEndTime = editEndTime;
         this.date = date;
+    }
+
+    public int getDeskStatus() {
+        return deskStatus;
+    }
+
+    public void setDeskStatus(int deskStatus) {
+        this.deskStatus = deskStatus;
     }
 
     public String getEditStartTTime() {
@@ -32,11 +43,11 @@ public class EditBookingDetails {
         this.editEndTime = editEndTime;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 }

@@ -26,6 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.databinding.FragmentBookingDetailBinding;
+import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
 import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
@@ -155,33 +156,19 @@ public class BookingDetailFragment extends Fragment {
         if (Utils.isNetworkAvailable(getActivity())) {
             dialog= ProgressDialog.showProgressBar(getContext());
 
-            BookingsRequest bookingsRequest = new BookingsRequest();
-            bookingsRequest.setTeamId(teamId);
-            bookingsRequest.setTeamMembershipId(teamMembershipId);
-            ArrayList<BookingsRequest.ChangeSets> list =new ArrayList<>();
+            BookingStatusRequest bookingsRequest = new BookingStatusRequest();
+            bookingsRequest.setCalendarEntryId(calendarId);
+            bookingsRequest.setBookingStatus("IN");
 
-            BookingsRequest.ChangeSets changeSets = new BookingsRequest.ChangeSets();
-            changeSets.setId(calendarId);
-            changeSets.setDate(date);
-
-            BookingsRequest.ChangeSets.Changes changes= new BookingsRequest.ChangeSets.Changes();
-            changes.setBookingStatus("IN");
-            changeSets.setChanges(changes);
-            list.add(changeSets);
-
-            bookingsRequest.setChangeSets(list);
-//            bookingsRequest.setDeletedIds(list1);
-            // TODO: 06-07-2022
-            System.out.println("booking req check"+bookingsRequest.getChangeSets());
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<BaseResponse> call = apiService.bookingBookings(bookingsRequest);
+            Call<BaseResponse> call = apiService.bookingStatus(bookingsRequest);
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                    Toast.makeText(getActivity(), "Success Bala", Toast.LENGTH_SHORT).show();
-                    openCheckoutDialog();
+                    Toast.makeText(getActivity(), ""+response.body().getResultCode(), Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
+                    openCheckoutDialog();
                 }
 
                 @Override
@@ -195,6 +182,7 @@ public class BookingDetailFragment extends Fragment {
             Utils.toastMessage(getActivity(), "Please Enable Internet");
         }
     }
+
     private void openCheckoutDialog() {
 
         dialog.setContentView(R.layout.layout_checkout_success);
