@@ -1,21 +1,27 @@
 package dream.guys.hotdeskandroid.ui.locate;
 
 import android.app.Dialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +32,7 @@ import dream.guys.hotdeskandroid.adapter.LocateMyTeamAdapter;
 import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
 import dream.guys.hotdeskandroid.databinding.FragmentLocateBinding;
 import dream.guys.hotdeskandroid.example.CanvasView;
+import dream.guys.hotdeskandroid.model.request.DeskCode;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.LocateFloorResponse;
@@ -73,6 +80,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     @BindView(R.id.first)
     ImageView first;
+
+    @BindView(R.id.firstLayout)
+    LinearLayout firstLayout;
 
 
 
@@ -159,6 +169,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         });
 
+
+
+
         binding.first.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,9 +210,16 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 int totalDeskSize=locateCountryResposeList.get(0).getLocationItemLayout().getDesks().size();
                 System.out.println("TotalDeskSize "+totalDeskSize);
 
+
+                for (int i = 0; i <1 ; i++) {
+                    addView(i);
+                }
+
+
+
                 ProgressDialog.dismisProgressBar(getContext(),dialog);
 
-                getAvaliableDeskDetails(locateCountryResposeList.get(0).getLocationItemLayout().getDesks());
+                //getAvaliableDeskDetails(locateCountryResposeList.get(0).getLocationItemLayout().getDesks());
 
 
 
@@ -215,6 +235,109 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         });
     }
 
+    private void addView(int i) {
+
+        View deskView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
+        ImageView iv1=deskView.findViewById(R.id.deskkk);
+
+
+        if(i==0) {
+
+            //iv1.layout(100,200,100,200);
+           // iv1.setX(10);
+           // iv1.setY(17);
+
+
+        }
+
+
+       /* if(i==1) {
+
+            iv1.setX(10);
+            iv1.setY(40);
+
+        }*/
+
+     /*   if(i==2) {
+
+            iv1.setX(60);
+            iv1.setY(17);
+
+        }
+
+        if(i==3) {
+
+            iv1.setX(48);
+            iv1.setY(17);
+
+        }*/
+    /*    if(i==1) {
+            iv1.setX(38);
+            iv1.setY(70);
+        }
+        if(i==2) {
+
+            iv1.setX(43);
+            iv1.setY(17);
+
+
+        }
+
+        if(i==3) {
+            iv1.setX(48);
+            iv1.setY(17);
+
+        }
+
+        if(i==4) {
+
+            iv1.setX(54);
+            iv1.setY(17);
+
+        }
+
+        if(i==5) {
+
+            iv1.setX(33);
+            iv1.setY(22);
+
+        }
+
+        if(i==6) {
+            iv1.setX(37);
+            iv1.setY(22);
+        }
+
+        if(i==7) {
+
+            iv1.setX(42);
+            iv1.setY(22);
+        }
+
+        if(i==8) {
+            iv1.setX(47);
+            iv1.setY(22);
+        }
+
+        if(i==9) {
+            iv1.setX(0);
+            iv1.setY(10);
+
+        }
+
+        if(i==10) {
+            iv1.setX(63);
+            iv1.setY(55);
+        }
+
+        if(i==11) {
+            iv1.setX(10);
+            iv1.setY(10);
+        }*/
+        binding.firstLayout.addView(deskView);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void getAvaliableDeskDetails(List<LocateCountryRespose.LocationItemLayout.Desks> desks) {
 
         dialog = ProgressDialog.showProgressBar(getContext());
@@ -223,31 +346,48 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //"2000-01-01T15:50:38.000Z"
         //"2000-01-01T18:00:00.000Z"
 
-        Date date=Utils.convertStringToDateFormet("2022-07-05");
-        System.out.println("DateFormatInLocate"+date);
-        Call<List<DeskAvaliabilityResponse>> call = apiService.getAvaliableDeskDetails(4,Utils.convertStringToDateFormet("2022-07-05"),Utils.convertStringToDateFormet("2000-01-01"),Utils.convertStringToDateFormet("2000-01-01"));
-        call.enqueue(new Callback<List<DeskAvaliabilityResponse>>() {
+        System.out.println("DateFormatInLocate"+Utils.getCurrentDateInDateFormet());
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDateTime now = LocalDateTime.now();
+
+        System.out.println("NowValue"+now);
+        System.out.println("DTFValue"+dtf);
+
+        Call<DeskAvaliabilityResponse> call = apiService.getAvaliableDeskDetails(4,now,now, now);
+        call.enqueue(new Callback<DeskAvaliabilityResponse>() {
             @Override
-            public void onResponse(Call<List<DeskAvaliabilityResponse>> call, Response<List<DeskAvaliabilityResponse>> response) {
+            public void onResponse(Call<DeskAvaliabilityResponse> call, Response<DeskAvaliabilityResponse> response) {
 
-                List<DeskAvaliabilityResponse> deskAvaliabilityResponseList=response.body();
+                DeskAvaliabilityResponse deskAvaliabilityResponseList=response.body();
 
-                for (int i = 0; i <deskAvaliabilityResponseList.size() ; i++) {
+                System.out.println("InsideDataValaibelity");
+                System.out.println("AllDeskSize"+desks.size());
+                System.out.println("ActiveDeskSize"+ deskAvaliabilityResponseList.getLocationDesksList().size());
 
-                    if(desks.contains(deskAvaliabilityResponseList.get(0).getLocationDesksList().get(i).getCode()))
-                    {
-                        System.out.println("AvaliableDesks"+deskAvaliabilityResponseList.get(0).getLocationDesksList().get(i).getCode());
+                List<String> deskCodeList=new ArrayList<>();
+                for (int i = 0; i <desks.size() ; i++) {
+                    deskCodeList.add(desks.get(i).getDeskCode());
+                }
+
+                for (int i = 0; i <deskAvaliabilityResponseList.getLocationDesksList().size() ; i++) {
+
+                    if(deskCodeList.contains(deskAvaliabilityResponseList.getLocationDesksList().get(i).getCode())){
+                        System.out.println("AvaliableDesks"+deskAvaliabilityResponseList.getLocationDesksList().get(i).getCode());
                     }
+
                 }
 
                 ProgressDialog.dismisProgressBar(getContext(),dialog);
 
 
-
             }
 
             @Override
-            public void onFailure(Call<List<DeskAvaliabilityResponse>> call, Throwable t) {
+            public void onFailure(Call<DeskAvaliabilityResponse> call, Throwable t) {
+
+                System.out.println("Failure"+t.getMessage().toString());
+
                 ProgressDialog.dismisProgressBar(getContext(),dialog);
             }
         });
