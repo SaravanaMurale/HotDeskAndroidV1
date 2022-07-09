@@ -43,26 +43,27 @@
         <activity
             android:name=".example.DummyActivity"
             android:exported="false" />
-
-            <activity
-                android:name=".ui.login.SignInActivity"
-                android:exported="true">
-                <intent-filter>
-                    <action android:name="android.intent.action.MAIN" />
-
-                    <category android:name="android.intent.category.LAUNCHER" />
-                </intent-filter>
-            </activity>
-
-        <activity
-            android:name=".example.CanvasActivity"
+<!--
+<activity
+            android:name=".ui.login.SignInActivity"
             android:exported="true">
-            <!--<intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity>-->
+            </intent-filter>
+        </activity>
+-->
+
+        <activity
+            android:name=".example.MutipleImageLoadActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="preloaded_fonts"

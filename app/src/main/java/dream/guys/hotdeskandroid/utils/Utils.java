@@ -429,17 +429,19 @@ public class Utils {
         //finishAllActivity(context);
     }
 
-    public static Date getCurrentDateInDateFormet(){
+    public static String getCurrentDateInDateFormet(){
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
 
-        System.out.println();
-        System.out.println(formatter.format(date));
+        System.out.println("UtilDateFormat"+formatter.format(date));
 
-        return date;
+        //return date;
+
+        return formatter.format(date);
 
     }
+
 
     public static Date convertStringToDateFormet(String dateInString){
 

@@ -40,6 +40,8 @@ public interface ApiInterface {
     @PUT("api/booking/bookings")
     Call<BaseResponse> bookingBookings(@Body BookingsRequest body);
 
+
+
     @GET("api/locate/ImmediateChildLocations")
     Call<List<LocateCountryRespose>> getLocationCountryList();
 
@@ -48,10 +50,10 @@ public interface ApiInterface {
 
 
     @GET("api/deskLayouts/LocationDesksWithUser")
-    Call<List<DeskAvaliabilityResponse>> getAvaliableDeskDetails(@Query("parentId") int parentId,
-                                                                 @Query("toDate") Date toDate,
-                                                                 @Query("fromTime") Date fromTime,
-                                                                 @Query("toTime") Date toTime);
+    Call<DeskAvaliabilityResponse> getAvaliableDeskDetails(@Query("locationId") int parentId,
+                                                                 @Query("toDate") LocalDateTime toDate,
+                                                                 @Query("fromTime") LocalDateTime fromTime,
+                                                                 @Query("toTime") LocalDateTime toTime);
 
 
 
