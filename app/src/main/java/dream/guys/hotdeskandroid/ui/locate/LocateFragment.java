@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
@@ -18,13 +17,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
 
-import java.text.SimpleDateFormat;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import dream.guys.hotdeskandroid.R;
@@ -32,10 +36,9 @@ import dream.guys.hotdeskandroid.adapter.LocateMyTeamAdapter;
 import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
 import dream.guys.hotdeskandroid.databinding.FragmentLocateBinding;
 import dream.guys.hotdeskandroid.example.CanvasView;
-import dream.guys.hotdeskandroid.model.request.DeskCode;
+import dream.guys.hotdeskandroid.model.request.GetCoordinator;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
-import dream.guys.hotdeskandroid.model.response.LocateFloorResponse;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
@@ -185,7 +188,57 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         getLocateDeskRoomCarDesign();
 
+        //getItemJsonObject();
+
         return root;
+    }
+
+    private void getItemJsonObject() {
+
+        dialog = ProgressDialog.showProgressBar(getContext());
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<JSONObject> call = apiService.getItemJsonObject(4);
+        call.enqueue(new Callback<JSONObject>() {
+            @Override
+            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+
+                try {
+
+                    String c=convertToString(response);
+
+                    JSONObject object = new JSONObject(c);
+                    List<String> namesList = new ArrayList<>();
+                    Iterator<String> stringIterator = object.keys();
+                    while (stringIterator.hasNext()) {
+
+                        Object o =stringIterator.next();
+                        System.out.println("ObjectVAlue"+o.toString());
+
+                        namesList.add(stringIterator.next());
+                    }
+
+                    System.out.println("NameListSize"+namesList.size());
+
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<JSONObject> call, Throwable t) {
+                ProgressDialog.dismisProgressBar(getContext(),dialog);
+            }
+        });
+    }
+
+    private String convertToString(Object doctorService) {
+        //Converting Json format String
+        Gson gson = new Gson();
+        return gson.toJson(doctorService);
     }
 
     private void callCheckInBottomSheetToBook() {
@@ -208,12 +261,38 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 List<LocateCountryRespose> locateCountryResposeList=response.body();
                 int totalDeskSize=locateCountryResposeList.get(0).getLocationItemLayout().getDesks().size();
-                System.out.println("TotalDeskSize "+totalDeskSize);
+
+                System.out.println("TotalSize"+totalDeskSize);
+
+                System.out.println("ITEMPRINT"+locateCountryResposeList.get(0).getItems());
 
 
-                for (int i = 0; i <1 ; i++) {
-                    addView(i);
-                }
+               /* List<String> deskId=new ArrayList<>();
+                for (int i = 0; i <totalDeskSize ; i++) {
+                    System.out.println("Deskname "+locateCountryResposeList.get(0).getLocationItemLayout().getDesks().get(i).getDeskCode());
+                    System.out.println("Deskname "+locateCountryResposeList.get(0).getLocationItemLayout().getDesks().get(i).getDesksId());
+                    deskId.add(locateCountryResposeList.get(0).getLocationItemLayout().getDesks().get(i).getDesksId()+"_3");
+                }*/
+
+
+
+
+
+
+
+                /*for (int i = 0; i <totalDeskSize ; i++) {
+
+                    View deskView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
+                    ImageView iv1=deskView.findViewById(R.id.deskkk);
+
+                    RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    relativeLayout.leftMargin = locateCountryResposeList.get(0).getItems().getDeskPos0().get(i);
+                    relativeLayout.topMargin = locateCountryResposeList.get(0).getItems().getDeskPos0().get(i);;
+                    relativeLayout.width = 100;
+                    relativeLayout.height = 100;
+                    iv1.setLayoutParams(relativeLayout);
+
+                }*/
 
 
 
@@ -235,105 +314,228 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         });
     }
 
-    private void addView(int i) {
+    private void getDeskaxis(List<String> deskId) {
+
+        GetCoordinator getCoordinator=new GetCoordinator();
+        getCoordinator.setCoordination(deskId);
+
+
+        dialog = ProgressDialog.showProgressBar(getContext());
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(4);
+
+    }
+
+    private void addView(List<LocateCountryRespose> i) {
+
+        //https://www.youtube.com/watch?v=PynfI_9CSqA
 
         View deskView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
         ImageView iv1=deskView.findViewById(R.id.deskkk);
 
 
+
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 334;
+            relativeLayout.topMargin = 171;
+            relativeLayout.width = 100;
+            relativeLayout.height = 100;
+            iv1.setLayoutParams(relativeLayout);
+
+
+
+
+/*
+
         if(i==0) {
 
-            //iv1.layout(100,200,100,200);
-           // iv1.setX(10);
-           // iv1.setY(17);
-
-
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 334;
+            relativeLayout.topMargin = 171;
+            relativeLayout.width=100;
+            relativeLayout.height=100;
+            iv1.setLayoutParams(relativeLayout);
         }
 
-
-       /* if(i==1) {
-
-            iv1.setX(10);
-            iv1.setY(40);
-
-        }*/
-
-     /*   if(i==2) {
-
-            iv1.setX(60);
-            iv1.setY(17);
+        if(i==1){
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 388;
+            relativeLayout.topMargin = 175;
+            relativeLayout.width=100;
+            relativeLayout.height=100;
+            iv1.setLayoutParams(relativeLayout);
 
         }
-
-        if(i==3) {
-
-            iv1.setX(48);
-            iv1.setY(17);
-
-        }*/
-    /*    if(i==1) {
-            iv1.setX(38);
-            iv1.setY(70);
-        }
-        if(i==2) {
-
-            iv1.setX(43);
-            iv1.setY(17);
-
+        if(i==2){
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 433;
+            relativeLayout.topMargin = 177;
+            relativeLayout.width=100;
+            relativeLayout.height=100;
+            iv1.setLayoutParams(relativeLayout);
 
         }
-
-        if(i==3) {
-            iv1.setX(48);
-            iv1.setY(17);
-
-        }
-
-        if(i==4) {
-
-            iv1.setX(54);
-            iv1.setY(17);
+        if(i==3){
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 488;
+            relativeLayout.topMargin = 176;
+            relativeLayout.width=100;
+            relativeLayout.height=100;
+            iv1.setLayoutParams(relativeLayout);
 
         }
-
-        if(i==5) {
-
-            iv1.setX(33);
-            iv1.setY(22);
-
-        }
-
-        if(i==6) {
-            iv1.setX(37);
-            iv1.setY(22);
-        }
-
-        if(i==7) {
-
-            iv1.setX(42);
-            iv1.setY(22);
-        }
-
-        if(i==8) {
-            iv1.setX(47);
-            iv1.setY(22);
-        }
-
-        if(i==9) {
-            iv1.setX(0);
-            iv1.setY(10);
+        if(i==4){
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 549;
+            relativeLayout.topMargin = 179;
+            relativeLayout.width=100;
+            relativeLayout.height=100;
+            iv1.setLayoutParams(relativeLayout);
 
         }
+        if(i==5){
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 330;
+            relativeLayout.topMargin = 224;
+            relativeLayout.width=100;
+            relativeLayout.height=100;
+            iv1.setLayoutParams(relativeLayout);
 
-        if(i==10) {
-            iv1.setX(63);
-            iv1.setY(55);
         }
+        if(i==6){
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 376;
+            relativeLayout.topMargin = 227;
+            relativeLayout.width=100;
+            relativeLayout.height=100;
+            iv1.setLayoutParams(relativeLayout);
 
-        if(i==11) {
-            iv1.setX(10);
-            iv1.setY(10);
-        }*/
+        }
+        if(i==7){
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 427;
+            relativeLayout.topMargin = 227;
+            relativeLayout.width=100;
+            relativeLayout.height=100;
+            iv1.setLayoutParams(relativeLayout);
+
+        }if(i==8){
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 477;
+            relativeLayout.topMargin = 223;
+            relativeLayout.width=100;
+            relativeLayout.height=100;
+            iv1.setLayoutParams(relativeLayout);
+
+        }if(i==9){
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 534;
+            relativeLayout.topMargin = 227;
+            relativeLayout.width=100;
+            relativeLayout.height=100;
+            iv1.setLayoutParams(relativeLayout);
+
+        }
+        if(i==10){
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 329;
+            relativeLayout.topMargin = 298;
+            relativeLayout.width=100;
+            relativeLayout.height=100;
+            iv1.setLayoutParams(relativeLayout);
+
+        }
+        if(i==11){
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 378;
+            relativeLayout.topMargin = 296;
+            relativeLayout.width=100;
+            relativeLayout.height=100;
+            iv1.setLayoutParams(relativeLayout);
+
+        }
+        if(i==12){
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 429;
+            relativeLayout.topMargin = 294;
+            relativeLayout.width=100;
+            relativeLayout.height=100;
+            iv1.setLayoutParams(relativeLayout);
+
+        }
+        if(i==13){
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 481;
+            relativeLayout.topMargin = 300;
+            relativeLayout.width=100;
+            relativeLayout.height=100;
+            iv1.setLayoutParams(relativeLayout);
+
+        }
+        if(i==14){
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 541;
+            relativeLayout.topMargin = 298;
+            relativeLayout.width=100;
+            relativeLayout.height=100;
+            iv1.setLayoutParams(relativeLayout);
+
+        }
+        if(i==15){
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 327;
+            relativeLayout.topMargin = 367;
+            relativeLayout.width=100;
+            relativeLayout.height=100;
+            iv1.setLayoutParams(relativeLayout);
+
+        }
+        if(i==16){
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 386;
+            relativeLayout.topMargin = 361;
+            relativeLayout.width=100;
+            relativeLayout.height=100;
+            iv1.setLayoutParams(relativeLayout);
+
+        }
+        if(i==17){
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 438;
+            relativeLayout.topMargin = 364;
+            relativeLayout.width=100;
+            relativeLayout.height=100;
+            iv1.setLayoutParams(relativeLayout);
+
+        }
+        if(i==18){
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 489;
+            relativeLayout.topMargin = 363;
+            relativeLayout.width=100;
+            relativeLayout.height=100;
+            iv1.setLayoutParams(relativeLayout);
+
+        }
+        if(i==19){
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 541;
+            relativeLayout.topMargin = 364;
+            relativeLayout.width=100;
+            relativeLayout.height=100;
+            iv1.setLayoutParams(relativeLayout);
+
+        }
+        if(i==20){
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 630;
+            relativeLayout.topMargin = 380;
+            relativeLayout.width=100;
+            relativeLayout.height=100;
+            iv1.setLayoutParams(relativeLayout);
+
+        }
+*/
         binding.firstLayout.addView(deskView);
     }
 

@@ -24,15 +24,34 @@ public class MutipleImageLoadActivity extends AppCompatActivity {
         addLinearLayout=(LinearLayout)findViewById(R.id.addLinearLayout);
         dessAva=(ImageView) findViewById(R.id.dessAva);
 
-        RelativeLayout.LayoutParams relativeLayout=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        relativeLayout.leftMargin=100;
-        relativeLayout.topMargin=200;
+
+        for (int i = 0; i <2 ; i++) {
+            addImageView(i);
+        }
 
 
       /*  for (int i = 0; i <3 ; i++) {
             addView(i);
         }*/
 
+
+    }
+
+    private void addImageView(int i) {
+
+        if (i == 1){
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        relativeLayout.leftMargin = 200;
+        relativeLayout.topMargin = 300;
+        dessAva.setLayoutParams(relativeLayout);
+    }
+
+        if(i==2){
+            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            relativeLayout.leftMargin = 50;
+            relativeLayout.topMargin = 100;
+            dessAva.setLayoutParams(relativeLayout);
+        }
 
     }
 
