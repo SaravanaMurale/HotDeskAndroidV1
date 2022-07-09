@@ -46,6 +46,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -69,6 +70,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -176,20 +178,20 @@ public class Utils {
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popUpTimePicker(activity,startTime);
+                popUpTimePicker(activity,startTime,"");
             }
         });
 
         endTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popUpTimePicker(activity,endTime);
+                popUpTimePicker(activity,endTime,"");
             }
         });
         bottomSheetDialog.show();
     }
 
-    public static void popUpTimePicker(Activity activity, TextView v) {
+    public static void popUpTimePicker(Activity activity, TextView v, String tilte) {
 //        TextView startTime = v;
         TimePickerDialog timePickerDialog=new TimePickerDialog(activity,
                 android.R.style.Theme_Holo_Light_Dialog_MinWidth,
@@ -223,8 +225,8 @@ public class Utils {
         timePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"Back",timePickerDialog);
 
         //timePickerDialog.setContentView(R.layout.layout_sso);
-        timePickerDialog.setTitle("Start\nWed, 10th August,2022");
 
+        timePickerDialog.setTitle(HtmlCompat.fromHtml("Start <br>"+tilte,HtmlCompat.FROM_HTML_MODE_LEGACY));
 
 
         timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -233,8 +235,17 @@ public class Utils {
 
     }
 
+    public static String dayDateMonthFormat(Date date){
+        DateFormat df = new SimpleDateFormat("EEE,d MMM yyyy");
+        return df.format(date);
+    }
     public static String getISO8601format(Date date){
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        return df.format(date);
+    }
+
+    public static String getYearMonthDateFormat(Date date){
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         return df.format(date);
     }
 

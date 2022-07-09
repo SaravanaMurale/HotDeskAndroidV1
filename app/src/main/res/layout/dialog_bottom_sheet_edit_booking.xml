@@ -99,6 +99,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rl_teams_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
@@ -128,7 +129,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/bsRepeatBlock"
+                android:id="@+id/rl_repeat_block"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
@@ -185,7 +186,8 @@
                             android:layout_height="@dimen/_15sdp"
                             android:layout_centerInParent="true"
                             android:layout_marginTop="@dimen/_15sdp"
-                            android:src="@drawable/bg_circle_vector" />
+                            android:src="@drawable/info_circle"
+                            app:tint="@color/figmaBlue" />
 
                     </RelativeLayout>
 
@@ -243,10 +245,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginTop="@dimen/_10sdp"
                             android:layout_marginEnd="@dimen/_5sdp"
                             android:text="Select"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:layout_centerInParent="true"
                             android:textColor="@color/figmaBlue"
                             android:theme="@style/TextBold" />
                     </RelativeLayout>
@@ -265,6 +267,7 @@
                 </com.google.android.material.chip.ChipGroup>
 
                 <LinearLayout
+                    android:id="@+id/status_check_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/list_item"
@@ -277,17 +280,20 @@
                         android:id="@+id/user_status"
                         android:layout_width="@dimen/_10sdp"
                         android:layout_height="@dimen/_10sdp"
-                        android:background="@drawable/bg_circle_vector" />
+                        android:background="@drawable/bg_circle_vector"
+                        android:backgroundTint="@color/teal_200"
+                        />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/_3sdp"
                         android:text="Checked In"
+                        android:layout_marginStart="@dimen/_3sdp"
                         android:theme="@style/TextRegular" />
                 </LinearLayout>
             </RelativeLayout>
             <EditText
+                android:id="@+id/ed_registration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rectangle_bg_with_corner"
@@ -323,8 +329,8 @@
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="Continue"
-                    android:textSize="@dimen/_14sdp"
                     android:textColor="@color/figmaBlue"
+                    android:textSize="@dimen/_14sdp"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
         </LinearLayout>

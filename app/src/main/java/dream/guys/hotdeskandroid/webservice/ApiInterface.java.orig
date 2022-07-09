@@ -4,10 +4,12 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
 import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
+import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.LocateFloorResponse;
@@ -17,6 +19,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -31,10 +34,17 @@ public interface ApiInterface {
     @GET("api/MyWork/UserMyWorkStatus")
     Call<BookingListResponse> getUserMyWorkDetails(@Query("dayOfTheWeek") String dayOfTheWeek, @Query("includeNonWorkingDays") boolean includeNonWorkingDays);
 
-<<<<<<< HEAD
+    @PUT("api/booking/bookingStatus")
+    Call<BaseResponse> bookingStatus(@Body BookingStatusRequest calendarId);
+
     @PUT("api/booking/bookings")
     Call<BaseResponse> bookingBookings(@Body BookingsRequest body);
+
+<<<<<<< HEAD
 =======
+
+
+>>>>>>> 86ab90d16ad951b8f85bf09e7d8509541b0e6a55
     @GET("api/locate/ImmediateChildLocations")
     Call<List<LocateCountryRespose>> getLocationCountryList();
 
@@ -42,12 +52,14 @@ public interface ApiInterface {
     Call<List<LocateCountryRespose>> getCountrysChild(@Query("parentId") int parentId);
 
 
-    @GET("api/locate/ImmediateChildLocations")
-    Call<List<LocateFloorResponse>> getFloorDetails(@Query("parentId") int parentId);
+    @GET("api/deskLayouts/LocationDesksWithUser")
+    Call<DeskAvaliabilityResponse> getAvaliableDeskDetails(@Query("locationId") int parentId,
+                                                                 @Query("toDate") LocalDateTime toDate,
+                                                                 @Query("fromTime") LocalDateTime fromTime,
+                                                                 @Query("toTime") LocalDateTime toTime);
 
 
 
 
->>>>>>> 8458affcb387e0171e69bcf0ab0c14cc8f333518
 
 }
