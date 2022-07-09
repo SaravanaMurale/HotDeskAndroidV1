@@ -236,51 +236,46 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
     private void addView(int i) {
-
         View deskView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
         ImageView iv1=deskView.findViewById(R.id.deskkk);
 
-
         if(i==0) {
-
-            //iv1.layout(100,200,100,200);
-           // iv1.setX(10);
-           // iv1.setY(17);
-
-
-        }
-
-
-       /* if(i==1) {
-
+//            iv1.layout(100,200,100,200);
             iv1.setX(10);
-            iv1.setY(40);
-
-        }*/
-
-     /*   if(i==2) {
-
-            iv1.setX(60);
             iv1.setY(17);
-
         }
 
-        if(i==3) {
+//
+//        if(i==1) {
+//            iv1.setX(10);
+//            iv1.setY(40);
+//
+//        }
+//
+//        if(i==2) {
+//
+//            iv1.setX(60);
+//            iv1.setY(17);
+//
+//        }
+//
+//        if(i==3) {
+//            iv1.setX(48);
+//            iv1.setY(17);
+//        }
+//        if(i==4) {
+//            iv1.setX(54);
+//            iv1.setY(17);
+//        }
 
-            iv1.setX(48);
-            iv1.setY(17);
 
-        }*/
     /*    if(i==1) {
             iv1.setX(38);
             iv1.setY(70);
         }
         if(i==2) {
-
             iv1.setX(43);
             iv1.setY(17);
-
-
         }
 
         if(i==3) {

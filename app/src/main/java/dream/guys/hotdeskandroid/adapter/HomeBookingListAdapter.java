@@ -68,16 +68,22 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
         if (list.get(position).isDateStatus()){
             holder.dateLayout.setVisibility(View.VISIBLE);
-
             System.out.println("DateFormatPrintHere"+list.get(position).getDate());
 //            System.out.println("DayInTextAndNumber"+Utils.getDayAndDateFromDateFormat(list.get(position).getDate()));
-
             holder.today_date.setText(""+Utils.getDayAndDateFromDateFormat(list.get(position).getDate()));
             holder.lineLayout.setVisibility(View.GONE);
         }
         else {
             holder.dateLayout.setVisibility(View.GONE);
             holder.lineLayout.setVisibility(View.VISIBLE);
+        }
+
+        if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate()) == 1){
+            holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
+            holder.bookingIvEdit.setVisibility(View.GONE);
+            System.out.println("date check Balaaaa"+list.get(position).getDate()+" : "+Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate()));
+        } else if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
+            holder.today_date.setText("Today");
         }
 
         if (list.get(position).getCalDeskStatus() ==1 &&
@@ -95,6 +101,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingDeskName.setText(list.get(position).getCalendarEntriesModel().getBooking().getDeskCode());
             holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom()));
             holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
+
 
 /*
         Below Switch case Logic

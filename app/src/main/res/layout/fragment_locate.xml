@@ -29,14 +29,12 @@
 
 
                 <RelativeLayout
-                    android:id="@+id/firstLayout"
                     android:layout_width="1000dp"
                     android:layout_height="1000dp">
 
 
-
                     <LinearLayout
-
+                        android:id="@+id/firstLayout"
                         android:layout_width="1000dp"
                         android:layout_height="1000dp">
 
@@ -45,9 +43,7 @@
                             android:layout_width="@dimen/_30sdp"
                             android:layout_height="@dimen/_30sdp"
                             android:src="@drawable/desk_avaliable"
-                            android:visibility="gone"
-                            />
-
+                            android:visibility="gone" />
 
 
                     </LinearLayout>
