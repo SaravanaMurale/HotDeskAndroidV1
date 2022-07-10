@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class LocateCountryRespose {
@@ -17,9 +18,10 @@ public class LocateCountryRespose {
     boolean isLeafLocation;
     int locationType;
     String timeZoneId;
-    //String coordinates;
+
     @SerializedName("items")
-    JSONObject items;
+    HashMap<String,List<String>> items;
+
     @SerializedName("locationItemLayout")
     LocationItemLayout locationItemLayout;
     @SerializedName("supportZoneLayoutItems")
@@ -28,11 +30,11 @@ public class LocateCountryRespose {
     @SerializedName("backGroundImage")
     BackGroundImage backGroundImage;
 
-    public JSONObject getItems() {
+    public HashMap<String, List<String>> getItems() {
         return items;
     }
 
-    public void setItems(JSONObject items) {
+    public void setItems(HashMap<String, List<String>> items) {
         this.items = items;
     }
 
@@ -126,7 +128,7 @@ public class LocateCountryRespose {
     }
 
 
-   /* public  class Items{
+    public  class Items{
 
 
 
@@ -139,15 +141,7 @@ public class LocateCountryRespose {
 
 
 
-
-
-
-
-
-
-
-
-        @SerializedName("19_3")
+        /*@SerializedName("19_3")
         List<Integer> deskPos0;
 
         @SerializedName("18_3")
@@ -352,9 +346,8 @@ public class LocateCountryRespose {
 
         public void setDeskPos19(List<Integer> deskPos19) {
             this.deskPos19 = deskPos19;
-        }
+        }*/
     }
-*/
 
     public class LocationItemLayout {
 
@@ -363,6 +356,9 @@ public class LocateCountryRespose {
 
         @SerializedName("meetingRooms")
         List<MeetingRooms> meetingRoomsList;
+
+        @SerializedName("parkingSlots")
+        List<ParkingSlots> parkingSlotsList;
 
         public List<Desks> getDesks() {
             return desksList;
@@ -378,6 +374,14 @@ public class LocateCountryRespose {
 
         public void setMeetingRoomsList(List<MeetingRooms> meetingRoomsList) {
             this.meetingRoomsList = meetingRoomsList;
+        }
+
+        public List<ParkingSlots> getParkingSlotsList() {
+            return parkingSlotsList;
+        }
+
+        public void setParkingSlotsList(List<ParkingSlots> parkingSlotsList) {
+            this.parkingSlotsList = parkingSlotsList;
         }
 
         public class Desks {
@@ -445,6 +449,37 @@ public class LocateCountryRespose {
 
             public void setMeetingRoomDesc(String meetingRoomDesc) {
                 this.meetingRoomDesc = meetingRoomDesc;
+            }
+        }
+
+        public class ParkingSlots{
+
+            private int id;
+            private String code;
+            private boolean active;
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public String getCode() {
+                return code;
+            }
+
+            public void setCode(String code) {
+                this.code = code;
+            }
+
+            public boolean isActive() {
+                return active;
+            }
+
+            public void setActive(boolean active) {
+                this.active = active;
             }
         }
 

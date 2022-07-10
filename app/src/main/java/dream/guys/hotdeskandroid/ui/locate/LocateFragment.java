@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
@@ -17,29 +18,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.gson.Gson;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.LocateMyTeamAdapter;
 import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
-import dream.guys.hotdeskandroid.databinding.FragmentLocateBinding;
 import dream.guys.hotdeskandroid.example.CanvasView;
-import dream.guys.hotdeskandroid.model.request.GetCoordinator;
+import dream.guys.hotdeskandroid.example.MyCanvasDraw;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
+import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
+import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
@@ -50,11 +45,13 @@ import retrofit2.Response;
 public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSelectListener {
 
     //BottomSheetData
-    TextView country,state,street,floor,back;
+    TextView country,state,street,floor,back,bsApply;
     RecyclerView rvCountry,rvState,rvStreet;
     ShowCountryAdapter showCountryAdapter;
     LinearLayoutManager linearLayoutManager;
     RelativeLayout countryBlock,statBlock,streetBlock,floorBlock;
+
+    TextView bsLocationSearch;
 
 
     //MyTeamBottomSheet
@@ -62,12 +59,19 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     LocateMyTeamAdapter locateMyTeamAdapter;
 
 
-    FragmentLocateBinding binding;
+    dream.guys.hotdeskandroid.databinding.FragmentLocateBinding binding;
     TextView locateText,title;
 
 
     @BindView(R.id.searchLocate)
     TextView searchLocate;
+    @BindView(R.id.locateCalendearView)
+    TextView locateCalendearView;
+    @BindView(R.id.locateStartTime)
+    TextView locateStartTime;
+    @BindView(R.id.locateEndTime)
+    TextView locateEndTime;
+
 
     @BindView(R.id.ivLocateMyTeam)
     ImageView ivLocateMyTeam;
@@ -76,10 +80,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     @BindView(R.id.ivLocateKey)
     ImageView ivLocateKey;
 
-    @BindView(R.id.locateStartTime)
-    TextView locateStartTime;
-    @BindView(R.id.locateEndTime)
-    TextView locateEndTime;
 
     @BindView(R.id.first)
     ImageView first;
@@ -87,8 +87,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     @BindView(R.id.firstLayout)
     LinearLayout firstLayout;
 
+    @BindView(R.id.secondLayout)
+    LinearLayout secondLayout;
+
+    View deskView;
 
 
+
+    List<LocateCountryRespose> locateCountryResposeList;
 
 
     CanvasView canvasView;
@@ -100,7 +106,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentLocateBinding.inflate(inflater, container, false);
+        binding = dream.guys.hotdeskandroid.databinding.FragmentLocateBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         dialog = new Dialog(getContext());
@@ -147,6 +153,15 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         });
 
+        binding.locateCalendearView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Utils.bottomSheetDatePicker(getContext(),getActivity(),"","");
+
+            }
+        });
+
         binding.ivLocateMyTeam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,126 +194,103 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                callCheckInBottomSheetToBook();
-                System.out.println("");
+                //callCheckInBottomSheetToBook(selctedCode, key, id);
+                //System.out.println("");
 
             }
         });
 
 
-        getLocateDeskRoomCarDesign();
 
-        //getItemJsonObject();
+        //Initally Load Floor Details
+
+        initLoadFloorDetails();
+
+
 
         return root;
     }
 
-    private void getItemJsonObject() {
+    private void initLoadFloorDetails() {
+        int parentId=SessionHandler.getInstance().getInt(getContext(),AppConstants.PARENT_ID);
+        if(parentId>0){
+            String buildingName=SessionHandler.getInstance().get(getContext(),AppConstants.BUILDING);
+            String floorName=SessionHandler.getInstance().get(getContext(),AppConstants.FLOOR);
 
-        dialog = ProgressDialog.showProgressBar(getContext());
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<JSONObject> call = apiService.getItemJsonObject(4);
-        call.enqueue(new Callback<JSONObject>() {
-            @Override
-            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
-
-                try {
-
-                    String c=convertToString(response);
-
-                    JSONObject object = new JSONObject(c);
-                    List<String> namesList = new ArrayList<>();
-                    Iterator<String> stringIterator = object.keys();
-                    while (stringIterator.hasNext()) {
-
-                        Object o =stringIterator.next();
-                        System.out.println("ObjectVAlue"+o.toString());
-
-                        namesList.add(stringIterator.next());
-                    }
-
-                    System.out.println("NameListSize"+namesList.size());
-
-                    ProgressDialog.dismisProgressBar(getContext(),dialog);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    ProgressDialog.dismisProgressBar(getContext(),dialog);
-                }
-
+            if(buildingName==null && floorName==null){
+                binding.searchLocate.setHint("40th Bank Street,30th Floor");
+            }else {
+                binding.searchLocate.setHint(buildingName+","+floorName);
             }
 
-            @Override
-            public void onFailure(Call<JSONObject> call, Throwable t) {
-                ProgressDialog.dismisProgressBar(getContext(),dialog);
-            }
-        });
+            getLocateDeskRoomCarDesign(parentId);
+        }else {
+            Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private String convertToString(Object doctorService) {
-        //Converting Json format String
-        Gson gson = new Gson();
-        return gson.toJson(doctorService);
-    }
 
-    private void callCheckInBottomSheetToBook() {
+    //Book BottomSheet
+    private void callCheckInBottomSheetToBook(String selctedCode, String key, int id) {
+
+        TextView locateDeskName;
 
         BottomSheetDialog locateCheckInBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         locateCheckInBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_checkin_bottomsheet,
                 new RelativeLayout(getContext())));
 
+        locateDeskName=locateCheckInBottomSheet.findViewById(R.id.locateDeskName);
+
+        locateDeskName.setText(selctedCode);
+
+
+
+
+
         locateCheckInBottomSheet.show();
     }
 
-    private void getLocateDeskRoomCarDesign() {
+    private void getLocateDeskRoomCarDesign(int parentId) {
 
         dialog = ProgressDialog.showProgressBar(getContext());
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(4);
+
+
+        Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(parentId);
         call.enqueue(new Callback<List<LocateCountryRespose>>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
 
-                List<LocateCountryRespose> locateCountryResposeList=response.body();
+                locateCountryResposeList=response.body();
                 int totalDeskSize=locateCountryResposeList.get(0).getLocationItemLayout().getDesks().size();
-
                 System.out.println("TotalSize"+totalDeskSize);
 
-                System.out.println("ITEMPRINT"+locateCountryResposeList.get(0).getItems());
-
-
-               /* List<String> deskId=new ArrayList<>();
-                for (int i = 0; i <totalDeskSize ; i++) {
-                    System.out.println("Deskname "+locateCountryResposeList.get(0).getLocationItemLayout().getDesks().get(i).getDeskCode());
-                    System.out.println("Deskname "+locateCountryResposeList.get(0).getLocationItemLayout().getDesks().get(i).getDesksId());
-                    deskId.add(locateCountryResposeList.get(0).getLocationItemLayout().getDesks().get(i).getDesksId()+"_3");
-                }*/
-
-
-
-
-
-
-
-                /*for (int i = 0; i <totalDeskSize ; i++) {
-
-                    View deskView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
-                    ImageView iv1=deskView.findViewById(R.id.deskkk);
-
-                    RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    relativeLayout.leftMargin = locateCountryResposeList.get(0).getItems().getDeskPos0().get(i);
-                    relativeLayout.topMargin = locateCountryResposeList.get(0).getItems().getDeskPos0().get(i);;
-                    relativeLayout.width = 100;
-                    relativeLayout.height = 100;
-                    iv1.setLayoutParams(relativeLayout);
-
-                }*/
-
-
+                //addDottedLine();
 
                 ProgressDialog.dismisProgressBar(getContext(),dialog);
+                getAvaliableDeskDetails(locateCountryResposeList.get(0).getLocationItemLayout().getDesks());
 
-                //getAvaliableDeskDetails(locateCountryResposeList.get(0).getLocationItemLayout().getDesks());
+
+
+                List<String> valueList=new ArrayList<>();
+                for(String key:locateCountryResposeList.get(0).getItems().keySet()){
+                    System.out.println("Value"+locateCountryResposeList.get(0).getItems().get(key));
+
+                    valueList=locateCountryResposeList.get(0).getItems().get(key);
+
+                    addView(valueList,key);
+
+                    //strings.add(locateCountryResposeList.get(0).getItems().get(key));
+
+                    /*for (int i = 0; i <strings.size() ; i++) {
+                        System.out.println("InsideValue"+strings.get(i));
+
+                    }*/
+
+                }
+                ProgressDialog.dismisProgressBar(getContext(),dialog);
+
 
 
 
@@ -314,229 +306,119 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         });
     }
 
-    private void getDeskaxis(List<String> deskId) {
+    private void addDottedLine() {
 
-        GetCoordinator getCoordinator=new GetCoordinator();
-        getCoordinator.setCoordination(deskId);
+       /* View dottView = getLayoutInflater().inflate(R.layout.layout_dotted_line, null, false);
+        ImageView ivDesk = dottView.findViewById(R.id.dottedImage);
+        RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
+        relativeLayout.leftMargin =300;
+        relativeLayout.topMargin = 500;
+        ivDesk.setLayoutParams(relativeLayout);
 
-        dialog = ProgressDialog.showProgressBar(getContext());
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(4);
+        binding.firstLayout.addView(dottView);*/
+
+        MyCanvasDraw myCanvasDraw = new MyCanvasDraw (getContext(),100,200);
+        binding.secondLayout.addView(myCanvasDraw);
+
 
     }
 
-    private void addView(List<LocateCountryRespose> i) {
 
-        //https://www.youtube.com/watch?v=PynfI_9CSqA
+    private void addView(List<String> valueList, String key) {
 
-        View deskView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
-        ImageView iv1=deskView.findViewById(R.id.deskkk);
+            System.out.println("ReceivedKeyInAddView"+key);
 
-
-
+            deskView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
+            ImageView ivDesk = deskView.findViewById(R.id.ivDesk);
             RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 334;
-            relativeLayout.topMargin = 171;
-            relativeLayout.width = 100;
-            relativeLayout.height = 100;
-            iv1.setLayoutParams(relativeLayout);
+
+            //ivDesk.setRotation(45);
+
+            //SetImageHereBased on Code
+            /* String[] result = key.split("_");
+             String splitValue=result[1];
+
+            if(splitValue.equals(AppConstants.DESK)){
+
+            }else if(splitValue.equals(AppConstants.MEETING)){
+
+            }else if(splitValue.equals(AppConstants.CAR_PARKING)){
+
+            }*/
+
+            relativeLayout.leftMargin = Integer.parseInt(valueList.get(0));
+            relativeLayout.topMargin = Integer.parseInt(valueList.get(1));
+            relativeLayout.width = 80;
+            relativeLayout.height = 80;
+            ivDesk.setLayoutParams(relativeLayout);
+
+            //ClickOnImage
+            ivDesk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    List<String> onClickValue=  locateCountryResposeList.get(0).getItems().get(key);
+                     /*for (int j = 0; j <onClickValue.size() ; j++) {
+                        System.out.println("OnClickedKey"+key+"OnClickedValue"+onClickValue.get(j));
+                    }*/
+
+                    //Split key to get id and code
+                    String[] result = key.split("_");
+                    int id=Integer.parseInt(result[0]);
+                    String code=result[1];
+                    String selctedCode="";
+
+                    //Get code based on id
+                    if(code.equals(AppConstants.DESK)) {
+                        //Get Code For Desk
+                        for (int i = 0; i < locateCountryResposeList.get(0).getLocationItemLayout().getDesks().size(); i++) {
+
+                            if (id == locateCountryResposeList.get(0).getLocationItemLayout().getDesks().get(i).getDesksId()) {
+
+                                selctedCode = locateCountryResposeList.get(0).getLocationItemLayout().getDesks().get(i).getDeskCode();
+
+                                System.out.println("ClickedCodeIs" + locateCountryResposeList.get(0).getLocationItemLayout().getDesks().get(i).getDeskCode());
+
+                            }
+
+                        }
+
+                    }else if(code.equals(AppConstants.MEETING)){
+                        //Get Code For MEETING
+
+                        for (int i = 0; i <locateCountryResposeList.get(0).getLocationItemLayout().getMeetingRoomsList().size() ; i++) {
+
+                            if (id == locateCountryResposeList.get(0).getLocationItemLayout().getMeetingRoomsList().get(i).getMeetingRoomId()) {
+
+                                selctedCode=locateCountryResposeList.get(0).getLocationItemLayout().getMeetingRoomsList().get(i).getMeetingRoomCode();
+                            }
+
+                        }
+
+
+                    }else if(code.equals(AppConstants.CAR_PARKING)){
+                     //Get Code For CAR_PARKING
+                        for (int i = 0; i <locateCountryResposeList.get(0).getLocationItemLayout().getParkingSlotsList().size() ; i++) {
+                            if (id == locateCountryResposeList.get(0).getLocationItemLayout().getParkingSlotsList().get(i).getId()) {
+
+                                selctedCode=locateCountryResposeList.get(0).getLocationItemLayout().getParkingSlotsList().get(i).getCode();
+                            }
+
+                        }
+
+                    }
+
+                    callCheckInBottomSheetToBook(selctedCode,key,id);
 
 
 
+                }
+            });
 
-/*
+            binding.firstLayout.addView(deskView);
 
-        if(i==0) {
 
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 334;
-            relativeLayout.topMargin = 171;
-            relativeLayout.width=100;
-            relativeLayout.height=100;
-            iv1.setLayoutParams(relativeLayout);
-        }
-
-        if(i==1){
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 388;
-            relativeLayout.topMargin = 175;
-            relativeLayout.width=100;
-            relativeLayout.height=100;
-            iv1.setLayoutParams(relativeLayout);
-
-        }
-        if(i==2){
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 433;
-            relativeLayout.topMargin = 177;
-            relativeLayout.width=100;
-            relativeLayout.height=100;
-            iv1.setLayoutParams(relativeLayout);
-
-        }
-        if(i==3){
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 488;
-            relativeLayout.topMargin = 176;
-            relativeLayout.width=100;
-            relativeLayout.height=100;
-            iv1.setLayoutParams(relativeLayout);
-
-        }
-        if(i==4){
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 549;
-            relativeLayout.topMargin = 179;
-            relativeLayout.width=100;
-            relativeLayout.height=100;
-            iv1.setLayoutParams(relativeLayout);
-
-        }
-        if(i==5){
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 330;
-            relativeLayout.topMargin = 224;
-            relativeLayout.width=100;
-            relativeLayout.height=100;
-            iv1.setLayoutParams(relativeLayout);
-
-        }
-        if(i==6){
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 376;
-            relativeLayout.topMargin = 227;
-            relativeLayout.width=100;
-            relativeLayout.height=100;
-            iv1.setLayoutParams(relativeLayout);
-
-        }
-        if(i==7){
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 427;
-            relativeLayout.topMargin = 227;
-            relativeLayout.width=100;
-            relativeLayout.height=100;
-            iv1.setLayoutParams(relativeLayout);
-
-        }if(i==8){
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 477;
-            relativeLayout.topMargin = 223;
-            relativeLayout.width=100;
-            relativeLayout.height=100;
-            iv1.setLayoutParams(relativeLayout);
-
-        }if(i==9){
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 534;
-            relativeLayout.topMargin = 227;
-            relativeLayout.width=100;
-            relativeLayout.height=100;
-            iv1.setLayoutParams(relativeLayout);
-
-        }
-        if(i==10){
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 329;
-            relativeLayout.topMargin = 298;
-            relativeLayout.width=100;
-            relativeLayout.height=100;
-            iv1.setLayoutParams(relativeLayout);
-
-        }
-        if(i==11){
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 378;
-            relativeLayout.topMargin = 296;
-            relativeLayout.width=100;
-            relativeLayout.height=100;
-            iv1.setLayoutParams(relativeLayout);
-
-        }
-        if(i==12){
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 429;
-            relativeLayout.topMargin = 294;
-            relativeLayout.width=100;
-            relativeLayout.height=100;
-            iv1.setLayoutParams(relativeLayout);
-
-        }
-        if(i==13){
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 481;
-            relativeLayout.topMargin = 300;
-            relativeLayout.width=100;
-            relativeLayout.height=100;
-            iv1.setLayoutParams(relativeLayout);
-
-        }
-        if(i==14){
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 541;
-            relativeLayout.topMargin = 298;
-            relativeLayout.width=100;
-            relativeLayout.height=100;
-            iv1.setLayoutParams(relativeLayout);
-
-        }
-        if(i==15){
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 327;
-            relativeLayout.topMargin = 367;
-            relativeLayout.width=100;
-            relativeLayout.height=100;
-            iv1.setLayoutParams(relativeLayout);
-
-        }
-        if(i==16){
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 386;
-            relativeLayout.topMargin = 361;
-            relativeLayout.width=100;
-            relativeLayout.height=100;
-            iv1.setLayoutParams(relativeLayout);
-
-        }
-        if(i==17){
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 438;
-            relativeLayout.topMargin = 364;
-            relativeLayout.width=100;
-            relativeLayout.height=100;
-            iv1.setLayoutParams(relativeLayout);
-
-        }
-        if(i==18){
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 489;
-            relativeLayout.topMargin = 363;
-            relativeLayout.width=100;
-            relativeLayout.height=100;
-            iv1.setLayoutParams(relativeLayout);
-
-        }
-        if(i==19){
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 541;
-            relativeLayout.topMargin = 364;
-            relativeLayout.width=100;
-            relativeLayout.height=100;
-            iv1.setLayoutParams(relativeLayout);
-
-        }
-        if(i==20){
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            relativeLayout.leftMargin = 630;
-            relativeLayout.topMargin = 380;
-            relativeLayout.width=100;
-            relativeLayout.height=100;
-            iv1.setLayoutParams(relativeLayout);
-
-        }
-*/
-        binding.firstLayout.addView(deskView);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -556,7 +438,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         System.out.println("NowValue"+now);
         System.out.println("DTFValue"+dtf);
 
-        Call<DeskAvaliabilityResponse> call = apiService.getAvaliableDeskDetails(4,now,now, now);
+        int parentId=SessionHandler.getInstance().getInt(getContext(),AppConstants.PARENT_ID);
+        Call<DeskAvaliabilityResponse> call = apiService.getAvaliableDeskDetails(parentId,now,now, now);
         call.enqueue(new Callback<DeskAvaliabilityResponse>() {
             @Override
             public void onResponse(Call<DeskAvaliabilityResponse> call, Response<DeskAvaliabilityResponse> response) {
@@ -564,21 +447,25 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 DeskAvaliabilityResponse deskAvaliabilityResponseList=response.body();
 
                 System.out.println("InsideDataValaibelity");
-                System.out.println("AllDeskSize"+desks.size());
-                System.out.println("ActiveDeskSize"+ deskAvaliabilityResponseList.getLocationDesksList().size());
+                //System.out.println("AllDeskSize"+desks.size());
+               // System.out.println("ActiveDeskSize"+ deskAvaliabilityResponseList.getLocationDesksList().size());
 
                 List<String> deskCodeList=new ArrayList<>();
                 for (int i = 0; i <desks.size() ; i++) {
                     deskCodeList.add(desks.get(i).getDeskCode());
                 }
 
-                for (int i = 0; i <deskAvaliabilityResponseList.getLocationDesksList().size() ; i++) {
+                if(deskAvaliabilityResponseList.getLocationDesksList()!=null){
+                    for (int i = 0; i <deskAvaliabilityResponseList.getLocationDesksList().size() ; i++) {
 
-                    if(deskCodeList.contains(deskAvaliabilityResponseList.getLocationDesksList().get(i).getCode())){
-                        System.out.println("AvaliableDesks"+deskAvaliabilityResponseList.getLocationDesksList().get(i).getCode());
+                        if(deskCodeList.contains(deskAvaliabilityResponseList.getLocationDesksList().get(i).getCode())){
+                            System.out.println("AvaliableDesks"+deskAvaliabilityResponseList.getLocationDesksList().get(i).getCode());
+                        }
+
                     }
-
                 }
+
+
 
                 ProgressDialog.dismisProgressBar(getContext(),dialog);
 
@@ -663,12 +550,26 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
+    //Select Floor BottomSheeet
     private void CallFloorBottomSheet(List<LocateCountryRespose> locateCountryResposes) {
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView(getLayoutInflater().
                 inflate(R.layout.bottom_sheet_locate_floor_filter,
                 new RelativeLayout(getContext())));
+
+
+
+        bsLocationSearch=bottomSheetDialog.findViewById(R.id.bsLocationSearch);
+
+        String buildingName=SessionHandler.getInstance().get(getContext(),AppConstants.BUILDING);
+        String floorName=SessionHandler.getInstance().get(getContext(),AppConstants.FLOOR);
+
+        if(buildingName==null && floorName==null){
+            bsLocationSearch.setText("40th Bank Street,30th Floor");
+        }else {
+            bsLocationSearch.setText(buildingName+","+floorName);
+        }
 
         countryBlock=bottomSheetDialog.findViewById(R.id.bsCountryBlock);
         statBlock=bottomSheetDialog.findViewById(R.id.bsStateBlock);
@@ -698,11 +599,23 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         floorBlock.setVisibility(View.INVISIBLE);
 
         back=bottomSheetDialog.findViewById(R.id.bsBack);
+        bsApply=bottomSheetDialog.findViewById(R.id.bsApply);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bottomSheetDialog.dismiss();
 
+
+            }
+        });
+
+        bsApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                binding.firstLayout.removeAllViews();
+                initLoadFloorDetails();
                 bottomSheetDialog.dismiss();
             }
         });
@@ -712,7 +625,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                //country.setText("Global Location");
+                country.setText("Global Location");
                 rvCountry.setVisibility(View.VISIBLE);
                 showCountryListInAdapter(locateCountryResposes);
 
@@ -729,7 +642,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         state.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                state.setText("City");
                 callCountrysChildData(stateId);
 
             }
@@ -762,6 +675,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         switch (identifier){
             case "COUNTRY":
+                state.setText("City");
                 stateId=locateCountryRespose.getLocateCountryId();
                 country.setText(locateCountryRespose.getName());
                 callCountrysChildData(locateCountryRespose.getLocateCountryId());
@@ -769,17 +683,23 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             case "STATE":
                 state.setText(locateCountryRespose.getName());
+                SessionHandler.getInstance().save(getContext(), AppConstants.BUILDING,locateCountryRespose.getName());
                 rvState.setVisibility(View.GONE);
+                streetBlock.setVisibility(View.VISIBLE);
+                street.setVisibility(View.VISIBLE);
+                street.setText("Building");
                 getFloorDetails(locateCountryRespose.getLocateCountryId());
                 break;
 
             case "FLOOR":
-                streetBlock.setVisibility(View.VISIBLE);
-                street.setVisibility(View.VISIBLE);
-                street.setText(locateCountryRespose.getName());
+                floorBlock.setVisibility(View.VISIBLE);
+                floor.setVisibility(View.VISIBLE);
+                floor.setText(locateCountryRespose.getName());
+                SessionHandler.getInstance().save(getContext(), AppConstants.FLOOR,locateCountryRespose.getName());
                 rvStreet.setVisibility(View.GONE);
-
+                SessionHandler.getInstance().saveInt(getContext(), AppConstants.PARENT_ID,locateCountryRespose.getLocateCountryId());
                 getDeskRoomCarParkingDetails(locateCountryRespose.getLocateCountryId());
+
 
                 break;
 

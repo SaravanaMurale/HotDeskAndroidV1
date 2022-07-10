@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.View;
 
@@ -32,6 +34,63 @@ public class MyCanvasDraw extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        Path path=new Path();
+        paint=new Paint();
+
+
+        Point a=new Point(350,50);
+        Point b=new Point(350,300);
+        Point c=new Point(550,60);
+
+        //path.setFillType(null);
+
+
+        path.lineTo(a.x,a.y);
+        path.lineTo(b.x,b.y);
+        path.lineTo(c.x,c.y);
+        path.lineTo(a.x,a.y);
+        path.close();
+
+        canvas.drawPath(path,paint);
+
+
+
+
+    }
+
+
+
+}
+
+    /*public void setDeskInActivity(){
+
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.desk_avaliable);
+        canvas.drawColor(Color.WHITE);
+        canvas.drawBitmap(bm,500,500,null);
+
+
+        *//* int x = getWidth();
+        int y = getHeight();
+
+        Paint paintTopLeft = new Paint();
+        paintTopLeft.setStyle(Paint.Style.FILL);
+        paintTopLeft.setColor(Color.WHITE);
+        //canvas.drawPaint(paintTopLeft);  // don't do that
+        // Use Color.parseColor to define HTML colors
+        paintTopLeft.setColor(Color.parseColor("#F44336"));
+       // canvas.drawRect(0,0,x / 2,y / 2,paintTopLeft);
+
+        Paint paintTopRight = new Paint();
+        paintTopRight.setStyle(Paint.Style.FILL);
+        paintTopRight.setColor(Color.WHITE);
+        // canvas.drawPaint(paintTopRight);  // don't do that
+        // Use Color.parseColor to define HTML colors
+        paintTopRight.setColor(Color.parseColor("#2196F3"));
+        //canvas.drawRect(x / 2, 0, x, y / 2, paintTopRight);*//*
+
+    }*/
+
+
 
       /*  rect=new Rect(0,100,200,300);
         paint=new Paint();
@@ -42,7 +101,7 @@ public class MyCanvasDraw extends View {
 
 
 
-        canvas.save();
+    /*    canvas.save();
         Bitmap bm= BitmapFactory.decodeResource(getResources(), R.drawable.desk_avaliable);
         canvas.drawColor(Color.WHITE);
         canvas.drawBitmap(bm,i,j,paint);
@@ -53,12 +112,12 @@ public class MyCanvasDraw extends View {
         canvas.drawColor(Color.WHITE);
         canvas.drawBitmap(bm1,300,400,null);
         canvas.restore();
+*/
 
 
 
 
-
-        //canvas.save();
+//canvas.save();
 
 
 
@@ -85,37 +144,6 @@ public class MyCanvasDraw extends View {
         }*/
 
 
-        //canvas.setBitmap(bm);
+//canvas.setBitmap(bm);
 
-       // canvas.drawBitmap(bm,0,0);
-    }
-
-
-    public void setDeskInActivity(){
-
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.desk_avaliable);
-        canvas.drawColor(Color.WHITE);
-        canvas.drawBitmap(bm,500,500,null);
-
-
-        /* int x = getWidth();
-        int y = getHeight();
-
-        Paint paintTopLeft = new Paint();
-        paintTopLeft.setStyle(Paint.Style.FILL);
-        paintTopLeft.setColor(Color.WHITE);
-        //canvas.drawPaint(paintTopLeft);  // don't do that
-        // Use Color.parseColor to define HTML colors
-        paintTopLeft.setColor(Color.parseColor("#F44336"));
-       // canvas.drawRect(0,0,x / 2,y / 2,paintTopLeft);
-
-        Paint paintTopRight = new Paint();
-        paintTopRight.setStyle(Paint.Style.FILL);
-        paintTopRight.setColor(Color.WHITE);
-        // canvas.drawPaint(paintTopRight);  // don't do that
-        // Use Color.parseColor to define HTML colors
-        paintTopRight.setColor(Color.parseColor("#2196F3"));
-        //canvas.drawRect(x / 2, 0, x, y / 2, paintTopRight);*/
-
-    }
-}
+// canvas.drawBitmap(bm,0,0);

@@ -36,7 +36,7 @@
 
 
                     <LinearLayout
-
+                        android:id="@+id/secondLayout"
                         android:layout_width="1000dp"
                         android:layout_height="1000dp">
 
@@ -45,8 +45,7 @@
                             android:layout_width="@dimen/_30sdp"
                             android:layout_height="@dimen/_30sdp"
                             android:src="@drawable/desk_avaliable"
-                            android:visibility="gone"
-                            />
+                            android:visibility="gone" />
 
 
 
@@ -67,9 +66,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints"
-
-        >
+        tools:ignore="MissingConstraints">
 
         <!--Search-->
         <TextView
@@ -87,6 +84,7 @@
 
         <!--Calender-->
         <TextView
+            android:id="@+id/locateCalendearView"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/searchLocate"
@@ -101,6 +99,8 @@
             android:paddingBottom="@dimen/_5sdp"
             android:text="Wed 4 May"
             tools:ignore="MissingConstraints" />
+
+        <!--StartAndEndTime-->
 
         <!--StartAndEndTime-->
         <RelativeLayout
@@ -171,6 +171,10 @@
 
 
         </RelativeLayout>
+
+
+
+
 
     </RelativeLayout>
 

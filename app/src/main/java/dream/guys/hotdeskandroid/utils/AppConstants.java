@@ -25,6 +25,14 @@ public class AppConstants {
     public static final String EDIT="EDIT";
     public static final String REMOTE="REMOTE";
 
+    //Locate
+    public static final String PARENT_ID="PARENT_ID";
+    public static final String BUILDING="BUILDING";
+    public static final String FLOOR="FLOOR";
+    public static final String DESK="3";
+    public static final String MEETING="4";
+    public static final String CAR_PARKING="5";
+
 
 
     public static final String OFFICE_TODAY="You are in the office today";

@@ -139,7 +139,7 @@ public class Utils {
     }
 
 
-    //Bottom Sheet Designs
+    //Bottom Sheet TimePicker
     public static void bottomSheetTimePicker(Context mContext, Activity activity, String title, String date) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet,
@@ -156,6 +156,41 @@ public class Utils {
 //        int hours =simpleTimePicker.getHour();
         bottomSheetDialog.show();
     }
+
+    //BotomSheet DatePicker
+
+    public static void bottomSheetDatePicker(Context mContext, Activity activity,String title, String date){
+        BottomSheetDialog bottomSheetDatePicker = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
+        bottomSheetDatePicker.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_date_picker,
+                new RelativeLayout(activity)));
+
+        TextView calContinue = bottomSheetDatePicker.findViewById(R.id.calenderContinue);
+        TextView calBack = bottomSheetDatePicker.findViewById(R.id.calenderBack);
+
+        calContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDatePicker.dismiss();
+            }
+        });
+
+        calBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDatePicker.dismiss();
+            }
+        });
+
+
+        bottomSheetDatePicker.show();
+    }
+
+
+
+
+
+
+
     public static void bottomSheetEditYourBooking(Context mContext, Activity activity, String title, String date) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_booking,

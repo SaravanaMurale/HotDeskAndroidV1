@@ -43,7 +43,7 @@
         <activity
             android:name=".example.DummyActivity"
             android:exported="false" />
-<activity
+        <activity
             android:name=".ui.login.SignInActivity"
             android:exported="true">
             <intent-filter>
@@ -53,8 +53,8 @@
             </intent-filter>
         </activity>
 
-        <!--<activity
-            android:name=".example.MutipleImageLoadActivity"
+       <!-- <activity
+            android:name=".example.CanvasShapeDrawActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
