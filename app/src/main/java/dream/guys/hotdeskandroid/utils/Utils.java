@@ -418,14 +418,15 @@ public class Utils {
 
     public static String splitTime(String dateWithTandZ){
 
+        SimpleDateFormat f12hours=new SimpleDateFormat("hh:mm aa");
+        SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
+        Date date=null;
         String timeWithZ="";
         String time="";
 
         String[] words=dateWithTandZ.split("T");
 
         for (int i = 0; i <words.length ; i++) {
-
-
             if(i==1){
                 timeWithZ=words[i];
             }
@@ -450,8 +451,12 @@ public class Utils {
         }
 
         hourMinFormet=hour+":"+min;
-
-        return hourMinFormet;
+        try {
+            date=f24hours.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return ""+f12hours.format(date);
 
     }
 
@@ -494,7 +499,30 @@ public class Utils {
     }
 
 
+    public static int compareTwoDate(Date date, String currentDate) {
 
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date d = formatter.parse(formatter.format(date));
+            Date d1 = formatter.parse(currentDate);
 
+            if(d1.compareTo(d) <0){// not expired
+                return 3;
+            }else if(d.compareTo(d1)==0){// both date are same
+                if(d.getTime() < d1.getTime()){// not expired
+                    return 1;
+                }else if(d.getTime() == d1.getTime()){//expired
+                    return 2;
+                }else{//expired
+                    return 2;
+                }
+            }else{//expired
+                return 1;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 3;
+        }
 
+    }
 }
