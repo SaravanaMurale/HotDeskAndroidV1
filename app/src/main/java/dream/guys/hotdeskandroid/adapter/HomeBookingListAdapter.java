@@ -232,7 +232,6 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getCarParkBookingsModel().getMyto()));
         }
 
-
         //CheckOut Button Click
         holder.bookingBtnCheckOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -240,6 +239,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                 fragment.changeCheckOut(list.get(holder.getAbsoluteAdapterPosition()),holder.getAbsoluteAdapterPosition());
             }
         });
+
         //CheckIn Button Click
         holder.bookingBtnCheckIn.setOnClickListener(new View.OnClickListener() {
             @Override

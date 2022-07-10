@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:id="@+id/select_desk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:text="Select Desk"
+        android:textSize="@dimen/_15sdp"
+        android:textColor="@color/figmaBlack"
+        android:theme="@style/TextBold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/desk_list_select_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/select_desk"
+        android:layout_above="@id/bsDeskBack"
+        />
+
+    <TextView
+        android:id="@+id/bsDeskBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/back"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_alignParentBottom="true"
+        android:theme="@style/TextBold"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/_20sdp"/>
+
+
+</RelativeLayout>

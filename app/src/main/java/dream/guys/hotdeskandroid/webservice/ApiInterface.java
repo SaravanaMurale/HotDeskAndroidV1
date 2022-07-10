@@ -2,6 +2,7 @@ package dream.guys.hotdeskandroid.webservice;
 
 import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.time.LocalDateTime;
@@ -12,12 +13,14 @@ import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
 import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.LocateFloorResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -36,7 +39,8 @@ public interface ApiInterface {
     Call<UserDetailsResponse>  getLoginUserDetails();
 
     @GET("api/MyWork/UserMyWorkStatus")
-    Call<BookingListResponse> getUserMyWorkDetails(@Query("dayOfTheWeek") String dayOfTheWeek, @Query("includeNonWorkingDays") boolean includeNonWorkingDays);
+    Call<BookingListResponse> getUserMyWorkDetails(@Query("dayOfTheWeek") String dayOfTheWeek,
+                                                   @Query("includeNonWorkingDays") boolean includeNonWorkingDays);
 
     @PUT("api/booking/bookingStatus")
     Call<BaseResponse> bookingStatus(@Body BookingStatusRequest calendarId);
@@ -58,10 +62,15 @@ public interface ApiInterface {
                                                                  @Query("toDate") LocalDateTime toDate,
                                                                  @Query("fromTime") LocalDateTime fromTime,
                                                                  @Query("toTime") LocalDateTime toTime);
+    @GET("api/booking/bookingsForEdit")
+    Call<BookingForEditResponse> getBookingsForEdit(@Query("teamId") int parentId,
+                                                    @Query("teamMembershipId") int toDate,
+                                                    @Query("fromDate") String fromTime,
+                                                    @Query("toDate") String toTime);
 
 
     @GET("api/locate/ImmediateChildLocations")
-    Call<JSONObject> getItemJsonObject(@Query("parentId") int parentId);
+    Call<List<String>> getItemJsonObject(@Query("parentId") int parentId);
 
 
 

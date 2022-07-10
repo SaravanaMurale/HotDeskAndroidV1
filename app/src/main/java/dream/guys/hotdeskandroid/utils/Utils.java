@@ -218,7 +218,7 @@ public class Utils {
                         }
 
                     }
-                },12,0,false);
+                },24,0,true);
 
 
         timePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE,"Continue",timePickerDialog);
@@ -374,6 +374,7 @@ public class Utils {
     public static boolean compareTimeIfCheckInEnable(String startTime, String endTime){
         startTime = startTime.replace(":",".");
         endTime = endTime.replace(":",".");
+
         System.out.println(startTime+" balas "+endTime);
         if (Double.parseDouble(startTime) >= Double.parseDouble(endTime))
             return true;
@@ -383,8 +384,6 @@ public class Utils {
 
     public static String splitTime(String dateWithTandZ){
 
-        SimpleDateFormat f12hours=new SimpleDateFormat("hh:mm aa");
-        SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
         Date date=null;
         String timeWithZ="";
         String time="";
@@ -416,12 +415,7 @@ public class Utils {
         }
 
         hourMinFormet=hour+":"+min;
-        try {
-            date=f24hours.parse(time);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return ""+f12hours.format(date);
+        return hourMinFormet;
 
     }
 

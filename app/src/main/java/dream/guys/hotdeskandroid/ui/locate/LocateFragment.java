@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 
+import org.json.JSONObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,6 +44,7 @@ import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -86,10 +88,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     @BindView(R.id.firstLayout)
     LinearLayout firstLayout;
-
-
-
-
 
     CanvasView canvasView;
 
@@ -186,9 +184,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         });
 
 
-        getLocateDeskRoomCarDesign();
+//        getLocateDeskRoomCarDesign();
 
-        //getItemJsonObject();
+        getItemJsonObject();
 
         return root;
     }
@@ -197,16 +195,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         dialog = ProgressDialog.showProgressBar(getContext());
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<JSONObject> call = apiService.getItemJsonObject(4);
-        call.enqueue(new Callback<JSONObject>() {
+        Call<List<String>> call = apiService.getItemJsonObject(4);
+        call.enqueue(new Callback<List<String>>() {
             @Override
-            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
-
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
                 try {
-
-                    String c=convertToString(response);
-
-                    JSONObject object = new JSONObject(c);
+//                    String c=convertToString(response.body().get(0));
+                    System.out.println("ObjectVAlue bala"+response.body().get(0).toString());
+                    /*JSONObject object = new JSONObject(c);
                     List<String> namesList = new ArrayList<>();
                     Iterator<String> stringIterator = object.keys();
                     while (stringIterator.hasNext()) {
@@ -216,12 +212,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                         namesList.add(stringIterator.next());
                     }
-
-                    System.out.println("NameListSize"+namesList.size());
+*/
+//                    System.out.println("NameListSize"+namesList.size());
 
                     ProgressDialog.dismisProgressBar(getContext(),dialog);
 
-                } catch (JSONException e) {
+                } catch (Exception e) {
+                    System.out.println("ObjectVAlue bala catch"+e.getMessage());
+
                     e.printStackTrace();
                     ProgressDialog.dismisProgressBar(getContext(),dialog);
                 }
@@ -229,7 +227,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
 
             @Override
-            public void onFailure(Call<JSONObject> call, Throwable t) {
+            public void onFailure(Call<List<String>> call, Throwable t) {
+                System.out.println("ObjectVAlue bala fail"+t.getMessage());
+
                 ProgressDialog.dismisProgressBar(getContext(),dialog);
             }
         });

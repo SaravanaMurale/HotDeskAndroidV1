@@ -6,6 +6,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
+
 public class LocateCountryRespose {
 
     @SerializedName("id")

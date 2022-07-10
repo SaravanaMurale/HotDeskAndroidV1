@@ -34,6 +34,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
 
 import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
@@ -41,6 +42,7 @@ import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
 import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
@@ -52,7 +54,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnCheckInClickable {
+public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnCheckInClickable, DeskListRecyclerAdapter.OnSelectSelected {
 
     FragmentHomeBinding binding;
     TextView text;
@@ -64,19 +66,22 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     TextView homeUserName;
 
     //HomeBooking
-    RecyclerView rvHomeBooking;
+    RecyclerView rvHomeBooking,rvDeskRecycler;
     HomeBookingListAdapter homeBookingListAdapter;
+    DeskListRecyclerAdapter deskListRecyclerAdapter;
     LinearLayoutManager linearLayoutManager;
+    LinearLayoutManager desklinearLayoutManager;
     List<BookingListResponse> bookingListResponseList;
 
     //EditBooking
-    TextView startTime,endTime,repeat,date;
+    TextView startTime,endTime,repeat,date,deskRoomName;
     String repeatValue="None";
 
     View view;
     Dialog dialog;
-    int teamId=0,teamMembershipId=0;
+    int teamId=0,teamMembershipId=0,selectedDeskId=0;
     ArrayList<BookingListResponse.DayGroup> recyclerModelArrayList;
+    List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -215,6 +220,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         }
     }
     private void loadHomeList(){
+
         if (Utils.isNetworkAvailable(getActivity())) {
 
             dialog= ProgressDialog.showProgressBar(getContext());
@@ -231,6 +237,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         teamId = bookingListResponse.getTeamId();
                         teamMembershipId = bookingListResponse.getTeamMembershipId();
                         createRecyclerList(bookingListResponse);
+                        loadDeskList();
 
                     }else if(response.code()==401){
                         //Handle if token got expired
@@ -250,7 +257,38 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         }
     }
 
+    private void loadDeskList() {
+        if (Utils.isNetworkAvailable(getActivity())) {
 
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BookingForEditResponse> call = apiService.getBookingsForEdit(teamId,teamMembershipId,Utils.getCurrentDate(),Utils.getCurrentDate());
+            call.enqueue(new Callback<BookingForEditResponse>() {
+                @Override
+                public void onResponse(Call<BookingForEditResponse> call, Response<BookingForEditResponse> response) {
+                    System.out.println(response.body().getTeamDeskAvailabilities());
+                    bookingForEditResponse = response.body().getTeamDeskAvailabilities();
+//                    createRecyclerDeskList(response.body().getTeamDeskAvailabilities());
+                }
+
+                @Override
+                public void onFailure(Call<BookingForEditResponse> call, Throwable t) {
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
+    }
+
+
+    private void createRecyclerDeskList(List<BookingForEditResponse.TeamDeskAvailabilities> body) {
+        List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse = body;
+
+
+//        ProgressDialog.dismisProgressBar(getContext(),dialog);
+
+    }
     private void createRecyclerList(BookingListResponse body) {
         BookingListResponse bookingListResponses = body;
         recyclerModelArrayList = new ArrayList<>();
@@ -381,7 +419,6 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         } else if(click.equals(AppConstants.EDIT)){
             //Edit
             System.out.println("BookingEditClicked");
-
             EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
             editDeskBookingDetails.setEditStartTTime(Utils.splitTime(calendarEntriesModel.getFrom()));
             editDeskBookingDetails.setEditEndTime(Utils.splitTime(calendarEntriesModel.getMyto()));
@@ -454,8 +491,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         startTime = bottomSheetDialog.findViewById(R.id.start_time);
         endTime = bottomSheetDialog.findViewById(R.id.end_time);
         repeat=bottomSheetDialog.findViewById(R.id.repeat);
+        deskRoomName=bottomSheetDialog.findViewById(R.id.tv_desk_room_name);
         date=bottomSheetDialog.findViewById(R.id.date);
         TextView back=bottomSheetDialog.findViewById(R.id.editBookingBack);
+        TextView select=bottomSheetDialog.findViewById(R.id.select_desk_room);
         TextView continueEditBook=bottomSheetDialog.findViewById(R.id.editBookingContinue);
         EditText commentRegistration=bottomSheetDialog.findViewById(R.id.ed_registration);
         RelativeLayout repeatBlock=bottomSheetDialog.findViewById(R.id.rl_repeat_block);
@@ -523,13 +562,16 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
             }
         });
+        select.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callDeskBottomSheetDialog();
+            }
+        });
         repeatBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 callRepeatBottomSheetDialog();
-
-
             }
         });
 
@@ -544,6 +586,35 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
     }
 
+    private void callDeskBottomSheetDialog() {
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_select_desk,
+                new RelativeLayout(getContext()))));
+
+        TextView bsRepeatBack;
+        rvDeskRecycler= bottomSheetDialog.findViewById(R.id.desk_list_select_recycler);
+        bsRepeatBack=bottomSheetDialog.findViewById(R.id.bsDeskBack);
+
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvDeskRecycler.setLayoutManager(linearLayoutManager);
+        rvDeskRecycler.setHasFixedSize(true);
+
+        deskListRecyclerAdapter =new DeskListRecyclerAdapter(getContext(),getActivity(),bookingForEditResponse,this);
+        rvDeskRecycler.setAdapter(deskListRecyclerAdapter);
+
+
+        bsRepeatBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        bottomSheetDialog.show();
+
+
+    }
     private void callRepeatBottomSheetDialog() {
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -653,6 +724,11 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         bottomSheetDialog.show();
 
 
+    }
+
+    @Override
+    public void onSelectDesk(int deskId, String deskName) {
+        deskRoomName.setText(""+deskName);
     }
 
 

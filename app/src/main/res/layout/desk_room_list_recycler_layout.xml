@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginHorizontal="@dimen/_5sdp"
+    android:layout_marginVertical="@dimen/_5sdp"
+    app:cardCornerRadius="@dimen/_3sdp"
+    app:cardElevation="@dimen/_3sdp"
+    >
+
+    <RelativeLayout
+        android:id="@+id/repeatNoneBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        android:background="@color/bg_grey">
+
+        <TextView
+            android:id="@+id/tv_desk_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="None"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/black"
+            android:theme="@style/TextBold" />
+
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

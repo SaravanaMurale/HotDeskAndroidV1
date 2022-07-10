@@ -14,7 +14,7 @@
             android:id="@+id/rlDateLayout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="1.1"
             android:visibility="visible">
 
             <TextView
@@ -23,6 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_3sdp"
                 android:gravity="center"
+                android:layout_centerHorizontal="true"
                 android:text="Today"
                 android:theme="@style/TextSmall" />
 
@@ -40,7 +41,7 @@
             android:id="@+id/rlLineLayout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1.1">
 
             <view
                 class="android.widget.TextView"
@@ -131,7 +132,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/bookingAddress"
-                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_3sdp"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:layout_toRightOf="@+id/bookingCheckInIcon"
                     android:text="8:00"
@@ -155,7 +156,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/bookingAddress"
-                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_marginLeft="@dimen/_3sdp"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:layout_toRightOf="@+id/bookingCheckOutIcon"
                     android:text="8:00"
