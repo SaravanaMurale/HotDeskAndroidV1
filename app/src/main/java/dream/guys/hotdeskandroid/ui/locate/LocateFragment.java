@@ -54,7 +54,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     TextView bsLocationSearch;
 
 
-    //MyTeamBottomSheet
+    //MyTeamBottomSheets
     RecyclerView rvMyTeam;
     LocateMyTeamAdapter locateMyTeamAdapter;
 
