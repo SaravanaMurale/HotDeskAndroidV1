@@ -550,7 +550,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
-    //Select Floor BottomSheeet
+    //Select Floor Plan BottomSheeet
     private void CallFloorBottomSheet(List<LocateCountryRespose> locateCountryResposes) {
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
