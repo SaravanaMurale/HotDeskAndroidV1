@@ -22,6 +22,7 @@ import dream.guys.hotdeskandroid.model.response.LocateFloorResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -55,6 +56,9 @@ public interface ApiInterface {
 
     @GET("api/locate/ImmediateChildLocations")
     Call<List<LocateCountryRespose>> getCountrysChild(@Query("parentId") int parentId);
+
+    @GET("api/locate/ImmediateChildLocations")
+    Call<Response> getCountrysChildResponse(@Query("parentId") int parentId);
 
 
     @GET("api/deskLayouts/LocationDesksWithUser")

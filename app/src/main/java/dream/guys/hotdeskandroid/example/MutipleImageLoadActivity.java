@@ -65,7 +65,7 @@ public class MutipleImageLoadActivity extends AppCompatActivity {
         //  |
 
         View deskView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
-        ImageView iv1=deskView.findViewById(R.id.deskkk);
+        ImageView iv1=deskView.findViewById(R.id.ivDesk);
 
         if(i==0) {
 
