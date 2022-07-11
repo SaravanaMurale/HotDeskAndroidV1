@@ -6,6 +6,8 @@ public class EditBookingDetails {
 
     String editStartTTime;
     String editEndTime;
+    String deskCode;
+    int calId=0;
     int deskStatus=0;
     Date date;
     String abbrevation;
@@ -17,6 +19,22 @@ public class EditBookingDetails {
         this.editStartTTime = editStartTTime;
         this.editEndTime = editEndTime;
         this.date = date;
+    }
+
+    public int getCalId() {
+        return calId;
+    }
+
+    public void setCalId(int calId) {
+        this.calId = calId;
+    }
+
+    public String getDeskCode() {
+        return deskCode;
+    }
+
+    public void setDeskCode(String deskCode) {
+        this.deskCode = deskCode;
     }
 
     public int getDeskStatus() {

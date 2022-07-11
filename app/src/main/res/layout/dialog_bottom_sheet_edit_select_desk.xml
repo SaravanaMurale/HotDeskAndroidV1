@@ -10,21 +10,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_25sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_10sdp"
         android:text="Select Desk"
-        android:textSize="@dimen/_15sdp"
         android:textColor="@color/figmaBlack"
+        android:textSize="@dimen/_15sdp"
         android:theme="@style/TextBold" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/desk_list_select_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/select_desk"
         android:layout_above="@id/bsDeskBack"
-        />
+        android:layout_below="@id/select_desk" />
 
     <TextView
         android:id="@+id/bsDeskBack"

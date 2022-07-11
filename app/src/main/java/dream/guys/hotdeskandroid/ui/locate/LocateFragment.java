@@ -1,48 +1,45 @@
 package dream.guys.hotdeskandroid.ui.locate;
-
 import android.app.Dialog;
 import android.os.Build;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+        import android.os.Bundle;
+        import android.view.LayoutInflater;
+        import android.view.View;
+        import android.view.ViewGroup;
+        import android.widget.ImageView;
+        import android.widget.LinearLayout;
+        import android.widget.RelativeLayout;
+        import android.widget.TextView;
+        import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+        import androidx.annotation.RequiresApi;
+        import androidx.fragment.app.Fragment;
+        import androidx.recyclerview.widget.LinearLayoutManager;
+        import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import org.json.JSONObject;
+        import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+        import java.time.LocalDateTime;
+        import java.time.format.DateTimeFormatter;
+        import java.util.ArrayList;
+        import java.util.List;
 
-import butterknife.BindView;
-import dream.guys.hotdeskandroid.R;
-import dream.guys.hotdeskandroid.adapter.LocateMyTeamAdapter;
-import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
-import dream.guys.hotdeskandroid.example.CanvasView;
-import dream.guys.hotdeskandroid.example.MyCanvasDraw;
-import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
-import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
-import dream.guys.hotdeskandroid.utils.AppConstants;
-import dream.guys.hotdeskandroid.utils.ProgressDialog;
-import dream.guys.hotdeskandroid.utils.SessionHandler;
-import dream.guys.hotdeskandroid.utils.Utils;
-import dream.guys.hotdeskandroid.webservice.ApiClient;
-import dream.guys.hotdeskandroid.webservice.ApiInterface;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+        import butterknife.BindView;
+        import dream.guys.hotdeskandroid.R;
+        import dream.guys.hotdeskandroid.adapter.LocateMyTeamAdapter;
+        import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
+        import dream.guys.hotdeskandroid.example.CanvasView;
+        import dream.guys.hotdeskandroid.example.MyCanvasDraw;
+        import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
+        import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
+        import dream.guys.hotdeskandroid.utils.AppConstants;
+        import dream.guys.hotdeskandroid.utils.ProgressDialog;
+        import dream.guys.hotdeskandroid.utils.SessionHandler;
+        import dream.guys.hotdeskandroid.utils.Utils;
+        import dream.guys.hotdeskandroid.webservice.ApiClient;
+        import dream.guys.hotdeskandroid.webservice.ApiInterface;
+        import retrofit2.Call;
+        import retrofit2.Callback;
+        import retrofit2.Response;
 
 public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSelectListener {
 
@@ -54,9 +51,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     RelativeLayout countryBlock,statBlock,streetBlock,floorBlock;
 
     TextView bsLocationSearch;
-
-
-    //MyTeamBottomSheets
+ 
     RecyclerView rvMyTeam;
     LocateMyTeamAdapter locateMyTeamAdapter;
 
@@ -94,7 +89,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     View deskView;
 
+
+
     List<LocateCountryRespose> locateCountryResposeList;
+
+
     CanvasView canvasView;
 
     Dialog dialog;
@@ -109,19 +108,19 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         dialog = new Dialog(getContext());
         //locateText= root.findViewById(R.id.locate_Text);
-       /* locateText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.bottomSheetTimePicker(getContext(),getActivity(),"End","ckasnckan");
-            }
-        });*/
-
-       /* Bitmap bitmap = Bitmap.createBitmap(100,100, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        RectF rect = new RectF();
-        Paint paint = new Paint();
-        canvas.drawBitmap(bitmap, null, rect, paint);*/
-//        paint.set(paint);
+        /* locateText.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Utils.bottomSheetTimePicker(getContext(),getActivity(),"End","ckasnckan");
+             }
+         });*/
+ 
+        /* Bitmap bitmap = Bitmap.createBitmap(100,100, Bitmap.Config.ARGB_8888);
+         Canvas canvas = new Canvas(bitmap);
+         RectF rect = new RectF();
+         Paint paint = new Paint();
+         canvas.drawBitmap(bitmap, null, rect, paint);*/
+        //        paint.set(paint);
 
 
         binding.locateStartTime.setOnClickListener(new View.OnClickListener() {
@@ -199,22 +198,21 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         });
 
 
+
         //Initally Load Floor Details
-//                    String c=convertToString(response.body().get(0));
+
         initLoadFloorDetails();
-                    /*JSONObject object = new JSONObject(c);
+
 
 
         return root;
     }
-*/
+
     private void initLoadFloorDetails() {
         int parentId=SessionHandler.getInstance().getInt(getContext(),AppConstants.PARENT_ID);
         if(parentId>0){
             String buildingName=SessionHandler.getInstance().get(getContext(),AppConstants.BUILDING);
             String floorName=SessionHandler.getInstance().get(getContext(),AppConstants.FLOOR);
-                    System.out.println("ObjectVAlue bala catch"+e.getMessage());
-
 
             if(buildingName==null && floorName==null){
                 binding.searchLocate.setHint("40th Bank Street,30th Floor");
@@ -225,7 +223,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             getLocateDeskRoomCarDesign(parentId);
         }else {
             Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
-
         }
     }
 
@@ -282,11 +279,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     addView(valueList,key);
 
                     //strings.add(locateCountryResposeList.get(0).getItems().get(key));
-
-                    /*for (int i = 0; i <strings.size() ; i++) {
-                        System.out.println("InsideValue"+strings.get(i));
-
-                    }*/
+ 
+                     /*for (int i = 0; i <strings.size() ; i++) {
+                         System.out.println("InsideValue"+strings.get(i));
+ 
+                     }*/
 
                 }
                 ProgressDialog.dismisProgressBar(getContext(),dialog);
@@ -307,16 +304,16 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
     private void addDottedLine() {
-
-       /* View dottView = getLayoutInflater().inflate(R.layout.layout_dotted_line, null, false);
-        ImageView ivDesk = dottView.findViewById(R.id.dottedImage);
-        RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        relativeLayout.leftMargin =300;
-        relativeLayout.topMargin = 500;
-        ivDesk.setLayoutParams(relativeLayout);
-
-        binding.firstLayout.addView(dottView);*/
+ 
+        /* View dottView = getLayoutInflater().inflate(R.layout.layout_dotted_line, null, false);
+         ImageView ivDesk = dottView.findViewById(R.id.dottedImage);
+         RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+ 
+         relativeLayout.leftMargin =300;
+         relativeLayout.topMargin = 500;
+         ivDesk.setLayoutParams(relativeLayout);
+ 
+         binding.firstLayout.addView(dottView);*/
 
         MyCanvasDraw myCanvasDraw = new MyCanvasDraw (getContext(),100,200);
         binding.secondLayout.addView(myCanvasDraw);
@@ -327,96 +324,96 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void addView(List<String> valueList, String key) {
 
-            System.out.println("ReceivedKeyInAddView"+key);
+        System.out.println("ReceivedKeyInAddView"+key);
 
-            deskView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
-            ImageView ivDesk = deskView.findViewById(R.id.ivDesk);
-            RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        deskView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
+        ImageView ivDesk = deskView.findViewById(R.id.ivDesk);
+        RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-            //ivDesk.setRotation(45);
+        //ivDesk.setRotation(45);
 
-            //SetImageHereBased on Code
-            /* String[] result = key.split("_");
-             String splitValue=result[1];
+        //SetImageHereBased on Code
+             /* String[] result = key.split("_");
+              String splitValue=result[1];
+ 
+             if(splitValue.equals(AppConstants.DESK)){
+ 
+             }else if(splitValue.equals(AppConstants.MEETING)){
+ 
+             }else if(splitValue.equals(AppConstants.CAR_PARKING)){
+ 
+             }*/
 
-            if(splitValue.equals(AppConstants.DESK)){
+        relativeLayout.leftMargin = Integer.parseInt(valueList.get(0));
+        relativeLayout.topMargin = Integer.parseInt(valueList.get(1));
+        relativeLayout.width = 80;
+        relativeLayout.height = 80;
+        ivDesk.setLayoutParams(relativeLayout);
 
-            }else if(splitValue.equals(AppConstants.MEETING)){
+        //ClickOnImage
+        ivDesk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-            }else if(splitValue.equals(AppConstants.CAR_PARKING)){
+                List<String> onClickValue=  locateCountryResposeList.get(0).getItems().get(key);
+                      /*for (int j = 0; j <onClickValue.size() ; j++) {
+                         System.out.println("OnClickedKey"+key+"OnClickedValue"+onClickValue.get(j));
+                     }*/
 
-            }*/
+                //Split key to get id and code
+                String[] result = key.split("_");
+                int id=Integer.parseInt(result[0]);
+                String code=result[1];
+                String selctedCode="";
 
-            relativeLayout.leftMargin = Integer.parseInt(valueList.get(0));
-            relativeLayout.topMargin = Integer.parseInt(valueList.get(1));
-            relativeLayout.width = 80;
-            relativeLayout.height = 80;
-            ivDesk.setLayoutParams(relativeLayout);
+                //Get code based on id
+                if(code.equals(AppConstants.DESK)) {
+                    //Get Code For Desk
+                    for (int i = 0; i < locateCountryResposeList.get(0).getLocationItemLayout().getDesks().size(); i++) {
 
-            //ClickOnImage
-            ivDesk.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                        if (id == locateCountryResposeList.get(0).getLocationItemLayout().getDesks().get(i).getDesksId()) {
 
-                    List<String> onClickValue=  locateCountryResposeList.get(0).getItems().get(key);
-                     /*for (int j = 0; j <onClickValue.size() ; j++) {
-                        System.out.println("OnClickedKey"+key+"OnClickedValue"+onClickValue.get(j));
-                    }*/
+                            selctedCode = locateCountryResposeList.get(0).getLocationItemLayout().getDesks().get(i).getDeskCode();
 
-                    //Split key to get id and code
-                    String[] result = key.split("_");
-                    int id=Integer.parseInt(result[0]);
-                    String code=result[1];
-                    String selctedCode="";
-
-                    //Get code based on id
-                    if(code.equals(AppConstants.DESK)) {
-                        //Get Code For Desk
-                        for (int i = 0; i < locateCountryResposeList.get(0).getLocationItemLayout().getDesks().size(); i++) {
-
-                            if (id == locateCountryResposeList.get(0).getLocationItemLayout().getDesks().get(i).getDesksId()) {
-
-                                selctedCode = locateCountryResposeList.get(0).getLocationItemLayout().getDesks().get(i).getDeskCode();
-
-                                System.out.println("ClickedCodeIs" + locateCountryResposeList.get(0).getLocationItemLayout().getDesks().get(i).getDeskCode());
-
-                            }
-
-                        }
-
-                    }else if(code.equals(AppConstants.MEETING)){
-                        //Get Code For MEETING
-
-                        for (int i = 0; i <locateCountryResposeList.get(0).getLocationItemLayout().getMeetingRoomsList().size() ; i++) {
-
-                            if (id == locateCountryResposeList.get(0).getLocationItemLayout().getMeetingRoomsList().get(i).getMeetingRoomId()) {
-
-                                selctedCode=locateCountryResposeList.get(0).getLocationItemLayout().getMeetingRoomsList().get(i).getMeetingRoomCode();
-                            }
-
-                        }
-
-
-                    }else if(code.equals(AppConstants.CAR_PARKING)){
-                     //Get Code For CAR_PARKING
-                        for (int i = 0; i <locateCountryResposeList.get(0).getLocationItemLayout().getParkingSlotsList().size() ; i++) {
-                            if (id == locateCountryResposeList.get(0).getLocationItemLayout().getParkingSlotsList().get(i).getId()) {
-
-                                selctedCode=locateCountryResposeList.get(0).getLocationItemLayout().getParkingSlotsList().get(i).getCode();
-                            }
+                            System.out.println("ClickedCodeIs" + locateCountryResposeList.get(0).getLocationItemLayout().getDesks().get(i).getDeskCode());
 
                         }
 
                     }
 
-                    callCheckInBottomSheetToBook(selctedCode,key,id);
+                }else if(code.equals(AppConstants.MEETING)){
+                    //Get Code For MEETING
+
+                    for (int i = 0; i <locateCountryResposeList.get(0).getLocationItemLayout().getMeetingRoomsList().size() ; i++) {
+
+                        if (id == locateCountryResposeList.get(0).getLocationItemLayout().getMeetingRoomsList().get(i).getMeetingRoomId()) {
+
+                            selctedCode=locateCountryResposeList.get(0).getLocationItemLayout().getMeetingRoomsList().get(i).getMeetingRoomCode();
+                        }
+
+                    }
 
 
+                }else if(code.equals(AppConstants.CAR_PARKING)){
+                    //Get Code For CAR_PARKING
+                    for (int i = 0; i <locateCountryResposeList.get(0).getLocationItemLayout().getParkingSlotsList().size() ; i++) {
+                        if (id == locateCountryResposeList.get(0).getLocationItemLayout().getParkingSlotsList().get(i).getId()) {
+
+                            selctedCode=locateCountryResposeList.get(0).getLocationItemLayout().getParkingSlotsList().get(i).getCode();
+                        }
+
+                    }
 
                 }
-            });
 
-            binding.firstLayout.addView(deskView);
+                callCheckInBottomSheetToBook(selctedCode,key,id);
+
+
+
+            }
+        });
+
+        binding.firstLayout.addView(deskView);
 
 
     }
@@ -448,7 +445,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 System.out.println("InsideDataValaibelity");
                 //System.out.println("AllDeskSize"+desks.size());
-               // System.out.println("ActiveDeskSize"+ deskAvaliabilityResponseList.getLocationDesksList().size());
+                // System.out.println("ActiveDeskSize"+ deskAvaliabilityResponseList.getLocationDesksList().size());
 
                 List<String> deskCodeList=new ArrayList<>();
                 for (int i = 0; i <desks.size() ; i++) {
@@ -556,7 +553,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView(getLayoutInflater().
                 inflate(R.layout.bottom_sheet_locate_floor_filter,
-                new RelativeLayout(getContext())));
+                        new RelativeLayout(getContext())));
 
 
 
@@ -647,12 +644,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             }
         });
-
-
-
-        /*linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvCountry.setLayoutManager(linearLayoutManager);
-        rvCountry.setHasFixedSize(true);*/
+ 
+ 
+ 
+         /*linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+         rvCountry.setLayoutManager(linearLayoutManager);
+         rvCountry.setHasFixedSize(true);*/
 
         bottomSheetDialog.show();
 
@@ -813,12 +810,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 List<LocateCountryRespose> locateCountryResposeList=response.body();
 
                 System.out.println("InsideFloorDetails");
-
-
-
-                    /*for (int j = 0; j <locateCountryResposeList.get(0).getLocationItemLayout().getDesks().size() ; j++) {
-                        System.out.println("DeskNameInFloor"+locateCountryResposeList.get(j).getLocationItemLayout().getDesks().get(j).getDeskCode());
-                    }*/
+ 
+ 
+ 
+                     /*for (int j = 0; j <locateCountryResposeList.get(0).getLocationItemLayout().getDesks().size() ; j++) {
+                         System.out.println("DeskNameInFloor"+locateCountryResposeList.get(j).getLocationItemLayout().getDesks().get(j).getDeskCode());
+                     }*/
 
 
 
@@ -836,7 +833,4 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
     }
-
-
-
 }

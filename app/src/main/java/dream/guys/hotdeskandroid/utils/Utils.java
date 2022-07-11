@@ -226,6 +226,23 @@ public class Utils {
         bottomSheetDialog.show();
     }
 
+    public static String convert12HrsTO24Hrs(String time) {
+        SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
+        SimpleDateFormat f12hours=new SimpleDateFormat("hh:mm aa");
+        try {
+            Date date=f12hours.parse(time);
+//                            return String.valueOf(f12hours.format(date));
+//            v.setText(""+f12hours.format(date));
+            System.out.println("ReceivedDate"+f12hours.format(date));
+            return ""+f24hours.format(date);
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "00:00";
+        }
+
+    }
     public static void popUpTimePicker(Activity activity, TextView v, String tilte) {
 //        TextView startTime = v;
         TimePickerDialog timePickerDialog=new TimePickerDialog(activity,
@@ -344,7 +361,7 @@ public class Utils {
             }
 
             String[] tokenTime=expiryTokenTimeWithZ.split("Z");
-            System.out.println("TokenSplitData"+tokenTime[0]);
+//            System.out.println("TokenSplitData"+tokenTime[0]);
 
         }
 
@@ -432,7 +449,7 @@ public class Utils {
 
             String[] tokenTime=timeWithZ.split("Z");
             time=tokenTime[0];
-            System.out.println("TokenSplitData"+tokenTime[0]);
+//            System.out.println("TokenSplitData"+tokenTime[0]);
 
         }
 

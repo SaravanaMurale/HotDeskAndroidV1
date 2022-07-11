@@ -53,17 +53,9 @@ public class BookingsRequest {
         private int id;
         @SerializedName("date")
         private String date;
-        @SerializedName("autoAdjustStartTime")
-        private boolean autoAdjustStartTime;
         @SerializedName("changes")
         private Changes changes;
 
-        @SerializedName("isRequest")
-        private boolean isRequest;
-        @SerializedName("isRecurrence")
-        private boolean isRecurrence;
-        @SerializedName("isRecurrenceParent")
-        private boolean isRecurrenceParent;
 
         public int getId() {
             return id;
@@ -81,13 +73,8 @@ public class BookingsRequest {
             this.date = date;
         }
 
-        public boolean isAutoAdjustStartTime() {
-            return autoAdjustStartTime;
-        }
 
-        public void setAutoAdjustStartTime(boolean autoAdjustStartTime) {
-            this.autoAdjustStartTime = autoAdjustStartTime;
-        }
+
 
         public Changes getChanges() {
             return changes;
@@ -97,30 +84,6 @@ public class BookingsRequest {
             this.changes = changes;
         }
 
-        public boolean isRequest() {
-            return isRequest;
-        }
-
-        public void setRequest(boolean request) {
-            isRequest = request;
-        }
-
-        public boolean isRecurrence() {
-            return isRecurrence;
-        }
-
-        public void setRecurrence(boolean recurrence) {
-            isRecurrence = recurrence;
-        }
-
-        public boolean isRecurrenceParent() {
-            return isRecurrenceParent;
-        }
-
-        public void setRecurrenceParent(boolean recurrenceParent) {
-            isRecurrenceParent = recurrenceParent;
-        }
-
         public static class Changes {
             @SerializedName("bookingStatus")
             private String bookingStatus;
@@ -128,8 +91,18 @@ public class BookingsRequest {
             private String from;
             @SerializedName("to")
             private String to;
+            @SerializedName("comments")
+            private String comments;
             @SerializedName("teamDeskId")
             private int teamDeskId;
+
+            public String getComments() {
+                return comments;
+            }
+
+            public void setComments(String comments) {
+                this.comments = comments;
+            }
 
             public String getFrom() {
                 return from;

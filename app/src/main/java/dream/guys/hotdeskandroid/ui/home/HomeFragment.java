@@ -141,32 +141,13 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
     }
 
-    public void editBookingCall(BookingListResponse.DayGroup data) {
+    public void editBookingCall(BookingsRequest data) {
         if (Utils.isNetworkAvailable(getActivity())) {
             dialog= ProgressDialog.showProgressBar(getContext());
-
-            BookingsRequest bookingsRequest = new BookingsRequest();
-            bookingsRequest.setTeamId(teamId);
-            bookingsRequest.setTeamMembershipId(teamMembershipId);
-            ArrayList<BookingsRequest.ChangeSets> list =new ArrayList<>();
-            ArrayList<Integer> list1 =new ArrayList<>();
-            list1.add(0);
-            BookingsRequest.ChangeSets changeSets = new BookingsRequest.ChangeSets();
-            changeSets.setId(data.getCalendarEntriesModel().getId());
-            changeSets.setDate(""+Utils.getISO8601format(data.getDate()));
-
-            BookingsRequest.ChangeSets.Changes changes= new BookingsRequest.ChangeSets.Changes();
-            changes.setBookingStatus("OUT");
-            changeSets.setChanges(changes);
-            list.add(changeSets);
-
-            bookingsRequest.setChangeSets(list);
-            bookingsRequest.setDeletedIds(list1);
             // TODO: 06-07-2022
-            System.out.println("booking req check"+bookingsRequest.getChangeSets());
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<BaseResponse> call = apiService.bookingBookings(bookingsRequest);
+            Call<BaseResponse> call = apiService.bookingBookings(data);
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
@@ -265,8 +246,11 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             call.enqueue(new Callback<BookingForEditResponse>() {
                 @Override
                 public void onResponse(Call<BookingForEditResponse> call, Response<BookingForEditResponse> response) {
-                    System.out.println(response.body().getTeamDeskAvailabilities());
                     bookingForEditResponse = response.body().getTeamDeskAvailabilities();
+                    for (int i=0;i<bookingForEditResponse.size();i++){
+                        System.out.println("desk Code Check"+bookingForEditResponse.get(i).getDeskCode());
+
+                    }
 //                    createRecyclerDeskList(response.body().getTeamDeskAvailabilities());
                 }
 
@@ -423,6 +407,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             editDeskBookingDetails.setEditStartTTime(Utils.splitTime(calendarEntriesModel.getFrom()));
             editDeskBookingDetails.setEditEndTime(Utils.splitTime(calendarEntriesModel.getMyto()));
             editDeskBookingDetails.setDate(date);
+            editDeskBookingDetails.setCalId(calendarEntriesModel.getId());
+            editDeskBookingDetails.setDeskCode(calendarEntriesModel.getBooking().getDeskCode());
             editDeskBookingDetails.setDeskStatus(calendarEntriesModel.getBooking().getStatus().getId());
             editBookingUsingBottomSheet(editDeskBookingDetails,1);
 
@@ -528,6 +514,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         startTime.setText(editDeskBookingDetails.getEditStartTTime());
         endTime.setText(editDeskBookingDetails.getEditEndTime());
         date.setText(""+Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
+        deskRoomName.setText(editDeskBookingDetails.getDeskCode());
 
 
         for (int i=0; i<5; i++){
@@ -560,6 +547,32 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             @Override
             public void onClick(View v) {
 
+                BookingsRequest bookingsRequest = new BookingsRequest();
+                ArrayList<BookingsRequest.ChangeSets> list =new ArrayList<>();
+                ArrayList<Integer> list1 =new ArrayList<>();
+
+                BookingsRequest.ChangeSets changeSets = new BookingsRequest.ChangeSets();
+                changeSets.setId(editDeskBookingDetails.getCalId());
+                changeSets.setDate(""+Utils.getISO8601format(editDeskBookingDetails.getDate()));
+
+                BookingsRequest.ChangeSets.Changes changes= new BookingsRequest.ChangeSets.Changes();
+                changes.setTeamDeskId(selectedDeskId);
+                changes.setFrom(Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+
+                        "T"+Utils.convert12HrsTO24Hrs(startTime.getText().toString())+":00:000Z");
+                changes.setFrom(Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+
+                        "T"+Utils.convert12HrsTO24Hrs(endTime.getText().toString())+":00:000Z");
+                if (!commentRegistration.getText().toString().isEmpty() &&
+                        !commentRegistration.getText().toString().equalsIgnoreCase(""))
+                changes.setComments(""+commentRegistration.getText());
+                changeSets.setChanges(changes);
+                list.add(changeSets);
+                bookingsRequest.setChangeSets(list);
+                bookingsRequest.setTeamId(teamId);
+                bookingsRequest.setTeamMembershipId(teamMembershipId);
+                bookingsRequest.setDeletedIds(list1);
+
+                editBookingCall(bookingsRequest);
+                bottomSheetDialog.dismiss();
             }
         });
         select.setOnClickListener(new View.OnClickListener() {
@@ -600,7 +613,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         rvDeskRecycler.setLayoutManager(linearLayoutManager);
         rvDeskRecycler.setHasFixedSize(true);
 
-        deskListRecyclerAdapter =new DeskListRecyclerAdapter(getContext(),getActivity(),bookingForEditResponse,this);
+        deskListRecyclerAdapter =new DeskListRecyclerAdapter(getContext(),this,getActivity(),bookingForEditResponse,this,bottomSheetDialog);
         rvDeskRecycler.setAdapter(deskListRecyclerAdapter);
 
 
@@ -729,6 +742,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     @Override
     public void onSelectDesk(int deskId, String deskName) {
         deskRoomName.setText(""+deskName);
+        selectedDeskId= deskId;
     }
 
 

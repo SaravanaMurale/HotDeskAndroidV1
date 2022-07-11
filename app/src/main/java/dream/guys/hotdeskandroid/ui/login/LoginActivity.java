@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -44,6 +45,9 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.etPassword)
     EditText etPassword;
 
+    @BindView(R.id.tvForgetPassword)
+    TextView tvForgotPassword;
+
     @BindView(R.id.btnSignInLogin)
     Button signIn;
 
@@ -71,8 +75,15 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-    }
 
+        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 
 
     //GetToken

@@ -11,10 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
@@ -27,11 +30,14 @@ public class DeskListRecyclerAdapter extends RecyclerView.Adapter<DeskListRecycl
     Activity activity;
     List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse;
     public OnSelectSelected onSelectSelected;
-    public DeskListRecyclerAdapter(Context context, FragmentActivity activity, List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse, HomeFragment homeFragment) {
+    BottomSheetDialog bottomSheetDialog;
+    public DeskListRecyclerAdapter(Context context, OnSelectSelected onSelectSelected, FragmentActivity activity, List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse, HomeFragment homeFragment, BottomSheetDialog bottomSheetDialog) {
         this.homeFragment=homeFragment;
         this.context = context;
+        this.onSelectSelected =onSelectSelected;
         this.activity = activity;
         this.bookingForEditResponse=bookingForEditResponse;
+        this.bottomSheetDialog=bottomSheetDialog;
     }
 
     @NonNull
@@ -53,7 +59,9 @@ public class DeskListRecyclerAdapter extends RecyclerView.Adapter<DeskListRecycl
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSelectSelected.onSelectDesk(bookingForEditResponse.get(holder.getAbsoluteAdapterPosition()).getDeskId(),bookingForEditResponse.get(holder.getAbsoluteAdapterPosition()).getDeskCode());
+                bottomSheetDialog.dismiss();
+                onSelectSelected.onSelectDesk(bookingForEditResponse.get(holder.getAbsoluteAdapterPosition()).getDeskId(),
+                        bookingForEditResponse.get(holder.getAbsoluteAdapterPosition()).getDeskCode());
             }
         });
     }
@@ -70,6 +78,7 @@ public class DeskListRecyclerAdapter extends RecyclerView.Adapter<DeskListRecycl
 
         public Viewholder(@NonNull View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }
