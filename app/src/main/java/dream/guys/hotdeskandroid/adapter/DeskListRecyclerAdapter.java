@@ -13,16 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
-import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.ui.home.HomeFragment;
-import dream.guys.hotdeskandroid.utils.AppConstants;
 
 public class DeskListRecyclerAdapter extends RecyclerView.Adapter<DeskListRecyclerAdapter.Viewholder> {
     HomeFragment homeFragment;

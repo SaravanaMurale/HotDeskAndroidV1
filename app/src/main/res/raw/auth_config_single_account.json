@@ -1,0 +1,13 @@
+{
+  "client_id" : "3558aa69-9b0b-442d-b81b-d30defd1c72a",
+  "redirect_uri" : "dream.guys.hotdeskandroid://oauth/redirect",
+  "authorization_user_agent" : "DEFAULT",
+  "account_mode" : "SINGLE",
+  "broker_redirect_uri_registered": true,
+  "authorities" : [
+    {
+      "type": "AAD",
+      "authority_url": "https://login.microsoftonline.com/common"
+    }
+  ]
+}

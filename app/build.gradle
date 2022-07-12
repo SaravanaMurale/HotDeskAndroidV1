@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application'
 }
-
 android {
     compileSdk 31
 
@@ -14,7 +13,6 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -27,6 +25,9 @@ android {
     }
     buildFeatures {
         viewBinding true
+    }
+    packagingOptions{
+        exclude("META-INF/jersey-module-version")
     }
 }
 
@@ -64,6 +65,8 @@ dependencies {
     //Circular Image
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+    implementation 'com.android.volley:volley:1.1.1'
 
+    implementation 'com.microsoft.identity.client:msal:2.+'
 
 }

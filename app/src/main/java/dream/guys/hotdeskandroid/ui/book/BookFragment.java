@@ -8,9 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.databinding.FragmentBookBinding;
-import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
 
 public class BookFragment extends Fragment {
     FragmentBookBinding binding;

@@ -3,13 +3,9 @@ package dream.guys.hotdeskandroid.example;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.CalendarContract;
 import android.widget.CalendarView;
-
-import java.util.Calendar;
 
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;

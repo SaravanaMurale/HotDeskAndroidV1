@@ -145,9 +145,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         if (Utils.isNetworkAvailable(getActivity())) {
             dialog= ProgressDialog.showProgressBar(getContext());
             // TODO: 06-07-2022
-
+            String json ="{'teamId':6,'teamMembershipId':21,'changesets':[{'id':1178,'date':'2022-07-11T00:00:00.000Z','changes':{'teamDeskId':64,'from':'2000-01-01T14:24:00.000Z','to':'2000-01-01T17:50:00.000Z'}}],'deletedIds':[]}";
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<BaseResponse> call = apiService.bookingBookings(data);
+            Call<BaseResponse> call = apiService.bookingBookings(json);
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
@@ -559,7 +559,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 changes.setTeamDeskId(selectedDeskId);
                 changes.setFrom(Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+
                         "T"+Utils.convert12HrsTO24Hrs(startTime.getText().toString())+":00:000Z");
-                changes.setFrom(Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+
+                changes.setTo(Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+
                         "T"+Utils.convert12HrsTO24Hrs(endTime.getText().toString())+":00:000Z");
                 if (!commentRegistration.getText().toString().isEmpty() &&
                         !commentRegistration.getText().toString().equalsIgnoreCase(""))

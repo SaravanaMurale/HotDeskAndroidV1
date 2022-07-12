@@ -2,12 +2,8 @@ package dream.guys.hotdeskandroid.model.response;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.List;
-
-import okhttp3.ResponseBody;
 
 public class LocateCountryRespose {
 

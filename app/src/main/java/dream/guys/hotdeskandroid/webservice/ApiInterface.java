@@ -1,16 +1,9 @@
 package dream.guys.hotdeskandroid.webservice;
 
-import com.google.gson.JsonObject;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
-import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
@@ -18,23 +11,26 @@ import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
-import dream.guys.hotdeskandroid.model.response.LocateFloorResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
-
     @POST("api/Account/Token")
     Call<GetTokenResponse> getLoginToken(@Body GetTokenRequest request);
+
+    @FormUrlEncoded
+    @POST("api/Account/RequestPasswordReset")
+    Call<GetTokenResponse> requestPasswordReset(@Field("tenantName") String tenatn,
+                                                @Field("userName") String user);
 
     @GET("api/Account/LoggedInUser")
     Call<UserDetailsResponse>  getLoginUserDetails();
@@ -47,7 +43,8 @@ public interface ApiInterface {
     Call<BaseResponse> bookingStatus(@Body BookingStatusRequest calendarId);
 
     @PUT("api/booking/bookings")
-    Call<BaseResponse> bookingBookings(@Body BookingsRequest body);
+    Call<BaseResponse> bookingBookings(@Body String body);
+//    Call<BaseResponse> bookingBookings(@Body BookingsRequest body);
 
 
 

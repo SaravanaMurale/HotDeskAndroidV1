@@ -1,0 +1,21 @@
+{
+  "client_id" : "3558aa69-9b0b-442d-b81b-d30defd1c72a",
+  "redirect_uri" : "dream.guys.hotdeskandroid://oauth/redirect",
+  "account_mode" : "MULTIPLE",
+  "broker_redirect_uri_registered": false,
+  "authorities": [
+    {
+      "type": "B2C",
+      "authority_url": "https://hdplusdev.b2clogin.com/tfp/hdplusdev.onmicrosoft.com/B2C_1A_signup_signin_Multitenant/",
+      "default": true
+    },
+    {
+      "type": "B2C",
+      "authority_url": "https://hdplusdev.b2clogin.com/tfp/hdplusdev.onmicrosoft.com/b2c_1_edit_profile/"
+    },
+    {
+      "type": "B2C",
+      "authority_url": "https://hdplusdev.b2clogin.com/tfp/hdplusdev.onmicrosoft.com/b2c_1_reset/"
+    }
+  ]
+}

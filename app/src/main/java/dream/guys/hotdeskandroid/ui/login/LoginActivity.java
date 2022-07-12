@@ -1,5 +1,6 @@
 package dream.guys.hotdeskandroid.ui.login;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
@@ -7,10 +8,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.microsoft.identity.client.AcquireTokenParameters;
+import com.microsoft.identity.client.AuthenticationCallback;
+import com.microsoft.identity.client.IAccount;
+import com.microsoft.identity.client.IAuthenticationResult;
+import com.microsoft.identity.client.IMultipleAccountPublicClientApplication;
+import com.microsoft.identity.client.IPublicClientApplication;
+import com.microsoft.identity.client.Prompt;
+import com.microsoft.identity.client.PublicClientApplication;
+import com.microsoft.identity.client.exception.MsalClientException;
+import com.microsoft.identity.client.exception.MsalException;
+import com.microsoft.identity.client.exception.MsalServiceException;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -20,6 +36,8 @@ import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
+import dream.guys.hotdeskandroid.ui.login.sso.B2CConfiguration;
+import dream.guys.hotdeskandroid.ui.login.sso.B2CUser;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -34,7 +52,7 @@ import retrofit2.http.Header;
 
 
 public class LoginActivity extends AppCompatActivity {
-
+    String TAG="Zure SSo";
 
     Dialog dialog;
 
@@ -50,7 +68,13 @@ public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.btnSignInLogin)
     Button signIn;
+    @BindView(R.id.ivWindows)
+    ImageView ivWindows;
 
+    private List<B2CUser> users;
+
+    /* Azure AD Variables */
+    private IMultipleAccountPublicClientApplication b2cApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +84,52 @@ public class LoginActivity extends AppCompatActivity {
 
         dialog = new Dialog(LoginActivity.this);
 
+        // Creates a PublicClientApplication object with res/raw/auth_config_single_account.json
+        PublicClientApplication.createMultipleAccountPublicClientApplication(this,
+                R.raw.auth_config_b2c,
+                new IPublicClientApplication.IMultipleAccountApplicationCreatedListener() {
+                    @Override
+                    public void onCreated(IMultipleAccountPublicClientApplication application) {
+                        b2cApp = application;
+                        loadAccounts();
+                    }
+
+                    @Override
+                    public void onError(MsalException exception) {
+                        displayError(exception);
+//                        removeAccountButton.setEnabled(false);
+//                        runUserFlowButton.setEnabled(false);
+//                        acquireTokenSilentButton.setEnabled(false);
+                    }
+                });
+
+        ivWindows.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (b2cApp == null) {
+                    return;
+                }
+
+                /**
+                 * Runs user flow interactively.
+                 * <p>
+                 * Once the user finishes with the flow, you will also receive an access token containing the claims for the scope you passed in (see B2CConfiguration.getScopes()),
+                 * which you can subsequently use to obtain your resources.
+                 */
+
+                AcquireTokenParameters parameters = new AcquireTokenParameters.Builder()
+                        .startAuthorizationFromActivity(LoginActivity.this)
+                        .fromAuthority(B2CConfiguration.getAuthorityFromPolicyName("B2C_1A_signup_signin_Multitenant"))
+//                        .fromAuthority(B2CConfiguration.getAuthorityFromPolicyName("B2C_1A_signup_signin_Multitenant"policyListSpinner.getSelectedItem().toString()))
+                        .withScopes(B2CConfiguration.getScopes())
+                        .withPrompt(Prompt.LOGIN)
+                        .withCallback(getAuthInteractiveCallback())
+                        .build();
+
+                b2cApp.acquireToken(parameters);
+
+            }
+        });
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,17 +151,118 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent=new Intent(LoginActivity.this, ForgotPasswordActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
 
+    /**
+     * Callback used for interactive request.
+     * If succeeds we use the access token to call the Microsoft Graph.
+     * Does not check cache.
+     */
+    private AuthenticationCallback getAuthInteractiveCallback() {
+        return new AuthenticationCallback() {
+
+            @Override
+            public void onSuccess(IAuthenticationResult authenticationResult) {
+                /* Successfully got a token, use it to call a protected resource - MSGraph */
+                Log.d(TAG, "Successfully authenticated");
+
+                /* display result info */
+                displayResult(authenticationResult);
+
+                /* Reload account asynchronously to get the up-to-date list. */
+                loadAccounts();
+            }
+
+            @Override
+            public void onError(MsalException exception) {
+                final String B2C_PASSWORD_CHANGE = "AADB2C90118";
+                if (exception.getMessage().contains(B2C_PASSWORD_CHANGE)) {
+                    Log.d(TAG, "onError: The user clicks the 'Forgot Password' link in a sign-up or sign-in user flow.\\n\" +\n" +
+                            "                            \"Your application needs to handle this error code by running a specific user flow that resets the password.");
+                    return;
+                }
+
+                /* Failed to acquireToken */
+                Log.d(TAG, "Authentication failed: " + exception.toString());
+                displayError(exception);
+
+                if (exception instanceof MsalClientException) {
+                    /* Exception inside MSAL, more info inside MsalError.java */
+                } else if (exception instanceof MsalServiceException) {
+                    /* Exception when communicating with the STS, likely config issue */
+                }
+            }
+
+            @Override
+            public void onCancel() {
+                /* User canceled the authentication */
+                Log.d(TAG, "User cancelled login.");
+            }
+        };
+    }
+
+    private void loadAccounts() {
+        if (b2cApp == null) {
+            return;
+        }
+
+        b2cApp.getAccounts(new IPublicClientApplication.LoadAccountsCallback() {
+            @Override
+            public void onTaskCompleted(final List<IAccount> result) {
+                users = B2CUser.getB2CUsersFromAccountList(result);
+                updateUI(users);
+            }
+
+            @Override
+            public void onError(MsalException exception) {
+                displayError(exception);
+            }
+        });
+    }
+    /**
+     * Display the graph response
+     */
+    private void displayResult(@NonNull final IAuthenticationResult result) {
+        final String output =
+                "Access Token :" + result.getAccessToken() + "\n" +
+                        "Scope : " + result.getScope() + "\n" +
+                        "Expiry : " + result.getExpiresOn() + "\n" +
+                        "Tenant ID : " + result.getTenantId() + "\n";
+
+        Log.d(TAG, "displayResult: "+output);
+    }
+
+
+    /**
+     * Display the error message
+     */
+    private void displayError(@NonNull final Exception exception) {
+        Log.d(TAG, "displayError: "+exception.toString());
+    }
+
+    /**
+     * Updates UI based on the obtained user list.
+     */
+    private void updateUI(final List<B2CUser> users) {
+        if (users.size() != 0) {
+//            removeAccountButton.setEnabled(true);
+//            acquireTokenSilentButton.setEnabled(true);
+        } else {
+//            removeAccountButton.setEnabled(false);
+//            acquireTokenSilentButton.setEnabled(false);
+        }
+
+    }
 
     //GetToken
     private void doLogin(String companyName, String email, String password) {
 
         if (Utils.isNetworkAvailable(this)) {
 
-           dialog=ProgressDialog.showProgressBar(LoginActivity.this);
+            dialog=ProgressDialog.showProgressBar(LoginActivity.this);
             GetTokenRequest getTokenRequest = new GetTokenRequest(companyName, email, password);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<GetTokenResponse> call = apiService.getLoginToken(getTokenRequest);

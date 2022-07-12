@@ -1,7 +1,5 @@
 package dream.guys.hotdeskandroid;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;

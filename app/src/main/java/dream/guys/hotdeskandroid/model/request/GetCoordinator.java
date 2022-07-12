@@ -4,8 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
-
 public class GetCoordinator {
 
     List<String> deskId;

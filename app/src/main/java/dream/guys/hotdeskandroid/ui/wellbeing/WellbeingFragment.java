@@ -1,6 +1,5 @@
 package dream.guys.hotdeskandroid.ui.wellbeing;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,11 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import butterknife.BindView;
-import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
-import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
 import dream.guys.hotdeskandroid.databinding.FragmentWellbeingBinding;
-import dream.guys.hotdeskandroid.ui.login.SignInActivity;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 

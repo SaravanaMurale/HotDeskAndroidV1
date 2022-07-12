@@ -19,79 +19,36 @@
 
 package dream.guys.hotdeskandroid.utils;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Application;
-import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.net.ConnectivityManager;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.text.Html;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.MimeTypeMap;
-import android.widget.FrameLayout;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.NoSuchElementException;
-import java.util.TimeZone;
 
 import dream.guys.hotdeskandroid.R;
-import dream.guys.hotdeskandroid.example.DummyActivity;
-import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.login.SignInActivity;
 
 /**
@@ -233,7 +190,7 @@ public class Utils {
             Date date=f12hours.parse(time);
 //                            return String.valueOf(f12hours.format(date));
 //            v.setText(""+f12hours.format(date));
-            System.out.println("ReceivedDate"+f12hours.format(date));
+            System.out.println("ReceivedDate Bala"+f24hours.format(date));
             return ""+f24hours.format(date);
 
 

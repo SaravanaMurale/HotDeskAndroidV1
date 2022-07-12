@@ -3,7 +3,6 @@ package dream.guys.hotdeskandroid.example;
 import android.content.Context;
 import android.media.metrics.Event;
 import android.util.AttributeSet;
-import android.util.EventLog;
 import android.view.LayoutInflater;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -18,8 +17,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import dream.guys.hotdeskandroid.R;
 
 public class CustomCalendarView extends LinearLayout {
 

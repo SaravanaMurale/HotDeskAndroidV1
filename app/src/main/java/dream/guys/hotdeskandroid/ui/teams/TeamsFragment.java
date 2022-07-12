@@ -8,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import dream.guys.hotdeskandroid.R;
-import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
 import dream.guys.hotdeskandroid.databinding.FragmentTeamsBinding;
 
 public class TeamsFragment extends Fragment {
