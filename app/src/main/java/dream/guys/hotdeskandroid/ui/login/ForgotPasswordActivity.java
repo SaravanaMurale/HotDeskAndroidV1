@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.request.ForgotPasswordRequest;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
@@ -32,6 +34,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     EditText etEmail;
     @BindView(R.id.etCompanyName)
     EditText etCompanyName;
+    @BindView(R.id.tv_back_to_sign_in)
+    TextView gobacktoSignIn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,10 +44,16 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         dialog = new Dialog(ForgotPasswordActivity.this);
 
+        gobacktoSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validateLoginDetails(etCompanyName.getText().toString(),etEmail.getText().toString())){
+                if (validateLoginDetails(etCompanyName.getText().toString().trim(),etEmail.getText().toString().trim())){
                     requestPasswordRest();
                 }else {
                     Toast.makeText(ForgotPasswordActivity.this, "Enter Credentials", Toast.LENGTH_SHORT).show();
@@ -58,14 +69,16 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 dialog= ProgressDialog.showProgressBar(ForgotPasswordActivity.this);
 //                GetTokenRequest getTokenRequest = new GetTokenRequest(companyName, email, password);
                 ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-                Call<GetTokenResponse> call = apiService.requestPasswordReset(etCompanyName.getText().toString(),
-                        etEmail.getText().toString());
-                call.enqueue(new Callback<GetTokenResponse>() {
+                ForgotPasswordRequest forgotPasswordRequest = new ForgotPasswordRequest();
+                forgotPasswordRequest.setTenantName(etCompanyName.getText().toString().trim());
+                forgotPasswordRequest.setUserName(etEmail.getText().toString().trim());
+                Call<Void> call = apiService.requestPasswordReset(forgotPasswordRequest);
+                call.enqueue(new Callback<Void>() {
                     @Override
-                    public void onResponse(Call<GetTokenResponse> call, Response<GetTokenResponse> response) {
+                    public void onResponse(Call<Void> call, Response<Void> response) {
                         if(response.code()==200){
                             ProgressDialog.dismisProgressBar(ForgotPasswordActivity.this,dialog);
-                            Utils.toastMessage(ForgotPasswordActivity.this, "Success");
+                            Utils.toastMessage(ForgotPasswordActivity.this, "You will receive an email shortly with the instructions on how to reset your password.");
                             finish();
                         }else if(response.code()==401){
                             ProgressDialog.dismisProgressBar(ForgotPasswordActivity.this,dialog);
@@ -79,7 +92,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<GetTokenResponse> call, Throwable t) {
+                    public void onFailure(Call<Void> call, Throwable t) {
                         ProgressDialog.dismisProgressBar(ForgotPasswordActivity.this,dialog);
                         Utils.toastMessage(ForgotPasswordActivity.this, "You have entered wrong username or password");
 
@@ -112,4 +125,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
 }

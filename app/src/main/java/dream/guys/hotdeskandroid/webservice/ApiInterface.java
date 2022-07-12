@@ -4,12 +4,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
+import dream.guys.hotdeskandroid.model.request.BookingsRequest;
+import dream.guys.hotdeskandroid.model.request.ForgotPasswordRequest;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
+import dream.guys.hotdeskandroid.model.response.ImageResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import retrofit2.Call;
@@ -27,10 +30,14 @@ public interface ApiInterface {
     @POST("api/Account/Token")
     Call<GetTokenResponse> getLoginToken(@Body GetTokenRequest request);
 
-    @FormUrlEncoded
+    @GET("api/image/user")
+    Call<ImageResponse> getUserImage();
+
+    @GET("api/image/tenant")
+    Call<ImageResponse> getTenantImage();
+
     @POST("api/Account/RequestPasswordReset")
-    Call<GetTokenResponse> requestPasswordReset(@Field("tenantName") String tenatn,
-                                                @Field("userName") String user);
+    Call<Void> requestPasswordReset(@Body ForgotPasswordRequest forgotPasswordRequest);
 
     @GET("api/Account/LoggedInUser")
     Call<UserDetailsResponse>  getLoginUserDetails();
@@ -43,8 +50,8 @@ public interface ApiInterface {
     Call<BaseResponse> bookingStatus(@Body BookingStatusRequest calendarId);
 
     @PUT("api/booking/bookings")
-    Call<BaseResponse> bookingBookings(@Body String body);
-//    Call<BaseResponse> bookingBookings(@Body BookingsRequest body);
+    Call<BaseResponse> bookingBookings(@Body BookingsRequest body);
+//    Call<BaseResponse> bookingBookings(@Body String body);
 
 
 

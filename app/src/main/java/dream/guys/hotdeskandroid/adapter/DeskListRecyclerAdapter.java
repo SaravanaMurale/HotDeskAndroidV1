@@ -57,7 +57,7 @@ public class DeskListRecyclerAdapter extends RecyclerView.Adapter<DeskListRecycl
             @Override
             public void onClick(View v) {
                 bottomSheetDialog.dismiss();
-                onSelectSelected.onSelectDesk(bookingForEditResponse.get(holder.getAbsoluteAdapterPosition()).getDeskId(),
+                onSelectSelected.onSelectDesk(bookingForEditResponse.get(holder.getAbsoluteAdapterPosition()).getTeamDeskId(),
                         bookingForEditResponse.get(holder.getAbsoluteAdapterPosition()).getDeskCode());
             }
         });

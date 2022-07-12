@@ -1,6 +1,8 @@
 package dream.guys.hotdeskandroid.ui.home;
 
 import android.app.Dialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +47,7 @@ import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
+import dream.guys.hotdeskandroid.model.response.ImageResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -114,11 +118,51 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 */
         //doTokenExpiryHere();
 
+        loadUserImage();
+        loadTenantImage();
         loadHomeList();
 
 
 
         return root;
+    }
+
+    private void loadTenantImage() {
+    }
+
+    private void loadUserImage() {
+        if (Utils.isNetworkAvailable(getActivity())) {
+
+//            dialog= ProgressDialog.showProgressBar(getContext());
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<ImageResponse> call = apiService.getUserImage();
+            call.enqueue(new Callback<ImageResponse>() {
+                @Override
+                public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
+                    if(response.code()==200){
+                        ImageResponse imageResponse = response.body();
+                        if (imageResponse.getMessage()!=null && !imageResponse.isStatus()){
+                            Utils.toastMessage(getContext(),imageResponse.getMessage().getCode());
+                        }
+                        if (imageResponse.getImage()!=null){
+                            byte[] decodedString = Base64.decode(imageResponse.getImage(), Base64.DEFAULT);
+                            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                            userProfile.setImageBitmap(decodedByte);
+                        }
+                    }else if(response.code()==401){
+
+                    }
+                }
+                @Override
+                public void onFailure(Call<ImageResponse> call, Throwable t) {
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
     }
 
     @Override
@@ -147,7 +191,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             // TODO: 06-07-2022
             String json ="{'teamId':6,'teamMembershipId':21,'changesets':[{'id':1178,'date':'2022-07-11T00:00:00.000Z','changes':{'teamDeskId':64,'from':'2000-01-01T14:24:00.000Z','to':'2000-01-01T17:50:00.000Z'}}],'deletedIds':[]}";
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<BaseResponse> call = apiService.bookingBookings(json);
+            Call<BaseResponse> call = apiService.bookingBookings(data);
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
@@ -553,14 +597,15 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
                 BookingsRequest.ChangeSets changeSets = new BookingsRequest.ChangeSets();
                 changeSets.setId(editDeskBookingDetails.getCalId());
-                changeSets.setDate(""+Utils.getISO8601format(editDeskBookingDetails.getDate()));
+                changeSets.setDate(""+Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+"T00:00:00.000Z");
 
                 BookingsRequest.ChangeSets.Changes changes= new BookingsRequest.ChangeSets.Changes();
                 changes.setTeamDeskId(selectedDeskId);
-                changes.setFrom(Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+
+                /*changes.setFrom(Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+
                         "T"+Utils.convert12HrsTO24Hrs(startTime.getText().toString())+":00:000Z");
                 changes.setTo(Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+
                         "T"+Utils.convert12HrsTO24Hrs(endTime.getText().toString())+":00:000Z");
+                */
                 if (!commentRegistration.getText().toString().isEmpty() &&
                         !commentRegistration.getText().toString().equalsIgnoreCase(""))
                 changes.setComments(""+commentRegistration.getText());
