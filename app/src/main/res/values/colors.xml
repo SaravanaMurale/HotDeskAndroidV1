@@ -24,5 +24,6 @@
     <color name="bg_grey">#fafafa</color>
     <color name="line_gray">#dcdcdc</color>
     <color name="biometric_bg">#bcbcbc</color>
+    <color name="figma_orange">#e9994a</color>
 
 </resources>

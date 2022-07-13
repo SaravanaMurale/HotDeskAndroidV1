@@ -25,7 +25,8 @@
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginRight="@dimen/_9sdp"
         android:background="@drawable/rectangle_greybg_with_corner"
-        android:hint="@string/search"
+        android:hint="  search"
+        android:drawableLeft="@drawable/search_1px"
         android:padding="@dimen/_8sdp" />
 
     <LinearLayout
@@ -180,6 +181,14 @@
                 />
 
         </RelativeLayout>
+
+
+        <!--RV FloorList-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvFloorList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
 
     </LinearLayout>
 

@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/figmaBgGrey"
     tools:context=".ui.locate.LocateFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+     android:layout_width="match_parent"
+     android:layout_height="match_parent">
 
 
     <!--Floor Layout-->
@@ -15,6 +19,7 @@
         android:scrollbars="none"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="2dp">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,12 +32,10 @@
                 android:scrollbars="none">
 
 
-
                 <RelativeLayout
                     android:id="@+id/firstLayout"
                     android:layout_width="1000dp"
                     android:layout_height="1000dp">
-
 
 
                     <LinearLayout
@@ -46,7 +49,6 @@
                             android:layout_height="@dimen/_30sdp"
                             android:src="@drawable/desk_avaliable"
                             android:visibility="gone" />
-
 
 
                     </LinearLayout>
@@ -117,7 +119,6 @@
             tools:ignore="MissingConstraints">
 
 
-
             <TextView
                 android:id="@+id/tvStartLocate"
                 android:layout_width="wrap_content"
@@ -135,7 +136,6 @@
                 android:layout_toRightOf="@id/tvStartLocate"
                 android:text="8:00"
                 android:textColor="@color/black" />
-
 
 
             <view
@@ -173,28 +173,19 @@
         </RelativeLayout>
 
 
-
-
-
     </RelativeLayout>
 
 
+ </androidx.constraintlayout.widget.ConstraintLayout>
+
     <!--Bottom Filter-->
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints"
-
-        >
-
-        <RelativeLayout
+            android:id="@+id/endBlock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginRight="@dimen/_10sdp"
-
-            >
+            android:layout_marginRight="@dimen/_10sdp">
 
             <ImageView
                 android:id="@+id/ivLocateMyTeam"
@@ -210,19 +201,107 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:src="@drawable/locate_filter" />
 
-            <ImageView
-                android:id="@+id/ivLocateKey"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:layout_below="@+id/ivLocateFilter"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginBottom="@dimen/_30sdp"
-                android:src="@drawable/locate_key" />
+        <ImageView
+            android:id="@+id/ivLocateKey"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_below="@+id/ivLocateFilter"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_30sdp"
+            android:src="@drawable/locate_key" />
 
-        </RelativeLayout>
+    </RelativeLayout>
+
+
+    <!--Visible and Invisible Status-->
+    <RelativeLayout
+        android:id="@+id/locateKeyStatusBlock"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_toLeftOf="@+id/endBlock"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/_30sdp"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/statusUnAvaliable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/rectangle_bg_with_corner"
+            android:drawableLeft="@drawable/status_unavaliable"
+            android:paddingLeft="@dimen/_5sdp"
+            android:paddingRight="@dimen/_5sdp"
+            android:text=" unavaliable" />
+
+
+        <TextView
+            android:id="@+id/statusBookedByMe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/statusUnAvaliable"
+            android:text=" booked by me"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/rectangle_bg_with_corner"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:paddingLeft="@dimen/_5sdp"
+            android:paddingRight="@dimen/_5sdp"
+            android:drawableLeft="@drawable/status_booked_byme"
+            />
+
+
+
+        <TextView
+            android:id="@+id/statusBooked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/statusUnAvaliable"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:text=" booked"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:paddingLeft="@dimen/_5sdp"
+            android:paddingRight="@dimen/_5sdp"
+            android:background="@drawable/rectangle_bg_with_corner"
+            android:drawableLeft="@drawable/status_booked"
+            />
+
+        <TextView
+            android:id="@+id/statusByRequest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/statusUnAvaliable"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_toLeftOf="@+id/statusBooked"
+            android:background="@drawable/rectangle_bg_with_corner"
+            android:drawableLeft="@drawable/byrequest"
+            android:paddingLeft="@dimen/_5sdp"
+            android:paddingRight="@dimen/_5sdp"
+            android:text=" by request" />
+
+        <TextView
+            android:id="@+id/statusAvaliable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/statusUnAvaliable"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_toLeftOf="@+id/statusByRequest"
+            android:background="@drawable/rectangle_bg_with_corner"
+            android:drawableLeft="@drawable/status_avaliable"
+            android:paddingLeft="@dimen/_5sdp"
+            android:paddingRight="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:text=" avaliable" />
+
+
+
 
 
     </RelativeLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</RelativeLayout>

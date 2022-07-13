@@ -17,6 +17,8 @@ public class LocateCountryRespose {
     int locationType;
     String timeZoneId;
 
+    @SerializedName("coordinates")
+    List<List<Integer>> coordinates;
     @SerializedName("items")
     HashMap<String,List<String>> items;
 
@@ -27,6 +29,15 @@ public class LocateCountryRespose {
     //String locationOptions;
     @SerializedName("backGroundImage")
     BackGroundImage backGroundImage;
+
+
+    public List<List<Integer>> getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(List<List<Integer>> coordinates) {
+        this.coordinates = coordinates;
+    }
 
     public HashMap<String, List<String>> getItems() {
         return items;
@@ -485,6 +496,46 @@ public class LocateCountryRespose {
 
     public class SupportZoneLayoutItems {
 
+        @SerializedName("supportZoneId")
+        int supportZoneId;
+        @SerializedName("title")
+        String title;
+        @SerializedName("coordinates")
+        List<List<Integer>> supportZoneCoordinates;
+        @SerializedName("fontSize")
+        int fontSize;
+
+        public int getSupportZoneId() {
+            return supportZoneId;
+        }
+
+        public void setSupportZoneId(int supportZoneId) {
+            this.supportZoneId = supportZoneId;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public List<List<Integer>> getSupportZoneCoordinates() {
+            return supportZoneCoordinates;
+        }
+
+        public void setSupportZoneCoordinates(List<List<Integer>> supportZoneCoordinates) {
+            this.supportZoneCoordinates = supportZoneCoordinates;
+        }
+
+        public int getFontSize() {
+            return fontSize;
+        }
+
+        public void setFontSize(int fontSize) {
+            this.fontSize = fontSize;
+        }
     }
 
     public class BackGroundImage {

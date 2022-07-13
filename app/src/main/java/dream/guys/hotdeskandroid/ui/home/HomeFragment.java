@@ -311,7 +311,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 @Override
                 public void onResponse(Call<BookingListResponse> call, Response<BookingListResponse> response) {
                     if(response.code()==200){
-
+                        ProgressDialog.dismisProgressBar(getContext(),dialog);
                         BookingListResponse bookingListResponse  =response.body();
                         teamId = bookingListResponse.getTeamId();
                         teamMembershipId = bookingListResponse.getTeamMembershipId();
@@ -349,12 +349,14 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         System.out.println("desk Code Check"+bookingForEditResponse.get(i).getDeskCode());
 
                     }
+
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
 //                    createRecyclerDeskList(response.body().getTeamDeskAvailabilities());
                 }
 
                 @Override
                 public void onFailure(Call<BookingForEditResponse> call, Throwable t) {
-
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
                 }
             });
 

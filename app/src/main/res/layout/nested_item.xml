@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bg_grey"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/nestedItemTv"
+            android:text="Grocery and Stationary"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_centerVertical="true" />
+
+        <CheckBox
+            android:id="@+id/check_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:theme="@style/BlueCheck"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
