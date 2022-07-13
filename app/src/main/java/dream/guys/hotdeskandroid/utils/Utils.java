@@ -20,16 +20,20 @@
 package dream.guys.hotdeskandroid.utils;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -142,6 +146,26 @@ public class Utils {
         bottomSheetDatePicker.show();
     }
 
+    public static void showCustomAlertDialog(final Activity mContext, String aMessage) {
+        final Dialog dialog = new Dialog(mContext);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        int width = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.80);
+        int height = (int) (mContext.getResources().getDisplayMetrics().heightPixels * 0.20);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog_validation);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        TextView text = dialog.findViewById(R.id.tv_err_msg);
+        text.setText(aMessage);
+        TextView dialogButton = dialog.findViewById(R.id.tv_ok);
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                mContext.startActivityForResult(intent, 123);
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
 
 
 
@@ -183,7 +207,25 @@ public class Utils {
         bottomSheetDialog.show();
     }
 
+    public static String convert24HrsTO12Hrs(String time) {
+        time.replace(".",":");
+        SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
+        SimpleDateFormat f12hours=new SimpleDateFormat("hh:mm aa");
+        try {
+            Date date=f24hours.parse(time);
+//                            return String.valueOf(f12hours.format(date));
+//            v.setText(""+f12hours.format(date));
+            System.out.println("ReceivedDate Bala"+f12hours.format(date));
+            return ""+f12hours.format(date);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "00:00";
+        }
+
+    }
     public static String convert12HrsTO24Hrs(String time) {
+        time.replace(".",":");
         SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
         SimpleDateFormat f12hours=new SimpleDateFormat("hh:mm aa");
         try {
@@ -227,7 +269,7 @@ public class Utils {
                         }
 
                     }
-                },24,0,true);
+                },12,0,false);
 
 
         timePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE,"Continue",timePickerDialog);

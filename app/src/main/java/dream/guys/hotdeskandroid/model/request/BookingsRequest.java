@@ -1,6 +1,9 @@
 package dream.guys.hotdeskandroid.model.request;
 
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -53,8 +56,15 @@ public class BookingsRequest {
         @SerializedName("date")
         private String date;
         @SerializedName("changes")
-        private Changes changes;
+        private JsonObject changes;
 
+        public JsonObject getChanges() {
+            return changes;
+        }
+
+        public void setChanges(JsonObject changes) {
+            this.changes = changes;
+        }
 
         public int getId() {
             return id;
@@ -70,17 +80,6 @@ public class BookingsRequest {
 
         public void setDate(String date) {
             this.date = date;
-        }
-
-
-
-
-        public Changes getChanges() {
-            return changes;
-        }
-
-        public void setChanges(Changes changes) {
-            this.changes = changes;
         }
 
         public static class Changes {

@@ -50,9 +50,9 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
 
     public interface  OnCheckInClickable{
-        public void onCheckInDeskClick(BookingListResponse.DayGroup.CalendarEntry calendarEntriesModel, String click, Date date);
-        public void onCheckInMeetingRoomClick(BookingListResponse.DayGroup.MeetingBooking meetingEntriesModel, String click, Date date);
-        public void onCheckInCarParkingClick(BookingListResponse.DayGroup.CarParkBooking carParkingEntriesModel, String click, Date date);
+        public void onCheckInDeskClick(BookingListResponse.DayGroup.CalendarEntry calendarEntriesModel, String click, Date date,int position);
+        public void onCheckInMeetingRoomClick(BookingListResponse.DayGroup.MeetingBooking meetingEntriesModel, String click, Date date,int position);
+        public void onCheckInCarParkingClick(BookingListResponse.DayGroup.CarParkBooking carParkingEntriesModel, String click, Date date,int position);
     }
 
     @NonNull
@@ -246,16 +246,16 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
                 if (list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel()!=null){
                     String clickedStatus="CHECKIN";
-                onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(), AppConstants.CHECKIN, list.get(holder.getAbsoluteAdapterPosition()).getDate());
+                onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(), AppConstants.CHECKIN, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
 //                    fragment.changeCheckIn(list.get(holder.getAbsoluteAdapterPosition()));
                     Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
                 }else if(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel()!=null){
                     String clickedStatus="CHECKIN";
-                    onCheckInClickable.onCheckInMeetingRoomClick(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel(),AppConstants.CHECKIN, list.get(holder.getAbsoluteAdapterPosition()).getDate());
+                    onCheckInClickable.onCheckInMeetingRoomClick(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel(),AppConstants.CHECKIN, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
                     //Toast.makeText(context, "ROOM CLICKED", Toast.LENGTH_SHORT).show();
                 }else if(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel()!=null){
                     String clickedStatus="CHECKIN";
-                    onCheckInClickable.onCheckInCarParkingClick(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel(),AppConstants.CHECKIN, list.get(holder.getAbsoluteAdapterPosition()).getDate());
+                    onCheckInClickable.onCheckInCarParkingClick(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel(),AppConstants.CHECKIN, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
                     //Toast.makeText(context, "CAR CLICKED", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -267,15 +267,15 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
                 if (list.get(holder.getAbsoluteAdapterPosition()).getCalDeskStatus() ==1){
                     String clickedStatus="EDIT";
-                    onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(), AppConstants.EDIT,list.get(holder.getAbsoluteAdapterPosition()).getDate());
+                    onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(), AppConstants.EDIT,list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
                     //Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
                 }else if(list.get(holder.getAbsoluteAdapterPosition()).getCalDeskStatus() ==2){
                     String clickedStatus="EDIT";
-                    onCheckInClickable.onCheckInMeetingRoomClick(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel(),AppConstants.EDIT, list.get(holder.getAbsoluteAdapterPosition()).getDate());
+                    onCheckInClickable.onCheckInMeetingRoomClick(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel(),AppConstants.EDIT, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
                     //Toast.makeText(context, "ROOM CLICKED", Toast.LENGTH_SHORT).show();
                 }else if(list.get(holder.getAbsoluteAdapterPosition()).getCalDeskStatus() ==3){
                     String clickedStatus="EDIT";
-                    onCheckInClickable.onCheckInCarParkingClick(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel(),AppConstants.EDIT, list.get(holder.getAbsoluteAdapterPosition()).getDate());
+                    onCheckInClickable.onCheckInCarParkingClick(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel(),AppConstants.EDIT, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
                     //Toast.makeText(context, "CAR CLICKED", Toast.LENGTH_SHORT).show();
                 }
 
@@ -288,15 +288,15 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
                 if (list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel()!=null){
                     String clickedStatus="REMOTE";
-                    onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(), AppConstants.REMOTE,list.get(holder.getAbsoluteAdapterPosition()).getDate());
+                    onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(), AppConstants.REMOTE,list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
                     //Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
                 }else if(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel()!=null){
                     String clickedStatus="REMOTE";
-                    onCheckInClickable.onCheckInMeetingRoomClick(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel(),AppConstants.REMOTE, list.get(holder.getAbsoluteAdapterPosition()).getDate());
+                    onCheckInClickable.onCheckInMeetingRoomClick(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel(),AppConstants.REMOTE, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
                     //Toast.makeText(context, "ROOM CLICKED", Toast.LENGTH_SHORT).show();
                 }else if(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel()!=null){
                     String clickedStatus="REMOTE";
-                    onCheckInClickable.onCheckInCarParkingClick(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel(),AppConstants.REMOTE, list.get(holder.getAbsoluteAdapterPosition()).getDate());
+                    onCheckInClickable.onCheckInCarParkingClick(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel(),AppConstants.REMOTE, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
                     //Toast.makeText(context, "CAR CLICKED", Toast.LENGTH_SHORT).show();
                 }
 

@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -38,6 +39,7 @@ import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import dream.guys.hotdeskandroid.ui.login.sso.B2CConfiguration;
 import dream.guys.hotdeskandroid.ui.login.sso.B2CUser;
+import dream.guys.hotdeskandroid.ui.login.sso.WebViewActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -106,19 +108,37 @@ public class LoginActivity extends AppCompatActivity {
         ivWindows.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (b2cApp == null) {
+                Intent intent = new Intent(getApplicationContext(), WebViewActivity.class);
+                startActivity(intent);
+            }
+             /*   if (b2cApp == null) {
                     return;
                 }
 
-                /**
+                *//**
                  * Runs user flow interactively.
                  * <p>
                  * Once the user finishes with the flow, you will also receive an access token containing the claims for the scope you passed in (see B2CConfiguration.getScopes()),
                  * which you can subsequently use to obtain your resources.
-                 */
+                 *//*
+                List<Pair<String, String>> extraQueryParameters = new ArrayList<>();
+                extraQueryParameters.add( new Pair<String, String>("domain_hint", "google.com"));
+                extraQueryParameters.add( new Pair<String, String>("response_type", "code+id_token"));
+                extraQueryParameters.add( new Pair<String, String>("response_mode", "query"));
+                extraQueryParameters.add( new Pair<String, String>("scope", "openid%20offline_access&state=12345"));
+
+*//*
+                AcquireTokenParameters parameters = new AcquireTokenParameters.Builder()
+                        .startAuthorizationFromActivity(LoginActivity.this)
+                        .withAuthorizationQueryStringParameters(extraQueryParameters)
+                        // More settings here
+                        .build();
+
+                b2cApp.acquireToken(parameters);*//*
 
                 AcquireTokenParameters parameters = new AcquireTokenParameters.Builder()
                         .startAuthorizationFromActivity(LoginActivity.this)
+                        .withAuthorizationQueryStringParameters(extraQueryParameters)
                         .fromAuthority(B2CConfiguration.getAuthorityFromPolicyName("B2C_1A_signup_signin_Multitenant"))
 //                        .fromAuthority(B2CConfiguration.getAuthorityFromPolicyName("B2C_1A_signup_signin_Multitenant"policyListSpinner.getSelectedItem().toString()))
                         .withScopes(B2CConfiguration.getScopes())
@@ -128,15 +148,15 @@ public class LoginActivity extends AppCompatActivity {
 
                 b2cApp.acquireToken(parameters);
 
-            }
+            }*/
         });
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String companyName = etCompanyName.getText().toString();
-                String email = etEmail.getText().toString();
-                String password = etPassword.getText().toString();
+                String companyName = etCompanyName.getText().toString().trim();
+                String email = etEmail.getText().toString().trim();
+                String password = etPassword.getText().toString().trim();
 
                 //Validate Input User Details
                 if(validateLoginDetails(companyName, email, password)){

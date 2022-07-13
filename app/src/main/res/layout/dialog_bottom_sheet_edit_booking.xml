@@ -294,6 +294,13 @@
                         android:theme="@style/TextRegular" />
                 </LinearLayout>
             </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_comments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Registration Number"
+                android:theme="@style/TextSmall" />
+
             <EditText
                 android:id="@+id/ed_registration"
                 android:layout_width="match_parent"

@@ -1,5 +1,9 @@
 package dream.guys.hotdeskandroid.webservice;
 
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -50,7 +54,7 @@ public interface ApiInterface {
     Call<BaseResponse> bookingStatus(@Body BookingStatusRequest calendarId);
 
     @PUT("api/booking/bookings")
-    Call<BaseResponse> bookingBookings(@Body BookingsRequest body);
+    Call<BaseResponse> bookingBookings(@Body JsonObject body);
 //    Call<BaseResponse> bookingBookings(@Body String body);
 
 

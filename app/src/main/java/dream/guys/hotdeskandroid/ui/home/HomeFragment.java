@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -24,12 +25,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,6 +70,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     FragmentHomeBinding binding;
     TextView text;
     ImageView userProfile;
+    ImageView tenantProfile;
     Toolbar toolbar;
 
     //Header
@@ -99,6 +107,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         dialog = new Dialog(getContext());
 
         userProfile=root.findViewById(R.id.user_profile_pic);
+        tenantProfile=root.findViewById(R.id.tentant_image_view);
         rvHomeBooking=root.findViewById(R.id.rvHomeBooking);
         userProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +137,40 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     }
 
     private void loadTenantImage() {
+        if (Utils.isNetworkAvailable(getActivity())) {
+
+//            dialog= ProgressDialog.showProgressBar(getContext());
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<ImageResponse> call = apiService.getTenantImage();
+            call.enqueue(new Callback<ImageResponse>() {
+                @Override
+                public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
+                    if(response.code()==200){
+                        ImageResponse imageResponse = response.body();
+                        if (imageResponse.getMessage()!=null && !imageResponse.isStatus()){
+//                            Utils.toastMessage(getContext(),imageResponse.getMessage().getCode());
+                            tenantProfile.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.default_company_logo));
+                        }
+                        if (imageResponse.getImage()!=null){
+                            String cleanImage = imageResponse.getImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");
+                            byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
+                            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                            tenantProfile.setImageBitmap(decodedByte);
+                        }
+                    }else if(response.code()==401){
+
+                    }
+                }
+                @Override
+                public void onFailure(Call<ImageResponse> call, Throwable t) {
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
     }
 
     private void loadUserImage() {
@@ -144,9 +187,11 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         ImageResponse imageResponse = response.body();
                         if (imageResponse.getMessage()!=null && !imageResponse.isStatus()){
                             Utils.toastMessage(getContext(),imageResponse.getMessage().getCode());
+                            userProfile.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.mygirl));
                         }
                         if (imageResponse.getImage()!=null){
-                            byte[] decodedString = Base64.decode(imageResponse.getImage(), Base64.DEFAULT);
+                            String cleanImage = imageResponse.getImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");
+                            byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
                             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                             userProfile.setImageBitmap(decodedByte);
                         }
@@ -185,7 +230,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
     }
 
-    public void editBookingCall(BookingsRequest data) {
+    public void editBookingCall(JsonObject data,int position) {
         if (Utils.isNetworkAvailable(getActivity())) {
             dialog= ProgressDialog.showProgressBar(getContext());
             // TODO: 06-07-2022
@@ -195,13 +240,23 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                    Toast.makeText(getActivity(), "Success Bala", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
+                    if (response.code()==200){
+                        Toast.makeText(getActivity(), "Success Bala", Toast.LENGTH_SHORT).show();
+                        if (response.body().getResultCode()!=null &&response.body().getResultCode().equalsIgnoreCase("ok")){
+                            loadHomeList();
+                        }else {
+                            Utils.showCustomAlertDialog(getActivity(),"Booking Not Updated "+response.body().getResultCode().toString());
+                        }
+                    }else {
+                        Toast.makeText(getActivity(), "Response Failure", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
                 @Override
                 public void onFailure(Call<BaseResponse> call, Throwable t) {
                     Toast.makeText(getActivity(), "fail Bala"+t.getMessage(), Toast.LENGTH_SHORT).show();
+                    System.out.println("resps"+t.getMessage());
                     dialog.dismiss();
                 }
             });
@@ -218,7 +273,6 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             BookingStatusRequest bookingsRequest = new BookingStatusRequest();
             bookingsRequest.setCalendarEntryId(data.getCalendarEntriesModel().getId());
             bookingsRequest.setBookingStatus("OUT");
-
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<BaseResponse> call = apiService.bookingStatus(bookingsRequest);
@@ -419,8 +473,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     }
 
     @Override
-    public void onCheckInDeskClick(BookingListResponse.DayGroup.CalendarEntry calendarEntriesModel, String click, Date date) {
-
+    public void onCheckInDeskClick(BookingListResponse.DayGroup.CalendarEntry calendarEntriesModel, String click, Date date,int position) {
         if(click.equals(AppConstants.CHECKIN) || click.equals(AppConstants.REMOTE)){
             //Checkin
             System.out.println("BookingNameDest"+calendarEntriesModel.getUsageTypeName());
@@ -454,13 +507,13 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             editDeskBookingDetails.setCalId(calendarEntriesModel.getId());
             editDeskBookingDetails.setDeskCode(calendarEntriesModel.getBooking().getDeskCode());
             editDeskBookingDetails.setDeskStatus(calendarEntriesModel.getBooking().getStatus().getId());
-            editBookingUsingBottomSheet(editDeskBookingDetails,1);
+            editBookingUsingBottomSheet(editDeskBookingDetails,1,position);
 
         }
     }
 
     @Override
-    public void onCheckInMeetingRoomClick(BookingListResponse.DayGroup.MeetingBooking meetingEntriesModel, String click, Date date) {
+    public void onCheckInMeetingRoomClick(BookingListResponse.DayGroup.MeetingBooking meetingEntriesModel, String click, Date date, int position) {
 
         if(click.equals(AppConstants.CHECKIN)) {
             //Checkin
@@ -482,12 +535,12 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             editDeskBookingDetails.setEditEndTime(Utils.splitTime(meetingEntriesModel.getMyto()));
             editDeskBookingDetails.setDate(date);
 
-            editBookingUsingBottomSheet(editDeskBookingDetails,2);
+            editBookingUsingBottomSheet(editDeskBookingDetails,2,position);
         }
     }
 
     @Override
-    public void onCheckInCarParkingClick(BookingListResponse.DayGroup.CarParkBooking carParkingEntriesModel, String click, Date date) {
+    public void onCheckInCarParkingClick(BookingListResponse.DayGroup.CarParkBooking carParkingEntriesModel, String click, Date date,int position) {
 
         if(click.equals(AppConstants.CHECKIN)) {
             //Checkin
@@ -504,14 +557,18 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             //Edit
             System.out.println("CarParkingEditClicked");
             EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
+            editDeskBookingDetails.setCalId(carParkingEntriesModel.getId());
+            editDeskBookingDetails.setParkingSlotId(carParkingEntriesModel.getParkingSlotId());
             editDeskBookingDetails.setEditStartTTime(Utils.splitTime(carParkingEntriesModel.getFrom()));
             editDeskBookingDetails.setEditEndTime(Utils.splitTime(carParkingEntriesModel.getMyto()));
             editDeskBookingDetails.setDate(date);
-            editBookingUsingBottomSheet(editDeskBookingDetails,3);
+            editDeskBookingDetails.setVehicleRegNumber(carParkingEntriesModel.getVehicleRegNumber());
+            editDeskBookingDetails.setParkingSlotCode(carParkingEntriesModel.getParkingSlotCode());
+            editBookingUsingBottomSheet(editDeskBookingDetails,3,position);
         }
     }
 
-    private void editBookingUsingBottomSheet(EditBookingDetails editDeskBookingDetails,int dskRoomParkStatus) {
+    private void editBookingUsingBottomSheet(EditBookingDetails editDeskBookingDetails,int dskRoomParkStatus,int position) {
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_booking,
@@ -526,10 +583,12 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         TextView back=bottomSheetDialog.findViewById(R.id.editBookingBack);
         TextView select=bottomSheetDialog.findViewById(R.id.select_desk_room);
         TextView continueEditBook=bottomSheetDialog.findViewById(R.id.editBookingContinue);
+        TextView tvComments=bottomSheetDialog.findViewById(R.id.tv_comments);
         EditText commentRegistration=bottomSheetDialog.findViewById(R.id.ed_registration);
         RelativeLayout repeatBlock=bottomSheetDialog.findViewById(R.id.rl_repeat_block);
         RelativeLayout teamsBlock=bottomSheetDialog.findViewById(R.id.rl_teams_layout);
         LinearLayout statusCheckLayout=bottomSheetDialog.findViewById(R.id.status_check_layout);
+        LinearLayout llDeskLayout=bottomSheetDialog.findViewById(R.id.ll_desk_layout);
 
         ChipGroup chipGroup = bottomSheetDialog.findViewById(R.id.list_item);
 
@@ -546,6 +605,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         } else {
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlue));
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlue));
+            statusCheckLayout.setVisibility(View.GONE);
             chipGroup.setVisibility(View.GONE);
         }
 
@@ -553,10 +613,22 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             repeatBlock.setVisibility(View.GONE);
             teamsBlock.setVisibility(View.GONE);
             commentRegistration.setHint("Comments");
+            tvComments.setText("Comments");
+
+        }else if (dskRoomParkStatus==2){
+
+        }else {
+            llDeskLayout.setVisibility(View.GONE);
+            repeatBlock.setVisibility(View.GONE);
+            teamsBlock.setVisibility(View.GONE);
+            commentRegistration.setHint("Registration Number");
+            tvComments.setText("Regitration Number");
+            commentRegistration.setText(editDeskBookingDetails.getVehicleRegNumber());
+
         }
 
-        startTime.setText(editDeskBookingDetails.getEditStartTTime());
-        endTime.setText(editDeskBookingDetails.getEditEndTime());
+        startTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()));
+        endTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditEndTime()));
         date.setText(""+Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
         deskRoomName.setText(editDeskBookingDetails.getDeskCode());
 
@@ -590,6 +662,32 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         continueEditBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                JsonObject jsonOuterObject = new JsonObject();
+                JsonObject jsonInnerObject = new JsonObject();
+                JsonObject jsonChangesObject = new JsonObject();
+                JsonArray jsonChangesetArray = new JsonArray();
+                JsonArray jsonDeletedIdsArray = new JsonArray();
+                jsonInnerObject.addProperty("id",editDeskBookingDetails.getCalId());
+                jsonInnerObject.addProperty("date",""+Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+"T00:00:00.000Z");
+
+                switch (dskRoomParkStatus){
+                    case 1:
+                        jsonOuterObject.addProperty("teamId",teamId);
+                        jsonOuterObject.addProperty("teamMembershipId",teamMembershipId);
+                        if (!commentRegistration.getText().toString().isEmpty() &&
+                                !commentRegistration.getText().toString().equalsIgnoreCase(""))
+                            jsonChangesObject.addProperty("comments",commentRegistration.getText().toString());
+                            break;
+                    case 2:
+                        break;
+                    case 3:
+                        jsonOuterObject.addProperty("parkingSlotId",editDeskBookingDetails.getParkingSlotId());
+                        if (!commentRegistration.getText().toString().isEmpty() &&
+                                !commentRegistration.getText().toString().equalsIgnoreCase(""))
+                                jsonChangesObject.addProperty("vehicleRegNumber",commentRegistration.getText().toString());
+
+                        break;
+                }
 
                 BookingsRequest bookingsRequest = new BookingsRequest();
                 ArrayList<BookingsRequest.ChangeSets> list =new ArrayList<>();
@@ -598,25 +696,31 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 BookingsRequest.ChangeSets changeSets = new BookingsRequest.ChangeSets();
                 changeSets.setId(editDeskBookingDetails.getCalId());
                 changeSets.setDate(""+Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+"T00:00:00.000Z");
+                JsonObject jsonObject = new JsonObject();
+                if (selectedDeskId!=0){
+                    jsonChangesObject.addProperty("teamDeskId",selectedDeskId);
+//                        jsonObject.put("teamDeskId",selectedDeskId);
+                }
+                if (!Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()).equalsIgnoreCase(startTime.getText().toString())){
+                    jsonChangesObject.addProperty("from", "2000-01-01T"+Utils.convert12HrsTO24Hrs(startTime.getText().toString())+":00:000Z");
 
-                BookingsRequest.ChangeSets.Changes changes= new BookingsRequest.ChangeSets.Changes();
-                changes.setTeamDeskId(selectedDeskId);
-                /*changes.setFrom(Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+
-                        "T"+Utils.convert12HrsTO24Hrs(startTime.getText().toString())+":00:000Z");
-                changes.setTo(Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+
-                        "T"+Utils.convert12HrsTO24Hrs(endTime.getText().toString())+":00:000Z");
-                */
-                if (!commentRegistration.getText().toString().isEmpty() &&
-                        !commentRegistration.getText().toString().equalsIgnoreCase(""))
-                changes.setComments(""+commentRegistration.getText());
-                changeSets.setChanges(changes);
-                list.add(changeSets);
-                bookingsRequest.setChangeSets(list);
-                bookingsRequest.setTeamId(teamId);
-                bookingsRequest.setTeamMembershipId(teamMembershipId);
-                bookingsRequest.setDeletedIds(list1);
+                }if (!Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditEndTime()).equalsIgnoreCase(endTime.getText().toString())){
+                    jsonChangesObject.addProperty("to","2000-01-01T"+Utils.convert12HrsTO24Hrs(endTime.getText().toString())+":00:000Z");
+                }
 
-                editBookingCall(bookingsRequest);
+
+                jsonInnerObject.add("changes",jsonChangesObject);
+                jsonChangesetArray.add(jsonInnerObject);
+
+                jsonOuterObject.add("changesets", jsonChangesetArray);
+                jsonOuterObject.add("deletedIds", jsonDeletedIdsArray);
+
+                System.out.println("json un"+jsonOuterObject.toString());
+
+                if (jsonChangesObject.size() > 0){
+                    editBookingCall(jsonOuterObject,position);
+                }
+                selectedDeskId=0;
                 bottomSheetDialog.dismiss();
             }
         });

@@ -7,10 +7,37 @@ public class EditBookingDetails {
     String editStartTTime;
     String editEndTime;
     String deskCode;
+    String vehicleRegNumber;
+    String parkingSlotCode;
     int calId=0;
+    int parkingSlotId=0;
     int deskStatus=0;
     Date date;
     String abbrevation;
+
+    public int getParkingSlotId() {
+        return parkingSlotId;
+    }
+
+    public void setParkingSlotId(int parkingSlotId) {
+        this.parkingSlotId = parkingSlotId;
+    }
+
+    public String getVehicleRegNumber() {
+        return vehicleRegNumber;
+    }
+
+    public void setVehicleRegNumber(String vehicleRegNumber) {
+        this.vehicleRegNumber = vehicleRegNumber;
+    }
+
+    public String getParkingSlotCode() {
+        return parkingSlotCode;
+    }
+
+    public void setParkingSlotCode(String parkingSlotCode) {
+        this.parkingSlotCode = parkingSlotCode;
+    }
 
     public EditBookingDetails() {
     }

@@ -78,7 +78,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if(response.code()==200){
                             ProgressDialog.dismisProgressBar(ForgotPasswordActivity.this,dialog);
-                            Utils.toastMessage(ForgotPasswordActivity.this, "You will receive an email shortly with the instructions on how to reset your password.");
+                            Utils.toastMessage(
+                                    ForgotPasswordActivity.this, "You will receive an email shortly with the instructions on how to reset your password.");
                             finish();
                         }else if(response.code()==401){
                             ProgressDialog.dismisProgressBar(ForgotPasswordActivity.this,dialog);
