@@ -16,8 +16,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/nestedItemTv"
             android:text="Grocery and Stationary"
-            android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textColor="@color/figmaBlack"
+            android:textSize="15sp"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_centerVertical="true" />
 

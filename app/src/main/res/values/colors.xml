@@ -25,5 +25,9 @@
     <color name="line_gray">#dcdcdc</color>
     <color name="biometric_bg">#bcbcbc</color>
     <color name="figma_orange">#e9994a</color>
+    <color name="figma_dark_black">#000000</color>
+    <color name="figma_byrequest">#F8D49B</color>
+    <color name="figma_dark_green">#1B9D67</color>
+    <color name="figma_unavaliable">#D99797</color>
 
 </resources>

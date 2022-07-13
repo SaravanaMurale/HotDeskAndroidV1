@@ -3,7 +3,6 @@ package dream.guys.hotdeskandroid.ui.locate;
 import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -578,15 +577,27 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     //MyTeamBottomSheet
     private void callMyTeamBottomSheet() {
 
+        TextView myTeamClose;
+
         BottomSheetDialog myTeamBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         myTeamBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_myteam_bottomsheet,
                 new RelativeLayout(getContext())));
 
         rvMyTeam = myTeamBottomSheet.findViewById(R.id.rvLocateMyTeam);
+        myTeamClose=myTeamBottomSheet.findViewById(R.id.myTeamClose);
+
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvMyTeam.setLayoutManager(linearLayoutManager);
         rvMyTeam.setHasFixedSize(true);
+
+
+        myTeamClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myTeamBottomSheet.dismiss();
+            }
+        });
 
         List<String> stringName = new ArrayList<>();
         stringName.add("Bessie Cooper");
@@ -1015,13 +1026,35 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         ArrayList<DataModel> mList;
         ItemAdapter adapter;
 
+        TextView locateFilterCancel,locateFilterApply;
+
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((this).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_locate_filter,
                 new RelativeLayout(getContext())));
 
+        locateFilterCancel=bottomSheetDialog.findViewById(R.id.locateFilterCancel);
+        locateFilterApply=bottomSheetDialog.findViewById(R.id.locateFilterApply);
+
+
+
         locateFilterMainRV = bottomSheetDialog.findViewById(R.id.locateFilterMainRV);
         locateFilterMainRV.setHasFixedSize(true);
         locateFilterMainRV.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+        locateFilterCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        locateFilterApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
 
         mList = new ArrayList<>();
 

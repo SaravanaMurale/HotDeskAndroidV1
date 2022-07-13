@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -50,7 +51,7 @@ public class ShowCountryAdapter extends RecyclerView.Adapter<ShowCountryAdapter.
 
         holder.tvCountryName.setText(countryList.get(position).getName());
 
-        holder.tvCountryName.setOnClickListener(new View.OnClickListener() {
+        holder.itemCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -68,6 +69,8 @@ public class ShowCountryAdapter extends RecyclerView.Adapter<ShowCountryAdapter.
 
     public class ShowCountryViewHolder extends RecyclerView.ViewHolder{
 
+        @BindView(R.id.itemCardView)
+        CardView itemCardView;
         @BindView(R.id.tvCountryName)
         TextView tvCountryName;
 

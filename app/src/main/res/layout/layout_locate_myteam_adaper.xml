@@ -24,6 +24,15 @@
                 android:layout_centerVertical="true"
                 app:tint="@color/figmaBlack" />
 
+            <ImageView
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:src="@drawable/online"
+                android:layout_alignRight="@+id/locateMyTeamProfile"
+                android:layout_alignBottom="@+id/locateMyTeamProfile"
+                android:layout_marginBottom="@dimen/_5sdp"
+                />
+
 
             <ImageView
                 android:id="@+id/locateMyTeamFireIv"
@@ -63,7 +72,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_toRightOf="@+id/locateMyTeamProfile"
                 android:text="Desk-001"
-                android:textColor="@color/figmaGrey" />
+                android:textColor="@color/figmaBlack" />
 
             <ImageView
                 android:id="@+id/locateMyTeamLocation"
@@ -77,11 +86,11 @@
 
             <ImageView
                 android:id="@+id/locateMyTeamNameCheckInIcon"
-                android:layout_width="@dimen/_13sdp"
-                android:layout_height="@dimen/_13sdp"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
                 android:layout_below="@+id/locateMyTeamDeskName"
                 android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_toRightOf="@+id/locateMyTeamProfile"
                 android:src="@drawable/checkin"
                 app:tint="@color/figmaBlack" />
@@ -101,11 +110,11 @@
 
             <ImageView
                 android:id="@+id/locateMyTeamCheckOutIcon"
-                android:layout_width="@dimen/_13sdp"
-                android:layout_height="@dimen/_13sdp"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
                 android:layout_below="@+id/locateMyTeamDeskName"
                 android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_toRightOf="@+id/locateMyTeamCheckInTime"
                 android:src="@drawable/checkout"
                 app:tint="@color/figmaBlack" />

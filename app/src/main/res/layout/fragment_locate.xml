@@ -81,8 +81,11 @@
             android:layout_marginRight="@dimen/_9sdp"
             android:background="@drawable/rectangle_bg_with_corner"
             android:drawableRight="@drawable/locate_location"
+            android:gravity="center_vertical"
             android:hint="40th Bank Street 30th Floor"
-            android:padding="@dimen/_8sdp" />
+            android:padding="@dimen/_5sdp"
+            android:textColorHint="@color/figmaBlack"
+            android:textSize="@dimen/_10sdp" />
 
         <!--Calender-->
         <TextView
@@ -96,10 +99,12 @@
             android:background="@drawable/rectangle_bg_with_corner"
             android:drawableRight="@drawable/locate_calender"
             android:paddingLeft="@dimen/_8sdp"
-            android:paddingTop="@dimen/_5sdp"
-            android:paddingRight="@dimen/_8sdp"
-            android:paddingBottom="@dimen/_5sdp"
+            android:paddingTop="@dimen/_3sdp"
+            android:paddingRight="@dimen/_9sdp"
+            android:paddingBottom="@dimen/_3sdp"
             android:text="Wed 4 May"
+            android:textColor="@color/figmaBlack"
+            android:textSize="@dimen/_10sdp"
             tools:ignore="MissingConstraints" />
 
         <!--StartAndEndTime-->
@@ -114,7 +119,6 @@
             android:layout_marginRight="@dimen/_10sdp"
             android:background="@drawable/rectangle_bg_with_corner"
             android:paddingLeft="@dimen/_8sdp"
-            android:paddingTop="2dp"
             android:paddingRight="@dimen/_8sdp"
             tools:ignore="MissingConstraints">
 
@@ -124,7 +128,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="Start" />
+                android:text="Start"
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/locateStartTime"
@@ -132,28 +137,32 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_4sdp"
                 android:layout_toRightOf="@id/tvStartLocate"
                 android:text="8:00"
-                android:textColor="@color/black" />
+                android:textColor="@color/figmaBlack"
+                android:textSize="@dimen/_10sdp" />
 
 
             <view
                 class="android.widget.TextView"
-                android:layout_width="@dimen/_2sdp"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/_1sdp"
+                android:layout_height="14dp"
                 android:layout_centerVertical="true"
                 android:layout_marginVertical="@dimen/_5sdp"
-                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_4sdp"
                 android:layout_toRightOf="@id/locateStartTime"
-                android:background="@color/grey" />
+                android:background="@color/grey"
+
+                />
 
             <TextView
                 android:id="@+id/tvLocateEndTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginLeft="@dimen/_13sdp"
+                android:textSize="@dimen/_10sdp"
                 android:layout_toRightOf="@id/locateStartTime"
                 android:text="End"
 
@@ -167,7 +176,8 @@
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_toRightOf="@+id/tvLocateEndTime"
                 android:text="17:30"
-                android:textColor="@color/black" />
+                android:textColor="@color/figmaBlack"
+                android:textSize="@dimen/_10sdp" />
 
 
         </RelativeLayout>
@@ -218,9 +228,9 @@
         android:id="@+id/locateKeyStatusBlock"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_50sdp"
-        android:layout_toLeftOf="@+id/endBlock"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/_30sdp"
+        android:layout_toLeftOf="@+id/endBlock"
         android:visibility="invisible">
 
         <TextView
@@ -233,23 +243,23 @@
             android:drawableLeft="@drawable/status_unavaliable"
             android:paddingLeft="@dimen/_5sdp"
             android:paddingRight="@dimen/_5sdp"
-            android:text=" unavaliable" />
+            android:text=" unavaliable"
+            android:textColor="@color/figma_unavaliable" />
 
 
         <TextView
             android:id="@+id/statusBookedByMe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/statusUnAvaliable"
-            android:text=" booked by me"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/rectangle_bg_with_corner"
             android:layout_marginRight="@dimen/_5sdp"
+            android:layout_toLeftOf="@+id/statusUnAvaliable"
+            android:background="@drawable/rectangle_bg_with_corner"
+            android:drawableLeft="@drawable/status_booked_byme"
             android:paddingLeft="@dimen/_5sdp"
             android:paddingRight="@dimen/_5sdp"
-            android:drawableLeft="@drawable/status_booked_byme"
-            />
-
+            android:text=" booked by me"
+            android:textColor="@color/figmaBlue" />
 
 
         <TextView
@@ -259,13 +269,12 @@
             android:layout_above="@id/statusUnAvaliable"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/_5sdp"
-            android:text=" booked"
             android:layout_marginBottom="@dimen/_5sdp"
-            android:paddingLeft="@dimen/_5sdp"
-            android:paddingRight="@dimen/_5sdp"
             android:background="@drawable/rectangle_bg_with_corner"
             android:drawableLeft="@drawable/status_booked"
-            />
+            android:paddingLeft="@dimen/_5sdp"
+            android:paddingRight="@dimen/_5sdp"
+            android:text=" booked" />
 
         <TextView
             android:id="@+id/statusByRequest"
@@ -279,7 +288,8 @@
             android:drawableLeft="@drawable/byrequest"
             android:paddingLeft="@dimen/_5sdp"
             android:paddingRight="@dimen/_5sdp"
-            android:text=" by request" />
+            android:text=" by request"
+            android:textColor="@color/figma_byrequest" />
 
         <TextView
             android:id="@+id/statusAvaliable"
@@ -287,16 +297,14 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/statusUnAvaliable"
             android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:layout_toLeftOf="@+id/statusByRequest"
             android:background="@drawable/rectangle_bg_with_corner"
             android:drawableLeft="@drawable/status_avaliable"
             android:paddingLeft="@dimen/_5sdp"
             android:paddingRight="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:text=" avaliable" />
-
-
-
+            android:text=" avaliable"
+            android:textColor="@color/figma_dark_green" />
 
 
     </RelativeLayout>
