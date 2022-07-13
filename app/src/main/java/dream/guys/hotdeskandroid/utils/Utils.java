@@ -25,7 +25,6 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
@@ -62,8 +61,6 @@ import dream.guys.hotdeskandroid.ui.login.SignInActivity;
  */
 
 public class Utils {
-
-    static  String calPickDate=null;
 
 
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
@@ -156,9 +153,7 @@ public class Utils {
 
     //BotomSheet DatePicker
 
-    public static String bottomSheetDatePicker(Context mContext, Activity activity,String title, String date){
-
-
+    public static void bottomSheetDatePicker(Context mContext, Activity activity, String title, String date, TextView locateCheckInDate){
 
         BottomSheetDialog bottomSheetDatePicker = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
         bottomSheetDatePicker.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_date_picker,
@@ -168,8 +163,6 @@ public class Utils {
         TextView calBack = bottomSheetDatePicker.findViewById(R.id.calenderBack);
         CalendarView calendarView=bottomSheetDatePicker.findViewById(R.id.datePicker);
 
-
-
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
@@ -178,9 +171,7 @@ public class Utils {
                 String monthInString=String.valueOf(month);
                 String dayInString=String.valueOf(dayOfMonth);
                 String dateInString= yearInString+"-"+monthInString+"-"+dayInString;
-                calPickDate=dateInString;
-
-
+                locateCheckInDate.setText(dateInString);
             }
         });
 
@@ -201,7 +192,6 @@ public class Utils {
 
         bottomSheetDatePicker.show();
 
-        return calPickDate;
     }
 
     public static void showCustomAlertDialog(final Activity mContext, String aMessage) {

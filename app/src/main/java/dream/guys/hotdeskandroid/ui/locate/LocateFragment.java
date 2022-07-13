@@ -6,14 +6,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -120,6 +118,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     TextView locateDeskName,editBookingContinue;
     RelativeLayout bookingDateBlock,bookingStartBlock,bookingEndBlock;
     TextView locateCheckInDate,locateCheckInTime,locateCheckoutTime;
+    int teamDeskIdForBooking=0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -176,7 +175,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                Utils.bottomSheetDatePicker(getContext(), getActivity(), "", "");
+                Utils.bottomSheetDatePicker(getContext(), getActivity(), "", "", locateCheckInDate);
 
             }
         });
@@ -507,7 +506,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void getAvaliableDeskDetails(List<LocateCountryRespose.LocationItemLayout.Desks> desks) {
+    private void getAvaliableDeskDetails(List<LocateCountryRespose.LocationItemLayout.Desks> desks, int id) {
 
         dialog = ProgressDialog.showProgressBar(getContext());
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -535,7 +534,20 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 //System.out.println("AllDeskSize"+desks.size());
                 // System.out.println("ActiveDeskSize"+ deskAvaliabilityResponseList.getLocationDesksList().size());
 
-                List<String> deskCodeList = new ArrayList<>();
+
+                //GetTeamDeskIdForBooking
+                for (int i = 0; i <deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size() ; i++) {
+
+                    if(id==deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).getDeskId()){
+                         teamDeskIdForBooking=deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).getTeamDeskId();
+                        System.out.println("TeamDeskIdForBooking "+teamDeskIdForBooking);
+                    }
+
+
+                }
+
+
+                /*List<String> deskCodeList = new ArrayList<>();
                 for (int i = 0; i < desks.size(); i++) {
                     deskCodeList.add(desks.get(i).getDeskCode());
                 }
@@ -548,7 +560,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         }
 
                     }
-                }
+                }*/
 
 
                 ProgressDialog.dismisProgressBar(getContext(), dialog);
@@ -1096,6 +1108,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         System.out.println("BookingRequestDetail"+selctedCode+" "+key+" "+id+" "+code);
 
+        getAvaliableDeskDetails(null,id);
 
 
         BottomSheetDialog locateCheckInBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -1121,7 +1134,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         bookingStartBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.bottomSheetTimePicker(getContext(),getActivity(),"","");
+                //Utils.bottomSheetTimePicker(getContext(),getActivity(),"","","");
+                callBookingTimePickerBottomSheet();
             }
         });
 
@@ -1129,7 +1143,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                Utils.bottomSheetTimePicker(getContext(),getActivity(),"","");
+                //Utils.bottomSheetTimePicker(getContext(),getActivity(),"","","");
             }
         });
 
@@ -1139,6 +1153,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         locateDeskName.setText(selctedCode);
 
+
+
         editBookingContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1146,6 +1162,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 //dialog = ProgressDialog.showProgressBar(getContext());
 
                 if(code.equals("3")){
+
                     deskBookingRequest();
                 }else if(code.equals("5")){
                     carParkingRequest();
@@ -1157,9 +1174,17 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         locateCheckInBottomSheet.show();
     }
 
+    private void callBookingTimePickerBottomSheet() {
+
+     Utils.bottomSheetTimePicker(getContext(),getActivity(),locateCheckInTime,"","");
+
+    }
+
     private void callBookingDatePickerBottomSheet() {
 
-        BottomSheetDialog bottomSheetDatePicker = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        Utils.bottomSheetDatePicker(getContext(),getActivity(),"","",locateCheckInDate);
+
+        /*BottomSheetDialog bottomSheetDatePicker = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDatePicker.setContentView((getActivity()).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_date_picker,
                 new RelativeLayout(getActivity())));
 
@@ -1195,7 +1220,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         });
 
 
-        bottomSheetDatePicker.show();
+        bottomSheetDatePicker.show();*/
 
     }
 
@@ -1220,7 +1245,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         changes.setFrom("2022-07-21T20:15:00.000Z");
         changes.setTo("2022-07-21T21:30:00.000Z");
         changes.setTimeZoneId("India Standard Time");
-        changes.setTeamDeskId(21);
+        changes.setTeamDeskId(teamDeskIdForBooking);
         changes.setTypeOfCheckIn(1);
 
         changeSets.setChanges(changes);
