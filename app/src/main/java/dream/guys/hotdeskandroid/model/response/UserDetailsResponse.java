@@ -62,6 +62,22 @@ public class UserDetailsResponse {
     @SerializedName("calendarIntegrationType")
     private int calendarIntegrationType;
 
+    public int getTeamMembershipId() {
+        return teamMembershipId;
+    }
+
+    public void setTeamMembershipId(int teamMembershipId) {
+        this.teamMembershipId = teamMembershipId;
+    }
+
+    public CurrentTeam getCurrentTeam() {
+        return currentTeam;
+    }
+
+    public void setCurrentTeam(CurrentTeam currentTeam) {
+        this.currentTeam = currentTeam;
+    }
+
     public int getId() {
         return id;
     }

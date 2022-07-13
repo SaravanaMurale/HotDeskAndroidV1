@@ -58,7 +58,9 @@
 
 
 
+            <!--Date-->
             <RelativeLayout
+                android:id="@+id/bookingDateBlock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
@@ -89,7 +91,9 @@
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 
+            <!--Start-->
             <RelativeLayout
+                android:id="@+id/bookingStartBlock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
@@ -121,7 +125,9 @@
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 
+            <!--End-->
             <RelativeLayout
+                android:id="@+id/bookingEndBlock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
@@ -153,6 +159,7 @@
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 
+            <!--Repeat-->
             <RelativeLayout
                 android:id="@+id/bsRepeatBlock"
                 android:layout_width="match_parent"
@@ -216,8 +223,8 @@
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="Book"
-                    android:textSize="@dimen/_14sdp"
                     android:textColor="@color/figmaBlue"
+                    android:textSize="@dimen/_14sdp"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 

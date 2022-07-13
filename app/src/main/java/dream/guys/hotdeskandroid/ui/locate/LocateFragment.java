@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,7 +36,10 @@ import dream.guys.hotdeskandroid.example.DataModel;
 import dream.guys.hotdeskandroid.example.ItemAdapter;
 import dream.guys.hotdeskandroid.example.MyCanvasDraw;
 import dream.guys.hotdeskandroid.example.ValuesPOJO;
+import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
+import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
 import dream.guys.hotdeskandroid.model.request.Point;
+import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.utils.AppConstants;
@@ -109,9 +114,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     int stateId = 0;
 
     boolean keyClickedStats=true;
-
-
     List<Point> pointList=new ArrayList<>();
+
+    //CheckInDetails
+    TextView locateDeskName,editBookingContinue;
+    RelativeLayout bookingDateBlock,bookingStartBlock,bookingEndBlock;
+    TextView locateCheckInDate,locateCheckInTime,locateCheckoutTime;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -249,22 +257,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
 
-    //Book BottomSheet
-    private void callCheckInBottomSheetToBook(String selctedCode, String key, int id) {
 
-        TextView locateDeskName;
-
-        BottomSheetDialog locateCheckInBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        locateCheckInBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_checkin_bottomsheet,
-                new RelativeLayout(getContext())));
-
-        locateDeskName = locateCheckInBottomSheet.findViewById(R.id.locateDeskName);
-
-        locateDeskName.setText(selctedCode);
-
-
-        locateCheckInBottomSheet.show();
-    }
 
     private void getLocateDeskRoomCarDesign(int parentId, int id ) {
 
@@ -499,7 +492,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 }
 
-                callCheckInBottomSheetToBook(selctedCode, key, id);
+                callCheckInBottomSheetToBook(selctedCode, key, id,code);
 
 
             }
@@ -1096,6 +1089,221 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         bottomSheetDialog.show();
 
     }
+
+
+    //Book BottomSheet
+    private void callCheckInBottomSheetToBook(String selctedCode, String key, int id, String code) {
+
+        System.out.println("BookingRequestDetail"+selctedCode+" "+key+" "+id+" "+code);
+
+
+
+        BottomSheetDialog locateCheckInBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        locateCheckInBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_checkin_bottomsheet,
+                new RelativeLayout(getContext())));
+
+
+        bookingDateBlock=locateCheckInBottomSheet.findViewById(R.id.bookingDateBlock);
+        bookingStartBlock=locateCheckInBottomSheet.findViewById(R.id.bookingStartBlock);
+        bookingEndBlock=locateCheckInBottomSheet.findViewById(R.id.bookingEndBlock);
+
+        locateCheckInDate=locateCheckInBottomSheet.findViewById(R.id.locateCheckInDate);
+        locateCheckInTime=locateCheckInBottomSheet.findViewById(R.id.locateCheckInTime);
+        locateCheckoutTime=locateCheckInBottomSheet.findViewById(R.id.locateCheckoutTime);
+
+        bookingDateBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               callBookingDatePickerBottomSheet();
+            }
+        });
+
+        bookingStartBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.bottomSheetTimePicker(getContext(),getActivity(),"","");
+            }
+        });
+
+        bookingEndBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Utils.bottomSheetTimePicker(getContext(),getActivity(),"","");
+            }
+        });
+
+
+        locateDeskName = locateCheckInBottomSheet.findViewById(R.id.locateDeskName);
+        editBookingContinue=locateCheckInBottomSheet.findViewById(R.id.editBookingContinue);
+
+        locateDeskName.setText(selctedCode);
+
+        editBookingContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //dialog = ProgressDialog.showProgressBar(getContext());
+
+                if(code.equals("3")){
+                    deskBookingRequest();
+                }else if(code.equals("5")){
+                    carParkingRequest();
+                }
+            }
+        });
+
+
+        locateCheckInBottomSheet.show();
+    }
+
+    private void callBookingDatePickerBottomSheet() {
+
+        BottomSheetDialog bottomSheetDatePicker = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDatePicker.setContentView((getActivity()).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_date_picker,
+                new RelativeLayout(getActivity())));
+
+        TextView calContinue = bottomSheetDatePicker.findViewById(R.id.calenderContinue);
+        TextView calBack = bottomSheetDatePicker.findViewById(R.id.calenderBack);
+        CalendarView calendarView=bottomSheetDatePicker.findViewById(R.id.datePicker);
+
+
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+
+                String yearInString=String.valueOf(year);
+                String monthInString=String.valueOf(month);
+                String dayInString=String.valueOf(dayOfMonth);
+                String dateInString= yearInString+"-"+monthInString+"-"+dayInString;
+                locateCheckInDate.setText(dateInString);
+            }
+        });
+
+        calContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDatePicker.dismiss();
+            }
+        });
+
+        calBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDatePicker.dismiss();
+            }
+        });
+
+
+        bottomSheetDatePicker.show();
+
+    }
+
+
+    private void deskBookingRequest() {
+
+        System.out.println("DeskBookingRequested");
+
+        LocateBookingRequest locateBookingRequest=new LocateBookingRequest();
+        //locateBookingRequest.setTeamId(SessionHandler.getInstance().getInt(getContext(),AppConstants.TEAM_ID));
+        //locateBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(getContext(),AppConstants.TEAMMEMBERSHIP_ID));
+
+        locateBookingRequest.setTeamId(9);
+        locateBookingRequest.setTeamMembershipId(12);
+
+        LocateBookingRequest.ChangeSets changeSets=locateBookingRequest.new ChangeSets();
+        changeSets.setChangeSetId(0);
+        changeSets.setChangeSetDate("2022-07-14T00:00:00.000Z");
+
+        LocateBookingRequest.ChangeSets.Changes changes=changeSets. new Changes();
+        changes.setUsageTypeId(2);
+        changes.setFrom("2022-07-21T20:15:00.000Z");
+        changes.setTo("2022-07-21T21:30:00.000Z");
+        changes.setTimeZoneId("India Standard Time");
+        changes.setTeamDeskId(21);
+        changes.setTypeOfCheckIn(1);
+
+        changeSets.setChanges(changes);
+
+        List<LocateBookingRequest.ChangeSets> changeSetsList=new ArrayList<>();
+        changeSetsList.add(changeSets);
+
+        locateBookingRequest.setChangeSetsList(changeSetsList);
+
+        LocateBookingRequest.DeleteIds deleteIds=locateBookingRequest.new DeleteIds();
+        List<LocateBookingRequest.DeleteIds> deleteIdsList=new ArrayList<>();
+        //deleteIdsList.add(deleteIds);
+
+        locateBookingRequest.setDeleteIdsList(deleteIdsList);
+
+        System.out.println("BookingRequestObject"+locateBookingRequest);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<BaseResponse> call = apiService.doDeskBooking(locateBookingRequest);
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                System.out.println("BookingSuccessInLocate");
+
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                System.out.println("BookingfailureInLocate");
+            }
+        });
+
+
+    }
+
+    private void carParkingRequest() {
+
+        System.out.println("carParkingRequested");
+
+        LocateCarParkBookingRequest locateCarParkBookingRequest=new LocateCarParkBookingRequest();
+        locateCarParkBookingRequest.setParkingSlotId(0);
+
+        LocateCarParkBookingRequest.CarParkingChangeSets carParkingChangeSets=locateCarParkBookingRequest.new CarParkingChangeSets();
+        carParkingChangeSets.setId(0);
+        carParkingChangeSets.setDate("");
+
+        LocateCarParkBookingRequest.CarParkingChangeSets.CarParkingChanges carParkingChanges=carParkingChangeSets.new CarParkingChanges();
+        carParkingChanges.setFrom("");
+        carParkingChanges.setTo("");
+        carParkingChanges.setComments("");
+        carParkingChanges.setBookedForUser(0);
+        carParkingChanges.setVehicleRegNumber("");
+
+        carParkingChangeSets.setCarParkingChanges(carParkingChanges);
+
+        List<LocateCarParkBookingRequest.CarParkingChangeSets> carParkingChangeSetsList=new ArrayList<>();
+        carParkingChangeSetsList.add(carParkingChangeSets);
+
+        LocateCarParkBookingRequest.CarParkingDeleteIds carParkingDeleteIds=locateCarParkBookingRequest.new CarParkingDeleteIds();
+
+        List<LocateCarParkBookingRequest.CarParkingDeleteIds> deleteIdsList=new ArrayList<>();
+        //deleteIdsList.add(carParkingDeleteIds);
+
+        locateCarParkBookingRequest.setDeleteIdsList(deleteIdsList);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<BaseResponse> call = apiService.doCarParkingBooking(locateCarParkBookingRequest);
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+
 
     @Override
     public void onDestroy() {

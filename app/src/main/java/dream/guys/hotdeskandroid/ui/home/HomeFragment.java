@@ -127,9 +127,11 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 */
         //doTokenExpiryHere();
 
-        loadUserImage();
-        loadTenantImage();
-        loadHomeList();
+
+
+        //loadUserImage();
+        //loadTenantImage();
+        //loadHomeList();
 
 
 

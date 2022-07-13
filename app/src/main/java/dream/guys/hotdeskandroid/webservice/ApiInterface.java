@@ -11,6 +11,8 @@ import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
 import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.ForgotPasswordRequest;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
+import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
+import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
@@ -83,6 +85,12 @@ public interface ApiInterface {
 
     @GET("api/locate/ImmediateChildLocations")
     Call<List<String>> getItemJsonObject(@Query("parentId") int parentId);
+
+    @PUT("api/booking/bookings")
+    Call<BaseResponse>  doDeskBooking(@Body LocateBookingRequest locateBookingRequest);
+
+    @PUT("api/booking/bookings")
+    Call<BaseResponse> doCarParkingBooking(@Body LocateCarParkBookingRequest locateCarParkBookingRequest);
 
 
 
