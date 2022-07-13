@@ -358,6 +358,8 @@ public class LoginActivity extends AppCompatActivity {
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.EMAIL,email);
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.PASSWORD,password);
                             SessionHandler.getInstance().saveBoolean(LoginActivity.this,AppConstants.USER_DETAILS_SAVED_STATUS,true);
+                            SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.TEAMMEMBERSHIP_ID,userDetailsResponse.getTeamMembershipId());
+                            SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.TEAM_ID,userDetailsResponse.getCurrentTeam().getCurrentTeamId());
 
                             //Save UserId
                             SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.USER_ID,userDetailsResponse.getId());

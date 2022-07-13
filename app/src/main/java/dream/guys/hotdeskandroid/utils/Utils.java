@@ -33,12 +33,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CalendarView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.text.HtmlCompat;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -60,6 +62,8 @@ import dream.guys.hotdeskandroid.ui.login.SignInActivity;
  */
 
 public class Utils {
+
+    static  String calPickDate=null;
 
 
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
@@ -152,13 +156,33 @@ public class Utils {
 
     //BotomSheet DatePicker
 
-    public static void bottomSheetDatePicker(Context mContext, Activity activity,String title, String date){
+    public static String bottomSheetDatePicker(Context mContext, Activity activity,String title, String date){
+
+
+
         BottomSheetDialog bottomSheetDatePicker = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
         bottomSheetDatePicker.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_date_picker,
                 new RelativeLayout(activity)));
 
         TextView calContinue = bottomSheetDatePicker.findViewById(R.id.calenderContinue);
         TextView calBack = bottomSheetDatePicker.findViewById(R.id.calenderBack);
+        CalendarView calendarView=bottomSheetDatePicker.findViewById(R.id.datePicker);
+
+
+
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+
+                String yearInString=String.valueOf(year);
+                String monthInString=String.valueOf(month);
+                String dayInString=String.valueOf(dayOfMonth);
+                String dateInString= yearInString+"-"+monthInString+"-"+dayInString;
+                calPickDate=dateInString;
+
+
+            }
+        });
 
         calContinue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,6 +200,8 @@ public class Utils {
 
 
         bottomSheetDatePicker.show();
+
+        return calPickDate;
     }
 
     public static void showCustomAlertDialog(final Activity mContext, String aMessage) {
