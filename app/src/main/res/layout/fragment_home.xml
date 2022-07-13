@@ -26,13 +26,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/homeNotificationIcon"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:src="@drawable/notification_icon"
-                android:layout_marginHorizontal="@dimen/_15sdp"
-                />
+                <ImageView
+                    android:id="@+id/homeNotificationIcon"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:src="@drawable/notification_icon" />
 
                 <ImageView
                     android:layout_width="@dimen/_10sdp"
@@ -182,7 +181,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:paddingTop="@dimen/_10sdp"
         android:fillViewport="true"
         >
 

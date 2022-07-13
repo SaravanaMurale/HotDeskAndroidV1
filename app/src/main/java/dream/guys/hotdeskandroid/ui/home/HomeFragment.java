@@ -133,8 +133,6 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         //loadTenantImage();
         //loadHomeList();
 
-
-
         return root;
     }
 
@@ -227,30 +225,42 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 Utils.finishAllActivity(getContext());
             }
         },5000);
-
-
-
     }
 
-    public void editBookingCall(JsonObject data,int position) {
+    public void editBookingCall(JsonObject data,int position,int dskRoomStatus) {
         if (Utils.isNetworkAvailable(getActivity())) {
             dialog= ProgressDialog.showProgressBar(getContext());
             // TODO: 06-07-2022
             String json ="{'teamId':6,'teamMembershipId':21,'changesets':[{'id':1178,'date':'2022-07-11T00:00:00.000Z','changes':{'teamDeskId':64,'from':'2000-01-01T14:24:00.000Z','to':'2000-01-01T17:50:00.000Z'}}],'deletedIds':[]}";
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<BaseResponse> call = apiService.bookingBookings(data);
+            Call<BaseResponse> call=null;
+            switch (dskRoomStatus){
+                case 1:
+                    call = apiService.bookingBookings(data);
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    call = apiService.carParkBookingBookings(data);
+                    break;
+            }
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     dialog.dismiss();
                     if (response.code()==200){
                         Toast.makeText(getActivity(), "Success Bala", Toast.LENGTH_SHORT).show();
-                        if (response.body().getResultCode()!=null &&response.body().getResultCode().equalsIgnoreCase("ok")){
+                        if (response.body().getResultCode()!=null && response.body().getResultCode().equalsIgnoreCase("ok")){
                             loadHomeList();
                         }else {
                             Utils.showCustomAlertDialog(getActivity(),"Booking Not Updated "+response.body().getResultCode().toString());
                         }
-                    }else {
+                    }else if (response.code() == 500){
+                        Utils.showCustomAlertDialog(getActivity(),"500 Response");
+                    }else if (response.code() == 401){
+                        Utils.showCustomAlertDialog(getActivity(),"401 Error Response");
+                    }
+                    else {
                         Toast.makeText(getActivity(), "Response Failure", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -539,7 +549,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             editDeskBookingDetails.setEditEndTime(Utils.splitTime(meetingEntriesModel.getMyto()));
             editDeskBookingDetails.setDate(date);
 
-            editBookingUsingBottomSheet(editDeskBookingDetails,2,position);
+//            editBookingUsingBottomSheet(editDeskBookingDetails,2,position);
         }
     }
 
@@ -652,7 +662,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             @Override
             public void onClick(View v) {
                 if (editDeskBookingDetails.getDeskStatus() != 1)
-                    Utils.popUpTimePicker(getActivity(),startTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
+                    Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
+//                    Utils.popUpTimePicker(getActivity(),startTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
             }
         });
 
@@ -660,7 +671,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             @Override
             public void onClick(View v) {
                 if (editDeskBookingDetails.getDeskStatus() != 1)
-                    Utils.popUpTimePicker(getActivity(),endTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
+                    Utils.bottomSheetTimePicker(getContext(),getActivity(),endTime,"End Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
+//                    Utils.popUpTimePicker(getActivity(),endTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
             }
         });
         continueEditBook.setOnClickListener(new View.OnClickListener() {
@@ -673,7 +685,6 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 JsonArray jsonDeletedIdsArray = new JsonArray();
                 jsonInnerObject.addProperty("id",editDeskBookingDetails.getCalId());
                 jsonInnerObject.addProperty("date",""+Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+"T00:00:00.000Z");
-
                 switch (dskRoomParkStatus){
                     case 1:
                         jsonOuterObject.addProperty("teamId",teamId);
@@ -688,8 +699,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         jsonOuterObject.addProperty("parkingSlotId",editDeskBookingDetails.getParkingSlotId());
                         if (!commentRegistration.getText().toString().isEmpty() &&
                                 !commentRegistration.getText().toString().equalsIgnoreCase(""))
-                                jsonChangesObject.addProperty("vehicleRegNumber",commentRegistration.getText().toString());
-
+                            jsonChangesObject.addProperty("vehicleRegNumber",commentRegistration.getText().toString());
                         break;
                 }
 
@@ -706,12 +716,11 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 //                        jsonObject.put("teamDeskId",selectedDeskId);
                 }
                 if (!Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()).equalsIgnoreCase(startTime.getText().toString())){
-                    jsonChangesObject.addProperty("from", "2000-01-01T"+Utils.convert12HrsTO24Hrs(startTime.getText().toString())+":00:000Z");
+                    jsonChangesObject.addProperty("from", "2000-01-01T"+Utils.convert12HrsTO24Hrs(startTime.getText().toString())+":00.000Z");
 
                 }if (!Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditEndTime()).equalsIgnoreCase(endTime.getText().toString())){
-                    jsonChangesObject.addProperty("to","2000-01-01T"+Utils.convert12HrsTO24Hrs(endTime.getText().toString())+":00:000Z");
+                    jsonChangesObject.addProperty("to","2000-01-01T"+Utils.convert12HrsTO24Hrs(endTime.getText().toString())+":00.000Z");
                 }
-
 
                 jsonInnerObject.add("changes",jsonChangesObject);
                 jsonChangesetArray.add(jsonInnerObject);
@@ -722,7 +731,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 System.out.println("json un"+jsonOuterObject.toString());
 
                 if (jsonChangesObject.size() > 0){
-                    editBookingCall(jsonOuterObject,position);
+                    editBookingCall(jsonOuterObject,position,dskRoomParkStatus);
                 }
                 selectedDeskId=0;
                 bottomSheetDialog.dismiss();
