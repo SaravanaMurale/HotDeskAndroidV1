@@ -354,6 +354,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.USERNAME,userDetailsResponse.getFullName());
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.COMPANY_NAME,companyName);
+                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.CURRENT_TEAM,userDetailsResponse.getCurrentTeam().getCurrentTeamName());
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.EMAIL,email);
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.PASSWORD,password);
                             SessionHandler.getInstance().saveBoolean(LoginActivity.this,AppConstants.USER_DETAILS_SAVED_STATUS,true);

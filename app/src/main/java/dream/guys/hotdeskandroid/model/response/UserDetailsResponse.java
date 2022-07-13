@@ -62,6 +62,166 @@ public class UserDetailsResponse {
     @SerializedName("calendarIntegrationType")
     private int calendarIntegrationType;
 
+    public int getTeamMembershipId() {
+        return teamMembershipId;
+    }
+
+    public void setTeamMembershipId(int teamMembershipId) {
+        this.teamMembershipId = teamMembershipId;
+    }
+
+    public int getNotificationType() {
+        return notificationType;
+    }
+
+    public void setNotificationType(int notificationType) {
+        this.notificationType = notificationType;
+    }
+
+    public CurrentTeam getCurrentTeam() {
+        return currentTeam;
+    }
+
+    public void setCurrentTeam(CurrentTeam currentTeam) {
+        this.currentTeam = currentTeam;
+    }
+
+    public DefaultLocation getDefaultLocation() {
+        return defaultLocation;
+    }
+
+    public void setDefaultLocation(DefaultLocation defaultLocation) {
+        this.defaultLocation = defaultLocation;
+    }
+
+    public DefaultCarParkLocation getDefaultCarParkLocation() {
+        return defaultCarParkLocation;
+    }
+
+    public void setDefaultCarParkLocation(DefaultCarParkLocation defaultCarParkLocation) {
+        this.defaultCarParkLocation = defaultCarParkLocation;
+    }
+
+    public String getVehicleRegNumber() {
+        return vehicleRegNumber;
+    }
+
+    public void setVehicleRegNumber(String vehicleRegNumber) {
+        this.vehicleRegNumber = vehicleRegNumber;
+    }
+
+    public PreferredDesk getPreferredDesk() {
+        return preferredDesk;
+    }
+
+    public void setPreferredDesk(PreferredDesk preferredDesk) {
+        this.preferredDesk = preferredDesk;
+    }
+
+    public String getDeskPhoneNumber() {
+        return deskPhoneNumber;
+    }
+
+    public void setDeskPhoneNumber(String deskPhoneNumber) {
+        this.deskPhoneNumber = deskPhoneNumber;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getWorkHoursFrom() {
+        return workHoursFrom;
+    }
+
+    public void setWorkHoursFrom(String workHoursFrom) {
+        this.workHoursFrom = workHoursFrom;
+    }
+
+    public String getWorkHoursTo() {
+        return workHoursTo;
+    }
+
+    public void setWorkHoursTo(String workHoursTo) {
+        this.workHoursTo = workHoursTo;
+    }
+
+    public String getHighestRole() {
+        return highestRole;
+    }
+
+    public void setHighestRole(String highestRole) {
+        this.highestRole = highestRole;
+    }
+
+    public int getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(int tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public boolean isGdprAccepted() {
+        return gdprAccepted;
+    }
+
+    public void setGdprAccepted(boolean gdprAccepted) {
+        this.gdprAccepted = gdprAccepted;
+    }
+
+    public String getGdprTimestamp() {
+        return gdprTimestamp;
+    }
+
+    public void setGdprTimestamp(String gdprTimestamp) {
+        this.gdprTimestamp = gdprTimestamp;
+    }
+
+    public String getGdpripAddress() {
+        return gdpripAddress;
+    }
+
+    public void setGdpripAddress(String gdpripAddress) {
+        this.gdpripAddress = gdpripAddress;
+    }
+
+    public int getBookAhead() {
+        return bookAhead;
+    }
+
+    public void setBookAhead(int bookAhead) {
+        this.bookAhead = bookAhead;
+    }
+
+    public int getCarparkBookAhead() {
+        return carparkBookAhead;
+    }
+
+    public void setCarparkBookAhead(int carparkBookAhead) {
+        this.carparkBookAhead = carparkBookAhead;
+    }
+
+    public int getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(int countryId) {
+        this.countryId = countryId;
+    }
+
+    public int getCalendarIntegrationType() {
+        return calendarIntegrationType;
+    }
+
+    public void setCalendarIntegrationType(int calendarIntegrationType) {
+        this.calendarIntegrationType = calendarIntegrationType;
+    }
+
     public int getId() {
         return id;
     }
