@@ -84,7 +84,7 @@ public class Utils {
     }
 
     public static void toastMessage(Context mContext, String message) {
-        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
     }
 
     public static boolean isNetworkAvailable(final Context context) {
@@ -101,13 +101,15 @@ public class Utils {
 
 
     //Bottom Sheet TimePicker
-    public static void bottomSheetTimePicker(Context mContext, Activity activity, String title, String date) {
+    public static void bottomSheetTimePicker(Context mContext, Activity activity,TextView tv, String title, String date) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet,
                 new RelativeLayout(activity)));
         TimePicker simpleTimePicker = bottomSheetDialog.findViewById(R.id.simpleTimePicker);
         TextView titleTv = bottomSheetDialog.findViewById(R.id.title);
         TextView dateTv = bottomSheetDialog.findViewById(R.id.date);
+        TextView continueTv = bottomSheetDialog.findViewById(R.id.continue_tv);
+        TextView backTv = bottomSheetDialog.findViewById(R.id.tv_back);
         titleTv.setText(title);
         dateTv.setText(date);
 
@@ -115,6 +117,36 @@ public class Utils {
 //        simpleTimePicker.setHour(5); // from api level 23
 //        pickerint hours =simpleTimePicker.getCurrentHour(); // before api level 23
 //        int hours =simpleTimePicker.getHour();
+        backTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+        continueTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hour=simpleTimePicker.getHour();
+                minutes=simpleTimePicker.getMinute();
+                String time=hour+":"+minutes;
+
+                SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
+
+                try {
+                    Date date=f24hours.parse(time);
+                    SimpleDateFormat f12hours=new SimpleDateFormat("hh:mm aa");
+//                            return String.valueOf(f12hours.format(date));
+                    tv.setText(""+f12hours.format(date));
+                    System.out.println("ReceivedDate"+f12hours.format(date));
+                    bottomSheetDialog.dismiss();
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
         bottomSheetDialog.show();
     }
 
@@ -165,6 +197,7 @@ public class Utils {
             }
         });
         dialog.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
     }
 
 

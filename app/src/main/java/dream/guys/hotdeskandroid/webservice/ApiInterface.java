@@ -55,7 +55,10 @@ public interface ApiInterface {
 
     @PUT("api/booking/bookings")
     Call<BaseResponse> bookingBookings(@Body JsonObject body);
-//    Call<BaseResponse> bookingBookings(@Body String body);
+
+    @PUT("api/CarParkBooking/Bookings")
+    Call<BaseResponse> carParkBookingBookings(@Body JsonObject body);
+//    Call<BaseResponse> carParkbookingBookings(@Body String body);
 
 
 

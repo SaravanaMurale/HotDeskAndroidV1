@@ -127,7 +127,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                Utils.bottomSheetTimePicker(getContext(),getActivity(),"","");
+                Utils.bottomSheetTimePicker(getContext(),getActivity(),null,"","");
 
             }
         });
@@ -136,7 +136,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                Utils.bottomSheetTimePicker(getContext(),getActivity(),"","");
+                Utils.bottomSheetTimePicker(getContext(),getActivity(),null,"","");
 
             }
         });
