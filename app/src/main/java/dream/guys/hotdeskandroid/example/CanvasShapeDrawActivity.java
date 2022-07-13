@@ -34,8 +34,8 @@ public class CanvasShapeDrawActivity extends BaseClass {
 
 
 
-        MyCanvasDraw myCanvasDraw = new MyCanvasDraw (this,100,200);
-        relativeLayout.addView(myCanvasDraw);
+        //MyCanvasDraw myCanvasDraw = new MyCanvasDraw (this, pointList);
+        //relativeLayout.addView(myCanvasDraw);
         /*MyCanvasDraw myCanvasDraw1 = new MyCanvasDraw (this,400,500);
         relativeLayout.addView(myCanvasDraw1);*/
 

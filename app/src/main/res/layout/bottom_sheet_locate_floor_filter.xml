@@ -13,8 +13,15 @@
         android:layout_marginRight="@dimen/_9sdp"
         android:background="@drawable/rectangle_greybg_with_corner"
         android:drawableRight="@drawable/locate_location"
+        android:gravity="center_vertical"
         android:hint="40th Bank Street 30th Floor"
-        android:padding="@dimen/_8sdp" />
+        android:paddingLeft="@dimen/_15sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingRight="@dimen/_15sdp"
+        android:textSize="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:textColor="@color/figmaBlack"
+        android:textColorHint="@color/figmaBlack" />
 
     <TextView
         android:id="@+id/bsGeneralSearch"
@@ -22,11 +29,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/bsLocationSearch"
         android:layout_marginLeft="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:gravity="center_vertical"
         android:layout_marginRight="@dimen/_9sdp"
         android:background="@drawable/rectangle_greybg_with_corner"
-        android:hint="@string/search"
-        android:padding="@dimen/_8sdp" />
+        android:drawableLeft="@drawable/search_1px"
+        android:hint="  Search"
+        android:textSize="@dimen/_10sdp"
+        android:paddingLeft="@dimen/_8sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_7sdp"
+        />
 
     <LinearLayout
         android:id="@+id/floorFilterBlock"
@@ -51,7 +64,10 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="8dp"
                 android:text="United Kingdom"
-                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/figma_dark_black"
+
 
                 />
 
@@ -60,7 +76,7 @@
         android:layout_height="@dimen/_20sdp"
         android:src="@drawable/world"
         android:layout_toLeftOf="@id/bsCountry"
-
+        android:layout_centerVertical="true"
         android:layout_marginTop="5dp"
         android:layout_marginRight="@dimen/_15sdp"
         />
@@ -90,7 +106,9 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="8dp"
                 android:text="City"
-                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/figma_dark_black"
 
                 />
 
@@ -128,7 +146,9 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="8dp"
                 android:text="Building"
-                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/figma_dark_black"
 
                 />
 
@@ -166,7 +186,9 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="8dp"
                 android:text="Floor"
-                android:textColor="@color/black"
+                android:textSize="@dimen/_10sdp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/figma_dark_black"
 
                 />
 
@@ -180,6 +202,14 @@
                 />
 
         </RelativeLayout>
+
+
+        <!--RV FloorList-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvFloorList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
 
     </LinearLayout>
 

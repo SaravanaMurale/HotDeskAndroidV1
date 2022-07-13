@@ -9,7 +9,9 @@
     <RelativeLayout
         android:id="@+id/header"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        >
 
         <TextView
             android:id="@+id/tvMyTeam"
@@ -23,18 +25,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PMO Office"
             android:layout_below="@id/tvMyTeam"
-            />
+            android:text="PMO Office"
+            android:textColor="@color/figmaBlack"
+            android:textSize="@dimen/_9sdp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="All teams"
             android:layout_alignParentRight="true"
-            android:textColor="@color/blue"
-            android:textStyle="bold"
-            />
+            android:text="All teams"
+            android:textColor="@color/blue" />
 
 
 
@@ -42,14 +43,18 @@
     </RelativeLayout>
 
     <!--Search-->
-    <EditText
+    <TextView
         android:id="@+id/locateMyTeamSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/search"
         android:layout_below="@id/header"
         android:layout_marginTop="@dimen/_10sdp"
-        />
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:paddingLeft="@dimen/_10sdp"
+        android:drawableLeft="@drawable/search_1px"
+        android:background="@drawable/rectangle_greybg_with_corner"
+        android:hint="   Search" />
 
 
     <!--RecyclerView-->
@@ -62,6 +67,19 @@
         android:layout_marginTop="@dimen/_10sdp"
         />
 
+
+    <TextView
+        android:id="@+id/myTeamClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/rvLocateMyTeam"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="@string/close"
+        android:textColor="@color/figmaBlack"
+        android:textSize="@dimen/_15sdp"
+        android:textStyle="bold"
+        />
 
 
 </RelativeLayout>

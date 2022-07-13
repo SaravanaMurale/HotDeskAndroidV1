@@ -6,32 +6,33 @@
 
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/itemCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="@dimen/_10sdp"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginBottom="@dimen/_1sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:elevation="@dimen/_20sdp"
         >
 
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            >
+            android:background="@color/bg_grey">
 
             <TextView
                 android:id="@+id/tvCountryName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/_10sdp"
                 android:text="United Kingdom"
-                android:textColor="@color/black"
-                android:padding="@dimen/_8sdp"
-                />
-
+                android:textColor="@color/figmaBlack"
+                android:textSize="@dimen/_14sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_5sdp" />
 
         </RelativeLayout>
 
