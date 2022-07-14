@@ -7,13 +7,13 @@ import java.util.List;
 public class LocateCarParkBookingRequest {
 
     @SerializedName("parkingSlotId")
-    int parkingSlotId;
+    private int parkingSlotId;
 
     @SerializedName("changesets")
-    List<CarParkingChangeSets> carParkingChangeSetsList;
+    private List<CarParkingChangeSets> carParkingChangeSetsList;
 
     @SerializedName("deletedIds")
-    List<CarParkingDeleteIds> deleteIdsList;
+    private List<CarParkingDeleteIds> deleteIdsList;
 
     public int getParkingSlotId() {
         return parkingSlotId;
@@ -42,11 +42,11 @@ public class LocateCarParkBookingRequest {
     public class CarParkingChangeSets{
 
         @SerializedName("id")
-        int id;
+        private int id;
         @SerializedName("date")
-        String date;
+        private String date;
         @SerializedName("changes")
-        CarParkingChanges carParkingChanges;
+        private CarParkingChanges carParkingChanges;
 
         public int getId() {
             return id;
@@ -75,15 +75,15 @@ public class LocateCarParkBookingRequest {
         public class CarParkingChanges {
 
             @SerializedName("from")
-            String from;
+            private String from;
             @SerializedName("to")
-            String to;
+            private String to;
             @SerializedName("comments")
-            String comments;
+            private String comments;
             @SerializedName("bookedForUser")
-            int bookedForUser;
+            private int bookedForUser;
             @SerializedName("vehicleRegNumber")
-            String vehicleRegNumber;
+            private String vehicleRegNumber;
 
             public String getFrom() {
                 return from;
@@ -125,10 +125,6 @@ public class LocateCarParkBookingRequest {
                 this.vehicleRegNumber = vehicleRegNumber;
             }
         }
-
-
-
-
 
     }
 

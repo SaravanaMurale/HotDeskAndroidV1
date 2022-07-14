@@ -92,7 +92,7 @@ public interface ApiInterface {
     @PUT("api/booking/bookings")
     Call<BaseResponse>  doDeskBooking(@Body LocateBookingRequest locateBookingRequest);
 
-    @PUT("api/booking/bookings")
+    @PUT("api/carparkbooking/bookings")
     Call<BaseResponse> doCarParkingBooking(@Body LocateCarParkBookingRequest locateCarParkBookingRequest);
 
 
