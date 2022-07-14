@@ -14,10 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import dream.guys.hotdeskandroid.R;
 
@@ -40,14 +37,20 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
 
-        DataModel model = mList.get(position);
+        DataModel model = mList.get(holder.getAdapterPosition());
         holder.mTextView.setText(model.getItemText());
 
         boolean isExpandable = model.isExpandable();
         holder.expandableLayout.setVisibility(isExpandable ? View.VISIBLE : View.GONE);
 
+        if (model.isChecked()){
+            holder.checkBox.setChecked(true);
+        }else {
+            holder.checkBox.setChecked(false);
+        }
+
         if (isExpandable){
-            holder.mArrowImage.setImageResource(R.drawable.minus);
+            holder.mArrowImage.setImageResource(R.drawable.minus_1px);
         }else{
             holder.mArrowImage.setImageResource(R.drawable.plus_1px);
         }
@@ -55,23 +58,30 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
                 if (b){
-                    mList.get(position).setChecked(true);
+                    mList.get(holder.getAdapterPosition()).setChecked(true);
+                    list = new ArrayList<>();
 
-                    for (int i=0;i<mList.get(position).getNestedList().size();i++){
+                    for (int i=0;i<mList.get(holder.getAdapterPosition()).getNestedList().size();i++){
 
-                        model.getNestedList().get(i).setChecked(true);
-                        list.set(i,model.getNestedList().get(i));
+                        mList.get(holder.getAdapterPosition()).getNestedList().get(i).setChecked(true);
+                        //list.set(i,mList.get(holder.getAdapterPosition()).getNestedList().get(i));
+
+                        list = mList.get(holder.getAdapterPosition()).getNestedList();
 
                     }
                     setValueToadapter(holder);
                 }else {
-                    mList.get(position).setChecked(false);
+                    mList.get(holder.getAdapterPosition()).setChecked(false);
+                    list = new ArrayList<>();
 
-                    for (int i=0;i<mList.get(position).getNestedList().size();i++){
+                    for (int i=0;i<mList.get(holder.getAdapterPosition()).getNestedList().size();i++){
 
-                        model.getNestedList().get(i).setChecked(false);
-                        list.set(i,model.getNestedList().get(i));
+                        mList.get(holder.getAdapterPosition()).getNestedList().get(i).setChecked(false);
+                        //list.set(i,mList.get(holder.getAdapterPosition()).getNestedList().get(i));
+
+                        list = mList.get(holder.getAdapterPosition()).getNestedList();
 
                     }
                     setValueToadapter(holder);
@@ -84,8 +94,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                model.setExpandable(!model.isExpandable());
-                list = model.getNestedList();
+                //model.setExpandable(!model.isExpandable());
+                mList.get(holder.getAdapterPosition()).setExpandable(!model.isExpandable());
+                list = mList.get(holder.getAdapterPosition()).getNestedList(); //model.getNestedList();
                 notifyItemChanged(holder.getAdapterPosition());
             }
         });

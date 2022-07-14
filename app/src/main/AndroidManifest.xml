@@ -48,7 +48,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".BottomFilterActivity"
+            android:name=".example.BottomFilterActivity"
             android:exported="false" />
         <activity
             android:name=".ui.login.ForgotPasswordActivity"

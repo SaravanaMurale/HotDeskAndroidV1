@@ -121,7 +121,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             }
         });
 
-        profile.setOnClickListener(new View.OnClickListener() {
+        binding.profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),ProfileActivity.class);
@@ -142,9 +142,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
 
 
-        loadUserImage();
-        loadTenantImage();
-        loadHomeList();
+        //loadUserImage();
+        //loadTenantImage();
+        //loadHomeList();
 
         return root;
     }
