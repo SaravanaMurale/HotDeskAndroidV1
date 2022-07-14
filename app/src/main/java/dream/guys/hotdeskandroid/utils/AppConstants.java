@@ -15,6 +15,7 @@ public class AppConstants {
     //User Login Credential for biometric access
     public static final String USER_DETAILS_SAVED_STATUS="USER_DETAILS_SAVED_STATUS";
     public static final String COMPANY_NAME = "COMPANY_NAME";
+    public static final String CURRENT_TEAM = "CURRENT_TEAM";
     public static final String EMAIL = "EMAIL";
     public static final String PASSWORD = "PASSWORD";
     public static final String TOKEN_EXPIRY_STATUS="TOKEN_EXPIRY_STATUS";

@@ -70,6 +70,7 @@ public class UserDetailsResponse {
         this.teamMembershipId = teamMembershipId;
     }
 
+<<<<<<< HEAD
     public int getNotificationType() {
         return notificationType;
     }
@@ -78,6 +79,8 @@ public class UserDetailsResponse {
         this.notificationType = notificationType;
     }
 
+=======
+>>>>>>> ca52eb05c362ed785c29a6de12663b0e39ec67ec
     public CurrentTeam getCurrentTeam() {
         return currentTeam;
     }
@@ -86,6 +89,7 @@ public class UserDetailsResponse {
         this.currentTeam = currentTeam;
     }
 
+<<<<<<< HEAD
     public DefaultLocation getDefaultLocation() {
         return defaultLocation;
     }
@@ -222,6 +226,8 @@ public class UserDetailsResponse {
         this.calendarIntegrationType = calendarIntegrationType;
     }
 
+=======
+>>>>>>> ca52eb05c362ed785c29a6de12663b0e39ec67ec
     public int getId() {
         return id;
     }

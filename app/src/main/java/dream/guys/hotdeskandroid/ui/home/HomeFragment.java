@@ -1,6 +1,7 @@
 package dream.guys.hotdeskandroid.ui.home;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -76,6 +77,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     //Header
     @BindView(R.id.homeUserName)
     TextView homeUserName;
+    @BindView(R.id.profile)
+    TextView profile;
+    @BindView(R.id.homeTeamName)
+    TextView homeTeamName;
 
     //HomeBooking
     RecyclerView rvHomeBooking,rvDeskRecycler;
@@ -112,11 +117,19 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         userProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.bottomSheetEditYourBooking(getContext(),getActivity(),"message","dad");
+//                Utils.bottomSheetEditYourBooking(getContext(),getActivity(),"message","dad");
             }
         });
 
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),ProfileActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
         binding.homeUserName.setText(SessionHandler.getInstance().get(getContext(),AppConstants.USERNAME));
+        binding.homeTeamName.setText(SessionHandler.getInstance().get(getContext(),AppConstants.CURRENT_TEAM));
 /*
         text.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,13 +138,13 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             }
         });
 */
-        //doTokenExpiryHere();
+//        doTokenExpiryHere();
 
 
 
-        //loadUserImage();
-        //loadTenantImage();
-        //loadHomeList();
+        loadUserImage();
+        loadTenantImage();
+        loadHomeList();
 
         return root;
     }
