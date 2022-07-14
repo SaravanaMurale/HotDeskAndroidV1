@@ -174,16 +174,16 @@
             android:layout_marginVertical="@dimen/_2sdp"
             android:layout_marginHorizontal="@dimen/_5sdp"
             >
+
             <TextView
                 android:id="@+id/tv_team"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/TextRegular"
-                android:text="PMO"
-                android:layout_toLeftOf="@id/view_all"
                 android:layout_alignParentStart="true"
+                android:layout_toLeftOf="@id/view_all"
+                android:text="PMO"
                 android:textColor="@color/figmaBlack"
-                />
+                android:theme="@style/TextRegular" />
             <TextView
                 android:id="@+id/view_all"
                 android:layout_width="wrap_content"
@@ -233,7 +233,7 @@
                 <ImageView
                     android:layout_width="@dimen/_15sdp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/info_circle"
+                    android:src="@drawable/building_circle"
                     />
                 <TextView
                     android:layout_width="wrap_content"
@@ -320,5 +320,325 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginVertical="@dimen/_2sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        >
+
+        <TextView
+            android:id="@+id/tv_upcoming_booking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@id/view_all_upcoming"
+            android:text="Upcoming Booking"
+            android:textColor="@color/figmaBlack"
+            android:theme="@style/TextBold" />
+        <TextView
+            android:id="@+id/view_all_upcoming"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/TextRegular"
+            android:text="View All"
+            android:layout_marginHorizontal="@dimen/_2sdp"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/figmaBlue"
+            />
+    </RelativeLayout>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginVertical="@dimen/_5sdp"
+        app:cardCornerRadius="@dimen/_5sdp"
+        app:cardElevation="@dimen/_3sdp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    >
+
+                    <TextView
+                        android:id="@+id/user_status"
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp"
+                        android:background="@drawable/bg_circle_vector"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/TextRegular"
+                        android:text="Checked In"
+                        android:textColor="@color/black"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    >
+                    <ImageView
+                        android:id="@+id/bookingCheckInIcon"
+                        android:layout_width="@dimen/_13sdp"
+                        android:layout_height="@dimen/_13sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:src="@drawable/checkin"
+                        app:tint="@color/figmaBlack" />
+
+                    <TextView
+                        android:id="@+id/bookingCheckInTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_3sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:text="8:00"
+                        android:textColor="@color/figmaBlack"
+                        android:textSize="@dimen/_10sdp" />
+
+
+                    <ImageView
+                        android:id="@+id/bookingCheckOutIcon"
+                        android:layout_width="@dimen/_13sdp"
+                        android:layout_height="@dimen/_13sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:src="@drawable/checkout"
+                        app:tint="@color/figmaBlack" />
+
+                    <TextView
+                        android:id="@+id/bookingCheckOutTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_3sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:text="8:00"
+                        android:textColor="@color/figmaBlack"
+                        android:textSize="@dimen/_10sdp" />
+
+                </LinearLayout>
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:gravity="center_vertical"
+                >
+                <view
+                    android:layout_width="@dimen/_1sdp"
+                    android:layout_height="match_parent"
+                    class="android.widget.RelativeLayout"
+                    android:background="@color/figmaBgGrey"
+                    android:layout_alignParentStart="true"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="@dimen/_1sdp"
+                    android:layout_toLeftOf="@id/location"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_desk_room_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Room - 001"
+                        android:textColor="@color/figmaBlack"
+                        android:theme="@style/TextRegular" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/_3sdp"
+                        android:text="Bank Street floor 43"
+                        android:theme="@style/TextSmall"
+                        android:textColor="@color/figmaBlack"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/_3sdp"
+                        android:text="London"
+                        android:textColor="@color/figmaBlack"
+                        android:theme="@style/TextSmall" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/location"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_alignParentEnd="true"
+                    android:backgroundTint="@color/figmaBlue"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/blue_location" />
+            </RelativeLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginVertical="@dimen/_5sdp"
+        app:cardCornerRadius="@dimen/_5sdp"
+        app:cardElevation="@dimen/_3sdp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    >
+
+                    <TextView
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp"
+                        android:background="@drawable/bg_circle_vector"
+                        android:visibility="gone"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/TextRegular"
+                        android:text="Jun, 26"
+                        android:textColor="@color/black"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    >
+                    <ImageView
+                        android:layout_width="@dimen/_13sdp"
+                        android:layout_height="@dimen/_13sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:src="@drawable/checkin"
+                        app:tint="@color/figmaBlack" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_3sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:text="8:00"
+                        android:textColor="@color/figmaBlack"
+                        android:textSize="@dimen/_10sdp" />
+
+
+                    <ImageView
+                        android:layout_width="@dimen/_13sdp"
+                        android:layout_height="@dimen/_13sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:src="@drawable/checkout"
+                        app:tint="@color/figmaBlack" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_3sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:text="8:00"
+                        android:textColor="@color/figmaBlack"
+                        android:textSize="@dimen/_10sdp" />
+
+                </LinearLayout>
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:gravity="center_vertical"
+                >
+                <view
+                    android:layout_width="@dimen/_1sdp"
+                    android:layout_height="match_parent"
+                    class="android.widget.RelativeLayout"
+                    android:background="@color/figmaBgGrey"
+                    android:layout_alignParentStart="true"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="@dimen/_1sdp"
+                    android:layout_toLeftOf="@id/location_2"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Room - 001"
+                        android:textColor="@color/figmaBlack"
+                        android:theme="@style/TextRegular" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/_3sdp"
+                        android:text="Bank Street floor 43"
+                        android:theme="@style/TextSmall"
+                        android:textColor="@color/figmaBlack"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/_3sdp"
+                        android:text="London"
+                        android:textColor="@color/figmaBlack"
+                        android:theme="@style/TextSmall" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/location_2"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_alignParentEnd="true"
+                    android:backgroundTint="@color/figmaBlue"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/blue_location" />
+            </RelativeLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

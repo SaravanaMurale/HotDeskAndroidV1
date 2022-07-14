@@ -173,9 +173,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom())
                             +" - "
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
-
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("You're Working in alternative office");
-
                     break;
                 case "TR":
                     holder.tvBookingWorkingRemote.setText("You're in training");

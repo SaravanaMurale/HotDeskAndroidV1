@@ -54,6 +54,7 @@
                 android:src="@drawable/search_icon"
                 />
             <ImageView
+                android:id="@+id/profile"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
@@ -116,6 +117,7 @@
                             android:text="Hi, Bala"
                             />
                         <TextView
+                            android:id="@+id/homeTeamName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:theme="@style/TextRegular"

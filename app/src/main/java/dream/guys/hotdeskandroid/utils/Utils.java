@@ -117,7 +117,16 @@ public class Utils {
         titleTv.setText(title);
         dateTv.setText(date);
 
-        simpleTimePicker.setCurrentHour(5); // before api level 23
+        String[] parts =Utils.convert12HrsTO24Hrs(tv.getText().toString()).split(":");
+        simpleTimePicker.setHour(Integer.parseInt(parts[0]));
+        simpleTimePicker.setMinute(Integer.parseInt(parts[1]));
+
+        String part1 = parts[0]; // 004
+        String part2 = parts[1]; // 034556
+        simpleTimePicker.setHour(Integer.parseInt(part1));
+        simpleTimePicker.setMinute(Integer.parseInt(part2));
+
+//        simpleTimePicker.setCurrentHour(5); // before api level 23
 //        simpleTimePicker.setHour(5); // from api level 23
 //        pickerint hours =simpleTimePicker.getCurrentHour(); // before api level 23
 //        int hours =simpleTimePicker.getHour();
