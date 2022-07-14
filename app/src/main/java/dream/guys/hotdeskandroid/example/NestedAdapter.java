@@ -1,9 +1,11 @@
 package dream.guys.hotdeskandroid.example;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,10 +21,17 @@ import dream.guys.hotdeskandroid.R;
 public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.NestedViewHolder> {
 
     private ArrayList<ValuesPOJO> mList;
+    int pos=0;
 
     public NestedAdapter(ArrayList<ValuesPOJO> mList){
         this.mList = mList;
     }
+
+    public NestedAdapter(ArrayList<ValuesPOJO> list,int pos) {
+        this.mList = list;
+        this.pos = pos;
+    }
+
 
     @NonNull
     @Override
@@ -31,11 +40,24 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.NestedView
         return new NestedViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull NestedViewHolder holder, int position) {
         holder.mTv.setText(mList.get(position).getValues());
 
         holder.checkBox.setChecked(mList.get(position).isChecked());
+
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+               // Log.d("POS", String.valueOf(pos));
+
+                ItemAdapter.mList.get(pos).getNestedList().get(holder.getAdapterPosition()).setChecked(b);
+                //itemAdapter.notifyDataSetChanged();
+
+            }
+        });
 
     }
 

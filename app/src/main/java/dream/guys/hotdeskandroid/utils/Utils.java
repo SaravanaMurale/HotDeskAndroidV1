@@ -25,7 +25,6 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
@@ -62,8 +61,6 @@ import dream.guys.hotdeskandroid.ui.login.SignInActivity;
  */
 
 public class Utils {
-
-    static  String calPickDate=null;
 
 
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
@@ -104,12 +101,59 @@ public class Utils {
     }
 
 
+    //Locate Booking TimerPicker BottomSheet
+    public static void bottomSheetTimePickerInBooking(Context mContext, Activity activity,TextView tv, String title, String date) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet,
+                new RelativeLayout(activity)));
+
+        TimePicker simpleTimePicker24Hours = bottomSheetDialog.findViewById(R.id.simpleTimePicker);
+        simpleTimePicker24Hours.setIs24HourView(true);
+        TextView titleTv = bottomSheetDialog.findViewById(R.id.title);
+        TextView dateTv = bottomSheetDialog.findViewById(R.id.date);
+        TextView continueTv = bottomSheetDialog.findViewById(R.id.continue_tv);
+        TextView backTv = bottomSheetDialog.findViewById(R.id.tv_back);
+        titleTv.setText(title);
+        dateTv.setText(date);
+
+        backTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        continueTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                System.out.println("GETDATATATATA"+simpleTimePicker24Hours.getHour()+":"+simpleTimePicker24Hours.getMinute()+":"+simpleTimePicker24Hours.getMinute()+":"+simpleTimePicker24Hours.getMinute());
+                //tv.setText(getCurrentDate()+""+"T"+simpleTimePicker24Hours.getHour()+":"+simpleTimePicker24Hours.getMinute()+":"+"00"+"."+"000"+"Z");
+
+
+
+                tv.setText(simpleTimePicker24Hours.getHour()+":"+simpleTimePicker24Hours.getMinute());
+
+                //SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
+
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        bottomSheetDialog.show();
+
+
+    }
+
+
+
     //Bottom Sheet TimePicker
     public static void bottomSheetTimePicker(Context mContext, Activity activity,TextView tv, String title, String date) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet,
                 new RelativeLayout(activity)));
         TimePicker simpleTimePicker = bottomSheetDialog.findViewById(R.id.simpleTimePicker);
+        simpleTimePicker.setIs24HourView(true);
         TextView titleTv = bottomSheetDialog.findViewById(R.id.title);
         TextView dateTv = bottomSheetDialog.findViewById(R.id.date);
         TextView continueTv = bottomSheetDialog.findViewById(R.id.continue_tv);
@@ -164,10 +208,7 @@ public class Utils {
     }
 
     //BotomSheet DatePicker
-
-    public static String bottomSheetDatePicker(Context mContext, Activity activity,String title, String date){
-
-
+    public static void bottomSheetDatePicker(Context mContext, Activity activity, String title, String date, TextView locateCheckInDate){
 
         BottomSheetDialog bottomSheetDatePicker = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
         bottomSheetDatePicker.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_date_picker,
@@ -177,18 +218,29 @@ public class Utils {
         TextView calBack = bottomSheetDatePicker.findViewById(R.id.calenderBack);
         CalendarView calendarView=bottomSheetDatePicker.findViewById(R.id.datePicker);
 
-
-
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
 
                 String yearInString=String.valueOf(year);
-                String monthInString=String.valueOf(month);
-                String dayInString=String.valueOf(dayOfMonth);
-                String dateInString= yearInString+"-"+monthInString+"-"+dayInString;
-                calPickDate=dateInString;
 
+                int actualMonth=month+1;
+                String monthInStringFormat;
+
+                if(actualMonth>=10){
+                    monthInStringFormat=String.valueOf(actualMonth);
+                }else {
+                    String monthInString=String.valueOf(actualMonth);
+                    monthInStringFormat="0"+monthInString;
+                }
+
+
+                String dayInString=String.valueOf(dayOfMonth);
+                String dateInString= yearInString+"-"+monthInStringFormat+"-"+dayInString;
+                System.out.println("PickedDate"+dateInString);
+                //locateCheckInDate.setText(dateInString+"T"+getCurrentTimeIn24HourFormat()+".000"+"Z");
+                //locateCheckInDate.setText(dateInString+"T"+"00:00:00.000"+"Z");
+                locateCheckInDate.setText(dateInString);
 
             }
         });
@@ -210,7 +262,6 @@ public class Utils {
 
         bottomSheetDatePicker.show();
 
-        return calPickDate;
     }
 
     public static void showCustomAlertDialog(final Activity mContext, String aMessage) {
@@ -378,6 +429,14 @@ public class Utils {
 
         }
         return date;
+    }
+
+    public static String getCurrentTimeIn24HourFormat(){
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        String str = sdf.format(new Date());
+        System.out.println("sout"+str);
+        return str;
+
     }
 
     public static String getCurrentTime(){
