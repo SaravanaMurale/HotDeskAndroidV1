@@ -1093,7 +1093,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         nestedList2.add(valuesPOJO);
         valuesPOJO = new ValuesPOJO("Ac",false);
         nestedList2.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Non-Ac",false);
+        valuesPOJO = new ValuesPOJO("Non-AC",false);
         nestedList2.add(valuesPOJO);
 
 
