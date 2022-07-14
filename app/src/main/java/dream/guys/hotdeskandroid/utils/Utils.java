@@ -128,7 +128,11 @@ public class Utils {
             public void onClick(View v) {
 
                 System.out.println("GETDATATATATA"+simpleTimePicker24Hours.getHour()+":"+simpleTimePicker24Hours.getMinute()+":"+simpleTimePicker24Hours.getMinute()+":"+simpleTimePicker24Hours.getMinute());
-                tv.setText(getCurrentDate()+""+"T"+simpleTimePicker24Hours.getHour()+":"+simpleTimePicker24Hours.getMinute()+":"+"00"+"."+"000"+"Z");
+                //tv.setText(getCurrentDate()+""+"T"+simpleTimePicker24Hours.getHour()+":"+simpleTimePicker24Hours.getMinute()+":"+"00"+"."+"000"+"Z");
+
+
+
+                tv.setText(simpleTimePicker24Hours.getHour()+":"+simpleTimePicker24Hours.getMinute());
 
                 //SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
 
@@ -235,7 +239,9 @@ public class Utils {
                 String dateInString= yearInString+"-"+monthInStringFormat+"-"+dayInString;
                 System.out.println("PickedDate"+dateInString);
                 //locateCheckInDate.setText(dateInString+"T"+getCurrentTimeIn24HourFormat()+".000"+"Z");
-                locateCheckInDate.setText(dateInString+"T"+"00:00:00.000"+"Z");
+                //locateCheckInDate.setText(dateInString+"T"+"00:00:00.000"+"Z");
+                locateCheckInDate.setText(dateInString);
+
             }
         });
 

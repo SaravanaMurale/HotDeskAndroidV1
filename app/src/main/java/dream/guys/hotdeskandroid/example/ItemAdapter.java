@@ -20,7 +20,7 @@ import dream.guys.hotdeskandroid.R;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
 
-    private ArrayList<DataModel> mList;
+    public static ArrayList<DataModel> mList;
     private ArrayList<ValuesPOJO> list = new ArrayList<>();
     NestedAdapter adapter;
 
@@ -71,7 +71,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                         list = mList.get(holder.getAdapterPosition()).getNestedList();
 
                     }
-                    setValueToadapter(holder);
+                    setValueToadapter(holder,holder.getAbsoluteAdapterPosition());
                 }else {
                     mList.get(holder.getAdapterPosition()).setChecked(false);
                     list = new ArrayList<>();
@@ -84,12 +84,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                         list = mList.get(holder.getAdapterPosition()).getNestedList();
 
                     }
-                    setValueToadapter(holder);
+                    setValueToadapter(holder,holder.getAbsoluteAdapterPosition());
                 }
             }
         });
 
-        setValueToadapter(holder);
+        setValueToadapter(holder,holder.getAbsoluteAdapterPosition());
 
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,9 +102,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         });
     }
 
-    private void setValueToadapter(ItemViewHolder holder) {
+    private void setValueToadapter(ItemViewHolder holder,int pos) {
 
-        adapter = new NestedAdapter(list);
+
+        adapter = new NestedAdapter(list,pos);
         holder.nestedRecyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
         holder.nestedRecyclerView.setHasFixedSize(true);
         holder.nestedRecyclerView.setAdapter(adapter);

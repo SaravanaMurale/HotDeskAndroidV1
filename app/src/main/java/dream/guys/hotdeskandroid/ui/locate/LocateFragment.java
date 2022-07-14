@@ -1,5 +1,7 @@
 package dream.guys.hotdeskandroid.ui.locate;
 
+import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
+
 import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
@@ -1289,15 +1291,15 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         LocateBookingRequest.ChangeSets changeSets=locateBookingRequest.new ChangeSets();
         changeSets.setChangeSetId(0);
         //changeSets.setChangeSetDate("2022-07-14T00:00:00.000Z");
-        changeSets.setChangeSetDate(locateCheckInDate.getText().toString());
+        changeSets.setChangeSetDate(locateCheckInDate.getText().toString()+"T"+"00:00:00.000"+"Z");
 
         LocateBookingRequest.ChangeSets.Changes changes=changeSets. new Changes();
         changes.setUsageTypeId(2);
         //changes.setFrom("2022-07-21T20:15:00.000Z");
         //changes.setTo("2022-07-21T21:30:00.000Z");
 
-        changes.setFrom(locateCheckInTime.getText().toString());
-        changes.setTo(locateCheckoutTime.getText().toString());
+        changes.setFrom(getCurrentDate()+""+"T"+locateCheckInTime.getText().toString()+":"+"00"+"."+"000"+"Z");
+        changes.setTo(getCurrentDate()+""+"T"+locateCheckoutTime.getText().toString()+":"+"00"+"."+"000"+"Z");
         changes.setTimeZoneId("India Standard Time");
         changes.setTeamDeskId(teamDeskIdForBooking);
         changes.setTypeOfCheckIn(1);
@@ -1352,11 +1354,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         LocateCarParkBookingRequest.CarParkingChangeSets carParkingChangeSets=locateCarParkBookingRequest.new CarParkingChangeSets();
         carParkingChangeSets.setId(0);
-        carParkingChangeSets.setDate(locateCheckInDate.getText().toString());
+        carParkingChangeSets.setDate(locateCheckInDate.getText().toString()+"T"+"00:00:00.000"+"Z");
 
         LocateCarParkBookingRequest.CarParkingChangeSets.CarParkingChanges carParkingChanges=carParkingChangeSets.new CarParkingChanges();
-        carParkingChanges.setFrom(locateCheckInTime.getText().toString());
-        carParkingChanges.setTo(locateCheckoutTime.getText().toString());
+        carParkingChanges.setFrom(getCurrentDate()+""+"T"+locateCheckInTime.getText().toString()+":"+"00"+"."+"000"+"Z");
+        carParkingChanges.setTo(getCurrentDate()+""+"T"+locateCheckoutTime.getText().toString()+":"+"00"+"."+"000"+"Z");
         carParkingChanges.setComments(etComment.getText().toString());
         carParkingChanges.setBookedForUser(SessionHandler.getInstance().getInt(getContext(),AppConstants.USER_ID));
         carParkingChanges.setVehicleRegNumber(etVehicleReg.getText().toString());
