@@ -108,33 +108,33 @@ public class LoginActivity extends AppCompatActivity {
         ivWindows.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), WebViewActivity.class);
+            /*    Intent intent = new Intent(getApplicationContext(), WebViewActivity.class);
                 startActivity(intent);
-            }
-             /*   if (b2cApp == null) {
+            */
+                if (b2cApp == null) {
                     return;
                 }
 
-                *//**
+                /**
                  * Runs user flow interactively.
                  * <p>
                  * Once the user finishes with the flow, you will also receive an access token containing the claims for the scope you passed in (see B2CConfiguration.getScopes()),
                  * which you can subsequently use to obtain your resources.
-                 *//*
+                 */
                 List<Pair<String, String>> extraQueryParameters = new ArrayList<>();
                 extraQueryParameters.add( new Pair<String, String>("domain_hint", "google.com"));
                 extraQueryParameters.add( new Pair<String, String>("response_type", "code+id_token"));
                 extraQueryParameters.add( new Pair<String, String>("response_mode", "query"));
                 extraQueryParameters.add( new Pair<String, String>("scope", "openid%20offline_access&state=12345"));
 
-*//*
                 AcquireTokenParameters parameters = new AcquireTokenParameters.Builder()
                         .startAuthorizationFromActivity(LoginActivity.this)
                         .withAuthorizationQueryStringParameters(extraQueryParameters)
                         // More settings here
                         .build();
 
-                b2cApp.acquireToken(parameters);*//*
+                b2cApp.acquireToken(parameters);
+/*
 
                 AcquireTokenParameters parameters = new AcquireTokenParameters.Builder()
                         .startAuthorizationFromActivity(LoginActivity.this)
@@ -147,8 +147,9 @@ public class LoginActivity extends AppCompatActivity {
                         .build();
 
                 b2cApp.acquireToken(parameters);
+*/
 
-            }*/
+            }
         });
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -310,6 +311,11 @@ public class LoginActivity extends AppCompatActivity {
                     }else if(response.code()==401){
                         ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
                         Utils.toastMessage(LoginActivity.this, "Wrong userName or password");
+                    }else if(response.code()==403){
+                        Intent intent = new Intent(getApplicationContext(),GDPRActivity.class);
+                        intent.putExtra("tenantName",companyName);
+                        intent.putExtra("userName",email);
+                        startActivity(intent);
                     }
                 }
 

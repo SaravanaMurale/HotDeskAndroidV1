@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/figmaBackground"
+    tools:context=".ui.login.GDPRActivity">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_below="@id/btnSubmit"
+                android:layout_alignParentStart="true"
+                android:text="Terms of service"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:textColor="@color/figmaGrey"
+                android:textSize="@dimen/_14sdp"
+                android:theme="@style/TextBoldButton"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_below="@id/btnSubmit"
+                android:layout_alignParentStart="true"
+                android:text="Last updated 11 July 2022"
+                android:layout_marginStart="@dimen/_25sdp"
+                android:textColor="@color/figmaGrey"
+                android:textSize="@dimen/_12sdp"
+                android:theme="@style/TextRegular"
+                android:layout_marginBottom="@dimen/_5sdp"
+                />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2"
+        android:fillViewport="true"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:layout_marginVertical="@dimen/_15sdp"
+            android:theme="@style/TextRegular"
+            android:textColor="@color/figmaGrey"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer quisque in lorem ornare. Mi justo nunc morbi maecenas bibendum eros fringilla duis egestas. Facilisi tristique nunc vulputate sagittis, id eleifend. Pulvinar adipiscing adipiscing nulla mi tristique nisl mi. Pulvinar nulla feugiat imperdiet est condimentum morbi porttitor ultrices. Elementum aliquet diam gravida malesuada adipiscing sed pellentesque bibendum pulvinar. Ullamcorper orci leo, arcu vel nulla ultricies auctor lectus laoreet. Laoreet nulla facilisis enim quisque curabitur. Ultricies ut sit fermentum posuere sit accumsan in. Dolor quis amet cursus fusce nunc. Ultrices mollis mauris nibh ultrices. Etiam vel ut turpis odio aliquet ullamcorper massa ultricies nullam. Consequat, rhoncus massa nec et sociis bibendum interdum lacinia. Tellus, malesuada ut et dictum nunc tellus nunc luctus nulla.
+Sit vestibulum iaculis viverra turpis in ultrices. Sollicitudin orci, auctor ultrices morbi faucibus. Lobortis amet sed ut tristique libero etiam. Odio eget fames porta neque, felis cras consectetur enim sollicitudin. Nunc fringilla maecenas vitae aliquam etiam tristique enim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer quisque in lorem ornare. Mi justo nunc morbi maecenas bibendum eros fringilla duis egestas. Facilisi tristique nunc vulputate sagittis, id eleifend. Pulvinar adipiscing adipiscing nulla mi tristique nisl mi. Pulvinar nulla feugiat imperdiet est condimentum morbi porttitor ultrices. Elementum aliquet diam gravida malesuada adipiscing sed pellentesque bibendum pulvinar. Ullamcorper orci leo, arcu vel nulla ultricies auctor lectus laoreet. Laoreet nulla facilisis enim quisque curabitur. Ultricies ut sit fermentum posuere sit accumsan in. Dolor quis amet cursus fusce nunc. Ultrices mollis mauris nibh ultrices. Etiam vel ut turpis odio aliquet ullamcorper massa ultricies nullam. Consequat, rhoncus massa nec et sociis bibendum interdum lacinia. Tellus, malesuada ut et dictum nunc tellus nunc luctus nulla.
+Sit vestibulum iaculis viverra turpis in ultrices. Sollicitudin orci, auctor ultrices morbi faucibus. Lobortis amet sed ut tristique libero etiam. Odio eget fames porta neque, felis cras consectetur enim sollicitudin. Nunc fringilla maecenas vitae aliquam etiam tristique enim."
+
+            />
+    </ScrollView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnAccept"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/etEmail"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:background="@drawable/button_blue_bg"
+                android:paddingLeft="@dimen/_20sdp"
+                android:paddingRight="@dimen/_20sdp"
+                android:text="Accept"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:theme="@style/TextBoldButton" />
+
+            <TextView
+                android:id="@+id/decline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btnSubmit"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_25sdp"
+                android:text="Decline"
+                android:textColor="@color/figmaGrey"
+                android:textSize="@dimen/_16sdp"
+                android:theme="@style/TextRegular" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

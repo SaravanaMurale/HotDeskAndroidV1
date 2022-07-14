@@ -65,7 +65,6 @@ public class B2CUser {
 
             user.accounts.add(account);
         }
-
         List<B2CUser> users = new ArrayList<>();
         users.addAll(b2CUserHashMap.values());
         return users;

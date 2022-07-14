@@ -1,12 +1,12 @@
 {
-  "client_id" : "3558aa69-9b0b-442d-b81b-d30defd1c72a",
-  "redirect_uri" : "dream.guys.hotdeskandroid://oauth/redirect",
+  "client_id" : "0984a7b6-bc13-4141-8b0d-8f767e136bb7",
+  "redirect_uri" : "com.brickendon.hdplus://oauth/redirect",
   "account_mode" : "MULTIPLE",
   "broker_redirect_uri_registered": true,
   "authorities": [
     {
       "type": "B2C",
-      "authority_url": "https://hdplusdev.b2clogin.com/tfp/hdplusdev.onmicrosoft.com/B2C_1A_signup_signin_Multitenant/",
+      "authority_url": "https://login.microsoftonline.com/common",
       "default": true
     },
     {

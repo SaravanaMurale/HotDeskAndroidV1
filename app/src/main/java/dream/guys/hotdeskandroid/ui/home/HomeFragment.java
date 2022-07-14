@@ -56,6 +56,8 @@ import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.ImageResponse;
+import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
+import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -71,16 +73,12 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     FragmentHomeBinding binding;
     TextView text;
     ImageView userProfile;
+    ImageView profile;
     ImageView tenantProfile;
     Toolbar toolbar;
 
     //Header
-    @BindView(R.id.homeUserName)
-    TextView homeUserName;
-    @BindView(R.id.profile)
-    TextView profile;
-    @BindView(R.id.homeTeamName)
-    TextView homeTeamName;
+    ImageView notiIcon;
 
     //HomeBooking
     RecyclerView rvHomeBooking,rvDeskRecycler;
@@ -98,6 +96,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     Dialog dialog;
     int teamId=0,teamMembershipId=0,selectedDeskId=0;
     ArrayList<BookingListResponse.DayGroup> recyclerModelArrayList;
+    ArrayList<IncomingRequestResponse.Result> notiList;
     List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -112,6 +111,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         dialog = new Dialog(getContext());
 
         userProfile=root.findViewById(R.id.user_profile_pic);
+        notiIcon=root.findViewById(R.id.noti_icon);
+        profile=root.findViewById(R.id.profile);
         tenantProfile=root.findViewById(R.id.tentant_image_view);
         rvHomeBooking=root.findViewById(R.id.rvHomeBooking);
         userProfile.setOnClickListener(new View.OnClickListener() {
@@ -144,9 +145,47 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
         loadUserImage();
         loadTenantImage();
+        loadNotification();
         loadHomeList();
 
         return root;
+    }
+
+    private void loadNotification() {
+        if (Utils.isNetworkAvailable(getActivity())) {
+
+//            dialog= ProgressDialog.showProgressBar(getContext());
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<IncomingRequestResponse> call = apiService.getIncomingRequest(false);
+            call.enqueue(new Callback<IncomingRequestResponse>() {
+                @Override
+                public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {
+                    if(response.code()==200){
+                        notiList = new ArrayList<>();
+                        if (response.body().getResults()!=null){
+                            notiList.addAll(response.body().getResults());
+                            loo :
+                            for (int i=0;i<notiList.size();i++){
+                                if (notiList.get(i).getStatus()==0){
+                                    notiIcon.setVisibility(View.VISIBLE);
+                                    break loo;
+                                }
+                            }
+                        }
+                    }else if(response.code()==401){
+                        Utils.toastMessage(getActivity(),"Token Expired");
+                    }
+                }
+                @Override
+                public void onFailure(Call<IncomingRequestResponse> call, Throwable t) {
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
     }
 
     private void loadTenantImage() {
@@ -167,12 +206,14 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         }
                         if (imageResponse.getImage()!=null){
                             String cleanImage = imageResponse.getImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");
+                            SessionHandler.getInstance().save(getActivity(), AppConstants.TENANTIMAGE
+                                    , cleanImage);
                             byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
                             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                             tenantProfile.setImageBitmap(decodedByte);
                         }
                     }else if(response.code()==401){
-
+                        Utils.toastMessage(getActivity(),"Token Expired");
                     }
                 }
                 @Override
@@ -204,12 +245,14 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         }
                         if (imageResponse.getImage()!=null){
                             String cleanImage = imageResponse.getImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");
+                            SessionHandler.getInstance().save(getActivity(), AppConstants.USERIMAGE
+                                    , cleanImage);
                             byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
                             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                             userProfile.setImageBitmap(decodedByte);
                         }
                     }else if(response.code()==401){
-
+                        Utils.showCustomAlertDialog(getActivity(),"Token Expired");
                     }
                 }
                 @Override
@@ -262,7 +305,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     dialog.dismiss();
                     if (response.code()==200){
-                        Toast.makeText(getActivity(), "Success Bala", Toast.LENGTH_SHORT).show();
+                        Utils.showCustomAlertDialog(getActivity(),"Update Success");
+//                        Toast.makeText(getActivity(), "Success Bala", Toast.LENGTH_SHORT).show();
                         if (response.body().getResultCode()!=null && response.body().getResultCode().equalsIgnoreCase("ok")){
                             loadHomeList();
                         }else {
@@ -369,12 +413,15 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             call.enqueue(new Callback<BookingForEditResponse>() {
                 @Override
                 public void onResponse(Call<BookingForEditResponse> call, Response<BookingForEditResponse> response) {
-                    bookingForEditResponse = response.body().getTeamDeskAvailabilities();
-                    for (int i=0;i<bookingForEditResponse.size();i++){
-                        System.out.println("desk Code Check"+bookingForEditResponse.get(i).getDeskCode());
+                    if (response.code()==200){
+                        bookingForEditResponse = response.body().getTeamDeskAvailabilities();
+                        for (int i=0;i<bookingForEditResponse.size();i++){
+                            System.out.println("desk Code Check"+bookingForEditResponse.get(i).getDeskCode());
 
+                        }
+                    }else if(response.code()==401){
+                        Utils.showCustomAlertDialog(getActivity(),"Token Expired");
                     }
-
                     ProgressDialog.dismisProgressBar(getContext(),dialog);
 //                    createRecyclerDeskList(response.body().getTeamDeskAvailabilities());
                 }
@@ -561,8 +608,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             editDeskBookingDetails.setEditStartTTime(Utils.splitTime(meetingEntriesModel.getFrom()));
             editDeskBookingDetails.setEditEndTime(Utils.splitTime(meetingEntriesModel.getMyto()));
             editDeskBookingDetails.setDate(date);
+            editDeskBookingDetails.setCalId(meetingEntriesModel.getId());
+            editDeskBookingDetails.setMeetingRoomtId(meetingEntriesModel.getMeetingRoomId());
 
-//            editBookingUsingBottomSheet(editDeskBookingDetails,2,position);
+            editBookingUsingBottomSheet(editDeskBookingDetails,2,position);
         }
     }
 
@@ -707,6 +756,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                             jsonChangesObject.addProperty("comments",commentRegistration.getText().toString());
                             break;
                     case 2:
+                        jsonOuterObject.addProperty("meetingRoomId",editDeskBookingDetails.getMeetingRoomtId());
                         break;
                     case 3:
                         jsonOuterObject.addProperty("parkingSlotId",editDeskBookingDetails.getParkingSlotId());

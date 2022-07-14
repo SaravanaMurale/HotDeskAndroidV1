@@ -34,11 +34,12 @@
                     android:src="@drawable/notification_icon" />
 
                 <ImageView
+                    android:id="@+id/noti_icon"
                     android:layout_width="@dimen/_10sdp"
                     android:layout_height="@dimen/_10sdp"
-                    android:src="@drawable/notification_red"
                     android:layout_marginHorizontal="@dimen/_15sdp"
-
+                    android:src="@drawable/notification_red"
+                    android:visibility="gone"
                     />
 
             </RelativeLayout>

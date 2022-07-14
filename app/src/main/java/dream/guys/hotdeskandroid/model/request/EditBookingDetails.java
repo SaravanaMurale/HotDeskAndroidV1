@@ -11,9 +11,18 @@ public class EditBookingDetails {
     String parkingSlotCode;
     int calId=0;
     int parkingSlotId=0;
+    int meetingRoomtId=0;
     int deskStatus=0;
     Date date;
     String abbrevation;
+
+    public int getMeetingRoomtId() {
+        return meetingRoomtId;
+    }
+
+    public void setMeetingRoomtId(int meetingRoomtId) {
+        this.meetingRoomtId = meetingRoomtId;
+    }
 
     public int getParkingSlotId() {
         return parkingSlotId;

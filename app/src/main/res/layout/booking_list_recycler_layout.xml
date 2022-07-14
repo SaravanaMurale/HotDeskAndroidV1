@@ -61,158 +61,174 @@
             app:cardCornerRadius="@dimen/_5sdp"
             android:elevation="@dimen/_5sdp"
             >
-
-            <!--Booking Detail-->
-            <RelativeLayout
-                android:id="@+id/rlInOffice"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_5sdp"
-                android:visibility="visible">
-
-                <ImageView
-                    android:id="@+id/bookingIvIcon"
-                    android:layout_width="@dimen/_21sdp"
-                    android:layout_height="@dimen/_21sdp"
-                    android:src="@drawable/car"
-                    app:tint="@color/figmaBlack" />
-
-                <ImageView
-                    android:id="@+id/bookingIvEdit"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:layout_alignParentRight="true"
-                    android:src="@drawable/edit" />
-
-                <TextView
-                    android:id="@+id/bookingDeskName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_toRightOf="@+id/bookingIvIcon"
-                    android:text="Space-001"
-                    android:textStyle="bold"
-                    android:theme="@style/TextBold" />
-
-                <ImageView
-                    android:id="@+id/bookingIvLocation"
-                    android:layout_width="@dimen/_10sdp"
-                    android:layout_height="@dimen/_11sdp"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginTop="1dp"
-                    android:layout_toRightOf="@id/bookingDeskName"
-                    android:src="@drawable/blue_location"
-
-                    />
-
-                <TextView
-                    android:id="@+id/bookingAddress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/bookingDeskName"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_3sdp"
-                    android:layout_toRightOf="@+id/bookingIvIcon"
-                    android:text="40 Bank Street -30th Floor"
-                    android:textColor="@color/figmaGrey" />
-
-                <ImageView
-                    android:id="@+id/bookingCheckInIcon"
-                    android:layout_width="@dimen/_13sdp"
-                    android:layout_height="@dimen/_13sdp"
-                    android:layout_below="@+id/bookingAddress"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_3sdp"
-                    android:layout_toRightOf="@+id/bookingIvIcon"
-                    android:src="@drawable/checkin"
-                    app:tint="@color/figmaBlack" />
-
-                <TextView
-                    android:id="@+id/bookingCheckInTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/bookingAddress"
-                    android:layout_marginLeft="@dimen/_3sdp"
-                    android:layout_marginTop="@dimen/_3sdp"
-                    android:layout_toRightOf="@+id/bookingCheckInIcon"
-                    android:text="8:00"
-                    android:textColor="@color/figmaBlack"
-                    android:textSize="@dimen/_10sdp" />
-
-
-                <ImageView
-                    android:id="@+id/bookingCheckOutIcon"
-                    android:layout_width="@dimen/_13sdp"
-                    android:layout_height="@dimen/_13sdp"
-                    android:layout_below="@+id/bookingAddress"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_3sdp"
-                    android:layout_toRightOf="@+id/bookingCheckInTime"
-                    android:src="@drawable/checkout"
-                    app:tint="@color/figmaBlack" />
-
-                <TextView
-                    android:id="@+id/bookingCheckOutTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/bookingAddress"
-                    android:layout_marginLeft="@dimen/_3sdp"
-                    android:layout_marginTop="@dimen/_3sdp"
-                    android:layout_toRightOf="@+id/bookingCheckOutIcon"
-                    android:text="8:00"
-                    android:textColor="@color/figmaBlack"
-                    android:textSize="@dimen/_10sdp" />
-
-                <ImageView
-                    android:id="@+id/bookingRefreshIcon"
-                    android:layout_width="@dimen/_13sdp"
-                    android:layout_height="@dimen/_13sdp"
-                    android:layout_below="@+id/bookingAddress"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_3sdp"
-                    android:layout_toRightOf="@+id/bookingCheckOutTime"
-                    android:src="@drawable/refresh" />
-
-                <Button
-                    android:id="@+id/bookingBtnCheckOut"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/checkout"
-                    android:background="@drawable/button_blue_bg"
-                    android:backgroundTint="@color/figmaBlue"
-                    android:fontFamily="@font/sen"
-                    android:maxHeight="@dimen/_35sdp"
-                    android:minHeight="@dimen/_15sdp"
-                    android:layout_below="@+id/bookingCheckInIcon"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:textAllCaps="false"
-                    android:theme="@style/TextBoldButton"
-                    android:layout_toRightOf="@+id/bookingIvIcon"
+                android:orientation="vertical"
+                >
+                <view
+                    android:id="@+id/green_line"
+                    class="android.widget.TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_2sdp"
+                    android:layout_above="@id/bookingIvIcon"
+                    android:layout_alignParentTop="true"
                     android:visibility="gone"
+                    android:background="@color/teal_200"
                     />
-
-                <Button
-                    android:id="@+id/bookingBtnCheckIn"
-                    android:layout_width="wrap_content"
+                <!--Booking Detail-->
+                <RelativeLayout
+                    android:id="@+id/rlInOffice"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/bookingCheckInIcon"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_3sdp"
-                    android:layout_toRightOf="@+id/bookingIvIcon"
-                    android:background="@drawable/button_blue_bg"
-                    android:backgroundTint="@color/figmaBlue"
-                    android:fontFamily="@font/sen"
-                    android:maxHeight="@dimen/_35sdp"
-                    android:minHeight="@dimen/_15sdp"
-                    android:text="@string/checkin"
-                    android:textAllCaps="false"
-                    android:theme="@style/TextBoldButton"
-                    android:visibility="visible" />
+                    android:layout_margin="@dimen/_5sdp"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/bookingIvIcon"
+                        android:layout_width="@dimen/_21sdp"
+                        android:layout_height="@dimen/_21sdp"
+                        android:src="@drawable/car"
+                        app:tint="@color/figmaBlack" />
+
+                    <ImageView
+                        android:id="@+id/bookingIvEdit"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/edit" />
+
+                    <TextView
+                        android:id="@+id/bookingDeskName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_toRightOf="@+id/bookingIvIcon"
+                        android:text="Space-001"
+                        android:textStyle="bold"
+                        android:theme="@style/TextBold" />
+
+                    <ImageView
+                        android:id="@+id/bookingIvLocation"
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_11sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="1dp"
+                        android:layout_toRightOf="@id/bookingDeskName"
+                        android:src="@drawable/blue_location"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/bookingAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/bookingDeskName"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_toRightOf="@+id/bookingIvIcon"
+                        android:text="40 Bank Street -30th Floor"
+                        android:textColor="@color/figmaGrey" />
+
+                    <ImageView
+                        android:id="@+id/bookingCheckInIcon"
+                        android:layout_width="@dimen/_13sdp"
+                        android:layout_height="@dimen/_13sdp"
+                        android:layout_below="@+id/bookingAddress"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_toRightOf="@+id/bookingIvIcon"
+                        android:src="@drawable/checkin"
+                        app:tint="@color/figmaBlack" />
+
+                    <TextView
+                        android:id="@+id/bookingCheckInTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/bookingAddress"
+                        android:layout_marginLeft="@dimen/_3sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_toRightOf="@+id/bookingCheckInIcon"
+                        android:text="8:00"
+                        android:textColor="@color/figmaBlack"
+                        android:textSize="@dimen/_10sdp" />
+
+
+                    <ImageView
+                        android:id="@+id/bookingCheckOutIcon"
+                        android:layout_width="@dimen/_13sdp"
+                        android:layout_height="@dimen/_13sdp"
+                        android:layout_below="@+id/bookingAddress"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_toRightOf="@+id/bookingCheckInTime"
+                        android:src="@drawable/checkout"
+                        app:tint="@color/figmaBlack" />
+
+                    <TextView
+                        android:id="@+id/bookingCheckOutTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/bookingAddress"
+                        android:layout_marginLeft="@dimen/_3sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_toRightOf="@+id/bookingCheckOutIcon"
+                        android:text="8:00"
+                        android:textColor="@color/figmaBlack"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <ImageView
+                        android:id="@+id/bookingRefreshIcon"
+                        android:layout_width="@dimen/_13sdp"
+                        android:layout_height="@dimen/_13sdp"
+                        android:layout_below="@+id/bookingAddress"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_toRightOf="@+id/bookingCheckOutTime"
+                        android:src="@drawable/refresh" />
+
+                    <Button
+                        android:id="@+id/bookingBtnCheckOut"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/checkout"
+                        android:background="@drawable/button_blue_bg"
+                        android:backgroundTint="@color/figmaBlue"
+                        android:fontFamily="@font/sen"
+                        android:maxHeight="@dimen/_35sdp"
+                        android:minHeight="@dimen/_15sdp"
+                        android:layout_below="@+id/bookingCheckInIcon"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:textAllCaps="false"
+                        android:theme="@style/TextBoldButton"
+                        android:layout_toRightOf="@+id/bookingIvIcon"
+                        android:visibility="gone"
+                        />
+
+                    <Button
+                        android:id="@+id/bookingBtnCheckIn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/bookingCheckInIcon"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_toRightOf="@+id/bookingIvIcon"
+                        android:background="@drawable/button_blue_bg"
+                        android:backgroundTint="@color/figmaBlue"
+                        android:fontFamily="@font/sen"
+                        android:maxHeight="@dimen/_35sdp"
+                        android:minHeight="@dimen/_15sdp"
+                        android:text="@string/checkin"
+                        android:textAllCaps="false"
+                        android:theme="@style/TextBoldButton"
+                        android:visibility="visible" />
 
 
 
-            </RelativeLayout>
+                </RelativeLayout>
+
+            </LinearLayout>
 
 
             <!--Working Remotely-->

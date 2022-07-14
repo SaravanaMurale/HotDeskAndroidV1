@@ -69,14 +69,14 @@ public class B2CConfiguration {
     /**
      * Name of your B2C tenant hostname.
      */
-//    final static String azureAdB2CHostName = "fabrikamb2c.b2clogin.com";
-    final static String azureAdB2CHostName = "hdplusdev.b2clogin.com";
+    final static String azureAdB2CHostName = "fabrikamb2c.b2clogin.com";
+//    final static String azureAdB2CHostName = "hdplusdev.b2clogin.com";
 
     /**
      * Name of your B2C tenant.
      */
-//    final static String tenantName = "fabrikamb2c.onmicrosoft.com";
-    final static String tenantName = "hdplusdev.onmicrosoft.com";
+    final static String tenantName = "fabrikamb2c.onmicrosoft.com";
+//    final static String tenantName = "hdplusdev.onmicrosoft.com";
 
     /**
      * Returns an authority for the given policy name.

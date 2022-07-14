@@ -10,6 +10,7 @@ import java.util.List;
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
 import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.ForgotPasswordRequest;
+import dream.guys.hotdeskandroid.model.request.GDPRrequest;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
 import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
@@ -19,6 +20,7 @@ import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.model.response.ImageResponse;
+import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import retrofit2.Call;
@@ -33,6 +35,9 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
+    @POST("api/account/updategdpracceptancesettings")
+    Call<GDPRrequest> updateGDPR(@Body GDPRrequest request);
+
     @POST("api/Account/Token")
     Call<GetTokenResponse> getLoginToken(@Body GetTokenRequest request);
 
@@ -44,6 +49,9 @@ public interface ApiInterface {
 
     @POST("api/Account/RequestPasswordReset")
     Call<Void> requestPasswordReset(@Body ForgotPasswordRequest forgotPasswordRequest);
+
+    @GET("api/requests/incoming")
+    Call<IncomingRequestResponse>  getIncomingRequest(@Query("includePastRequests") boolean includePastRequests);
 
     @GET("api/Account/LoggedInUser")
     Call<UserDetailsResponse>  getLoginUserDetails();
@@ -60,6 +68,10 @@ public interface ApiInterface {
 
     @PUT("api/CarParkBooking/Bookings")
     Call<BaseResponse> carParkBookingBookings(@Body JsonObject body);
+
+    @PUT("api/MeetingRoomBooking/Bookings")
+    Call<BaseResponse> meetingRoomBookingBookings(@Body JsonObject body);
+
 //    Call<BaseResponse> carParkbookingBookings(@Body String body);
 
 

@@ -64,7 +64,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
     @Override
     public void onBindViewHolder(@NonNull HomeBookingListViewHolder holder, int position) {
-
+        //conditon is to display date and line accordingly
         if (list.get(position).isDateStatus()){
             holder.dateLayout.setVisibility(View.VISIBLE);
             System.out.println("DateFormatPrintHere"+list.get(position).getDate());
@@ -77,6 +77,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.lineLayout.setVisibility(View.VISIBLE);
         }
 
+        //condition displays today string instead od date and disable previous date
         if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate()) == 1){
             holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
             holder.bookingIvEdit.setVisibility(View.GONE);
@@ -116,23 +117,30 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             Utils.compareTimeIfCheckInEnable(
                             Utils.getCurrentTime(),
                             Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom())
-                            ))
+                            )){
+                        holder.greenLine.setVisibility(View.VISIBLE);
                         holder.bookingBtnCheckIn.setVisibility(View.VISIBLE);
+                    }
                     else
                         holder.bookingBtnCheckIn.setVisibility(View.GONE);
 
                     holder.bookingBtnCheckOut.setVisibility(View.GONE);
                     break;
                 case 2:
+                    //show green line if its falls between from and to time of today
                     if (Utils.getCurrentDate()
                             .equalsIgnoreCase(Utils.getYearMonthDateFormat(list.get(position).getDate())) &&
                             Utils.compareTimeIfCheckInEnable(
                                     Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()),
                                     Utils.getCurrentTime()
-                            ))
+                            )){
+                        holder.greenLine.setVisibility(View.VISIBLE);
                         holder.bookingBtnCheckOut.setVisibility(View.VISIBLE);
-                    else
+                    }
+                    else{
+                        holder.greenLine.setVisibility(View.GONE);
                         holder.bookingBtnCheckOut.setVisibility(View.GONE);
+                    }
 
                     holder.bookingBtnCheckIn.setVisibility(View.GONE);
 //                    holder.bookingBtnCheckOut.setVisibility(View.VISIBLE);
@@ -200,7 +208,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     break;
 
             }
-        }else if (list.get(position).getCalDeskStatus() == 2){
+        }
+        else if (list.get(position).getCalDeskStatus() == 2){
             //Meeting Room
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
@@ -210,6 +219,22 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     .placeholder(R.drawable.room)
                     .into(holder.bookingImage);
 
+            //show green line if its falls between from and to time of today
+            if(Utils.getCurrentDate()
+                    .equalsIgnoreCase(Utils.getYearMonthDateFormat(list.get(position).getDate()))
+                    &&
+                    Utils.compareTimeIfCheckInEnable(
+                            Utils.getCurrentTime(),
+                            Utils.splitTime(list.get(position).getMeetingBookingsModel().getFrom())
+                    ) &&
+                    Utils.compareTimeIfCheckInEnable(
+                            Utils.splitTime(list.get(position).getMeetingBookingsModel().getMyto()),
+                            Utils.getCurrentTime())){
+                holder.greenLine.setVisibility(View.VISIBLE);
+            } else {
+                holder.greenLine.setVisibility(View.GONE);
+            }
+
             holder.bookingDeskName.setText(""+list.get(position).getMeetingBookingsModel().getMeetingRoomName());
             holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getMeetingBookingsModel().getFrom()));
             holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getMeetingBookingsModel().getMyto()));
@@ -218,6 +243,23 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             //Car Parking
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
+
+            //show green line if its falls between from and to time of today
+            if(Utils.getCurrentDate()
+                    .equalsIgnoreCase(Utils.getYearMonthDateFormat(list.get(position).getDate()))
+                    &&
+                    Utils.compareTimeIfCheckInEnable(
+                            Utils.getCurrentTime(),
+                            Utils.splitTime(list.get(position).getCarParkBookingsModel().getFrom())
+                    )&&
+                    Utils.compareTimeIfCheckInEnable(
+                    Utils.splitTime(list.get(position).getCarParkBookingsModel().getMyto()),
+                    Utils.getCurrentTime()
+            )){
+                holder.greenLine.setVisibility(View.VISIBLE);
+            }else {
+                holder.greenLine.setVisibility(View.GONE);
+            }
 
             Glide.with(context)
                     .load(R.drawable.car)
@@ -276,7 +318,6 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     onCheckInClickable.onCheckInCarParkingClick(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel(),AppConstants.EDIT, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
                     //Toast.makeText(context, "CAR CLICKED", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
@@ -300,11 +341,6 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
             }
         });
-
-
-
-
-
     }
 
     @Override
@@ -322,6 +358,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         TextView bookingCheckInTime;
         @BindView(R.id.bookingCheckOutTime)
         TextView bookingCheckOutTime;
+        @BindView(R.id.green_line)
+        TextView greenLine;
         @BindView(R.id.bookingBtnCheckIn)
         Button bookingBtnCheckIn;
         @BindView(R.id.bookingBtnCheckOut)
