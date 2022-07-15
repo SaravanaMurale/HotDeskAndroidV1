@@ -7,14 +7,18 @@ import android.app.ActionBar;
 import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.ScaleAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +39,7 @@ import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.FloorAdapter;
 import dream.guys.hotdeskandroid.adapter.LocateMyTeamAdapter;
 import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
+import dream.guys.hotdeskandroid.databinding.FragmentLocateBinding;
 import dream.guys.hotdeskandroid.example.CanvasView;
 import dream.guys.hotdeskandroid.example.DataModel;
 import dream.guys.hotdeskandroid.example.ItemAdapter;
@@ -57,6 +62,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSelectListener {
+
+
+    @BindView(R.id.scrollView)
+    ScrollView scrollView;
 
     //BottomSheetData
     TextView country, state, street, floor, back, bsApply;
@@ -112,7 +121,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
     CanvasView canvasView;
-    dream.guys.hotdeskandroid.databinding.FragmentLocateBinding binding;
+    FragmentLocateBinding binding;
 
     Dialog dialog;
     int stateId = 0;
@@ -134,7 +143,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     int baseDist;
     float baseRatio;
 
-    RelativeLayout.LayoutParams params;
+    //RelativeLayout.LayoutParams params;
+
+    private ScaleGestureDetector mScaleGestureDetector;
+    GestureDetector gestureDetector;
+    private float mScale = 1f;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -143,7 +156,27 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         binding = dream.guys.hotdeskandroid.databinding.FragmentLocateBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        //params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+        gestureDetector = new GestureDetector(getContext(), new GestureListener());
+
+        mScaleGestureDetector = new ScaleGestureDetector(getContext(), new ScaleGestureDetector.SimpleOnScaleGestureListener(){
+            @Override
+            public boolean onScale(ScaleGestureDetector detector) {
+                float scale = 1 - detector.getScaleFactor();
+                float prevScale = mScale;
+                mScale += scale;
+
+                if (mScale > 10f)
+                    mScale = 10f;
+
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1f / prevScale, 1f / mScale, 1f / prevScale, 1f / mScale, detector.getFocusX(), detector.getFocusY());
+                scaleAnimation.setDuration(0);
+                scaleAnimation.setFillAfter(true);
+                scrollView.startAnimation(scaleAnimation);
+                return true;
+            }
+        });
 
         dialog = new Dialog(getContext());
         //locateText= root.findViewById(R.id.locate_Text);
@@ -357,7 +390,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             System.out.println("CoordinateData"+ i +"position"+"size "+coordinateList.get(i).size());
 
-            Point point=new Point(coordinateList.get(i).get(0),coordinateList.get(i).get(1));
+            Point point=new Point(coordinateList.get(i).get(0)+40,coordinateList.get(i).get(1)+20);
             pointList.add(point);
 
 
@@ -413,7 +446,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         deskView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
         ImageView ivDesk = deskView.findViewById(R.id.ivDesk);
-        RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         //Head Facing
         for (int i = 0; i < valueList.size(); i++) {
@@ -456,10 +489,19 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
  
              }*/
 
-        relativeLayout.leftMargin = Integer.parseInt(valueList.get(0));
-        relativeLayout.topMargin = Integer.parseInt(valueList.get(1));
+        int x=Integer.parseInt(valueList.get(0));
+        int y=Integer.parseInt(valueList.get(1));
+
+        relativeLayout.leftMargin = x;
+        relativeLayout.topMargin = y;
+
+
+        //relativeLayout.leftMargin = Integer.parseInt(valueList.get(0)+10);
+        //relativeLayout.topMargin = Integer.parseInt(valueList.get(1)+10);
+        //relativeLayout.width = 80;
+        //relativeLayout.height = 80;
         relativeLayout.width = 80;
-        relativeLayout.height = 80;
+        relativeLayout.height = 67;
         ivDesk.setLayoutParams(relativeLayout);
 
         //OnClickListener
@@ -730,7 +772,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         rvFloor = bottomSheetDialog.findViewById(R.id.rvFloorList);
 
 
-        country.setText(locateCountryResposes.get(0).getName());
+        country.setText("Global Location");
+        //country.setText(locateCountryResposes.get(0).getName());
         rvCountry.setVisibility(View.INVISIBLE);
         statBlock.setVisibility(View.INVISIBLE);
         rvState.setVisibility(View.INVISIBLE);
@@ -1433,6 +1476,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
+    public boolean dispatchTouchEvent(MotionEvent event) {
+
+        //super.dispatchTouchEvent(event);
+        mScaleGestureDetector.onTouchEvent(event);
+        gestureDetector.onTouchEvent(event);
+        return gestureDetector.onTouchEvent(event);
+    }
+
 
     @Override
     public void onDestroy() {
@@ -1441,8 +1492,33 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         System.out.println("OndestroyCalledInLocateFragment");
     }
 
+   /* @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
 
-    private class TouchHandler implements View.OnTouchListener
+        super.dispatchTouchEvent(event);
+        mScaleGestureDetector.onTouchEvent(event);
+        gestureDetector.onTouchEvent(event);
+        return gestureDetector.onTouchEvent(event);
+    }
+*/
+
+
+    public class GestureListener extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onDown(MotionEvent e) {
+
+            return true;
+        }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            return true;
+        }
+
+    }
+
+
+   /* private class TouchHandler implements View.OnTouchListener
     {
         @Override
         public boolean onTouch(View view, MotionEvent event)
@@ -1460,7 +1536,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
             return true;
         }
-    }
+    }*/
 
 
     /*@Override

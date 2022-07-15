@@ -2,6 +2,7 @@ package dream.guys.hotdeskandroid;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.MotionEvent;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -16,6 +17,9 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     BottomNavigationView navView;
     NavController navController;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
