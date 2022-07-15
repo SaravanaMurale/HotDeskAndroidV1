@@ -1207,6 +1207,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
+                locateCheckInBottomSheet.dismiss();
+
                 //dialog = ProgressDialog.showProgressBar(getContext());
                 if(code.equals("3")){
                 //Desk Booking
@@ -1349,7 +1351,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 ProgressDialog.dismisProgressBar(getContext(), dialog);
 
                 BaseResponse baseResponse=response.body();
-                Toast.makeText(getContext(),baseResponse.getResultCode(),Toast.LENGTH_LONG).show();
+                if(baseResponse!=null) {
+                    Toast.makeText(getContext(), baseResponse.getResultCode(), Toast.LENGTH_LONG).show();
+                }else {
+                    Toast.makeText(getContext(), "Not Avaliable", Toast.LENGTH_LONG).show();
+                }
 
                 System.out.println("BookingSuccessInLocate");
 
@@ -1405,7 +1411,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 ProgressDialog.dismisProgressBar(getContext(), dialog);
                 BaseResponse baseResponse=response.body();
-                Toast.makeText(getContext(),baseResponse.getResultCode(),Toast.LENGTH_LONG).show();
+                if (baseResponse!=null){
+                    Toast.makeText(getContext(),baseResponse.getResultCode(),Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(getContext(), "Not Avaliable", Toast.LENGTH_LONG).show();
+                }
                 /*if(response.code()==200){
                     Toast.makeText(getContext(),"Car Parking Booked Successfully",Toast.LENGTH_LONG).show();
                 }*/
