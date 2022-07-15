@@ -1,11 +1,14 @@
 package dream.guys.hotdeskandroid.ui.locate;
 
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
+import static dream.guys.hotdeskandroid.utils.Utils.getCurrentTime;
 
+import android.app.ActionBar;
 import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -125,12 +128,22 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     int teamDeskIdForBooking=0;
     int selectedCarParkingSlotId=0;
 
+    //Zoom
+    final static float move=200;
+    float ratio=1.0f;
+    int baseDist;
+    float baseRatio;
+
+    RelativeLayout.LayoutParams params;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = dream.guys.hotdeskandroid.databinding.FragmentLocateBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
         dialog = new Dialog(getContext());
         //locateText= root.findViewById(R.id.locate_Text);
@@ -153,7 +166,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                Utils.bottomSheetTimePicker(getContext(), getActivity(), null,"", "");
+                String c=Utils.getCurrentDate()+"T"+getCurrentTime()+":00Z";
+                System.out.println("CurentDateAndTime"+c);
+
+                //Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), locateStartTime,"", "");
+                //getCurrentDate()+""+"T"+locateStartTime.getText().toString()+":"+"00"+"."+"000"+"Z";
 
             }
         });
@@ -162,7 +179,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                Utils.bottomSheetTimePicker(getContext(), getActivity(), null,"", "");
+                Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), locateEndTime,"", "");
 
             }
         });
@@ -180,7 +197,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                Utils.bottomSheetDatePicker(getContext(), getActivity(), "", "", locateCheckInDate);
+                Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(),locateCalendearView,"","");
+
+                //locateCalendearView.getText().toString()+"T"+"00:00:00.000"+"Z");
 
             }
         });
@@ -231,6 +250,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             }
         });
+
+
 
 
         //Initally Load Floor Details
@@ -1407,4 +1428,56 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         System.out.println("OndestroyCalledInLocateFragment");
     }
+
+
+    private class TouchHandler implements View.OnTouchListener
+    {
+        @Override
+        public boolean onTouch(View view, MotionEvent event)
+        {
+            if (event.getAction() == MotionEvent.ACTION_DOWN)
+            {
+                params.leftMargin = Math.round(event.getX() * 160f / getContext().getResources().getDisplayMetrics().densityDpi);
+                params.topMargin = Math.round(event.getY() * 160f / getContext().getResources().getDisplayMetrics().densityDpi);
+                //image.setLayoutParams(params);
+                //image.setVisibility(View.VISIBLE);
+                firstLayout.setPivotX(event.getX());
+                firstLayout.setPivotY(event.getY());
+                firstLayout.setScaleX(2f);
+                firstLayout.setScaleY(2f);
+            }
+            return true;
+        }
+    }
+
+
+    /*@Override
+    public boolean onTouch(View v, MotionEvent event) {
+
+        if(event.getPointerCount()==2){
+            int action=event.getAction();
+            int mainaction=action&MotionEvent.ACTION_MASK;
+
+            if(mainaction==MotionEvent.ACTION_POINTER_DOWN){
+                baseDist=getDistace(event);
+                baseRatio=ratio;
+            }else {
+
+                float scale=(getDistace(event)-baseDist)/move;
+                float factor=(float) Math.pow(2,scale);
+                ratio=Math.min(1024.0f,Math.max(0.1f,baseRatio*factor));
+
+            }
+        }
+
+        return true;
+    }*/
+
+    private int getDistace(MotionEvent event) {
+        int dx=(int) (event.getX(0)-event.getX(1));
+        int dy=(int) (event.getY(0)-event.getY(1));
+        return (int)(Math.sqrt(dx*dx+dy*dy));
+    }
+
+
 }

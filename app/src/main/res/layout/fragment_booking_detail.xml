@@ -192,12 +192,14 @@
         android:layout_above="@+id/bookingDetailsBlock"
         android:background="@color/figmaBgGrey"
         android:layout_marginBottom="@dimen/_20sdp"
-        android:visibility="gone"
+        android:visibility="visible"
         >
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+       <ImageView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:src="@drawable/locate_layout"
+           />
 
     </RelativeLayout>
 
@@ -206,7 +208,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bookingDetailsBlock"
-        android:visibility="visible"
+        android:visibility="gone"
         >
 
         <ImageView
