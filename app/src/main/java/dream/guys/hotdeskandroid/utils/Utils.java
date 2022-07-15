@@ -20,6 +20,7 @@
 package dream.guys.hotdeskandroid.utils;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -54,6 +55,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.login.SignInActivity;
 
 /**
@@ -143,6 +145,27 @@ public class Utils {
         bottomSheetDialog.show();
 
 
+    }
+    public static void tokenExpiryAlert(final Context mContext, String msg) {
+        final Activity activity = (Activity) mContext;
+
+        AlertDialog.Builder userInactiveAlertBuilder = new AlertDialog.Builder(mContext);
+        userInactiveAlertBuilder.setTitle("Warning!!!");
+        userInactiveAlertBuilder.setCancelable(false);
+        userInactiveAlertBuilder.setMessage("Sorry, Your account is inactive. Contact your administrator to activate it.");
+
+        userInactiveAlertBuilder.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent callLogin = new Intent(mContext, LoginActivity.class);
+                callLogin.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                mContext.startActivity(callLogin);
+                activity.finish();
+                dialog.dismiss();
+            }
+        });
+
+        userInactiveAlertBuilder.show();
     }
 
 
