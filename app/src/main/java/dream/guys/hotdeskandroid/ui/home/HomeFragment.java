@@ -143,8 +143,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
 
 
-        //loadUserImage();
-        //loadTenantImage();
+        loadUserImage();
+        loadTenantImage();
         loadNotification();
         loadHomeList();
 

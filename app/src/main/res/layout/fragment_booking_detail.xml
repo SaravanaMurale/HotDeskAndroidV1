@@ -172,7 +172,6 @@
 
     </LinearLayout>
 
-
     <!--Office,Remote,Not working text here-->
     <TextView
         android:id="@+id/checkInText"
