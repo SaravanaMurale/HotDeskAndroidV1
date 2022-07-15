@@ -168,6 +168,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 String c=Utils.getCurrentDate()+"T"+getCurrentTime()+":00Z";
                 System.out.println("CurentDateAndTime"+c);
+                Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), locateStartTime,"", "");
 
                 //Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), locateStartTime,"", "");
                 //getCurrentDate()+""+"T"+locateStartTime.getText().toString()+":"+"00"+"."+"000"+"Z";
@@ -178,7 +179,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         binding.locateEndTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), locateEndTime,"", "");
 
             }
@@ -196,8 +196,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         binding.locateCalendearView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(),locateCalendearView,"","");
+                Utils.bottomSheetDatePicker(getContext(), getActivity(),"","",locateCalendearView);
 
                 //locateCalendearView.getText().toString()+"T"+"00:00:00.000"+"Z");
 
@@ -729,7 +728,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         rvFloor = bottomSheetDialog.findViewById(R.id.rvFloorList);
 
 
-        country.setText(locateCountryResposes.get(0).getName());
+//        country.setText(locateCountryResposes.get(0).getName());
+        country.setText("Global Location");
         rvCountry.setVisibility(View.INVISIBLE);
         statBlock.setVisibility(View.INVISIBLE);
         rvState.setVisibility(View.INVISIBLE);

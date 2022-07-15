@@ -54,10 +54,11 @@
 
         <Button
             android:id="@+id/btnSignInLogin"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/etPassword"
             android:layout_marginTop="@dimen/_15sdp"
+            android:theme="@style/TextBoldButton"
             android:background="@drawable/button_blue_bg"
             android:paddingLeft="@dimen/_20sdp"
             android:paddingRight="@dimen/_20sdp"
@@ -67,16 +68,14 @@
 
         <TextView
             android:id="@+id/tvForgetPassword"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/etPassword"
+            android:layout_below="@id/btnSignInLogin"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/_23sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:text="@string/forget_password"
             android:textColor="@color/grey"
-            android:textSize="@dimen/_14sdp"
-
-            />
+            android:textSize="@dimen/_14sdp" />
 
 
 

@@ -53,6 +53,8 @@ public class BookingDetailFragment extends Fragment {
     TextView bookingCheckOutTime;
     @BindView(R.id.checkInText)
     TextView checkInText;
+    @BindView(R.id.tvSkip)
+    TextView tvSkip;
 
     @BindView(R.id.centerLayoutBlock)
     RelativeLayout centerLayoutBlock;
@@ -60,6 +62,8 @@ public class BookingDetailFragment extends Fragment {
     RelativeLayout centerBlock;
     @BindView(R.id.ivWorkingRemote)
     ImageView ivWorkingRemote;
+    @BindView(R.id.noti_icon)
+    ImageView notiIcon;
     @BindView(R.id.ivNotWorking)
     ImageView ivNotWorking;
 
@@ -90,6 +94,16 @@ public class BookingDetailFragment extends Fragment {
         dialog = new Dialog(getContext());
         fragmentBookingDetailBinding.bookDetailUserName.setText(SessionHandler.getInstance().get(getContext(), AppConstants.USERNAME));
 
+        if (SessionHandler.getInstance().getBoolean(getActivity(), AppConstants.SHOWNOTIFICATION)){
+            fragmentBookingDetailBinding.notiIcon.setVisibility(View.VISIBLE);
+        }
+        fragmentBookingDetailBinding.tvSkip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController= Navigation.findNavController(view);
+                navController.navigate(R.id.navigation_home);
+            }
+        });
         Bundle bundle = getArguments();
         if (bundle != null) {
             action = bundle.getString("ACTION", null);

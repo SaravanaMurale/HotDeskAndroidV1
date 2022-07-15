@@ -288,7 +288,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     String clickedStatus="CHECKIN";
                 onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(), AppConstants.CHECKIN, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
 //                    fragment.changeCheckIn(list.get(holder.getAbsoluteAdapterPosition()));
-                    Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
                 }else if(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel()!=null){
                     String clickedStatus="CHECKIN";
                     onCheckInClickable.onCheckInMeetingRoomClick(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel(),AppConstants.CHECKIN, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
@@ -387,6 +387,9 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
         @BindView(R.id.bookingIvEdit)
         ImageView bookingIvEdit;
+
+        @BindView(R.id.bookingRefreshIcon)
+        ImageView bookingRefreshIcon;
 
 
         public HomeBookingListViewHolder(@NonNull View itemView) {

@@ -20,6 +20,7 @@ public class AppConstants {
     public static final String PASSWORD = "PASSWORD";
     public static final String TOKEN_EXPIRY_STATUS="TOKEN_EXPIRY_STATUS";
     public static final String USERNAME="USERNAME";
+    public static final String SHOWNOTIFICATION = "SHOWNOTIFICATION";
     public static final String USERIMAGE="USERIMAGE";
     public static final String TENANTIMAGE="TENANTIMAGE";
     public static final String TEAMMEMBERSHIP_ID="TEAMMEMBERSHIP_ID";

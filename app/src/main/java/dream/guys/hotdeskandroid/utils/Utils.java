@@ -176,7 +176,7 @@ public class Utils {
         bottomSheetDialog.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet,
                 new RelativeLayout(activity)));
         TimePicker simpleTimePicker = bottomSheetDialog.findViewById(R.id.simpleTimePicker);
-        simpleTimePicker.setIs24HourView(true);
+        simpleTimePicker.setIs24HourView(false);
         TextView titleTv = bottomSheetDialog.findViewById(R.id.title);
         TextView dateTv = bottomSheetDialog.findViewById(R.id.date);
         TextView continueTv = bottomSheetDialog.findViewById(R.id.continue_tv);

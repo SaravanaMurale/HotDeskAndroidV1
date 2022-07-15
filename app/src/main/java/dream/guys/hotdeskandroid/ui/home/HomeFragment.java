@@ -168,9 +168,11 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                             loo :
                             for (int i=0;i<notiList.size();i++){
                                 if (notiList.get(i).getStatus()==0){
+                                    SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.SHOWNOTIFICATION,true);
                                     notiIcon.setVisibility(View.VISIBLE);
                                     break loo;
                                 }
+                                SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.SHOWNOTIFICATION,false);
                             }
                         }
                     }else if(response.code()==401){
@@ -295,6 +297,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     call = apiService.bookingBookings(data);
                     break;
                 case 2:
+                    call = apiService.meetingRoomBookingBookings(data);
                     break;
                 case 3:
                     call = apiService.carParkBookingBookings(data);
@@ -305,7 +308,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     dialog.dismiss();
                     if (response.code()==200){
-                        Utils.showCustomAlertDialog(getActivity(),"Update Success");
+//                        Utils.showCustomAlertDialog(getActivity(),"Update Success");
 //                        Toast.makeText(getActivity(), "Success Bala", Toast.LENGTH_SHORT).show();
                         if (response.body().getResultCode()!=null && response.body().getResultCode().equalsIgnoreCase("ok")){
                             loadHomeList();
@@ -380,12 +383,12 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 @Override
                 public void onResponse(Call<BookingListResponse> call, Response<BookingListResponse> response) {
                     if(response.code()==200){
-                        ProgressDialog.dismisProgressBar(getContext(),dialog);
                         BookingListResponse bookingListResponse  =response.body();
                         teamId = bookingListResponse.getTeamId();
                         teamMembershipId = bookingListResponse.getTeamMembershipId();
                         createRecyclerList(bookingListResponse);
                         loadDeskList();
+                        ProgressDialog.dismisProgressBar(getContext(),dialog);
 
                     }else if(response.code()==401){
                         //Handle if token got expired
@@ -671,13 +674,15 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         if (editDeskBookingDetails.getDeskStatus() == 1){
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
+            select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             statusCheckLayout.setVisibility(View.GONE);
             chipGroup.setVisibility(View.GONE);
         }else if (editDeskBookingDetails.getDeskStatus() == 2){
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
-            endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
+            endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlue));
+            select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             statusCheckLayout.setVisibility(View.VISIBLE);
-            chipGroup.setVisibility(View.VISIBLE);
+            chipGroup.setVisibility(View.GONE);
         } else {
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlue));
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlue));
@@ -692,6 +697,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             tvComments.setText("Comments");
 
         }else if (dskRoomParkStatus==2){
+            llDeskLayout.setVisibility(View.GONE);
 
         }else {
             llDeskLayout.setVisibility(View.GONE);
@@ -723,7 +729,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (editDeskBookingDetails.getDeskStatus() != 1)
+                if (editDeskBookingDetails.getDeskStatus() != 1 && editDeskBookingDetails.getDeskStatus() != 2)
                     Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
 //                    Utils.popUpTimePicker(getActivity(),startTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
             }
@@ -803,7 +809,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callDeskBottomSheetDialog();
+                if (editDeskBookingDetails.getDeskStatus()!=1 && editDeskBookingDetails.getDeskStatus()!=2)
+                    callDeskBottomSheetDialog();
             }
         });
         repeatBlock.setOnClickListener(new View.OnClickListener() {
