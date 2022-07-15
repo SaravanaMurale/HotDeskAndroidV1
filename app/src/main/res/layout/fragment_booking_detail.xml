@@ -195,11 +195,12 @@
         android:visibility="visible"
         >
 
-       <ImageView
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:src="@drawable/locate_layout"
-           />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/locate_layout" />
 
     </RelativeLayout>
 
