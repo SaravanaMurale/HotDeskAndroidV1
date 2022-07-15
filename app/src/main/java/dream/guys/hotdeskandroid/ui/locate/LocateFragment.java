@@ -1415,7 +1415,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     Toast.makeText(getContext(),baseResponse.getResultCode(),Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Toast.makeText(getContext(), "Not Avaliable", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Parking Not Avaliable", Toast.LENGTH_LONG).show();
                 }
                 /*if(response.code()==200){
                     Toast.makeText(getContext(),"Car Parking Booked Successfully",Toast.LENGTH_LONG).show();
