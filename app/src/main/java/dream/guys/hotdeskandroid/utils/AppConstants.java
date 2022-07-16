@@ -32,6 +32,7 @@ public class AppConstants {
 
     //Locate
     public static final String PARENT_ID="PARENT_ID";
+    public static final String SUB_PARENT_ID="SUB_PARENT_ID";
     public static final String FLOOR_POSITION="FLOOR_POSITION";
     public static final String BUILDING="BUILDING";
     public static final String FLOOR="FLOOR";

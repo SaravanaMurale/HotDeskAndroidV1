@@ -2,7 +2,10 @@ package dream.guys.hotdeskandroid;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
+import android.view.animation.ScaleAnimation;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -12,11 +15,17 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import dream.guys.hotdeskandroid.databinding.ActivityMainBinding;
+import dream.guys.hotdeskandroid.ui.locate.LocateFragment;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     BottomNavigationView navView;
     NavController navController;
+
+
+    private ScaleGestureDetector mScaleGestureDetector;
+    GestureDetector gestureDetector;
+    private float mScale = 1f;
 
 
 
@@ -47,6 +56,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         */
+
+
+      /*  gestureDetector = new GestureDetector(this, new GestureListener());
+
+        mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.SimpleOnScaleGestureListener(){
+            @Override
+            public boolean onScale(ScaleGestureDetector detector) {
+                float scale = 1 - detector.getScaleFactor();
+                float prevScale = mScale;
+                mScale += scale;
+
+                if (mScale > 10f)
+                    mScale = 10f;
+
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1f / prevScale, 1f / mScale, 1f / prevScale, 1f / mScale, detector.getFocusX(), detector.getFocusY());
+                scaleAnimation.setDuration(0);
+                scaleAnimation.setFillAfter(true);
+                navView.startAnimation(scaleAnimation);
+                return true;
+            }
+        });*/
     }
 
     private void nightModeConfig() {
@@ -70,7 +100,28 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
         navView.setItemIconTintList(null);
 
+    }
 
+
+    /*@Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        super.dispatchTouchEvent(ev);
+        mScaleGestureDetector.onTouchEvent(ev);
+        gestureDetector.onTouchEvent(ev);
+        return gestureDetector.onTouchEvent(ev);
+    }*/
+
+    public class GestureListener extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onDown(MotionEvent e) {
+
+            return true;
+        }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            return true;
+        }
 
     }
 

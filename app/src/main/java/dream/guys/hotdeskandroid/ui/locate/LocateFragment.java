@@ -3,17 +3,14 @@ package dream.guys.hotdeskandroid.ui.locate;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentTime;
 
-import android.app.ActionBar;
 import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.GestureDetector;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.ScaleAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +19,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -114,6 +113,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     LinearLayout secondLayout;*/
 
     View deskView;
+    int canvasss=0;
+
 
 
 
@@ -145,9 +146,19 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     //RelativeLayout.LayoutParams params;
 
-    private ScaleGestureDetector mScaleGestureDetector;
-    GestureDetector gestureDetector;
-    private float mScale = 1f;
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        System.out.println("OnViewCreated");
+
+        //Initally Load Floor Details
+        initLoadFloorDetails(0);
+
+    }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -158,25 +169,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         //params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-        gestureDetector = new GestureDetector(getContext(), new GestureListener());
 
-        mScaleGestureDetector = new ScaleGestureDetector(getContext(), new ScaleGestureDetector.SimpleOnScaleGestureListener(){
-            @Override
-            public boolean onScale(ScaleGestureDetector detector) {
-                float scale = 1 - detector.getScaleFactor();
-                float prevScale = mScale;
-                mScale += scale;
-
-                if (mScale > 10f)
-                    mScale = 10f;
-
-                ScaleAnimation scaleAnimation = new ScaleAnimation(1f / prevScale, 1f / mScale, 1f / prevScale, 1f / mScale, detector.getFocusX(), detector.getFocusY());
-                scaleAnimation.setDuration(0);
-                scaleAnimation.setFillAfter(true);
-                scrollView.startAnimation(scaleAnimation);
-                return true;
-            }
-        });
 
         dialog = new Dialog(getContext());
         //locateText= root.findViewById(R.id.locate_Text);
@@ -289,11 +282,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         //Initally Load Floor Details
-       initLoadFloorDetails(0);
+       //initLoadFloorDetails(0);
 
 
         return root;
     }
+
+
 
 
 
@@ -309,7 +304,21 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 binding.searchLocate.setHint(buildingName + "," + floorName);
             }
 
-            getLocateDeskRoomCarDesign(parentId,i);
+            //ForCoordinate
+            int subParentId=SessionHandler.getInstance().getInt(getContext(), AppConstants.SUB_PARENT_ID);
+            boolean findCoordinateStatus=true;
+            getFloorDetails(subParentId,findCoordinateStatus);
+
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getLocateDeskRoomCarDesign(parentId,i);
+                }
+            },2000);
+
+
+
         } else {
             Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
         }
@@ -335,6 +344,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 int totalDeskSize = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks().size();
                 System.out.println("TotalSize" + totalDeskSize);
 
+
                 getFloorCoordinates(locateCountryResposeList.get(floorPosition).getCoordinates());
 
 
@@ -345,21 +355,28 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
                 List<String> valueList = new ArrayList<>();
-                for (String key : locateCountryResposeList.get(floorPosition).getItems().keySet()) {
-                    System.out.println("Value" + locateCountryResposeList.get(floorPosition).getItems().get(key));
 
-                    valueList = locateCountryResposeList.get(floorPosition).getItems().get(key);
+                if(locateCountryResposeList.get(floorPosition).getItems()!=null){
+                    for (String key : locateCountryResposeList.get(floorPosition).getItems().keySet()) {
+                        System.out.println("Value" + locateCountryResposeList.get(floorPosition).getItems().get(key));
 
-                    addView(valueList, key, floorPosition);
+                        valueList = locateCountryResposeList.get(floorPosition).getItems().get(key);
 
-                    //strings.add(locateCountryResposeList.get(0).getItems().get(key));
- 
+                        addView(valueList, key, floorPosition);
+
+                        //strings.add(locateCountryResposeList.get(0).getItems().get(key));
+
                      /*for (int i = 0; i <strings.size() ; i++) {
                          System.out.println("InsideValue"+strings.get(i));
- 
+
                      }*/
 
+                    }
+
+                }else {
+                    Toast.makeText(getContext(),"No Data",Toast.LENGTH_LONG).show();
                 }
+
 
 
 
@@ -383,7 +400,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     private void getFloorCoordinates(List<List<Integer>> coordinateList) {
 
 
-
         System.out.println("CoordinateSize"+coordinateList.size());
         //List<Point> pointList=new ArrayList<>();
         for (int i = 0; i <coordinateList.size() ; i++) {
@@ -397,28 +413,37 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }
         System.out.println("PointListSize"+pointList.size());
 
-
-        MyCanvasDraw  myCanvasDraw = new MyCanvasDraw(getContext(), pointList);
-
-
-        System.out.println("AlreadyHaveCanvashObject");
-
+        //binding.secondLayout.postInvalidate();
         //binding.secondLayout.invalidate();
-        binding.secondLayout.addView(myCanvasDraw);
 
-        binding.secondLayout.onFinishTemporaryDetach();
+        if(pointList.size()>0){
+            MyCanvasDraw  myCanvasDraw = new MyCanvasDraw(getContext(), pointList);
+
+            if(canvasss==1){
+                myCanvasDraw.setDrawMethod();
+            }
 
 
+            //myCanvasDraw.postInvalidate();
+            //myCanvasDraw.invalidate();
+            //binding.secondLayout.postInvalidate();
+            //binding.secondLayout.invalidate();
+            //myCanvasDraw.setInvalidate();
+            binding.secondLayout.addView(myCanvasDraw);
 
+            //binding.secondLayout.onFinishTemporaryDetach();
+            System.out.println("AlreadyHaveCanvashObject");
+
+        }
 
     }
 
-    /*@Override
+    @Override
     public void onResume() {
         super.onResume();
 
-        initLoadFloorDetails(0);
-    }*/
+        System.out.println("OnResumeCalled");
+    }
 
     private void addDottedLine() {
  
@@ -797,6 +822,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
+                canvasss=1;
+
                 binding.firstLayout.removeAllViews();
                 //binding.secondLayout.removeAllViews();
                 initLoadFloorDetails(1);
@@ -897,7 +924,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 streetBlock.setVisibility(View.VISIBLE);
                 street.setVisibility(View.VISIBLE);
                 street.setText("Building");
-                getFloorDetails(locateCountryRespose.getLocateCountryId());
+
+                SessionHandler.getInstance().saveInt(getContext(), AppConstants.SUB_PARENT_ID, locateCountryRespose.getLocateCountryId());
+                getFloorDetails(locateCountryRespose.getLocateCountryId(), false);
+
+
+                System.out.println("SubParentIdAndItsPosition"+locateCountryRespose.getLocateCountryId()+" ");
+
                 break;
 
             case "FLOOR":
@@ -934,6 +967,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         //List<Point> pointList=new ArrayList<>();
 
+        pointList.clear();
+
         for (int i = 0; i <supportZoneLayoutItemsList.size() ; i++) {
 
             System.out.println("supportZoneLayoutItemsSize"+supportZoneLayoutItemsList.size());
@@ -952,10 +987,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         }
 
-        for (int i = 0; i <pointList.size() ; i++) {
+       /* for (int i = 0; i <pointList.size() ; i++) {
             System.out.println("PointListDate "+pointList.get(i).getX()+" "+pointList.get(i).getY());
-        }
+        }*/
 
+        ProgressDialog.dismisProgressBar(getContext(), dialog);
               /*  Point point=new Point(coordinateList.get(i).get(0),coordinateList.get(i).get(1));
 
 */
@@ -1006,34 +1042,48 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         rvState.setAdapter(showCountryAdapter);
     }
 
-    private void getFloorDetails(int parentId) {
+    private void getFloorDetails(int floorId, boolean findCoordinateStatus) {
 
-        dialog = ProgressDialog.showProgressBar(getContext());
+        //dialog = ProgressDialog.showProgressBar(getContext());
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(parentId);
+        Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(floorId);
         call.enqueue(new Callback<List<LocateCountryRespose>>() {
             @Override
             public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
 
                 List<LocateCountryRespose> locateCountryResposes = response.body();
 
-                for (int i = 0; i < locateCountryResposes.size(); i++) {
+                //ProgressDialog.dismisProgressBar(getContext(), dialog);
 
-                    System.out.println("GetFloorDetails " + locateCountryResposes.get(i).getName());
+                if(findCoordinateStatus){
+                    int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+                    //ProgressDialog.dismisProgressBar(getContext(), dialog);
+                    for (int i = 0; i <locateCountryResposes.size() ; i++) {
+
+                        if(parentId==locateCountryResposes.get(i).getLocateCountryId()){
+                            if(locateCountryResposes.get(i).getSupportZoneLayoutItemsList()!=null){
+                               // ProgressDialog.dismisProgressBar(getContext(), dialog);
+                                getOtherSubZoneLayoutItems(locateCountryResposes.get(i).getSupportZoneLayoutItemsList());
+                            }
+                        }
+
+                    }
+                }else {
+                    rvStreet.setVisibility(View.VISIBLE);
+                    showFloorListInAdapter(locateCountryResposes);
+
+                    //ProgressDialog.dismisProgressBar(getContext(), dialog);
 
                 }
 
-                rvStreet.setVisibility(View.VISIBLE);
 
-                showFloorListInAdapter(locateCountryResposes);
-
-                ProgressDialog.dismisProgressBar(getContext(), dialog);
+                //ProgressDialog.dismisProgressBar(getContext(), dialog);
 
             }
 
             @Override
             public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
-                ProgressDialog.dismisProgressBar(getContext(), dialog);
+               // ProgressDialog.dismisProgressBar(getContext(), dialog);
             }
         });
 
@@ -1476,13 +1526,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
-    public boolean dispatchTouchEvent(MotionEvent event) {
-
-        //super.dispatchTouchEvent(event);
-        mScaleGestureDetector.onTouchEvent(event);
-        gestureDetector.onTouchEvent(event);
-        return gestureDetector.onTouchEvent(event);
-    }
 
 
     @Override
@@ -1503,19 +1546,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 */
 
 
-    public class GestureListener extends GestureDetector.SimpleOnGestureListener {
-        @Override
-        public boolean onDown(MotionEvent e) {
 
-            return true;
-        }
-
-        @Override
-        public boolean onDoubleTap(MotionEvent e) {
-            return true;
-        }
-
-    }
 
 
    /* private class TouchHandler implements View.OnTouchListener
