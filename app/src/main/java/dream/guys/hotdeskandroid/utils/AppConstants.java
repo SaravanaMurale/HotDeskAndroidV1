@@ -7,6 +7,8 @@ public class AppConstants {
 
     //SharedPreference Constant
     public static final String USERTOKEN = "USERTOKEN";
+    public static final String LOGIN_CHECK = "LOGIN_CHECK";
+    public static final String USER_CURRENT_STATUS = "USER_CURRENT_STATUS";
     public static final String WELCOME_VIEWED_STATUS = "WELCOME_VIEWED_STATUS";
     public static final String USER_ID = "USER_ID";
     public static final String EXPIRY_TOKEN_DATE = "EXPIRY_TOKEN_DATE";
@@ -20,6 +22,7 @@ public class AppConstants {
     public static final String PASSWORD = "PASSWORD";
     public static final String TOKEN_EXPIRY_STATUS="TOKEN_EXPIRY_STATUS";
     public static final String USERNAME="USERNAME";
+    public static final String SHOWNOTIFICATION = "SHOWNOTIFICATION";
     public static final String USERIMAGE="USERIMAGE";
     public static final String TENANTIMAGE="TENANTIMAGE";
     public static final String TEAMMEMBERSHIP_ID="TEAMMEMBERSHIP_ID";
@@ -44,5 +47,6 @@ public class AppConstants {
 
     public static final String OFFICE_TODAY="You are in the office today";
     public static final String WORKING_REMOTE="You are working remotely today";
+    public static final String PIN_SETUP_DONE="PIN_SETUP_DONE";
 
 }

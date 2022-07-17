@@ -28,8 +28,8 @@
 
                 <ImageView
                     android:id="@+id/profile_back"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
                     android:src="@drawable/ic_baseline_arrow_back_ios_24"
                     app:tint="@color/figmaBlue" />
@@ -43,8 +43,8 @@
                 android:layout_weight="1"
                 />
             <ImageView
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:src="@drawable/ic_outline_settings_24"
                 app:tint="@color/figmaBlack"
@@ -84,11 +84,12 @@
 
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/user_profile_pic"
-                            android:layout_width="@dimen/_50sdp"
+                            android:layout_width="@dimen/_45sdp"
                             android:layout_height="@dimen/_45sdp"
                             android:layout_centerInParent="true"
                             android:background="@drawable/bg_circle_vector"
-                            android:src="@drawable/mygirl" />
+                            android:src="@drawable/avatar"
+                            android:padding="@dimen/_2sdp"/>
                     </RelativeLayout>
                     <LinearLayout
                         android:layout_width="0dp"
@@ -193,7 +194,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginHorizontal="@dimen/_2sdp"
-                android:text="View All"
+                android:text="View Team"
                 android:textColor="@color/figmaBlue"
                 android:theme="@style/TextRegular" />
         </RelativeLayout>
@@ -722,6 +723,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_toLeftOf="@id/email_icon"
                 android:text="Email"
+                android:layout_centerInParent="true"
                 android:textColor="@color/figmaBlack"
                 android:theme="@style/TextBold" />
 
@@ -759,6 +761,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_toLeftOf="@id/teams_icon"
                 android:text="Teams"
+                android:layout_centerInParent="true"
                 android:textColor="@color/figmaBlack"
                 android:theme="@style/TextBold" />
 
@@ -796,6 +799,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_toLeftOf="@id/phone_icon"
                 android:text="Phone"
+                android:layout_centerInParent="true"
                 android:textColor="@color/figmaBlack"
                 android:theme="@style/TextBold" />
 

@@ -9,6 +9,7 @@ import java.util.List;
 
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
 import dream.guys.hotdeskandroid.model.request.BookingsRequest;
+import dream.guys.hotdeskandroid.model.request.CreatePinRequest;
 import dream.guys.hotdeskandroid.model.request.ForgotPasswordRequest;
 import dream.guys.hotdeskandroid.model.request.GDPRrequest;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
@@ -17,6 +18,7 @@ import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
+import dream.guys.hotdeskandroid.model.response.CheckPinLoginResponse;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.model.response.ImageResponse;
@@ -35,6 +37,19 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
+    // Pin APis
+    // to check wheter this user can setup pin or not
+    @POST("api/settings/PinNumberSetting")
+    Call<Boolean> checkPinEnabled();
+    // sign up for Pin login
+    @POST("api/account/UpdateSecurityPin")
+    Call<BaseResponse> createPin(@Body CreatePinRequest createPinRequest);
+    @POST("api/account/HasSetupPinNumberForTenantUser")
+    Call<CheckPinLoginResponse> checkPinLoginAvailable(@Body CreatePinRequest createPinRequest);
+    @POST("api/account/pin")
+    Call<GetTokenResponse> checkPinLogin(@Body CreatePinRequest createPinRequest);
+
+
     @POST("api/account/updategdpracceptancesettings")
     Call<GDPRrequest> updateGDPR(@Body GDPRrequest request);
 

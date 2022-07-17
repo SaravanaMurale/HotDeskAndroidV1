@@ -62,6 +62,7 @@ public class UserDetailsResponse {
     @SerializedName("calendarIntegrationType")
     private int calendarIntegrationType;
 
+
     public int getTeamMembershipId() {
         return teamMembershipId;
     }

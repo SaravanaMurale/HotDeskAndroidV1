@@ -28,6 +28,7 @@ import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.ui.home.HomeFragment;
 import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 
 public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingListAdapter.HomeBookingListViewHolder> {
@@ -84,6 +85,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             System.out.println("date check Balaaaa"+list.get(position).getDate()+" : "+Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate()));
         } else if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
             holder.today_date.setText("Today");
+
         }
 
         if (list.get(position).getCalDeskStatus() ==1 &&
@@ -152,8 +154,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     break;
                 default:
             }
-        }
-        else if (list.get(position).getCalDeskStatus() ==1 &&
+        } else if (list.get(position).getCalDeskStatus() ==1 &&
                 !list.get(position).getCalendarEntriesModel()
                 .getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
             holder.rlBookingRemoteBlock.setVisibility(View.VISIBLE);
@@ -165,6 +166,9 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                 case "RQ":
                     holder.tvBookingWorkingRemote.setText("Request for Desk In Progress");
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("Request for Desk In Progress");
+                    if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
+                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Request for Desk");
+                    }
                     break;
                 case "WFH":
                     holder.tvBookingWorkingRemote.setText("You're Working remotely");
@@ -173,6 +177,10 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             +" - "
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("You're Working remotely");
+                    if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
+                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Working remotely");
+                    }
+
                     break;
                 case "WOO":
                     holder.tvBookingWorkingRemote.setText("You're Working in alternative office");
@@ -182,6 +190,9 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             +" - "
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("You're Working in alternative office");
+                    if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
+                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Alternative Office");
+                    }
                     break;
                 case "TR":
                     holder.tvBookingWorkingRemote.setText("You're in training");
@@ -191,6 +202,9 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
 
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("You're in training");
+                    if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
+                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Training");
+                    }
                     break;
                 case "OO":
                     holder.tvBookingWorkingRemote.setText("Out of office");
@@ -198,15 +212,18 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom())
                             +" - "
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
-
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("Out of office");
-
+                    if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
+                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Out of Office");
+                    }
                     break;
                 case "SL":
                     holder.tvBookingWorkingRemote.setText("You're on Sick Leave");
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("You're on Sick Leave");
+                    if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
+                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Sick Leave");
+                    }
                     break;
-
             }
         }
         else if (list.get(position).getCalDeskStatus() == 2){
@@ -288,7 +305,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     String clickedStatus="CHECKIN";
                 onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(), AppConstants.CHECKIN, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
 //                    fragment.changeCheckIn(list.get(holder.getAbsoluteAdapterPosition()));
-                    Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
                 }else if(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel()!=null){
                     String clickedStatus="CHECKIN";
                     onCheckInClickable.onCheckInMeetingRoomClick(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel(),AppConstants.CHECKIN, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
@@ -387,6 +404,9 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
         @BindView(R.id.bookingIvEdit)
         ImageView bookingIvEdit;
+
+        @BindView(R.id.bookingRefreshIcon)
+        ImageView bookingRefreshIcon;
 
 
         public HomeBookingListViewHolder(@NonNull View itemView) {

@@ -176,7 +176,7 @@ public class Utils {
         bottomSheetDialog.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet,
                 new RelativeLayout(activity)));
         TimePicker simpleTimePicker = bottomSheetDialog.findViewById(R.id.simpleTimePicker);
-        simpleTimePicker.setIs24HourView(true);
+        simpleTimePicker.setIs24HourView(false);
         TextView titleTv = bottomSheetDialog.findViewById(R.id.title);
         TextView dateTv = bottomSheetDialog.findViewById(R.id.date);
         TextView continueTv = bottomSheetDialog.findViewById(R.id.continue_tv);
@@ -288,6 +288,27 @@ public class Utils {
     }
 
     public static void showCustomAlertDialog(final Activity mContext, String aMessage) {
+        final Dialog dialog = new Dialog(mContext);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        int width = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.80);
+        int height = (int) (mContext.getResources().getDisplayMetrics().heightPixels * 0.20);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog_validation);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        TextView text = dialog.findViewById(R.id.tv_err_msg);
+        text.setText(aMessage);
+        TextView dialogButton = dialog.findViewById(R.id.tv_ok);
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                mContext.startActivityForResult(intent, 123);
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+    }
+    public static void showCustomTokenExpiredDialog(final Activity mContext, String aMessage) {
         final Dialog dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         int width = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.80);
@@ -622,9 +643,6 @@ public class Utils {
 
     public static void finishAllActivity(Context context){
         Intent i = new Intent(context, SignInActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(i);
         //finishAllActivity(context);
     }

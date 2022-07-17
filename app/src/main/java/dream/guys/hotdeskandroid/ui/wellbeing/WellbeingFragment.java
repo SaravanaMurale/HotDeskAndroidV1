@@ -12,6 +12,7 @@ import android.widget.Button;
 import butterknife.BindView;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.databinding.FragmentWellbeingBinding;
+import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 
@@ -31,8 +32,8 @@ public class WellbeingFragment extends Fragment {
         binding.btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SessionHandler.getInstance().removeAll(getContext());
-
+//                SessionHandler.getInstance().removeAll(getContext());
+                SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
                 Utils.finishAllActivity(getContext());
 
             }

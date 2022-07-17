@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,10 +21,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.request.CreatePinRequest;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
+import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.CheckPinLoginResponse;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
+import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
+import dream.guys.hotdeskandroid.ui.login.pin.LoginPinActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.MyApp;
+import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
@@ -44,28 +51,34 @@ public class SignInActivity extends AppCompatActivity {
     RelativeLayout signInRoot;
     @BindView(R.id.btnSignIn)
     Button btnSignIn;
-
+    Dialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
         ButterKnife.bind(this);
-
+        dialog= new Dialog(this);
         boolean tokenStatus =
                 SessionHandler.getInstance().getBoolean(
                         MyApp.getContext(),
                         AppConstants.TOKEN_EXPIRY_STATUS);
 
         //Already loggedin user
+        System.out.println("login chec"+SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.PIN_SETUP_DONE));
         if(tokenStatus){
             //If token expired enable fingerprint
             enableBioMetricAccessHere();
-        } else {
+        } else if (!SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.LOGIN_CHECK)
+                && SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.PIN_SETUP_DONE)){
+            Intent intent=new Intent(SignInActivity.this, LoginPinActivity.class);
+            startActivity(intent);
+            finish();
+        }else {
             //NormalFlow
             int userId=SessionHandler.getInstance().getInt(SignInActivity.this, AppConstants.USER_ID);
-            if(userId > 0){
+            if(SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.LOGIN_CHECK)){
                 launchHomeActivity();
-            }else if(userId==0) {
+            }else {
                 visibleSignInButton();
             }
         }
@@ -73,11 +86,69 @@ public class SignInActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(SignInActivity.this,LoginActivity.class);
-                startActivity(intent);
-                finish();
+                checkForPinLogin();
+//                Intent intent=new Intent(SignInActivity.this,LoginActivity.class);
+//                startActivity(intent);
+//                finish();
             }
         });
+
+    }
+
+    private void checkForPinLogin() {
+        if (Utils.isNetworkAvailable(this)) {
+            dialog= ProgressDialog.showProgressBar(SignInActivity.this);
+//                GetTokenRequest getTokenRequest = new GetTokenRequest(companyName, email, password);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            CreatePinRequest createPinRequest = new CreatePinRequest();
+            createPinRequest.setTenantName(SessionHandler.getInstance().get(this, AppConstants.COMPANY_NAME));
+            createPinRequest.setUserId(""+SessionHandler.getInstance().getInt(this,AppConstants.USER_ID));
+            Call<CheckPinLoginResponse> call = apiService.checkPinLoginAvailable(createPinRequest);
+            call.enqueue(new Callback<CheckPinLoginResponse>() {
+                @Override
+                public void onResponse(Call<CheckPinLoginResponse> call, Response<CheckPinLoginResponse> response) {
+                    if(response.code()==200){
+                        ProgressDialog.dismisProgressBar(SignInActivity.this,dialog);
+                        if (response.body().isHasPinSetup()){
+                            Intent intent=new Intent(SignInActivity.this,LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }else {
+                            Intent intent=new Intent(SignInActivity.this,LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+
+                    }else if(response.code() == 401){
+                        ProgressDialog.dismisProgressBar(SignInActivity.this,dialog);
+                        Utils.toastMessage(SignInActivity.this, "Token Expired");
+                        Intent intent=new Intent(SignInActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                    else {
+                        ProgressDialog.dismisProgressBar(SignInActivity.this,dialog);
+//                        Utils.toastMessage(SignInActivity.this, "Error updating Pin. Please enter again");
+                        Intent intent=new Intent(SignInActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<CheckPinLoginResponse> call, Throwable t) {
+                    ProgressDialog.dismisProgressBar(SignInActivity.this,dialog);
+                    Intent intent=new Intent(SignInActivity.this,LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+
+                }
+            });
+
+
+        } else {
+            Utils.toastMessage(this, "Please Enable Internet");
+        }
 
     }
 

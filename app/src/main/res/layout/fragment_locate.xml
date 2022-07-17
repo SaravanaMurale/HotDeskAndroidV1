@@ -83,7 +83,7 @@
             android:background="@drawable/rectangle_bg_with_corner"
             android:drawableRight="@drawable/locate_location"
             android:gravity="center_vertical"
-            android:hint="40th Bank Street 30th Floor"
+            android:hint="Choose Location"
             android:padding="@dimen/_5sdp"
             android:textColorHint="@color/figmaBlack"
             android:textSize="@dimen/_10sdp" />

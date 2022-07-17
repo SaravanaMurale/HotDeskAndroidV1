@@ -26,6 +26,8 @@ public class ProfileActivity extends AppCompatActivity {
     TextView profileUserName;
     @BindView(R.id.profileTeamName)
     TextView profileTeamName;
+    @BindView(R.id.tv_team)
+    TextView tvTeam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class ProfileActivity extends AppCompatActivity {
     private void uiInit() {
         profileUserName.setText(SessionHandler.getInstance().get(this, AppConstants.USERNAME));
         profileTeamName.setText(SessionHandler.getInstance().get(this, AppConstants.CURRENT_TEAM));
+        tvTeam.setText(SessionHandler.getInstance().get(this, AppConstants.CURRENT_TEAM));
         if (SessionHandler.getInstance().get(this, AppConstants.USERIMAGE)!=null){
             byte[] decodedString = Base64.decode(
                     SessionHandler.getInstance().get(this, AppConstants.USERIMAGE),
