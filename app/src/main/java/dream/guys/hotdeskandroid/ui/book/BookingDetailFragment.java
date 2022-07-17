@@ -176,6 +176,8 @@ public class BookingDetailFragment extends Fragment {
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     Toast.makeText(getActivity(), ""+response.body().getResultCode(), Toast.LENGTH_SHORT).show();
+                    SessionHandler.getInstance().save(getActivity(),AppConstants.USER_CURRENT_STATUS,"Checked IN");
+
                     dialog.dismiss();
                     openCheckoutDialog();
                 }

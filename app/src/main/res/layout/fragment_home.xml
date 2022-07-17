@@ -135,17 +135,19 @@
                             android:gravity="center_vertical"
                             >
 
-                            <TextView
+                            <ImageView
                                 android:id="@+id/user_status"
                                 android:layout_width="@dimen/_10sdp"
                                 android:layout_height="@dimen/_10sdp"
-                                android:background="@drawable/bg_circle_vector"
+                                android:src="@drawable/bg_circle_vector"
                                 />
                             <TextView
+                                android:id="@+id/user_current_status"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:theme="@style/TextRegular"
                                 android:text="Checked In"
+                                android:layout_marginStart="@dimen/_3sdp"
                                 android:textColor="@color/black"
                                 />
                         </LinearLayout>

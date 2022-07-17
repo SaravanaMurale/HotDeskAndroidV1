@@ -303,6 +303,8 @@ public class LoginActivity extends AppCompatActivity {
                             ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
 
                             //GetUser Details Using Token
+
+                            SessionHandler.getInstance().saveBoolean(LoginActivity.this, AppConstants.LOGIN_CHECK,true);
                             getUserDetailsUsingToken(getTokenResponse.getToken());
                         } else {
                             ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
@@ -366,6 +368,9 @@ public class LoginActivity extends AppCompatActivity {
                             SessionHandler.getInstance().saveBoolean(LoginActivity.this,AppConstants.USER_DETAILS_SAVED_STATUS,true);
                             SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.TEAMMEMBERSHIP_ID,userDetailsResponse.getTeamMembershipId());
                             SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.TEAM_ID,userDetailsResponse.getCurrentTeam().getCurrentTeamId());
+                            SessionHandler.getInstance().saveBoolean(LoginActivity.this,AppConstants.PIN_SETUP_DONE,userDetailsResponse.isHasPinSetup());
+                            System.out.println("login chec"+SessionHandler.getInstance().getBoolean(LoginActivity.this,AppConstants.PIN_SETUP_DONE));
+                            System.out.println("login chec respos"+userDetailsResponse.isHasPinSetup());
 
                             //Save UserId
                             SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.USER_ID,userDetailsResponse.getId());

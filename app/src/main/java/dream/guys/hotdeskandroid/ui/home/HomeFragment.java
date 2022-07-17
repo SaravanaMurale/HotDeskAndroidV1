@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -58,6 +60,7 @@ import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.ImageResponse;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.ui.login.LoginActivity;
+import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -72,6 +75,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
     FragmentHomeBinding binding;
     TextView text;
+    TextView userCurrentStatus;
     ImageView userProfile;
     ImageView profile;
     ImageView tenantProfile;
@@ -79,6 +83,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
     //Header
     ImageView notiIcon;
+    ImageView userStatus;
 
     //HomeBooking
     RecyclerView rvHomeBooking,rvDeskRecycler;
@@ -110,12 +115,27 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
         dialog = new Dialog(getContext());
 
+        System.out.println("Seesin userId"+SessionHandler.getInstance().getInt(getActivity(),AppConstants.USER_ID));
         userProfile=root.findViewById(R.id.user_profile_pic);
         notiIcon=root.findViewById(R.id.noti_icon);
         profile=root.findViewById(R.id.profile);
+        userCurrentStatus=root.findViewById(R.id.user_current_status);
+        userStatus=root.findViewById(R.id.user_status);
         tenantProfile=root.findViewById(R.id.tentant_image_view);
         rvHomeBooking=root.findViewById(R.id.rvHomeBooking);
-        userProfile.setOnClickListener(new View.OnClickListener() {
+        if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null && SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked in")){
+            userCurrentStatus.setText("Checked In");
+        }else if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null && SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked out")){
+            userCurrentStatus.setText("Checked Out");
+            userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
+//            holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
+        }else {
+            if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null){
+                userCurrentStatus.setText(SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS));
+                userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
+            }
+        }
+       userProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Utils.bottomSheetEditYourBooking(getContext(),getActivity(),"message","dad");
@@ -140,15 +160,39 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         });
 */
 //        doTokenExpiryHere();
-
-
-
-        //loadUserImage();
-        //loadTenantImage();
-        //loadNotification();
-        //loadHomeList();
+        if (!SessionHandler.getInstance().getBoolean(getActivity(),AppConstants.PIN_SETUP_DONE)){
+            checkPinPopUp();
+        }
+        loadUserImage();
+        loadTenantImage();
+        loadNotification();
+        loadHomeList();
 
         return root;
+    }
+
+    private void checkPinPopUp() {
+            final Dialog dialog = new Dialog(getActivity());
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            int width = (int) (getActivity().getResources().getDisplayMetrics().widthPixels * 0.80);
+            int height = (int) (getActivity().getResources().getDisplayMetrics().heightPixels * 0.20);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.dialog_pin_pop_up);
+            dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            TextView text = dialog.findViewById(R.id.tv_err_msg);
+            text.setText("The option to login using a pin is now available. \n To enable please select continue");
+            TextView dialogButton = dialog.findViewById(R.id.tv_ok);
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), CreatePinActivity.class);
+                    getActivity().startActivity(intent);
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
     }
 
     private void loadNotification() {
@@ -356,6 +400,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     BookingListResponse.DayGroup.CalendarEntry.Booking.Status calendarEntry = recyclerModelArrayList.get(pos).getCalendarEntriesModel().getBooking().getStatus();
                     calendarEntry.setId(1);
                     homeBookingListAdapter.notifyItemChanged(pos);
+                    SessionHandler.getInstance().save(getActivity(),AppConstants.USER_CURRENT_STATUS,"Checked Out");
+                    userCurrentStatus.setText("Checked Out");
+                    userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
+
 //                    openCheckoutDialog();
                 }
 
@@ -377,7 +425,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             dialog= ProgressDialog.showProgressBar(getContext());
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<BookingListResponse> call = apiService.getUserMyWorkDetails(Utils.getCurrentDate(),true);
+//            Call<BookingListResponse> call = apiService.getUserMyWorkDetails(Utils.getCurrentDate(),true);
+            Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-07-18",true);
             //Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-07-04",true);
             call.enqueue(new Callback<BookingListResponse>() {
                 @Override
