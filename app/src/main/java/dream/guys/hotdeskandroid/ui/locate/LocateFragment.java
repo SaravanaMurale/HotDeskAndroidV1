@@ -419,9 +419,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         if(pointList.size()>0){
             MyCanvasDraw  myCanvasDraw = new MyCanvasDraw(getContext(), pointList);
 
-            if(canvasss==1){
+            /*if(canvasss==1){
                 myCanvasDraw.setDrawMethod();
-            }
+            }*/
 
 
             //myCanvasDraw.postInvalidate();
