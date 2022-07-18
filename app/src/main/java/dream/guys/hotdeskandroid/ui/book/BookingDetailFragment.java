@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -55,6 +56,8 @@ public class BookingDetailFragment extends Fragment {
     TextView checkInText;
     @BindView(R.id.tvSkip)
     TextView tvSkip;
+    @BindView(R.id.user_current_status)
+    TextView userCurrentStatus;
 
     @BindView(R.id.centerLayoutBlock)
     RelativeLayout centerLayoutBlock;
@@ -66,6 +69,8 @@ public class BookingDetailFragment extends Fragment {
     ImageView notiIcon;
     @BindView(R.id.ivNotWorking)
     ImageView ivNotWorking;
+    @BindView(R.id.user_status)
+    ImageView userStatus;
 
     @BindView(R.id.bookingDetailsBlock)
     RelativeLayout bookingDetailsBlock;
@@ -93,6 +98,22 @@ public class BookingDetailFragment extends Fragment {
 
         dialog = new Dialog(getContext());
         fragmentBookingDetailBinding.bookDetailUserName.setText(SessionHandler.getInstance().get(getContext(), AppConstants.USERNAME));
+
+        if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null && SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked in")){
+            userCurrentStatus.setText("Checked In");
+        }else if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null && SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked out")){
+            userCurrentStatus.setText("Checked Out");
+            userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
+//            holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
+        }else {
+            if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null){
+                userCurrentStatus.setText(SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS));
+                userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
+            }else {
+                userCurrentStatus.setText("In Office");
+                userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaBlue), android.graphics.PorterDuff.Mode.MULTIPLY);
+            }
+        }
 
         if (SessionHandler.getInstance().getBoolean(getActivity(), AppConstants.SHOWNOTIFICATION)){
             fragmentBookingDetailBinding.notiIcon.setVisibility(View.VISIBLE);

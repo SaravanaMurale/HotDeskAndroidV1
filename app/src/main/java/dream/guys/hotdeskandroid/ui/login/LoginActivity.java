@@ -438,10 +438,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void launchWelcomeActivity() {
-
         Intent intent = new Intent(LoginActivity.this, WelcomeActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
 
     }
 }

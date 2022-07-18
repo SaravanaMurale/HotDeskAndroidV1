@@ -91,6 +91,10 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         if (list.get(position).getCalDeskStatus() ==1 &&
                 list.get(position).getCalendarEntriesModel()
                         .getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
+            if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
+                SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Booked");
+            }
+
             holder.rlBookingRemoteBlock.setVisibility(View.GONE);
             holder.rlInOffice.setVisibility(View.VISIBLE);
             //Desk Booking

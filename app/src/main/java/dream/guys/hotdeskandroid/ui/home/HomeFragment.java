@@ -125,6 +125,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         rvHomeBooking=root.findViewById(R.id.rvHomeBooking);
         if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null && SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked in")){
             userCurrentStatus.setText("Checked In");
+            userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.teal_200), android.graphics.PorterDuff.Mode.MULTIPLY);
         }else if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null && SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked out")){
             userCurrentStatus.setText("Checked Out");
             userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
@@ -133,6 +134,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null){
                 userCurrentStatus.setText(SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS));
                 userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
+            }else {
+                userCurrentStatus.setText("In Office");
+                userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaBlue), android.graphics.PorterDuff.Mode.MULTIPLY);
             }
         }
        userProfile.setOnClickListener(new View.OnClickListener() {
@@ -182,11 +186,18 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             TextView text = dialog.findViewById(R.id.tv_err_msg);
             text.setText("The option to login using a pin is now available. \n To enable please select continue");
             TextView dialogButton = dialog.findViewById(R.id.tv_ok);
+            TextView dialogButtonCancel = dialog.findViewById(R.id.tv_cancel);
             dialogButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), CreatePinActivity.class);
                     getActivity().startActivity(intent);
+                    dialog.dismiss();
+                }
+            });
+            dialogButtonCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     dialog.dismiss();
                 }
             });
@@ -221,6 +232,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         }
                     }else if(response.code()==401){
                         Utils.toastMessage(getActivity(),"Token Expired");
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                        Utils.finishAllActivity(getContext());
                     }
                 }
                 @Override
@@ -260,6 +273,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         }
                     }else if(response.code()==401){
                         Utils.toastMessage(getActivity(),"Token Expired");
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                        Utils.finishAllActivity(getContext());
                     }
                 }
                 @Override
@@ -299,6 +314,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         }
                     }else if(response.code()==401){
                         Utils.showCustomAlertDialog(getActivity(),"Token Expired");
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                        Utils.finishAllActivity(getContext());
                     }
                 }
                 @Override
@@ -363,6 +380,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         Utils.showCustomAlertDialog(getActivity(),"500 Response");
                     }else if (response.code() == 401){
                         Utils.showCustomAlertDialog(getActivity(),"401 Error Response");
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                        Utils.finishAllActivity(getContext());
                     }
                     else {
                         Toast.makeText(getActivity(), "Response Failure", Toast.LENGTH_SHORT).show();
@@ -425,8 +444,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             dialog= ProgressDialog.showProgressBar(getContext());
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-//            Call<BookingListResponse> call = apiService.getUserMyWorkDetails(Utils.getCurrentDate(),true);
-            Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-07-18",true);
+            Call<BookingListResponse> call = apiService.getUserMyWorkDetails(Utils.getCurrentDate(),true);
+//            Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-07-18",true);
             //Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-07-04",true);
             call.enqueue(new Callback<BookingListResponse>() {
                 @Override
@@ -442,7 +461,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     }else if(response.code()==401){
                         //Handle if token got expired
                         ProgressDialog.dismisProgressBar(getContext(),dialog);
-                        redirectToBioMetricAccess();
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                        Utils.finishAllActivity(getContext());
+//                        redirectToBioMetricAccess();
 
                     }
                 }
@@ -473,6 +494,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         }
                     }else if(response.code()==401){
                         Utils.showCustomAlertDialog(getActivity(),"Token Expired");
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                        Utils.finishAllActivity(getContext());
                     }
                     ProgressDialog.dismisProgressBar(getContext(),dialog);
 //                    createRecyclerDeskList(response.body().getTeamDeskAvailabilities());

@@ -65,9 +65,13 @@ public class SignInActivity extends AppCompatActivity {
 
         //Already loggedin user
         System.out.println("login chec"+SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.PIN_SETUP_DONE));
-        if(tokenStatus){
+        if(tokenStatus &&!SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.LOGIN_CHECK)
+                && SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.PIN_SETUP_DONE)){
+            Intent intent=new Intent(SignInActivity.this, LoginPinActivity.class);
+            startActivity(intent);
+            finish();
             //If token expired enable fingerprint
-            enableBioMetricAccessHere();
+//            enableBioMetricAccessHere();
         } else if (!SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.LOGIN_CHECK)
                 && SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.PIN_SETUP_DONE)){
             Intent intent=new Intent(SignInActivity.this, LoginPinActivity.class);

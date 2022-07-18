@@ -64,10 +64,10 @@ public class GDPRActivity extends AppCompatActivity {
             gdpRrequest.setUserName(userName);
             gdpRrequest.setGdprAccepted(true);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<GDPRrequest> call = apiService.updateGDPR(gdpRrequest);
-            call.enqueue(new Callback<GDPRrequest>() {
+            Call<Boolean> call = apiService.updateGDPR(gdpRrequest);
+            call.enqueue(new Callback<Boolean>() {
                 @Override
-                public void onResponse(Call<GDPRrequest> call, Response<GDPRrequest> response) {
+                public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                     if (response.code()==200){
                         Utils.toastMessage(getApplicationContext(),"Successfull, Please Login");
                     }
@@ -77,8 +77,8 @@ public class GDPRActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<GDPRrequest> call, Throwable t) {
-                    Utils.toastMessage(getApplicationContext(),"Failure, Please Login");
+                public void onFailure(Call<Boolean> call, Throwable t) {
+                    Utils.toastMessage(getApplicationContext(),"Failure, Please Login"+t.getMessage());
                     Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
                     startActivity(intent);
                     finish();

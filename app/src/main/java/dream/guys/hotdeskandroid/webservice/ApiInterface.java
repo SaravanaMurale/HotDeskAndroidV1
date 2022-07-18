@@ -51,7 +51,7 @@ public interface ApiInterface {
 
 
     @POST("api/account/updategdpracceptancesettings")
-    Call<GDPRrequest> updateGDPR(@Body GDPRrequest request);
+    Call<Boolean> updateGDPR(@Body GDPRrequest request);
 
     @POST("api/Account/Token")
     Call<GetTokenResponse> getLoginToken(@Body GetTokenRequest request);

@@ -181,6 +181,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         }
                     }else if(response.code()==401){
                         Utils.toastMessage(getActivity(),"Token Expired");
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                                        Utils.finishAllActivity(getContext());
                     }
                 }
                 @Override

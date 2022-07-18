@@ -8,6 +8,17 @@
     tools:context=".ui.wellbeing.WellbeingFragment">
 
 
+    <Button
+        android:id="@+id/btnResetPin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Reset Pin"
+        android:layout_marginVertical="@dimen/_15sdp"
+        app:layout_constraintBottom_toTopOf="@+id/btnLogout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
     <Button
         android:id="@+id/btnLogout"

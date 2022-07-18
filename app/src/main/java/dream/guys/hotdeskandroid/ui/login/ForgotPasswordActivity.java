@@ -84,6 +84,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         }else if(response.code()==401){
                             ProgressDialog.dismisProgressBar(ForgotPasswordActivity.this,dialog);
                             Utils.toastMessage(ForgotPasswordActivity.this, "Wrong userName or password");
+                            SessionHandler.getInstance().saveBoolean(ForgotPasswordActivity.this, AppConstants.LOGIN_CHECK,false);
+                            Utils.finishAllActivity(ForgotPasswordActivity.this);
                         }
                         else {
                             ProgressDialog.dismisProgressBar(ForgotPasswordActivity.this,dialog);

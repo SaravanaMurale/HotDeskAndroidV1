@@ -8,10 +8,12 @@
 
     <ImageView
         android:id="@+id/loginLogo"
-        android:layout_width="@dimen/_130sdp"
-        android:layout_height="@dimen/_130sdp"
+        android:layout_width="@dimen/_110sdp"
+        android:layout_height="@dimen/_110sdp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:maxHeight="@dimen/_130sdp"
+        android:minHeight="@dimen/_60sdp"
         android:src="@drawable/logo_splash" />
 
 
@@ -21,10 +23,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/loginLogo"
-        android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_10sdp"
-        >
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_10sdp">
 
         <EditText
             android:id="@+id/etCompanyName"
@@ -32,15 +33,15 @@
             android:layout_height="wrap_content"
             android:hint="@string/company_name"
             android:inputType="text" />
+
         <EditText
             android:id="@+id/etEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/etCompanyName"
-            android:hint="@string/email"
             android:layout_marginTop="@dimen/_15sdp"
-            android:inputType="textEmailAddress"
-            />
+            android:hint="@string/email"
+            android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/etPassword"
@@ -49,22 +50,22 @@
             android:layout_below="@+id/etEmail"
             android:layout_marginTop="@dimen/_15sdp"
             android:hint="@string/password"
-            android:inputType="textPassword"
-            />
+            android:inputType="textPassword" />
 
         <Button
             android:id="@+id/btnSignInLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:layout_below="@id/etPassword"
             android:layout_marginTop="@dimen/_15sdp"
-            android:theme="@style/TextBoldButton"
             android:background="@drawable/button_blue_bg"
             android:paddingLeft="@dimen/_20sdp"
             android:paddingRight="@dimen/_20sdp"
             android:text="@string/signin"
             android:textAllCaps="false"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:theme="@style/TextBoldButton" />
 
         <TextView
             android:id="@+id/tvForgetPassword"
@@ -76,7 +77,6 @@
             android:text="@string/forget_password"
             android:textColor="@color/grey"
             android:textSize="@dimen/_14sdp" />
-
 
 
     </RelativeLayout>
@@ -133,6 +133,7 @@
         android:layout_below="@+id/tvBlock"
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_15sdp"
         >
 
         <ImageView
