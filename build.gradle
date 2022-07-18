@@ -12,7 +12,9 @@ allprojects {
         maven {
             url 'https://pkgs.dev.azure.com/MicrosoftDeviceSDK/DuoSDK-Public/_packaging/Duo-SDK-Feed/maven/v1'
         }
+        maven { url 'https://maven.google.com' }
         maven { url "https://jitpack.io" }
+
         maven {
             name "vsts-maven-adal-android"
             url "https://identitydivision.pkgs.visualstudio.com/_packaging/AndroidADAL/maven/v1"

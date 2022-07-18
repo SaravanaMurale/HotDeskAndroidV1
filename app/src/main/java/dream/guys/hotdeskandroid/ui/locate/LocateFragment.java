@@ -186,7 +186,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                  Utils.bottomSheetTimePicker(getContext(),getActivity(),"End","ckasnckan");
              }
          });*/
- 
+
         /* Bitmap bitmap = Bitmap.createBitmap(100,100, Bitmap.Config.ARGB_8888);
          Canvas canvas = new Canvas(bitmap);
          RectF rect = new RectF();
@@ -289,7 +289,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         //Initally Load Floor Details
-       initLoadFloorDetails(0);
+        initLoadFloorDetails(0);
 
 
         return root;
@@ -353,10 +353,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     addView(valueList, key, floorPosition);
 
                     //strings.add(locateCountryResposeList.get(0).getItems().get(key));
- 
+
                      /*for (int i = 0; i <strings.size() ; i++) {
                          System.out.println("InsideValue"+strings.get(i));
- 
+
                      }*/
 
                 }
@@ -421,15 +421,15 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }*/
 
     private void addDottedLine() {
- 
+
         /* View dottView = getLayoutInflater().inflate(R.layout.layout_dotted_line, null, false);
          ImageView ivDesk = dottView.findViewById(R.id.dottedImage);
          RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
- 
+
          relativeLayout.leftMargin =300;
          relativeLayout.topMargin = 500;
          ivDesk.setLayoutParams(relativeLayout);
- 
+
          binding.firstLayout.addView(dottView);*/
 
         //MyCanvasDraw myCanvasDraw = new MyCanvasDraw(getContext(), pointList);
@@ -480,13 +480,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //SetImageHereBased on Code
              /* String[] result = key.split("_");
               String splitValue=result[1];
- 
+
              if(splitValue.equals(AppConstants.DESK)){
- 
+
              }else if(splitValue.equals(AppConstants.MEETING)){
- 
+
              }else if(splitValue.equals(AppConstants.CAR_PARKING)){
- 
+
              }*/
 
         int x=Integer.parseInt(valueList.get(0));
@@ -614,7 +614,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 for (int i = 0; i <deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size() ; i++) {
 
                     if(id==deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).getDeskId()){
-                         teamDeskIdForBooking=deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).getTeamDeskId();
+                        teamDeskIdForBooking=deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).getTeamDeskId();
                         System.out.println("TeamDeskIdForBooking "+teamDeskIdForBooking);
                     }
 
@@ -855,9 +855,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 rvFloor.setVisibility(View.VISIBLE);
             }
         });
- 
- 
- 
+
+
+
          /*linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
          rvCountry.setLayoutManager(linearLayoutManager);
          rvCountry.setHasFixedSize(true);*/
@@ -956,9 +956,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             System.out.println("PointListDate "+pointList.get(i).getX()+" "+pointList.get(i).getY());
         }
 
-              /*  Point point=new Point(coordinateList.get(i).get(0),coordinateList.get(i).get(1));
+        /*  Point point=new Point(coordinateList.get(i).get(0),coordinateList.get(i).get(1));
 
-*/
+         */
 
     }
 
@@ -1223,7 +1223,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 Utils.bottomSheetDatePicker(getContext(),getActivity(),"","",locateCheckInDate);
 
-               //callBookingDatePickerBottomSheet();
+                //callBookingDatePickerBottomSheet();
             }
         });
 
@@ -1255,7 +1255,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 //dialog = ProgressDialog.showProgressBar(getContext());
                 if(code.equals("3")){
-                //Desk Booking
+                    //Desk Booking
                     deskBookingRequest();
                 }else if(code.equals("5")){
                     //Car Booking
@@ -1293,7 +1293,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void callBookingTimePickerBottomSheet() {
 
-     //Utils.bottomSheetTimePicker(getContext(),getActivity(),locateCheckInTime,"","");
+        //Utils.bottomSheetTimePicker(getContext(),getActivity(),locateCheckInTime,"","");
 
     }
 
