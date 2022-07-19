@@ -311,7 +311,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             //ForCoordinate
             int subParentId=SessionHandler.getInstance().getInt(getContext(), AppConstants.SUB_PARENT_ID);
             boolean findCoordinateStatus=true;
-            getFloorDetails(subParentId,findCoordinateStatus);
+            //getFloorDetails(subParentId,findCoordinateStatus);
 
 
             new Handler().postDelayed(new Runnable() {
@@ -1429,7 +1429,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         LocateBookingRequest.ChangeSets changeSets=locateBookingRequest.new ChangeSets();
         changeSets.setChangeSetId(0);
         //changeSets.setChangeSetDate("2022-07-14T00:00:00.000Z");
-        changeSets.setChangeSetDate(locateCheckInDate.getText().toString()+"T"+"00:00:00.000"+"Z");
+        changeSets.setChangeSetDate
+                (locateCheckInDate.getText().toString()+"T"+"00:00:00.000"+"Z");
 
         LocateBookingRequest.ChangeSets.Changes changes=changeSets. new Changes();
         changes.setUsageTypeId(2);

@@ -6,6 +6,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.animation.ScaleAnimation;
+import android.widget.ScrollView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -15,7 +16,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import dream.guys.hotdeskandroid.databinding.ActivityMainBinding;
-import dream.guys.hotdeskandroid.ui.locate.LocateFragment;
+
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
@@ -28,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     private float mScale = 1f;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
         uiInit();
         nightModeConfig();
-/*      navView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+
+        /*      navView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
@@ -58,10 +59,9 @@ public class MainActivity extends AppCompatActivity {
         */
 
 
-      /*
       gestureDetector = new GestureDetector(this, new GestureListener());
 
-        mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.SimpleOnScaleGestureListener(){
+      mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.SimpleOnScaleGestureListener(){
             @Override
             public boolean onScale(ScaleGestureDetector detector) {
                 float scale = 1 - detector.getScaleFactor();
@@ -74,11 +74,11 @@ public class MainActivity extends AppCompatActivity {
                 ScaleAnimation scaleAnimation = new ScaleAnimation(1f / prevScale, 1f / mScale, 1f / prevScale, 1f / mScale, detector.getFocusX(), detector.getFocusY());
                 scaleAnimation.setDuration(0);
                 scaleAnimation.setFillAfter(true);
-                navView.startAnimation(scaleAnimation);
+                ScrollView layout = (ScrollView) findViewById(R.id.scrollView);
+                layout.startAnimation(scaleAnimation);
                 return true;
             }
         });
-        */
     }
 
     private void nightModeConfig() {
@@ -105,13 +105,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /*@Override
+    @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         super.dispatchTouchEvent(ev);
         mScaleGestureDetector.onTouchEvent(ev);
         gestureDetector.onTouchEvent(ev);
         return gestureDetector.onTouchEvent(ev);
-    }*/
+    }
 
     public class GestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
@@ -130,6 +130,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-       // finish();
+
     }
 }
