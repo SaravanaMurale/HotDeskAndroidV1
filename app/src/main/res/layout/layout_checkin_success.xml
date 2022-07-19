@@ -21,13 +21,12 @@
             >
 
             <TextView
-                android:id="@+id/dialog_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/_30sdp"
+                android:text="Checked in successfully"
                 android:theme="@style/TextBold"
-                android:text="@string/check_out_success"
                 android:textSize="@dimen/_15sdp"
                 android:textStyle="bold" />
 
@@ -35,9 +34,8 @@
                 android:id="@+id/ivCheckoutSuccess"
                 android:layout_width="@dimen/_200sdp"
                 android:layout_height="@dimen/_200sdp"
-                android:src="@drawable/checkout_success"
                 android:layout_centerInParent="true"
-                />
+                android:src="@drawable/checkout_success" />
 
             <TextView
                 android:id="@+id/checkDialogClose"

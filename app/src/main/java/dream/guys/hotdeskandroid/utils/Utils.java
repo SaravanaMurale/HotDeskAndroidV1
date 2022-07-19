@@ -263,7 +263,7 @@ public class Utils {
                 System.out.println("PickedDate"+dateInString);
                 //locateCheckInDate.setText(dateInString+"T"+getCurrentTimeIn24HourFormat()+".000"+"Z");
                 //locateCheckInDate.setText(dateInString+"T"+"00:00:00.000"+"Z");
-                locateCheckInDate.setText(dateInString);
+                locateCheckInDate.setText(""+dateInString);
 
             }
         });

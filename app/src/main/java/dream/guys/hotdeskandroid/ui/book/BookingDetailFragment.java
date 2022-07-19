@@ -107,11 +107,11 @@ public class BookingDetailFragment extends Fragment {
 //            holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
         }else {
             if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null){
-                userCurrentStatus.setText(SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS));
-                userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
+                fragmentBookingDetailBinding.userCurrentStatus.setText(SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS));
+                fragmentBookingDetailBinding.userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
             }else {
-                userCurrentStatus.setText("In Office");
-                userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaBlue), android.graphics.PorterDuff.Mode.MULTIPLY);
+                fragmentBookingDetailBinding.userCurrentStatus.setText("In Office");
+                fragmentBookingDetailBinding.userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaBlue), android.graphics.PorterDuff.Mode.MULTIPLY);
             }
         }
 
@@ -217,7 +217,7 @@ public class BookingDetailFragment extends Fragment {
 
     private void openCheckoutDialog() {
 
-        dialog.setContentView(R.layout.layout_checkout_success);
+        dialog.setContentView(R.layout.layout_checkin_success);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         NavController navController= Navigation.findNavController(view);
 

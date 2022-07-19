@@ -124,7 +124,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             Utils.getCurrentTime(),
                             Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom())
                             )){
-                        holder.greenLine.setVisibility(View.VISIBLE);
+                        holder.greenLine.setVisibility(View.GONE);
                         holder.bookingBtnCheckIn.setVisibility(View.VISIBLE);
                     }
                     else

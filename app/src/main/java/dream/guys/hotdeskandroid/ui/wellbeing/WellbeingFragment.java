@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -27,9 +28,9 @@ public class WellbeingFragment extends Fragment {
     FragmentWellbeingBinding binding;
 
     @BindView(R.id.btnResetPin)
-    Button btnResetPin;
+    RelativeLayout btnResetPin;
     @BindView(R.id.btnLogout)
-    Button btnLogout;
+    RelativeLayout btnLogout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

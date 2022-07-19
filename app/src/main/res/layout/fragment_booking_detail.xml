@@ -321,9 +321,9 @@
         android:layout_marginLeft="@dimen/_20sdp"
         android:layout_marginRight="@dimen/_20sdp"
         android:layout_marginBottom="@dimen/_25sdp"
-        android:theme="@style/TextBoldButton"
         android:background="@drawable/button_blue_bg"
-        android:text="@string/check_in_now" />
+        android:text="@string/check_in_now"
+        android:theme="@style/TextBoldButton" />
 
     <!--Skip and Change schedule-->
     <RelativeLayout

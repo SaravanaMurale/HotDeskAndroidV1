@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
@@ -301,7 +302,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     if(response.code()==200){
                         ImageResponse imageResponse = response.body();
                         if (imageResponse.getMessage()!=null && !imageResponse.isStatus()){
-                            Utils.toastMessage(getContext(),imageResponse.getMessage().getCode());
+//                            Utils.toastMessage(getContext(),imageResponse.getMessage().getCode());
                             userProfile.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.mygirl));
                         }
                         if (imageResponse.getImage()!=null){
@@ -372,7 +373,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 //                        Utils.showCustomAlertDialog(getActivity(),"Update Success");
 //                        Toast.makeText(getActivity(), "Success Bala", Toast.LENGTH_SHORT).show();
                         if (response.body().getResultCode()!=null && response.body().getResultCode().equalsIgnoreCase("ok")){
+                            openCheckoutDialog("Booking Updated");
                             loadHomeList();
+//                            openCheckoutDialog("Booking Updated");
                         }else {
                             Utils.showCustomAlertDialog(getActivity(),"Booking Not Updated "+response.body().getResultCode().toString());
                         }
@@ -423,7 +426,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     userCurrentStatus.setText("Checked Out");
                     userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
 
-//                    openCheckoutDialog();
+                    openCheckoutDialog("Checked Out Successfully");
                 }
 
                 @Override
@@ -436,6 +439,25 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         } else {
             Utils.toastMessage(getActivity(), "Please Enable Internet");
         }
+    }
+
+    private void openCheckoutDialog(String mesg) {
+        Dialog popDialog = new Dialog(getActivity());
+        popDialog.setContentView(R.layout.layout_checkout_success);
+        popDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        NavController navController= Navigation.findNavController(view);
+
+        TextView checkDialogClose = popDialog.findViewById(R.id.checkDialogClose);
+        TextView dialogMsg = popDialog.findViewById(R.id.dialog_text);
+        dialogMsg.setText(""+mesg);
+
+        checkDialogClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popDialog.dismiss();
+            }
+        });
+        popDialog.show();
     }
     private void loadHomeList(){
 

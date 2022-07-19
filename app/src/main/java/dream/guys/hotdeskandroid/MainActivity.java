@@ -58,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
         */
 
 
-      /*  gestureDetector = new GestureDetector(this, new GestureListener());
+      /*
+      gestureDetector = new GestureDetector(this, new GestureListener());
 
         mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.SimpleOnScaleGestureListener(){
             @Override
@@ -76,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
                 navView.startAnimation(scaleAnimation);
                 return true;
             }
-        });*/
+        });
+        */
     }
 
     private void nightModeConfig() {

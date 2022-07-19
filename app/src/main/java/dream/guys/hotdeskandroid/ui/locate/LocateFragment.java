@@ -4,6 +4,8 @@ import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentTime;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +25,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -195,7 +199,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 String c=Utils.getCurrentDate()+"T"+getCurrentTime()+":00Z";
                 System.out.println("CurentDateAndTime"+c);
 
-                Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), locateEndTime,"", "");
+                Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), binding.locateStartTime,"", "");
 
                 //Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), locateStartTime,"", "");
                 //getCurrentDate()+""+"T"+locateStartTime.getText().toString()+":"+"00"+"."+"000"+"Z";
@@ -207,7 +211,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), locateEndTime,"", "");
+                Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), binding.locateEndTime,"", "");
 
             }
         });
@@ -225,7 +229,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                Utils.bottomSheetDatePicker(getContext(), getActivity(),"","",locateCalendearView);
+                Utils.bottomSheetDatePicker(getContext(), getActivity(),"","",binding.locateCalendearView);
                 //locateCalendearView.getText().toString()+"T"+"00:00:00.000"+"Z");
 
             }
@@ -1391,6 +1395,23 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
+    private void openCheckoutDialog(String mesg) {
+        Dialog popDialog = new Dialog(getActivity());
+        popDialog.setContentView(R.layout.layout_checkout_success);
+        popDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextView checkDialogClose = popDialog.findViewById(R.id.checkDialogClose);
+        TextView dialogMsg = popDialog.findViewById(R.id.dialog_text);
+        dialogMsg.setText(""+mesg);
+
+        checkDialogClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popDialog.dismiss();
+            }
+        });
+        popDialog.show();
+    }
 
     private void deskBookingRequest() {
 
@@ -1446,7 +1467,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 BaseResponse baseResponse=response.body();
                 if(baseResponse!=null) {
-                    Toast.makeText(getContext(), baseResponse.getResultCode(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getContext(), baseResponse.getResultCode(), Toast.LENGTH_LONG).show();
+                    openCheckoutDialog("Booking Succcessfull");
+
                 }else {
                     Toast.makeText(getContext(), "Not Avaliable", Toast.LENGTH_LONG).show();
                 }
@@ -1506,7 +1529,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 ProgressDialog.dismisProgressBar(getContext(), dialog);
                 BaseResponse baseResponse=response.body();
                 if (baseResponse!=null){
-                    Toast.makeText(getContext(),baseResponse.getResultCode(),Toast.LENGTH_LONG).show();
+                    openCheckoutDialog("Booking Succcessfull");
                 }
                 else {
                     Toast.makeText(getContext(), "Parking Not Avaliable", Toast.LENGTH_LONG).show();
