@@ -24,6 +24,7 @@ import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.model.response.ImageResponse;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
+import dream.guys.hotdeskandroid.model.response.TeamsResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -122,6 +123,8 @@ public interface ApiInterface {
     @PUT("api/carparkbooking/bookings")
     Call<BaseResponse> doCarParkingBooking(@Body LocateCarParkBookingRequest locateCarParkBookingRequest);
 
+    @GET("api/teams")
+    Call<List<TeamsResponse>>  getTeams();
 
 
 

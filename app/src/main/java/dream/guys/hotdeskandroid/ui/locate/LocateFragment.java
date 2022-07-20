@@ -25,8 +25,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,7 +40,6 @@ import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.FloorAdapter;
 import dream.guys.hotdeskandroid.adapter.LocateMyTeamAdapter;
 import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
-import dream.guys.hotdeskandroid.databinding.FragmentLocateBinding;
 import dream.guys.hotdeskandroid.example.CanvasView;
 import dream.guys.hotdeskandroid.example.DataModel;
 import dream.guys.hotdeskandroid.example.ItemAdapter;
@@ -54,6 +51,7 @@ import dream.guys.hotdeskandroid.model.request.Point;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
+import dream.guys.hotdeskandroid.model.response.TeamsResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -117,38 +115,32 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     LinearLayout secondLayout;*/
 
     View deskView;
-    int canvasss=0;
-
-
+    int canvasss = 0;
 
 
     List<LocateCountryRespose> locateCountryResposeList;
 
 
     CanvasView canvasView;
-    FragmentLocateBinding binding;
+    dream.guys.hotdeskandroid.databinding.FragmentLocateBinding binding;
 
     Dialog dialog;
     int stateId = 0;
 
-    boolean keyClickedStats=true;
-    List<Point> pointList=new ArrayList<>();
+    boolean keyClickedStats = true;
+    List<Point> pointList = new ArrayList<>();
 
     //CheckInDetails
-    TextView locateDeskName,editBookingBack,editBookingContinue;
-    RelativeLayout bookingDateBlock,bookingStartBlock,bookingEndBlock,bookingCommentBlock,bookingVechicleRegtBlock;
-    EditText etComment,etVehicleReg;
-    TextView locateCheckInDate,locateCheckInTime,locateCheckoutTime;
-    int teamDeskIdForBooking=0;
-    int selectedCarParkingSlotId=0;
+    TextView locateDeskName, editBookingBack, editBookingContinue;
+    RelativeLayout bookingDateBlock, bookingStartBlock, bookingEndBlock, bookingCommentBlock, bookingVechicleRegtBlock;
+    EditText etComment, etVehicleReg;
+    TextView locateCheckInDate, locateCheckInTime, locateCheckoutTime;
+    int teamDeskIdForBooking = 0;
+    int selectedCarParkingSlotId = 0;
 
-    //Zoom
-    final static float move=200;
-    float ratio=1.0f;
-    int baseDist;
-    float baseRatio;
-
-    //RelativeLayout.LayoutParams params;
+    //AvaliablityChecking
+    List<DeskAvaliabilityResponse.TeamDeskAvaliabilityList> teamDeskAvaliabilityList;
+    List<TeamsResponse> teamsResponseList;
 
 
     @Override
@@ -163,7 +155,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -172,7 +163,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         View root = binding.getRoot();
 
         //params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-
 
 
         dialog = new Dialog(getContext());
@@ -196,10 +186,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                String c=Utils.getCurrentDate()+"T"+getCurrentTime()+":00Z";
-                System.out.println("CurentDateAndTime"+c);
+                String c = Utils.getCurrentDate() + "T" + getCurrentTime() + ":00Z";
+                System.out.println("CurentDateAndTime" + c);
 
-                Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), binding.locateStartTime,"", "");
+                //Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), binding.locateStartTime,"", "");
+                Utils.bottomSheetTimePicker(getContext(), getActivity(), binding.locateStartTime, "Stat Time", getCurrentDate());
+                System.out.println("covert12HoursTo24HoursFormat" + Utils.convert12HrsTO24Hrs(binding.locateStartTime.getText().toString()));
 
                 //Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), locateStartTime,"", "");
                 //getCurrentDate()+""+"T"+locateStartTime.getText().toString()+":"+"00"+"."+"000"+"Z";
@@ -211,7 +203,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), binding.locateEndTime,"", "");
+                Utils.bottomSheetTimePicker(getContext(), getActivity(), binding.locateEndTime, "End Time", getCurrentDate());
+                System.out.println("covert12HoursTo24HoursFormat" + Utils.convert12HrsTO24Hrs(binding.locateStartTime.getText().toString()));
+
 
             }
         });
@@ -229,7 +223,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                Utils.bottomSheetDatePicker(getContext(), getActivity(),"","",binding.locateCalendearView);
+                Utils.bottomSheetDatePicker(getContext(), getActivity(), "", "", binding.locateCalendearView);
+
+                System.out.println("ReceivedDatePickerInLocate" + binding.locateCalendearView.getText().toString());
+
+
                 //locateCalendearView.getText().toString()+"T"+"00:00:00.000"+"Z");
 
             }
@@ -257,15 +255,15 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                if(keyClickedStats){
+                if (keyClickedStats) {
                     binding.ivLocateKey.setImageDrawable(getResources().getDrawable(R.drawable.key_icon_orange));
                     binding.locateKeyStatusBlock.setVisibility(View.VISIBLE);
-                    keyClickedStats=false;
+                    keyClickedStats = false;
 
-                }else {
+                } else {
                     binding.ivLocateKey.setImageDrawable(getResources().getDrawable(R.drawable.locate_key));
                     binding.locateKeyStatusBlock.setVisibility(View.INVISIBLE);
-                    keyClickedStats=true;
+                    keyClickedStats = true;
                 }
 
             }
@@ -283,16 +281,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         });
 
 
-
-
         //Initally Load Floor Details
-       //initLoadFloorDetails(0);
+        //initLoadFloorDetails(0);
 
 
         return root;
     }
-
-
 
 
 
@@ -309,18 +303,23 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
 
             //ForCoordinate
-            int subParentId=SessionHandler.getInstance().getInt(getContext(), AppConstants.SUB_PARENT_ID);
-            boolean findCoordinateStatus=true;
+            int subParentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.SUB_PARENT_ID);
+            boolean findCoordinateStatus = true;
             //getFloorDetails(subParentId,findCoordinateStatus);
 
+
+            getAvaliableDeskDetails(null, 0);
+
+            getTeams();
 
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    getLocateDeskRoomCarDesign(parentId,i);
-                }
-            },2000);
 
+
+                    getLocateDeskRoomCarDesign(parentId, i);
+                }
+            }, 2000);
 
 
         } else {
@@ -328,10 +327,30 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }
     }
 
+    private void getTeams() {
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<TeamsResponse>> call = apiService.getTeams();
+        call.enqueue(new Callback<List<TeamsResponse>>() {
+            @Override
+            public void onResponse(Call<List<TeamsResponse>> call, Response<List<TeamsResponse>> response) {
+
+                teamsResponseList = response.body();
+                ProgressDialog.dismisProgressBar(getContext(), dialog);
 
 
+            }
 
-    private void getLocateDeskRoomCarDesign(int parentId, int id ) {
+            @Override
+            public void onFailure(Call<List<TeamsResponse>> call, Throwable t) {
+                ProgressDialog.dismisProgressBar(getContext(), dialog);
+            }
+        });
+
+    }
+
+
+    private void getLocateDeskRoomCarDesign(int parentId, int id) {
 
         dialog = ProgressDialog.showProgressBar(getContext());
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -348,19 +367,18 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 int totalDeskSize = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks().size();
                 System.out.println("TotalSize" + totalDeskSize);
 
+                ProgressDialog.dismisProgressBar(getContext(), dialog);
+                //getAvaliableDeskDetails(locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks(),0);
 
-                getFloorCoordinates(locateCountryResposeList.get(floorPosition).getCoordinates());
+
+                //getFloorCoordinates(locateCountryResposeList.get(floorPosition).getCoordinates());
 
 
                 //addDottedLine();
 
-                ProgressDialog.dismisProgressBar(getContext(), dialog);
-                //getAvaliableDeskDetails(locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks());
-
 
                 List<String> valueList = new ArrayList<>();
-
-                if(locateCountryResposeList.get(floorPosition).getItems()!=null){
+                if (locateCountryResposeList.get(floorPosition).getItems() != null) {
                     for (String key : locateCountryResposeList.get(floorPosition).getItems().keySet()) {
                         System.out.println("Value" + locateCountryResposeList.get(floorPosition).getItems().get(key));
 
@@ -370,19 +388,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                         //strings.add(locateCountryResposeList.get(0).getItems().get(key));
 
-                     /*for (int i = 0; i <strings.size() ; i++) {
-                         System.out.println("InsideValue"+strings.get(i));
-
-                     }*/
 
                     }
 
-                }else {
-                    Toast.makeText(getContext(),"No Data",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getContext(), "No Data", Toast.LENGTH_LONG).show();
                 }
-
-
-
 
 
                 ProgressDialog.dismisProgressBar(getContext(), dialog);
@@ -400,28 +411,27 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
 
-
     private void getFloorCoordinates(List<List<Integer>> coordinateList) {
 
 
-        System.out.println("CoordinateSize"+coordinateList.size());
+        System.out.println("CoordinateSize" + coordinateList.size());
         //List<Point> pointList=new ArrayList<>();
-        for (int i = 0; i <coordinateList.size() ; i++) {
+        for (int i = 0; i < coordinateList.size(); i++) {
 
-            System.out.println("CoordinateData"+ i +"position"+"size "+coordinateList.get(i).size());
+            System.out.println("CoordinateData" + i + "position" + "size " + coordinateList.get(i).size());
 
-            Point point=new Point(coordinateList.get(i).get(0)+40,coordinateList.get(i).get(1)+20);
+            Point point = new Point(coordinateList.get(i).get(0) + 40, coordinateList.get(i).get(1) + 20);
             pointList.add(point);
 
 
         }
-        System.out.println("PointListSize"+pointList.size());
+        System.out.println("PointListSize" + pointList.size());
 
         //binding.secondLayout.postInvalidate();
         //binding.secondLayout.invalidate();
 
-        if(pointList.size()>0){
-            MyCanvasDraw  myCanvasDraw = new MyCanvasDraw(getContext(), pointList);
+        if (pointList.size() > 0) {
+            MyCanvasDraw myCanvasDraw = new MyCanvasDraw(getContext(), pointList);
 
             /*if(canvasss==1){
                 myCanvasDraw.setDrawMethod();
@@ -471,7 +481,120 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     private void addView(List<String> valueList, String key, int floorPosition) {
 
         System.out.println("ReceivedKeyInAddView" + key);
+        String startDate="2022-07-21 21:35:00";
+        String endDate="2022-07-20 23:59:00";
 
+        //Split key to get id and code
+        String[] result = key.split("_");
+        int id = Integer.parseInt(result[0]);
+        String code = result[1];
+
+        //Desk Avaliablity Checking
+        if (code.equals(AppConstants.DESK)) {
+
+            for (int i = 0; i < teamDeskAvaliabilityList.size(); i++) {
+
+                boolean wasAssigned = false;
+
+                if (id == teamDeskAvaliabilityList.get(i).getDeskId()) {
+
+                    DeskAvaliabilityResponse.TeamDeskAvaliabilityList teamDeskAvaliability = teamDeskAvaliabilityList.get(i);
+
+                    //GET TEAM ID
+                    boolean getTeamId = false;
+                    TeamsResponse teamsResponse = new TeamsResponse();
+                    if (!getTeamId) {
+                        for (int j = 0; j < teamsResponseList.size(); j++) {
+                            if (teamDeskAvaliability.getTeamId() == teamsResponseList.get(j).getId()) {
+
+                                teamsResponse = teamsResponseList.get(j);
+                                getTeamId = true;
+                            }
+                        }
+                    }//
+
+                    System.out.println("TotalAvaliableDeskId" + teamDeskAvaliability.getDeskId());
+                    System.out.println("CurrentDateAndTimeIn24HoursFormat" + Utils.getCurrentTimeIn24HourFormat());
+
+                    //GetCurrentDate and Offset
+                    String offSetAddedDate = Utils.addingHoursToCurrentDate(teamDeskAvaliability.getCurrentTimeZoneOffset());
+
+                    System.out.println("NewlyAddedDateWithTime" + offSetAddedDate);
+                    System.out.println("NewlyAddedDateAlone" + Utils.splitGetDate(offSetAddedDate));
+
+
+                    for (int j = 0; j < teamDeskAvaliability.getAvailableTimeSlotsList().size(); j++) {
+
+                        if (!wasAssigned) {
+
+                            DeskAvaliabilityResponse.TeamDeskAvaliabilityList.AvailableTimeSlots availableTimeSlots = teamDeskAvaliability.getAvailableTimeSlotsList().get(j);
+
+                            System.out.println("SlotFrom" + availableTimeSlots.getFrom());
+                            System.out.println("SlotTo" + availableTimeSlots.getTo());
+
+
+                            int dateComparsionResult = Utils.compareTwoDates(startDate, offSetAddedDate);
+                            int second = Utils.compareTwoDates(startDate, Utils.removeTandZInDate(availableTimeSlots.getFrom()));
+                            int third = Utils.compareTwoDates(endDate, Utils.removeTandZInDate(availableTimeSlots.getTo()));
+
+                            if (dateComparsionResult == 1) {
+                                System.out.println("Unavaliable");
+                            } else if (teamDeskAvaliability.isPartiallyAvailable() == true && second == 2 && third == 1) {
+
+                                if (teamDeskAvaliability.isBookedByUser() == true) {
+                                    System.out.println("bookedForMe");
+                                } else if (teamDeskAvaliability.isBookedByElse() == true) {
+                                    System.out.println("BookedOther");
+                                } else if (teamsResponse.getDeskCount() != 0 && teamsResponse.getAutomaticApprovalStatus() == 2) {
+                                    System.out.println("Avaliable");
+
+                                } else if (teamDeskAvaliability.getTeamId() == SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID)) {
+                                    System.out.println("Avaliable");
+                                } else {
+
+                                    if (teamsResponse.getDeskCount() != 0 && teamsResponse.getAutomaticApprovalStatus() == 3) {
+                                        System.out.println("Unavaliable");
+                                    } else {
+                                        System.out.println("Request");
+                                    }
+                                }
+                                wasAssigned = true;
+
+                            } else {
+                                System.out.println("Unavaliable");
+
+                                if (teamDeskAvaliability.isBookedByUser() == true) {
+                                    System.out.println("bookedForMe");
+                                } else if (teamDeskAvaliability.isBookedByElse() == true) {
+                                    System.out.println("BookedOther");
+                                }
+                            }
+
+
+                        }
+
+
+                    }
+
+
+                /*for (int j = 0; j < teamsResponseList.size(); j++) {
+
+                        if (teamDeskAvaliabilityList.get(0).getTeamId() == teamsResponseList.get(j).getId()) {
+
+                            System.out.println("automaticApprovalStatus" + teamsResponseList.get(j).getAutomaticApprovalStatus());
+                            System.out.println("TeamsNames" + teamsResponseList.get(j).getName());
+
+                            //System.out.println("AvaliableTimeSlotFrom" + teamDeskAvaliabilityList.get(i).getAvailableTimeSlotsList().get(i).getFrom());
+                            //System.out.println("AvaliableTimeSlotTo" + teamDeskAvaliabilityList.get(i).getAvailableTimeSlotsList().get(i).getTo());
+
+                        }
+                    }*/
+                }
+
+
+            }
+
+        }
 
         deskView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
         ImageView ivDesk = deskView.findViewById(R.id.ivDesk);
@@ -518,8 +641,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
              }*/
 
-        int x=Integer.parseInt(valueList.get(0));
-        int y=Integer.parseInt(valueList.get(1));
+        int x = Integer.parseInt(valueList.get(0));
+        int y = Integer.parseInt(valueList.get(1));
 
         relativeLayout.leftMargin = x;
         relativeLayout.topMargin = y;
@@ -532,6 +655,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         relativeLayout.width = 80;
         relativeLayout.height = 67;
         ivDesk.setLayoutParams(relativeLayout);
+
 
         //OnClickListener
         ivDesk.setOnClickListener(new View.OnClickListener() {
@@ -566,7 +690,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 } else if (code.equals(AppConstants.MEETING)) {
                     //Get Code For MEETING
-
                     for (int i = 0; i < locateCountryResposeList.get(floorPosition).getLocationItemLayout().getMeetingRoomsList().size(); i++) {
 
                         if (id == locateCountryResposeList.get(floorPosition).getLocationItemLayout().getMeetingRoomsList().get(i).getMeetingRoomId()) {
@@ -589,21 +712,16 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 }
 
-                if(code.equals("3") || code.equals("5")){
-                    callDeskBookingnBottomSheet(selctedCode, key, id,code);
-                }else if(code.equals("4")){
+                if (code.equals("3") || code.equals("5")) {
+                    callDeskBookingnBottomSheet(selctedCode, key, id, code);
+                } else if (code.equals("4")) {
 
                 }
-
-
-
 
             }
         });
 
         binding.firstLayout.addView(deskView);
-
-
 
 
     }
@@ -634,20 +752,25 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 DeskAvaliabilityResponse deskAvaliabilityResponseList = response.body();
 
+                teamDeskAvaliabilityList = deskAvaliabilityResponseList.getTeamDeskAvaliabilityList();
+
+
                 System.out.println("InsideDataValaibelity");
                 //System.out.println("AllDeskSize"+desks.size());
                 // System.out.println("ActiveDeskSize"+ deskAvaliabilityResponseList.getLocationDesksList().size());
 
 
                 //GetTeamDeskIdForBooking
-                for (int i = 0; i <deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size() ; i++) {
+                if (id > 0) {
+                    for (int i = 0; i < deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size(); i++) {
 
-                    if(id==deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).getDeskId()){
-                         teamDeskIdForBooking=deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).getTeamDeskId();
-                        System.out.println("TeamDeskIdForBooking "+teamDeskIdForBooking);
+                        if (id == deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).getDeskId()) {
+                            teamDeskIdForBooking = deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).getTeamDeskId();
+                            System.out.println("TeamDeskIdForBooking " + teamDeskIdForBooking);
+                        }
+
+
                     }
-
-
                 }
 
 
@@ -683,6 +806,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
+
     //MyTeamBottomSheet
     private void callMyTeamBottomSheet() {
 
@@ -693,7 +817,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 new RelativeLayout(getContext())));
 
         rvMyTeam = myTeamBottomSheet.findViewById(R.id.rvLocateMyTeam);
-        myTeamClose=myTeamBottomSheet.findViewById(R.id.myTeamClose);
+        myTeamClose = myTeamBottomSheet.findViewById(R.id.myTeamClose);
 
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -826,7 +950,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                canvasss=1;
+                canvasss = 1;
 
                 binding.firstLayout.removeAllViews();
                 //binding.secondLayout.removeAllViews();
@@ -933,7 +1057,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 getFloorDetails(locateCountryRespose.getLocateCountryId(), false);
 
 
-                System.out.println("SubParentIdAndItsPosition"+locateCountryRespose.getLocateCountryId()+" ");
+                System.out.println("SubParentIdAndItsPosition" + locateCountryRespose.getLocateCountryId() + " ");
 
                 break;
 
@@ -946,7 +1070,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 rvFloor.setVisibility(View.VISIBLE);
                 SessionHandler.getInstance().saveInt(getContext(), AppConstants.PARENT_ID, locateCountryRespose.getLocateCountryId());
 
-                if(locateCountryRespose.getSupportZoneLayoutItemsList()!=null){
+                if (locateCountryRespose.getSupportZoneLayoutItemsList() != null) {
                     getOtherSubZoneLayoutItems(locateCountryRespose.getSupportZoneLayoutItemsList());
                 }
 
@@ -973,17 +1097,17 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         pointList.clear();
 
-        for (int i = 0; i <supportZoneLayoutItemsList.size() ; i++) {
+        for (int i = 0; i < supportZoneLayoutItemsList.size(); i++) {
 
-            System.out.println("supportZoneLayoutItemsSize"+supportZoneLayoutItemsList.size());
-            System.out.println("supportZoneLayoutItemsSize"+supportZoneLayoutItemsList.get(i).getTitle());
-            System.out.println("CorrrdnateSize"+supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().size());
+            System.out.println("supportZoneLayoutItemsSize" + supportZoneLayoutItemsList.size());
+            System.out.println("supportZoneLayoutItemsSize" + supportZoneLayoutItemsList.get(i).getTitle());
+            System.out.println("CorrrdnateSize" + supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().size());
 
-            for (int j = 0; j <supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().size() ; j++) {
+            for (int j = 0; j < supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().size(); j++) {
 
-                System.out.println("DATAATATA"+supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(0) +" "+supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(1));
+                System.out.println("DATAATATA" + supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(0) + " " + supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(1));
 
-                Point point=new Point(supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(0),
+                Point point = new Point(supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(0),
                         supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(1));
                 pointList.add(point);
 
@@ -996,7 +1120,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }*/
 
         ProgressDialog.dismisProgressBar(getContext(), dialog);
-              /*  Point point=new Point(coordinateList.get(i).get(0),coordinateList.get(i).get(1));
+        /*  Point point=new Point(coordinateList.get(i).get(0),coordinateList.get(i).get(1));
 
          */
 
@@ -1059,20 +1183,20 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 //ProgressDialog.dismisProgressBar(getContext(), dialog);
 
-                if(findCoordinateStatus){
+                if (findCoordinateStatus) {
                     int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
                     //ProgressDialog.dismisProgressBar(getContext(), dialog);
-                    for (int i = 0; i <locateCountryResposes.size() ; i++) {
+                    for (int i = 0; i < locateCountryResposes.size(); i++) {
 
-                        if(parentId==locateCountryResposes.get(i).getLocateCountryId()){
-                            if(locateCountryResposes.get(i).getSupportZoneLayoutItemsList()!=null){
-                               // ProgressDialog.dismisProgressBar(getContext(), dialog);
+                        if (parentId == locateCountryResposes.get(i).getLocateCountryId()) {
+                            if (locateCountryResposes.get(i).getSupportZoneLayoutItemsList() != null) {
+                                // ProgressDialog.dismisProgressBar(getContext(), dialog);
                                 getOtherSubZoneLayoutItems(locateCountryResposes.get(i).getSupportZoneLayoutItemsList());
                             }
                         }
 
                     }
-                }else {
+                } else {
                     rvStreet.setVisibility(View.VISIBLE);
                     showFloorListInAdapter(locateCountryResposes);
 
@@ -1087,7 +1211,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             @Override
             public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
-               // ProgressDialog.dismisProgressBar(getContext(), dialog);
+                // ProgressDialog.dismisProgressBar(getContext(), dialog);
             }
         });
 
@@ -1157,15 +1281,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         ArrayList<DataModel> mList;
         ItemAdapter adapter;
 
-        TextView locateFilterCancel,locateFilterApply;
+        TextView locateFilterCancel, locateFilterApply;
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((this).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_locate_filter,
                 new RelativeLayout(getContext())));
 
-        locateFilterCancel=bottomSheetDialog.findViewById(R.id.locateFilterCancel);
-        locateFilterApply=bottomSheetDialog.findViewById(R.id.locateFilterApply);
-
+        locateFilterCancel = bottomSheetDialog.findViewById(R.id.locateFilterCancel);
+        locateFilterApply = bottomSheetDialog.findViewById(R.id.locateFilterApply);
 
 
         locateFilterMainRV = bottomSheetDialog.findViewById(R.id.locateFilterMainRV);
@@ -1192,34 +1315,34 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //list1
         ArrayList<ValuesPOJO> nestedList1 = new ArrayList<>();
 
-        valuesPOJO = new ValuesPOJO("Monitor",false);
+        valuesPOJO = new ValuesPOJO("Monitor", false);
         nestedList1.add(valuesPOJO);
         nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Adjustable height",false);
+        valuesPOJO = new ValuesPOJO("Adjustable height", false);
         nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Laptop stand",false);
+        valuesPOJO = new ValuesPOJO("Laptop stand", false);
         nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("USB_C Dock",false);
+        valuesPOJO = new ValuesPOJO("USB_C Dock", false);
         nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Charge point",false);
+        valuesPOJO = new ValuesPOJO("Charge point", false);
         nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Standing desk",false);
+        valuesPOJO = new ValuesPOJO("Standing desk", false);
         nestedList1.add(valuesPOJO);
 
         ArrayList<ValuesPOJO> nestedList2 = new ArrayList<>();
 
-        valuesPOJO = new ValuesPOJO("Single",false);
+        valuesPOJO = new ValuesPOJO("Single", false);
         nestedList2.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Double",false);
+        valuesPOJO = new ValuesPOJO("Double", false);
         nestedList2.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Ac",false);
+        valuesPOJO = new ValuesPOJO("Ac", false);
         nestedList2.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Non-AC",false);
+        valuesPOJO = new ValuesPOJO("Non-AC", false);
         nestedList2.add(valuesPOJO);
 
 
-        mList.add(new DataModel(nestedList1 , "Workspaces"));
-        mList.add(new DataModel( nestedList2,"Rooms"));
+        mList.add(new DataModel(nestedList1, "Workspaces"));
+        mList.add(new DataModel(nestedList2, "Rooms"));
 
         adapter = new ItemAdapter(mList);
         locateFilterMainRV.setAdapter(adapter);
@@ -1232,40 +1355,39 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     //Book BottomSheet
     private void callDeskBookingnBottomSheet(String selctedCode, String key, int id, String code) {
 
-        System.out.println("BookingRequestDetail"+selctedCode+" "+key+" "+id+" "+code);
+        System.out.println("BookingRequestDetail" + selctedCode + " " + key + " " + id + " " + code);
 
         BottomSheetDialog locateCheckInBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         locateCheckInBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_checkin_bottomsheet,
                 new RelativeLayout(getContext())));
-        bookingDateBlock=locateCheckInBottomSheet.findViewById(R.id.bookingDateBlock);
-        bookingStartBlock=locateCheckInBottomSheet.findViewById(R.id.bookingStartBlock);
-        bookingEndBlock=locateCheckInBottomSheet.findViewById(R.id.bookingEndBlock);
+        bookingDateBlock = locateCheckInBottomSheet.findViewById(R.id.bookingDateBlock);
+        bookingStartBlock = locateCheckInBottomSheet.findViewById(R.id.bookingStartBlock);
+        bookingEndBlock = locateCheckInBottomSheet.findViewById(R.id.bookingEndBlock);
 
 
-        locateCheckInDate=locateCheckInBottomSheet.findViewById(R.id.locateCheckInDate);
-        locateCheckInTime=locateCheckInBottomSheet.findViewById(R.id.locateCheckInTime);
-        locateCheckoutTime=locateCheckInBottomSheet.findViewById(R.id.locateCheckoutTime);
+        locateCheckInDate = locateCheckInBottomSheet.findViewById(R.id.locateCheckInDate);
+        locateCheckInTime = locateCheckInBottomSheet.findViewById(R.id.locateCheckInTime);
+        locateCheckoutTime = locateCheckInBottomSheet.findViewById(R.id.locateCheckoutTime);
 
         locateDeskName = locateCheckInBottomSheet.findViewById(R.id.locateDeskName);
-        editBookingContinue=locateCheckInBottomSheet.findViewById(R.id.editBookingContinue);
-        editBookingBack=locateCheckInBottomSheet.findViewById(R.id.editBookingBack);
-
+        editBookingContinue = locateCheckInBottomSheet.findViewById(R.id.editBookingContinue);
+        editBookingBack = locateCheckInBottomSheet.findViewById(R.id.editBookingBack);
 
 
         //Car Parking Booking Widget
-        bookingCommentBlock=locateCheckInBottomSheet.findViewById(R.id.bookingCommentBlock);
-        bookingVechicleRegtBlock=locateCheckInBottomSheet.findViewById(R.id.bookingVechicleRegtBlock);
-        etComment=locateCheckInBottomSheet.findViewById(R.id.etComment);
+        bookingCommentBlock = locateCheckInBottomSheet.findViewById(R.id.bookingCommentBlock);
+        bookingVechicleRegtBlock = locateCheckInBottomSheet.findViewById(R.id.bookingVechicleRegtBlock);
+        etComment = locateCheckInBottomSheet.findViewById(R.id.etComment);
         etComment.setText("Comment");
-        etVehicleReg=locateCheckInBottomSheet.findViewById(R.id.etVehicleReg);
+        etVehicleReg = locateCheckInBottomSheet.findViewById(R.id.etVehicleReg);
         etVehicleReg.setText("TN20CX2443");
 
         //Desk Avaliability Checking
-        if(code.equals("3")) {
+        if (code.equals("3")) {
             bookingCommentBlock.setVisibility(View.GONE);
             bookingVechicleRegtBlock.setVisibility(View.GONE);
             getAvaliableDeskDetails(null, id);
-        }else if(code.equals("5")){
+        } else if (code.equals("5")) {
             bookingCommentBlock.setVisibility(View.VISIBLE);
             bookingVechicleRegtBlock.setVisibility(View.VISIBLE);
             getParkingSlotId(selctedCode);
@@ -1275,7 +1397,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                Utils.bottomSheetDatePicker(getContext(),getActivity(),"","",locateCheckInDate);
+                Utils.bottomSheetDatePicker(getContext(), getActivity(), "", "", locateCheckInDate);
 
                 //callBookingDatePickerBottomSheet();
             }
@@ -1284,7 +1406,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         bookingStartBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.bottomSheetTimePickerInBooking(getContext(),getActivity(),locateCheckInTime,"","");
+                Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), locateCheckInTime, "", "");
                 //callBookingTimePickerBottomSheet();
             }
         });
@@ -1293,10 +1415,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                Utils.bottomSheetTimePickerInBooking(getContext(),getActivity(),locateCheckoutTime,"","");
+                Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), locateCheckoutTime, "", "");
             }
         });
-
 
 
         locateDeskName.setText(selctedCode);
@@ -1308,10 +1429,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 locateCheckInBottomSheet.dismiss();
 
                 //dialog = ProgressDialog.showProgressBar(getContext());
-                if(code.equals("3")){
+                if (code.equals("3")) {
                     //Desk Booking
                     deskBookingRequest();
-                }else if(code.equals("5")){
+                } else if (code.equals("5")) {
                     //Car Booking
                     carParkingRequest();
                 }
@@ -1332,10 +1453,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     private void getParkingSlotId(String key) {
 
         int floorPosition = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION);
-        for (int i = 0; i <locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList().size() ; i++) {
+        for (int i = 0; i < locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList().size(); i++) {
 
-            System.out.println("SelectedCodeEquatl"+locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList().get(i).getCode());
-            if(key.equals(locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList().get(i).getCode())) {
+            System.out.println("SelectedCodeEquatl" + locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList().get(i).getCode());
+            if (key.equals(locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList().get(i).getCode())) {
                 System.out.println("SelectedCarParkingSlotId" + locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList().get(i).getId());
                 selectedCarParkingSlotId = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList().get(i).getId();
             }
@@ -1402,7 +1523,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         TextView checkDialogClose = popDialog.findViewById(R.id.checkDialogClose);
         TextView dialogMsg = popDialog.findViewById(R.id.dialog_text);
-        dialogMsg.setText(""+mesg);
+        dialogMsg.setText("" + mesg);
 
         checkDialogClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1419,44 +1540,44 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         System.out.println("DeskBookingRequested");
 
-        LocateBookingRequest locateBookingRequest=new LocateBookingRequest();
-        locateBookingRequest.setTeamId(SessionHandler.getInstance().getInt(getContext(),AppConstants.TEAM_ID));
-        locateBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(getContext(),AppConstants.TEAMMEMBERSHIP_ID));
+        LocateBookingRequest locateBookingRequest = new LocateBookingRequest();
+        locateBookingRequest.setTeamId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID));
+        locateBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID));
 
         //locateBookingRequest.setTeamId(9);
         //locateBookingRequest.setTeamMembershipId(12);
 
-        LocateBookingRequest.ChangeSets changeSets=locateBookingRequest.new ChangeSets();
+        LocateBookingRequest.ChangeSets changeSets = locateBookingRequest.new ChangeSets();
         changeSets.setChangeSetId(0);
         //changeSets.setChangeSetDate("2022-07-14T00:00:00.000Z");
         changeSets.setChangeSetDate
-                (locateCheckInDate.getText().toString()+"T"+"00:00:00.000"+"Z");
+                (locateCheckInDate.getText().toString() + "T" + "00:00:00.000" + "Z");
 
-        LocateBookingRequest.ChangeSets.Changes changes=changeSets. new Changes();
+        LocateBookingRequest.ChangeSets.Changes changes = changeSets.new Changes();
         changes.setUsageTypeId(2);
         //changes.setFrom("2022-07-21T20:15:00.000Z");
         //changes.setTo("2022-07-21T21:30:00.000Z");
 
-        changes.setFrom(getCurrentDate()+""+"T"+locateCheckInTime.getText().toString()+":"+"00"+"."+"000"+"Z");
-        changes.setTo(getCurrentDate()+""+"T"+locateCheckoutTime.getText().toString()+":"+"00"+"."+"000"+"Z");
+        changes.setFrom(getCurrentDate() + "" + "T" + locateCheckInTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+        changes.setTo(getCurrentDate() + "" + "T" + locateCheckoutTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
         changes.setTimeZoneId("India Standard Time");
         changes.setTeamDeskId(teamDeskIdForBooking);
         changes.setTypeOfCheckIn(1);
 
         changeSets.setChanges(changes);
 
-        List<LocateBookingRequest.ChangeSets> changeSetsList=new ArrayList<>();
+        List<LocateBookingRequest.ChangeSets> changeSetsList = new ArrayList<>();
         changeSetsList.add(changeSets);
 
         locateBookingRequest.setChangeSetsList(changeSetsList);
 
-        LocateBookingRequest.DeleteIds deleteIds=locateBookingRequest.new DeleteIds();
-        List<LocateBookingRequest.DeleteIds> deleteIdsList=new ArrayList<>();
+        LocateBookingRequest.DeleteIds deleteIds = locateBookingRequest.new DeleteIds();
+        List<LocateBookingRequest.DeleteIds> deleteIdsList = new ArrayList<>();
         //deleteIdsList.add(deleteIds);
 
         locateBookingRequest.setDeleteIdsList(deleteIdsList);
 
-        System.out.println("BookingRequestObject"+locateBookingRequest);
+        System.out.println("BookingRequestObject" + locateBookingRequest);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<BaseResponse> call = apiService.doDeskBooking(locateBookingRequest);
@@ -1466,12 +1587,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 ProgressDialog.dismisProgressBar(getContext(), dialog);
 
-                BaseResponse baseResponse=response.body();
-                if(baseResponse!=null) {
+                BaseResponse baseResponse = response.body();
+                if (baseResponse != null) {
 //                    Toast.makeText(getContext(), baseResponse.getResultCode(), Toast.LENGTH_LONG).show();
                     openCheckoutDialog("Booking Succcessfull");
 
-                }else {
+                } else {
                     Toast.makeText(getContext(), "Not Avaliable", Toast.LENGTH_LONG).show();
                 }
 
@@ -1494,29 +1615,29 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         dialog = ProgressDialog.showProgressBar(getContext());
         System.out.println("carParkingRequested");
 
-        LocateCarParkBookingRequest locateCarParkBookingRequest=new LocateCarParkBookingRequest();
+        LocateCarParkBookingRequest locateCarParkBookingRequest = new LocateCarParkBookingRequest();
         locateCarParkBookingRequest.setParkingSlotId(selectedCarParkingSlotId);
 
-        LocateCarParkBookingRequest.CarParkingChangeSets carParkingChangeSets=locateCarParkBookingRequest.new CarParkingChangeSets();
+        LocateCarParkBookingRequest.CarParkingChangeSets carParkingChangeSets = locateCarParkBookingRequest.new CarParkingChangeSets();
         carParkingChangeSets.setId(0);
-        carParkingChangeSets.setDate(locateCheckInDate.getText().toString()+"T"+"00:00:00.000"+"Z");
+        carParkingChangeSets.setDate(locateCheckInDate.getText().toString() + "T" + "00:00:00.000" + "Z");
 
-        LocateCarParkBookingRequest.CarParkingChangeSets.CarParkingChanges carParkingChanges=carParkingChangeSets.new CarParkingChanges();
-        carParkingChanges.setFrom(getCurrentDate()+""+"T"+locateCheckInTime.getText().toString()+":"+"00"+"."+"000"+"Z");
-        carParkingChanges.setTo(getCurrentDate()+""+"T"+locateCheckoutTime.getText().toString()+":"+"00"+"."+"000"+"Z");
+        LocateCarParkBookingRequest.CarParkingChangeSets.CarParkingChanges carParkingChanges = carParkingChangeSets.new CarParkingChanges();
+        carParkingChanges.setFrom(getCurrentDate() + "" + "T" + locateCheckInTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+        carParkingChanges.setTo(getCurrentDate() + "" + "T" + locateCheckoutTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
         carParkingChanges.setComments(etComment.getText().toString());
-        carParkingChanges.setBookedForUser(SessionHandler.getInstance().getInt(getContext(),AppConstants.USER_ID));
+        carParkingChanges.setBookedForUser(SessionHandler.getInstance().getInt(getContext(), AppConstants.USER_ID));
         carParkingChanges.setVehicleRegNumber(etVehicleReg.getText().toString());
 
         carParkingChangeSets.setCarParkingChanges(carParkingChanges);
 
-        List<LocateCarParkBookingRequest.CarParkingChangeSets> carParkingChangeSetsList=new ArrayList<>();
+        List<LocateCarParkBookingRequest.CarParkingChangeSets> carParkingChangeSetsList = new ArrayList<>();
         carParkingChangeSetsList.add(carParkingChangeSets);
 
         locateCarParkBookingRequest.setCarParkingChangeSetsList(carParkingChangeSetsList);
 
-        LocateCarParkBookingRequest.CarParkingDeleteIds carParkingDeleteIds=locateCarParkBookingRequest.new CarParkingDeleteIds();
-        List<LocateCarParkBookingRequest.CarParkingDeleteIds> deleteIdsList=new ArrayList<>();
+        LocateCarParkBookingRequest.CarParkingDeleteIds carParkingDeleteIds = locateCarParkBookingRequest.new CarParkingDeleteIds();
+        List<LocateCarParkBookingRequest.CarParkingDeleteIds> deleteIdsList = new ArrayList<>();
         //deleteIdsList.add(carParkingDeleteIds);
 
         locateCarParkBookingRequest.setDeleteIdsList(deleteIdsList);
@@ -1528,11 +1649,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
                 ProgressDialog.dismisProgressBar(getContext(), dialog);
-                BaseResponse baseResponse=response.body();
-                if (baseResponse!=null){
+                BaseResponse baseResponse = response.body();
+                if (baseResponse != null) {
                     openCheckoutDialog("Booking Succcessfull");
-                }
-                else {
+                } else {
                     Toast.makeText(getContext(), "Parking Not Avaliable", Toast.LENGTH_LONG).show();
                 }
                 /*if(response.code()==200){
@@ -1549,7 +1669,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
     }
-
 
 
     @Override
@@ -1617,9 +1736,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }*/
 
     private int getDistace(MotionEvent event) {
-        int dx=(int) (event.getX(0)-event.getX(1));
-        int dy=(int) (event.getY(0)-event.getY(1));
-        return (int)(Math.sqrt(dx*dx+dy*dy));
+        int dx = (int) (event.getX(0) - event.getX(1));
+        int dy = (int) (event.getY(0) - event.getY(1));
+        return (int) (Math.sqrt(dx * dx + dy * dy));
     }
 
 
