@@ -33,7 +33,7 @@
         <activity
             android:name=".ui.login.sso.WebViewActivity"
             android:exported="false" />
-        <activity
+        <!--<activity
             android:name="com.microsoft.identity.client.BrowserTabActivity"
             android:exported="true">
             <intent-filter>
@@ -41,10 +41,9 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <!--
+                &lt;!&ndash;
                     Add in your scheme/host from registered redirect URI
                     note that the leading "/" is required for android:path
-                -->
 
                 <data
                     android:host="oauth"
@@ -54,6 +53,26 @@
                     android:host="com.azuresamples.msalandroidapp"
                     android:path="/1wIqXSqBj7w+h11ZifsnqwgyKrY="
                     android:scheme="msauth" />
+                    &ndash;&gt;
+
+                <data
+                    android:host="dream.guys.hotdeskandroid"
+                    android:path="/J3qaYqopn1p9ciZLX8o6GDfAtyU="
+                    android:scheme="oauth" />
+
+            </intent-filter>
+        </activity>-->
+        <activity
+            android:name="com.microsoft.identity.client.BrowserTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="oauth"
+                    android:path="/redirect"
+                    android:scheme="com.brickendon.hdplus" />
             </intent-filter>
         </activity>
         <activity

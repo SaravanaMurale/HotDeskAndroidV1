@@ -63,6 +63,23 @@ public class SignInActivity extends AppCompatActivity {
                         MyApp.getContext(),
                         AppConstants.TOKEN_EXPIRY_STATUS);
 
+        try {
+            android.content.pm.PackageInfo info = getPackageManager().getPackageInfo(
+                    "dream.guys.hotdeskandroid",
+                    android.content.pm.PackageManager.GET_SIGNATURES);
+            for (android.content.pm.Signature signature : info.signatures) {
+                java.security.MessageDigest md = java.security.MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                android.util.Log.d("KeyHash", "KeyHash:" + android.util.Base64.encodeToString(md.digest(),
+                        android.util.Base64.DEFAULT));
+
+            }
+        } catch (android.content.pm.PackageManager.NameNotFoundException e) {
+
+        } catch (java.security.NoSuchAlgorithmException e) {
+
+        }
+
         //Already loggedin user
         System.out.println("login chec"+SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.PIN_SETUP_DONE));
         if(tokenStatus &&!SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.LOGIN_CHECK)

@@ -5,16 +5,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.microsoft.identity.client.AcquireTokenParameters;
 import com.microsoft.identity.client.AuthenticationCallback;
 import com.microsoft.identity.client.IAccount;
@@ -36,7 +43,9 @@ import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
+import dream.guys.hotdeskandroid.model.response.TypeOfLoginResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
+import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
 import dream.guys.hotdeskandroid.ui.login.sso.B2CConfiguration;
 import dream.guys.hotdeskandroid.ui.login.sso.B2CUser;
 import dream.guys.hotdeskandroid.ui.login.sso.WebViewActivity;
@@ -58,6 +67,8 @@ public class LoginActivity extends AppCompatActivity {
 
     Dialog dialog;
 
+    @BindView(R.id.etTenantName)
+    EditText etTenantName;
     @BindView(R.id.etCompanyName)
     EditText etCompanyName;
     @BindView(R.id.etEmail)
@@ -67,17 +78,25 @@ public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.tvForgetPassword)
     TextView tvForgotPassword;
+    @BindView(R.id.backToLogin)
+    TextView tvBackToLogin;
 
     @BindView(R.id.btnSignInLogin)
     Button signIn;
+    @BindView(R.id.btnLoginSso)
+    Button signInSso;
     @BindView(R.id.ivWindows)
     ImageView ivWindows;
+    @BindView(R.id.tenant_layout)
+    RelativeLayout tenantLayout;
+    @BindView(R.id.login_layout)
+    RelativeLayout loginLayout;
 
     private List<B2CUser> users;
 
     /* Azure AD Variables */
     private IMultipleAccountPublicClientApplication b2cApp;
-
+    String tentantName="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +104,7 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         dialog = new Dialog(LoginActivity.this);
+
 
         // Creates a PublicClientApplication object with res/raw/auth_config_single_account.json
         PublicClientApplication.createMultipleAccountPublicClientApplication(this,
@@ -104,36 +124,23 @@ public class LoginActivity extends AppCompatActivity {
 //                        acquireTokenSilentButton.setEnabled(false);
                     }
                 });
-
+        tvBackToLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tenantLayout.setVisibility(View.GONE);
+                loginLayout.setVisibility(View.VISIBLE);
+            }
+        });
         ivWindows.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             /*    Intent intent = new Intent(getApplicationContext(), WebViewActivity.class);
                 startActivity(intent);
             */
-                if (b2cApp == null) {
-                    return;
-                }
+                loginLayout.setVisibility(View.GONE);
+                tenantLayout.setVisibility(View.VISIBLE);
+//                tenantNamePopUp();
 
-                /**
-                 * Runs user flow interactively.
-                 * <p>
-                 * Once the user finishes with the flow, you will also receive an access token containing the claims for the scope you passed in (see B2CConfiguration.getScopes()),
-                 * which you can subsequently use to obtain your resources.
-                 */
-                List<Pair<String, String>> extraQueryParameters = new ArrayList<>();
-                extraQueryParameters.add( new Pair<String, String>("domain_hint", "google.com"));
-                extraQueryParameters.add( new Pair<String, String>("response_type", "code+id_token"));
-                extraQueryParameters.add( new Pair<String, String>("response_mode", "query"));
-                extraQueryParameters.add( new Pair<String, String>("scope", "openid%20offline_access&state=12345"));
-
-                AcquireTokenParameters parameters = new AcquireTokenParameters.Builder()
-                        .startAuthorizationFromActivity(LoginActivity.this)
-                        .withAuthorizationQueryStringParameters(extraQueryParameters)
-                        // More settings here
-                        .build();
-
-                b2cApp.acquireToken(parameters);
 /*
 
                 AcquireTokenParameters parameters = new AcquireTokenParameters.Builder()
@@ -166,6 +173,18 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+        signInSso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!etTenantName.getText().toString().equalsIgnoreCase("") && !etTenantName.getText().toString().isEmpty()){
+                    tentantName=etTenantName.getText().toString();
+                    checkSsoEnabled();
+                }else {
+                    Toast.makeText(LoginActivity.this, "Enter Tenant Name", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
 
         tvForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,6 +193,71 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void checkSsoEnabled() {
+        if (Utils.isNetworkAvailable(this)) {
+
+            dialog=ProgressDialog.showProgressBar(LoginActivity.this);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            JsonObject jsonObject = new JsonObject();
+            if (!tentantName.equalsIgnoreCase(""))
+                jsonObject.addProperty("tenantName",tentantName);
+            Call<TypeOfLoginResponse> call = apiService.typeOfLogin(jsonObject);
+            call.enqueue(new Callback<TypeOfLoginResponse>() {
+                @Override
+                public void onResponse(Call<TypeOfLoginResponse> call, Response<TypeOfLoginResponse> response) {
+                    TypeOfLoginResponse typeOfLoginResponse = response.body();
+                    if (response.code()==200 && typeOfLoginResponse!=null){
+                        if (typeOfLoginResponse.getTypeOfLogin()==0) {
+                            ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+                            Toast.makeText(LoginActivity.this, "SSO Login has not been set up, please contact Admin to Setup", Toast.LENGTH_LONG).show();
+                        } else{
+                            ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+
+                            if (b2cApp == null) {
+                                return;
+                            }
+
+                            /**
+                             * Runs user flow interactively.
+                             * <p>
+                             * Once the user finishes with the flow, you will also receive an access token containing the claims for the scope you passed in (see B2CConfiguration.getScopes()),
+                             * which you can subsequently use to obtain your resources.
+                             */
+                            List<Pair<String, String>> extraQueryParameters = new ArrayList<>();
+                            extraQueryParameters.add( new Pair<String, String>("domain_hint", "google.com"));
+//                            extraQueryParameters.add( new Pair<String, String>("domain_hint", typeOfLoginResponse.getMobileIdentityProvider()));
+
+                            AcquireTokenParameters parameters = new AcquireTokenParameters.Builder()
+                                    .startAuthorizationFromActivity(LoginActivity.this)
+                                    .fromAuthority(B2CConfiguration.getAuthorityFromPolicyName("B2C_1A_signup_signin_Multitenant"))
+                                    .withScopes(B2CConfiguration.getScopes())
+                                    .withPrompt(Prompt.LOGIN)
+//                                    .withLoginHint(typeOfLoginResponse.getMobileIdentityProvider())
+                                    .withAuthorizationQueryStringParameters(extraQueryParameters)
+                                    .withCallback(getAuthInteractiveCallback())
+                                    .build();
+
+                            b2cApp.acquireToken(parameters);
+                        }
+                    }else if (response.code() == 403){
+                        ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+
+                    }else {
+                        ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+                        Utils.showCustomAlertDialog(LoginActivity.this,"SSO Login is not setup for this email contact admin.");
+                    }
+                }
+                @Override
+                public void onFailure(Call<TypeOfLoginResponse> call, Throwable t) {
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(this, "Please Enable Internet");
+        }
     }
 
     /**
@@ -188,16 +272,19 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(IAuthenticationResult authenticationResult) {
                 /* Successfully got a token, use it to call a protected resource - MSGraph */
                 Log.d(TAG, "Successfully authenticated");
-
+                System.out.println("bala sso"+authenticationResult.getAccount());
                 /* display result info */
                 displayResult(authenticationResult);
 
                 /* Reload account asynchronously to get the up-to-date list. */
                 loadAccounts();
-            }
+                dialog.dismiss();
 
+            }
             @Override
             public void onError(MsalException exception) {
+                dialog.dismiss();
+                System.out.println("bala sso error"+exception.getMessage());
                 final String B2C_PASSWORD_CHANGE = "AADB2C90118";
                 if (exception.getMessage().contains(B2C_PASSWORD_CHANGE)) {
                     Log.d(TAG, "onError: The user clicks the 'Forgot Password' link in a sign-up or sign-in user flow.\\n\" +\n" +
@@ -219,6 +306,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onCancel() {
                 /* User canceled the authentication */
+                System.out.println("bala sso cancel");
                 Log.d(TAG, "User cancelled login.");
             }
         };
@@ -250,9 +338,67 @@ public class LoginActivity extends AppCompatActivity {
                 "Access Token :" + result.getAccessToken() + "\n" +
                         "Scope : " + result.getScope() + "\n" +
                         "Expiry : " + result.getExpiresOn() + "\n" +
-                        "Tenant ID : " + result.getTenantId() + "\n";
-
+                        "Tenant ID : " + result.getTenantId() + "\n"+
+                        "email : " + result.getAccount().getUsername() + "\n";
+        if (result.getAccessToken()!=null)
+            SessionHandler.getInstance().save(LoginActivity.this, AppConstants.USERTOKEN, result.getAccessToken());
+        callTokenExachange(result.getAccount().getUsername());
         Log.d(TAG, "displayResult: "+output);
+    }
+
+    private void callTokenExachange(String email) {
+        if (Utils.isNetworkAvailable(this)) {
+
+            dialog=ProgressDialog.showProgressBar(LoginActivity.this);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            JsonObject jsonObject = new JsonObject();
+            if (!tentantName.equalsIgnoreCase(""))
+            jsonObject.addProperty("tenantName",tentantName);
+            Call<GetTokenResponse> call = apiService.tokenExchange(jsonObject);
+            call.enqueue(new Callback<GetTokenResponse>() {
+                @Override
+                public void onResponse(Call<GetTokenResponse> call, Response<GetTokenResponse> response) {
+                    if (response.code()==200){
+                        GetTokenResponse getTokenResponse = response.body();
+                        if (getTokenResponse != null) {
+                            //Save token
+                            SessionHandler.getInstance().save(LoginActivity.this, AppConstants.USERTOKEN, getTokenResponse.getToken());
+
+                            //System.out.println("ReceivedToken" + getTokenResponse.getToken());
+                            //System.out.println("ReceivedExpiration" + getTokenResponse.getExpiration());
+                            //String token=getTokenResponse.getExpiration();
+
+                            ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+
+                            //GetUser Details Using Token
+
+                            SessionHandler.getInstance().saveBoolean(LoginActivity.this, AppConstants.LOGIN_CHECK,true);
+                            getUserDetailsUsingToken(getTokenResponse.getToken());
+                        } else {
+                            ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+                            Utils.toastMessage(LoginActivity.this, "No Token Found");
+                        }
+                    }else if (response.code() == 403){
+                        ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+
+                        Intent intent = new Intent(getApplicationContext(), GDPRActivity.class);
+                        intent.putExtra("tenantName",tentantName);
+                        intent.putExtra("userName",email);
+                        startActivity(intent);
+                    }else {
+                        ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+                        Utils.showCustomAlertDialog(LoginActivity.this,"SSO Login is not setup for this email contact admin.");
+                    }
+                }
+                @Override
+                public void onFailure(Call<GetTokenResponse> call, Throwable t) {
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(this, "Please Enable Internet");
+        }
     }
 
 
@@ -295,10 +441,6 @@ public class LoginActivity extends AppCompatActivity {
                         if (getTokenResponse != null) {
                             //Save token
                             SessionHandler.getInstance().save(LoginActivity.this, AppConstants.USERTOKEN, getTokenResponse.getToken());
-
-                            //System.out.println("ReceivedToken" + getTokenResponse.getToken());
-                            //System.out.println("ReceivedExpiration" + getTokenResponse.getExpiration());
-                            //String token=getTokenResponse.getExpiration();
 
                             ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
 
@@ -447,4 +589,5 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
 
     }
+
 }
