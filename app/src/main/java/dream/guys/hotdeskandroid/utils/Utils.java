@@ -751,6 +751,27 @@ public class Utils {
 
     }
 
+    public static String addMinuteWithCurrentTime(int id,int addMin){
+        String newTime="";
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date d = null;
+        try {
+            d = df.parse(Utils.getCurrentTimeIn24HourFormat());
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(d);
+            if(id==1){
+                cal.add(Calendar.MINUTE, addMin);
+            }else if(id==2){
+                cal.add(Calendar.HOUR, addMin);
+            }
+            newTime = df.format(cal.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return  newTime;
+    }
+
 
     public static String addingHoursToCurrentDate(int currentTimeZoneOffset){
         //Should add seconds

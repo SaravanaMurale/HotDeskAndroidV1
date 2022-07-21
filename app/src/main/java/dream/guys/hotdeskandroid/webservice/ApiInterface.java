@@ -104,9 +104,9 @@ public interface ApiInterface {
 
     @GET("api/deskLayouts/LocationDesksWithUser")
     Call<DeskAvaliabilityResponse> getAvaliableDeskDetails(@Query("locationId") int parentId,
-                                                                 @Query("toDate") LocalDateTime toDate,
-                                                                 @Query("fromTime") LocalDateTime fromTime,
-                                                                 @Query("toTime") LocalDateTime toTime);
+                                                                 @Query("toDate") String toDate,
+                                                                 @Query("fromTime") String fromTime,
+                                                                 @Query("toTime") String toTime);
     @GET("api/booking/bookingsForEdit")
     Call<BookingForEditResponse> getBookingsForEdit(@Query("teamId") int parentId,
                                                     @Query("teamMembershipId") int toDate,

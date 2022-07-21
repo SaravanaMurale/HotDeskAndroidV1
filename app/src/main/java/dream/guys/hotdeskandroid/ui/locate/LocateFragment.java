@@ -3,6 +3,7 @@ package dream.guys.hotdeskandroid.ui.locate;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentTime;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -30,8 +31,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -478,103 +477,119 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
 
+    @SuppressLint("ResourceType")
     private void addView(List<String> valueList, String key, int floorPosition) {
 
         System.out.println("ReceivedKeyInAddView" + key);
-        String startDate="2022-07-21 21:35:00";
-        String endDate="2022-07-20 23:59:00";
+        String startDate="2022-07-21 15:30:00";
+        String endDate="2022-07-21 17:30:00";
 
-        //Split key to get id and code
+        //Desk Avaliablity Checking Split key to get id and code
         String[] result = key.split("_");
         int id = Integer.parseInt(result[0]);
         String code = result[1];
 
+
+
+        deskView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
+        ImageView ivDesk = deskView.findViewById(R.id.ivDesk);
+        RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+
         //Desk Avaliablity Checking
         if (code.equals(AppConstants.DESK)) {
 
-            for (int i = 0; i < teamDeskAvaliabilityList.size(); i++) {
+            if(teamDeskAvaliabilityList.size()>0){
+                for (int i = 0; i < teamDeskAvaliabilityList.size(); i++) {
 
-                boolean wasAssigned = false;
+                    boolean wasAssigned = false;
 
-                if (id == teamDeskAvaliabilityList.get(i).getDeskId()) {
+                    if (id == teamDeskAvaliabilityList.get(i).getDeskId()) {
 
-                    DeskAvaliabilityResponse.TeamDeskAvaliabilityList teamDeskAvaliability = teamDeskAvaliabilityList.get(i);
+                        DeskAvaliabilityResponse.TeamDeskAvaliabilityList teamDeskAvaliability = teamDeskAvaliabilityList.get(i);
 
-                    //GET TEAM ID
-                    boolean getTeamId = false;
-                    TeamsResponse teamsResponse = new TeamsResponse();
-                    if (!getTeamId) {
-                        for (int j = 0; j < teamsResponseList.size(); j++) {
-                            if (teamDeskAvaliability.getTeamId() == teamsResponseList.get(j).getId()) {
+                        //GET TEAM ID
+                        boolean getTeamId = false;
+                        TeamsResponse teamsResponse = new TeamsResponse();
+                        if (!getTeamId) {
+                            for (int j = 0; j < teamsResponseList.size(); j++) {
+                                if (teamDeskAvaliability.getTeamId() == teamsResponseList.get(j).getId()) {
 
-                                teamsResponse = teamsResponseList.get(j);
-                                getTeamId = true;
+                                    teamsResponse = teamsResponseList.get(j);
+                                    getTeamId = true;
+                                }
                             }
-                        }
-                    }//
+                        }//
 
-                    System.out.println("TotalAvaliableDeskId" + teamDeskAvaliability.getDeskId());
-                    System.out.println("CurrentDateAndTimeIn24HoursFormat" + Utils.getCurrentTimeIn24HourFormat());
+                        System.out.println("TotalAvaliableDeskId" + teamDeskAvaliability.getDeskId());
+                        System.out.println("CurrentDateAndTimeIn24HoursFormat" + Utils.getCurrentTimeIn24HourFormat());
 
-                    //GetCurrentDate and Offset
-                    String offSetAddedDate = Utils.addingHoursToCurrentDate(teamDeskAvaliability.getCurrentTimeZoneOffset());
+                        //GetCurrentDate and Offset
+                        String offSetAddedDate = Utils.addingHoursToCurrentDate(teamDeskAvaliability.getCurrentTimeZoneOffset());
 
-                    System.out.println("NewlyAddedDateWithTime" + offSetAddedDate);
-                    System.out.println("NewlyAddedDateAlone" + Utils.splitGetDate(offSetAddedDate));
-
-
-                    for (int j = 0; j < teamDeskAvaliability.getAvailableTimeSlotsList().size(); j++) {
-
-                        if (!wasAssigned) {
-
-                            DeskAvaliabilityResponse.TeamDeskAvaliabilityList.AvailableTimeSlots availableTimeSlots = teamDeskAvaliability.getAvailableTimeSlotsList().get(j);
-
-                            System.out.println("SlotFrom" + availableTimeSlots.getFrom());
-                            System.out.println("SlotTo" + availableTimeSlots.getTo());
+                        System.out.println("NewlyAddedDateWithTime" + offSetAddedDate);
+                        System.out.println("NewlyAddedDateAlone" + Utils.splitGetDate(offSetAddedDate));
 
 
-                            int dateComparsionResult = Utils.compareTwoDates(startDate, offSetAddedDate);
-                            int second = Utils.compareTwoDates(startDate, Utils.removeTandZInDate(availableTimeSlots.getFrom()));
-                            int third = Utils.compareTwoDates(endDate, Utils.removeTandZInDate(availableTimeSlots.getTo()));
+                        for (int j = 0; j < teamDeskAvaliability.getAvailableTimeSlotsList().size(); j++) {
 
-                            if (dateComparsionResult == 1) {
-                                System.out.println("Unavaliable");
-                            } else if (teamDeskAvaliability.isPartiallyAvailable() == true && second == 2 && third == 1) {
+                            if (!wasAssigned) {
 
-                                if (teamDeskAvaliability.isBookedByUser() == true) {
-                                    System.out.println("bookedForMe");
-                                } else if (teamDeskAvaliability.isBookedByElse() == true) {
-                                    System.out.println("BookedOther");
-                                } else if (teamsResponse.getDeskCount() != 0 && teamsResponse.getAutomaticApprovalStatus() == 2) {
-                                    System.out.println("Avaliable");
+                                DeskAvaliabilityResponse.TeamDeskAvaliabilityList.AvailableTimeSlots availableTimeSlots = teamDeskAvaliability.getAvailableTimeSlotsList().get(j);
 
-                                } else if (teamDeskAvaliability.getTeamId() == SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID)) {
-                                    System.out.println("Avaliable");
-                                } else {
+                                System.out.println("SlotFrom" + availableTimeSlots.getFrom());
+                                System.out.println("SlotTo" + availableTimeSlots.getTo());
 
-                                    if (teamsResponse.getDeskCount() != 0 && teamsResponse.getAutomaticApprovalStatus() == 3) {
-                                        System.out.println("Unavaliable");
+
+                                int dateComparsionResult = Utils.compareTwoDates(startDate, offSetAddedDate);
+                                int second = Utils.compareTwoDates(startDate, Utils.removeTandZInDate(availableTimeSlots.getFrom()));
+                                int third = Utils.compareTwoDates(endDate, Utils.removeTandZInDate(availableTimeSlots.getTo()));
+
+                                if (dateComparsionResult == 1) {
+                                    System.out.println("BookingUnavaliable");
+                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                } else if (teamDeskAvaliability.isPartiallyAvailable() == true && second == 2 && third == 1) {
+
+                                    if (teamDeskAvaliability.isBookedByUser() == true) {
+                                        System.out.println("BookingbookedForMe");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
+                                    } else if (teamDeskAvaliability.isBookedByElse() == true) {
+                                        System.out.println("BookingBookedOther");
+                                    } else if (teamsResponse.getDeskCount() != 0 && teamsResponse.getAutomaticApprovalStatus() == 2) {
+                                        System.out.println("BookingAvaliable");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_avaliable));
+
+                                    } else if (teamDeskAvaliability.getTeamId() == SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID)) {
+                                        System.out.println("BookingAvaliable");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_avaliable));
                                     } else {
-                                        System.out.println("Request");
+
+                                        if (teamsResponse.getDeskCount() != 0 && teamsResponse.getAutomaticApprovalStatus() == 3) {
+                                            System.out.println("BookingUnavaliable");
+                                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                        } else {
+                                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_request));
+                                            System.out.println("BookingRequest");
+                                        }
+                                    }
+                                    wasAssigned = true;
+
+                                } else {
+                                    System.out.println("BookingUnavaliable");
+                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                    if (teamDeskAvaliability.isBookedByUser() == true) {
+                                        System.out.println("BookingbookedForMe");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
+                                    } else if (teamDeskAvaliability.isBookedByElse() == true) {
+                                        System.out.println("BookingBookedOther");
                                     }
                                 }
-                                wasAssigned = true;
 
-                            } else {
-                                System.out.println("Unavaliable");
 
-                                if (teamDeskAvaliability.isBookedByUser() == true) {
-                                    System.out.println("bookedForMe");
-                                } else if (teamDeskAvaliability.isBookedByElse() == true) {
-                                    System.out.println("BookedOther");
-                                }
                             }
 
 
                         }
-
-
-                    }
 
 
                 /*for (int j = 0; j < teamsResponseList.size(); j++) {
@@ -589,16 +604,18 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                         }
                     }*/
+                    }
+
+
                 }
-
-
+            }else {
+                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
             }
+
+
 
         }
 
-        deskView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
-        ImageView ivDesk = deskView.findViewById(R.id.ivDesk);
-        RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         //Head Facing
         for (int i = 0; i < valueList.size(); i++) {
@@ -736,16 +753,22 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //"2000-01-01T15:50:38.000Z"
         //"2000-01-01T18:00:00.000Z"
 
-        System.out.println("DateFormatInLocate" + Utils.getCurrentDateInDateFormet());
 
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        LocalDateTime now = LocalDateTime.now();
+        String toDate=Utils.getCurrentDate()+"T00:00:00Z";
+        System.out.println("ToDateCheckoing"+toDate);
 
-        System.out.println("NowValue" + now);
-        System.out.println("DTFValue" + dtf);
+        //Add min and hour
+        String startTime=Utils.addMinuteWithCurrentTime(1,2);
+        String fromTime=startTime+".000Z";
+        String endTime=Utils.addMinuteWithCurrentTime(2,9);
+        String toTime=endTime+".000Z";
+
+        System.out.println("DateAndStatTimeAndEndTime"+toDate+" "+fromTime+" "+toTime);
 
         int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
-        Call<DeskAvaliabilityResponse> call = apiService.getAvaliableDeskDetails(parentId, now, now, now);
+        //Call<DeskAvaliabilityResponse> call = apiService.getAvaliableDeskDetails(parentId, now, now, now);
+        Call<DeskAvaliabilityResponse> call = apiService.getAvaliableDeskDetails(parentId, toDate, fromTime, toTime);
+
         call.enqueue(new Callback<DeskAvaliabilityResponse>() {
             @Override
             public void onResponse(Call<DeskAvaliabilityResponse> call, Response<DeskAvaliabilityResponse> response) {
