@@ -48,6 +48,8 @@ import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
 import dream.guys.hotdeskandroid.model.request.Point;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.CarParkAvalibilityResponse;
+import dream.guys.hotdeskandroid.model.response.CarParkingslotsResponse;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
@@ -137,9 +139,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     int teamDeskIdForBooking = 0;
     int selectedCarParkingSlotId = 0;
 
-    //AvaliablityChecking
+    //DesAvaliablityChecking
     List<DeskAvaliabilityResponse.TeamDeskAvaliabilityList> teamDeskAvaliabilityList;
     List<TeamsResponse> teamsResponseList;
+
+    //CarParkingAvalibilityChecking
+    List<CarParkingslotsResponse> carParkingslots;
+    List<CarParkAvalibilityResponse> carParkAvalibilityResponseList;
 
 
     @Override
@@ -307,14 +313,19 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             //getFloorDetails(subParentId,findCoordinateStatus);
 
 
+            //Used For Desk Avaliability Checking
             getAvaliableDeskDetails(null, 0);
-
             getTeams();
 
+            //Used For Car Parking Avaliability Checking
+            getCarParkingSlots(parentId);
+            getCarParkingAvalibilitySlots();
+
+
+            //Load Desk,car and parking details with view
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-
 
                     getLocateDeskRoomCarDesign(parentId, i);
                 }
@@ -326,8 +337,64 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }
     }
 
+    private void getCarParkingAvalibilitySlots() {
+
+
+        String toDate=Utils.getCurrentDate()+"T00:00:00Z";
+        System.out.println("ToDateCheckoing"+toDate);
+
+        //Add min and hour
+        String startTime=Utils.addMinuteWithCurrentTime(1,2);
+        String fromTime=startTime+".000Z";
+        String endTime=Utils.addMinuteWithCurrentTime(2,3);
+        String toTime=endTime+".000Z";
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<CarParkAvalibilityResponse>> call = apiService.getCarParkingSlotAvalibility(toDate,fromTime,toTime);
+        call.enqueue(new Callback<List<CarParkAvalibilityResponse>>() {
+            @Override
+            public void onResponse(Call<List<CarParkAvalibilityResponse>> call, Response<List<CarParkAvalibilityResponse>> response) {
+
+                carParkAvalibilityResponseList=response.body();
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<CarParkAvalibilityResponse>> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    private void getCarParkingSlots(int parentId) {
+
+        System.out.println("CarPArkingSlotCAlled");
+        //dialog = ProgressDialog.showProgressBar(getContext());
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<CarParkingslotsResponse>> call = apiService.getCarParkingSlots(parentId);
+        call.enqueue(new Callback<List<CarParkingslotsResponse>>() {
+            @Override
+            public void onResponse(Call<List<CarParkingslotsResponse>> call, Response<List<CarParkingslotsResponse>> response) {
+                ProgressDialog.dismisProgressBar(getContext(), dialog);
+                carParkingslots=response.body();
+
+                ProgressDialog.dismisProgressBar(getContext(), dialog);
+
+            }
+
+            @Override
+            public void onFailure(Call<List<CarParkingslotsResponse>> call, Throwable t) {
+                ProgressDialog.dismisProgressBar(getContext(), dialog);
+
+            }
+        });
+    }
+
     private void getTeams() {
 
+        //dialog = ProgressDialog.showProgressBar(getContext());
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<List<TeamsResponse>> call = apiService.getTeams();
         call.enqueue(new Callback<List<TeamsResponse>>() {
@@ -481,8 +548,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     private void addView(List<String> valueList, String key, int floorPosition) {
 
         System.out.println("ReceivedKeyInAddView" + key);
-        String startDate="2022-07-21 15:30:00";
-        String endDate="2022-07-21 17:30:00";
+        String startDate="2022-07-21 19:30:00";
+        String endDate="2022-07-21 21:30:00";
 
         //Desk Avaliablity Checking Split key to get id and code
         String[] result = key.split("_");
@@ -548,11 +615,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 if (dateComparsionResult == 1) {
                                     System.out.println("BookingUnavaliable");
                                     ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+
                                 } else if (teamDeskAvaliability.isPartiallyAvailable() == true && second == 2 && third == 1) {
 
                                     if (teamDeskAvaliability.isBookedByUser() == true) {
                                         System.out.println("BookingbookedForMe");
                                         ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
+
                                     } else if (teamDeskAvaliability.isBookedByElse() == true) {
                                         System.out.println("BookingBookedOther");
                                     } else if (teamsResponse.getDeskCount() != 0 && teamsResponse.getAutomaticApprovalStatus() == 2) {
@@ -612,6 +681,61 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
             }
 
+
+        }else if(code.equals(AppConstants.CAR_PARKING)){
+
+            if(carParkingslots.size()>0){
+
+                for (int i = 0; i <carParkingslots.size() ; i++) {
+
+                    if(carParkAvalibilityResponseList.size()>0) {
+
+                        for (int j = 0; j < carParkAvalibilityResponseList.size(); j++) {
+                            if (carParkingslots.get(i).getCarParkingSlotId() == carParkAvalibilityResponseList.get(j).getParkingSlotAvalibilityId()) {
+                                CarParkAvalibilityResponse carParkAvalibilityResponse = carParkAvalibilityResponseList.get(j);
+
+                                if (carParkAvalibilityResponse.isBookedByElse() == false && carParkAvalibilityResponse.isBookedByUser() == false && carParkAvalibilityResponse.isAvailable() == true && (carParkingslots.get(i).getParkingSlotAvailability() == 1 && (carParkingslots.get(i).getAssignessList().size() == 0))) {
+                                    System.out.println("CarParkAvaliable");
+                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_avaliable));
+                                } else if (carParkAvalibilityResponse.isBookedByElse() == false && carParkAvalibilityResponse.isBookedByUser() == false && carParkAvalibilityResponse.isAvailable() == true && carParkingslots.get(i).getParkingSlotAvailability() == 2) {
+
+                                    System.out.println("CarParkingRequest");
+                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_request));
+                                } else if (carParkAvalibilityResponse.isBookedByElse() == false && carParkAvalibilityResponse.isBookedByUser() == false && (carParkAvalibilityResponse.isAvailable() == false || carParkingslots.get(i).getParkingSlotAvailability() == 1)) {
+
+                                    System.out.println("CarParkUnAvaliable");
+                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                } else if (carParkAvalibilityResponse.isBookedByElse() == true) {
+
+                                    System.out.println("CarParkingBookedOther");
+                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
+                                } else if (carParkAvalibilityResponse.isBookedByUser() == true) {
+
+                                    System.out.println("BookedForMe");
+                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
+                                } else {
+
+                                    System.out.println("CarParkUnAvaliable");
+                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                }
+
+
+                            }
+                        }
+
+                    }else {
+                        System.out.println("CarParkUnAvaliable");
+                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                    }
+
+
+
+                }
+
+            }else {
+                System.out.println("CarParkUnAvaliable");
+                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+            }
 
 
         }

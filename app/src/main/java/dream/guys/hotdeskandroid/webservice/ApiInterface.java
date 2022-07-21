@@ -2,13 +2,9 @@ package dream.guys.hotdeskandroid.webservice;
 
 import com.google.gson.JsonObject;
 
-import org.json.JSONObject;
-
-import java.time.LocalDateTime;
 import java.util.List;
 
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
-import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.CreatePinRequest;
 import dream.guys.hotdeskandroid.model.request.ForgotPasswordRequest;
 import dream.guys.hotdeskandroid.model.request.GDPRrequest;
@@ -18,6 +14,8 @@ import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
+import dream.guys.hotdeskandroid.model.response.CarParkAvalibilityResponse;
+import dream.guys.hotdeskandroid.model.response.CarParkingslotsResponse;
 import dream.guys.hotdeskandroid.model.response.CheckPinLoginResponse;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
@@ -30,12 +28,9 @@ import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
@@ -130,6 +125,15 @@ public interface ApiInterface {
 
     @GET("api/teams")
     Call<List<TeamsResponse>>  getTeams();
+
+    @GET("api/ParkingSlot/carparkparkingslots")
+    Call<List<CarParkingslotsResponse>> getCarParkingSlots(@Query("locationId") int locationId);
+
+    @GET("api/CarParkBooking/availability")
+    Call<List<CarParkAvalibilityResponse>> getCarParkingSlotAvalibility(@Query("date") String toDate,
+                                                                        @Query("from") String fromTime,
+                                                                        @Query("to") String toTime);
+
 
 
 
