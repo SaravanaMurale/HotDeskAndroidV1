@@ -41,6 +41,60 @@ public class DeskAvaliabilityResponse {
         @SerializedName("code")
         String code;
 
+        @SerializedName("availableTimeSlots")
+        List<AvailableTimeSlots> availableTimeSlotsList;
+        @SerializedName("currentTimeZoneOffset")
+        int currentTimeZoneOffset;
+
+        @SerializedName("isBookedByUser")
+        boolean isBookedByUser;
+
+        @SerializedName("isPartiallyAvailable")
+        boolean isPartiallyAvailable;
+
+        @SerializedName("isBookedByElse")
+        boolean isBookedByElse;
+
+        public List<AvailableTimeSlots> getAvailableTimeSlotsList() {
+            return availableTimeSlotsList;
+        }
+
+        public void setAvailableTimeSlotsList(List<AvailableTimeSlots> availableTimeSlotsList) {
+            this.availableTimeSlotsList = availableTimeSlotsList;
+        }
+
+        public int getCurrentTimeZoneOffset() {
+            return currentTimeZoneOffset;
+        }
+
+        public void setCurrentTimeZoneOffset(int currentTimeZoneOffset) {
+            this.currentTimeZoneOffset = currentTimeZoneOffset;
+        }
+
+        public boolean isBookedByUser() {
+            return isBookedByUser;
+        }
+
+        public void setBookedByUser(boolean bookedByUser) {
+            isBookedByUser = bookedByUser;
+        }
+
+        public boolean isPartiallyAvailable() {
+            return isPartiallyAvailable;
+        }
+
+        public void setPartiallyAvailable(boolean partiallyAvailable) {
+            isPartiallyAvailable = partiallyAvailable;
+        }
+
+        public boolean isBookedByElse() {
+            return isBookedByElse;
+        }
+
+        public void setBookedByElse(boolean bookedByElse) {
+            isBookedByElse = bookedByElse;
+        }
+
         public int getTeamDeskId() {
             return teamDeskId;
         }
@@ -80,6 +134,28 @@ public class DeskAvaliabilityResponse {
         public void setCode(String code) {
             this.code = code;
         }
+
+        public class AvailableTimeSlots{
+            String from;
+            String to;
+
+            public String getFrom() {
+                return from;
+            }
+
+            public void setFrom(String from) {
+                this.from = from;
+            }
+
+            public String getTo() {
+                return to;
+            }
+
+            public void setTo(String to) {
+                this.to = to;
+            }
+        }
+
     }
 
     public class LocationDesks{

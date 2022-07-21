@@ -52,6 +52,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 
 import dream.guys.hotdeskandroid.R;
@@ -109,7 +110,7 @@ public class Utils {
                 new RelativeLayout(activity)));
 
         TimePicker simpleTimePicker24Hours = bottomSheetDialog.findViewById(R.id.simpleTimePicker);
-        simpleTimePicker24Hours.setIs24HourView(true);
+        //simpleTimePicker24Hours.setIs24HourView(false);
         TextView titleTv = bottomSheetDialog.findViewById(R.id.title);
         TextView dateTv = bottomSheetDialog.findViewById(R.id.date);
         TextView continueTv = bottomSheetDialog.findViewById(R.id.continue_tv);
@@ -130,8 +131,6 @@ public class Utils {
 
                 System.out.println("GETDATATATATA"+simpleTimePicker24Hours.getHour()+":"+simpleTimePicker24Hours.getMinute()+":"+simpleTimePicker24Hours.getMinute()+":"+simpleTimePicker24Hours.getMinute());
                 //tv.setText(getCurrentDate()+""+"T"+simpleTimePicker24Hours.getHour()+":"+simpleTimePicker24Hours.getMinute()+":"+"00"+"."+"000"+"Z");
-
-
 
                 tv.setText(simpleTimePicker24Hours.getHour()+":"+simpleTimePicker24Hours.getMinute());
 
@@ -264,12 +263,17 @@ public class Utils {
                 //locateCheckInDate.setText(dateInString+"T"+"00:00:00.000"+"Z");
                 locateCheckInDate.setText(""+dateInString);
 
+
             }
         });
 
         calContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                System.out.println("ContinuPrintHere"+locateCheckInDate.getText());
+                //Utils.dayDateMonthFormat();
+
                 bottomSheetDatePicker.dismiss();
             }
         });
@@ -475,7 +479,10 @@ public class Utils {
     }
 
     public static String getCurrentTimeIn24HourFormat(){
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        //SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
         String str = sdf.format(new Date());
         System.out.println("sout"+str);
         return str;
@@ -571,9 +578,6 @@ public class Utils {
 
            dayInText=day[0];
 
-
-
-
         return dayInText+" "+dayInNumber;
 
     }
@@ -653,7 +657,6 @@ public class Utils {
 
         System.out.println("UtilDateFormat"+formatter.format(date));
 
-        //return date;
 
         return formatter.format(date);
 
@@ -700,6 +703,83 @@ public class Utils {
             e.printStackTrace();
             return 3;
         }
+
+    }
+
+
+    public static String removeTandZInDate(String date){
+
+        String result = date.replace("T", " ");
+        String finalResult=result.replace("Z","");
+
+        return finalResult;
+
+    }
+
+    public static int compareTwoDates(String date1,String date2){
+
+        System.out.println("CurrentDate"+date1);
+        System.out.println("OfsetAddedDate"+date2);
+
+        int dateCompare=-1;
+
+        SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date d1 = sdformat.parse(date1);
+            Date d2 = sdformat.parse(date2);
+
+
+            if(d1.compareTo(d2)<0){
+                dateCompare=1;
+                System.out.println("CurrentTimeLessAddedTimeHigh");
+            }else if(d1.compareTo(d2)>0){
+                dateCompare=2;
+                System.out.println("CurrentTimeHihgAddedTimeLess");
+            }else if(d1.compareTo(d2)==0){
+                dateCompare=0;
+                System.out.println("CurrentTimeAndAddedTimeEqual");
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return dateCompare;
+
+
+
+    }
+
+
+    public static String addingHoursToCurrentDate(int currentTimeZoneOffset){
+        //Should add seconds
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date d = null;
+        try {
+            d = df.parse(Utils.getCurrentTimeIn24HourFormat());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+        cal.add(Calendar.SECOND, currentTimeZoneOffset);
+        String newTime = df.format(cal.getTime());
+
+        return  newTime;
+
+
+    }
+
+
+
+    public static  String splitGetDate(String dateWithTime){
+
+        //Split key to get id and code
+        String[] result = dateWithTime.split(" ");
+        String dateAlone= result[0];
+
+        return dateAlone;
 
     }
 }
