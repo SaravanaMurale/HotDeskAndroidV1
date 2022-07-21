@@ -69,20 +69,21 @@ public class B2CConfiguration {
     /**
      * Name of your B2C tenant hostname.
      */
-    final static String azureAdB2CHostName = "fabrikamb2c.b2clogin.com";
-//    final static String azureAdB2CHostName = "hdplusdev.b2clogin.com";
+//    final static String azureAdB2CHostName = "fabrikamb2c.b2clogin.com";
+    final static String azureAdB2CHostName = "hdplusdev.b2clogin.com";
 
     /**
      * Name of your B2C tenant.
      */
-    final static String tenantName = "fabrikamb2c.onmicrosoft.com";
-//    final static String tenantName = "hdplusdev.onmicrosoft.com";
+//    final static String tenantName = "fabrikamb2c.onmicrosoft.com";
+    final static String tenantName = "hdplusdev.onmicrosoft.com";
 
     /**
      * Returns an authority for the given policy name.
      *
      * @param policyName name of a B2C policy.
      */
+//    https://hdplusdev.b2clogin.com/hdplusdev.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1A_signup_signin_Multitenant
     public static String getAuthorityFromPolicyName(final String policyName) {
         return "https://" + azureAdB2CHostName + "/tfp/" + tenantName + "/" + policyName + "/";
     }
@@ -92,6 +93,7 @@ public class B2CConfiguration {
      * These scopes must be added in your B2C application page.
      */
     public static List<String> getScopes() {
-        return Arrays.asList("https://hdplusdev.onmicrosoft.com/helloapi/demo.read");
+        return Arrays.asList("https://hdplusdev.onmicrosoft.com/SsoAPi/user_impersonation");
+//        return Arrays.asList("https://hdplusdev.onmicrosoft.com/helloapi/demo.read");
     }
 }

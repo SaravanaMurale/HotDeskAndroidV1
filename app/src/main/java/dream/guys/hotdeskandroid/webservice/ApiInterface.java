@@ -24,6 +24,7 @@ import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.model.response.ImageResponse;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
+import dream.guys.hotdeskandroid.model.response.TypeOfLoginResponse;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import retrofit2.Call;
@@ -40,6 +41,10 @@ import retrofit2.http.Query;
 public interface ApiInterface {
     // Pin APis
     // to check wheter this user can setup pin or not
+    @POST("api/account/TypeOfLogin")
+    Call<TypeOfLoginResponse> typeOfLogin(@Body JsonObject jsonObject);
+    @POST("api/account/TokenExchange")
+    Call<GetTokenResponse> tokenExchange(@Body JsonObject jsonObject);
     @POST("api/settings/PinNumberSetting")
     Call<Boolean> checkPinEnabled();
     // sign up for Pin login

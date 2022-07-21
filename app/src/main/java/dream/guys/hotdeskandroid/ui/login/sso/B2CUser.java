@@ -65,6 +65,7 @@ public class B2CUser {
 
             user.accounts.add(account);
         }
+
         List<B2CUser> users = new ArrayList<>();
         users.addAll(b2CUserHashMap.values());
         return users;
@@ -107,7 +108,7 @@ public class B2CUser {
         for (IAccount account : accounts) {
             if (policyName.equalsIgnoreCase(getB2CPolicyNameFromAccount(account))) {
                 AcquireTokenSilentParameters parameters = new AcquireTokenSilentParameters.Builder()
-                        .fromAuthority(B2CConfiguration.getAuthorityFromPolicyName("B2C_1A_signup_signin_Multitenant"))
+                        .fromAuthority(B2CConfiguration.getAuthorityFromPolicyName(policyName))
                         .withScopes(scopes)
                         .forAccount(account)
                         .withCallback(callback)

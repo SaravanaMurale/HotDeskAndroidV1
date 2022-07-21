@@ -103,7 +103,6 @@ public class Utils {
         return token;
     }
 
-
     //Locate Booking TimerPicker BottomSheet
     public static void bottomSheetTimePickerInBooking(Context mContext, Activity activity,TextView tv, String title, String date) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
