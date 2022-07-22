@@ -11,6 +11,7 @@ import dream.guys.hotdeskandroid.model.request.GDPRrequest;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
 import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
+import dream.guys.hotdeskandroid.model.request.LocateDeskBookingRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
@@ -120,6 +121,10 @@ public interface ApiInterface {
     @PUT("api/booking/bookings")
     Call<BaseResponse>  doDeskBooking(@Body LocateBookingRequest locateBookingRequest);
 
+    @PUT("api/booking/bookings")
+    Call<BaseResponse>  doRequestDeskBooking(@Body LocateDeskBookingRequest locateBookingRequest);
+
+
     @PUT("api/carparkbooking/bookings")
     Call<BaseResponse> doCarParkingBooking(@Body LocateCarParkBookingRequest locateCarParkBookingRequest);
 
@@ -133,6 +138,8 @@ public interface ApiInterface {
     Call<List<CarParkAvalibilityResponse>> getCarParkingSlotAvalibility(@Query("date") String toDate,
                                                                         @Query("from") String fromTime,
                                                                         @Query("to") String toTime);
+
+
 
 
 

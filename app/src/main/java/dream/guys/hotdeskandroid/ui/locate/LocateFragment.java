@@ -44,8 +44,10 @@ import dream.guys.hotdeskandroid.example.DataModel;
 import dream.guys.hotdeskandroid.example.ItemAdapter;
 import dream.guys.hotdeskandroid.example.MyCanvasDraw;
 import dream.guys.hotdeskandroid.example.ValuesPOJO;
+import dream.guys.hotdeskandroid.model.request.DeskStatusModel;
 import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
+import dream.guys.hotdeskandroid.model.request.LocateDeskBookingRequest;
 import dream.guys.hotdeskandroid.model.request.Point;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkAvalibilityResponse;
@@ -146,6 +148,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     //CarParkingAvalibilityChecking
     List<CarParkingslotsResponse> carParkingslots;
     List<CarParkAvalibilityResponse> carParkAvalibilityResponseList;
+    int loopCount=0;
 
 
     @Override
@@ -329,7 +332,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     getLocateDeskRoomCarDesign(parentId, i);
                 }
-            }, 2000);
+            }, 4000);
 
 
         } else {
@@ -445,15 +448,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 List<String> valueList = new ArrayList<>();
                 if (locateCountryResposeList.get(floorPosition).getItems() != null) {
+
+                    int itemTotalSize=locateCountryResposeList.get(floorPosition).getItems().size();
+
                     for (String key : locateCountryResposeList.get(floorPosition).getItems().keySet()) {
-                        System.out.println("Value" + locateCountryResposeList.get(floorPosition).getItems().get(key));
 
                         valueList = locateCountryResposeList.get(floorPosition).getItems().get(key);
 
-                        addView(valueList, key, floorPosition);
-
-                        //strings.add(locateCountryResposeList.get(0).getItems().get(key));
-
+                        addView(valueList, key, floorPosition,itemTotalSize);
 
                     }
 
@@ -545,28 +547,31 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
     @SuppressLint("ResourceType")
-    private void addView(List<String> valueList, String key, int floorPosition) {
+    private void addView(List<String> valueList, String key, int floorPosition,int itemTotalSize) {
 
+        System.out.println("ItemTotalSize"+itemTotalSize);
         System.out.println("ReceivedKeyInAddView" + key);
-        String startDate="2022-07-21 19:30:00";
-        String endDate="2022-07-21 21:30:00";
+        String startDate="2022-07-22 19:30:00";
+        String endDate="2022-07-22 23:50:00";
 
         //Desk Avaliablity Checking Split key to get id and code
         String[] result = key.split("_");
         int id = Integer.parseInt(result[0]);
         String code = result[1];
 
-
-
         deskView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
         ImageView ivDesk = deskView.findViewById(R.id.ivDesk);
         RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        DeskStatusModel deskStatusModel=null;
+        List<DeskStatusModel> deskStatusModelList=new ArrayList<>();
 
 
         //Desk Avaliablity Checking
         if (code.equals(AppConstants.DESK)) {
 
-            if(teamDeskAvaliabilityList.size()>0){
+            if(teamDeskAvaliabilityList!=null){
+
                 for (int i = 0; i < teamDeskAvaliabilityList.size(); i++) {
 
                     boolean wasAssigned = false;
@@ -579,11 +584,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         boolean getTeamId = false;
                         TeamsResponse teamsResponse = new TeamsResponse();
                         if (!getTeamId) {
-                            for (int j = 0; j < teamsResponseList.size(); j++) {
-                                if (teamDeskAvaliability.getTeamId() == teamsResponseList.get(j).getId()) {
+                            if(teamsResponseList.size()>0) {
+                                for (int j = 0; j < teamsResponseList.size(); j++) {
+                                    if (teamDeskAvaliability.getTeamId() == teamsResponseList.get(j).getId()) {
 
-                                    teamsResponse = teamsResponseList.get(j);
-                                    getTeamId = true;
+                                        teamsResponse = teamsResponseList.get(j);
+                                        getTeamId = true;
+                                    }
                                 }
                             }
                         }//
@@ -616,29 +623,37 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                     System.out.println("BookingUnavaliable");
                                     ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
 
+                                    deskStatusModel=new DeskStatusModel(key,id,code,0);
+
                                 } else if (teamDeskAvaliability.isPartiallyAvailable() == true && second == 2 && third == 1) {
 
                                     if (teamDeskAvaliability.isBookedByUser() == true) {
                                         System.out.println("BookingbookedForMe");
                                         ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
+                                        deskStatusModel=new DeskStatusModel(key,id,code,2);
 
                                     } else if (teamDeskAvaliability.isBookedByElse() == true) {
                                         System.out.println("BookingBookedOther");
+                                        deskStatusModel=new DeskStatusModel(key,id,code,3);
                                     } else if (teamsResponse.getDeskCount() != 0 && teamsResponse.getAutomaticApprovalStatus() == 2) {
                                         System.out.println("BookingAvaliable");
                                         ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_avaliable));
+                                        deskStatusModel=new DeskStatusModel(key,id,code,1);
 
                                     } else if (teamDeskAvaliability.getTeamId() == SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID)) {
                                         System.out.println("BookingAvaliable");
                                         ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_avaliable));
+                                        deskStatusModel=new DeskStatusModel(key,id,code,1);
                                     } else {
 
                                         if (teamsResponse.getDeskCount() != 0 && teamsResponse.getAutomaticApprovalStatus() == 3) {
                                             System.out.println("BookingUnavaliable");
                                             ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                            deskStatusModel=new DeskStatusModel(key,id,code,0);
                                         } else {
                                             ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_request));
                                             System.out.println("BookingRequest");
+                                            deskStatusModel=new DeskStatusModel(key,id,code,4);
                                         }
                                     }
                                     wasAssigned = true;
@@ -646,96 +661,109 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 } else {
                                     System.out.println("BookingUnavaliable");
                                     ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                    deskStatusModel=new DeskStatusModel(key,id,code,0);
                                     if (teamDeskAvaliability.isBookedByUser() == true) {
                                         System.out.println("BookingbookedForMe");
                                         ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
+                                        deskStatusModel=new DeskStatusModel(key,id,code,2);
                                     } else if (teamDeskAvaliability.isBookedByElse() == true) {
                                         System.out.println("BookingBookedOther");
+                                        deskStatusModel=new DeskStatusModel(key,id,code,3);
                                     }
                                 }
 
 
                             }
 
+                            deskStatusModelList.add(deskStatusModel);
+
 
                         }
 
 
-                /*for (int j = 0; j < teamsResponseList.size(); j++) {
-
-                        if (teamDeskAvaliabilityList.get(0).getTeamId() == teamsResponseList.get(j).getId()) {
-
-                            System.out.println("automaticApprovalStatus" + teamsResponseList.get(j).getAutomaticApprovalStatus());
-                            System.out.println("TeamsNames" + teamsResponseList.get(j).getName());
-
-                            //System.out.println("AvaliableTimeSlotFrom" + teamDeskAvaliabilityList.get(i).getAvailableTimeSlotsList().get(i).getFrom());
-                            //System.out.println("AvaliableTimeSlotTo" + teamDeskAvaliabilityList.get(i).getAvailableTimeSlotsList().get(i).getTo());
-
-                        }
-                    }*/
                     }
 
 
                 }
             }else {
                 ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                deskStatusModel=new DeskStatusModel(key,id,code,0);
+                deskStatusModelList.add(deskStatusModel);
             }
 
 
         }else if(code.equals(AppConstants.CAR_PARKING)){
 
-            if(carParkingslots.size()>0){
+            if (carParkingslots.size() > 0) {
 
-                for (int i = 0; i <carParkingslots.size() ; i++) {
+                    for (int i = 0; i < carParkingslots.size(); i++) {
 
-                    if(carParkAvalibilityResponseList.size()>0) {
+                        if (carParkAvalibilityResponseList.size() > 0) {
 
-                        for (int j = 0; j < carParkAvalibilityResponseList.size(); j++) {
-                            if (carParkingslots.get(i).getCarParkingSlotId() == carParkAvalibilityResponseList.get(j).getParkingSlotAvalibilityId()) {
-                                CarParkAvalibilityResponse carParkAvalibilityResponse = carParkAvalibilityResponseList.get(j);
+                            for (int j = 0; j < carParkAvalibilityResponseList.size(); j++) {
+                                if (carParkingslots.get(i).getCarParkingSlotId() == carParkAvalibilityResponseList.get(j).getParkingSlotAvalibilityId()) {
+                                    CarParkAvalibilityResponse carParkAvalibilityResponse = carParkAvalibilityResponseList.get(j);
 
-                                if (carParkAvalibilityResponse.isBookedByElse() == false && carParkAvalibilityResponse.isBookedByUser() == false && carParkAvalibilityResponse.isAvailable() == true && (carParkingslots.get(i).getParkingSlotAvailability() == 1 && (carParkingslots.get(i).getAssignessList().size() == 0))) {
-                                    System.out.println("CarParkAvaliable");
-                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_avaliable));
-                                } else if (carParkAvalibilityResponse.isBookedByElse() == false && carParkAvalibilityResponse.isBookedByUser() == false && carParkAvalibilityResponse.isAvailable() == true && carParkingslots.get(i).getParkingSlotAvailability() == 2) {
+                                    if (carParkAvalibilityResponse.isBookedByElse() == false && carParkAvalibilityResponse.isBookedByUser() == false && carParkAvalibilityResponse.isAvailable() == true && (carParkingslots.get(i).getParkingSlotAvailability() == 1 && (carParkingslots.get(i).getAssignessList().size() == 0))) {
+                                        deskStatusModel=new DeskStatusModel(key,id,code,1);
+                                        System.out.println("CarParkAvaliable");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_avaliable));
+                                        break;
+                                    } else if (carParkAvalibilityResponse.isBookedByElse() == false && carParkAvalibilityResponse.isBookedByUser() == false && carParkAvalibilityResponse.isAvailable() == true && carParkingslots.get(i).getParkingSlotAvailability() == 2) {
+                                        deskStatusModel=new DeskStatusModel(key,id,code,4);
 
-                                    System.out.println("CarParkingRequest");
-                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_request));
-                                } else if (carParkAvalibilityResponse.isBookedByElse() == false && carParkAvalibilityResponse.isBookedByUser() == false && (carParkAvalibilityResponse.isAvailable() == false || carParkingslots.get(i).getParkingSlotAvailability() == 1)) {
+                                        System.out.println("CarParkingRequest");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_request));
+                                        break;
+                                    } else if (carParkAvalibilityResponse.isBookedByElse() == false && carParkAvalibilityResponse.isBookedByUser() == false && (carParkAvalibilityResponse.isAvailable() == false || carParkingslots.get(i).getParkingSlotAvailability() == 1)) {
+                                        deskStatusModel=new DeskStatusModel(key,id,code,0);
+                                        System.out.println("CarParkUnAvaliable");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                        break;
+                                    } else if (carParkAvalibilityResponse.isBookedByElse() == true) {
+                                        deskStatusModel=new DeskStatusModel(key,id,code,3);
+                                        System.out.println("CarParkingBookedOther");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
+                                        break;
+                                    } else if (carParkAvalibilityResponse.isBookedByUser() == true) {
+                                        deskStatusModel=new DeskStatusModel(key,id,code,2);
+                                        System.out.println("BookedForMe");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
+                                        break;
+                                    } else {
+                                        deskStatusModel=new DeskStatusModel(key,id,code,0);
+                                        System.out.println("CarParkUnAvaliable");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                        break;
+                                    }
 
-                                    System.out.println("CarParkUnAvaliable");
-                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
-                                } else if (carParkAvalibilityResponse.isBookedByElse() == true) {
-
-                                    System.out.println("CarParkingBookedOther");
-                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
-                                } else if (carParkAvalibilityResponse.isBookedByUser() == true) {
-
-                                    System.out.println("BookedForMe");
-                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
-                                } else {
-
-                                    System.out.println("CarParkUnAvaliable");
-                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
                                 }
 
+                              //  deskStatusModelList.add(deskStatusModel);
 
                             }
+
+                        } else {
+                            System.out.println("CarParkUnAvaliable");
+                            deskStatusModel=new DeskStatusModel(key,id,code,0);
+                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
                         }
 
-                    }else {
-                        System.out.println("CarParkUnAvaliable");
-                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+
+                        deskStatusModelList.add(deskStatusModel);
+
                     }
 
-
-
+                } else {
+                    System.out.println("CarParkUnAvaliable");
+                    deskStatusModel=new DeskStatusModel(key,id,code,0);
+                    deskStatusModelList.add(deskStatusModel);
+                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
                 }
 
-            }else {
-                System.out.println("CarParkUnAvaliable");
-                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
-            }
+            //deskStatusModelList.add(deskStatusModel);
+
+
 
 
         }
@@ -782,12 +810,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
              }*/
 
+        //Set Image Based on Position
         int x = Integer.parseInt(valueList.get(0));
         int y = Integer.parseInt(valueList.get(1));
 
         relativeLayout.leftMargin = x;
         relativeLayout.topMargin = y;
-
 
         //relativeLayout.leftMargin = Integer.parseInt(valueList.get(0)+10);
         //relativeLayout.topMargin = Integer.parseInt(valueList.get(1)+10);
@@ -802,6 +830,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         ivDesk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
 
                 List<String> onClickValue = locateCountryResposeList.get(floorPosition).getItems().get(key);
                       /*for (int j = 0; j <onClickValue.size() ; j++) {
@@ -853,8 +883,48 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 }
 
+                if(deskStatusModelList.size()>0){
+                    for (int i = 0; i <deskStatusModelList.size() ; i++) {
+
+                        System.out.println("DESKNAMETOREQUESTTISERVER"+deskStatusModelList.get(i).getKey()+" "+deskStatusModelList.get(i).getStatus());
+
+                    }
+                }
+
+                int requestTeamId=0,requestTeamDeskId=0;
                 if (code.equals("3") || code.equals("5")) {
-                    callDeskBookingnBottomSheet(selctedCode, key, id, code);
+                    if(deskStatusModelList!=null){
+                        for (int i = 0; i <deskStatusModelList.size() ; i++) {
+                            if(key.equals(deskStatusModelList.get(i).getKey())){
+
+                                System.out.println("BookingForRequest"+deskStatusModelList.get(i).getId());
+
+                                DeskStatusModel deskStatusModel1=deskStatusModelList.get(i);
+
+
+
+                                for (int j = 0; j <teamDeskAvaliabilityList.size() ; j++) {
+
+                                    if(deskStatusModel1.getId()==teamDeskAvaliabilityList.get(j).getDeskId()){
+
+                                        requestTeamId=teamDeskAvaliabilityList.get(j).getTeamId();
+                                        requestTeamDeskId=teamDeskAvaliabilityList.get(j).getTeamDeskId();
+                                        System.out.println("RequstedTeamId"+teamDeskAvaliabilityList.get(j).getTeamId());
+                                        System.out.println("RequestedTeamDeskId"+teamDeskAvaliabilityList.get(j).getTeamDeskId());
+
+                                    }
+
+                                }
+
+                            }
+                        }
+
+                    }
+
+                    System.out.println("OnlyBooking");
+
+                    //Booking Bottom Sheet
+                    callDeskBookingnBottomSheet(selctedCode, key, id, code,requestTeamId,requestTeamDeskId);
                 } else if (code.equals("4")) {
 
                 }
@@ -1500,7 +1570,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
     //Book BottomSheet
-    private void callDeskBookingnBottomSheet(String selctedCode, String key, int id, String code) {
+    private void callDeskBookingnBottomSheet(String selctedCode, String key, int id, String code, int requestTeamId, int requestTeamDeskId) {
 
         System.out.println("BookingRequestDetail" + selctedCode + " " + key + " " + id + " " + code);
 
@@ -1577,8 +1647,16 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 //dialog = ProgressDialog.showProgressBar(getContext());
                 if (code.equals("3")) {
-                    //Desk Booking
-                    deskBookingRequest();
+
+                    if(requestTeamId>0 && requestTeamDeskId>0){
+                        //Request Desk Booking
+                        requestDeskBooking(requestTeamId,requestTeamDeskId);
+
+                    }else {
+                        //Desk Booking
+                        deskBooking();
+                    }
+
                 } else if (code.equals("5")) {
                     //Car Booking
                     carParkingRequest();
@@ -1595,6 +1673,64 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         locateCheckInBottomSheet.show();
+    }
+
+    private void requestDeskBooking(int requestTeamId, int requestTeamDeskId) {
+
+        System.out.println("APIITNGRATIONREQUESTDESKBOOKING");
+
+        LocateDeskBookingRequest locateDeskBookingRequest = new LocateDeskBookingRequest();
+        locateDeskBookingRequest.setTeamId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID));
+        locateDeskBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID));
+
+        LocateDeskBookingRequest.ChangeSets changeSets = locateDeskBookingRequest.new ChangeSets();
+        changeSets.setChangeSetId(0);
+
+        changeSets.setChangeSetDate
+                (locateCheckInDate.getText().toString() + "T" + "00:00:00.000" + "Z");
+
+        LocateDeskBookingRequest.ChangeSets.Changes changes = changeSets.new Changes();
+        changes.setUsageTypeId(7);
+
+        changes.setFrom(getCurrentDate() + "" + "T" + locateCheckInTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+        changes.setTo(getCurrentDate() + "" + "T" + locateCheckoutTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+        changes.setTimeZoneId("India Standard Time");
+        changes.setTeamDeskId(null);
+        changes.setRequestedTeamId(requestTeamId);
+        changes.setRequestedTeamDeskId(requestTeamDeskId);
+        changes.setTypeOfCheckIn(1);
+
+        changeSets.setChanges(changes);
+
+        List<LocateDeskBookingRequest.ChangeSets> changeSetsList = new ArrayList<>();
+        changeSetsList.add(changeSets);
+
+        locateDeskBookingRequest.setChangeSets(changeSetsList);
+
+        List<LocateDeskBookingRequest.DeleteIds> deleteIdsList = new ArrayList<>();
+        //deleteIdsList.add(deleteIds);
+
+        locateDeskBookingRequest.setDeletedIds(deleteIdsList);
+
+        System.out.println("BookingRequestObject" + locateDeskBookingRequest);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<BaseResponse> call = apiService.doRequestDeskBooking(locateDeskBookingRequest);
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                BaseResponse baseResponse=response.body();
+                System.out.println("DeskRequestBookingDesk"+baseResponse.getResultCode());
+
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+            }
+        });
+
     }
 
     private void getParkingSlotId(String key) {
@@ -1681,7 +1817,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         popDialog.show();
     }
 
-    private void deskBookingRequest() {
+    private void deskBooking() {
 
         dialog = ProgressDialog.showProgressBar(getContext());
 
