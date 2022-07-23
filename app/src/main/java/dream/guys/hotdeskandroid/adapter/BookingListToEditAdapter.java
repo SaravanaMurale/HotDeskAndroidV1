@@ -22,12 +22,25 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
 
     Context context;
     List<BookingForEditResponse.Bookings> bookingsListToEdit;
+    List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities;
+    OnEditClickable onEditClickable;
+    String code;
 
 
-    public BookingListToEditAdapter(Context context, List<BookingForEditResponse.Bookings> bookingsListToEdit) {
+    public interface OnEditClickable{
+
+        public void onEditClick(BookingForEditResponse.Bookings bookings, String code, List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities);
+
+    }
+
+
+    public BookingListToEditAdapter(Context context, List<BookingForEditResponse.Bookings> bookingsListToEdit, OnEditClickable onEditClickable, String code, List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities) {
 
         this.context=context;
         this.bookingsListToEdit=bookingsListToEdit;
+        this.onEditClickable=onEditClickable;
+        this.code=code;
+        this.teamDeskAvailabilities=teamDeskAvailabilities;
 
     }
 
@@ -46,10 +59,16 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
         holder.editCheckInTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getFrom()));
         holder.editCheckOutTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getMyto()));
 
-        /*String fromTime=bookingsListToEdit.get(position).getFrom();
-        String dateSplitted=Utils.splitTime(fromTime);
-        System.out.println("DateSplitededdd"+dateSplitted);
-        String toTime=bookingsListToEdit.get(position).getMyto();*/
+        holder.editTextEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                onEditClickable.onEditClick(bookingsListToEdit.get(holder.getAbsoluteAdapterPosition()),code,teamDeskAvailabilities);
+
+
+            }
+        });
+
 
 
     }

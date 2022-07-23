@@ -22,14 +22,18 @@ import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.ui.home.HomeFragment;
 
 public class DeskListRecyclerAdapter extends RecyclerView.Adapter<DeskListRecyclerAdapter.Viewholder> {
-    HomeFragment homeFragment;
+   // HomeFragment homeFragment;
     Context context;
     Activity activity;
     List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse;
     public OnSelectSelected onSelectSelected;
     BottomSheetDialog bottomSheetDialog;
-    public DeskListRecyclerAdapter(Context context, OnSelectSelected onSelectSelected, FragmentActivity activity, List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse, HomeFragment homeFragment, BottomSheetDialog bottomSheetDialog) {
-        this.homeFragment=homeFragment;
+
+
+
+
+    public DeskListRecyclerAdapter(Context context, OnSelectSelected onSelectSelected, FragmentActivity activity, List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse, Context context1, BottomSheetDialog bottomSheetDialog) {
+       // this.homeFragment=homeFragment;
         this.context = context;
         this.onSelectSelected =onSelectSelected;
         this.activity = activity;

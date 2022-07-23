@@ -939,7 +939,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         rvDeskRecycler.setLayoutManager(linearLayoutManager);
         rvDeskRecycler.setHasFixedSize(true);
 
-        deskListRecyclerAdapter =new DeskListRecyclerAdapter(getContext(),this,getActivity(),bookingForEditResponse,this,bottomSheetDialog);
+        deskListRecyclerAdapter =new DeskListRecyclerAdapter(getContext(),this,getActivity(),bookingForEditResponse,getContext(),bottomSheetDialog);
         rvDeskRecycler.setAdapter(deskListRecyclerAdapter);
 
 

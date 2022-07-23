@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -37,6 +36,7 @@ import java.util.List;
 import butterknife.BindView;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.BookingListToEditAdapter;
+import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.FloorAdapter;
 import dream.guys.hotdeskandroid.adapter.LocateMyTeamAdapter;
 import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
@@ -67,7 +67,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSelectListener {
+public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSelectListener, BookingListToEditAdapter.OnEditClickable, DeskListRecyclerAdapter.OnSelectSelected {
 
 
     @BindView(R.id.scrollView)
@@ -147,10 +147,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     List<DeskAvaliabilityResponse.TeamDeskAvaliabilityList> teamDeskAvaliabilityList;
     List<TeamsResponse> teamsResponseList;
 
+    //Edit Booking
+    int selectedDeskId=0;
+    TextView deskRoomName;
+
     //CarParkingAvalibilityChecking
     List<CarParkingslotsResponse> carParkingslots;
     List<CarParkAvalibilityResponse> carParkAvalibilityResponseList;
-    int loopCount=0;
 
 
     @Override
@@ -548,13 +551,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
 
+
     @SuppressLint("ResourceType")
     private void addView(List<String> valueList, String key, int floorPosition,int itemTotalSize) {
 
         System.out.println("ItemTotalSize"+itemTotalSize);
         System.out.println("ReceivedKeyInAddView" + key);
-        String startDate="2022-07-23 15:30:00";
-        String endDate="2022-07-23 23:50:00";
+        String startDate="2022-07-23 21:00:00";
+        String endDate="2022-07-23 22:30:00";
 
         //Desk Avaliablity Checking Split key to get id and code
         String[] result = key.split("_");
@@ -925,7 +929,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 }else if(deskStatusModelList.get(i).getStatus()==2){
                                     //Booking Edit
 
-                                    getBookingListToEdit();
+                                    getBookingListToEdit(code);
 
 
 
@@ -950,10 +954,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
-    private void callBottomSheetToEdit(BookingForEditResponse bookingForEditResponse) {
+    private void callBottomSheetToEdit(BookingForEditResponse bookingForEditResponse, String code) {
 
         RecyclerView rvEditList;
-        TextView editClose;
+        TextView editClose,editDate;
         LinearLayoutManager linearLayoutManager;
 
         BottomSheetDialog locateEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -962,13 +966,17 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         rvEditList = locateEditBottomSheet.findViewById(R.id.rvEditList);
         editClose=locateEditBottomSheet.findViewById(R.id.editClose);
+        editDate=locateEditBottomSheet.findViewById(R.id.editDate);
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvEditList.setLayoutManager(linearLayoutManager);
         rvEditList.setHasFixedSize(true);
 
-        BookingListToEditAdapter bookingListToEditAdapter=new BookingListToEditAdapter(getContext(),bookingForEditResponse.getBookings());
+        BookingListToEditAdapter bookingListToEditAdapter=new BookingListToEditAdapter(getContext(),bookingForEditResponse.getBookings(),this,code,bookingForEditResponse.getTeamDeskAvailabilities());
         rvEditList.setAdapter(bookingListToEditAdapter);
+
+        //Show Here Current Date
+        editDate.setText(getCurrentDate());
 
 
         editClose.setOnClickListener(new View.OnClickListener() {
@@ -982,7 +990,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
-    private void getBookingListToEdit() {
+    private void getBookingListToEdit(String code) {
 
         dialog = ProgressDialog.showProgressBar(getContext());
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -998,13 +1006,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 BookingForEditResponse bookingForEditResponse=response.body();
 
-                callBottomSheetToEdit(bookingForEditResponse);
-
-               /* for (int i = 0; i < bookingForEditResponse.getBookings().size() ; i++) {
-
-                    System.out.println("BookingForEditListCode"+bookingForEditResponse.getBookings().get(i).getDeskCode());
-                    System.out.println("BookingForEditListName"+bookingForEditResponse.getBookings().get(i).getBookedByUserName());
-                }*/
+                callBottomSheetToEdit(bookingForEditResponse,code);
 
                 ProgressDialog.dismisProgressBar(getContext(),dialog);
 
@@ -1107,46 +1109,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
-
-    //MyTeamBottomSheet
-    private void callMyTeamBottomSheet() {
-
-        TextView myTeamClose;
-
-        BottomSheetDialog myTeamBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        myTeamBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_myteam_bottomsheet,
-                new RelativeLayout(getContext())));
-
-        rvMyTeam = myTeamBottomSheet.findViewById(R.id.rvLocateMyTeam);
-        myTeamClose = myTeamBottomSheet.findViewById(R.id.myTeamClose);
-
-
-        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvMyTeam.setLayoutManager(linearLayoutManager);
-        rvMyTeam.setHasFixedSize(true);
-
-
-        myTeamClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myTeamBottomSheet.dismiss();
-            }
-        });
-
-        List<String> stringName = new ArrayList<>();
-        stringName.add("Bessie Cooper");
-        stringName.add("Francene Vandyne");
-        stringName.add("Cody Fisher");
-
-
-        locateMyTeamAdapter = new LocateMyTeamAdapter(getContext(), stringName);
-        rvMyTeam.setAdapter(locateMyTeamAdapter);
-
-
-        myTeamBottomSheet.show();
-
-
-    }
 
     private void getLocateCountryList() {
 
@@ -1575,82 +1537,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
 
-    private void callLocateFilterBottomSheet() {
 
-        RecyclerView locateFilterMainRV;
-        ValuesPOJO valuesPOJO;
-        ArrayList<DataModel> mList;
-        ItemAdapter adapter;
-
-        TextView locateFilterCancel, locateFilterApply;
-
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        bottomSheetDialog.setContentView((this).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_locate_filter,
-                new RelativeLayout(getContext())));
-
-        locateFilterCancel = bottomSheetDialog.findViewById(R.id.locateFilterCancel);
-        locateFilterApply = bottomSheetDialog.findViewById(R.id.locateFilterApply);
-
-
-        locateFilterMainRV = bottomSheetDialog.findViewById(R.id.locateFilterMainRV);
-        locateFilterMainRV.setHasFixedSize(true);
-        locateFilterMainRV.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
-        locateFilterCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomSheetDialog.dismiss();
-            }
-        });
-
-        locateFilterApply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomSheetDialog.dismiss();
-            }
-        });
-
-        mList = new ArrayList<>();
-
-        //list1
-        ArrayList<ValuesPOJO> nestedList1 = new ArrayList<>();
-
-        valuesPOJO = new ValuesPOJO("Monitor", false);
-        nestedList1.add(valuesPOJO);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Adjustable height", false);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Laptop stand", false);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("USB_C Dock", false);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Charge point", false);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Standing desk", false);
-        nestedList1.add(valuesPOJO);
-
-        ArrayList<ValuesPOJO> nestedList2 = new ArrayList<>();
-
-        valuesPOJO = new ValuesPOJO("Single", false);
-        nestedList2.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Double", false);
-        nestedList2.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Ac", false);
-        nestedList2.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Non-AC", false);
-        nestedList2.add(valuesPOJO);
-
-
-        mList.add(new DataModel(nestedList1, "Workspaces"));
-        mList.add(new DataModel(nestedList2, "Rooms"));
-
-        adapter = new ItemAdapter(mList);
-        locateFilterMainRV.setAdapter(adapter);
-
-        bottomSheetDialog.show();
-
-    }
 
 
     //Book BottomSheet
@@ -1770,8 +1657,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         LocateDeskBookingRequest.ChangeSets changeSets = locateDeskBookingRequest.new ChangeSets();
         changeSets.setChangeSetId(0);
 
-        changeSets.setChangeSetDate
-                (locateCheckInDate.getText().toString() + "T" + "00:00:00.000" + "Z");
+        changeSets.setChangeSetDate(locateCheckInDate.getText().toString() + "T" + "00:00:00.000" + "Z");
 
         LocateDeskBookingRequest.ChangeSets.Changes changes = changeSets.new Changes();
         changes.setUsageTypeId(7);
@@ -1805,7 +1691,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
                 BaseResponse baseResponse=response.body();
-                System.out.println("DeskRequestBookingDesk"+baseResponse.getResultCode());
+
+                if(baseResponse!=null){
+                    Toast.makeText(getContext(),baseResponse.getResultCode(),Toast.LENGTH_LONG).show();
+                }
+
+
+//                System.out.println("DeskRequestBookingDesk"+baseResponse.getResultCode());
 
             }
 
@@ -1830,12 +1722,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         }
 
-
-    }
-
-    private void callBookingTimePickerBottomSheet() {
-
-        //Utils.bottomSheetTimePicker(getContext(),getActivity(),locateCheckInTime,"","");
 
     }
 
@@ -2039,74 +1925,306 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onEditClick(BookingForEditResponse.Bookings bookings, String code, List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities) {
 
-        System.out.println("OndestroyCalledInLocateFragment");
-    }
+        TextView startTime,endTime,date;
 
-   /* @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_booking,
+                new RelativeLayout(getContext()))));
 
-        super.dispatchTouchEvent(event);
-        mScaleGestureDetector.onTouchEvent(event);
-        gestureDetector.onTouchEvent(event);
-        return gestureDetector.onTouchEvent(event);
-    }
-*/
+        startTime = bottomSheetDialog.findViewById(R.id.start_time);
+        endTime = bottomSheetDialog.findViewById(R.id.end_time);
+        date=bottomSheetDialog.findViewById(R.id.date);
+        deskRoomName=bottomSheetDialog.findViewById(R.id.tv_desk_room_name);
+        TextView continueEditBook=bottomSheetDialog.findViewById(R.id.editBookingContinue);
+        LinearLayout llDeskLayout=bottomSheetDialog.findViewById(R.id.ll_desk_layout);
+        RelativeLayout repeatBlock=bottomSheetDialog.findViewById(R.id.rl_repeat_block);
+        RelativeLayout teamsBlock=bottomSheetDialog.findViewById(R.id.rl_teams_layout);
+        TextView tvComments=bottomSheetDialog.findViewById(R.id.tv_comments);
+        EditText commentRegistration=bottomSheetDialog.findViewById(R.id.ed_registration);
 
+        TextView select=bottomSheetDialog.findViewById(R.id.select_desk_room);
 
+        //Need To Change Date Here
+        date.setText(bookings.getDate());
 
-
-
-   /* private class TouchHandler implements View.OnTouchListener
-    {
-        @Override
-        public boolean onTouch(View view, MotionEvent event)
-        {
-            if (event.getAction() == MotionEvent.ACTION_DOWN)
-            {
-                params.leftMargin = Math.round(event.getX() * 160f / getContext().getResources().getDisplayMetrics().densityDpi);
-                params.topMargin = Math.round(event.getY() * 160f / getContext().getResources().getDisplayMetrics().densityDpi);
-                //image.setLayoutParams(params);
-                //image.setVisibility(View.VISIBLE);
-                firstLayout.setPivotX(event.getX());
-                firstLayout.setPivotY(event.getY());
-                firstLayout.setScaleX(2f);
-                firstLayout.setScaleY(2f);
-            }
-            return true;
-        }
-    }*/
+        if(code.equals("3")){
 
 
-    /*@Override
-    public boolean onTouch(View v, MotionEvent event) {
+            repeatBlock.setVisibility(View.GONE);
+            teamsBlock.setVisibility(View.GONE);
+            tvComments.setVisibility(View.GONE);
+            commentRegistration.setVisibility(View.GONE);
 
-        if(event.getPointerCount()==2){
-            int action=event.getAction();
-            int mainaction=action&MotionEvent.ACTION_MASK;
+            startTime.setText( Utils.splitTime(bookings.getFrom()));
+            endTime.setText(Utils.splitTime(bookings.getMyto()));
+            // date.setText(""+Utils.dayDateMonthFormat(bookings.getDate()));
+            deskRoomName.setText(bookings.getDeskCode());
+        }else {
 
-            if(mainaction==MotionEvent.ACTION_POINTER_DOWN){
-                baseDist=getDistace(event);
-                baseRatio=ratio;
-            }else {
-
-                float scale=(getDistace(event)-baseDist)/move;
-                float factor=(float) Math.pow(2,scale);
-                ratio=Math.min(1024.0f,Math.max(0.1f,baseRatio*factor));
-
-            }
         }
 
-        return true;
-    }*/
 
-    private int getDistace(MotionEvent event) {
-        int dx = (int) (event.getX(0) - event.getX(1));
-        int dy = (int) (event.getY(0) - event.getY(1));
-        return (int) (Math.sqrt(dx * dx + dy * dy));
+        startTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), startTime, "", "");
+                    //Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time","");
+            }
+        });
+
+        endTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), endTime, "", "");
+                //Utils.bottomSheetTimePicker(getContext(),getActivity(),endTime,"End Time","");
+
+            }
+        });
+
+        select.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callDeskBottomSheetDialogToSelectDeskCode(teamDeskAvailabilities);
+            }
+        });
+
+        continueEditBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //Edit DeskBooking
+                doEditDeskBooking(bookings,startTime.getText().toString(),endTime.getText().toString());
+
+
+
+            }
+        });
+
+        bottomSheetDialog.show();
+
+
+    }
+
+    private void doEditDeskBooking(BookingForEditResponse.Bookings bookings, String startTime, String endTime) {
+
+        dialog=ProgressDialog.showProgressBar(getContext());
+
+        LocateBookingRequest locateBookingRequest = new LocateBookingRequest();
+        locateBookingRequest.setTeamId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID));
+        locateBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID));
+
+        LocateBookingRequest.ChangeSets changeSets = locateBookingRequest.new ChangeSets();
+        changeSets.setChangeSetId(0);
+
+        //changeSets.setChangeSetDate(startTim+ "T" + "00:00:00.000" + "Z");
+        changeSets.setChangeSetDate(Utils.splitDate(bookings.getDate())+"T" +"00:00:00.000"+"Z");
+
+        LocateBookingRequest.ChangeSets.Changes changes = changeSets.new Changes();
+        changes.setUsageTypeId(2);
+
+        changes.setFrom(getCurrentDate() + "" + "T" + startTime + ":" + "00" + "." + "000" + "Z");
+        changes.setTo(getCurrentDate() + "" + "T" + endTime + ":" + "00" + "." + "000" + "Z");
+        changes.setTimeZoneId("India Standard Time");
+        if(selectedDeskId>0){
+            changes.setTeamDeskId(selectedDeskId);
+        }else {
+            changes.setTeamDeskId(bookings.teamDeskId);
+        }
+
+        changes.setTypeOfCheckIn(1);
+
+        changeSets.setChanges(changes);
+
+        List<LocateBookingRequest.ChangeSets> changeSetsList = new ArrayList<>();
+        changeSetsList.add(changeSets);
+        locateBookingRequest.setChangeSetsList(changeSetsList);
+
+        LocateBookingRequest.DeleteIds deleteIds = locateBookingRequest.new DeleteIds();
+        List<LocateBookingRequest.DeleteIds> deleteIdsList = new ArrayList<>();
+        //deleteIdsList.add(deleteIds);
+
+        locateBookingRequest.setDeleteIdsList(deleteIdsList);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<BaseResponse> call = apiService.doDeskBooking(locateBookingRequest);
+
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+
+                BaseResponse baseResponse = response.body();
+                if (baseResponse != null) {
+
+                    //openCheckoutDialog("Booking Succcessfull");
+
+                } else {
+                    Toast.makeText(getContext(), "Not Avaliable"+baseResponse.getResultCode(), Toast.LENGTH_LONG).show();
+                }
+
+                ProgressDialog.dismisProgressBar(getContext(), dialog);
+                System.out.println("BookingSuccessInLocate");
+
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                ProgressDialog.dismisProgressBar(getContext(), dialog);
+            }
+        });
+
+
+
+    }
+
+    private void callDeskBottomSheetDialogToSelectDeskCode(List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities) {
+
+        RecyclerView rvDeskRecycler;
+        DeskListRecyclerAdapter deskListRecyclerAdapter;
+        TextView bsRepeatBack;
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_select_desk,
+                new RelativeLayout(getContext()))));
+
+        rvDeskRecycler= bottomSheetDialog.findViewById(R.id.desk_list_select_recycler);
+        bsRepeatBack=bottomSheetDialog.findViewById(R.id.bsDeskBack);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvDeskRecycler.setLayoutManager(linearLayoutManager);
+        rvDeskRecycler.setHasFixedSize(true);
+
+        deskListRecyclerAdapter =new DeskListRecyclerAdapter(getContext(),this,getActivity(),teamDeskAvailabilities,getContext(),bottomSheetDialog);
+        rvDeskRecycler.setAdapter(deskListRecyclerAdapter);
+
+        bottomSheetDialog.show();
+
+    }
+
+    @Override
+    public void onSelectDesk(int deskId, String deskName) {
+        deskRoomName.setText(""+deskName);
+        selectedDeskId= deskId;
     }
 
 
+    //MyTeamBottomSheet
+    private void callMyTeamBottomSheet() {
+
+        TextView myTeamClose;
+
+        BottomSheetDialog myTeamBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        myTeamBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_myteam_bottomsheet,
+                new RelativeLayout(getContext())));
+
+        rvMyTeam = myTeamBottomSheet.findViewById(R.id.rvLocateMyTeam);
+        myTeamClose = myTeamBottomSheet.findViewById(R.id.myTeamClose);
+
+
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvMyTeam.setLayoutManager(linearLayoutManager);
+        rvMyTeam.setHasFixedSize(true);
+
+
+        myTeamClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myTeamBottomSheet.dismiss();
+            }
+        });
+
+        List<String> stringName = new ArrayList<>();
+        stringName.add("Bessie Cooper");
+        stringName.add("Francene Vandyne");
+        stringName.add("Cody Fisher");
+
+
+        locateMyTeamAdapter = new LocateMyTeamAdapter(getContext(), stringName);
+        rvMyTeam.setAdapter(locateMyTeamAdapter);
+
+
+        myTeamBottomSheet.show();
+
+
+    }
+
+    private void callLocateFilterBottomSheet() {
+
+        RecyclerView locateFilterMainRV;
+        ValuesPOJO valuesPOJO;
+        ArrayList<DataModel> mList;
+        ItemAdapter adapter;
+
+        TextView locateFilterCancel, locateFilterApply;
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((this).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_locate_filter,
+                new RelativeLayout(getContext())));
+
+        locateFilterCancel = bottomSheetDialog.findViewById(R.id.locateFilterCancel);
+        locateFilterApply = bottomSheetDialog.findViewById(R.id.locateFilterApply);
+
+
+        locateFilterMainRV = bottomSheetDialog.findViewById(R.id.locateFilterMainRV);
+        locateFilterMainRV.setHasFixedSize(true);
+        locateFilterMainRV.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+        locateFilterCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        locateFilterApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        mList = new ArrayList<>();
+
+        //list1
+        ArrayList<ValuesPOJO> nestedList1 = new ArrayList<>();
+
+        valuesPOJO = new ValuesPOJO("Monitor", false);
+        nestedList1.add(valuesPOJO);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Adjustable height", false);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Laptop stand", false);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("USB_C Dock", false);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Charge point", false);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Standing desk", false);
+        nestedList1.add(valuesPOJO);
+
+        ArrayList<ValuesPOJO> nestedList2 = new ArrayList<>();
+
+        valuesPOJO = new ValuesPOJO("Single", false);
+        nestedList2.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Double", false);
+        nestedList2.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Ac", false);
+        nestedList2.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Non-AC", false);
+        nestedList2.add(valuesPOJO);
+
+
+        mList.add(new DataModel(nestedList1, "Workspaces"));
+        mList.add(new DataModel(nestedList2, "Rooms"));
+
+        adapter = new ItemAdapter(mList);
+        locateFilterMainRV.setAdapter(adapter);
+
+        bottomSheetDialog.show();
+
+    }
 }

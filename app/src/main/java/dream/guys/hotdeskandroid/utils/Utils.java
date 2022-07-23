@@ -582,7 +582,20 @@ public class Utils {
 
     }
 
-    public static void splitDate(String dateWithTandZ){
+
+
+    public static boolean compareTimeIfCheckInEnable(String startTime, String endTime){
+        startTime = startTime.replace(":",".");
+        endTime = endTime.replace(":",".");
+
+        System.out.println(startTime+" balas "+endTime);
+        if (Double.parseDouble(startTime) >= Double.parseDouble(endTime))
+            return true;
+        else
+            return false;
+    }
+
+    public static String splitDate(String dateWithTandZ){
         String date="";
         String[] words=dateWithTandZ.split("T");
 
@@ -594,17 +607,8 @@ public class Utils {
 
         }
 
-    }
+        return  date;
 
-    public static boolean compareTimeIfCheckInEnable(String startTime, String endTime){
-        startTime = startTime.replace(":",".");
-        endTime = endTime.replace(":",".");
-
-        System.out.println(startTime+" balas "+endTime);
-        if (Double.parseDouble(startTime) >= Double.parseDouble(endTime))
-            return true;
-        else
-            return false;
     }
 
     public static String splitTime(String dateWithTandZ){

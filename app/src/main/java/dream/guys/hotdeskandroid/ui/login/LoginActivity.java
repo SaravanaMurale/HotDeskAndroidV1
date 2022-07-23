@@ -226,7 +226,7 @@ public class LoginActivity extends AppCompatActivity {
                              * which you can subsequently use to obtain your resources.
                              */
                             List<Pair<String, String>> extraQueryParameters = new ArrayList<>();
-                            extraQueryParameters.add( new Pair<String, String>("domain_hint", "google.com"));
+                            extraQueryParameters.add( new Pair<String, String>("domain_hint", "facebook.com"));
 //                            extraQueryParameters.add( new Pair<String, String>("domain_hint", typeOfLoginResponse.getMobileIdentityProvider()));
 
                             AcquireTokenParameters parameters = new AcquireTokenParameters.Builder()
