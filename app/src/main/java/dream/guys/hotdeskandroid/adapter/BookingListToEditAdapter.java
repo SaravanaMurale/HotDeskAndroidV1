@@ -1,0 +1,84 @@
+package dream.guys.hotdeskandroid.adapter;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
+import dream.guys.hotdeskandroid.utils.Utils;
+
+public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListToEditAdapter.BookingListToEditViewHolder> {
+
+    Context context;
+    List<BookingForEditResponse.Bookings> bookingsListToEdit;
+
+
+    public BookingListToEditAdapter(Context context, List<BookingForEditResponse.Bookings> bookingsListToEdit) {
+
+        this.context=context;
+        this.bookingsListToEdit=bookingsListToEdit;
+
+    }
+
+    @NonNull
+    @Override
+    public BookingListToEditViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_booking_edit_adapter, parent, false);
+        return new BookingListToEditViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull BookingListToEditViewHolder holder, int position) {
+
+        holder.editCode.setText(bookingsListToEdit.get(position).getDeskCode());
+        holder.editCheckInTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getFrom()));
+        holder.editCheckOutTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getMyto()));
+
+        /*String fromTime=bookingsListToEdit.get(position).getFrom();
+        String dateSplitted=Utils.splitTime(fromTime);
+        System.out.println("DateSplitededdd"+dateSplitted);
+        String toTime=bookingsListToEdit.get(position).getMyto();*/
+
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return bookingsListToEdit.size();
+    }
+
+    public class BookingListToEditViewHolder extends RecyclerView.ViewHolder{
+
+        @BindView(R.id.editBookingImage)
+        ImageView editBookingImage;
+        @BindView(R.id.editCode)
+        TextView editCode;
+        @BindView(R.id.editCheckOutTime)
+        TextView editCheckOutTime;
+        @BindView(R.id.editCheckInTime)
+        TextView editCheckInTime;
+        @BindView(R.id.editDelete)
+        TextView editDelete;
+        @BindView(R.id.editTextEdit)
+        TextView editTextEdit;
+
+
+        public BookingListToEditViewHolder(@NonNull View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
+}

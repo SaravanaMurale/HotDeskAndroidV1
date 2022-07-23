@@ -29,5 +29,6 @@
     <color name="figma_byrequest">#F8D49B</color>
     <color name="figma_dark_green">#1B9D67</color>
     <color name="figma_unavaliable">#D99797</color>
+    <color name="figma_red">#BA0101</color>
 
 </resources>

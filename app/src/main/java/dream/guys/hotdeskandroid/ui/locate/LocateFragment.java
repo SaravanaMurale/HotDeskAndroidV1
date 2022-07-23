@@ -36,6 +36,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.adapter.BookingListToEditAdapter;
 import dream.guys.hotdeskandroid.adapter.FloorAdapter;
 import dream.guys.hotdeskandroid.adapter.LocateMyTeamAdapter;
 import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
@@ -50,6 +51,7 @@ import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateDeskBookingRequest;
 import dream.guys.hotdeskandroid.model.request.Point;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkAvalibilityResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingslotsResponse;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
@@ -551,8 +553,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         System.out.println("ItemTotalSize"+itemTotalSize);
         System.out.println("ReceivedKeyInAddView" + key);
-        String startDate="2022-07-22 19:30:00";
-        String endDate="2022-07-22 23:50:00";
+        String startDate="2022-07-23 15:30:00";
+        String endDate="2022-07-23 23:50:00";
 
         //Desk Avaliablity Checking Split key to get id and code
         String[] result = key.split("_");
@@ -883,13 +885,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 }
 
-                if(deskStatusModelList.size()>0){
+               /* if(deskStatusModelList.size()>0){
                     for (int i = 0; i <deskStatusModelList.size() ; i++) {
 
                         System.out.println("DESKNAMETOREQUESTTISERVER"+deskStatusModelList.get(i).getKey()+" "+deskStatusModelList.get(i).getStatus());
 
                     }
-                }
+                }*/
 
                 int requestTeamId=0,requestTeamDeskId=0;
                 if (code.equals("3") || code.equals("5")) {
@@ -897,34 +899,45 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         for (int i = 0; i <deskStatusModelList.size() ; i++) {
                             if(key.equals(deskStatusModelList.get(i).getKey())){
 
-                                System.out.println("BookingForRequest"+deskStatusModelList.get(i).getId());
+                                if(deskStatusModelList.get(i).getStatus()==1){
+                                    //Avaliable Booking
+                                    //Booking Bottom Sheet
+                                    callDeskBookingnBottomSheet(selctedCode, key, id, code,requestTeamId,requestTeamDeskId);
+                                }else if(deskStatusModelList.get(i).getStatus()==4){
+                                    //Booking Request
+                                    DeskStatusModel deskStatusModel1=deskStatusModelList.get(i);
+                                    for (int j = 0; j <teamDeskAvaliabilityList.size() ; j++) {
 
-                                DeskStatusModel deskStatusModel1=deskStatusModelList.get(i);
+                                        if(deskStatusModel1.getId()==teamDeskAvaliabilityList.get(j).getDeskId()){
 
+                                            requestTeamId=teamDeskAvaliabilityList.get(j).getTeamId();
+                                            requestTeamDeskId=teamDeskAvaliabilityList.get(j).getTeamDeskId();
+                                            System.out.println("RequstedTeamId"+teamDeskAvaliabilityList.get(j).getTeamId());
+                                            System.out.println("RequestedTeamDeskId"+teamDeskAvaliabilityList.get(j).getTeamDeskId());
 
-
-                                for (int j = 0; j <teamDeskAvaliabilityList.size() ; j++) {
-
-                                    if(deskStatusModel1.getId()==teamDeskAvaliabilityList.get(j).getDeskId()){
-
-                                        requestTeamId=teamDeskAvaliabilityList.get(j).getTeamId();
-                                        requestTeamDeskId=teamDeskAvaliabilityList.get(j).getTeamDeskId();
-                                        System.out.println("RequstedTeamId"+teamDeskAvaliabilityList.get(j).getTeamId());
-                                        System.out.println("RequestedTeamDeskId"+teamDeskAvaliabilityList.get(j).getTeamDeskId());
+                                        }
 
                                     }
+                                    //Booking Request Bottom Sheet
+                                    callDeskBookingnBottomSheet(selctedCode, key, id, code,requestTeamId,requestTeamDeskId);
+
+
+                                }else if(deskStatusModelList.get(i).getStatus()==2){
+                                    //Booking Edit
+
+                                    getBookingListToEdit();
+
+
 
                                 }
+
 
                             }
                         }
 
                     }
 
-                    System.out.println("OnlyBooking");
 
-                    //Booking Bottom Sheet
-                    callDeskBookingnBottomSheet(selctedCode, key, id, code,requestTeamId,requestTeamDeskId);
                 } else if (code.equals("4")) {
 
                 }
@@ -934,6 +947,77 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         binding.firstLayout.addView(deskView);
 
+
+    }
+
+    private void callBottomSheetToEdit(BookingForEditResponse bookingForEditResponse) {
+
+        RecyclerView rvEditList;
+        TextView editClose;
+        LinearLayoutManager linearLayoutManager;
+
+        BottomSheetDialog locateEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        locateEditBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_edit_booking_bottomsheet,
+                new RelativeLayout(getContext())));
+
+        rvEditList = locateEditBottomSheet.findViewById(R.id.rvEditList);
+        editClose=locateEditBottomSheet.findViewById(R.id.editClose);
+
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvEditList.setLayoutManager(linearLayoutManager);
+        rvEditList.setHasFixedSize(true);
+
+        BookingListToEditAdapter bookingListToEditAdapter=new BookingListToEditAdapter(getContext(),bookingForEditResponse.getBookings());
+        rvEditList.setAdapter(bookingListToEditAdapter);
+
+
+        editClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locateEditBottomSheet.dismiss();
+            }
+        });
+
+        locateEditBottomSheet.show();
+
+    }
+
+    private void getBookingListToEdit() {
+
+        dialog = ProgressDialog.showProgressBar(getContext());
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<BookingForEditResponse> call=apiService.getBookingsForEdit(SessionHandler.getInstance().getInt(getContext(),AppConstants.TEAM_ID),
+                SessionHandler.getInstance().getInt(getContext(),AppConstants.TEAMMEMBERSHIP_ID),
+                Utils.getCurrentDate(),
+                Utils.getCurrentDate());
+
+        call.enqueue(new Callback<BookingForEditResponse>() {
+            @Override
+            public void onResponse(Call<BookingForEditResponse> call, Response<BookingForEditResponse> response) {
+
+                BookingForEditResponse bookingForEditResponse=response.body();
+
+                callBottomSheetToEdit(bookingForEditResponse);
+
+               /* for (int i = 0; i < bookingForEditResponse.getBookings().size() ; i++) {
+
+                    System.out.println("BookingForEditListCode"+bookingForEditResponse.getBookings().get(i).getDeskCode());
+                    System.out.println("BookingForEditListName"+bookingForEditResponse.getBookings().get(i).getBookedByUserName());
+                }*/
+
+                ProgressDialog.dismisProgressBar(getContext(),dialog);
+
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<BookingForEditResponse> call, Throwable t) {
+                ProgressDialog.dismisProgressBar(getContext(),dialog);
+            }
+        });
 
     }
 
@@ -1868,7 +1952,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
-                ProgressDialog.dismisProgressBar(getContext(), dialog);
 
                 BaseResponse baseResponse = response.body();
                 if (baseResponse != null) {
@@ -1879,6 +1962,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     Toast.makeText(getContext(), "Not Avaliable", Toast.LENGTH_LONG).show();
                 }
 
+                ProgressDialog.dismisProgressBar(getContext(), dialog);
                 System.out.println("BookingSuccessInLocate");
 
             }
