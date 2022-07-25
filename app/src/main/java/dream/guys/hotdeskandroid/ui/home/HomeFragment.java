@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -26,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -81,6 +83,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     ImageView profile;
     ImageView tenantProfile;
     Toolbar toolbar;
+    LinearLayout headBlock;
+    FrameLayout qrLayout;
 
     //Header
     ImageView notiIcon;
@@ -91,6 +95,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     HomeBookingListAdapter homeBookingListAdapter;
     DeskListRecyclerAdapter deskListRecyclerAdapter;
     LinearLayoutManager linearLayoutManager;
+    NestedScrollView nestedScrollView;
     LinearLayoutManager desklinearLayoutManager;
     List<BookingListResponse> bookingListResponseList;
 
@@ -104,6 +109,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     ArrayList<BookingListResponse.DayGroup> recyclerModelArrayList;
     ArrayList<IncomingRequestResponse.Result> notiList;
     List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse;
+    boolean qrEnabled = false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -117,10 +123,13 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         dialog = new Dialog(getContext());
 
         System.out.println("Seesin userId"+SessionHandler.getInstance().getInt(getActivity(),AppConstants.USER_ID));
-        userProfile=root.findViewById(R.id.user_profile_pic);
-        notiIcon=root.findViewById(R.id.noti_icon);
-        profile=root.findViewById(R.id.profile);
-        userCurrentStatus=root.findViewById(R.id.user_current_status);
+        userProfile = root.findViewById(R.id.user_profile_pic);
+        notiIcon = root.findViewById(R.id.noti_icon);
+        profile = root.findViewById(R.id.profile);
+        userCurrentStatus = root.findViewById(R.id.user_current_status);
+        headBlock = root.findViewById(R.id.HeadBlock);
+        nestedScrollView = root.findViewById(R.id.nestedView);
+        qrLayout = root.findViewById(R.id.nestedView);
         userStatus=root.findViewById(R.id.user_status);
         tenantProfile=root.findViewById(R.id.tentant_image_view);
         rvHomeBooking=root.findViewById(R.id.rvHomeBooking);
@@ -168,12 +177,44 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         if (!SessionHandler.getInstance().getBoolean(getActivity(),AppConstants.PIN_SETUP_DONE)){
             checkPinPopUp();
         }
+
+        qrEnabledCall();
         loadUserImage();
         loadTenantImage();
         loadNotification();
         loadHomeList();
 
         return root;
+    }
+
+    private void qrEnabledCall() {
+        if (Utils.isNetworkAvailable(getActivity())) {
+
+//            dialog= ProgressDialog.showProgressBar(getContext());
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<Boolean> call = apiService.getQrEnabled();
+            call.enqueue(new Callback<Boolean>() {
+                @Override
+                public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                    if(response.code()==200){
+                        qrEnabled = response.body();
+                        qrEnabled = true;
+                    }else if(response.code()==401){
+                        Utils.showCustomAlertDialog(getActivity(),"Token Expired");
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                        Utils.finishAllActivity(getContext());
+                    }
+                }
+                @Override
+                public void onFailure(Call<Boolean> call, Throwable t) {
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
     }
 
     private void checkPinPopUp() {
@@ -667,7 +708,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 bundle.putString("BOOK_NAME",calendarEntriesModel.getUsageTypeName());
 
             }
-            navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment,bundle);
+            if (qrEnabled){
+                navController.navigate(R.id.action_qrFragment,bundle);
+            } else
+                navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment,bundle);
         } else if(click.equals(AppConstants.EDIT)){
             //Edit
             System.out.println("BookingEditClicked");
@@ -792,7 +836,6 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
         }else if (dskRoomParkStatus==2){
             llDeskLayout.setVisibility(View.GONE);
-
         }else {
             llDeskLayout.setVisibility(View.GONE);
             repeatBlock.setVisibility(View.GONE);
@@ -800,7 +843,6 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             commentRegistration.setHint("Registration Number");
             tvComments.setText("Regitration Number");
             commentRegistration.setText(editDeskBookingDetails.getVehicleRegNumber());
-
         }
 
         startTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()));

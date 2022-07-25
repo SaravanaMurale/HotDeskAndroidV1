@@ -23,6 +23,14 @@
         <item name="android:background">@drawable/top_round_corner_white</item>
         <item name="android:layout_marginTop">@dimen/_5sdp</item>
     </style>
+    <style name="RoundedTabLayoutStyle" parent="Widget.Design.TabLayout">
+        <item name="tabBackground">@drawable/tabs_selector</item>
+        <item name="tabIndicator">@null</item>
+        <!--        <item name="android:background">@drawable/tab_layout_bg</item>-->
+        <!--        <item name="tabSelectedTextColor">@color/colorAppTheme</item>-->
+        <item name="tabTextColor">@color/white</item>
+    </style>
+
 
 
     <style name="TextBoldButton" parent="Widget.MaterialComponents.Button.TextButton">

@@ -41,12 +41,17 @@ import retrofit2.http.Query;
 public interface ApiInterface {
     // Pin APis
     // to check wheter this user can setup pin or not
+    @POST("api/settings/PrivacyPolicyURL")
+    Call<String> privacyPolicy(@Body JsonObject jsonObject);
     @POST("api/account/TypeOfLogin")
     Call<TypeOfLoginResponse> typeOfLogin(@Body JsonObject jsonObject);
     @POST("api/account/TokenExchange")
     Call<GetTokenResponse> tokenExchange(@Body JsonObject jsonObject);
     @POST("api/settings/PinNumberSetting")
     Call<Boolean> checkPinEnabled();
+    //Qr enabled
+    @GET("api/Settings/QRCheckInEnforcementEnabled")
+    Call<Boolean> getQrEnabled();
     // sign up for Pin login
     @POST("api/account/UpdateSecurityPin")
     Call<BaseResponse> createPin(@Body CreatePinRequest createPinRequest);
@@ -130,8 +135,6 @@ public interface ApiInterface {
 
     @GET("api/teams")
     Call<List<TeamsResponse>>  getTeams();
-
-
 
 
 }

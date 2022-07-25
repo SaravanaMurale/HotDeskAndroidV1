@@ -58,17 +58,10 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView2"
         android:fillViewport="true"
         >
-        <TextView
+        <WebView
+            android:id="@+id/webView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="@dimen/_15sdp"
-            android:layout_marginVertical="@dimen/_15sdp"
-            android:theme="@style/TextRegular"
-            android:textColor="@color/figmaGrey"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer quisque in lorem ornare. Mi justo nunc morbi maecenas bibendum eros fringilla duis egestas. Facilisi tristique nunc vulputate sagittis, id eleifend. Pulvinar adipiscing adipiscing nulla mi tristique nisl mi. Pulvinar nulla feugiat imperdiet est condimentum morbi porttitor ultrices. Elementum aliquet diam gravida malesuada adipiscing sed pellentesque bibendum pulvinar. Ullamcorper orci leo, arcu vel nulla ultricies auctor lectus laoreet. Laoreet nulla facilisis enim quisque curabitur. Ultricies ut sit fermentum posuere sit accumsan in. Dolor quis amet cursus fusce nunc. Ultrices mollis mauris nibh ultrices. Etiam vel ut turpis odio aliquet ullamcorper massa ultricies nullam. Consequat, rhoncus massa nec et sociis bibendum interdum lacinia. Tellus, malesuada ut et dictum nunc tellus nunc luctus nulla.
-Sit vestibulum iaculis viverra turpis in ultrices. Sollicitudin orci, auctor ultrices morbi faucibus. Lobortis amet sed ut tristique libero etiam. Odio eget fames porta neque, felis cras consectetur enim sollicitudin. Nunc fringilla maecenas vitae aliquam etiam tristique enim.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer quisque in lorem ornare. Mi justo nunc morbi maecenas bibendum eros fringilla duis egestas. Facilisi tristique nunc vulputate sagittis, id eleifend. Pulvinar adipiscing adipiscing nulla mi tristique nisl mi. Pulvinar nulla feugiat imperdiet est condimentum morbi porttitor ultrices. Elementum aliquet diam gravida malesuada adipiscing sed pellentesque bibendum pulvinar. Ullamcorper orci leo, arcu vel nulla ultricies auctor lectus laoreet. Laoreet nulla facilisis enim quisque curabitur. Ultricies ut sit fermentum posuere sit accumsan in. Dolor quis amet cursus fusce nunc. Ultrices mollis mauris nibh ultrices. Etiam vel ut turpis odio aliquet ullamcorper massa ultricies nullam. Consequat, rhoncus massa nec et sociis bibendum interdum lacinia. Tellus, malesuada ut et dictum nunc tellus nunc luctus nulla.
-Sit vestibulum iaculis viverra turpis in ultrices. Sollicitudin orci, auctor ultrices morbi faucibus. Lobortis amet sed ut tristique libero etiam. Odio eget fames porta neque, felis cras consectetur enim sollicitudin. Nunc fringilla maecenas vitae aliquam etiam tristique enim."
-
             />
     </ScrollView>
 
