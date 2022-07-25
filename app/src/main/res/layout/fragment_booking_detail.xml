@@ -353,10 +353,10 @@
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_15sdp"
             android:text="Change your \n    schedule"
-            android:theme="@style/TextBold"
             android:textColor="@color/figmaBlue"
             android:textSize="@dimen/_13sdp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:theme="@style/TextBold" />
 
     </RelativeLayout>
 

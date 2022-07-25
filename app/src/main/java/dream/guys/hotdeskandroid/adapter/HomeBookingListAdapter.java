@@ -19,7 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -117,15 +119,23 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 */
             switch (list.get(position).getCalendarEntriesModel().getBooking().getStatus().getId()){
                 case 3:
+                    Date dNow = new Date( ); // Instantiate a Date object
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(dNow);
+                    cal.add(Calendar.MINUTE, 5);
+                    dNow = cal.getTime();
+                    SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
+
                     if (Utils.getCurrentDate()
                             .equalsIgnoreCase(Utils.getYearMonthDateFormat(list.get(position).getDate()))
                             &&
                             Utils.compareTimeIfCheckInEnable(
-                            Utils.getCurrentTime(),
-                            Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom())
+                                    f24hours.format(dNow),
+                                    Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom())
                             )){
                         holder.greenLine.setVisibility(View.GONE);
                         holder.bookingBtnCheckIn.setVisibility(View.VISIBLE);
+                        holder.bookingBtnCheckIn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.scan_2px, 0);
                     }
                     else
                         holder.bookingBtnCheckIn.setVisibility(View.GONE);
