@@ -3,6 +3,7 @@ package dream.guys.hotdeskandroid.ui.locate;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentTime;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -10,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -30,13 +30,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.adapter.BookingListToEditAdapter;
+import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.FloorAdapter;
 import dream.guys.hotdeskandroid.adapter.LocateMyTeamAdapter;
 import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
@@ -45,10 +45,15 @@ import dream.guys.hotdeskandroid.example.DataModel;
 import dream.guys.hotdeskandroid.example.ItemAdapter;
 import dream.guys.hotdeskandroid.example.MyCanvasDraw;
 import dream.guys.hotdeskandroid.example.ValuesPOJO;
+import dream.guys.hotdeskandroid.model.request.DeskStatusModel;
 import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
+import dream.guys.hotdeskandroid.model.request.LocateDeskBookingRequest;
 import dream.guys.hotdeskandroid.model.request.Point;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
+import dream.guys.hotdeskandroid.model.response.CarParkAvalibilityResponse;
+import dream.guys.hotdeskandroid.model.response.CarParkingslotsResponse;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
@@ -62,7 +67,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSelectListener {
+public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSelectListener, BookingListToEditAdapter.OnEditClickable, DeskListRecyclerAdapter.OnSelectSelected {
 
 
     @BindView(R.id.scrollView)
@@ -138,9 +143,17 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     int teamDeskIdForBooking = 0;
     int selectedCarParkingSlotId = 0;
 
-    //AvaliablityChecking
+    //DesAvaliablityChecking
     List<DeskAvaliabilityResponse.TeamDeskAvaliabilityList> teamDeskAvaliabilityList;
     List<TeamsResponse> teamsResponseList;
+
+    //Edit Booking
+    int selectedDeskId=0;
+    TextView deskRoomName;
+
+    //CarParkingAvalibilityChecking
+    List<CarParkingslotsResponse> carParkingslots;
+    List<CarParkAvalibilityResponse> carParkAvalibilityResponseList;
 
 
     @Override
@@ -308,18 +321,23 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             //getFloorDetails(subParentId,findCoordinateStatus);
 
 
+            //Used For Desk Avaliability Checking
             getAvaliableDeskDetails(null, 0);
-
             getTeams();
 
+            //Used For Car Parking Avaliability Checking
+            getCarParkingSlots(parentId);
+            getCarParkingAvalibilitySlots();
+
+
+            //Load Desk,car and parking details with view
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
 
-
                     getLocateDeskRoomCarDesign(parentId, i);
                 }
-            }, 2000);
+            }, 4000);
 
 
         } else {
@@ -327,8 +345,64 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }
     }
 
+    private void getCarParkingAvalibilitySlots() {
+
+
+        String toDate=Utils.getCurrentDate()+"T00:00:00Z";
+        System.out.println("ToDateCheckoing"+toDate);
+
+        //Add min and hour
+        String startTime=Utils.addMinuteWithCurrentTime(1,2);
+        String fromTime=startTime+".000Z";
+        String endTime=Utils.addMinuteWithCurrentTime(2,3);
+        String toTime=endTime+".000Z";
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<CarParkAvalibilityResponse>> call = apiService.getCarParkingSlotAvalibility(toDate,fromTime,toTime);
+        call.enqueue(new Callback<List<CarParkAvalibilityResponse>>() {
+            @Override
+            public void onResponse(Call<List<CarParkAvalibilityResponse>> call, Response<List<CarParkAvalibilityResponse>> response) {
+
+                carParkAvalibilityResponseList=response.body();
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<CarParkAvalibilityResponse>> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    private void getCarParkingSlots(int parentId) {
+
+        System.out.println("CarPArkingSlotCAlled");
+        //dialog = ProgressDialog.showProgressBar(getContext());
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<CarParkingslotsResponse>> call = apiService.getCarParkingSlots(parentId);
+        call.enqueue(new Callback<List<CarParkingslotsResponse>>() {
+            @Override
+            public void onResponse(Call<List<CarParkingslotsResponse>> call, Response<List<CarParkingslotsResponse>> response) {
+                ProgressDialog.dismisProgressBar(getContext(), dialog);
+                carParkingslots=response.body();
+
+                ProgressDialog.dismisProgressBar(getContext(), dialog);
+
+            }
+
+            @Override
+            public void onFailure(Call<List<CarParkingslotsResponse>> call, Throwable t) {
+                ProgressDialog.dismisProgressBar(getContext(), dialog);
+
+            }
+        });
+    }
+
     private void getTeams() {
 
+        //dialog = ProgressDialog.showProgressBar(getContext());
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<List<TeamsResponse>> call = apiService.getTeams();
         call.enqueue(new Callback<List<TeamsResponse>>() {
@@ -379,15 +453,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 List<String> valueList = new ArrayList<>();
                 if (locateCountryResposeList.get(floorPosition).getItems() != null) {
+
+                    int itemTotalSize=locateCountryResposeList.get(floorPosition).getItems().size();
+
                     for (String key : locateCountryResposeList.get(floorPosition).getItems().keySet()) {
-                        System.out.println("Value" + locateCountryResposeList.get(floorPosition).getItems().get(key));
 
                         valueList = locateCountryResposeList.get(floorPosition).getItems().get(key);
 
-                        addView(valueList, key, floorPosition);
-
-                        //strings.add(locateCountryResposeList.get(0).getItems().get(key));
-
+                        addView(valueList, key, floorPosition,itemTotalSize);
 
                     }
 
@@ -478,97 +551,137 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
 
-    private void addView(List<String> valueList, String key, int floorPosition) {
 
+    @SuppressLint("ResourceType")
+    private void addView(List<String> valueList, String key, int floorPosition,int itemTotalSize) {
+
+        System.out.println("ItemTotalSize"+itemTotalSize);
         System.out.println("ReceivedKeyInAddView" + key);
-        String startDate="2022-07-21 21:35:00";
-        String endDate="2022-07-20 23:59:00";
+        String startDate="2022-07-23 21:00:00";
+        String endDate="2022-07-23 22:30:00";
 
-        //Split key to get id and code
+        //Desk Avaliablity Checking Split key to get id and code
         String[] result = key.split("_");
         int id = Integer.parseInt(result[0]);
         String code = result[1];
 
+        deskView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
+        ImageView ivDesk = deskView.findViewById(R.id.ivDesk);
+        RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        DeskStatusModel deskStatusModel=null;
+        List<DeskStatusModel> deskStatusModelList=new ArrayList<>();
+
+
         //Desk Avaliablity Checking
         if (code.equals(AppConstants.DESK)) {
 
-            for (int i = 0; i < teamDeskAvaliabilityList.size(); i++) {
+            if(teamDeskAvaliabilityList!=null){
 
-                boolean wasAssigned = false;
+                for (int i = 0; i < teamDeskAvaliabilityList.size(); i++) {
 
-                if (id == teamDeskAvaliabilityList.get(i).getDeskId()) {
+                    boolean wasAssigned = false;
 
-                    DeskAvaliabilityResponse.TeamDeskAvaliabilityList teamDeskAvaliability = teamDeskAvaliabilityList.get(i);
+                    if (id == teamDeskAvaliabilityList.get(i).getDeskId()) {
 
-                    //GET TEAM ID
-                    boolean getTeamId = false;
-                    TeamsResponse teamsResponse = new TeamsResponse();
-                    if (!getTeamId) {
-                        for (int j = 0; j < teamsResponseList.size(); j++) {
-                            if (teamDeskAvaliability.getTeamId() == teamsResponseList.get(j).getId()) {
+                        DeskAvaliabilityResponse.TeamDeskAvaliabilityList teamDeskAvaliability = teamDeskAvaliabilityList.get(i);
 
-                                teamsResponse = teamsResponseList.get(j);
-                                getTeamId = true;
-                            }
-                        }
-                    }//
+                        //GET TEAM ID
+                        boolean getTeamId = false;
+                        TeamsResponse teamsResponse = new TeamsResponse();
+                        if (!getTeamId) {
+                            if(teamsResponseList.size()>0) {
+                                for (int j = 0; j < teamsResponseList.size(); j++) {
+                                    if (teamDeskAvaliability.getTeamId() == teamsResponseList.get(j).getId()) {
 
-                    System.out.println("TotalAvaliableDeskId" + teamDeskAvaliability.getDeskId());
-                    System.out.println("CurrentDateAndTimeIn24HoursFormat" + Utils.getCurrentTimeIn24HourFormat());
-
-                    //GetCurrentDate and Offset
-                    String offSetAddedDate = Utils.addingHoursToCurrentDate(teamDeskAvaliability.getCurrentTimeZoneOffset());
-
-                    System.out.println("NewlyAddedDateWithTime" + offSetAddedDate);
-                    System.out.println("NewlyAddedDateAlone" + Utils.splitGetDate(offSetAddedDate));
-
-
-                    for (int j = 0; j < teamDeskAvaliability.getAvailableTimeSlotsList().size(); j++) {
-
-                        if (!wasAssigned) {
-
-                            DeskAvaliabilityResponse.TeamDeskAvaliabilityList.AvailableTimeSlots availableTimeSlots = teamDeskAvaliability.getAvailableTimeSlotsList().get(j);
-
-                            System.out.println("SlotFrom" + availableTimeSlots.getFrom());
-                            System.out.println("SlotTo" + availableTimeSlots.getTo());
-
-
-                            int dateComparsionResult = Utils.compareTwoDates(startDate, offSetAddedDate);
-                            int second = Utils.compareTwoDates(startDate, Utils.removeTandZInDate(availableTimeSlots.getFrom()));
-                            int third = Utils.compareTwoDates(endDate, Utils.removeTandZInDate(availableTimeSlots.getTo()));
-
-                            if (dateComparsionResult == 1) {
-                                System.out.println("Unavaliable");
-                            } else if (teamDeskAvaliability.isPartiallyAvailable() == true && second == 2 && third == 1) {
-
-                                if (teamDeskAvaliability.isBookedByUser() == true) {
-                                    System.out.println("bookedForMe");
-                                } else if (teamDeskAvaliability.isBookedByElse() == true) {
-                                    System.out.println("BookedOther");
-                                } else if (teamsResponse.getDeskCount() != 0 && teamsResponse.getAutomaticApprovalStatus() == 2) {
-                                    System.out.println("Avaliable");
-
-                                } else if (teamDeskAvaliability.getTeamId() == SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID)) {
-                                    System.out.println("Avaliable");
-                                } else {
-
-                                    if (teamsResponse.getDeskCount() != 0 && teamsResponse.getAutomaticApprovalStatus() == 3) {
-                                        System.out.println("Unavaliable");
-                                    } else {
-                                        System.out.println("Request");
+                                        teamsResponse = teamsResponseList.get(j);
+                                        getTeamId = true;
                                     }
                                 }
-                                wasAssigned = true;
-
-                            } else {
-                                System.out.println("Unavaliable");
-
-                                if (teamDeskAvaliability.isBookedByUser() == true) {
-                                    System.out.println("bookedForMe");
-                                } else if (teamDeskAvaliability.isBookedByElse() == true) {
-                                    System.out.println("BookedOther");
-                                }
                             }
+                        }//
+
+                        System.out.println("TotalAvaliableDeskId" + teamDeskAvaliability.getDeskId());
+                        System.out.println("CurrentDateAndTimeIn24HoursFormat" + Utils.getCurrentTimeIn24HourFormat());
+
+                        //GetCurrentDate and Offset
+                        String offSetAddedDate = Utils.addingHoursToCurrentDate(teamDeskAvaliability.getCurrentTimeZoneOffset());
+
+                        System.out.println("NewlyAddedDateWithTime" + offSetAddedDate);
+                        System.out.println("NewlyAddedDateAlone" + Utils.splitGetDate(offSetAddedDate));
+
+
+                        for (int j = 0; j < teamDeskAvaliability.getAvailableTimeSlotsList().size(); j++) {
+
+                            if (!wasAssigned) {
+
+                                DeskAvaliabilityResponse.TeamDeskAvaliabilityList.AvailableTimeSlots availableTimeSlots = teamDeskAvaliability.getAvailableTimeSlotsList().get(j);
+
+                                System.out.println("SlotFrom" + availableTimeSlots.getFrom());
+                                System.out.println("SlotTo" + availableTimeSlots.getTo());
+
+
+                                int dateComparsionResult = Utils.compareTwoDates(startDate, offSetAddedDate);
+                                int second = Utils.compareTwoDates(startDate, Utils.removeTandZInDate(availableTimeSlots.getFrom()));
+                                int third = Utils.compareTwoDates(endDate, Utils.removeTandZInDate(availableTimeSlots.getTo()));
+
+                                if (dateComparsionResult == 1) {
+                                    System.out.println("BookingUnavaliable");
+                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+
+                                    deskStatusModel=new DeskStatusModel(key,id,code,0);
+
+                                } else if (teamDeskAvaliability.isPartiallyAvailable() == true && second == 2 && third == 1) {
+
+                                    if (teamDeskAvaliability.isBookedByUser() == true) {
+                                        System.out.println("BookingbookedForMe");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
+                                        deskStatusModel=new DeskStatusModel(key,id,code,2);
+
+                                    } else if (teamDeskAvaliability.isBookedByElse() == true) {
+                                        System.out.println("BookingBookedOther");
+                                        deskStatusModel=new DeskStatusModel(key,id,code,3);
+                                    } else if (teamsResponse.getDeskCount() != 0 && teamsResponse.getAutomaticApprovalStatus() == 2) {
+                                        System.out.println("BookingAvaliable");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_avaliable));
+                                        deskStatusModel=new DeskStatusModel(key,id,code,1);
+
+                                    } else if (teamDeskAvaliability.getTeamId() == SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID)) {
+                                        System.out.println("BookingAvaliable");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_avaliable));
+                                        deskStatusModel=new DeskStatusModel(key,id,code,1);
+                                    } else {
+
+                                        if (teamsResponse.getDeskCount() != 0 && teamsResponse.getAutomaticApprovalStatus() == 3) {
+                                            System.out.println("BookingUnavaliable");
+                                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                            deskStatusModel=new DeskStatusModel(key,id,code,0);
+                                        } else {
+                                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_request));
+                                            System.out.println("BookingRequest");
+                                            deskStatusModel=new DeskStatusModel(key,id,code,4);
+                                        }
+                                    }
+                                    wasAssigned = true;
+
+                                } else {
+                                    System.out.println("BookingUnavaliable");
+                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                    deskStatusModel=new DeskStatusModel(key,id,code,0);
+                                    if (teamDeskAvaliability.isBookedByUser() == true) {
+                                        System.out.println("BookingbookedForMe");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
+                                        deskStatusModel=new DeskStatusModel(key,id,code,2);
+                                    } else if (teamDeskAvaliability.isBookedByElse() == true) {
+                                        System.out.println("BookingBookedOther");
+                                        deskStatusModel=new DeskStatusModel(key,id,code,3);
+                                    }
+                                }
+
+
+                            }
+
+                            deskStatusModelList.add(deskStatusModel);
 
 
                         }
@@ -577,28 +690,90 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     }
 
 
-                /*for (int j = 0; j < teamsResponseList.size(); j++) {
+                }
+            }else {
+                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                deskStatusModel=new DeskStatusModel(key,id,code,0);
+                deskStatusModelList.add(deskStatusModel);
+            }
 
-                        if (teamDeskAvaliabilityList.get(0).getTeamId() == teamsResponseList.get(j).getId()) {
 
-                            System.out.println("automaticApprovalStatus" + teamsResponseList.get(j).getAutomaticApprovalStatus());
-                            System.out.println("TeamsNames" + teamsResponseList.get(j).getName());
+        }else if(code.equals(AppConstants.CAR_PARKING)){
 
-                            //System.out.println("AvaliableTimeSlotFrom" + teamDeskAvaliabilityList.get(i).getAvailableTimeSlotsList().get(i).getFrom());
-                            //System.out.println("AvaliableTimeSlotTo" + teamDeskAvaliabilityList.get(i).getAvailableTimeSlotsList().get(i).getTo());
+            if (carParkingslots.size() > 0) {
 
+                    for (int i = 0; i < carParkingslots.size(); i++) {
+
+                        if (carParkAvalibilityResponseList.size() > 0) {
+
+                            for (int j = 0; j < carParkAvalibilityResponseList.size(); j++) {
+                                if (carParkingslots.get(i).getCarParkingSlotId() == carParkAvalibilityResponseList.get(j).getParkingSlotAvalibilityId()) {
+                                    CarParkAvalibilityResponse carParkAvalibilityResponse = carParkAvalibilityResponseList.get(j);
+
+                                    if (carParkAvalibilityResponse.isBookedByElse() == false && carParkAvalibilityResponse.isBookedByUser() == false && carParkAvalibilityResponse.isAvailable() == true && (carParkingslots.get(i).getParkingSlotAvailability() == 1 && (carParkingslots.get(i).getAssignessList().size() == 0))) {
+                                        deskStatusModel=new DeskStatusModel(key,id,code,1);
+                                        System.out.println("CarParkAvaliable");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_avaliable));
+                                        break;
+                                    } else if (carParkAvalibilityResponse.isBookedByElse() == false && carParkAvalibilityResponse.isBookedByUser() == false && carParkAvalibilityResponse.isAvailable() == true && carParkingslots.get(i).getParkingSlotAvailability() == 2) {
+                                        deskStatusModel=new DeskStatusModel(key,id,code,4);
+
+                                        System.out.println("CarParkingRequest");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_request));
+                                        break;
+                                    } else if (carParkAvalibilityResponse.isBookedByElse() == false && carParkAvalibilityResponse.isBookedByUser() == false && (carParkAvalibilityResponse.isAvailable() == false || carParkingslots.get(i).getParkingSlotAvailability() == 1)) {
+                                        deskStatusModel=new DeskStatusModel(key,id,code,0);
+                                        System.out.println("CarParkUnAvaliable");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                        break;
+                                    } else if (carParkAvalibilityResponse.isBookedByElse() == true) {
+                                        deskStatusModel=new DeskStatusModel(key,id,code,3);
+                                        System.out.println("CarParkingBookedOther");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
+                                        break;
+                                    } else if (carParkAvalibilityResponse.isBookedByUser() == true) {
+                                        deskStatusModel=new DeskStatusModel(key,id,code,2);
+                                        System.out.println("BookedForMe");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
+                                        break;
+                                    } else {
+                                        deskStatusModel=new DeskStatusModel(key,id,code,0);
+                                        System.out.println("CarParkUnAvaliable");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                        break;
+                                    }
+
+                                }
+
+                              //  deskStatusModelList.add(deskStatusModel);
+
+                            }
+
+                        } else {
+                            System.out.println("CarParkUnAvaliable");
+                            deskStatusModel=new DeskStatusModel(key,id,code,0);
+                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
                         }
-                    }*/
+
+
+                        deskStatusModelList.add(deskStatusModel);
+
+                    }
+
+                } else {
+                    System.out.println("CarParkUnAvaliable");
+                    deskStatusModel=new DeskStatusModel(key,id,code,0);
+                    deskStatusModelList.add(deskStatusModel);
+                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
                 }
 
+            //deskStatusModelList.add(deskStatusModel);
 
-            }
+
+
 
         }
 
-        deskView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
-        ImageView ivDesk = deskView.findViewById(R.id.ivDesk);
-        RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         //Head Facing
         for (int i = 0; i < valueList.size(); i++) {
@@ -641,12 +816,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
              }*/
 
+        //Set Image Based on Position
         int x = Integer.parseInt(valueList.get(0));
         int y = Integer.parseInt(valueList.get(1));
 
         relativeLayout.leftMargin = x;
         relativeLayout.topMargin = y;
-
 
         //relativeLayout.leftMargin = Integer.parseInt(valueList.get(0)+10);
         //relativeLayout.topMargin = Integer.parseInt(valueList.get(1)+10);
@@ -661,6 +836,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         ivDesk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
 
                 List<String> onClickValue = locateCountryResposeList.get(floorPosition).getItems().get(key);
                       /*for (int j = 0; j <onClickValue.size() ; j++) {
@@ -712,8 +889,59 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 }
 
+               /* if(deskStatusModelList.size()>0){
+                    for (int i = 0; i <deskStatusModelList.size() ; i++) {
+
+                        System.out.println("DESKNAMETOREQUESTTISERVER"+deskStatusModelList.get(i).getKey()+" "+deskStatusModelList.get(i).getStatus());
+
+                    }
+                }*/
+
+                int requestTeamId=0,requestTeamDeskId=0;
                 if (code.equals("3") || code.equals("5")) {
-                    callDeskBookingnBottomSheet(selctedCode, key, id, code);
+                    if(deskStatusModelList!=null){
+                        for (int i = 0; i <deskStatusModelList.size() ; i++) {
+                            if(key.equals(deskStatusModelList.get(i).getKey())){
+
+                                if(deskStatusModelList.get(i).getStatus()==1){
+                                    //Avaliable Booking
+                                    //Booking Bottom Sheet
+                                    callDeskBookingnBottomSheet(selctedCode, key, id, code,requestTeamId,requestTeamDeskId);
+                                }else if(deskStatusModelList.get(i).getStatus()==4){
+                                    //Booking Request
+                                    DeskStatusModel deskStatusModel1=deskStatusModelList.get(i);
+                                    for (int j = 0; j <teamDeskAvaliabilityList.size() ; j++) {
+
+                                        if(deskStatusModel1.getId()==teamDeskAvaliabilityList.get(j).getDeskId()){
+
+                                            requestTeamId=teamDeskAvaliabilityList.get(j).getTeamId();
+                                            requestTeamDeskId=teamDeskAvaliabilityList.get(j).getTeamDeskId();
+                                            System.out.println("RequstedTeamId"+teamDeskAvaliabilityList.get(j).getTeamId());
+                                            System.out.println("RequestedTeamDeskId"+teamDeskAvaliabilityList.get(j).getTeamDeskId());
+
+                                        }
+
+                                    }
+                                    //Booking Request Bottom Sheet
+                                    callDeskBookingnBottomSheet(selctedCode, key, id, code,requestTeamId,requestTeamDeskId);
+
+
+                                }else if(deskStatusModelList.get(i).getStatus()==2){
+                                    //Booking Edit
+
+                                    getBookingListToEdit(code);
+
+
+
+                                }
+
+
+                            }
+                        }
+
+                    }
+
+
                 } else if (code.equals("4")) {
 
                 }
@@ -723,6 +951,75 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         binding.firstLayout.addView(deskView);
 
+
+    }
+
+    private void callBottomSheetToEdit(BookingForEditResponse bookingForEditResponse, String code) {
+
+        RecyclerView rvEditList;
+        TextView editClose,editDate;
+        LinearLayoutManager linearLayoutManager;
+
+        BottomSheetDialog locateEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        locateEditBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_edit_booking_bottomsheet,
+                new RelativeLayout(getContext())));
+
+        rvEditList = locateEditBottomSheet.findViewById(R.id.rvEditList);
+        editClose=locateEditBottomSheet.findViewById(R.id.editClose);
+        editDate=locateEditBottomSheet.findViewById(R.id.editDate);
+
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvEditList.setLayoutManager(linearLayoutManager);
+        rvEditList.setHasFixedSize(true);
+
+        BookingListToEditAdapter bookingListToEditAdapter=new BookingListToEditAdapter(getContext(),bookingForEditResponse.getBookings(),this,code,bookingForEditResponse.getTeamDeskAvailabilities());
+        rvEditList.setAdapter(bookingListToEditAdapter);
+
+        //Show Here Current Date
+        editDate.setText(getCurrentDate());
+
+
+        editClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locateEditBottomSheet.dismiss();
+            }
+        });
+
+        locateEditBottomSheet.show();
+
+    }
+
+    private void getBookingListToEdit(String code) {
+
+        dialog = ProgressDialog.showProgressBar(getContext());
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<BookingForEditResponse> call=apiService.getBookingsForEdit(SessionHandler.getInstance().getInt(getContext(),AppConstants.TEAM_ID),
+                SessionHandler.getInstance().getInt(getContext(),AppConstants.TEAMMEMBERSHIP_ID),
+                Utils.getCurrentDate(),
+                Utils.getCurrentDate());
+
+        call.enqueue(new Callback<BookingForEditResponse>() {
+            @Override
+            public void onResponse(Call<BookingForEditResponse> call, Response<BookingForEditResponse> response) {
+
+                BookingForEditResponse bookingForEditResponse=response.body();
+
+                callBottomSheetToEdit(bookingForEditResponse,code);
+
+                ProgressDialog.dismisProgressBar(getContext(),dialog);
+
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<BookingForEditResponse> call, Throwable t) {
+                ProgressDialog.dismisProgressBar(getContext(),dialog);
+            }
+        });
 
     }
 
@@ -736,16 +1033,22 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //"2000-01-01T15:50:38.000Z"
         //"2000-01-01T18:00:00.000Z"
 
-        System.out.println("DateFormatInLocate" + Utils.getCurrentDateInDateFormet());
 
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        LocalDateTime now = LocalDateTime.now();
+        String toDate=Utils.getCurrentDate()+"T00:00:00Z";
+        System.out.println("ToDateCheckoing"+toDate);
 
-        System.out.println("NowValue" + now);
-        System.out.println("DTFValue" + dtf);
+        //Add min and hour
+        String startTime=Utils.addMinuteWithCurrentTime(1,2);
+        String fromTime=startTime+".000Z";
+        String endTime=Utils.addMinuteWithCurrentTime(2,9);
+        String toTime=endTime+".000Z";
+
+        System.out.println("DateAndStatTimeAndEndTime"+toDate+" "+fromTime+" "+toTime);
 
         int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
-        Call<DeskAvaliabilityResponse> call = apiService.getAvaliableDeskDetails(parentId, now, now, now);
+        //Call<DeskAvaliabilityResponse> call = apiService.getAvaliableDeskDetails(parentId, now, now, now);
+        Call<DeskAvaliabilityResponse> call = apiService.getAvaliableDeskDetails(parentId, toDate, fromTime, toTime);
+
         call.enqueue(new Callback<DeskAvaliabilityResponse>() {
             @Override
             public void onResponse(Call<DeskAvaliabilityResponse> call, Response<DeskAvaliabilityResponse> response) {
@@ -806,46 +1109,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
-
-    //MyTeamBottomSheet
-    private void callMyTeamBottomSheet() {
-
-        TextView myTeamClose;
-
-        BottomSheetDialog myTeamBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        myTeamBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_myteam_bottomsheet,
-                new RelativeLayout(getContext())));
-
-        rvMyTeam = myTeamBottomSheet.findViewById(R.id.rvLocateMyTeam);
-        myTeamClose = myTeamBottomSheet.findViewById(R.id.myTeamClose);
-
-
-        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvMyTeam.setLayoutManager(linearLayoutManager);
-        rvMyTeam.setHasFixedSize(true);
-
-
-        myTeamClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myTeamBottomSheet.dismiss();
-            }
-        });
-
-        List<String> stringName = new ArrayList<>();
-        stringName.add("Bessie Cooper");
-        stringName.add("Francene Vandyne");
-        stringName.add("Cody Fisher");
-
-
-        locateMyTeamAdapter = new LocateMyTeamAdapter(getContext(), stringName);
-        rvMyTeam.setAdapter(locateMyTeamAdapter);
-
-
-        myTeamBottomSheet.show();
-
-
-    }
 
     private void getLocateCountryList() {
 
@@ -1274,86 +1537,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
 
-    private void callLocateFilterBottomSheet() {
 
-        RecyclerView locateFilterMainRV;
-        ValuesPOJO valuesPOJO;
-        ArrayList<DataModel> mList;
-        ItemAdapter adapter;
-
-        TextView locateFilterCancel, locateFilterApply;
-
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        bottomSheetDialog.setContentView((this).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_locate_filter,
-                new RelativeLayout(getContext())));
-
-        locateFilterCancel = bottomSheetDialog.findViewById(R.id.locateFilterCancel);
-        locateFilterApply = bottomSheetDialog.findViewById(R.id.locateFilterApply);
-
-
-        locateFilterMainRV = bottomSheetDialog.findViewById(R.id.locateFilterMainRV);
-        locateFilterMainRV.setHasFixedSize(true);
-        locateFilterMainRV.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
-        locateFilterCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomSheetDialog.dismiss();
-            }
-        });
-
-        locateFilterApply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomSheetDialog.dismiss();
-            }
-        });
-
-        mList = new ArrayList<>();
-
-        //list1
-        ArrayList<ValuesPOJO> nestedList1 = new ArrayList<>();
-
-        valuesPOJO = new ValuesPOJO("Monitor", false);
-        nestedList1.add(valuesPOJO);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Adjustable height", false);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Laptop stand", false);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("USB_C Dock", false);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Charge point", false);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Standing desk", false);
-        nestedList1.add(valuesPOJO);
-
-        ArrayList<ValuesPOJO> nestedList2 = new ArrayList<>();
-
-        valuesPOJO = new ValuesPOJO("Single", false);
-        nestedList2.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Double", false);
-        nestedList2.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Ac", false);
-        nestedList2.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Non-AC", false);
-        nestedList2.add(valuesPOJO);
-
-
-        mList.add(new DataModel(nestedList1, "Workspaces"));
-        mList.add(new DataModel(nestedList2, "Rooms"));
-
-        adapter = new ItemAdapter(mList);
-        locateFilterMainRV.setAdapter(adapter);
-
-        bottomSheetDialog.show();
-
-    }
 
 
     //Book BottomSheet
-    private void callDeskBookingnBottomSheet(String selctedCode, String key, int id, String code) {
+    private void callDeskBookingnBottomSheet(String selctedCode, String key, int id, String code, int requestTeamId, int requestTeamDeskId) {
 
         System.out.println("BookingRequestDetail" + selctedCode + " " + key + " " + id + " " + code);
 
@@ -1430,8 +1618,16 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 //dialog = ProgressDialog.showProgressBar(getContext());
                 if (code.equals("3")) {
-                    //Desk Booking
-                    deskBookingRequest();
+
+                    if(requestTeamId>0 && requestTeamDeskId>0){
+                        //Request Desk Booking
+                        requestDeskBooking(requestTeamId,requestTeamDeskId);
+
+                    }else {
+                        //Desk Booking
+                        deskBooking();
+                    }
+
                 } else if (code.equals("5")) {
                     //Car Booking
                     carParkingRequest();
@@ -1450,6 +1646,69 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         locateCheckInBottomSheet.show();
     }
 
+    private void requestDeskBooking(int requestTeamId, int requestTeamDeskId) {
+
+        System.out.println("APIITNGRATIONREQUESTDESKBOOKING");
+
+        LocateDeskBookingRequest locateDeskBookingRequest = new LocateDeskBookingRequest();
+        locateDeskBookingRequest.setTeamId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID));
+        locateDeskBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID));
+
+        LocateDeskBookingRequest.ChangeSets changeSets = locateDeskBookingRequest.new ChangeSets();
+        changeSets.setChangeSetId(0);
+
+        changeSets.setChangeSetDate(locateCheckInDate.getText().toString() + "T" + "00:00:00.000" + "Z");
+
+        LocateDeskBookingRequest.ChangeSets.Changes changes = changeSets.new Changes();
+        changes.setUsageTypeId(7);
+
+        changes.setFrom(getCurrentDate() + "" + "T" + locateCheckInTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+        changes.setTo(getCurrentDate() + "" + "T" + locateCheckoutTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+        changes.setTimeZoneId("India Standard Time");
+        changes.setTeamDeskId(null);
+        changes.setRequestedTeamId(requestTeamId);
+        changes.setRequestedTeamDeskId(requestTeamDeskId);
+        changes.setTypeOfCheckIn(1);
+
+        changeSets.setChanges(changes);
+
+        List<LocateDeskBookingRequest.ChangeSets> changeSetsList = new ArrayList<>();
+        changeSetsList.add(changeSets);
+
+        locateDeskBookingRequest.setChangeSets(changeSetsList);
+
+        List<LocateDeskBookingRequest.DeleteIds> deleteIdsList = new ArrayList<>();
+        //deleteIdsList.add(deleteIds);
+
+        locateDeskBookingRequest.setDeletedIds(deleteIdsList);
+
+        System.out.println("BookingRequestObject" + locateDeskBookingRequest);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<BaseResponse> call = apiService.doRequestDeskBooking(locateDeskBookingRequest);
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                BaseResponse baseResponse=response.body();
+
+                if(baseResponse!=null){
+                    Toast.makeText(getContext(),baseResponse.getResultCode(),Toast.LENGTH_LONG).show();
+                }
+
+
+//                System.out.println("DeskRequestBookingDesk"+baseResponse.getResultCode());
+
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+            }
+        });
+
+    }
+
     private void getParkingSlotId(String key) {
 
         int floorPosition = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION);
@@ -1463,12 +1722,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         }
 
-
-    }
-
-    private void callBookingTimePickerBottomSheet() {
-
-        //Utils.bottomSheetTimePicker(getContext(),getActivity(),locateCheckInTime,"","");
 
     }
 
@@ -1534,7 +1787,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         popDialog.show();
     }
 
-    private void deskBookingRequest() {
+    private void deskBooking() {
 
         dialog = ProgressDialog.showProgressBar(getContext());
 
@@ -1585,7 +1838,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
-                ProgressDialog.dismisProgressBar(getContext(), dialog);
 
                 BaseResponse baseResponse = response.body();
                 if (baseResponse != null) {
@@ -1596,6 +1848,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     Toast.makeText(getContext(), "Not Avaliable", Toast.LENGTH_LONG).show();
                 }
 
+                ProgressDialog.dismisProgressBar(getContext(), dialog);
                 System.out.println("BookingSuccessInLocate");
 
             }
@@ -1672,74 +1925,306 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onEditClick(BookingForEditResponse.Bookings bookings, String code, List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities) {
 
-        System.out.println("OndestroyCalledInLocateFragment");
-    }
+        TextView startTime,endTime,date;
 
-   /* @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_booking,
+                new RelativeLayout(getContext()))));
 
-        super.dispatchTouchEvent(event);
-        mScaleGestureDetector.onTouchEvent(event);
-        gestureDetector.onTouchEvent(event);
-        return gestureDetector.onTouchEvent(event);
-    }
-*/
+        startTime = bottomSheetDialog.findViewById(R.id.start_time);
+        endTime = bottomSheetDialog.findViewById(R.id.end_time);
+        date=bottomSheetDialog.findViewById(R.id.date);
+        deskRoomName=bottomSheetDialog.findViewById(R.id.tv_desk_room_name);
+        TextView continueEditBook=bottomSheetDialog.findViewById(R.id.editBookingContinue);
+        LinearLayout llDeskLayout=bottomSheetDialog.findViewById(R.id.ll_desk_layout);
+        RelativeLayout repeatBlock=bottomSheetDialog.findViewById(R.id.rl_repeat_block);
+        RelativeLayout teamsBlock=bottomSheetDialog.findViewById(R.id.rl_teams_layout);
+        TextView tvComments=bottomSheetDialog.findViewById(R.id.tv_comments);
+        EditText commentRegistration=bottomSheetDialog.findViewById(R.id.ed_registration);
 
+        TextView select=bottomSheetDialog.findViewById(R.id.select_desk_room);
 
+        //Need To Change Date Here
+        date.setText(bookings.getDate());
 
-
-
-   /* private class TouchHandler implements View.OnTouchListener
-    {
-        @Override
-        public boolean onTouch(View view, MotionEvent event)
-        {
-            if (event.getAction() == MotionEvent.ACTION_DOWN)
-            {
-                params.leftMargin = Math.round(event.getX() * 160f / getContext().getResources().getDisplayMetrics().densityDpi);
-                params.topMargin = Math.round(event.getY() * 160f / getContext().getResources().getDisplayMetrics().densityDpi);
-                //image.setLayoutParams(params);
-                //image.setVisibility(View.VISIBLE);
-                firstLayout.setPivotX(event.getX());
-                firstLayout.setPivotY(event.getY());
-                firstLayout.setScaleX(2f);
-                firstLayout.setScaleY(2f);
-            }
-            return true;
-        }
-    }*/
+        if(code.equals("3")){
 
 
-    /*@Override
-    public boolean onTouch(View v, MotionEvent event) {
+            repeatBlock.setVisibility(View.GONE);
+            teamsBlock.setVisibility(View.GONE);
+            tvComments.setVisibility(View.GONE);
+            commentRegistration.setVisibility(View.GONE);
 
-        if(event.getPointerCount()==2){
-            int action=event.getAction();
-            int mainaction=action&MotionEvent.ACTION_MASK;
+            startTime.setText( Utils.splitTime(bookings.getFrom()));
+            endTime.setText(Utils.splitTime(bookings.getMyto()));
+            // date.setText(""+Utils.dayDateMonthFormat(bookings.getDate()));
+            deskRoomName.setText(bookings.getDeskCode());
+        }else {
 
-            if(mainaction==MotionEvent.ACTION_POINTER_DOWN){
-                baseDist=getDistace(event);
-                baseRatio=ratio;
-            }else {
-
-                float scale=(getDistace(event)-baseDist)/move;
-                float factor=(float) Math.pow(2,scale);
-                ratio=Math.min(1024.0f,Math.max(0.1f,baseRatio*factor));
-
-            }
         }
 
-        return true;
-    }*/
 
-    private int getDistace(MotionEvent event) {
-        int dx = (int) (event.getX(0) - event.getX(1));
-        int dy = (int) (event.getY(0) - event.getY(1));
-        return (int) (Math.sqrt(dx * dx + dy * dy));
+        startTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), startTime, "", "");
+                    //Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time","");
+            }
+        });
+
+        endTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), endTime, "", "");
+                //Utils.bottomSheetTimePicker(getContext(),getActivity(),endTime,"End Time","");
+
+            }
+        });
+
+        select.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callDeskBottomSheetDialogToSelectDeskCode(teamDeskAvailabilities);
+            }
+        });
+
+        continueEditBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //Edit DeskBooking
+                doEditDeskBooking(bookings,startTime.getText().toString(),endTime.getText().toString());
+
+
+
+            }
+        });
+
+        bottomSheetDialog.show();
+
+
+    }
+
+    private void doEditDeskBooking(BookingForEditResponse.Bookings bookings, String startTime, String endTime) {
+
+        dialog=ProgressDialog.showProgressBar(getContext());
+
+        LocateBookingRequest locateBookingRequest = new LocateBookingRequest();
+        locateBookingRequest.setTeamId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID));
+        locateBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID));
+
+        LocateBookingRequest.ChangeSets changeSets = locateBookingRequest.new ChangeSets();
+        changeSets.setChangeSetId(0);
+
+        //changeSets.setChangeSetDate(startTim+ "T" + "00:00:00.000" + "Z");
+        changeSets.setChangeSetDate(Utils.splitDate(bookings.getDate())+"T" +"00:00:00.000"+"Z");
+
+        LocateBookingRequest.ChangeSets.Changes changes = changeSets.new Changes();
+        changes.setUsageTypeId(2);
+
+        changes.setFrom(getCurrentDate() + "" + "T" + startTime + ":" + "00" + "." + "000" + "Z");
+        changes.setTo(getCurrentDate() + "" + "T" + endTime + ":" + "00" + "." + "000" + "Z");
+        changes.setTimeZoneId("India Standard Time");
+        if(selectedDeskId>0){
+            changes.setTeamDeskId(selectedDeskId);
+        }else {
+            changes.setTeamDeskId(bookings.teamDeskId);
+        }
+
+        changes.setTypeOfCheckIn(1);
+
+        changeSets.setChanges(changes);
+
+        List<LocateBookingRequest.ChangeSets> changeSetsList = new ArrayList<>();
+        changeSetsList.add(changeSets);
+        locateBookingRequest.setChangeSetsList(changeSetsList);
+
+        LocateBookingRequest.DeleteIds deleteIds = locateBookingRequest.new DeleteIds();
+        List<LocateBookingRequest.DeleteIds> deleteIdsList = new ArrayList<>();
+        //deleteIdsList.add(deleteIds);
+
+        locateBookingRequest.setDeleteIdsList(deleteIdsList);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<BaseResponse> call = apiService.doDeskBooking(locateBookingRequest);
+
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+
+                BaseResponse baseResponse = response.body();
+                if (baseResponse != null) {
+
+                    //openCheckoutDialog("Booking Succcessfull");
+
+                } else {
+                    Toast.makeText(getContext(), "Not Avaliable"+baseResponse.getResultCode(), Toast.LENGTH_LONG).show();
+                }
+
+                ProgressDialog.dismisProgressBar(getContext(), dialog);
+                System.out.println("BookingSuccessInLocate");
+
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                ProgressDialog.dismisProgressBar(getContext(), dialog);
+            }
+        });
+
+
+
+    }
+
+    private void callDeskBottomSheetDialogToSelectDeskCode(List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities) {
+
+        RecyclerView rvDeskRecycler;
+        DeskListRecyclerAdapter deskListRecyclerAdapter;
+        TextView bsRepeatBack;
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_select_desk,
+                new RelativeLayout(getContext()))));
+
+        rvDeskRecycler= bottomSheetDialog.findViewById(R.id.desk_list_select_recycler);
+        bsRepeatBack=bottomSheetDialog.findViewById(R.id.bsDeskBack);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvDeskRecycler.setLayoutManager(linearLayoutManager);
+        rvDeskRecycler.setHasFixedSize(true);
+
+        deskListRecyclerAdapter =new DeskListRecyclerAdapter(getContext(),this,getActivity(),teamDeskAvailabilities,getContext(),bottomSheetDialog);
+        rvDeskRecycler.setAdapter(deskListRecyclerAdapter);
+
+        bottomSheetDialog.show();
+
+    }
+
+    @Override
+    public void onSelectDesk(int deskId, String deskName) {
+        deskRoomName.setText(""+deskName);
+        selectedDeskId= deskId;
     }
 
 
+    //MyTeamBottomSheet
+    private void callMyTeamBottomSheet() {
+
+        TextView myTeamClose;
+
+        BottomSheetDialog myTeamBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        myTeamBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_myteam_bottomsheet,
+                new RelativeLayout(getContext())));
+
+        rvMyTeam = myTeamBottomSheet.findViewById(R.id.rvLocateMyTeam);
+        myTeamClose = myTeamBottomSheet.findViewById(R.id.myTeamClose);
+
+
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvMyTeam.setLayoutManager(linearLayoutManager);
+        rvMyTeam.setHasFixedSize(true);
+
+
+        myTeamClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myTeamBottomSheet.dismiss();
+            }
+        });
+
+        List<String> stringName = new ArrayList<>();
+        stringName.add("Bessie Cooper");
+        stringName.add("Francene Vandyne");
+        stringName.add("Cody Fisher");
+
+
+        locateMyTeamAdapter = new LocateMyTeamAdapter(getContext(), stringName);
+        rvMyTeam.setAdapter(locateMyTeamAdapter);
+
+
+        myTeamBottomSheet.show();
+
+
+    }
+
+    private void callLocateFilterBottomSheet() {
+
+        RecyclerView locateFilterMainRV;
+        ValuesPOJO valuesPOJO;
+        ArrayList<DataModel> mList;
+        ItemAdapter adapter;
+
+        TextView locateFilterCancel, locateFilterApply;
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((this).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_locate_filter,
+                new RelativeLayout(getContext())));
+
+        locateFilterCancel = bottomSheetDialog.findViewById(R.id.locateFilterCancel);
+        locateFilterApply = bottomSheetDialog.findViewById(R.id.locateFilterApply);
+
+
+        locateFilterMainRV = bottomSheetDialog.findViewById(R.id.locateFilterMainRV);
+        locateFilterMainRV.setHasFixedSize(true);
+        locateFilterMainRV.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+        locateFilterCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        locateFilterApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        mList = new ArrayList<>();
+
+        //list1
+        ArrayList<ValuesPOJO> nestedList1 = new ArrayList<>();
+
+        valuesPOJO = new ValuesPOJO("Monitor", false);
+        nestedList1.add(valuesPOJO);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Adjustable height", false);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Laptop stand", false);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("USB_C Dock", false);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Charge point", false);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Standing desk", false);
+        nestedList1.add(valuesPOJO);
+
+        ArrayList<ValuesPOJO> nestedList2 = new ArrayList<>();
+
+        valuesPOJO = new ValuesPOJO("Single", false);
+        nestedList2.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Double", false);
+        nestedList2.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Ac", false);
+        nestedList2.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Non-AC", false);
+        nestedList2.add(valuesPOJO);
+
+
+        mList.add(new DataModel(nestedList1, "Workspaces"));
+        mList.add(new DataModel(nestedList2, "Rooms"));
+
+        adapter = new ItemAdapter(mList);
+        locateFilterMainRV.setAdapter(adapter);
+
+        bottomSheetDialog.show();
+
+    }
 }

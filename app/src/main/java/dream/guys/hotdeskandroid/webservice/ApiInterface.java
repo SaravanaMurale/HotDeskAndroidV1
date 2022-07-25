@@ -2,22 +2,21 @@ package dream.guys.hotdeskandroid.webservice;
 
 import com.google.gson.JsonObject;
 
-import org.json.JSONObject;
-
-import java.time.LocalDateTime;
 import java.util.List;
 
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
-import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.CreatePinRequest;
 import dream.guys.hotdeskandroid.model.request.ForgotPasswordRequest;
 import dream.guys.hotdeskandroid.model.request.GDPRrequest;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
 import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
+import dream.guys.hotdeskandroid.model.request.LocateDeskBookingRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
+import dream.guys.hotdeskandroid.model.response.CarParkAvalibilityResponse;
+import dream.guys.hotdeskandroid.model.response.CarParkingslotsResponse;
 import dream.guys.hotdeskandroid.model.response.CheckPinLoginResponse;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
@@ -30,12 +29,9 @@ import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
@@ -114,9 +110,9 @@ public interface ApiInterface {
 
     @GET("api/deskLayouts/LocationDesksWithUser")
     Call<DeskAvaliabilityResponse> getAvaliableDeskDetails(@Query("locationId") int parentId,
-                                                                 @Query("toDate") LocalDateTime toDate,
-                                                                 @Query("fromTime") LocalDateTime fromTime,
-                                                                 @Query("toTime") LocalDateTime toTime);
+                                                                 @Query("toDate") String toDate,
+                                                                 @Query("fromTime") String fromTime,
+                                                                 @Query("toTime") String toTime);
     @GET("api/booking/bookingsForEdit")
     Call<BookingForEditResponse> getBookingsForEdit(@Query("teamId") int parentId,
                                                     @Query("teamMembershipId") int toDate,
@@ -130,11 +126,26 @@ public interface ApiInterface {
     @PUT("api/booking/bookings")
     Call<BaseResponse>  doDeskBooking(@Body LocateBookingRequest locateBookingRequest);
 
+    @PUT("api/booking/bookings")
+    Call<BaseResponse>  doRequestDeskBooking(@Body LocateDeskBookingRequest locateBookingRequest);
+
+
     @PUT("api/carparkbooking/bookings")
     Call<BaseResponse> doCarParkingBooking(@Body LocateCarParkBookingRequest locateCarParkBookingRequest);
 
     @GET("api/teams")
     Call<List<TeamsResponse>>  getTeams();
+
+    @GET("api/ParkingSlot/carparkparkingslots")
+    Call<List<CarParkingslotsResponse>> getCarParkingSlots(@Query("locationId") int locationId);
+
+    @GET("api/CarParkBooking/availability")
+    Call<List<CarParkAvalibilityResponse>> getCarParkingSlotAvalibility(@Query("date") String toDate,
+                                                                        @Query("from") String fromTime,
+                                                                        @Query("to") String toTime);
+
+
+
 
 
 }

@@ -582,7 +582,20 @@ public class Utils {
 
     }
 
-    public static void splitDate(String dateWithTandZ){
+
+
+    public static boolean compareTimeIfCheckInEnable(String startTime, String endTime){
+        startTime = startTime.replace(":",".");
+        endTime = endTime.replace(":",".");
+
+        System.out.println(startTime+" balas "+endTime);
+        if (Double.parseDouble(startTime) >= Double.parseDouble(endTime))
+            return true;
+        else
+            return false;
+    }
+
+    public static String splitDate(String dateWithTandZ){
         String date="";
         String[] words=dateWithTandZ.split("T");
 
@@ -594,17 +607,8 @@ public class Utils {
 
         }
 
-    }
+        return  date;
 
-    public static boolean compareTimeIfCheckInEnable(String startTime, String endTime){
-        startTime = startTime.replace(":",".");
-        endTime = endTime.replace(":",".");
-
-        System.out.println(startTime+" balas "+endTime);
-        if (Double.parseDouble(startTime) >= Double.parseDouble(endTime))
-            return true;
-        else
-            return false;
     }
 
     public static String splitTime(String dateWithTandZ){
@@ -748,6 +752,27 @@ public class Utils {
 
 
 
+    }
+
+    public static String addMinuteWithCurrentTime(int id,int addMin){
+        String newTime="";
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date d = null;
+        try {
+            d = df.parse(Utils.getCurrentTimeIn24HourFormat());
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(d);
+            if(id==1){
+                cal.add(Calendar.MINUTE, addMin);
+            }else if(id==2){
+                cal.add(Calendar.HOUR, addMin);
+            }
+            newTime = df.format(cal.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return  newTime;
     }
 
 

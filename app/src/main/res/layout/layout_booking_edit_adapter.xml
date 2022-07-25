@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:background="@color/figmaBgGrey"
+        android:padding="@dimen/_10sdp"
+        >
+
+        <ImageView
+            android:id="@+id/edit_outLine"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:src="@drawable/circle_outline"
+            android:layout_marginLeft="@dimen/_10sdp"
+            />
+
+        <ImageView
+            android:id="@+id/editBookingImage"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_toRightOf="@id/edit_outLine"
+            android:src="@drawable/car_edit" />
+
+        <TextView
+            android:id="@+id/editCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Space-001"
+            android:layout_toRightOf="@id/editBookingImage"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+
+            />
+
+
+        <ImageView
+            android:id="@+id/editRefreshIcon"
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:src="@drawable/refresh" />
+
+        <TextView
+            android:id="@+id/editCheckOutTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/editRefreshIcon"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:text="8:00"
+            android:textColor="@color/figmaBlack"
+            android:textSize="@dimen/_10sdp" />
+
+        <ImageView
+            android:id="@+id/editCheckOutIcon"
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_toLeftOf="@id/editCheckOutTime"
+            android:layout_marginRight="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:src="@drawable/checkout"
+            app:tint="@color/figmaBlack" />
+
+
+        <TextView
+            android:id="@+id/editCheckInTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_toLeftOf="@+id/editCheckOutIcon"
+            android:text="8:00"
+            android:textColor="@color/figmaBlack"
+            android:textSize="@dimen/_10sdp" />
+
+        <ImageView
+            android:id="@+id/editCheckInIcon"
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:src="@drawable/checkin"
+            android:layout_toLeftOf="@+id/editCheckInTime"
+            app:tint="@color/figmaBlack" />
+
+
+        <TextView
+            android:id="@+id/editDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edit_outLine"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Delete"
+            android:textColor="@color/figma_red"
+            android:textSize="@dimen/_15sdp" />
+
+        <TextView
+            android:id="@+id/editTextEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edit_outLine"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:text="Edit"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/_15sdp" />
+
+
+
+
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -239,7 +239,7 @@ public class BookingForEditResponse {
 
     }
 
-    private class Bookings {
+    public class Bookings {
         public int id;
         public String date;
         public int usageTypeId;
