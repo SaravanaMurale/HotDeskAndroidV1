@@ -5,23 +5,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_20sdp"
         android:background="@color/figmaBgGrey"
-        android:padding="@dimen/_10sdp"
-        >
+        android:padding="@dimen/_10sdp">
 
         <ImageView
             android:id="@+id/edit_outLine"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
-            android:src="@drawable/circle_outline"
             android:layout_marginLeft="@dimen/_10sdp"
-            />
+            android:src="@drawable/circle_outline" />
 
         <ImageView
             android:id="@+id/editBookingImage"
@@ -35,10 +31,11 @@
             android:id="@+id/editCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Space-001"
-            android:layout_toRightOf="@id/editBookingImage"
-            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_3sdp"
+            android:layout_toRightOf="@id/editBookingImage"
+            android:text="Space-001"
+            android:layout_toLeftOf="@+id/editCheckInIcon"
 
             />
 
@@ -48,16 +45,16 @@
             android:layout_width="@dimen/_15sdp"
             android:layout_height="@dimen/_15sdp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_10sdp"
             android:src="@drawable/refresh" />
 
         <TextView
             android:id="@+id/editCheckOutTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/editRefreshIcon"
-            android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_toLeftOf="@id/editRefreshIcon"
             android:text="8:00"
             android:textColor="@color/figmaBlack"
             android:textSize="@dimen/_10sdp" />
@@ -66,9 +63,9 @@
             android:id="@+id/editCheckOutIcon"
             android:layout_width="@dimen/_15sdp"
             android:layout_height="@dimen/_15sdp"
-            android:layout_toLeftOf="@id/editCheckOutTime"
-            android:layout_marginRight="@dimen/_6sdp"
             android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginRight="@dimen/_6sdp"
+            android:layout_toLeftOf="@id/editCheckOutTime"
             android:src="@drawable/checkout"
             app:tint="@color/figmaBlack" />
 
@@ -88,10 +85,10 @@
             android:id="@+id/editCheckInIcon"
             android:layout_width="@dimen/_15sdp"
             android:layout_height="@dimen/_15sdp"
-            android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_3sdp"
-            android:src="@drawable/checkin"
+            android:layout_marginRight="@dimen/_5sdp"
             android:layout_toLeftOf="@+id/editCheckInTime"
+            android:src="@drawable/checkin"
             app:tint="@color/figmaBlack" />
 
 
@@ -113,14 +110,10 @@
             android:layout_below="@+id/edit_outLine"
             android:layout_alignParentRight="true"
             android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_10sdp"
             android:text="Edit"
             android:textColor="@color/blue"
             android:textSize="@dimen/_15sdp" />
-
-
-
-
 
 
     </RelativeLayout>

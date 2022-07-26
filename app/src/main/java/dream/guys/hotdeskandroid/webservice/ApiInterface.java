@@ -11,11 +11,13 @@ import dream.guys.hotdeskandroid.model.request.GDPRrequest;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
 import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
+import dream.guys.hotdeskandroid.model.request.LocateCarParkEditRequest;
 import dream.guys.hotdeskandroid.model.request.LocateDeskBookingRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkAvalibilityResponse;
+import dream.guys.hotdeskandroid.model.response.CarParkingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingslotsResponse;
 import dream.guys.hotdeskandroid.model.response.CheckPinLoginResponse;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
@@ -133,6 +135,10 @@ public interface ApiInterface {
     @PUT("api/carparkbooking/bookings")
     Call<BaseResponse> doCarParkingBooking(@Body LocateCarParkBookingRequest locateCarParkBookingRequest);
 
+    //CarPark edit
+    @PUT("api/carparkbooking/bookings")
+    Call<BaseResponse> doCarParkingEdit(@Body LocateCarParkEditRequest locateCarParkBookingRequest);
+
     @GET("api/teams")
     Call<List<TeamsResponse>>  getTeams();
 
@@ -143,6 +149,13 @@ public interface ApiInterface {
     Call<List<CarParkAvalibilityResponse>> getCarParkingSlotAvalibility(@Query("date") String toDate,
                                                                         @Query("from") String fromTime,
                                                                         @Query("to") String toTime);
+
+    @GET("api/carparkbooking/bookings")
+    Call<CarParkingForEditResponse> getCarParkingEditList(@Query("fromDate") String fromDate,
+                                                                @Query("toDate") String toDate,
+                                                                @Query("slotId") int slotId);
+
+
 
 
 
