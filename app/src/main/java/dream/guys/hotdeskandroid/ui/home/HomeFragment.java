@@ -15,6 +15,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -52,6 +53,7 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
@@ -156,34 +158,11 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaBlue), android.graphics.PorterDuff.Mode.MULTIPLY);
             }
         }
-        binding.serachBar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.length()>0){
-                    callSearchRecyclerData();
-                }
-            }
-        });
        binding.searchIcon.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               searchLayout.setVisibility(View.VISIBLE);
-           }
-       });
-       binding.close.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               searchLayout.setVisibility(View.GONE);
+               ((MainActivity) getActivity()).showSearch();
            }
        });
        userProfile.setOnClickListener(new View.OnClickListener() {
@@ -243,6 +222,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         ProgressDialog.dismisProgressBar(getContext(),dialog);
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
                         Utils.finishAllActivity(getContext());
+//                        redirectToBioMetricAccess();
 
                         Log.d(TAG, "onResponse: else" );
                     }

@@ -209,9 +209,9 @@ public class LoginActivity extends AppCompatActivity {
                 public void onResponse(Call<TypeOfLoginResponse> call, Response<TypeOfLoginResponse> response) {
                     TypeOfLoginResponse typeOfLoginResponse = response.body();
                     if (response.code()==200 && typeOfLoginResponse!=null){
-                        if (typeOfLoginResponse.getTypeOfLogin()==0) {
+                        if (typeOfLoginResponse.getTypeOfLogin()==1) {
                             ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
-                            Toast.makeText(LoginActivity.this, "SSO Login has not been set up, please contact Admin to Setup", Toast.LENGTH_LONG).show();
+                            Utils.showCustomAlertDialog(LoginActivity.this, "SSO Login has not been set up, please contact Admin to Setup");
                         } else{
                             ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
 
