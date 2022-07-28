@@ -28,6 +28,8 @@ import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
+import in.aabhasjindal.otptextview.OTPListener;
+import in.aabhasjindal.otptextview.OtpTextView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,23 +38,40 @@ public class LoginPinActivity extends AppCompatActivity {
     @BindView(R.id.tv_back_to_home)
     TextView tvBack;
     @BindView(R.id.etPin)
-    EditText etPin;
+    OtpTextView etPin;
     @BindView(R.id.btnSubmit)
     Button btnSubmit;
     Dialog dialog;
+    String pin="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_pin);
         ButterKnife.bind(this);
         dialog= new Dialog(LoginPinActivity.this);
+
+        etPin.setOtpListener(new OTPListener()
+        {
+            @Override
+            public void onInteractionListener()
+            {
+
+            }
+
+            @Override
+            public void onOTPComplete(String otp)
+            {
+                pin = otp;
+            }
+        });
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (etPin.getText().toString().isEmpty() || etPin.getText().toString().equalsIgnoreCase("")){
+                if (pin.isEmpty() || pin.equalsIgnoreCase("")){
                     Utils.toastMessage(LoginPinActivity.this,"Enter Pin");
-                }else if (etPin.getText().toString().length()<6){
+                }else if (pin.length()<6){
                     Utils.toastMessage(LoginPinActivity.this,"Pin should be 6 digits");
+                    etPin.setOTP("");
                 }else {
                     checkPin();
                 }
@@ -74,7 +93,7 @@ public class LoginPinActivity extends AppCompatActivity {
 //                GetTokenRequest getTokenRequest = new GetTokenRequest(companyName, email, password);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             CreatePinRequest createPinRequest = new CreatePinRequest();
-            createPinRequest.setPin(etPin.getText().toString());
+            createPinRequest.setPin(pin);
             createPinRequest.setUserId(""+SessionHandler.getInstance().getInt(this,AppConstants.USER_ID));
             Call<GetTokenResponse> call = apiService.checkPinLogin(createPinRequest);
             call.enqueue(new Callback<GetTokenResponse>() {

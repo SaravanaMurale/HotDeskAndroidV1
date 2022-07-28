@@ -56,6 +56,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.ui.locate.LocateFragment;
 import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.login.SignInActivity;
 
@@ -129,12 +130,26 @@ public class Utils {
             @Override
             public void onClick(View v) {
 
-                System.out.println("GETDATATATATA"+simpleTimePicker24Hours.getHour()+":"+simpleTimePicker24Hours.getMinute()+":"+simpleTimePicker24Hours.getMinute()+":"+simpleTimePicker24Hours.getMinute());
-                //tv.setText(getCurrentDate()+""+"T"+simpleTimePicker24Hours.getHour()+":"+simpleTimePicker24Hours.getMinute()+":"+"00"+"."+"000"+"Z");
+                String hour=null,minute=null;
+                String getHHour=String.valueOf(simpleTimePicker24Hours.getHour());
+                String getMMinute=String.valueOf(simpleTimePicker24Hours.getMinute());
 
-                tv.setText(simpleTimePicker24Hours.getHour()+":"+simpleTimePicker24Hours.getMinute());
+                if(getHHour.length()==1){
+                    hour="0"+getHHour;
+                }else {
+                    hour=getHHour;
+                }
 
-                //SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
+
+                if(getMMinute.length()==1){
+                    minute="0"+getMMinute;
+                }else {
+                    minute=getMMinute;
+                }
+
+                System.out.println("GETDATATATATA"+hour+" "+minute);
+
+                tv.setText(hour+":"+minute);
 
                 bottomSheetDialog.dismiss();
             }
@@ -144,6 +159,8 @@ public class Utils {
 
 
     }
+
+
     public static void tokenExpiryAlert(final Context mContext, String msg) {
         final Activity activity = (Activity) mContext;
 

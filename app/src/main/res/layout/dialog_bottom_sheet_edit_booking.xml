@@ -294,6 +294,7 @@
                         android:theme="@style/TextRegular" />
                 </LinearLayout>
             </RelativeLayout>
+
             <TextView
                 android:id="@+id/tv_comments"
                 android:layout_width="wrap_content"

@@ -15,18 +15,22 @@ import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkEditRequest;
 import dream.guys.hotdeskandroid.model.request.LocateDeskBookingRequest;
+import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkAvalibilityResponse;
+import dream.guys.hotdeskandroid.model.response.CarParkingDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingslotsResponse;
 import dream.guys.hotdeskandroid.model.response.CheckPinLoginResponse;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
+import dream.guys.hotdeskandroid.model.response.DeskDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.model.response.ImageResponse;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
+import dream.guys.hotdeskandroid.model.response.MeetingRoomDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.TypeOfLoginResponse;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
@@ -36,6 +40,8 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
@@ -130,13 +136,16 @@ public interface ApiInterface {
     @GET("api/locate/ImmediateChildLocations")
     Call<List<String>> getItemJsonObject(@Query("parentId") int parentId);
 
+    //DeskBooking
     @PUT("api/booking/bookings")
     Call<BaseResponse>  doDeskBooking(@Body LocateBookingRequest locateBookingRequest);
 
+    //DeskBookingRequest
     @PUT("api/booking/bookings")
     Call<BaseResponse>  doRequestDeskBooking(@Body LocateDeskBookingRequest locateBookingRequest);
 
 
+    //CarParkBooking
     @PUT("api/carparkbooking/bookings")
     Call<BaseResponse> doCarParkingBooking(@Body LocateCarParkBookingRequest locateCarParkBookingRequest);
 
@@ -161,6 +170,19 @@ public interface ApiInterface {
                                                                 @Query("slotId") int slotId);
 
 
+    //MeetingRoomBook
+    @PUT("api/MeetingRoomBooking/bookings")
+    Call<BaseResponse> doMeetingRoomBook(@Body MeetingRoomRequest meetingRoomRequest);
+
+    //DeskDescription
+    @GET("api/Desks/{id}")
+    Call<DeskDescriptionResponse> getDiskDescription(@Path("id") int deskId);
+
+    @GET("api/MeetingRooms/{id}")
+    Call<MeetingRoomDescriptionResponse> getMeetingRoomDescription(@Path("id") int roomId);
+
+    @GET("api/ParkingSlot/{id}")
+    Call<CarParkingDescriptionResponse> getCarParkingDescription(@Path("id") int carParkId);
 
 
 
