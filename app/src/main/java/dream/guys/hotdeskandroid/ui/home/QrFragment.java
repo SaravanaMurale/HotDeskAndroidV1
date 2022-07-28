@@ -2,6 +2,7 @@ package dream.guys.hotdeskandroid.ui.home;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +56,7 @@ public class QrFragment extends Fragment {
 
     Dialog dialog;
     View view;
+    NavController navController;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +84,6 @@ public class QrFragment extends Fragment {
             date = bundle.getString("DATE","");
 
         }
-
         mCodeScanner = new CodeScanner(getActivity(), fragmentQrBinding.scannerView);
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
             @Override
@@ -88,16 +91,28 @@ public class QrFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (calendarId == result.getNumBits()){
+                        if (calendarId == Integer.parseInt(result.getText())){
                             changeCheckIn();
-                            Toast.makeText(activity, "calId"+calendarId+" "+result.getNumBits(), Toast.LENGTH_SHORT).show();
-                            System.out.println("calId calId else"+calendarId+" "+result.getNumBits());
-
                         }
                         else{
-                            Toast.makeText(activity, "calId calId else"+calendarId+" "+result.getNumBits(), Toast.LENGTH_SHORT).show();
-                            System.out.println("calId calId else"+calendarId+" "+result.getNumBits());
-//                            Toast.makeText(activity, result.getNumBits(), Toast.LENGTH_SHORT).show();
+                            final Dialog dialog = new Dialog(getActivity());
+                            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            dialog.setCancelable(false);
+                            dialog.setContentView(R.layout.dialog_validation);
+                            dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                            TextView text = dialog.findViewById(R.id.tv_err_msg);
+                            text.setText("You have scanned Wrong Desk");
+                            TextView dialogButton = dialog.findViewById(R.id.tv_ok);
+                            dialogButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    navController.navigate(R.id.navigation_home);
+                                    dialog.dismiss();
+                                }
+                            });
+                            dialog.show();
+                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
                         }
                     }
                 });
@@ -133,6 +148,8 @@ public class QrFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view =view;
+        navController= Navigation.findNavController(view);
+
 
     }
 
@@ -185,7 +202,6 @@ public class QrFragment extends Fragment {
 
         dialog.setContentView(R.layout.layout_checkin_success);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        NavController navController= Navigation.findNavController(view);
 
         TextView checkDialogClose = dialog.findViewById(R.id.checkDialogClose);
 

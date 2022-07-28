@@ -58,10 +58,30 @@ public class BookFragment extends Fragment {
         binding = FragmentBookBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        tabToggleViewClicked(0);
+
         binding.deskLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 tabToggleViewClicked(0);
+            }
+        });
+        binding.roomLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tabToggleViewClicked(1);
+            }
+        });
+        binding.parkingLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tabToggleViewClicked(2);
+            }
+        });
+        binding.moreLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tabToggleViewClicked(3);
             }
         });
 
@@ -75,16 +95,45 @@ public class BookFragment extends Fragment {
         switch (i){
             case 0:
                 binding.deskLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
-                binding.ivDesk.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
-                binding.tvDesk.setTextColor(R.color.white);
+                binding.ivDesk.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
                 binding.tvDesk.setVisibility(View.VISIBLE);
 
+                LinearLayout.LayoutParams deskParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                deskParams.weight = 1.0f;
+                binding.deskLayout.setLayoutParams(deskParams);
                 break;
             case 1:
+                binding.roomLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
+                binding.ivRoom.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
+                binding.tvRoom.setVisibility(View.VISIBLE);
+                LinearLayout.LayoutParams roomParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                roomParams.weight = 1.0f;
+                binding.roomLayout.setLayoutParams(roomParams);
+
                 break;
             case 2:
+                binding.parkingLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
+                binding.ivParking.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
+                binding.tvParking.setVisibility(View.VISIBLE);
+
+                LinearLayout.LayoutParams parkingParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                parkingParams.weight = 1.0f;
+                binding.parkingLayout.setLayoutParams(parkingParams);
+
                 break;
             case 3:
+                binding.moreLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
+                binding.ivMore.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
+                binding.tvMore.setVisibility(View.VISIBLE);
+
+                LinearLayout.LayoutParams moreParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                moreParams.weight = 1.0f;
+                binding.moreLayout.setLayoutParams(moreParams);
+
                 break;
             default:
                 break;
@@ -97,5 +146,26 @@ public class BookFragment extends Fragment {
         binding.roomLayout.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.figmaBgGrey));
         binding.parkingLayout.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.figmaBgGrey));
         binding.moreLayout.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.figmaBgGrey));
+
+        binding.ivDesk.setImageTintList(getContext().getResources().getColorStateList(R.color.figmaBlack));
+        binding.ivRoom.setImageTintList(getContext().getResources().getColorStateList(R.color.figmaBlack));
+        binding.ivParking.setImageTintList(getContext().getResources().getColorStateList(R.color.figmaBlack));
+        binding.ivMore.setImageTintList(getContext().getResources().getColorStateList(R.color.figmaBlack));
+
+        binding.tvDesk.setVisibility(View.GONE);
+        binding.tvRoom.setVisibility(View.GONE);
+        binding.tvParking.setVisibility(View.GONE);
+        binding.tvMore.setVisibility(View.GONE);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,(float) 0.0);
+
+        binding.deskLayout.setLayoutParams(params);
+        binding.roomLayout.setLayoutParams(params);
+        binding.parkingLayout.setLayoutParams(params);
+        binding.moreLayout.setLayoutParams(params);
+
+
+
     }
 }

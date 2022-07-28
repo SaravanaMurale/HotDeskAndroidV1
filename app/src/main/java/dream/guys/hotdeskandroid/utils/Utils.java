@@ -311,11 +311,10 @@ public class Utils {
         dialog.show();
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
     }
+
     public static void showCustomTokenExpiredDialog(final Activity mContext, String aMessage) {
         final Dialog dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        int width = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.80);
-        int height = (int) (mContext.getResources().getDisplayMetrics().heightPixels * 0.20);
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.dialog_validation);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -325,7 +324,7 @@ public class Utils {
         dialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                mContext.startActivityForResult(intent, 123);
+                Utils.finishAllActivity(mContext);
                 dialog.dismiss();
             }
         });

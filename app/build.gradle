@@ -65,7 +65,10 @@ dependencies {
     //Circular Image
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     //otp pin view
-    implementation 'com.github.mukeshsolanki:android-otpview-pinview:2.1.2'
+//    implementation 'com.github.mukeshsolanki:android-otpview-pinview:2.1.2'
+    //Otp View    
+    implementation 'com.github.aabhasr1:OtpView:v1.1.2'
+
     //QQR Scanner
     implementation 'com.github.yuriy-budiyev:code-scanner:2.3.2'
 

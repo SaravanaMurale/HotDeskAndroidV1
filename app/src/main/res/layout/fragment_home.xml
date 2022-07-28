@@ -1,302 +1,380 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.home.HomeFragment">
-
+    tools:context=".ui.home.HomeFragment"
+    >
     <LinearLayout
-        android:id="@+id/HeadBlock"
+        android:id="@+id/home_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible"
-        tools:ignore="MissingConstraints">
+        >
 
-        <!--Notification,Search-->
         <LinearLayout
+            android:id="@+id/HeadBlock"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            >
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible"
+            tools:ignore="MissingConstraints">
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            <!--Notification,Search-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                >
 
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/homeNotificationIcon"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_marginHorizontal="@dimen/_15sdp"
+                        android:src="@drawable/notification_icon" />
+
+                    <ImageView
+                        android:id="@+id/noti_icon"
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp"
+                        android:layout_marginHorizontal="@dimen/_15sdp"
+                        android:src="@drawable/notification_red"
+                        android:visibility="gone"
+                        />
+
+                </RelativeLayout>
+                <view
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    class="android.widget.ImageView"
+                    android:layout_weight="1"
+                    />
                 <ImageView
-                    android:id="@+id/homeNotificationIcon"
+                    android:id="@+id/search_icon"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:src="@drawable/search_icon"
+                    />
+                <ImageView
+                    android:id="@+id/profile"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:src="@drawable/notification_icon" />
-
-                <ImageView
-                    android:id="@+id/noti_icon"
-                    android:layout_width="@dimen/_10sdp"
-                    android:layout_height="@dimen/_10sdp"
-                    android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:src="@drawable/notification_red"
-                    android:visibility="gone"
+                    android:src="@drawable/user_profile_icon"
                     />
+            </LinearLayout>
 
-            </RelativeLayout>
-            <view
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                class="android.widget.ImageView"
-                android:layout_weight="1"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/figmaBgGrey"
                 />
-            <ImageView
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:src="@drawable/search_icon"
-                />
-            <ImageView
-                android:id="@+id/profile"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_marginHorizontal="@dimen/_15sdp"
-                android:src="@drawable/user_profile_icon"
-                />
-        </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/figmaBgGrey"
-            />
-
-        <!--User Image and other-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <androidx.cardview.widget.CardView
+            <!--User Image and other-->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardElevation="@dimen/_3sdp"
-                android:layout_marginBottom="@dimen/_3sdp"
-                >
-                <LinearLayout
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@color/white"
+                    app:cardElevation="@dimen/_3sdp"
+                    android:layout_marginBottom="@dimen/_3sdp"
                     >
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:minHeight="@dimen/_80sdp"
-                        >
-
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/user_profile_pic"
-                            android:layout_width="@dimen/_45sdp"
-                            android:layout_height="@dimen/_45sdp"
-                            android:layout_centerInParent="true"
-                            android:background="@drawable/bg_circle_vector"
-                            android:src="@drawable/avatar"
-                            android:padding="@dimen/_2sdp"
-                            />
-                    </RelativeLayout>
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:orientation="vertical"
-                        android:gravity="center_vertical"
-                        android:layout_gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:background="@color/white"
                         >
-                        <TextView
-                            android:id="@+id/homeUserName"
-                            android:layout_width="match_parent"
+                        <RelativeLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:theme="@style/TextBold"
-                            android:text="Hi, Bala"
-                            />
-                        <TextView
-                            android:id="@+id/homeTeamName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:theme="@style/TextRegular"
-                            android:text="Back Office"
-                            android:textColor="@color/black"
-                            android:layout_marginVertical="@dimen/_3sdp"
-                            />
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:minHeight="@dimen/_80sdp"
                             >
 
-                            <ImageView
-                                android:id="@+id/user_status"
-                                android:layout_width="@dimen/_10sdp"
-                                android:layout_height="@dimen/_10sdp"
-                                android:src="@drawable/bg_circle_vector"
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/user_profile_pic"
+                                android:layout_width="@dimen/_45sdp"
+                                android:layout_height="@dimen/_45sdp"
+                                android:layout_centerInParent="true"
+                                android:background="@drawable/bg_circle_vector"
+                                android:src="@drawable/avatar"
+                                android:padding="@dimen/_2sdp"
+                                />
+                        </RelativeLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:orientation="vertical"
+                            android:gravity="center_vertical"
+                            android:layout_gravity="center_vertical"
+                            >
+                            <TextView
+                                android:id="@+id/homeUserName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:theme="@style/TextBold"
+                                android:text="Hi, Bala"
                                 />
                             <TextView
-                                android:id="@+id/user_current_status"
+                                android:id="@+id/homeTeamName"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:theme="@style/TextRegular"
-                                android:text="Checked In"
-                                android:layout_marginStart="@dimen/_3sdp"
+                                android:text="Back Office"
                                 android:textColor="@color/black"
+                                android:layout_marginVertical="@dimen/_3sdp"
                                 />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical"
+                                >
+
+                                <ImageView
+                                    android:id="@+id/user_status"
+                                    android:layout_width="@dimen/_10sdp"
+                                    android:layout_height="@dimen/_10sdp"
+                                    android:src="@drawable/bg_circle_vector"
+                                    />
+                                <TextView
+                                    android:id="@+id/user_current_status"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:theme="@style/TextRegular"
+                                    android:text="Checked In"
+                                    android:layout_marginStart="@dimen/_3sdp"
+                                    android:textColor="@color/black"
+                                    />
+                            </LinearLayout>
                         </LinearLayout>
-                    </LinearLayout>
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-
-                        <view
-                            class="android.widget.TextView"
-                            android:layout_width="@dimen/_2sdp"
+                        <RelativeLayout
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_marginVertical="@dimen/_5sdp"
-                            android:background="@color/figmaGrey" />
+                            android:layout_weight="1">
 
-                        <ImageView
-                            android:id="@+id/tentant_image_view"
-                            android:layout_width="@dimen/_50sdp"
-                            android:layout_height="@dimen/_50sdp"
-                            android:layout_centerInParent="true"
-                            android:layout_weight="1"
-                            android:src="@drawable/default_company_logo" />
-                    </RelativeLayout>
+                            <view
+                                class="android.widget.TextView"
+                                android:layout_width="@dimen/_2sdp"
+                                android:layout_height="match_parent"
+                                android:layout_marginVertical="@dimen/_5sdp"
+                                android:background="@color/figmaGrey" />
 
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                            <ImageView
+                                android:id="@+id/tentant_image_view"
+                                android:layout_width="@dimen/_50sdp"
+                                android:layout_height="@dimen/_50sdp"
+                                android:layout_centerInParent="true"
+                                android:layout_weight="1"
+                                android:src="@drawable/default_company_logo" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
 
         </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:fillViewport="true"
+            android:visibility="visible"
+            >
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/_10sdp"
+                android:background="@color/figmaBackground"
+                >
+
+                <com.google.android.material.appbar.AppBarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:visibility="gone"
+                    >
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="?attr/actionBarSize"
+                        app:title=" "
+                        >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/notification_icon"
+                            android:layout_marginHorizontal="@dimen/_15sdp"
+                            />
+                    </androidx.appcompat.widget.Toolbar>
+                </com.google.android.material.appbar.AppBarLayout>
+
+
+
+                <!--Covid-19 self certification-->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="@dimen/_5sdp"
+                    app:cardElevation="@dimen/_5sdp"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:visibility="gone"
+                    >
+
+
+                    <RelativeLayout
+                        android:id="@+id/covidCertificationBlock"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_3sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:visibility="visible"
+
+                        >
+
+                        <ImageView
+                            android:id="@+id/ivNotiCovid"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:src="@drawable/notification_icon"
+                            android:layout_marginHorizontal="@dimen/_15sdp"/>
+
+                        <TextView
+                            android:id="@+id/tvCovidCertificate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/ivNotiCovid"
+                            android:text="@string/covid19"
+
+                            android:theme="@style/TextBold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tvCovidCertificate"
+                            android:layout_toRightOf="@id/ivNotiCovid"
+                            android:text="@string/pls_complete"
+                            android:textColor="@color/figmaGrey" />
+
+
+
+
+                    </RelativeLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <!--Home Bookig Recyclerview-->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvHomeBooking"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_8sdp"
+                    android:layout_marginRight="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_60sdp" />
+
+
+
+
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
 
 
     </LinearLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedView"
+    <LinearLayout
+        android:id="@+id/search_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:fillViewport="true"
-        android:visibility="visible"
+        android:orientation="vertical"
+        android:visibility="gone"
         >
 
-
         <LinearLayout
+            android:id="@+id/search_block"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="@dimen/_10sdp"
-            android:background="@color/figmaBackground"
-            >
+            android:visibility="visible"
+            tools:ignore="MissingConstraints">
 
-            <com.google.android.material.appbar.AppBarLayout
+            <!--Notification,Search-->
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                android:visibility="gone"
-                >
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="?attr/actionBarSize"
-                    app:title=" "
-                    >
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/notification_icon"
-                        android:layout_marginHorizontal="@dimen/_15sdp"
-                        />
-                </androidx.appcompat.widget.Toolbar>
-            </com.google.android.material.appbar.AppBarLayout>
-
-
-
-            <!--Covid-19 self certification-->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="@dimen/_5sdp"
-                app:cardElevation="@dimen/_5sdp"
-                android:layout_margin="@dimen/_8sdp"
-                android:visibility="gone"
+                android:layout_height="?attr/actionBarSize"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@color/white"
+                android:layout_marginHorizontal="@dimen/_10sdp"
                 >
 
+                <EditText
+                    android:id="@+id/serach_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/close"
+                    android:background="@drawable/bg_transparent_round"
+                    android:backgroundTint="@color/white"
+                    android:hint="Search Items" />
 
-                <RelativeLayout
-                    android:id="@+id/covidCertificationBlock"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/_3sdp"
-                    android:layout_marginTop="@dimen/_3sdp"
-                    android:visibility="visible"
-
-                    >
-
-                    <ImageView
-                        android:id="@+id/ivNotiCovid"
-                        android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_25sdp"
-                        android:src="@drawable/notification_icon"
-                        android:layout_marginHorizontal="@dimen/_15sdp"/>
-
-                    <TextView
-                        android:id="@+id/tvCovidCertificate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/ivNotiCovid"
-                        android:text="@string/covid19"
-
-                        android:theme="@style/TextBold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tvCovidCertificate"
-                        android:layout_toRightOf="@id/ivNotiCovid"
-                        android:text="@string/pls_complete"
-                        android:textColor="@color/figmaGrey" />
-
-
-
-
-                </RelativeLayout>
-
-
-            </androidx.cardview.widget.CardView>
-
-            <!--Home Bookig Recyclerview-->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvHomeBooking"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_8sdp"
-                android:layout_marginRight="@dimen/_8sdp"
-                android:layout_marginBottom="@dimen/_60sdp" />
-
-
+                <ImageView
+                    android:id="@+id/close"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:src="@drawable/close_circle" />
+            </RelativeLayout>
 
 
 
         </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/bg_transparent_round"
+            android:backgroundTint="@color/figmaGrey80"
+            android:fillViewport="true"
+            android:visibility="visible"
+            />
 
 
-</LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>
