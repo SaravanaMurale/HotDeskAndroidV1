@@ -83,11 +83,11 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     ImageView profile;
     ImageView tenantProfile;
     Toolbar toolbar;
-    LinearLayout headBlock;
+    LinearLayout headBlock,homeLayout,searchLayout;
     FrameLayout qrLayout;
 
     //Header
-    ImageView notiIcon;
+    ImageView notiIcon,closeSearch;
     ImageView userStatus;
 
     //HomeBooking
@@ -133,6 +133,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         userStatus=root.findViewById(R.id.user_status);
         tenantProfile=root.findViewById(R.id.tentant_image_view);
         rvHomeBooking=root.findViewById(R.id.rvHomeBooking);
+        homeLayout=root.findViewById(R.id.home_layout);
+        searchLayout=root.findViewById(R.id.search_layout);
+        closeSearch=root.findViewById(R.id.close);
+
         if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null && SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked in")){
             userCurrentStatus.setText("Checked In");
             userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.teal_200), android.graphics.PorterDuff.Mode.MULTIPLY);
@@ -149,6 +153,18 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaBlue), android.graphics.PorterDuff.Mode.MULTIPLY);
             }
         }
+       binding.searchIcon.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               searchLayout.setVisibility(View.VISIBLE);
+           }
+       });
+       binding.close.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               searchLayout.setVisibility(View.GONE);
+           }
+       });
        userProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -423,9 +439,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     }else if (response.code() == 500){
                         Utils.showCustomAlertDialog(getActivity(),"500 Response");
                     }else if (response.code() == 401){
-                        Utils.showCustomAlertDialog(getActivity(),"401 Error Response");
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"401 Error Response");
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                        Utils.finishAllActivity(getContext());
+//                        Utils.finishAllActivity(getContext());
                     }
                     else {
                         Toast.makeText(getActivity(), "Response Failure", Toast.LENGTH_SHORT).show();
