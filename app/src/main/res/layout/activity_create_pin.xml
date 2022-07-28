@@ -61,13 +61,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/etConfirmPin"
+            android:backgroundTint="@color/figmaBgGrey"
             android:textColor="#ffffff"
             app:bar_height="2dp"
             app:length="6"
-            app:otp_text_size="24dp"
-            app:otp_box_background="@drawable/otp_outline"
-            android:backgroundTint="@color/figmaBlack"
-            />
+            app:otp_box_background="@drawable/rectangle_greybg_with_corner"
+            app:otp_text_size="24dp" />
 
         <Button
             android:id="@+id/btnSubmit"

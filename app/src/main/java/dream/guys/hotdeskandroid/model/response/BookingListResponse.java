@@ -61,6 +61,7 @@ public class BookingListResponse {
         private CalendarEntry calendarEntriesModel;
         private MeetingBooking meetingBookingsModel;
         private CarParkBooking carParkBookingsModel;
+        public LocationBuildingFloor locationBuildingFloor;
 
 
         // 1--> desk booking 2--> meeting 3--> parking
@@ -240,6 +241,15 @@ public class BookingListResponse {
                 private String deskCode;
                 private String deskDescription;
                 private Status status;
+                private LocationBuildingFloor locationBuildingFloor;
+
+                public LocationBuildingFloor getLocationBuildingFloor() {
+                    return locationBuildingFloor;
+                }
+
+                public void setLocationBuildingFloor(LocationBuildingFloor locationBuildingFloor) {
+                    this.locationBuildingFloor = locationBuildingFloor;
+                }
 
                 public int getId() {
                     return id;
@@ -353,6 +363,15 @@ public class BookingListResponse {
             private String vehicleRegNumber;
             private String parkingSlotCode;
             private String requestStatus;
+            private LocationBuildingFloor locationBuildingFloor;
+
+            public LocationBuildingFloor getLocationBuildingFloor() {
+                return locationBuildingFloor;
+            }
+
+            public void setLocationBuildingFloor(LocationBuildingFloor locationBuildingFloor) {
+                this.locationBuildingFloor = locationBuildingFloor;
+            }
 
             public int getId() {
                 return id;
@@ -448,6 +467,15 @@ public class BookingListResponse {
             private String toUtc;
             private String timeZoneId;
             private String subject;
+            private LocationBuildingFloor locationBuildingFloor;
+
+            public LocationBuildingFloor getLocationBuildingFloor() {
+                return locationBuildingFloor;
+            }
+
+            public void setLocationBuildingFloor(LocationBuildingFloor locationBuildingFloor) {
+                this.locationBuildingFloor = locationBuildingFloor;
+            }
 
             public int getId() {
                 return id;
@@ -523,6 +551,44 @@ public class BookingListResponse {
         }
 
 
+        public class LocationBuildingFloor {
+            public int floorID;
+            public String fLoorName;
+            public int buildingID;
+            public String buildingName;
+
+            public int getFloorID() {
+                return floorID;
+            }
+
+            public void setFloorID(int floorID) {
+                this.floorID = floorID;
+            }
+
+            public String getfLoorName() {
+                return fLoorName;
+            }
+
+            public void setfLoorName(String fLoorName) {
+                this.fLoorName = fLoorName;
+            }
+
+            public int getBuildingID() {
+                return buildingID;
+            }
+
+            public void setBuildingID(int buildingID) {
+                this.buildingID = buildingID;
+            }
+
+            public String getBuildingName() {
+                return buildingName;
+            }
+
+            public void setBuildingName(String buildingName) {
+                this.buildingName = buildingName;
+            }
+        }
     }
 
 

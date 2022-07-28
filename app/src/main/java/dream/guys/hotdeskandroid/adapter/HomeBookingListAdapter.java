@@ -1,5 +1,6 @@
 package dream.guys.hotdeskandroid.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -65,6 +66,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         return new HomeBookingListViewHolder(itemView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull HomeBookingListViewHolder holder, int position) {
         //conditon is to display date and line accordingly
@@ -99,6 +101,11 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
             holder.rlBookingRemoteBlock.setVisibility(View.GONE);
             holder.rlInOffice.setVisibility(View.VISIBLE);
+            holder.bookingAddress.setText(new StringBuilder()
+                    .append("")
+                    .append(list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getfLoorName())
+                    .append(" - ").append(list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getBuildingName()).toString()
+            );
             //Desk Booking
             Glide.with(context)
                     .load(R.drawable.chair)
@@ -176,6 +183,11 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
 
+            holder.bookingAddress.setText(new StringBuilder()
+                    .append("")
+                    .append(list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getfLoorName())
+                    .append(" - ").append(list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getBuildingName()).toString()
+            );
             switch (list.get(position).getCalendarEntriesModel().getUsageTypeAbbreviation()){
                 case "RQ":
                     holder.tvBookingWorkingRemote.setText("Request for Desk In Progress");
@@ -244,7 +256,11 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             //Meeting Room
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
-
+            holder.bookingAddress.setText(new StringBuilder()
+                    .append("")
+                    .append(list.get(position).getMeetingBookingsModel().getLocationBuildingFloor().getfLoorName())
+                    .append(" - ").append(list.get(position).getMeetingBookingsModel().getLocationBuildingFloor().getBuildingName()).toString()
+            );
             Glide.with(context)
                     .load(R.drawable.room)
                     .placeholder(R.drawable.room)
@@ -274,7 +290,11 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             //Car Parking
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
-
+            holder.bookingAddress.setText(new StringBuilder()
+                    .append("")
+                    .append(list.get(position).getCarParkBookingsModel().getLocationBuildingFloor().getfLoorName())
+                    .append(" - ").append(list.get(position).getCarParkBookingsModel().getLocationBuildingFloor().getBuildingName()).toString()
+            );
             //show green line if its falls between from and to time of today
             if(Utils.getCurrentDate()
                     .equalsIgnoreCase(Utils.getYearMonthDateFormat(list.get(position).getDate()))

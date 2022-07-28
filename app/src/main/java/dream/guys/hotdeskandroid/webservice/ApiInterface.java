@@ -1,5 +1,7 @@
 package dream.guys.hotdeskandroid.webservice;
 
+import android.provider.Settings;
+
 import com.google.gson.JsonObject;
 
 import java.util.List;
@@ -80,6 +82,9 @@ public interface ApiInterface {
     @GET("api/Account/LoggedInUser")
     Call<UserDetailsResponse>  getLoginUserDetails();
 
+    @GET("api/globalsearch")
+    Call<GlobalSearchResponse> getGlobalSearchData(@Query("pageSize") int pageSize,
+                                              @Query("filterText") String text);
     @GET("api/MyWork/UserMyWorkStatus")
     Call<BookingListResponse> getUserMyWorkDetails(@Query("dayOfTheWeek") String dayOfTheWeek,
                                                    @Query("includeNonWorkingDays") boolean includeNonWorkingDays);

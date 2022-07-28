@@ -21,7 +21,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +78,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnCheckInClickable, DeskListRecyclerAdapter.OnSelectSelected {
-
+    String TAG="HomeFragment";
     FragmentHomeBinding binding;
     TextView text;
     TextView userCurrentStatus;
@@ -153,6 +156,24 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaBlue), android.graphics.PorterDuff.Mode.MULTIPLY);
             }
         }
+        binding.serachBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length()>0){
+                    callSearchRecyclerData();
+                }
+            }
+        });
        binding.searchIcon.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
@@ -201,6 +222,42 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         loadHomeList();
 
         return root;
+    }
+
+    private void callSearchRecyclerData() {
+        if (Utils.isNetworkAvailable(getActivity())) {
+
+            dialog= ProgressDialog.showProgressBar(getContext());
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BookingListResponse> call = apiService.getUserMyWorkDetails(Utils.getCurrentDate(),true);
+            call.enqueue(new Callback<BookingListResponse>() {
+                @Override
+                public void onResponse(Call<BookingListResponse> call, Response<BookingListResponse> response) {
+                    if(response.code()==200){
+                        ProgressDialog.dismisProgressBar(getContext(),dialog);
+                        Log.d(TAG, "onResponse: if");
+
+                    }else if(response.code()==401){
+                        //Handle if token got expired
+                        ProgressDialog.dismisProgressBar(getContext(),dialog);
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                        Utils.finishAllActivity(getContext());
+
+                        Log.d(TAG, "onResponse: else" );
+                    }
+                }
+                @Override
+                public void onFailure(Call<BookingListResponse> call, Throwable t) {
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    Log.d(TAG, "onFailure: "+t.getMessage());
+                    Utils.toastMessage(getActivity(),"failure: "+t.getMessage());
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
     }
 
     private void qrEnabledCall() {
@@ -536,6 +593,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         createRecyclerList(bookingListResponse);
                         loadDeskList();
                         ProgressDialog.dismisProgressBar(getContext(),dialog);
+                        Log.d(TAG, "onResponse: if");
 
                     }else if(response.code()==401){
                         //Handle if token got expired
@@ -544,11 +602,14 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         Utils.finishAllActivity(getContext());
 //                        redirectToBioMetricAccess();
 
+                        Log.d(TAG, "onResponse: else" );
                     }
                 }
                 @Override
                 public void onFailure(Call<BookingListResponse> call, Throwable t) {
                     ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    Log.d(TAG, "onFailure: "+t.getMessage());
+                    Utils.toastMessage(getActivity(),"failure: "+t.getMessage());
                 }
             });
 
