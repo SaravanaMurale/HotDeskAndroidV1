@@ -35,16 +35,19 @@
             android:textSize="@dimen/_14sdp"
             android:theme="@style/TextRegular" />
 
-        <EditText
+        <in.aabhasjindal.otptextview.OtpTextView
             android:id="@+id/etPin"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvRest"
             android:layout_marginTop="@dimen/_15sdp"
-            android:gravity="center"
-            android:hint="Enter Pin"
-            android:inputType="number"
-            android:maxLength="6" />
+            android:backgroundTint="@color/figmaBlack"
+            android:textColor="@color/black"
+            app:bar_height="2dp"
+            android:layout_centerHorizontal="true"
+            app:length="6"
+            app:otp_box_background="@drawable/otp_outline"
+            app:otp_text_size="24dp" />
 
 
         <Button

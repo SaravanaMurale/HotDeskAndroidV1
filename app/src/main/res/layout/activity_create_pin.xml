@@ -36,8 +36,8 @@
             android:textSize="@dimen/_18sdp"
             android:theme="@style/TextBold" />
 
-        <EditText
-            android:id="@+id/etNewPin"
+        <TextView
+            android:id="@+id/tvNewPin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvRest"
@@ -45,35 +45,49 @@
             android:inputType="number"
             android:maxLength="6" />
 
-        <EditText
-            android:id="@+id/etConfirmPin"
+        <in.aabhasjindal.otptextview.OtpTextView
+            android:id="@+id/etNewPin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvNewPin"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:backgroundTint="@color/figmaBlack"
+            android:textColor="@color/black"
+            app:bar_height="2dp"
+            android:layout_centerHorizontal="true"
+            app:length="6"
+            app:otp_box_background="@drawable/otp_outline"
+            app:otp_text_size="24dp" />
+
+        <TextView
+            android:id="@+id/tvConfirmPin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/etNewPin"
             android:layout_marginTop="@dimen/_15sdp"
             android:hint="Confirm New Pin"
             android:inputType="number"
-            android:maxLength="6"
-            />
+            android:maxLength="6" />
 
         <in.aabhasjindal.otptextview.OtpTextView
-            android:id="@+id/etPin"
-            android:layout_width="match_parent"
+            android:id="@+id/etConfirmPin"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etConfirmPin"
-            android:textColor="#ffffff"
+            android:layout_below="@+id/tvConfirmPin"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:backgroundTint="@color/figmaBlack"
+            android:textColor="@color/black"
+            android:layout_centerHorizontal="true"
             app:bar_height="2dp"
             app:length="6"
-            app:otp_text_size="24dp"
             app:otp_box_background="@drawable/otp_outline"
-            android:backgroundTint="@color/figmaBlack"
-            />
+            app:otp_text_size="24dp" />
 
         <Button
             android:id="@+id/btnSubmit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/etPin"
+            android:layout_below="@id/etConfirmPin"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/button_blue_bg"
