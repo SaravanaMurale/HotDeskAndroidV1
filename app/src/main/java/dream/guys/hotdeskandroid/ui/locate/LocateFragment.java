@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -33,6 +34,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.text.ParseException;
@@ -51,6 +53,7 @@ import dream.guys.hotdeskandroid.adapter.FloorAdapter;
 import dream.guys.hotdeskandroid.adapter.LocateMyTeamAdapter;
 import dream.guys.hotdeskandroid.adapter.MeetingListToEditAdapter;
 import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
+import dream.guys.hotdeskandroid.databinding.FragmentLocateBinding;
 import dream.guys.hotdeskandroid.example.CanvasView;
 import dream.guys.hotdeskandroid.example.DataModel;
 import dream.guys.hotdeskandroid.example.ItemAdapter;
@@ -149,7 +152,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
     CanvasView canvasView;
-    dream.guys.hotdeskandroid.databinding.FragmentLocateBinding binding;
+    @NonNull FragmentLocateBinding binding;
 
     //Dialog dialog;
     int stateId = 0;
@@ -1158,10 +1161,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     getMeetingRoomDescription(meetingRoomId);
 
                     //MeetingRoomBooking
-                    //callMeetingRoomBookingBottomSheet(meetingRoomId,meetingRoomName);
+                    callMeetingRoomBookingBottomSheet(meetingRoomId,meetingRoomName);
 
 
-                    getMeetingBookingListToEdit(meetingRoomId);
+                    //getMeetingBookingListToEdit(meetingRoomId);
                     //MeetingRoomEditListAdapter
                    // callMeetingRoomEditListAdapterBottomSheet();
                     
@@ -1244,9 +1247,16 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         TextView unAvalibaleDeskName,tvUnavaliableBack;
 
-        BottomSheetDialog locateCheckInBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+      /*  BottomSheetDialog locateCheckInBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         locateCheckInBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_unavalible_bottomsheet,
-                new RelativeLayout(getContext())));
+                new RelativeLayout(getContext())));*/
+
+        BottomSheetDialog locateCheckInBottomSheet = new BottomSheetDialog(getContext());
+        View view = View.inflate(getContext(), R.layout.dialog_locate_unavalible_bottomsheet, null);
+        locateCheckInBottomSheet.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(500);
+
 
         unAvalibaleDeskName=locateCheckInBottomSheet.findViewById(R.id.unAvalibaleDeskName);
         tvUnavaliableBack=locateCheckInBottomSheet.findViewById(R.id.tvUnavaliableBack);
