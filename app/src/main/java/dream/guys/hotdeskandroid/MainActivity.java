@@ -88,7 +88,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                if(s.toString().length()==0){
+                    list.clear();
+                    searchRecyclerAdapter.notifyDataSetChanged();
+                }
             }
 
             @Override

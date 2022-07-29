@@ -28,6 +28,10 @@ public class ProfileActivity extends AppCompatActivity {
     TextView profileTeamName;
     @BindView(R.id.tv_team)
     TextView tvTeam;
+    @BindView(R.id.tv_email)
+    TextView tvEmail;
+    @BindView(R.id.tv_phone)
+    TextView tvPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,11 @@ public class ProfileActivity extends AppCompatActivity {
     private void uiInit() {
         profileUserName.setText(SessionHandler.getInstance().get(this, AppConstants.USERNAME));
         profileTeamName.setText(SessionHandler.getInstance().get(this, AppConstants.CURRENT_TEAM));
+        if (!SessionHandler.getInstance().get(this, AppConstants.EMAIL).isEmpty()&&SessionHandler.getInstance().get(this, AppConstants.EMAIL).equalsIgnoreCase(""))
+            tvEmail.setText(SessionHandler.getInstance().get(this, AppConstants.EMAIL));
+        if (!SessionHandler.getInstance().get(this, AppConstants.PHONE_NUMBER).isEmpty()
+                && SessionHandler.getInstance().get(this, AppConstants.PHONE_NUMBER).equalsIgnoreCase(""))
+            tvPhone.setText(SessionHandler.getInstance().get(this, AppConstants.PHONE_NUMBER));
         tvTeam.setText(SessionHandler.getInstance().get(this, AppConstants.CURRENT_TEAM));
         if (SessionHandler.getInstance().get(this, AppConstants.USERIMAGE)!=null){
             byte[] decodedString = Base64.decode(

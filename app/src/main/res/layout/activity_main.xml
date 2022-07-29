@@ -81,7 +81,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:background="@drawable/bg_transparent_round"
-            android:backgroundTint="@color/figmaGrey80"
+            android:backgroundTint="@color/figmaGrey05"
             android:fillViewport="true"
             android:visibility="visible"
 

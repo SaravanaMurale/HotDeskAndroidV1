@@ -51,6 +51,8 @@ public class SignInActivity extends AppCompatActivity {
     RelativeLayout signInRoot;
     @BindView(R.id.btnSignIn)
     Button btnSignIn;
+    @BindView(R.id.btnPinSignIn)
+    Button btnPinSignIn;
     Dialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,21 +81,21 @@ public class SignInActivity extends AppCompatActivity {
         } catch (java.security.NoSuchAlgorithmException e) {
 
         }
-
+        checkForPinLogin();
         //Already loggedin user
         System.out.println("login chec"+SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.PIN_SETUP_DONE));
         if(tokenStatus &&!SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.LOGIN_CHECK)
                 && SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.PIN_SETUP_DONE)){
-            Intent intent=new Intent(SignInActivity.this, LoginPinActivity.class);
-            startActivity(intent);
-            finish();
+            btnPinSignIn.setVisibility(View.VISIBLE);
             //If token expired enable fingerprint
 //            enableBioMetricAccessHere();
         } else if (!SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.LOGIN_CHECK)
                 && SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.PIN_SETUP_DONE)){
+            btnPinSignIn.setVisibility(View.VISIBLE);
+            /*
             Intent intent=new Intent(SignInActivity.this, LoginPinActivity.class);
             startActivity(intent);
-            finish();
+            finish();*/
         }else {
             //NormalFlow
             int userId=SessionHandler.getInstance().getInt(SignInActivity.this, AppConstants.USER_ID);
@@ -107,10 +109,19 @@ public class SignInActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkForPinLogin();
-//                Intent intent=new Intent(SignInActivity.this,LoginActivity.class);
-//                startActivity(intent);
-//                finish();
+//                checkForPinLogin();
+                Intent intent=new Intent(SignInActivity.this,LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        btnPinSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                checkForPinLogin();
+                Intent intent=new Intent(SignInActivity.this, LoginPinActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -131,13 +142,16 @@ public class SignInActivity extends AppCompatActivity {
                     if(response.code()==200){
                         ProgressDialog.dismisProgressBar(SignInActivity.this,dialog);
                         if (response.body().isHasPinSetup()){
-                            Intent intent=new Intent(SignInActivity.this,LoginActivity.class);
+                            btnPinSignIn.setVisibility(View.VISIBLE);
+                            /*Intent intent=new Intent(SignInActivity.this,LoginActivity.class);
                             startActivity(intent);
-                            finish();
+                            finish();*/
                         }else {
+                            btnPinSignIn.setVisibility(View.GONE);
+/*
                             Intent intent=new Intent(SignInActivity.this,LoginActivity.class);
                             startActivity(intent);
-                            finish();
+                            finish();*/
                         }
 
                     }else if(response.code() == 401){
