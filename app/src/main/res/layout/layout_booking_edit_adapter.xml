@@ -25,7 +25,7 @@
             android:layout_height="@dimen/_20sdp"
             android:layout_marginLeft="@dimen/_20sdp"
             android:layout_toRightOf="@id/edit_outLine"
-            android:src="@drawable/car_edit" />
+            android:src="@drawable/car" />
 
         <TextView
             android:id="@+id/editCode"
