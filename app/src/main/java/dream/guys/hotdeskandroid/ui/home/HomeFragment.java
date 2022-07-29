@@ -48,8 +48,11 @@ import com.google.gson.JsonObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -67,6 +70,7 @@ import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.ImageResponse;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
+import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
 import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
@@ -114,6 +118,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     ArrayList<BookingListResponse.DayGroup> recyclerModelArrayList;
     ArrayList<IncomingRequestResponse.Result> notiList;
     List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse;
+    HashMap<Integer,String> meetingRecurenceMap = new HashMap<Integer, String>();
     boolean qrEnabled = false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -194,6 +199,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             checkPinPopUp();
         }
 
+        meetingRecurenceCall();
         qrEnabledCall();
         loadUserImage();
         loadTenantImage();
@@ -201,6 +207,63 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         loadHomeList();
 
         return root;
+    }
+
+    private void meetingRecurenceCall() {
+        if (Utils.isNetworkAvailable(getActivity())) {
+
+//            dialog= ProgressDialog.showProgressBar(getContext());
+            LocalDate today = LocalDate.now();
+
+            // Go backward to get Monday
+            LocalDate monday = today;
+            while (monday.getDayOfWeek() != DayOfWeek.MONDAY) {
+                monday = monday.minusDays(1);
+            }
+            // Go forward to get Sunday
+            LocalDate sunday = today;
+            while (sunday.getDayOfWeek() != DayOfWeek.SUNDAY) {
+                sunday = sunday.plusDays(1);
+            }
+
+            System.out.println("Today: " + today);
+            System.out.println("Monday of the Week: " + monday);
+            System.out.println("Sunday of the Week: " + sunday);
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<MeetingListToEditResponse>> call = apiService.getMeetingListToEdit(monday+"T00:00:00.000Z",sunday+"T00:00:00.000Z",null);
+            call.enqueue(new Callback<List<MeetingListToEditResponse>>() {
+                @Override
+                public void onResponse(Call<List<MeetingListToEditResponse>> call, Response<List<MeetingListToEditResponse>> response) {
+                    if(response.code()==200){
+//                        ProgressDialog.dismisProgressBar(getContext(),dialog);
+                        List<MeetingListToEditResponse> list= response.body();
+                        for (int i=0; i<list.size(); i++){
+                            if (list.get(i).getRecurrence()!=null){
+                                meetingRecurenceMap.put(list.get(i).getId(),list.get(i).getMeetingRoomName());
+                            }
+                        }
+                    }else if(response.code()==401){
+                        //Handle if token got expired
+//                        ProgressDialog.dismisProgressBar(getContext(),dialog);
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                        Utils.finishAllActivity(getContext());
+//                        redirectToBioMetricAccess();
+
+                        Log.d(TAG, "onResponse: else" );
+                    }
+                }
+                @Override
+                public void onFailure(Call<List<MeetingListToEditResponse>> call, Throwable t) {
+//                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    Log.d(TAG, "onFailure: "+t.getMessage());
+                    Utils.toastMessage(getActivity(),"failure: "+t.getMessage());
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
     }
 
     private void callSearchRecyclerData() {
@@ -728,7 +791,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         rvHomeBooking.setHasFixedSize(true);
 
        // homeBookingListAdapter=new HomeBookingListAdapter(getContext(), getActivity(), recyclerModelArrayList);
-        homeBookingListAdapter=new HomeBookingListAdapter(getContext(),this,recyclerModelArrayList,getActivity(),this);
+        homeBookingListAdapter=new HomeBookingListAdapter(getContext(),this,recyclerModelArrayList,getActivity(),this,meetingRecurenceMap);
         rvHomeBooking.setAdapter(homeBookingListAdapter);
 
         ProgressDialog.dismisProgressBar(getContext(),dialog);

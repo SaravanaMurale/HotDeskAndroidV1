@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,14 +43,15 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
     ArrayList<BookingListResponse.DayGroup> list;
 
     public OnCheckInClickable onCheckInClickable;
+    HashMap<Integer,String> map;
 
-
-    public HomeBookingListAdapter(Context context, OnCheckInClickable onCheckInClickable, ArrayList<BookingListResponse.DayGroup> recyclerModelArrayList, FragmentActivity activity, HomeFragment homeFragment) {
+    public HomeBookingListAdapter(Context context, OnCheckInClickable onCheckInClickable, ArrayList<BookingListResponse.DayGroup> recyclerModelArrayList, FragmentActivity activity, HomeFragment homeFragment, HashMap<Integer,String> map) {
         this.context = context;
         this.onCheckInClickable =  onCheckInClickable;
         this.list = recyclerModelArrayList;
         this.activity =activity;
         this.fragment = homeFragment;
+        this.map=map;
     }
 
 
@@ -185,8 +187,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
             holder.bookingAddress.setText(new StringBuilder()
                     .append("")
-                    .append(list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getfLoorName())
-                    .append(" - ").append(list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getBuildingName()).toString()
+                    .append(" "+list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getBuildingName())
+                    .append(" - ").append(list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getfLoorName()).toString()
             );
             switch (list.get(position).getCalendarEntriesModel().getUsageTypeAbbreviation()){
                 case "RQ":
@@ -256,10 +258,13 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             //Meeting Room
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
+            if (map.containsKey(list.get(position).getMeetingBookingsModel().getId())){
+                holder.bookingRefreshIcon.setVisibility(View.VISIBLE);
+            }
             holder.bookingAddress.setText(new StringBuilder()
                     .append("")
-                    .append(list.get(position).getMeetingBookingsModel().getLocationBuildingFloor().getfLoorName())
-                    .append(" - ").append(list.get(position).getMeetingBookingsModel().getLocationBuildingFloor().getBuildingName()).toString()
+                    .append(list.get(position).getMeetingBookingsModel().getLocationBuildingFloor().getBuildingName())
+                    .append(" - ").append(list.get(position).getMeetingBookingsModel().getLocationBuildingFloor().getfLoorName()).toString()
             );
             Glide.with(context)
                     .load(R.drawable.room)
@@ -292,8 +297,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
             holder.bookingAddress.setText(new StringBuilder()
                     .append("")
-                    .append(list.get(position).getCarParkBookingsModel().getLocationBuildingFloor().getfLoorName())
-                    .append(" - ").append(list.get(position).getCarParkBookingsModel().getLocationBuildingFloor().getBuildingName()).toString()
+                    .append(list.get(position).getCarParkBookingsModel().getLocationBuildingFloor().getBuildingName())
+                    .append(" - ").append(list.get(position).getCarParkBookingsModel().getLocationBuildingFloor().getfLoorName()).toString()
             );
             //show green line if its falls between from and to time of today
             if(Utils.getCurrentDate()

@@ -33,6 +33,7 @@ import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.MeetingRoomDescriptionResponse;
+import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
 import dream.guys.hotdeskandroid.model.response.TypeOfLoginResponse;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
@@ -90,6 +91,9 @@ public interface ApiInterface {
     @GET("api/Account/LoggedInUser")
     Call<UserDetailsResponse>  getLoginUserDetails();
 
+    @GET("api/mywork/teammemberstatus")
+    Call<List<TeamMembersResponse>> getTeamMembers(@Query("date") String date,
+                                             @Query("teamId") int teamId);
     @GET("api/globalsearch")
     Call<GlobalSearchResponse> getGlobalSearchData(@Query("pageSize") int pageSize,
                                                    @Query("filterText") String text);
@@ -196,9 +200,6 @@ public interface ApiInterface {
     //CarParkDescription
     @GET("api/ParkingSlot/{id}")
     Call<CarParkingDescriptionResponse> getCarParkingDescription(@Path("id") int carParkId);
-
-
-
 
 
 }
