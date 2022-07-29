@@ -21,22 +21,63 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_3sdp"
                 android:text="Desk-001"
-                android:textSize="@dimen/_14sdp"
+                android:textSize="@dimen/_18sdp"
                 android:theme="@style/TextBold" />
 
             <TextView
-                android:id="@+id/date"
+                android:id="@+id/tvLocateDeskBookLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:textSize="@dimen/_12sdp"
                 android:text="Location1,Location2"
                 android:theme="@style/TextSmall" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <TextView
+                    android:id="@+id/firstFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/figmaBgGrey"
+                    android:padding="@dimen/_3sdp"
+                    android:text="Monitor" />
+
+                <TextView
+                    android:id="@+id/secondFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Standing Desk"
+                    android:background="@color/figmaBgGrey"
+                    android:padding="@dimen/_3sdp"
+                    android:layout_toRightOf="@+id/firstFilter"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    />
+
+                <TextView
+                    android:id="@+id/thirdFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Adjustable Height"
+                    android:background="@color/figmaBgGrey"
+                    android:padding="@dimen/_3sdp"
+                    android:layout_toRightOf="@+id/secondFilter"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    />
+
+            </RelativeLayout>
 
 
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                >
 
                 <TextView
                     android:id="@+id/tvDescription"
@@ -66,9 +107,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Avaliable"
-                    android:layout_toRightOf="@+id/ivOnline"
                     android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_toRightOf="@+id/ivOnline"
+                    android:text="Avaliable"
+                    android:textColor="@color/black"
                     />
 
             </RelativeLayout>

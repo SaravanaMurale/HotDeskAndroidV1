@@ -1415,18 +1415,40 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
+            boolean status=true;
+
+                if(startRoomTime.getText().toString().equals("9:00")){
+                    Toast.makeText(getContext(),"Please Select Start Time",Toast.LENGTH_LONG).show();
+                    status=false;
+                    return;
+                }
+                if(endTRoomime.getText().toString().equals("9:00")){
+                    Toast.makeText(getContext(),"Please Select End Time",Toast.LENGTH_LONG).show();
+                    status=false;
+                    return;
+                }
                 String subject=etSubject.getText().toString();
                 String comment=etComments.getText().toString();
+                if(subject.isEmpty() || subject.equals("") || subject==null){
+                    Toast.makeText(getContext(),"Please Enter Subject",Toast.LENGTH_LONG).show();
+                    status=false;
+                    return;
+                }
 
-               if( subject!=null && comment!=null){
+                if(comment.isEmpty() || comment.equals("") || comment==null){
+                    Toast.makeText(getContext(),"Please Enter Comment",Toast.LENGTH_LONG).show();
+                    status=false;
+                    return;
+                }
+
+                if(status){
+
                    bottomSheetDialog.dismiss();
                    doMeetingRoomBooking(meetingRoomId,startRoomTime.getText().toString(),endTRoomime.getText().toString(),subject,comment);
 
-
                }else {
-
-                   Toast.makeText(getContext(),"Select Subject and Comment",Toast.LENGTH_LONG).show();
-               }
+                    Toast.makeText(getContext(),"Please Enter All Details",Toast.LENGTH_LONG).show();
+                }
 
             }
         });
@@ -1546,7 +1568,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     private void CallCarBookingEditList(CarParkingForEditResponse carParkingForEditResponse) {
 
         RecyclerView rvCarEditList;
-        TextView editClose,editDate;
+        TextView editClose,editDate,bookingName;
         LinearLayoutManager linearLayoutManager;
 
         BottomSheetDialog locateCarEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -1556,6 +1578,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         rvCarEditList = locateCarEditBottomSheet.findViewById(R.id.rvEditList);
         editClose=locateCarEditBottomSheet.findViewById(R.id.editClose);
         editDate=locateCarEditBottomSheet.findViewById(R.id.editDate);
+        bookingName=locateCarEditBottomSheet.findViewById(R.id.bookingName);
+
+        bookingName.setText("Car Booking");
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvCarEditList.setLayoutManager(linearLayoutManager);
@@ -1578,7 +1603,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     private void callBottomSheetToEdit(BookingForEditResponse bookingForEditResponse, String code) {
 
         RecyclerView rvEditList;
-        TextView editClose,editDate;
+        TextView editClose,editDate,bookingName;
         LinearLayoutManager linearLayoutManager;
 
         BottomSheetDialog locateEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -1588,6 +1613,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         rvEditList = locateEditBottomSheet.findViewById(R.id.rvEditList);
         editClose=locateEditBottomSheet.findViewById(R.id.editClose);
         editDate=locateEditBottomSheet.findViewById(R.id.editDate);
+        bookingName=locateEditBottomSheet.findViewById(R.id.bookingName);
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvEditList.setLayoutManager(linearLayoutManager);
@@ -1597,7 +1623,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         rvEditList.setAdapter(bookingListToEditAdapter);
 
         //Show Here Current Date
-        editDate.setText(getCurrentDate());
+        editDate.setText(binding.locateCalendearView.getText().toString());
+
+        if(code.equals("3")){
+            bookingName.setText("Desk Booking");
+        }
 
 
         editClose.setOnClickListener(new View.OnClickListener() {
@@ -2193,7 +2223,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
 
-    //Book BottomSheet
+    //BookBottomSheet
     private void callDeskBookingnBottomSheet(String selctedCode, String key, int id, String code, int requestTeamId, int requestTeamDeskId) {
 
         new Handler().postDelayed(new Runnable() {
@@ -2203,7 +2233,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         },1000);
 
-        TextView tvDescription;
+        TextView tvDescription,tvLocateDeskBookLocation;
 
         System.out.println("BookingRequestDetail" + selctedCode + " " + key + " " + id + " " + code);
 
@@ -2223,7 +2253,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         editBookingContinue = locateCheckInBottomSheet.findViewById(R.id.editBookingContinue);
         editBookingBack = locateCheckInBottomSheet.findViewById(R.id.editBookingBack);
 
+        tvLocateDeskBookLocation=locateCheckInBottomSheet.findViewById(R.id.tvLocateDeskBookLocation);
         tvDescription=locateCheckInBottomSheet.findViewById(R.id.tvDescription);
+
+        String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
+        String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
+
+        tvLocateDeskBookLocation.setText(buildingName+","+floorName);
 
         if(deskDescriotion!=null){
             tvDescription.setText("Description:"+deskDescriotion);
@@ -2389,12 +2425,22 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 BaseResponse baseResponse=response.body();
 
+                openCheckoutDialog("Booking Request Successfull");
+
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
-                callInitView();
-                if(baseResponse!=null){
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        callInitView();
+                    }
+                },1000);
+
+
+                /*if(baseResponse!=null){
                     Toast.makeText(getContext(),baseResponse.getResultCode(),Toast.LENGTH_LONG).show();
-                }
+                }*/
 
 
 //                System.out.println("DeskRequestBookingDesk"+baseResponse.getResultCode());
@@ -2636,7 +2682,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     @Override
     public void onEditClick(BookingForEditResponse.Bookings bookings, String code, List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities) {
 
-        TextView startTime,endTime,date;
+        TextView startTime,endTime,date,editBookingBack;
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_booking,
@@ -2652,11 +2698,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         RelativeLayout teamsBlock=bottomSheetDialog.findViewById(R.id.rl_teams_layout);
         TextView tvComments=bottomSheetDialog.findViewById(R.id.tv_comments);
         EditText commentRegistration=bottomSheetDialog.findViewById(R.id.ed_registration);
+        editBookingBack=bottomSheetDialog.findViewById(R.id.editBookingBack);
 
         TextView select=bottomSheetDialog.findViewById(R.id.select_desk_room);
 
         //Need To Change Date Here
-        date.setText(bookings.getDate());
+        date.setText(binding.locateCalendearView.getText().toString());
 
         if(code.equals("3")){
 
@@ -2697,6 +2744,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
                 callDeskBottomSheetDialogToSelectDeskCode(teamDeskAvailabilities);
+            }
+        });
+
+        editBookingBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
             }
         });
 
@@ -2843,7 +2897,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     @Override
     public void onCarEditClick(CarParkingForEditResponse.CarParkBooking carParkBooking) {
 
-        TextView startTime,endTime,date;
+        TextView startTime,endTime,date,editBookingBack;
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_booking,
@@ -2860,6 +2914,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         TextView tvComments=bottomSheetDialog.findViewById(R.id.tv_comments);
         EditText commentRegistration=bottomSheetDialog.findViewById(R.id.ed_registration);
         EditText etBookedBy=bottomSheetDialog.findViewById(R.id.etBookedBy);
+        editBookingBack=bottomSheetDialog.findViewById(R.id.editBookingBack);
 
         TextView select=bottomSheetDialog.findViewById(R.id.select_desk_room);
 
@@ -2871,6 +2926,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         etBookedBy.setText(carParkBooking.getBookedForUserName());
         tvComments.setText("Registration number");
         commentRegistration.setHint("Registration number");
+
+        startTime.setText(Utils.splitTime(carParkBooking.getFrom()));
+        endTime.setText(Utils.splitTime(carParkBooking.getMyto()));
 
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2887,6 +2945,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), endTime, "", "");
                 //Utils.bottomSheetTimePicker(getContext(),getActivity(),endTime,"End Time","");
 
+            }
+        });
+
+        editBookingBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
             }
         });
 
@@ -2910,6 +2975,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 if(status){
                     //Edit CarParkBooking
+                    bottomSheetDialog.dismiss();
                     doEditCarParkBooking(carParkBooking);
                 }
 
@@ -2963,6 +3029,15 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                openCheckoutDialog("Success");
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        callInitView();
+                    }
+                },2000);
+
                 System.out.println("CarEditSuccessfull");
 
             }
