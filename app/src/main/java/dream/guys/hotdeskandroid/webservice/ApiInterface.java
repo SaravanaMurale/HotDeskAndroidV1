@@ -1,5 +1,7 @@
 package dream.guys.hotdeskandroid.webservice;
 
+import android.provider.Settings;
+
 import com.google.gson.JsonObject;
 
 import java.util.List;
@@ -25,6 +27,7 @@ import dream.guys.hotdeskandroid.model.response.CheckPinLoginResponse;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.DeskDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
+import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.ImageResponse;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
@@ -87,6 +90,9 @@ public interface ApiInterface {
     @GET("api/Account/LoggedInUser")
     Call<UserDetailsResponse>  getLoginUserDetails();
 
+    @GET("api/globalsearch")
+    Call<GlobalSearchResponse> getGlobalSearchData(@Query("pageSize") int pageSize,
+                                                   @Query("filterText") String text);
     @GET("api/MyWork/UserMyWorkStatus")
     Call<BookingListResponse> getUserMyWorkDetails(@Query("dayOfTheWeek") String dayOfTheWeek,
                                                    @Query("includeNonWorkingDays") boolean includeNonWorkingDays);

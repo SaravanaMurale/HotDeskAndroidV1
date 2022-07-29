@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,20 +24,23 @@ import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
+import in.aabhasjindal.otptextview.OTPListener;
+import in.aabhasjindal.otptextview.OtpTextView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CreatePinActivity extends AppCompatActivity {
     @BindView(R.id.etConfirmPin)
-    EditText confirmPin;
+    OtpTextView confirmPin;
     @BindView(R.id.etNewPin)
-    EditText newPin;
+    OtpTextView newPin;
     @BindView(R.id.btnSubmit)
     Button btnSubmiot;
     @BindView(R.id.tv_back_to_home)
     TextView tvBack;
     Dialog dialog;
+    String pin="", conPin="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,39 @@ public class CreatePinActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         dialog = new Dialog(CreatePinActivity.this);
+
+
+        newPin.setOtpListener(new OTPListener()
+        {
+            @Override
+            public void onInteractionListener()
+            {
+
+            }
+
+            @Override
+            public void onOTPComplete(String otp)
+            {
+                pin = otp;
+//                Toast.makeText(getApplicationContext(),otp,Toast.LENGTH_LONG).show();
+            }
+        });
+
+        confirmPin.setOtpListener(new OTPListener()
+        {
+            @Override
+            public void onInteractionListener()
+            {
+
+            }
+
+            @Override
+            public void onOTPComplete(String otp)
+            {
+                conPin = otp;
+//                Toast.makeText(getApplicationContext(),otp,Toast.LENGTH_LONG).show();
+            }
+        });
 
         tvBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,9 +92,16 @@ public class CreatePinActivity extends AppCompatActivity {
         btnSubmiot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validateLoginDetails(newPin.getText().toString(),confirmPin.getText().toString())){
+                if (validateLoginDetails(pin,conPin)){
                     createPinLogin();
+                }else {
+                    newPin.setOTP("");
+                    confirmPin.setOTP("");
                 }
+
+               /* if (validateLoginDetails(newPin.getText().toString(),confirmPin.getText().toString())){
+                    createPinLogin();
+                }*/
             }
         });
 
@@ -71,8 +115,8 @@ public class CreatePinActivity extends AppCompatActivity {
             CreatePinRequest createPinRequest = new CreatePinRequest();
             createPinRequest.setTenantName(SessionHandler.getInstance().get(this, AppConstants.COMPANY_NAME));
             createPinRequest.setUsername(SessionHandler.getInstance().get(this,AppConstants.EMAIL));
-            createPinRequest.setNewPin(newPin.getText().toString().trim());
-            createPinRequest.setConfirmNewPin(confirmPin.getText().toString().trim());
+            createPinRequest.setNewPin(pin.trim());
+            createPinRequest.setConfirmNewPin(conPin.trim());
             Call<BaseResponse> call = apiService.createPin(createPinRequest);
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
@@ -127,6 +171,9 @@ public class CreatePinActivity extends AppCompatActivity {
             userDetailStatus = false;
         }else if (nwPin.length() < 6 || conPin.length() < 6){
             Utils.toastMessage(getApplicationContext(),"Pin Should be 6 digits");
+            userDetailStatus = false;
+        }else if (!nwPin.equalsIgnoreCase(conPin)){
+            Utils.toastMessage(getApplicationContext(),"Pin Mismatch");
             userDetailStatus = false;
         }else {
             userDetailStatus = true;
