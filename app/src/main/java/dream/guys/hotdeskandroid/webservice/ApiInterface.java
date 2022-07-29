@@ -31,6 +31,7 @@ import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.ImageResponse;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
+import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.MeetingRoomDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.TypeOfLoginResponse;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
@@ -170,18 +171,29 @@ public interface ApiInterface {
                                                                 @Query("toDate") String toDate,
                                                                 @Query("slotId") int slotId);
 
-
     //MeetingRoomBook
     @PUT("api/MeetingRoomBooking/bookings")
     Call<BaseResponse> doMeetingRoomBook(@Body MeetingRoomRequest meetingRoomRequest);
 
+    //MeetingEditListResponse
+    @GET("api/MeetingRoomBooking/bookings")
+    Call<List<MeetingListToEditResponse>> getMeetingListToEdit(@Query("fromDate") String fromDate,
+                                                         @Query("toDate") String toDate,
+                                                         @Query("roomIds") String slotId);
+
+
+    //MettingRoomEdit
+    @PUT("api/MeetingRoomBooking/bookings")
+    Call<BaseResponse>  doRoomEdit(@Body MeetingRoomRequest meetingRoomRequest);
+
     //DeskDescription
     @GET("api/Desks/{id}")
     Call<DeskDescriptionResponse> getDiskDescription(@Path("id") int deskId);
-
+    //RoomDescription
     @GET("api/MeetingRooms/{id}")
     Call<MeetingRoomDescriptionResponse> getMeetingRoomDescription(@Path("id") int roomId);
 
+    //CarParkDescription
     @GET("api/ParkingSlot/{id}")
     Call<CarParkingDescriptionResponse> getCarParkingDescription(@Path("id") int carParkId);
 
