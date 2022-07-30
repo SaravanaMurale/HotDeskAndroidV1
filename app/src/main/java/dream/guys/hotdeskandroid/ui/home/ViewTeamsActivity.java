@@ -77,7 +77,7 @@ public class ViewTeamsActivity extends AppCompatActivity {
                     if(response.code()==200){
                         ProgressDialog.dismisProgressBar(ViewTeamsActivity.this,dialog);
                         teamMembersResponses = response.body();
-                        Toast.makeText(ViewTeamsActivity.this, ""+teamMembersResponses.size(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ViewTeamsActivity.this, ""+teamMembersResponses.size(), Toast.LENGTH_SHORT).show();
                         if (teamMembersResponses!=null &&
                                 teamMembersResponses.size()>0){
                             for (int i=0;i<teamMembersResponses.size();i++){
@@ -101,7 +101,7 @@ public class ViewTeamsActivity extends AppCompatActivity {
                 }
                 @Override
                 public void onFailure(Call<List<TeamMembersResponse>> call, Throwable t) {
-                    Toast.makeText(ViewTeamsActivity.this, "on fail", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(ViewTeamsActivity.this, "on fail", Toast.LENGTH_SHORT).show();
                     Utils.showCustomAlertDialog(ViewTeamsActivity.this,"Response Failure: "+t.getMessage());
                     ProgressDialog.dismisProgressBar(ViewTeamsActivity.this,dialog);
                     Log.d("Search", "onResponse: fail"+t.getMessage());

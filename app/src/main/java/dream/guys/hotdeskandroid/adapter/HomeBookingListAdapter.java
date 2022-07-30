@@ -185,6 +185,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
 
+            if (list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor()!=null)
             holder.bookingAddress.setText(new StringBuilder()
                     .append("")
                     .append(" "+list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getBuildingName())

@@ -143,10 +143,12 @@ public class SignInActivity extends AppCompatActivity {
                         ProgressDialog.dismisProgressBar(SignInActivity.this,dialog);
                         if (response.body().isHasPinSetup()){
                             btnPinSignIn.setVisibility(View.VISIBLE);
+                            btnSignIn.setVisibility(View.VISIBLE);
                             /*Intent intent=new Intent(SignInActivity.this,LoginActivity.class);
                             startActivity(intent);
                             finish();*/
                         }else {
+                            btnSignIn.setVisibility(View.VISIBLE);
                             btnPinSignIn.setVisibility(View.GONE);
 /*
                             Intent intent=new Intent(SignInActivity.this,LoginActivity.class);
