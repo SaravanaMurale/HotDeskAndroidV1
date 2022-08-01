@@ -184,6 +184,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 getActivity().startActivity(intent);
             }
         });
+
         binding.homeUserName.setText(SessionHandler.getInstance().get(getContext(),AppConstants.USERNAME));
         binding.homeTeamName.setText(SessionHandler.getInstance().get(getContext(),AppConstants.CURRENT_TEAM));
 /*
@@ -231,7 +232,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             System.out.println("Sunday of the Week: " + sunday);
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<List<MeetingListToEditResponse>> call = apiService.getMeetingListToEdit(monday+"T00:00:00.000Z",sunday+"T00:00:00.000Z",null);
+            Call<List<MeetingListToEditResponse>> call = apiService.getMeetingListToEdit(monday+"T00:00:00.000Z",sunday+"T00:00:00.000Z");
             call.enqueue(new Callback<List<MeetingListToEditResponse>>() {
                 @Override
                 public void onResponse(Call<List<MeetingListToEditResponse>> call, Response<List<MeetingListToEditResponse>> response) {
@@ -247,7 +248,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         //Handle if token got expired
 //                        ProgressDialog.dismisProgressBar(getContext(),dialog);
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                        Utils.finishAllActivity(getContext());
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+//                        Utils.finishAllActivity(getContext());
 //                        redirectToBioMetricAccess();
 
                         Log.d(TAG, "onResponse: else" );
@@ -266,42 +268,6 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         }
     }
 
-    private void callSearchRecyclerData() {
-        if (Utils.isNetworkAvailable(getActivity())) {
-
-            dialog= ProgressDialog.showProgressBar(getContext());
-
-            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<BookingListResponse> call = apiService.getUserMyWorkDetails(Utils.getCurrentDate(),true);
-            call.enqueue(new Callback<BookingListResponse>() {
-                @Override
-                public void onResponse(Call<BookingListResponse> call, Response<BookingListResponse> response) {
-                    if(response.code()==200){
-                        ProgressDialog.dismisProgressBar(getContext(),dialog);
-                        Log.d(TAG, "onResponse: if");
-
-                    }else if(response.code()==401){
-                        //Handle if token got expired
-                        ProgressDialog.dismisProgressBar(getContext(),dialog);
-                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                        Utils.finishAllActivity(getContext());
-//                        redirectToBioMetricAccess();
-
-                        Log.d(TAG, "onResponse: else" );
-                    }
-                }
-                @Override
-                public void onFailure(Call<BookingListResponse> call, Throwable t) {
-                    ProgressDialog.dismisProgressBar(getContext(),dialog);
-                    Log.d(TAG, "onFailure: "+t.getMessage());
-                    Utils.toastMessage(getActivity(),"failure: "+t.getMessage());
-                }
-            });
-
-        } else {
-            Utils.toastMessage(getActivity(), "Please Enable Internet");
-        }
-    }
 
     private void qrEnabledCall() {
         if (Utils.isNetworkAvailable(getActivity())) {
@@ -317,9 +283,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         qrEnabled = response.body();
 //                        qrEnabled = true;
                     }else if(response.code()==401){
-                        Utils.showCustomAlertDialog(getActivity(),"Token Expired");
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                        Utils.finishAllActivity(getContext());
+//                        Utils.finishAllActivity(getContext());
                     }
                 }
                 @Override
@@ -389,9 +355,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                             }
                         }
                     }else if(response.code()==401){
-                        Utils.toastMessage(getActivity(),"Token Expired");
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                        Utils.finishAllActivity(getContext());
+//                        Utils.finishAllActivity(getContext());
                     }
                 }
                 @Override
@@ -430,9 +396,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                             tenantProfile.setImageBitmap(decodedByte);
                         }
                     }else if(response.code()==401){
-                        Utils.toastMessage(getActivity(),"Token Expired");
+//                        Utils.toastMessage(getActivity(),"Token Expired");
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                        Utils.finishAllActivity(getContext());
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+//                        Utils.finishAllActivity(getContext());
                     }
                 }
                 @Override
@@ -471,9 +438,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                             userProfile.setImageBitmap(decodedByte);
                         }
                     }else if(response.code()==401){
-                        Utils.showCustomAlertDialog(getActivity(),"Token Expired");
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                        Utils.finishAllActivity(getContext());
+//                        Utils.finishAllActivity(getContext());
                     }
                 }
                 @Override
@@ -642,7 +609,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         //Handle if token got expired
                         ProgressDialog.dismisProgressBar(getContext(),dialog);
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                        Utils.finishAllActivity(getContext());
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+//                        Utils.finishAllActivity(getContext());
 //                        redirectToBioMetricAccess();
 
                         Log.d(TAG, "onResponse: else" );
@@ -676,9 +644,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
                         }
                     }else if(response.code()==401){
-                        Utils.showCustomAlertDialog(getActivity(),"Token Expired");
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                        Utils.finishAllActivity(getContext());
+//                        Utils.finishAllActivity(getContext());
                     }
                     ProgressDialog.dismisProgressBar(getContext(),dialog);
 //                    createRecyclerDeskList(response.body().getTeamDeskAvailabilities());
@@ -953,9 +921,12 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             teamsBlock.setVisibility(View.GONE);
             commentRegistration.setHint("Comments");
             tvComments.setText("Comments");
-
         }else if (dskRoomParkStatus==2){
             llDeskLayout.setVisibility(View.GONE);
+            commentRegistration.setVisibility(View.GONE);
+            tvComments.setVisibility(View.GONE);
+            repeatBlock.setVisibility(View.GONE);
+            teamsBlock.setVisibility(View.GONE);
         }else {
             llDeskLayout.setVisibility(View.GONE);
             repeatBlock.setVisibility(View.GONE);

@@ -182,8 +182,7 @@ public interface ApiInterface {
     //MeetingEditListResponse
     @GET("api/MeetingRoomBooking/bookings")
     Call<List<MeetingListToEditResponse>> getMeetingListToEdit(@Query("fromDate") String fromDate,
-                                                         @Query("toDate") String toDate,
-                                                         @Query("roomIds") String slotId);
+                                                         @Query("toDate") String toDate);
 
 
     //MettingRoomEdit

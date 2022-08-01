@@ -82,6 +82,7 @@ public class SignInActivity extends AppCompatActivity {
 
         }
         checkForPinLogin();
+
         //Already loggedin user
         System.out.println("login chec"+SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.PIN_SETUP_DONE));
         if(tokenStatus &&!SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.LOGIN_CHECK)
