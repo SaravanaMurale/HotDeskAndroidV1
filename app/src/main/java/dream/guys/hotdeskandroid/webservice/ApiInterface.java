@@ -15,6 +15,7 @@ import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkEditRequest;
 import dream.guys.hotdeskandroid.model.request.LocateDeskBookingRequest;
+import dream.guys.hotdeskandroid.model.request.LocationMR_Request;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
@@ -31,11 +32,13 @@ import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.ImageResponse;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
+import dream.guys.hotdeskandroid.model.response.LocationWithMR_Response;
 import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.MeetingRoomDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
 import dream.guys.hotdeskandroid.model.response.TypeOfLoginResponse;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
+import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -188,6 +191,12 @@ public interface ApiInterface {
     //MettingRoomEdit
     @PUT("api/MeetingRoomBooking/bookings")
     Call<BaseResponse>  doRoomEdit(@Body MeetingRoomRequest meetingRoomRequest);
+
+    //MeetingUnavalibilityChecking
+    @GET("api/meetingrooms/userallowedmeetingrooms")
+    Call<List<UserAllowedMeetingResponse>> userAllowedMeetings();
+    @POST("api/MeetingRooms/locationsWithMR")
+    Call<List<LocationWithMR_Response>> getLocationMR(@Body LocationMR_Request locationMR_request);
 
     //DeskDescription
     @GET("api/Desks/{id}")

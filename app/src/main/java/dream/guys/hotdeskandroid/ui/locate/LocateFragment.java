@@ -7,7 +7,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -49,6 +48,7 @@ import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.BookingListToEditAdapter;
 import dream.guys.hotdeskandroid.adapter.CarListToEditAdapter;
 import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
+import dream.guys.hotdeskandroid.adapter.DeskSelectListAdapter;
 import dream.guys.hotdeskandroid.adapter.FloorAdapter;
 import dream.guys.hotdeskandroid.adapter.LocateMyTeamAdapter;
 import dream.guys.hotdeskandroid.adapter.MeetingListToEditAdapter;
@@ -65,8 +65,10 @@ import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkEditRequest;
 import dream.guys.hotdeskandroid.model.request.LocateDeskBookingRequest;
+import dream.guys.hotdeskandroid.model.request.LocationMR_Request;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.request.Point;
+import dream.guys.hotdeskandroid.model.request.SelectCode;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkAvalibilityResponse;
@@ -76,9 +78,11 @@ import dream.guys.hotdeskandroid.model.response.CarParkingslotsResponse;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.DeskDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
+import dream.guys.hotdeskandroid.model.response.LocationWithMR_Response;
 import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.MeetingRoomDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
+import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
@@ -88,7 +92,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSelectListener, BookingListToEditAdapter.OnEditClickable, DeskListRecyclerAdapter.OnSelectSelected, CarListToEditAdapter.CarEditClickable, MeetingListToEditAdapter.OnMeetingEditClickable {
+public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSelectListener, BookingListToEditAdapter.OnEditClickable, DeskListRecyclerAdapter.OnSelectSelected, CarListToEditAdapter.CarEditClickable, MeetingListToEditAdapter.OnMeetingEditClickable, DeskSelectListAdapter.OnDeskSelectClickable {
 
 
 
@@ -170,6 +174,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     int teamDeskIdForBooking = 0;
     int selectedCarParkingSlotId = 0;
 
+    List<LocateCountryRespose.LocationItemLayout.Desks> desksCode;
+    List<LocateCountryRespose.LocationItemLayout.ParkingSlots> carCode;
+    List<LocateCountryRespose.LocationItemLayout.MeetingRooms> meetingCode;
+    //SetSelectedDeskHere
+    TextView tv_desk_room_name;
+
     //DesAvaliablityChecking
     List<DeskAvaliabilityResponse.TeamDeskAvaliabilityList> teamDeskAvaliabilityList;
     List<TeamsResponse> teamsResponseList;
@@ -183,6 +193,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     List<CarParkAvalibilityResponse> carParkAvalibilityResponseList;
     List<CarParkingStatusModel> carParkingStatusModelList;
     boolean carParkingCheckingStatus=false;
+
+    //MeetingAvalibilityChecking
+    List<LocationWithMR_Response> locationWithMR_response;
+    List<UserAllowedMeetingResponse> userAllowedMeetingResponseList;
+    //MatchList
+    List<LocationWithMR_Response.Matches> matchesList;
 
     //Description
     String meetingRoomDescription=null;
@@ -366,14 +382,26 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             binding.locateProgressBar.setVisibility(View.VISIBLE);
             //Used For Desk Avaliability Checking
             getAvaliableDeskDetails(null, 0);
-            getTeams();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getTeams();
+                }
+            },2000);
+
 
             //Used For Car Parking Avaliability Checking
            /* getCarParkingSlots(parentId);
             getCarParkingAvalibilitySlots();
             carParkAvalibilityChecking();*/
 
+            //CarChecking
             doInitCarAvalibilityHere(parentId);
+
+            //Meeting Checking
+            doInitMeetingAvalibilityHere(parentId);
+
 
 
 
@@ -384,6 +412,126 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         } else {
             Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void doInitMeetingAvalibilityHere(int parentId) {
+
+        LocationMR_Request locationMR_request=new LocationMR_Request();
+
+        List<LocationMR_Request.Amenities> amenitiesList=new ArrayList<>();
+        locationMR_request.setAmenitiesList(amenitiesList);
+
+        locationMR_request.setFrom("1899-12-31T09:56:00Z");
+        locationMR_request.setTo("1899-12-31T17:30:00Z");
+        locationMR_request.setDate(getCurrentDate());
+        locationMR_request.setLocationId(parentId);
+
+        LocationMR_Request.Timezone timezone=locationMR_request.new Timezone();
+        timezone.setId("India Standard Time");
+
+        locationMR_request.setTimezone(timezone);
+
+        getLocationMR(locationMR_request);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getUserAllowedMeeting();
+            }
+        },2000);
+
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //meetingAvalibilityCheck(parentId);
+            }
+        },2000);
+
+
+    }
+
+    private void meetingAvalibilityCheck(int parentId) {
+
+        for (int i = 0; i <locationWithMR_response.size() ; i++) {
+
+            if(parentId==locationWithMR_response.get(i).getParentLocationId()){
+
+                LocationWithMR_Response locationWithMR=locationWithMR_response.get(i);
+
+                if(locationWithMR!=null){
+
+                    if(locationWithMR.getMatchesList()!=null){
+
+                        for (int j = 0; j <locationWithMR.getMatchesList().size() ; j++) {
+
+                            for (int k = 0; k <userAllowedMeetingResponseList.size() ; k++) {
+                                if(locationWithMR.getMatchesList().get(j).getMatchesId()==userAllowedMeetingResponseList.get(k).getId()){
+                                    locationWithMR.getMatchesList().get(j).setAllowedForBooking(true);
+                                    locationWithMR.getMatchesList().get(j).setCurrentTimeZoneOffset(locationWithMR_response.get(i).getTimeZoneOffsetMinutes());
+
+                                    //checkMeetingRoomAvailablity(locationWithMR.getMatchesList());
+
+                                }
+                            }
+
+                        }
+                        
+                    }else {
+                        //MeetingRoomRequest
+                    }
+
+                }
+
+            }
+
+        }
+
+
+
+
+    }
+
+
+
+    private void getLocationMR(LocationMR_Request locationMR_request) {
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<LocationWithMR_Response>> call = apiService.getLocationMR(locationMR_request);
+        call.enqueue(new Callback<List<LocationWithMR_Response>>() {
+            @Override
+            public void onResponse(Call<List<LocationWithMR_Response>> call, Response<List<LocationWithMR_Response>> response) {
+
+                locationWithMR_response=response.body();
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<LocationWithMR_Response>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void getUserAllowedMeeting() {
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<UserAllowedMeetingResponse>> call = apiService.userAllowedMeetings();
+        call.enqueue(new Callback<List<UserAllowedMeetingResponse>>() {
+            @Override
+            public void onResponse(Call<List<UserAllowedMeetingResponse>> call, Response<List<UserAllowedMeetingResponse>> response) {
+
+                 userAllowedMeetingResponseList  =response.body();
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<UserAllowedMeetingResponse>> call, Throwable t) {
+
+            }
+        });
     }
 
     private void doInitCarAvalibilityHere(int parentId) {
@@ -634,6 +782,30 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
 
                 locateCountryResposeList = response.body();
+               if(desksCode!=null){
+                   desksCode.clear();
+               }
+               if(carCode!=null){
+                   carCode.clear();
+               }
+
+               if(meetingCode!=null){
+                   meetingCode.clear();
+               }
+
+                if(locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks().size()>0){
+                    desksCode=locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks();
+                    System.out.println("NowDeskCodeAvaliable");
+                }else if(locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList().size()>0){
+                    carCode=locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList();
+                    System.out.println("NoeCarCodeAvaliable");
+                }else if(locateCountryResposeList.get(floorPosition).getLocationItemLayout().getMeetingRoomsList().size()>0){
+                    meetingCode=locateCountryResposeList.get(floorPosition).getLocationItemLayout().getMeetingRoomsList();
+                    System.out.println("NoeMeetingCodeAvaliable");
+                }
+
+
+
                 int totalDeskSize = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks().size();
                 System.out.println("TotalSize" + totalDeskSize);
 
@@ -680,6 +852,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             }
         });
+    }
+
+    private void getLayoutCode(List<LocateCountryRespose.LocationItemLayout.Desks> desks) {
     }
 
 
@@ -933,10 +1108,111 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                // carParkingCheckingStatus=true;
             //}
+        }
+        //MeetingChecking
+        if(code.equals(AppConstants.MEETING)){
+            int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+            for (int i = 0; i <locationWithMR_response.size() ; i++) {
+
+                if(parentId==locationWithMR_response.get(i).getParentLocationId()){
+
+                    LocationWithMR_Response locationWithMR=locationWithMR_response.get(i);
+
+                    if(locationWithMR!=null){
+
+                        if(locationWithMR.getMatchesList()!=null){
+
+                            for (int j = 0; j <locationWithMR.getMatchesList().size() ; j++) {
+
+                                for (int k = 0; k <userAllowedMeetingResponseList.size() ; k++) {
+                                    if(locationWithMR.getMatchesList().get(j).getMatchesId()==userAllowedMeetingResponseList.get(k).getId()){
+                                        locationWithMR.getMatchesList().get(j).setAllowedForBooking(true);
+                                        locationWithMR.getMatchesList().get(j).setCurrentTimeZoneOffset(locationWithMR_response.get(i).getTimeZoneOffsetMinutes());
+
+                                        //checkMeetingRoomAvailablity(locationWithMR.getMatchesList());
+
+
+                                        for (int l = 0; l <locationWithMR.getMatchesList().size() ; l++) {
+
+                                            if(id==locationWithMR.getMatchesList().get(l).getMatchesId()){
+
+                                                LocationWithMR_Response.Matches matches=locationWithMR.getMatchesList().get(l);
+
+                                                //GetCurrentDate and Offset
+                                                String offSetAddedDate = Utils.addingHoursToCurrentDate(matches.getCurrentTimeZoneOffset());
+
+                                                int dateComparsionResult = Utils.compareTwoDates(startDate, offSetAddedDate);
+
+                                                if (dateComparsionResult == 1) {
+                                                    System.out.println("BookingUnavaliable");
+
+                                                    //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                                    //deskStatusModel=new DeskStatusModel(key,id,code,0);
+                                                }else {
+
+                                                    //Block
+
+
+                                                    LocationWithMR_Response.Matches.Bookings bookings = locationWithMR.getMatchesList().get(l).getBookingsList().get(0);
+
+                                                    if (bookings != null) {
+                                                        if (bookings.getBookedByUserId() == SessionHandler.getInstance().getInt(getContext(), AppConstants.USER_ID)) {
+
+                                                            if (!matches.isAllowedForBooking()) {
+
+                                                                if (matches.getMatchType() == 2 && matches.getAutomaticApprovalStatus() == 0) {
+                                                                    System.out.println("BookedForMe");
+                                                                } else {
+                                                                    System.out.println("Request");
+                                                                }
+
+                                                            } else {
+                                                                System.out.println("BookedForMe");
+                                                            }
+
+                                                        } else {
+
+                                                            System.out.println("BookedOther");
+
+                                                        }
+
+                                                    }else if (matches.getAutomaticApprovalStatus() == 3 && !matches.isAllowedForBooking()) {
+
+                                                        System.out.println("Unavaliable");
+
+                                                    } else if (matches.getAutomaticApprovalStatus() == 2 || matches.isAllowedForBooking()) {
+
+                                                        System.out.println("avaliable");
+
+                                                    } else {
+
+                                                        System.out.println("Request");
+
+                                                    }
+                                                }
+
+
+                                            }
+
+
+                                        }
 
 
 
+                                    }
+                                }
 
+                            }
+
+                        }else {
+                            //MeetingRoomRequest
+                        }
+
+                    }
+
+                }
+
+            }
         }
 
 
@@ -1076,6 +1352,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                     //Booking Bottom Sheet
                                     callDeskBookingnBottomSheet(selctedCode, key, id, code,requestTeamId,requestTeamDeskId);
 
+
                                 }else if(deskStatusModelList.get(i).getStatus()==4){
                                     //Booking Request
                                     DeskStatusModel deskStatusModel1=deskStatusModelList.get(i);
@@ -1096,6 +1373,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                     getDescriptionUsingDeskId(id);
 
                                     //Booking Request Bottom Sheet
+
                                     callDeskBookingnBottomSheet(selctedCode, key, id, code,requestTeamId,requestTeamDeskId);
 
 
@@ -1131,10 +1409,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                     getCarDescriptionUsingCardId(id);
 
                                     //CarBooking
+
                                     callDeskBookingnBottomSheet(selctedCode, key, id, code,requestTeamId,requestTeamDeskId);
                                 }else if(carParkingStatusModelList.get(i).getStatus()==2){
                                     //EditCarParking
-                                    getCarBookingEditList(id);
+                                    getCarBookingEditList(id,code);
 
                                 }else if(carParkingStatusModelList.get(i).getStatus()==3){
 
@@ -1142,6 +1421,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                     getCarDescriptionUsingCardId(id);
                                     //CarRequestBooking
+
                                     callDeskBookingnBottomSheet(selctedCode, key, id, code,requestTeamId,requestTeamDeskId);
                                 }else if(carParkingStatusModelList.get(i).getStatus()==0){
                                     callDeskUnavaliable(selctedCode, key, id, code,requestTeamId,requestTeamDeskId);
@@ -1526,7 +1806,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
-    private void getCarBookingEditList(int id) {
+    private void getCarBookingEditList(int id, String code) {
 
         //String startDate="2022-07-25T00:00:00.000Z";
         //String endDate="2022-07-25T00:00:00.000Z";
@@ -1544,7 +1824,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 CarParkingForEditResponse carParkingForEditResponse=response.body();
 
-                CallCarBookingEditList(carParkingForEditResponse);
+                CallCarBookingEditList(carParkingForEditResponse,code);
 
                /* for (int i = 0; i <carParkingForEditResponse.getCarParkBookings().size() ; i++) {
                     System.out.println("CarParkingEditListVeHicleNumber"+carParkingForEditResponse.getCarParkBookings().get(i).getVehicleRegNumber());
@@ -1565,7 +1845,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
-    private void CallCarBookingEditList(CarParkingForEditResponse carParkingForEditResponse) {
+    private void CallCarBookingEditList(CarParkingForEditResponse carParkingForEditResponse, String code) {
 
         RecyclerView rvCarEditList;
         TextView editClose,editDate,bookingName;
@@ -1586,7 +1866,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         rvCarEditList.setLayoutManager(linearLayoutManager);
         rvCarEditList.setHasFixedSize(true);
 
-        CarListToEditAdapter  carListToEditAdapter=new CarListToEditAdapter(getContext(),carParkingForEditResponse.getCarParkBookings(),this);
+        CarListToEditAdapter  carListToEditAdapter=new CarListToEditAdapter(getContext(),carParkingForEditResponse.getCarParkBookings(),this,code);
         rvCarEditList.setAdapter(carListToEditAdapter);
 
         editClose.setOnClickListener(new View.OnClickListener() {
@@ -2226,6 +2506,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     //BookBottomSheet
     private void callDeskBookingnBottomSheet(String selctedCode, String key, int id, String code, int requestTeamId, int requestTeamDeskId) {
 
+        RelativeLayout selectDeskBlock;
+        TextView selectedLocation,tv_select_desk_room;
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -2243,6 +2526,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         bookingDateBlock = locateCheckInBottomSheet.findViewById(R.id.bookingDateBlock);
         bookingStartBlock = locateCheckInBottomSheet.findViewById(R.id.bookingStartBlock);
         bookingEndBlock = locateCheckInBottomSheet.findViewById(R.id.bookingEndBlock);
+        selectDeskBlock=locateCheckInBottomSheet.findViewById(R.id.selectDeskBlock);
 
 
         locateCheckInDate = locateCheckInBottomSheet.findViewById(R.id.locateCheckInDate);
@@ -2253,19 +2537,51 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         editBookingContinue = locateCheckInBottomSheet.findViewById(R.id.editBookingContinue);
         editBookingBack = locateCheckInBottomSheet.findViewById(R.id.editBookingBack);
 
+        tv_desk_room_name=locateCheckInBottomSheet.findViewById(R.id.tv_desk_room_name);
+        selectedLocation=locateCheckInBottomSheet.findViewById(R.id.selectedLocation);
+        tv_select_desk_room=locateCheckInBottomSheet.findViewById(R.id.tv_select_desk_room);
+
         tvLocateDeskBookLocation=locateCheckInBottomSheet.findViewById(R.id.tvLocateDeskBookLocation);
         tvDescription=locateCheckInBottomSheet.findViewById(R.id.tvDescription);
 
-        String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
-        String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
-
-        tvLocateDeskBookLocation.setText(buildingName+","+floorName);
 
         if(deskDescriotion!=null){
             tvDescription.setText("Description:"+deskDescriotion);
         }else {
             tvDescription.setText("Description:");
         }
+
+        tv_select_desk_room.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                List<SelectCode> code=new ArrayList<>();
+
+
+                if(desksCode!=null && desksCode.size()!=0){
+
+                    for (int i = 0; i <desksCode.size() ; i++) {
+                        SelectCode allDeskCode=new SelectCode(desksCode.get(i).getDesksId(),desksCode.get(i).getDeskCode());
+                        code.add(allDeskCode);
+                    }
+                }else if(carCode!=null && carCode.size()!=0){
+                    for (int i = 0; i <carCode.size() ; i++) {
+                        SelectCode allCarCode=new SelectCode(carCode.get(i).getId(),carCode.get(i).getCode());
+                        code.add(allCarCode);
+                    }
+                }else if(meetingCode!=null&& meetingCode.size()!=0){
+
+                    for (int i = 0; i <meetingCode.size() ; i++) {
+                        SelectCode allMeeingCode=new SelectCode(meetingCode.get(i).getMeetingRoomId(),meetingCode.get(i).getMeetingRoomCode());
+                        code.add(allMeeingCode);
+                    }
+
+                }
+
+                callBottomSheetToSelectDesk(code);
+
+            }
+        });
 
         //Car Parking Booking Widget
         bookingCommentBlock = locateCheckInBottomSheet.findViewById(R.id.bookingCommentBlock);
@@ -2313,8 +2629,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         });
 
+        String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
+        String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
+
+        tvLocateDeskBookLocation.setText(buildingName+","+floorName);
+        selectedLocation.setText(buildingName+","+floorName);
 
         locateDeskName.setText(selctedCode);
+        tv_desk_room_name.setText(selctedCode);
 
         editBookingContinue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2375,6 +2697,38 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         locateCheckInBottomSheet.show();
+    }
+
+    private void callBottomSheetToSelectDesk(List<SelectCode> code) {
+
+        RecyclerView rvDeskRecycler;
+        DeskSelectListAdapter deskSelectListAdapter;
+        TextView bsRepeatBackS;
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_select_desk,
+                new RelativeLayout(getContext()))));
+
+        rvDeskRecycler= bottomSheetDialog.findViewById(R.id.desk_list_select_recycler);
+        bsRepeatBackS=bottomSheetDialog.findViewById(R.id.bsDeskBack);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvDeskRecycler.setLayoutManager(linearLayoutManager);
+        rvDeskRecycler.setHasFixedSize(true);
+
+        deskSelectListAdapter =new DeskSelectListAdapter(getContext(),code,this,bottomSheetDialog);
+        rvDeskRecycler.setAdapter(deskSelectListAdapter);
+
+        bsRepeatBackS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        bottomSheetDialog.show();
+
+
     }
 
     private void requestDeskBooking(int requestTeamId, int requestTeamDeskId) {
@@ -2682,7 +3036,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     @Override
     public void onEditClick(BookingForEditResponse.Bookings bookings, String code, List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities) {
 
-        TextView startTime,endTime,date,editBookingBack;
+        TextView startTime,endTime,date,editBookingBack,tv_comment;
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_booking,
@@ -2695,6 +3049,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         TextView continueEditBook=bottomSheetDialog.findViewById(R.id.editBookingContinue);
         LinearLayout llDeskLayout=bottomSheetDialog.findViewById(R.id.ll_desk_layout);
         RelativeLayout repeatBlock=bottomSheetDialog.findViewById(R.id.rl_repeat_block);
+        RelativeLayout rl_comment_block=bottomSheetDialog.findViewById(R.id.rl_comment_block);
+        tv_comment=bottomSheetDialog.findViewById(R.id.tv_comment);
         RelativeLayout teamsBlock=bottomSheetDialog.findViewById(R.id.rl_teams_layout);
         TextView tvComments=bottomSheetDialog.findViewById(R.id.tv_comments);
         EditText commentRegistration=bottomSheetDialog.findViewById(R.id.ed_registration);
@@ -2708,7 +3064,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         if(code.equals("3")){
 
 
-            repeatBlock.setVisibility(View.GONE);
+            repeatBlock.setVisibility(View.VISIBLE);
             teamsBlock.setVisibility(View.GONE);
             tvComments.setVisibility(View.GONE);
             commentRegistration.setVisibility(View.GONE);
@@ -3186,20 +3542,31 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 String yearInString=String.valueOf(year);
 
+                //MonthConversion
                 int actualMonth=month+1;
                 String monthInStringFormat;
-
                 if(actualMonth>=10){
                     monthInStringFormat=String.valueOf(actualMonth);
                 }else {
                     String monthInString=String.valueOf(actualMonth);
                     monthInStringFormat="0"+monthInString;
                 }
+
+                //DayConversion
+                String dayInStringFormat;
+                if(dayOfMonth<10){
+                    String dayInString=String.valueOf(dayOfMonth);
+                    dayInStringFormat ="0"+dayInString;
+                }else {
+                    dayInStringFormat= String.valueOf(dayOfMonth);
+                }
+
+
+
                 String dateInString="";
 
                 System.out.println("ContinuPrintHere"+locateCheckInDateCal.getText());
-                String dayInString=String.valueOf(dayOfMonth);
-                dateInString= yearInString+"-"+monthInStringFormat+"-"+dayInString;
+                dateInString= yearInString+"-"+monthInStringFormat+"-"+dayInStringFormat;
                 System.out.println("PickedDate"+dateInString);
 
 
@@ -3492,6 +3859,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         });
 
 
+
+    }
+
+    @Override
+    public void onDeskSelect(int id, String code) {
+        System.out.println("BottomSelected"+id+" "+code);
+        tv_desk_room_name.setText(code);
 
     }
 }
