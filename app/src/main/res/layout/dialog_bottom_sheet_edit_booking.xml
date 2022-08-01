@@ -35,6 +35,8 @@
                 android:text="Mon, 10th August, 2022"
                 android:theme="@style/TextSmall" />
 
+            <!--StartTime-->
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -65,6 +67,8 @@
                     android:textColor="@color/figmaBlue"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
+
+           <!--EndTime-->
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -98,6 +102,8 @@
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 
+            <!--Teams-->
+
             <RelativeLayout
                 android:id="@+id/rl_teams_layout"
                 android:layout_width="match_parent"
@@ -128,6 +134,7 @@
                     android:checked="true" />
             </RelativeLayout>
 
+            <!--Repeat-->
             <RelativeLayout
                 android:id="@+id/rl_repeat_block"
                 android:layout_width="match_parent"
@@ -162,6 +169,42 @@
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 
+            <!--Comment-->
+            <RelativeLayout
+                android:id="@+id/rl_comment_block"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@drawable/rectangle_bg_with_corner"
+                android:orientation="horizontal"
+                android:padding="@dimen/_3sdp"
+                >
+
+                <TextView
+                    android:id="@+id/tv_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:text="Comment"
+                    android:textColor="@color/figmaBlack"
+                    android:theme="@style/TextBold" />
+
+                <TextView
+                    android:id="@+id/comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:enabled="false"
+                    android:text="none"
+                    android:textColor="@color/figmaBlue"
+                    android:theme="@style/TextBold" />
+            </RelativeLayout>
+
+            <!--SelectDesk-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
