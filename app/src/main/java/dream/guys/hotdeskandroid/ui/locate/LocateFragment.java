@@ -436,7 +436,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                getUserAllowedMeeting();
+
             }
         },2000);
 
@@ -447,6 +447,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 //meetingAvalibilityCheck(parentId);
             }
         },2000);
+
+        getUserAllowedMeeting();
+
+
 
 
     }
@@ -495,6 +499,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
     private void getLocationMR(LocationMR_Request locationMR_request) {
+
+        binding.locateProgressBar.setVisibility(View.VISIBLE);
+
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<List<LocationWithMR_Response>> call = apiService.getLocationMR(locationMR_request);
         call.enqueue(new Callback<List<LocationWithMR_Response>>() {
@@ -503,17 +510,19 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 locationWithMR_response=response.body();
 
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
             }
 
             @Override
             public void onFailure(Call<List<LocationWithMR_Response>> call, Throwable t) {
-
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
             }
         });
     }
 
     private void getUserAllowedMeeting() {
+        binding.locateProgressBar.setVisibility(View.VISIBLE);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<List<UserAllowedMeetingResponse>> call = apiService.userAllowedMeetings();
@@ -521,7 +530,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onResponse(Call<List<UserAllowedMeetingResponse>> call, Response<List<UserAllowedMeetingResponse>> response) {
 
+
+
                  userAllowedMeetingResponseList  =response.body();
+
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
 
 
@@ -529,7 +542,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             @Override
             public void onFailure(Call<List<UserAllowedMeetingResponse>> call, Throwable t) {
-
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -1112,7 +1125,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //MeetingChecking
         if(code.equals(AppConstants.MEETING)){
             int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
-            for (int i = 0; i <locationWithMR_response.size() ; i++) {
+
+             if(id==3){
+                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
+            }
+
+          /*  for (int i = 0; i <locationWithMR_response.size() ; i++) {
 
                 if(parentId==locationWithMR_response.get(i).getParentLocationId()){
 
@@ -1212,7 +1230,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 }
 
-            }
+            }*/
         }
 
 
@@ -1440,13 +1458,22 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     getMeetingRoomDescription(meetingRoomId);
 
-                    //MeetingRoomBooking
-                    callMeetingRoomBookingBottomSheet(meetingRoomId,meetingRoomName);
+                    if(id==3){
+                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
+                        getMeetingBookingListToEdit(meetingRoomId);
+                        //callMeetingRoomEditListAdapterBottomSheet();
+
+                    }else if(id==4){
+                        //MeetingRoomBooking
+                        callMeetingRoomBookingBottomSheet(meetingRoomId,meetingRoomName);
+                    }
 
 
-                    //getMeetingBookingListToEdit(meetingRoomId);
+
+
+
                     //MeetingRoomEditListAdapter
-                   // callMeetingRoomEditListAdapterBottomSheet();
+
                     
 
                 }
@@ -1478,6 +1505,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                List<MeetingListToEditResponse> meetingListToEditResponseList  =response.body();
 
+               binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
                callMeetingRoomEditListAdapterBottomSheet(meetingListToEditResponseList);
 
 
@@ -1485,6 +1514,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
            @Override
            public void onFailure(Call<List<MeetingListToEditResponse>> call, Throwable t) {
+
+               binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
            }
        });
@@ -3777,7 +3808,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     //Edit MeeingkBooking
                     String subject=etSubject.getText().toString();
                     String comment=etComments.getText().toString();
-                   doEditMeetingRoomBooking(meetingListToEditResponse,startRoomTime.getText().toString(),endTRoomime.getText().toString(),subject,comment);
+                   doEditMeetingRoomBooking(meetingListToEditResponse,startRoomTime.getText().toString(),endTRoomime.getText().toString(),subject,comment,bottomSheetDialog);
                     System.out.println("MeeingEditGoHere");
                 }
 
@@ -3790,40 +3821,31 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
-    private void doEditMeetingRoomBooking(MeetingListToEditResponse meetingListToEditResponse,  String startTime, String endTime,String subject,String comment) {
+    private void doEditMeetingRoomBooking(MeetingListToEditResponse meetingListToEditResponse, String startTime, String endTime, String subject, String comment, BottomSheetDialog bottomSheetDialog) {
 
-        MeetingRoomRequest meetEdit=new MeetingRoomRequest();
-        meetEdit.setMeetingRoomId(meetingListToEditResponse.getMeetingRoomId());
-        meetEdit.setMsTeams(false);
-        meetEdit.setHandleRecurring(false);
-        meetEdit.setOnlineMeeting(false);
+        MeetingRoomRequest meetingRoomRequest=new MeetingRoomRequest();
+        meetingRoomRequest.setMeetingRoomId(meetingListToEditResponse.getMeetingRoomId());
+        meetingRoomRequest.setMsTeams(false);
+        meetingRoomRequest.setHandleRecurring(false);
+        meetingRoomRequest.setOnlineMeeting(false);
 
-
-        //1st
-        MeetingRoomRequest.Changeset m=meetEdit.new Changeset();
-        m.setId(meetingListToEditResponse.getId());
-        String dateStr=binding.locateCalendearView.getText().toString();
-        m.setDate( dateStr+ "T" + "00:00:00.000" + "Z");
+        MeetingRoomRequest.Changeset m=meetingRoomRequest.new Changeset();
+        m.setId(0);
+        m.setDate(binding.locateCalendearView.getText().toString() + "T" + "00:00:00.000" + "Z");
 
         MeetingRoomRequest.Changeset.Changes changes=m.new Changes();
         changes.setFrom(getCurrentDate() + "" + "T" + startTime + ":" + "00" + "." + "000" + "Z");
         changes.setMyto(getCurrentDate() + "" + "T" + endTime + ":" + "00" + "." + "000" + "Z");
+        changes.setComments(comment);
+        changes.setSubject(subject);
+        changes.setRequest(false);
 
         m.setChanges(changes);
+
         List<MeetingRoomRequest.Changeset> changesetList=new ArrayList<>();
         changesetList.add(m);
 
-
-        //2nd
-        m.setId(0);
-        m.setDate(meetingListToEditResponse.getDate());
-
-        MeetingRoomRequest.Changeset.Changes changes2=m.new Changes();
-        changes2.setFrom(meetingListToEditResponse.getFrom());
-        changes2.setMyto(meetingListToEditResponse.getTo());
-        changes2.setComments(comment);
-        changes2.setSubject(subject);
-        changes2.setRequest(false);
+        meetingRoomRequest.setChangesets(changesetList);
 
         List<MeetingRoomRequest.Changeset.Changes.Attendees> attendeesList=new ArrayList<>();
         changes.setAttendees(attendeesList);
@@ -3831,24 +3853,26 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         List<MeetingRoomRequest.Changeset.Changes.ExternalAttendees> externalAttendeesList=new ArrayList<>();
         changes.setExternalAttendees(externalAttendeesList);
 
-        m.setChanges(changes2);
-        changesetList.add(m);
-
-        meetEdit.setChangesets(changesetList);
-
         List<MeetingRoomRequest.DeleteIds> deleteIdsList=new ArrayList<>();
-        meetEdit.setDeletedIds(deleteIdsList);
+        meetingRoomRequest.setDeletedIds(deleteIdsList);
 
-        System.out.println("BookingMeetingRoom"+meetEdit);
+        System.out.println("BookingMeetingRoom"+meetingRoomRequest);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<BaseResponse> call = apiService.doRoomEdit(meetEdit);
+        Call<BaseResponse> call = apiService.doRoomEdit(meetingRoomRequest);
         call.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
                 BaseResponse baseResponse=response.body();
+
+                bottomSheetDialog.dismiss();
+                openCheckoutDialog("MeetingEditSuccess");
                 System.out.println("MeetingRoomEdit");
+
+
+
+                callInitView();
 
             }
 
