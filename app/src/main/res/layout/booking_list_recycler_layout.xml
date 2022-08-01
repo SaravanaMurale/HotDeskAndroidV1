@@ -185,7 +185,9 @@
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_3sdp"
                         android:layout_toRightOf="@+id/bookingCheckOutTime"
-                        android:src="@drawable/refresh" />
+                        android:src="@drawable/refresh"
+                        android:visibility="gone"
+                        />
 
                     <Button
                         android:id="@+id/bookingBtnCheckOut"

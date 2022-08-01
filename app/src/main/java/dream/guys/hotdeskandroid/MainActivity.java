@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         binding.close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                binding.serachBar.clearComposingText();
                 binding.searchLayout.setVisibility(View.GONE);
             }
         });
@@ -133,9 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void callSearchRecyclerData(String searchText) {
         if (Utils.isNetworkAvailable(this)) {
-
 //            dialog= ProgressDialog.showProgressBar(this);
-
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<GlobalSearchResponse> call = apiService.getGlobalSearchData(40,searchText);
             call.enqueue(new Callback<GlobalSearchResponse>() {

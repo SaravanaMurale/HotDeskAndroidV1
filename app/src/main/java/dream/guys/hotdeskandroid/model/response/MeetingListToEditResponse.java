@@ -22,9 +22,18 @@ public class MeetingListToEditResponse {
         String fromUtc;
         @SerializedName("toUtc")
         String toUtc;
+        @SerializedName("recurrence")
+        String recurrence;
 
+    public String getRecurrence() {
+        return recurrence;
+    }
 
-        public int getId() {
+    public void setRecurrence(String recurrence) {
+        this.recurrence = recurrence;
+    }
+
+    public int getId() {
             return id;
         }
 

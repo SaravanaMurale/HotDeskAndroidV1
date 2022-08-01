@@ -185,12 +185,17 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
 
-            if (list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor()!=null)
-            holder.bookingAddress.setText(new StringBuilder()
+            /*holder.bookingAddress.setText(new StringBuilder()
                     .append("")
+<<<<<<< HEAD
                     .append(" "+list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getBuildingName())
                     .append(" - ").append(list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getfLoorName()).toString()
             );
+=======
+                    .append(" "+list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getfLoorName())
+                    .append(" - ").append(" "+list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getBuildingName()).toString()
+            );*/
+>>>>>>> e22ed8a21e4818ae65e9df9b38ed159e5c6eec66
             switch (list.get(position).getCalendarEntriesModel().getUsageTypeAbbreviation()){
                 case "RQ":
                     holder.tvBookingWorkingRemote.setText("Request for Desk In Progress");
