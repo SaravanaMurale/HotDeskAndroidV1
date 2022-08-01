@@ -1,7 +1,9 @@
 package dream.guys.hotdeskandroid.ui.home;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -12,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
@@ -120,6 +123,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse;
     HashMap<Integer,String> meetingRecurenceMap = new HashMap<Integer, String>();
     boolean qrEnabled = false;
+    private static final int PERMISSION_REQUEST_CODE = 1;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -796,8 +801,12 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 bundle.putString("BOOK_NAME",calendarEntriesModel.getUsageTypeName());
 
             }
+
             if (qrEnabled){
-                navController.navigate(R.id.action_qrFragment,bundle);
+                if (checkPermission())
+                    navController.navigate(R.id.action_qrFragment,bundle);
+                else
+                    requestPermission();
             } else
                 navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment,bundle);
         } else if(click.equals(AppConstants.EDIT)){
@@ -916,12 +925,12 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             chipGroup.setVisibility(View.GONE);
         }
 
-        if (dskRoomParkStatus == 1){
+        if (dskRoomParkStatus == 1) {
             repeatBlock.setVisibility(View.GONE);
             teamsBlock.setVisibility(View.GONE);
             commentRegistration.setHint("Comments");
             tvComments.setText("Comments");
-        }else if (dskRoomParkStatus==2){
+        }else if (dskRoomParkStatus==2) {
             llDeskLayout.setVisibility(View.GONE);
             commentRegistration.setVisibility(View.GONE);
             tvComments.setVisibility(View.GONE);
@@ -1058,6 +1067,24 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
     }
 
+    private boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CAMERA);
+        if (result == PackageManager.PERMISSION_GRANTED) {
+
+            return true;
+
+        } else {
+
+            return false;
+        }
+    }
+
+    private void requestPermission() {
+
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CODE);
+
+    }
     private void callDeskBottomSheetDialog() {
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -1220,4 +1247,21 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
     }
 */
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // Case_Download();
+                } else {
+
+                    //    Snackbar.make(findViewById(R.id.coordinatorLayout),"Permission Denied, Please allow to proceed !", Snackbar.LENGTH_LONG).show();
+
+                }
+                break;
+        }
+    }
 }
