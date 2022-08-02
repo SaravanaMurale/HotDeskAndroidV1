@@ -108,6 +108,10 @@ public class LocationWithMR_Response {
         @SerializedName("bookings")
         List<Bookings> bookingsList;
 
+       //ExtraAdded
+       boolean allowedForBooking=false;
+       int currentTimeZoneOffset=0;
+
        public int getAutomaticApprovalStatus() {
            return automaticApprovalStatus;
        }
@@ -140,6 +144,8 @@ public class LocationWithMR_Response {
             String date;
             String from;
             String to;
+            String fromUtc;
+            String toUtc;
             int bookedByUserId;
             String bookedByUserName;
 
@@ -151,7 +157,23 @@ public class LocationWithMR_Response {
                 this.id = id;
             }
 
-            public int getMeetingRoomId() {
+           public String getFromUtc() {
+               return fromUtc;
+           }
+
+           public void setFromUtc(String fromUtc) {
+               this.fromUtc = fromUtc;
+           }
+
+           public String getToUtc() {
+               return toUtc;
+           }
+
+           public void setToUtc(String toUtc) {
+               this.toUtc = toUtc;
+           }
+
+           public int getMeetingRoomId() {
                 return meetingRoomId;
             }
 
@@ -208,9 +230,7 @@ public class LocationWithMR_Response {
             }
         }
 
-        //ExtraAdded
-        boolean allowedForBooking=false;
-        int currentTimeZoneOffset=0;
+
 
        public boolean isAllowedForBooking() {
            return allowedForBooking;

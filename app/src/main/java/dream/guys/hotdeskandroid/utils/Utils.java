@@ -758,7 +758,12 @@ public class Utils {
             }else if(d1.compareTo(d2)==0){
                 dateCompare=0;
                 System.out.println("CurrentTimeAndAddedTimeEqual");
-            }
+            }/*else if(d1.compareTo(d2)<=0){
+                System.out.println("CurrentTimeIsLessOrEqual");
+                dateCompare=3;
+            }*/
+
+
 
         } catch (ParseException e) {
             e.printStackTrace();

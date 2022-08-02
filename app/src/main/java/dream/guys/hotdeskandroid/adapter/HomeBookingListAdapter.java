@@ -143,8 +143,14 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                                     Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom())
                             )){
                         holder.greenLine.setVisibility(View.GONE);
+
                         holder.bookingBtnCheckIn.setVisibility(View.VISIBLE);
-                        holder.bookingBtnCheckIn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.scan_2px, 0);
+                        if(fragment.qrEnabled){
+                            holder.bookingBtnCheckIn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.scan_2px, 0);
+                        }else {
+                            holder.bookingBtnCheckIn.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                        }
+
                     }
                     else
                         holder.bookingBtnCheckIn.setVisibility(View.GONE);
@@ -185,12 +191,13 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
 
+            /*System.out.println("HomeAdapterPrint"+list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getBuildingName());
             if (list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor()!=null)
             holder.bookingAddress.setText(new StringBuilder()
                     .append("")
                     .append(" "+list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getBuildingName())
                     .append(" - ").append(list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getfLoorName()).toString()
-            );
+            );*/
             switch (list.get(position).getCalendarEntriesModel().getUsageTypeAbbreviation()){
                 case "RQ":
                     holder.tvBookingWorkingRemote.setText("Request for Desk In Progress");
