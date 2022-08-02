@@ -13,9 +13,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+
 import butterknife.BindView;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.databinding.FragmentBookBinding;
+import dream.guys.hotdeskandroid.utils.CalendarView;
 
 public class BookFragment extends Fragment {
     FragmentBookBinding binding;
@@ -27,6 +36,9 @@ public class BookFragment extends Fragment {
     LinearLayout parkingLayout;
     @BindView(R.id.more_layout)
     LinearLayout moreLayout;
+
+    @BindView(R.id.calendar_view)
+    CalendarView calendarView;
 
     @BindView(R.id.iv_desk)
     ImageView ivDesk;
@@ -46,6 +58,10 @@ public class BookFragment extends Fragment {
     @BindView(R.id.tv_more)
     TextView tvMore;
 
+    HashSet<Date> events = new HashSet<>();
+    List<String> dateList = new ArrayList<>();
+
+
     int selectedicon = 0;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,6 +75,38 @@ public class BookFragment extends Fragment {
         View root = binding.getRoot();
 
         tabToggleViewClicked(0);
+
+        binding.calendarView.setEventHandler(new CalendarView.EventHandler() {
+            @Override
+            public void onDayLongPress(Date date, int pos) {
+                //  Log.e("Selected Date", df.format(date));
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+                dateList.add("2022-08-04");
+                dateList.add("2022-08-06");
+                dateList.add("2022-08-08");
+                dateList.add("2022-08-15");
+                dateList.add("2022-08-20");
+
+                for(int i=0;i<=dateList.size();i++){
+                    Date d = new Date();
+                    try
+                    {
+                        d = sdf.parse(dateList.get(i));
+                    }
+                    catch (ParseException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    events.add(d);
+                }
+
+
+                calendarView.updateCalendar(events, pos);
+//                fillCalendar(df.format(date));
+
+            }
+        });
 
         binding.deskLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +135,16 @@ public class BookFragment extends Fragment {
 
 
         return root;
+    }
+
+    private void fillCalendar(String dateStr) {
+        events.clear();
+
+
+        calendarView.updateCalendar(events, -1);
+
+
+
     }
 
     @SuppressLint("ResourceAsColor")

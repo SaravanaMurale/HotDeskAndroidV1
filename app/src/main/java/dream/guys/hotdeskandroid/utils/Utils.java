@@ -72,6 +72,26 @@ public class Utils {
     private static int hour;
     private static int minutes;
 
+    public static Boolean isThemeChanged(Context mContext) {
+        Boolean appTheme = false;
+        if (SessionHandler.getInstance().get(mContext, AppConstants.APPTHEME) != null) {
+            appTheme = true;
+        }
+        return appTheme;
+    }
+
+    public static int getAppTheme(Context mContext) {
+        int appTheme = 0;
+        if (SessionHandler.getInstance().get(mContext, AppConstants.APPTHEME) != null) {
+            appTheme = Color.parseColor(SessionHandler.getInstance().get(mContext, AppConstants.APPTHEME));
+        } else {
+            appTheme = mContext.getColor(R.color.figmaBlue);
+        }
+
+
+        return appTheme;
+    }
+
     public static void closeKeyboard(Context context, View view) {
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);

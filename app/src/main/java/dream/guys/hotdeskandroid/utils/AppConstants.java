@@ -49,4 +49,5 @@ public class AppConstants {
     public static final String WORKING_REMOTE="You are working remotely today";
     public static final String PIN_SETUP_DONE="PIN_SETUP_DONE";
 
+    public static final String APPTHEME = "APPTHEME";
 }

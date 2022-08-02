@@ -56,6 +56,7 @@ public class CreatePinActivity extends AppCompatActivity {
             @Override
             public void onInteractionListener()
             {
+                Toast.makeText(getApplicationContext(),"selected",Toast.LENGTH_LONG).show();
 
             }
 

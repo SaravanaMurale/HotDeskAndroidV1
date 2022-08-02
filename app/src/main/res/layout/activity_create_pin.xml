@@ -41,6 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvRest"
+            android:focusable="false"
             android:hint="Enter New Pin"
             android:inputType="number"
             android:maxLength="6" />
@@ -51,11 +52,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvNewPin"
             android:layout_marginTop="@dimen/_15sdp"
-            android:backgroundTint="@color/figmaBlack"
             android:textColor="@color/black"
             app:bar_height="2dp"
             android:layout_centerHorizontal="true"
             app:length="6"
+            app:otp_box_background_active="@drawable/otp_outline_red"
             app:otp_box_background="@drawable/otp_outline"
             app:otp_text_size="24dp" />
 
@@ -63,6 +64,7 @@
             android:id="@+id/tvConfirmPin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusable="false"
             android:layout_below="@+id/etNewPin"
             android:layout_marginTop="@dimen/_15sdp"
             android:hint="Confirm New Pin"
@@ -75,11 +77,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvConfirmPin"
             android:layout_marginTop="@dimen/_15sdp"
-            android:backgroundTint="@color/figmaBlack"
             android:textColor="@color/black"
             android:layout_centerHorizontal="true"
             app:bar_height="2dp"
             app:length="6"
+            app:otp_box_background_active="@drawable/otp_outline_red"
             app:otp_box_background="@drawable/otp_outline"
             app:otp_text_size="24dp" />
 
