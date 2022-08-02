@@ -110,9 +110,8 @@
                                 android:layout_height="@dimen/_45sdp"
                                 android:layout_centerInParent="true"
                                 android:background="@drawable/bg_circle_vector"
-                                android:src="@drawable/avatar"
                                 android:padding="@dimen/_2sdp"
-                                />
+                                android:src="@drawable/avatar" />
                         </RelativeLayout>
                         <LinearLayout
                             android:layout_width="0dp"
@@ -291,13 +290,19 @@
                 </androidx.cardview.widget.CardView>
 
                 <!--Home Bookig Recyclerview-->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvHomeBooking"
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/swipe_refresh"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_8sdp"
-                    android:layout_marginRight="@dimen/_8sdp"
-                    android:layout_marginBottom="@dimen/_60sdp" />
+                    >
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvHomeBooking"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:layout_marginRight="@dimen/_8sdp"
+                        android:layout_marginBottom="@dimen/_60sdp" />
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
 

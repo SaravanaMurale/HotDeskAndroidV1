@@ -271,7 +271,7 @@
                     android:text="Change"
                     android:textColor="@color/blue"
                     android:textSize="@dimen/_12sdp"
-
+                    android:visibility="visible"
                     />
 
                 <TextView

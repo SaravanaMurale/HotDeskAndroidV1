@@ -130,7 +130,7 @@ public class SignInActivity extends AppCompatActivity {
 
     private void checkForPinLogin() {
         if (Utils.isNetworkAvailable(this)) {
-            dialog= ProgressDialog.showProgressBar(SignInActivity.this);
+            dialog = ProgressDialog.showProgressBar(SignInActivity.this);
 //                GetTokenRequest getTokenRequest = new GetTokenRequest(companyName, email, password);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             CreatePinRequest createPinRequest = new CreatePinRequest();
@@ -159,10 +159,6 @@ public class SignInActivity extends AppCompatActivity {
 
                     }else if(response.code() == 401){
                         ProgressDialog.dismisProgressBar(SignInActivity.this,dialog);
-                        Utils.toastMessage(SignInActivity.this, "Token Expired");
-                        Intent intent=new Intent(SignInActivity.this,LoginActivity.class);
-                        startActivity(intent);
-                        finish();
                     }
                     else {
                         ProgressDialog.dismisProgressBar(SignInActivity.this,dialog);

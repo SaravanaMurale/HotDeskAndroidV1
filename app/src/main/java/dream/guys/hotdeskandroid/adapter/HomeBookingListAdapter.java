@@ -71,6 +71,9 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull HomeBookingListViewHolder holder, int position) {
+
+        holder.rlBookingRemoteBlock.setVisibility(View.GONE);
+        holder.rlInOffice.setVisibility(View.VISIBLE);
         //conditon is to display date and line accordingly
         if (list.get(position).isDateStatus()){
             holder.dateLayout.setVisibility(View.VISIBLE);
@@ -144,7 +147,10 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             )){
                         holder.greenLine.setVisibility(View.GONE);
                         holder.bookingBtnCheckIn.setVisibility(View.VISIBLE);
-                        holder.bookingBtnCheckIn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.scan_2px, 0);
+                        if(fragment.qrEnabled)
+                            holder.bookingBtnCheckIn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.scan_2px, 0);
+                        else
+                            holder.bookingBtnCheckIn.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                     }
                     else
                         holder.bookingBtnCheckIn.setVisibility(View.GONE);
@@ -177,7 +183,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     break;
                 default:
             }
-        } else if (list.get(position).getCalDeskStatus() ==1 &&
+        }
+        else if (list.get(position).getCalDeskStatus() ==1 &&
                 !list.get(position).getCalendarEntriesModel()
                 .getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
             holder.rlBookingRemoteBlock.setVisibility(View.VISIBLE);
@@ -185,12 +192,12 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
 
-            if (list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor()!=null)
+     /*       if (list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor()!=null)
             holder.bookingAddress.setText(new StringBuilder()
                     .append("")
                     .append(" "+list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getBuildingName())
                     .append(" - ").append(list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getfLoorName()).toString()
-            );
+            );*/
             switch (list.get(position).getCalendarEntriesModel().getUsageTypeAbbreviation()){
                 case "RQ":
                     holder.tvBookingWorkingRemote.setText("Request for Desk In Progress");
@@ -257,6 +264,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         }
         else if (list.get(position).getCalDeskStatus() == 2){
             //Meeting Room
+            holder.rlBookingRemoteBlock.setVisibility(View.GONE);
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
             if (map.containsKey(list.get(position).getMeetingBookingsModel().getId())){
@@ -292,8 +300,10 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getMeetingBookingsModel().getFrom()));
             holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getMeetingBookingsModel().getMyto()));
 
-        } else if (list.get(position).getCalDeskStatus() == 3){
+        }
+        else if (list.get(position).getCalDeskStatus() == 3){
             //Car Parking
+            holder.rlBookingRemoteBlock.setVisibility(View.GONE);
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
             holder.bookingAddress.setText(new StringBuilder()
