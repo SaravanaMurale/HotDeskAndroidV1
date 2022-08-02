@@ -970,6 +970,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         //Desk Avaliablity Checking
+
         if (code.equals(AppConstants.DESK)) {
 
             if(teamDeskAvaliabilityList!=null){
