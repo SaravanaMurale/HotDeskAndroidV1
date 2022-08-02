@@ -88,11 +88,11 @@ public class ProfileActivity extends AppCompatActivity {
     private void uiInit() {
         profileUserName.setText(SessionHandler.getInstance().get(this, AppConstants.USERNAME));
         profileTeamName.setText(SessionHandler.getInstance().get(this, AppConstants.CURRENT_TEAM));
-        if (!SessionHandler.getInstance().get(this, AppConstants.EMAIL).isEmpty()
+        if (SessionHandler.getInstance().get(this, AppConstants.EMAIL)!=null &&!SessionHandler.getInstance().get(this, AppConstants.EMAIL).isEmpty()
                 &&
                 !SessionHandler.getInstance().get(this, AppConstants.EMAIL).equalsIgnoreCase(""))
             tvEmail.setText(SessionHandler.getInstance().get(this, AppConstants.EMAIL));
-        if (!SessionHandler.getInstance().get(this, AppConstants.PHONE_NUMBER).isEmpty()
+        if (SessionHandler.getInstance().get(this, AppConstants.PHONE_NUMBER) != null &&!SessionHandler.getInstance().get(this, AppConstants.PHONE_NUMBER).isEmpty()
                 && !SessionHandler.getInstance().get(this, AppConstants.PHONE_NUMBER).equalsIgnoreCase(""))
             tvPhone.setText(SessionHandler.getInstance().get(this, AppConstants.PHONE_NUMBER));
         tvTeam.setText(SessionHandler.getInstance().get(this, AppConstants.CURRENT_TEAM));

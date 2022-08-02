@@ -4,200 +4,223 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:CalendarView="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.book.BookFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginHorizontal="@dimen/_10sdp"
-        >
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/desk_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:layout_marginHorizontal="@dimen/_3sdp"
-            android:background="@drawable/custom_shape"
-            android:backgroundTint="@color/figmaBlue"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/_10sdp"
-            android:paddingVertical="@dimen/_10sdp"
-            >
-
-            <ImageView
-                android:id="@+id/iv_desk"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:src="@drawable/chair"
-                app:tint="@color/figmaBlack" />
-
-            <view
-                class="android.widget.TextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                />
-
-            <TextView
-                android:id="@+id/tv_desk"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:text="Workspace"
-                android:visibility="gone"
-                android:textColor="@color/white"
-                android:theme="@style/TextBold" />
-            <view
-                class="android.widget.TextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                />
-
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/room_layout"
-            android:layout_width="wrap_content"
+            android:id="@+id/ll_book"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_weight="0"
-            android:paddingVertical="@dimen/_10sdp"
-            android:paddingHorizontal="@dimen/_10sdp"
-            android:background="@drawable/custom_shape"
-            android:backgroundTint="@color/figmaBgGrey"
-            android:gravity="center_vertical"
-            android:layout_marginHorizontal="@dimen/_3sdp"
-            >
-            <ImageView
-                android:id="@+id/iv_room"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:src="@drawable/room"
-                app:tint="@color/figmaBlack"
-                />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginHorizontal="@dimen/_10sdp">
 
-            <view
-                class="android.widget.TextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                />
-
-            <TextView
-                android:id="@+id/tv_room"
+            <LinearLayout
+                android:id="@+id/desk_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Room "
-                android:theme="@style/TextBold"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:visibility="gone"
-                android:textColor="@color/white"
-                />
-            <view
-                class="android.widget.TextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                />
+                android:layout_weight="0"
+                android:layout_marginHorizontal="@dimen/_3sdp"
+                android:background="@drawable/custom_shape"
+                android:backgroundTint="@color/figmaBlue"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_10sdp"
+                >
 
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/parking_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="0"
-            android:paddingVertical="@dimen/_10sdp"
-            android:paddingHorizontal="@dimen/_10sdp"
-            android:background="@drawable/custom_shape"
-            android:backgroundTint="@color/figmaBgGrey"
-            android:gravity="center_vertical"
-            android:layout_marginHorizontal="@dimen/_3sdp"
-            >
-            <ImageView
-                android:id="@+id/iv_parking"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:src="@drawable/car"
-                app:tint="@color/figmaBlack"
-                />
-            <view
-                class="android.widget.TextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                />
+                <ImageView
+                    android:id="@+id/iv_desk"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:src="@drawable/chair"
+                    app:tint="@color/figmaBlack" />
 
-            <TextView
-                android:id="@+id/tv_parking"
+                <view
+                    class="android.widget.TextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_desk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:text="Workspace"
+                    android:visibility="gone"
+                    android:textColor="@color/white"
+                    android:theme="@style/TextBold" />
+                <view
+                    class="android.widget.TextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/room_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Parking "
-                android:theme="@style/TextBold"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:visibility="gone"
-                android:textColor="@color/white"
-                />
-            <view
-                class="android.widget.TextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/more_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="0"
-            android:layout_toRightOf="@id/parking_layout"
-            android:paddingVertical="@dimen/_10sdp"
-            android:paddingHorizontal="@dimen/_10sdp"
-            android:background="@drawable/custom_shape"
-            android:backgroundTint="@color/figmaBgGrey"
-            android:gravity="center_vertical"
-            android:layout_marginHorizontal="@dimen/_3sdp"
-            >
-            <ImageView
-                android:id="@+id/iv_more"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:src="@drawable/more_icon"
-                app:tint="@color/figmaBlack"
-                />
+                android:orientation="horizontal"
+                android:layout_weight="0"
+                android:paddingVertical="@dimen/_10sdp"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:background="@drawable/custom_shape"
+                android:backgroundTint="@color/figmaBgGrey"
+                android:gravity="center_vertical"
+                android:layout_marginHorizontal="@dimen/_3sdp"
+                >
+                <ImageView
+                    android:id="@+id/iv_room"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:src="@drawable/room"
+                    app:tint="@color/figmaBlack"
+                    />
 
-            <view
-                class="android.widget.TextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                />
+                <view
+                    class="android.widget.TextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
 
-            <TextView
-                android:id="@+id/tv_more"
+                <TextView
+                    android:id="@+id/tv_room"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Room "
+                    android:theme="@style/TextBold"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:visibility="gone"
+                    android:textColor="@color/white"
+                    />
+                <view
+                    class="android.widget.TextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/parking_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="more "
-                android:theme="@style/TextBold"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:visibility="gone"
-                android:textColor="@color/white"
-                />
+                android:orientation="horizontal"
+                android:layout_weight="0"
+                android:paddingVertical="@dimen/_10sdp"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:background="@drawable/custom_shape"
+                android:backgroundTint="@color/figmaBgGrey"
+                android:gravity="center_vertical"
+                android:layout_marginHorizontal="@dimen/_3sdp"
+                >
+                <ImageView
+                    android:id="@+id/iv_parking"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:src="@drawable/car"
+                    app:tint="@color/figmaBlack"
+                    />
+                <view
+                    class="android.widget.TextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
 
-            <view
-                class="android.widget.TextView"
-                android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/tv_parking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Parking "
+                    android:theme="@style/TextBold"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:visibility="gone"
+                    android:textColor="@color/white"
+                    />
+                <view
+                    class="android.widget.TextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/more_layout"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                />
+                android:orientation="horizontal"
+                android:layout_weight="0"
+                android:layout_toRightOf="@id/parking_layout"
+                android:paddingVertical="@dimen/_10sdp"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:background="@drawable/custom_shape"
+                android:backgroundTint="@color/figmaBgGrey"
+                android:gravity="center_vertical"
+                android:layout_marginHorizontal="@dimen/_3sdp"
+                >
+                <ImageView
+                    android:id="@+id/iv_more"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:src="@drawable/more_icon"
+                    app:tint="@color/figmaBlack"
+                    />
+
+                <view
+                    class="android.widget.TextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="more "
+                    android:theme="@style/TextBold"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:visibility="gone"
+                    android:textColor="@color/white"
+                    />
+
+                <view
+                    class="android.widget.TextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
+
+            </LinearLayout>
 
         </LinearLayout>
-    </LinearLayout>
+
+        <dream.guys.hotdeskandroid.utils.CalendarView
+            android:id="@+id/calendar_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_285sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            app:layout_constraintTop_toBottomOf="@+id/ll_book"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout2"
         android:layout_width="match_parent"

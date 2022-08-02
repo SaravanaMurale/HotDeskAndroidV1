@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:ignore="MissingDefaultResource">
+
+    <TextView
+        android:id="@+id/cal_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"
+        android:background="@drawable/btn_bg_app_theme"
+        android:padding="@dimen/_8sdp"
+        android:layout_margin="@dimen/_8sdp"
+        android:textSize="@dimen/_8sdp"
+        android:textAppearance="@android:style/TextAppearance.Medium"
+        android:textAlignment="center"
+        android:text="00" />
+
+    <TextView
+        android:id="@+id/tv_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/cal_text_view"
+        app:layout_constraintStart_toStartOf="@id/cal_text_view"
+        app:layout_constraintEnd_toEndOf="@id/cal_text_view"
+        android:gravity="center"
+        android:background="@drawable/btn_bg_app_theme"
+        android:padding="@dimen/_8sdp"
+        android:layout_margin="@dimen/_8sdp"
+        android:textSize="@dimen/_8sdp"
+        android:textAppearance="@android:style/TextAppearance.Small"
+        android:textAlignment="center"
+        android:text="00" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

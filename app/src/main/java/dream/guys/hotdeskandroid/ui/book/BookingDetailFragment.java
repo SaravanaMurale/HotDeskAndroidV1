@@ -150,6 +150,7 @@ public class BookingDetailFragment extends Fragment {
             fragmentBookingDetailBinding.checkInText.setText(AppConstants.OFFICE_TODAY);
 
         } else if (action.equals(AppConstants.REMOTE)) {
+            fragmentBookingDetailBinding.btnCheckInNow.setVisibility(View.GONE);
             fragmentBookingDetailBinding.bookingDetailDeskName.setText(bookName);
             fragmentBookingDetailBinding.bookingDetailCheckInTime.setVisibility(View.INVISIBLE);
             fragmentBookingDetailBinding.bookingCheckOutTime.setVisibility(View.INVISIBLE);

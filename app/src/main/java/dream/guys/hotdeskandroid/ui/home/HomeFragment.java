@@ -23,6 +23,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
 import android.text.Editable;
@@ -86,7 +87,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnCheckInClickable, DeskListRecyclerAdapter.OnSelectSelected {
+public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnCheckInClickable, DeskListRecyclerAdapter.OnSelectSelected, SwipeRefreshLayout.OnRefreshListener {
     String TAG="HomeFragment";
     FragmentHomeBinding binding;
     TextView text;
@@ -125,6 +126,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     public boolean qrEnabled = false;
     private static final int PERMISSION_REQUEST_CODE = 1;
 
+    SwipeRefreshLayout mSwipeRefreshLayout;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -151,6 +153,12 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         homeLayout=root.findViewById(R.id.home_layout);
         searchLayout=root.findViewById(R.id.search_layout);
         closeSearch=root.findViewById(R.id.close);
+        mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh);
+        mSwipeRefreshLayout.setOnRefreshListener(HomeFragment.this);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.figmaBlue,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
 
         if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null && SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked in")){
             userCurrentStatus.setText("Checked In");
@@ -211,6 +219,23 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         loadTenantImage();
         loadNotification();
         loadHomeList();
+
+
+        /**
+         * Showing Swipe Refresh animation on activity create
+         * As animation won't start on onCreate, post runnable is used
+         */
+        mSwipeRefreshLayout.post(new Runnable() {
+
+            @Override
+            public void run() {
+
+                mSwipeRefreshLayout.setRefreshing(true);
+                loadHomeList();
+                // Fetching data from server
+//                loadRecyclerViewData();
+            }
+        });
 
         return root;
     }
@@ -592,7 +617,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
         if (Utils.isNetworkAvailable(getActivity())) {
 
-            dialog= ProgressDialog.showProgressBar(getContext());
+            mSwipeRefreshLayout.setRefreshing(true);
+//            dialog= ProgressDialog.showProgressBar(getContext());
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<BookingListResponse> call = apiService.getUserMyWorkDetails(Utils.getCurrentDate(),true);
@@ -607,12 +633,13 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         teamMembershipId = bookingListResponse.getTeamMembershipId();
                         createRecyclerList(bookingListResponse);
                         loadDeskList();
-                        ProgressDialog.dismisProgressBar(getContext(),dialog);
+
+//                        ProgressDialog.dismisProgressBar(getContext(),dialog);
                         Log.d(TAG, "onResponse: if");
 
                     }else if(response.code()==401){
                         //Handle if token got expired
-                        ProgressDialog.dismisProgressBar(getContext(),dialog);
+//                        ProgressDialog.dismisProgressBar(getContext(),dialog);
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
                         Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
 //                        Utils.finishAllActivity(getContext());
@@ -620,10 +647,13 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
                         Log.d(TAG, "onResponse: else" );
                     }
+                    mSwipeRefreshLayout.setRefreshing(false);
                 }
                 @Override
                 public void onFailure(Call<BookingListResponse> call, Throwable t) {
-                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    mSwipeRefreshLayout.setRefreshing(false);
+
+//                    ProgressDialog.dismisProgressBar(getContext(),dialog);
                     Log.d(TAG, "onFailure: "+t.getMessage());
                     Utils.toastMessage(getActivity(),"failure: "+t.getMessage());
                 }
@@ -635,6 +665,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     }
 
     private void loadDeskList() {
+        System.out.println("desk Code enter");
         if (Utils.isNetworkAvailable(getActivity())) {
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -1263,5 +1294,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        loadHomeList();
     }
 }

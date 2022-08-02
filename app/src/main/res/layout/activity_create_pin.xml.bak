@@ -12,8 +12,8 @@
         android:layout_height="@dimen/_130sdp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_40sdp"
-        android:src="@drawable/logo_splash"
-        />
+        android:src="@drawable/logo_splash" />
+
 
     <!--Email and Password-->
     <RelativeLayout
@@ -30,41 +30,99 @@
             android:id="@+id/tvRest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_marginVertical="@dimen/_5sdp"
-            android:text="Enter your pin"
+            android:text="Create Login Pin"
+            android:textSize="@dimen/_18sdp"
+            android:theme="@style/TextBold" />
+
+        <TextView
+            android:id="@+id/tvNewPin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvRest"
+<<<<<<< HEAD
+            android:focusable="false"
+            android:hint="Enter New Pin"
+            android:inputType="number"
+            android:maxLength="6" />
+=======
+            android:text="Enter New Pin"
+            android:textSize="@dimen/_14sdp"
+            android:theme="@style/TextRegular" />
+>>>>>>> f126f391e5bd2f1c3cd328f20ff7451a7946658d
+
+        <in.aabhasjindal.otptextview.OtpTextView
+            android:id="@+id/etNewPin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvNewPin"
+<<<<<<< HEAD
+            android:layout_marginTop="@dimen/_15sdp"
+            android:textColor="@color/black"
+            app:bar_height="2dp"
+=======
+>>>>>>> f126f391e5bd2f1c3cd328f20ff7451a7946658d
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/black"
+            app:bar_height="20dp"
+            app:height="@dimen/_40sdp"
+            app:length="6"
+            app:otp_box_background_active="@drawable/otp_outline_red"
+            app:otp_box_background="@drawable/otp_outline"
+            app:otp_box_background_active="@drawable/otp_outline_blue"
+            app:otp_box_background_inactive="@drawable/otp_outline"
+            app:otp_text_size="18dp"
+            app:width="@dimen/_40sdp" />
+
+        <TextView
+            android:id="@+id/tvConfirmPin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:layout_below="@+id/etNewPin"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Confirm New Pin"
             android:textSize="@dimen/_14sdp"
             android:theme="@style/TextRegular" />
 
         <in.aabhasjindal.otptextview.OtpTextView
-            android:id="@+id/etPin"
+            android:id="@+id/etConfirmPin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvRest"
-            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/tvConfirmPin"
+<<<<<<< HEAD
             android:layout_marginTop="@dimen/_15sdp"
             android:textColor="@color/black"
-            app:bar_height="2dp"
-            app:length="6"
+=======
+>>>>>>> f126f391e5bd2f1c3cd328f20ff7451a7946658d
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/black"
             app:height="@dimen/_40sdp"
             app:width="@dimen/_40sdp"
-            app:bar_height="@dimen/_15sdp"
+            app:bar_height="2dp"
             app:length="6"
+<<<<<<< HEAD
+            app:otp_box_background_active="@drawable/otp_outline_red"
+=======
             app:otp_box_background_active="@drawable/otp_outline_blue"
+>>>>>>> f126f391e5bd2f1c3cd328f20ff7451a7946658d
             app:otp_box_background="@drawable/otp_outline"
             app:otp_text_size="18dp" />
-
 
         <Button
             android:id="@+id/btnSubmit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/etPin"
+            android:layout_below="@id/etConfirmPin"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/button_blue_bg"
             android:paddingLeft="@dimen/_20sdp"
             android:paddingRight="@dimen/_20sdp"
-            android:text="Login"
+            android:text="Create Pin"
             android:textAllCaps="true"
             android:textColor="@color/white" />
 
@@ -75,7 +133,7 @@
             android:layout_below="@id/btnSubmit"
             android:layout_alignParentStart="true"
             android:layout_marginTop="@dimen/_23sdp"
-            android:text="Use email and password"
+            android:text="back to home"
             android:textColor="@color/figmaGrey"
             android:textSize="@dimen/_14sdp"
             android:theme="@style/TextRegular"
@@ -83,5 +141,8 @@
             />
 
     </RelativeLayout>
+
+
+
 
 </RelativeLayout>
