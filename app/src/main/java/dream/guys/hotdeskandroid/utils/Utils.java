@@ -843,4 +843,37 @@ public class Utils {
         return dateAlone;
 
     }
+
+    public static int doDateCompareHere(String selectDate){
+
+        int dateSelectedStatus=0;
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        Date currrentDate=null,selectedDate=null;
+        try {
+            currrentDate=formatter.parse(formatter.format(date));
+            String dateInString=selectDate;
+            selectedDate = formatter.parse(dateInString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if(currrentDate.getDate()==selectedDate.getDate()){
+            System.out.println("BothDateEqual");
+            dateSelectedStatus=1;
+        }else if(currrentDate.getDate()<selectedDate.getDate()){
+            System.out.println("SelecctedDateIsHigh");
+            dateSelectedStatus=2;
+        }else if(currrentDate.getDate()>selectedDate.getDate()){
+            System.out.println("SelecctedDateIsLow");
+            dateSelectedStatus=0;
+
+        }
+
+        return dateSelectedStatus;
+
+
+
+    }
 }

@@ -1,5 +1,7 @@
 package dream.guys.hotdeskandroid.webservice;
 
+import android.provider.Settings;
+
 import com.google.gson.JsonObject;
 
 import java.util.List;
@@ -13,6 +15,7 @@ import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkEditRequest;
 import dream.guys.hotdeskandroid.model.request.LocateDeskBookingRequest;
+import dream.guys.hotdeskandroid.model.request.LocationMR_Request;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
@@ -25,12 +28,17 @@ import dream.guys.hotdeskandroid.model.response.CheckPinLoginResponse;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.DeskDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
+import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.ImageResponse;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
+import dream.guys.hotdeskandroid.model.response.LocationWithMR_Response;
+import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.MeetingRoomDescriptionResponse;
+import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
 import dream.guys.hotdeskandroid.model.response.TypeOfLoginResponse;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
+import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -86,6 +94,12 @@ public interface ApiInterface {
     @GET("api/Account/LoggedInUser")
     Call<UserDetailsResponse>  getLoginUserDetails();
 
+    @GET("api/mywork/teammemberstatus")
+    Call<List<TeamMembersResponse>> getTeamMembers(@Query("date") String date,
+                                             @Query("teamId") int teamId);
+    @GET("api/globalsearch")
+    Call<GlobalSearchResponse> getGlobalSearchData(@Query("pageSize") int pageSize,
+                                                   @Query("filterText") String text);
     @GET("api/MyWork/UserMyWorkStatus")
     Call<BookingListResponse> getUserMyWorkDetails(@Query("dayOfTheWeek") String dayOfTheWeek,
                                                    @Query("includeNonWorkingDays") boolean includeNonWorkingDays);
@@ -164,23 +178,36 @@ public interface ApiInterface {
                                                                 @Query("toDate") String toDate,
                                                                 @Query("slotId") int slotId);
 
-
     //MeetingRoomBook
     @PUT("api/MeetingRoomBooking/bookings")
     Call<BaseResponse> doMeetingRoomBook(@Body MeetingRoomRequest meetingRoomRequest);
 
+    //MeetingEditListResponse
+    @GET("api/MeetingRoomBooking/bookings")
+    Call<List<MeetingListToEditResponse>> getMeetingListToEdit(@Query("fromDate") String fromDate,
+                                                         @Query("toDate") String toDate);
+
+
+    //MettingRoomEdit
+    @PUT("api/MeetingRoomBooking/bookings")
+    Call<BaseResponse>  doRoomEdit(@Body MeetingRoomRequest meetingRoomRequest);
+
+    //MeetingUnavalibilityChecking
+    @GET("api/meetingrooms/userallowedmeetingrooms")
+    Call<List<UserAllowedMeetingResponse>> userAllowedMeetings();
+    @POST("api/MeetingRooms/locationsWithMR")
+    Call<List<LocationWithMR_Response>> getLocationMR(@Body LocationMR_Request locationMR_request);
+
     //DeskDescription
     @GET("api/Desks/{id}")
     Call<DeskDescriptionResponse> getDiskDescription(@Path("id") int deskId);
-
+    //RoomDescription
     @GET("api/MeetingRooms/{id}")
     Call<MeetingRoomDescriptionResponse> getMeetingRoomDescription(@Path("id") int roomId);
 
+    //CarParkDescription
     @GET("api/ParkingSlot/{id}")
     Call<CarParkingDescriptionResponse> getCarParkingDescription(@Path("id") int carParkId);
-
-
-
 
 
 }

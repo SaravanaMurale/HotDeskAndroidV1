@@ -1,7 +1,9 @@
 package dream.guys.hotdeskandroid.ui.home;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -12,16 +14,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,11 +52,15 @@ import com.google.gson.JsonObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
+import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
@@ -62,6 +74,7 @@ import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.ImageResponse;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
+import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
 import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
@@ -74,8 +87,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnCheckInClickable, DeskListRecyclerAdapter.OnSelectSelected {
-
+public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnCheckInClickable, DeskListRecyclerAdapter.OnSelectSelected, SwipeRefreshLayout.OnRefreshListener {
+    String TAG="HomeFragment";
     FragmentHomeBinding binding;
     TextView text;
     TextView userCurrentStatus;
@@ -109,7 +122,11 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     ArrayList<BookingListResponse.DayGroup> recyclerModelArrayList;
     ArrayList<IncomingRequestResponse.Result> notiList;
     List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse;
-    boolean qrEnabled = false;
+    HashMap<Integer,String> meetingRecurenceMap = new HashMap<Integer, String>();
+    public boolean qrEnabled = false;
+    private static final int PERMISSION_REQUEST_CODE = 1;
+
+    SwipeRefreshLayout mSwipeRefreshLayout;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -136,6 +153,12 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         homeLayout=root.findViewById(R.id.home_layout);
         searchLayout=root.findViewById(R.id.search_layout);
         closeSearch=root.findViewById(R.id.close);
+        mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh);
+        mSwipeRefreshLayout.setOnRefreshListener(HomeFragment.this);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.figmaBlue,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
 
         if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null && SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked in")){
             userCurrentStatus.setText("Checked In");
@@ -153,16 +176,11 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaBlue), android.graphics.PorterDuff.Mode.MULTIPLY);
             }
         }
+
        binding.searchIcon.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               searchLayout.setVisibility(View.VISIBLE);
-           }
-       });
-       binding.close.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               searchLayout.setVisibility(View.GONE);
+               ((MainActivity) getActivity()).showSearch();
            }
        });
        userProfile.setOnClickListener(new View.OnClickListener() {
@@ -179,6 +197,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 getActivity().startActivity(intent);
             }
         });
+
         binding.homeUserName.setText(SessionHandler.getInstance().get(getContext(),AppConstants.USERNAME));
         binding.homeTeamName.setText(SessionHandler.getInstance().get(getContext(),AppConstants.CURRENT_TEAM));
 /*
@@ -194,14 +213,91 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             checkPinPopUp();
         }
 
+        meetingRecurenceCall();
         qrEnabledCall();
         loadUserImage();
         loadTenantImage();
         loadNotification();
         loadHomeList();
 
+
+        /**
+         * Showing Swipe Refresh animation on activity create
+         * As animation won't start on onCreate, post runnable is used
+         */
+        mSwipeRefreshLayout.post(new Runnable() {
+
+            @Override
+            public void run() {
+
+                mSwipeRefreshLayout.setRefreshing(true);
+                loadHomeList();
+                // Fetching data from server
+//                loadRecyclerViewData();
+            }
+        });
+
         return root;
     }
+
+    private void meetingRecurenceCall() {
+        if (Utils.isNetworkAvailable(getActivity())) {
+
+//            dialog= ProgressDialog.showProgressBar(getContext());
+            LocalDate today = LocalDate.now();
+
+            // Go backward to get Monday
+            LocalDate monday = today;
+            while (monday.getDayOfWeek() != DayOfWeek.MONDAY) {
+                monday = monday.minusDays(1);
+            }
+            // Go forward to get Sunday
+            LocalDate sunday = today;
+            while (sunday.getDayOfWeek() != DayOfWeek.SUNDAY) {
+                sunday = sunday.plusDays(1);
+            }
+
+            System.out.println("Today: " + today);
+            System.out.println("Monday of the Week: " + monday);
+            System.out.println("Sunday of the Week: " + sunday);
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<MeetingListToEditResponse>> call = apiService.getMeetingListToEdit(monday+"T00:00:00.000Z",sunday+"T00:00:00.000Z");
+            call.enqueue(new Callback<List<MeetingListToEditResponse>>() {
+                @Override
+                public void onResponse(Call<List<MeetingListToEditResponse>> call, Response<List<MeetingListToEditResponse>> response) {
+                    if(response.code()==200){
+//                        ProgressDialog.dismisProgressBar(getContext(),dialog);
+                        List<MeetingListToEditResponse> list= response.body();
+                        for (int i=0; i<list.size(); i++){
+                            if (list.get(i).getRecurrence()!=null){
+                                meetingRecurenceMap.put(list.get(i).getId(),list.get(i).getMeetingRoomName());
+                            }
+                        }
+                    }else if(response.code()==401){
+                        //Handle if token got expired
+//                        ProgressDialog.dismisProgressBar(getContext(),dialog);
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+//                        Utils.finishAllActivity(getContext());
+//                        redirectToBioMetricAccess();
+
+                        Log.d(TAG, "onResponse: else" );
+                    }
+                }
+                @Override
+                public void onFailure(Call<List<MeetingListToEditResponse>> call, Throwable t) {
+//                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    Log.d(TAG, "onFailure: "+t.getMessage());
+                    Utils.toastMessage(getActivity(),"failure: "+t.getMessage());
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
+    }
+
 
     private void qrEnabledCall() {
         if (Utils.isNetworkAvailable(getActivity())) {
@@ -215,11 +311,11 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                     if(response.code()==200){
                         qrEnabled = response.body();
-                        qrEnabled = true;
+//                        qrEnabled = true;
                     }else if(response.code()==401){
-                        Utils.showCustomAlertDialog(getActivity(),"Token Expired");
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                        Utils.finishAllActivity(getContext());
+//                        Utils.finishAllActivity(getContext());
                     }
                 }
                 @Override
@@ -289,9 +385,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                             }
                         }
                     }else if(response.code()==401){
-                        Utils.toastMessage(getActivity(),"Token Expired");
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                        Utils.finishAllActivity(getContext());
+//                        Utils.finishAllActivity(getContext());
                     }
                 }
                 @Override
@@ -330,9 +426,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                             tenantProfile.setImageBitmap(decodedByte);
                         }
                     }else if(response.code()==401){
-                        Utils.toastMessage(getActivity(),"Token Expired");
+//                        Utils.toastMessage(getActivity(),"Token Expired");
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                        Utils.finishAllActivity(getContext());
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+//                        Utils.finishAllActivity(getContext());
                     }
                 }
                 @Override
@@ -371,9 +468,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                             userProfile.setImageBitmap(decodedByte);
                         }
                     }else if(response.code()==401){
-                        Utils.showCustomAlertDialog(getActivity(),"Token Expired");
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                        Utils.finishAllActivity(getContext());
+//                        Utils.finishAllActivity(getContext());
                     }
                 }
                 @Override
@@ -520,7 +617,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
         if (Utils.isNetworkAvailable(getActivity())) {
 
-            dialog= ProgressDialog.showProgressBar(getContext());
+            mSwipeRefreshLayout.setRefreshing(true);
+//            dialog= ProgressDialog.showProgressBar(getContext());
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<BookingListResponse> call = apiService.getUserMyWorkDetails(Utils.getCurrentDate(),true);
@@ -535,20 +633,29 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         teamMembershipId = bookingListResponse.getTeamMembershipId();
                         createRecyclerList(bookingListResponse);
                         loadDeskList();
-                        ProgressDialog.dismisProgressBar(getContext(),dialog);
+
+//                        ProgressDialog.dismisProgressBar(getContext(),dialog);
+                        Log.d(TAG, "onResponse: if");
 
                     }else if(response.code()==401){
                         //Handle if token got expired
-                        ProgressDialog.dismisProgressBar(getContext(),dialog);
+//                        ProgressDialog.dismisProgressBar(getContext(),dialog);
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                        Utils.finishAllActivity(getContext());
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+//                        Utils.finishAllActivity(getContext());
 //                        redirectToBioMetricAccess();
 
+                        Log.d(TAG, "onResponse: else" );
                     }
+                    mSwipeRefreshLayout.setRefreshing(false);
                 }
                 @Override
                 public void onFailure(Call<BookingListResponse> call, Throwable t) {
-                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    mSwipeRefreshLayout.setRefreshing(false);
+
+//                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    Log.d(TAG, "onFailure: "+t.getMessage());
+                    Utils.toastMessage(getActivity(),"failure: "+t.getMessage());
                 }
             });
 
@@ -558,6 +665,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     }
 
     private void loadDeskList() {
+        System.out.println("desk Code enter");
         if (Utils.isNetworkAvailable(getActivity())) {
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -572,9 +680,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
                         }
                     }else if(response.code()==401){
-                        Utils.showCustomAlertDialog(getActivity(),"Token Expired");
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                        Utils.finishAllActivity(getContext());
+//                        Utils.finishAllActivity(getContext());
                     }
                     ProgressDialog.dismisProgressBar(getContext(),dialog);
 //                    createRecyclerDeskList(response.body().getTeamDeskAvailabilities());
@@ -687,7 +795,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         rvHomeBooking.setHasFixedSize(true);
 
        // homeBookingListAdapter=new HomeBookingListAdapter(getContext(), getActivity(), recyclerModelArrayList);
-        homeBookingListAdapter=new HomeBookingListAdapter(getContext(),this,recyclerModelArrayList,getActivity(),this);
+        homeBookingListAdapter=new HomeBookingListAdapter(getContext(),this,recyclerModelArrayList,getActivity(),this,meetingRecurenceMap);
         rvHomeBooking.setAdapter(homeBookingListAdapter);
 
         ProgressDialog.dismisProgressBar(getContext(),dialog);
@@ -724,8 +832,12 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 bundle.putString("BOOK_NAME",calendarEntriesModel.getUsageTypeName());
 
             }
+
             if (qrEnabled){
-                navController.navigate(R.id.action_qrFragment,bundle);
+                if (checkPermission())
+                    navController.navigate(R.id.action_qrFragment,bundle);
+                else
+                    requestPermission();
             } else
                 navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment,bundle);
         } else if(click.equals(AppConstants.EDIT)){
@@ -844,14 +956,17 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             chipGroup.setVisibility(View.GONE);
         }
 
-        if (dskRoomParkStatus == 1){
+        if (dskRoomParkStatus == 1) {
             repeatBlock.setVisibility(View.GONE);
             teamsBlock.setVisibility(View.GONE);
             commentRegistration.setHint("Comments");
             tvComments.setText("Comments");
-
-        }else if (dskRoomParkStatus==2){
+        }else if (dskRoomParkStatus==2) {
             llDeskLayout.setVisibility(View.GONE);
+            commentRegistration.setVisibility(View.GONE);
+            tvComments.setVisibility(View.GONE);
+            repeatBlock.setVisibility(View.GONE);
+            teamsBlock.setVisibility(View.GONE);
         }else {
             llDeskLayout.setVisibility(View.GONE);
             repeatBlock.setVisibility(View.GONE);
@@ -983,6 +1098,24 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
     }
 
+    private boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CAMERA);
+        if (result == PackageManager.PERMISSION_GRANTED) {
+
+            return true;
+
+        } else {
+
+            return false;
+        }
+    }
+
+    private void requestPermission() {
+
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CODE);
+
+    }
     private void callDeskBottomSheetDialog() {
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -1145,4 +1278,26 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
     }
 */
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // Case_Download();
+                } else {
+
+                    //    Snackbar.make(findViewById(R.id.coordinatorLayout),"Permission Denied, Please allow to proceed !", Snackbar.LENGTH_LONG).show();
+
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        loadHomeList();
+    }
 }

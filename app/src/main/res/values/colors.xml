@@ -17,6 +17,7 @@
     //Figma
     <color name="figmaGrey">#777777</color>
     <color name="figmaGrey80">#cc777777</color>
+    <color name="figmaGrey05">#66777777</color>
     <color name="figmaBgGrey">#F2F2F2</color>
     <color name="figmaBlack">#1b1b1b</color>
     <color name="figmaBlackGrey">#323232</color>

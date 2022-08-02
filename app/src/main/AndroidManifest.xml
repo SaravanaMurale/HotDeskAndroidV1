@@ -9,10 +9,12 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="true"/>
+        android:required="true" />
+
     <application
         android:name=".utils.MyApp"
         android:allowBackup="false"
@@ -21,6 +23,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HotDeskAndroid">
+        <activity
+            android:name=".ui.home.ViewTeamsActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.login.pin.LoginPinActivity"
             android:exported="false" />
@@ -36,7 +41,8 @@
         <activity
             android:name=".ui.login.sso.WebViewActivity"
             android:exported="false" />
-        <!--<activity
+        <!--
+<activity
             android:name="com.microsoft.identity.client.BrowserTabActivity"
             android:exported="true">
             <intent-filter>
@@ -64,14 +70,17 @@
                     android:scheme="oauth" />
 
             </intent-filter>
-        </activity>-->
+        </activity>
+        -->
         <activity
             android:name="com.microsoft.identity.client.BrowserTabActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="oauth"
                     android:path="/redirect"
@@ -99,7 +108,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false">
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />

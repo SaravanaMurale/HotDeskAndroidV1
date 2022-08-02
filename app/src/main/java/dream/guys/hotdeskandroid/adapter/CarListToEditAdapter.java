@@ -23,17 +23,19 @@ public class CarListToEditAdapter extends RecyclerView.Adapter<CarListToEditAdap
     Context context;
     List<CarParkingForEditResponse.CarParkBooking> carParkBookings;
     public CarEditClickable carEditClickable;
+    private String code;
 
     public   interface CarEditClickable{
         public void onCarEditClick(CarParkingForEditResponse.CarParkBooking carParkBooking);
     }
 
 
-    public CarListToEditAdapter(Context context, List<CarParkingForEditResponse.CarParkBooking> carParkBookings,CarEditClickable carEditClickable) {
+    public CarListToEditAdapter(Context context, List<CarParkingForEditResponse.CarParkBooking> carParkBookings, CarEditClickable carEditClickable, String code) {
 
         this.context=context;
         this.carParkBookings=carParkBookings;
         this.carEditClickable=carEditClickable;
+        this.code=code;
 
     }
 
@@ -49,6 +51,10 @@ public class CarListToEditAdapter extends RecyclerView.Adapter<CarListToEditAdap
 
     @Override
     public void onBindViewHolder(@NonNull CarListToEditViewHolder holder, int position) {
+
+        if(code.equals("5")){
+            holder.editBookingImage.setImageDrawable(context.getDrawable(R.drawable.car));
+        }
 
         holder.editCode.setText(carParkBookings.get(position).getVehicleRegNumber());
         holder.editCheckInTime.setText(Utils.splitTime(carParkBookings.get(position).getFrom()));

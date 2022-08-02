@@ -209,9 +209,9 @@ public class LoginActivity extends AppCompatActivity {
                 public void onResponse(Call<TypeOfLoginResponse> call, Response<TypeOfLoginResponse> response) {
                     TypeOfLoginResponse typeOfLoginResponse = response.body();
                     if (response.code()==200 && typeOfLoginResponse!=null){
-                        if (typeOfLoginResponse.getTypeOfLogin()==0) {
+                        if (typeOfLoginResponse.getTypeOfLogin()==1) {
                             ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
-                            Toast.makeText(LoginActivity.this, "SSO Login has not been set up, please contact Admin to Setup", Toast.LENGTH_LONG).show();
+                            Utils.showCustomAlertDialog(LoginActivity.this, "SSO Login has not been set up, please contact Admin to Setup");
                         } else{
                             ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
 
@@ -226,8 +226,8 @@ public class LoginActivity extends AppCompatActivity {
                              * which you can subsequently use to obtain your resources.
                              */
                             List<Pair<String, String>> extraQueryParameters = new ArrayList<>();
-                            extraQueryParameters.add( new Pair<String, String>("domain_hint", "facebook.com"));
-//                            extraQueryParameters.add( new Pair<String, String>("domain_hint", typeOfLoginResponse.getMobileIdentityProvider()));
+//                            extraQueryParameters.add( new Pair<String, String>("domain_hint", "facebook.com"));
+                            extraQueryParameters.add( new Pair<String, String>("domain_hint", typeOfLoginResponse.getMobileIdentityProvider()));
 
                             AcquireTokenParameters parameters = new AcquireTokenParameters.Builder()
                                     .startAuthorizationFromActivity(LoginActivity.this)
@@ -505,6 +505,7 @@ public class LoginActivity extends AppCompatActivity {
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.USERNAME,userDetailsResponse.getFullName());
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.COMPANY_NAME,companyName);
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.CURRENT_TEAM,userDetailsResponse.getCurrentTeam().getCurrentTeamName());
+                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.PHONE_NUMBER,userDetailsResponse.getPhoneNumber());
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.EMAIL,email);
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.PASSWORD,password);
                             SessionHandler.getInstance().saveBoolean(LoginActivity.this,AppConstants.USER_DETAILS_SAVED_STATUS,true);

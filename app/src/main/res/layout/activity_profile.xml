@@ -88,8 +88,8 @@
                             android:layout_height="@dimen/_45sdp"
                             android:layout_centerInParent="true"
                             android:background="@drawable/bg_circle_vector"
-                            android:src="@drawable/avatar"
-                            android:padding="@dimen/_2sdp"/>
+                            android:padding="@dimen/_2sdp"
+                            android:src="@drawable/avatar" />
                     </RelativeLayout>
                     <LinearLayout
                         android:layout_width="0dp"
@@ -193,13 +193,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
-                        android:layout_toLeftOf="@id/view_all"
+                        android:layout_toLeftOf="@id/view_teams"
                         android:text="PMO"
                         android:textColor="@color/figmaBlack"
                         android:theme="@style/TextRegular" />
 
                     <TextView
-                        android:id="@+id/view_all"
+                        android:id="@+id/view_teams"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -748,6 +748,7 @@
                     />
             </RelativeLayout>
             <androidx.cardview.widget.CardView
+                android:id="@+id/cv_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_10sdp"
@@ -760,7 +761,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginVertical="@dimen/_2sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     >
 
@@ -787,6 +788,7 @@
 
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
+                android:id="@+id/cv_teams"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_10sdp"
@@ -798,7 +800,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginVertical="@dimen/_2sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     >
 
@@ -825,6 +827,7 @@
 
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
+                android:id="@+id/cv_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_10sdp"
@@ -836,7 +839,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginVertical="@dimen/_2sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     >
 

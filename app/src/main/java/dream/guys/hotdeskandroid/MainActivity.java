@@ -1,21 +1,46 @@
 package dream.guys.hotdeskandroid;
 
+import android.app.Dialog;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
+import android.view.View;
 import android.view.animation.ScaleAnimation;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
+import dream.guys.hotdeskandroid.adapter.SearchRecyclerAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityMainBinding;
+import dream.guys.hotdeskandroid.model.response.BookingListResponse;
+import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
+import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.ProgressDialog;
+import dream.guys.hotdeskandroid.utils.SessionHandler;
+import dream.guys.hotdeskandroid.utils.Utils;
+import dream.guys.hotdeskandroid.webservice.ApiClient;
+import dream.guys.hotdeskandroid.webservice.ApiInterface;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -28,35 +53,61 @@ public class MainActivity extends AppCompatActivity {
     GestureDetector gestureDetector;
     private float mScale = 1f;
 
-
+    LinearLayout searchLayout;
+    LinearLayoutManager linearLayoutManager;
+    Dialog dialog;
+    SearchRecyclerAdapter searchRecyclerAdapter;
+    List<GlobalSearchResponse.Results> list = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_main);
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        dialog = new Dialog(this);
+
         uiInit();
         nightModeConfig();
+//        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+//        imm.hideSoftInputFromWindow(binding.serachBar.getWindowToken(), 0);
+//        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        binding.searchRecycler.setLayoutManager(linearLayoutManager);
+        binding.searchRecycler.setHasFixedSize(true);
+        searchRecyclerAdapter=new SearchRecyclerAdapter(getApplicationContext(),MainActivity.this,list);
+        binding.searchRecycler.setAdapter(searchRecyclerAdapter);
 
-        /*      navView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+        // homeBookingListAdapter=new HomeBookingListAdapter(getContext(), getActivity(), recyclerModelArrayList);
+
+        binding.serachBar.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.navigation_home:
-                        item.setIconTintList(null);
-                        break;
-                    case R.id.navigation_book:
-                        item.setIconTintList(getResources().getColorStateList(R.color.purple_700));
-                        break;
-                    default:
-                        break;
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().length()==0){
+                    list.clear();
+                    searchRecyclerAdapter.notifyDataSetChanged();
                 }
-                return false;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+//                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+//                imm.hideSoftInputFromWindow(binding.serachBar.getWindowToken(), 0);
+                callSearchRecyclerData(s.toString());
             }
         });
-        */
+        binding.close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.serachBar.clearComposingText();
+                binding.searchLayout.setVisibility(View.GONE);
+            }
+        });
 
 
       gestureDetector = new GestureDetector(this, new GestureListener());
@@ -81,10 +132,55 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void callSearchRecyclerData(String searchText) {
+        if (Utils.isNetworkAvailable(this)) {
+//            dialog= ProgressDialog.showProgressBar(this);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<GlobalSearchResponse> call = apiService.getGlobalSearchData(40,searchText);
+            call.enqueue(new Callback<GlobalSearchResponse>() {
+                @Override
+                public void onResponse(Call<GlobalSearchResponse> call, Response<GlobalSearchResponse> response) {
+//                    Toast.makeText(MainActivity.this, "on res", Toast.LENGTH_SHORT).show();
+                    if(response.code()==200){
+//                        ProgressDialog.dismisProgressBar(MainActivity.this,dialog);
+                        list.clear();
+                        if (response.body().getResults()!=null)
+                            list.addAll(response.body().getResults());
+                        Toast.makeText(MainActivity.this, "ls "+list.size(), Toast.LENGTH_SHORT).show();
+
+                        Toast.makeText(MainActivity.this, "200"+searchText, Toast.LENGTH_SHORT).show();
+                        searchRecyclerAdapter.notifyDataSetChanged();
+                        Log.d("Search", "onResponse: 200");
+                    }else if(response.code()==401){
+                        //Handle if token got expired
+//                        ProgressDialog.dismisProgressBar(MainActivity.this,dialog);
+
+                    } else {
+//                        ProgressDialog.dismisProgressBar(MainActivity.this,dialog);
+                        Log.d("Search", "onResponse: else");
+                    }
+
+                }
+                @Override
+                public void onFailure(Call<GlobalSearchResponse> call, Throwable t) {
+                    Toast.makeText(MainActivity.this, "on fail", Toast.LENGTH_SHORT).show();
+//                    ProgressDialog.dismisProgressBar(MainActivity.this,dialog);
+                    Log.d("Search", "onResponse: fail"+t.getMessage());
+                }
+            });
+
+        } else {
+            Utils.toastMessage(this, "Please Enable Internet");
+        }
+    }
+
+    public void showSearch(){
+        binding.searchLayout.setVisibility(View.VISIBLE);
+    }
+
     private void nightModeConfig() {
         int nightModeFlags = getApplicationContext().getResources().getConfiguration().uiMode &
                 Configuration.UI_MODE_NIGHT_MASK;
-
         switch (nightModeFlags) {
             case Configuration.UI_MODE_NIGHT_YES:
                 break;

@@ -55,6 +55,14 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
     @Override
     public void onBindViewHolder(@NonNull BookingListToEditViewHolder holder, int position) {
 
+        if(code.equals("3")){
+            holder.editBookingImage.setImageDrawable(context.getDrawable(R.drawable.chair));
+        }else if(code.equals("4")){
+            holder.editBookingImage.setImageDrawable(context.getDrawable(R.drawable.room));
+        }else if(code.equals("5")){
+            holder.editBookingImage.setImageDrawable(context.getDrawable(R.drawable.car));
+        }
+
         holder.editCode.setText(bookingsListToEdit.get(position).getDeskCode());
         holder.editCheckInTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getFrom()));
         holder.editCheckOutTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getMyto()));
