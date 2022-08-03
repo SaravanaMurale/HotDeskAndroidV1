@@ -267,7 +267,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:background="@drawable/rectangle_bg_with_corner"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone"
+                >
 
                 <LinearLayout
                     android:id="@+id/ll_selcted_desk_layout"

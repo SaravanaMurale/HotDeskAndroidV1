@@ -205,6 +205,9 @@
             </LinearLayout>
 
         </LinearLayout>
+<<<<<<< HEAD
+    </LinearLayout>
+=======
 
         <dream.guys.hotdeskandroid.utils.CalendarView
             android:id="@+id/calendar_view"
@@ -221,4 +224,35 @@
 
 
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout2"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/_5sdp"
+        android:layout_marginHorizontal="@dimen/_3sdp"
+        style="@style/RoundedTabLayoutStyle"
+        >
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:icon="@drawable/chair"
+
+            android:text="Room"
+            />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Accepted" />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Pay Stub" />
+
+    </com.google.android.material.tabs.TabLayout>
+>>>>>>> f86d7b217a3d9df2e274d303b5767a280d920bec
 </FrameLayout>
