@@ -1,6 +1,7 @@
 package dream.guys.hotdeskandroid.model.request;
 
 import java.util.Date;
+import java.util.List;
 
 public class EditBookingDetails {
 
@@ -15,6 +16,15 @@ public class EditBookingDetails {
     int deskStatus=0;
     Date date;
     String abbrevation;
+    List<String> amenities;
+
+    public List<String> getAmenities() {
+        return amenities;
+    }
+
+    public void setAmenities(List<String> amenities) {
+        this.amenities = amenities;
+    }
 
     public int getMeetingRoomtId() {
         return meetingRoomtId;

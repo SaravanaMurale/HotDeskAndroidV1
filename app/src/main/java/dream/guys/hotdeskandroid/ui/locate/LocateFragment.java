@@ -425,7 +425,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         locationMR_request.setTo("1899-12-31T17:30:00Z");
         locationMR_request.setDate(getCurrentDate());
         locationMR_request.setLocationId(parentId);
-
         LocationMR_Request.Timezone timezone=locationMR_request.new Timezone();
         timezone.setId("India Standard Time");
 

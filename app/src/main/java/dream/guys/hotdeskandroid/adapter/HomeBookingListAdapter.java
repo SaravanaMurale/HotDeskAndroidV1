@@ -94,7 +94,11 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             System.out.println("date check Balaaaa"+list.get(position).getDate()+" : "+Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate()));
         } else if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
             holder.today_date.setText("Today");
-
+            holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
+            holder.bookingIvEdit.setVisibility(View.VISIBLE);
+        }else {
+            holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
+            holder.bookingIvEdit.setVisibility(View.VISIBLE);
         }
 
         if (list.get(position).getCalDeskStatus() ==1 &&

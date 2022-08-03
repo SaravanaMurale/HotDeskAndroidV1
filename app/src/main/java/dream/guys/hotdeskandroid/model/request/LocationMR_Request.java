@@ -15,7 +15,7 @@ public class LocationMR_Request {
     @SerializedName("date")
     String date;
     @SerializedName("locationId")
-    int locationId;
+    Integer locationId;
     @SerializedName("timezone")
     Timezone timezone;
 
@@ -72,7 +72,7 @@ public class LocationMR_Request {
         return locationId;
     }
 
-    public void setLocationId(int locationId) {
+    public void setLocationId(Integer locationId) {
         this.locationId = locationId;
     }
 

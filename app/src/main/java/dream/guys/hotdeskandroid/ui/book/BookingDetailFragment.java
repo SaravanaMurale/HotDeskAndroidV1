@@ -81,7 +81,7 @@ public class BookingDetailFragment extends Fragment {
     Dialog dialog;
 
     String action, bookName, bookAdddress, bookChecInTime, bookCheckOutTime, date;
-    int teamId, teamMembershipId, calendarId;
+    int teamId, deskId, teamMembershipId, calendarId;
 
 
     View view;
@@ -134,6 +134,7 @@ public class BookingDetailFragment extends Fragment {
             bookCheckOutTime = bundle.getString("CHECK_OUT_TIME", null);
 
             teamId = bundle.getInt("TEAM_ID", 0);
+            deskId = bundle.getInt("DESK_ID", 0);
             teamMembershipId = bundle.getInt("TEAM_MEMBERSHIP_ID",0);
             calendarId = bundle.getInt("ID",0);
             date = bundle.getString("DATE","");
