@@ -126,7 +126,9 @@ public class MainActivity extends AppCompatActivity {
                 scaleAnimation.setDuration(0);
                 scaleAnimation.setFillAfter(true);
                 ScrollView layout = (ScrollView) findViewById(R.id.scrollView);
-                layout.startAnimation(scaleAnimation);
+                if(layout!=null) {
+                    layout.startAnimation(scaleAnimation);
+                }
                 return true;
             }
         });

@@ -43,8 +43,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_15sdp"
             android:textColor="@color/black"
-            app:bar_height="2dp"
-            app:length="6"
+
             app:height="@dimen/_40sdp"
             app:width="@dimen/_40sdp"
             app:bar_height="@dimen/_15sdp"
