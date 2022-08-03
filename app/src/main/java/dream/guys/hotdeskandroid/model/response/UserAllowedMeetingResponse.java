@@ -20,6 +20,16 @@ public class UserAllowedMeetingResponse {
     String managers;
     String teams;
 
+    List<Amenity> amenities;
+
+    public List<Amenity> getAmenities() {
+        return amenities;
+    }
+
+    public void setAmenities(List<Amenity> amenities) {
+        this.amenities = amenities;
+    }
+
     public int getId() {
         return id;
     }
@@ -193,4 +203,15 @@ public class UserAllowedMeetingResponse {
             }
         }
 
+    public class Amenity {
+        private int id;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+    }
 }

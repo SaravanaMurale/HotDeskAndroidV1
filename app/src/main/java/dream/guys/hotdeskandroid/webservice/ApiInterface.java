@@ -17,6 +17,7 @@ import dream.guys.hotdeskandroid.model.request.LocateCarParkEditRequest;
 import dream.guys.hotdeskandroid.model.request.LocateDeskBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocationMR_Request;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
+import dream.guys.hotdeskandroid.model.response.AmenitiesResponse;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
@@ -62,6 +63,9 @@ public interface ApiInterface {
     @POST("api/settings/PinNumberSetting")
     Call<Boolean> checkPinEnabled();
     //Qr enabled
+    @GET("api/meetingrooms/amenities")
+    Call<List<AmenitiesResponse>> getAmenities();
+
     @GET("api/Settings/QRCheckInEnforcementEnabled")
     Call<Boolean> getQrEnabled();
     // sign up for Pin login

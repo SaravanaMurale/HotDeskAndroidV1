@@ -52,7 +52,7 @@ public class QrFragment extends Fragment {
     CodeScanner mCodeScanner;
     Activity activity;
     String action, bookName, bookAdddress, bookChecInTime, bookCheckOutTime, date;
-    int teamId, teamMembershipId, calendarId;
+    int deskId,teamId, teamMembershipId, calendarId;
 
     Dialog dialog;
     View view;
@@ -79,6 +79,7 @@ public class QrFragment extends Fragment {
             bookCheckOutTime = bundle.getString("CHECK_OUT_TIME", null);
 
             teamId = bundle.getInt("TEAM_ID", 0);
+            deskId = bundle.getInt("DESK_ID", 0);
             teamMembershipId = bundle.getInt("TEAM_MEMBERSHIP_ID",0);
             calendarId = bundle.getInt("ID",0);
             date = bundle.getString("DATE","");
@@ -91,7 +92,7 @@ public class QrFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (calendarId == Integer.parseInt(result.getText())){
+                        if (deskId == Integer.parseInt(result.getText())){
                             changeCheckIn();
                         }
                         else{
