@@ -905,7 +905,7 @@ public class Utils {
             }else if(calDate.compareTo(currrentDate)>0){
                 System.out.println("D2IsLess");
             }else if(calDate.compareTo(currrentDate)==0){
-                System.out.println("D1AndD2Equal");
+                dateComparsionResult=2;
             }
 
         } catch (ParseException e) {
