@@ -137,7 +137,18 @@ public class Utils {
         TextView continueTv = bottomSheetDialog.findViewById(R.id.continue_tv);
         TextView backTv = bottomSheetDialog.findViewById(R.id.tv_back);
         titleTv.setText(title);
-        dateTv.setText(date);
+        //New...
+        if (!(date.equalsIgnoreCase(""))){
+            String dateTime = Utils.dateWithDayString(date);
+            if (dateTime.equalsIgnoreCase("")){
+                dateTv.setText(date);
+            }else {
+                dateTv.setText(dateTime);
+            }
+        }else {
+            dateTv.setText(date);
+        }
+
 
         backTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -883,6 +894,24 @@ public class Utils {
 
 
 
+    }
+
+    //New...
+    public static String dateWithDayString(String d){
+        String date="";
+        SimpleDateFormat spf=new SimpleDateFormat("yyyy-MM-dd");
+        Date newDate= null;
+        try {
+            newDate = spf.parse(d);
+            spf= new SimpleDateFormat("E, dd'th' MMM, yyyy");
+            if (newDate != null) {
+                date = spf.format(newDate);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return date;
     }
 
     public static int compareCurrentDateWithSelectedDate(String startDate){

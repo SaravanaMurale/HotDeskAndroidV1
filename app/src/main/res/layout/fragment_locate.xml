@@ -8,209 +8,209 @@
     tools:context=".ui.locate.LocateFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-     android:layout_width="match_parent"
-     android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
-    <!--Floor Layout-->
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:scrollbars="none"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="2dp">
+        <!--Floor Layout-->
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="2dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_150sdp">
-
-
-            <HorizontalScrollView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="none">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_150sdp">
 
 
-                <RelativeLayout
-                    android:id="@+id/firstLayout"
-                    android:layout_width="1000dp"
-                    android:layout_height="1000dp">
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="none">
 
 
-                    <LinearLayout
-                        android:id="@+id/secondLayout"
+                    <RelativeLayout
+                        android:id="@+id/firstLayout"
                         android:layout_width="1000dp"
                         android:layout_height="1000dp">
 
-                        <ImageView
-                            android:id="@+id/first"
-                            android:layout_width="@dimen/_30sdp"
-                            android:layout_height="@dimen/_30sdp"
-                            android:src="@drawable/desk_avaliable"
-                            android:visibility="gone" />
+
+                        <LinearLayout
+                            android:id="@+id/secondLayout"
+                            android:layout_width="1000dp"
+                            android:layout_height="1000dp">
+
+                            <ImageView
+                                android:id="@+id/first"
+                                android:layout_width="@dimen/_30sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:src="@drawable/desk_avaliable"
+                                android:visibility="gone" />
 
 
-                    </LinearLayout>
+                        </LinearLayout>
 
-                </RelativeLayout>
-
-
-            </HorizontalScrollView>
+                    </RelativeLayout>
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                </HorizontalScrollView>
 
 
-    </ScrollView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!--Locate Header-->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints">
 
-        <!--Search-->
-        <TextView
-            android:id="@+id/searchLocate"
+        </ScrollView>
+
+        <!--Locate Header-->
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_9sdp"
-            android:background="@drawable/rectangle_bg_with_corner"
-            android:drawableRight="@drawable/locate_location"
-            android:gravity="center_vertical"
-            android:hint="Choose Location"
-            android:padding="@dimen/_5sdp"
-            android:textColorHint="@color/figmaBlack"
-            android:textSize="@dimen/_10sdp" />
-
-        <!--Calender-->
-        <TextView
-            android:id="@+id/locateCalendearView"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/searchLocate"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginLeft="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:background="@drawable/rectangle_bg_with_corner"
-            android:drawableRight="@drawable/locate_calender"
-            android:paddingLeft="@dimen/_8sdp"
-            android:paddingTop="@dimen/_3sdp"
-            android:paddingRight="@dimen/_9sdp"
-            android:paddingBottom="@dimen/_3sdp"
-            android:text="Wed 4 May"
-            android:textColor="@color/figmaBlack"
-            android:textSize="@dimen/_10sdp"
-            tools:ignore="MissingConstraints" />
-
-        <!--StartAndEndTime-->
-
-        <!--StartAndEndTime-->
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/searchLocate"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginRight="@dimen/_10sdp"
-            android:background="@drawable/rectangle_bg_with_corner"
-            android:paddingLeft="@dimen/_8sdp"
-            android:paddingRight="@dimen/_8sdp"
             tools:ignore="MissingConstraints">
 
-
+            <!--Search-->
             <TextView
-                android:id="@+id/tvStartLocate"
-                android:layout_width="wrap_content"
+                android:id="@+id/searchLocate"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="Start"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_9sdp"
+                android:background="@drawable/rectangle_bg_with_corner"
+                android:drawableRight="@drawable/locate_location"
+                android:gravity="center_vertical"
+                android:hint="Choose Location"
+                android:padding="@dimen/_5sdp"
+                android:textColorHint="@color/figmaBlack"
                 android:textSize="@dimen/_10sdp" />
 
+            <!--Calender-->
             <TextView
-                android:id="@+id/locateStartTime"
-                android:layout_width="wrap_content"
+                android:id="@+id/locateCalendearView"
+                android:layout_width="@dimen/_100sdp"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_marginRight="@dimen/_4sdp"
-                android:layout_toRightOf="@id/tvStartLocate"
-                android:text="8:00"
+                android:layout_below="@+id/searchLocate"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/rectangle_bg_with_corner"
+                android:drawableRight="@drawable/locate_calender"
+                android:paddingLeft="@dimen/_8sdp"
+                android:paddingTop="@dimen/_3sdp"
+                android:paddingRight="@dimen/_9sdp"
+                android:paddingBottom="@dimen/_3sdp"
+                android:text="Wed 4 May"
                 android:textColor="@color/figmaBlack"
-                android:textSize="@dimen/_10sdp" />
-
-
-            <view
-                class="android.widget.TextView"
-                android:layout_width="@dimen/_1sdp"
-                android:layout_height="14dp"
-                android:layout_centerVertical="true"
-                android:layout_marginVertical="@dimen/_5sdp"
-                android:layout_marginLeft="@dimen/_4sdp"
-                android:layout_toRightOf="@id/locateStartTime"
-                android:background="@color/grey"
-
-                />
-
-            <TextView
-                android:id="@+id/tvLocateEndTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/_13sdp"
                 android:textSize="@dimen/_10sdp"
-                android:layout_toRightOf="@id/locateStartTime"
-                android:text="End"
+                tools:ignore="MissingConstraints" />
 
-                />
+            <!--StartAndEndTime-->
 
-            <TextView
-                android:id="@+id/locateEndTime"
+            <!--StartAndEndTime-->
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_toRightOf="@+id/tvLocateEndTime"
-                android:text="17:30"
-                android:textColor="@color/figmaBlack"
-                android:textSize="@dimen/_10sdp" />
+                android:layout_below="@+id/searchLocate"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:background="@drawable/rectangle_bg_with_corner"
+                android:paddingLeft="@dimen/_8sdp"
+                android:paddingRight="@dimen/_8sdp"
+                tools:ignore="MissingConstraints">
+
+
+                <TextView
+                    android:id="@+id/tvStartLocate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Start"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    android:id="@+id/locateStartTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_4sdp"
+                    android:layout_toRightOf="@id/tvStartLocate"
+                    android:text="8:00"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="@dimen/_10sdp" />
+
+
+                <view
+                    class="android.widget.TextView"
+                    android:layout_width="@dimen/_1sdp"
+                    android:layout_height="14dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:layout_marginLeft="@dimen/_4sdp"
+                    android:layout_toRightOf="@id/locateStartTime"
+                    android:background="@color/grey"
+
+                    />
+
+                <TextView
+                    android:id="@+id/tvLocateEndTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/_13sdp"
+                    android:textSize="@dimen/_10sdp"
+                    android:layout_toRightOf="@id/locateStartTime"
+                    android:text="End"
+
+                    />
+
+                <TextView
+                    android:id="@+id/locateEndTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_toRightOf="@+id/tvLocateEndTime"
+                    android:text="17:30"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="@dimen/_10sdp" />
+
+
+            </RelativeLayout>
 
 
         </RelativeLayout>
 
 
-    </RelativeLayout>
-
-
- </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--Bottom Filter-->
     <RelativeLayout
-            android:id="@+id/endBlock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="@dimen/_10sdp">
+        android:id="@+id/endBlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/_10sdp">
 
-            <ImageView
-                android:id="@+id/ivLocateMyTeam"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:src="@drawable/locate_myteam" />
+        <ImageView
+            android:id="@+id/ivLocateMyTeam"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:src="@drawable/locate_myteam" />
 
-            <ImageView
-                android:id="@+id/ivLocateFilter"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:layout_below="@+id/ivLocateMyTeam"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:src="@drawable/locate_filter" />
+        <ImageView
+            android:id="@+id/ivLocateFilter"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_below="@+id/ivLocateMyTeam"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:src="@drawable/locate_filter" />
 
         <ImageView
             android:id="@+id/ivLocateKey"

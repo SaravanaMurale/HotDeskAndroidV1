@@ -44,6 +44,8 @@ public class AppConstants {
     public static final String DESK="3";
     public static final String MEETING="4";
     public static final String CAR_PARKING="5";
+    public static final String NEW_FLOOR_POSITION="NEW_FLOOR_POSITION";
+    public static final String COUNTRY_NAME="COUNTRY_NAME";
 
 
 
