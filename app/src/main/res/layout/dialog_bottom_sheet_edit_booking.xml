@@ -63,7 +63,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="9:00"
+                    android:text=""
                     android:textColor="@color/figmaBlue"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
@@ -97,7 +97,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="9:00"
+                    android:text=""
                     android:textColor="@color/figmaBlue"
                     android:theme="@style/TextBold" />
             </RelativeLayout>

@@ -228,7 +228,17 @@ public class Utils {
         TextView continueTv = bottomSheetDialog.findViewById(R.id.continue_tv);
         TextView backTv = bottomSheetDialog.findViewById(R.id.tv_back);
         titleTv.setText(title);
-        dateTv.setText(date);
+        //New...
+        if (!(date.equalsIgnoreCase(""))){
+            String dateTime = Utils.dateWithDayString(date);
+            if (dateTime.equalsIgnoreCase("")){
+                dateTv.setText(date);
+            }else {
+                dateTv.setText(dateTime);
+            }
+        }else {
+            dateTv.setText(date);
+        }
 
         String[] parts =Utils.convert12HrsTO24Hrs(tv.getText().toString()).split(":");
         simpleTimePicker.setHour(Integer.parseInt(parts[0]));

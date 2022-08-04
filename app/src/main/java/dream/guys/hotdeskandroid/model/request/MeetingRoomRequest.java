@@ -161,7 +161,15 @@ public class MeetingRoomRequest {
             }
 
             public class Attendees{
+                int attendId;
 
+                public int getAttendId() {
+                    return attendId;
+                }
+
+                public void setAttendId(int attendId) {
+                    this.attendId = attendId;
+                }
             }
 
             public class ExternalAttendees{
