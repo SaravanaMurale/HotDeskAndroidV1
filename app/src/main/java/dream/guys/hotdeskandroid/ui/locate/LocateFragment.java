@@ -1978,6 +1978,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         System.out.println("BookingMeetingRoom" + meetingRoomRequest);
 
+
         //dialog = ProgressDialog.showProgressBar(getContext());
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<BaseResponse> call = apiService.doMeetingRoomBook(meetingRoomRequest);
