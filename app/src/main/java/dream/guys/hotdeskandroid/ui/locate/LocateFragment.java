@@ -1654,7 +1654,16 @@ RepeateDataAdapter.repeatInterface {
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvMeeingEditList.setLayoutManager(linearLayoutManager);
         rvMeeingEditList.setHasFixedSize(true);
+        for (int i = 0; i <meetingListToEditResponseList.size() ; i++) {
 
+
+
+            if(meetingListToEditResponseList.get(i).getStatus().getTimeStatus().equals("PAST")||
+                    meetingListToEditResponseList.get(i).getStatus().getTimeStatus().equals("ONGOING")){
+                meetingListToEditResponseList.remove(meetingListToEditResponseList.get(i));
+            }
+
+        }
 
         MeetingListToEditAdapter meetingListToEditAdapter = new MeetingListToEditAdapter(getContext(), meetingListToEditResponseList, this);
         rvMeeingEditList.setAdapter(meetingListToEditAdapter);
