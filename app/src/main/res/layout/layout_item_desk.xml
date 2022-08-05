@@ -8,8 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/desk_avaliable"
-        android:padding="@dimen/_5sdp"
-        android:layout_margin="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
         />
 
 

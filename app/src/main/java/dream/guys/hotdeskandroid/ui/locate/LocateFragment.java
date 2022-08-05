@@ -102,8 +102,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSelectListener, BookingListToEditAdapter.OnEditClickable, DeskListRecyclerAdapter.OnSelectSelected, CarListToEditAdapter.CarEditClickable, MeetingListToEditAdapter.OnMeetingEditClickable, DeskSelectListAdapter.OnDeskSelectClickable, ParticipantNameShowAdapter.OnParticipantSelectable,
-RepeateDataAdapter.repeatInterface{
-
+RepeateDataAdapter.repeatInterface {
 
 
     @BindView(R.id.locateProgressBar)
@@ -221,8 +220,8 @@ RepeateDataAdapter.repeatInterface{
 
     //New...
     TextView txtInterval;
-    BottomSheetDialog repeatDataBottomSheetDialog,locateEditBottomSheet;
-    List<ParticipantDetsilResponse> chipList=new ArrayList<>();
+    BottomSheetDialog repeatDataBottomSheetDialog, locateEditBottomSheet;
+    List<ParticipantDetsilResponse> chipList = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -255,7 +254,7 @@ RepeateDataAdapter.repeatInterface{
             @Override
             public void onClick(View v) {
 
-                bottomSheetLocateTimePickerInBooking(getContext(), getActivity(), binding.locateStartTime, "Start", binding.locateCalendearView.getText().toString(),1);
+                bottomSheetLocateTimePickerInBooking(getContext(), getActivity(), binding.locateStartTime, "Start", binding.locateCalendearView.getText().toString(), 1);
 
 
             }
@@ -270,7 +269,7 @@ RepeateDataAdapter.repeatInterface{
             public void onClick(View v) {
 
                 // Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), binding.locateEndTime, "", "");
-                bottomSheetLocateTimePickerInBooking(getContext(), getActivity(), binding.locateEndTime, "End", binding.locateCalendearView.getText().toString(),2);
+                bottomSheetLocateTimePickerInBooking(getContext(), getActivity(), binding.locateEndTime, "End", binding.locateCalendearView.getText().toString(), 2);
 
 
             }
@@ -690,8 +689,8 @@ RepeateDataAdapter.repeatInterface{
         String fromTime = startTime + ".000Z";
         String endTime = Utils.addMinuteWithCurrentTime(2, 5);
         String toTime = endTime + ".000Z";*/
-        String fromTime=binding.locateCalendearView.getText().toString()+"T"+binding.locateStartTime.getText().toString() + ":00Z";
-        String toTime=binding.locateCalendearView.getText().toString()+"T"+binding.locateEndTime.getText().toString() + ":00Z";
+        String fromTime = binding.locateCalendearView.getText().toString() + "T" + binding.locateStartTime.getText().toString() + ":00Z";
+        String toTime = binding.locateCalendearView.getText().toString() + "T" + binding.locateEndTime.getText().toString() + ":00Z";
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<List<CarParkAvalibilityResponse>> call = apiService.getCarParkingSlotAvalibility(toDate, fromTime, toTime);
@@ -1285,7 +1284,7 @@ RepeateDataAdapter.repeatInterface{
 
                                                 meetingStatusModelList.add(meetingStatusModel);
 
-                                            }else {
+                                            } else {
 
                                                 //I Added Newly
                                                 //MeetingRoomRequest
@@ -1365,8 +1364,8 @@ RepeateDataAdapter.repeatInterface{
 
         relativeLayout.leftMargin = x;
         relativeLayout.topMargin = y;
-        relativeLayout.width = 100;
-        relativeLayout.height = 80;
+        relativeLayout.width = 80;
+        relativeLayout.height = 67;
         ivDesk.setLayoutParams(relativeLayout);
 
 
@@ -1549,15 +1548,15 @@ RepeateDataAdapter.repeatInterface{
                                 if (meetingStatusModelList.get(i).getStatus() == 0) {
                                     callDeskUnavaliable(meetingRoomName, key, id, code, requestTeamId, requestTeamDeskId);
                                 } else if (meetingStatusModelList.get(i).getStatus() == 1) {
-                                    boolean isReqduest=false;
-                                    callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName,isReqduest);
+                                    boolean isReqduest = false;
+                                    callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest);
                                 } else if (meetingStatusModelList.get(i).getStatus() == 2) {
                                     getMeetingBookingListToEdit(meetingRoomId);
                                 } else if (meetingStatusModelList.get(i).getStatus() == 3) {
 
                                 } else if (meetingStatusModelList.get(i).getStatus() == 4) {
-                                    boolean isReqduest=true;
-                                    callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName,isReqduest);
+                                    boolean isReqduest = true;
+                                    callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest);
                                 }
                                 System.out.println("ClickedRoomIdStatus" + meetingStatusModelList.get(i).getStatus() + " " + meetingStatusModelList.get(i).getKey() + " " + meetingStatusModelList.get(i).getId());
                             }
@@ -1652,32 +1651,11 @@ RepeateDataAdapter.repeatInterface{
         editClose = locateMeetEditBottomSheet.findViewById(R.id.editClose);
         editDate = locateMeetEditBottomSheet.findViewById(R.id.editDate);
 
-        //New...
-        String sDate = binding.locateCalendearView.getText().toString();
-        if (!(sDate.equalsIgnoreCase(""))){
-            String dateTime = Utils.dateWithDayString(sDate);
-            if (dateTime.equalsIgnoreCase("")){
-                editDate.setText(binding.locateCalendearView.getText().toString());
-            }else {
-                editDate.setText(dateTime);
-            }
-        }else {
-            editDate.setText(binding.locateCalendearView.getText().toString());
-        }
-
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvMeeingEditList.setLayoutManager(linearLayoutManager);
         rvMeeingEditList.setHasFixedSize(true);
-        for (int i = 0; i <meetingListToEditResponseList.size() ; i++) {
 
 
-
-            if(meetingListToEditResponseList.get(i).getStatus().getTimeStatus().equals("PAST")||
-                    meetingListToEditResponseList.get(i).getStatus().getTimeStatus().equals("ONGOING")){
-                meetingListToEditResponseList.remove(meetingListToEditResponseList.get(i));
-            }
-
-        }
         MeetingListToEditAdapter meetingListToEditAdapter = new MeetingListToEditAdapter(getContext(), meetingListToEditResponseList, this);
         rvMeeingEditList.setAdapter(meetingListToEditAdapter);
 
@@ -1816,7 +1794,7 @@ RepeateDataAdapter.repeatInterface{
         EditText etParticipants, etSubject, etComments;
         RecyclerView rvParticipant;
         LinearLayoutManager linearLayoutManager;
-        RelativeLayout startTimeLayout,endTimeLayout;
+        RelativeLayout startTimeLayout, endTimeLayout;
 
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -1834,7 +1812,7 @@ RepeateDataAdapter.repeatInterface{
         tvMeetingRoomDescription = bottomSheetDialog.findViewById(R.id.meetingRoomDescription);
         roomTitle = bottomSheetDialog.findViewById(R.id.roomTitle);
         rvParticipant = bottomSheetDialog.findViewById(R.id.rvParticipant);
-        participantChipGroup=bottomSheetDialog.findViewById(R.id.participantChipGroup);
+        participantChipGroup = bottomSheetDialog.findViewById(R.id.participantChipGroup);
 
         startTimeLayout = bottomSheetDialog.findViewById(R.id.startTimeLayout);
         endTimeLayout = bottomSheetDialog.findViewById(R.id.endTimeLayout);
@@ -1933,7 +1911,7 @@ RepeateDataAdapter.repeatInterface{
                 if (status) {
 
                     bottomSheetDialog.dismiss();
-                    doMeetingRoomBooking(meetingRoomId, startRoomTime.getText().toString(), endTRoomime.getText().toString(), subject, comment,isRequest);
+                    doMeetingRoomBooking(meetingRoomId, startRoomTime.getText().toString(), endTRoomime.getText().toString(), subject, comment, isRequest);
 
                 } else {
                     Toast.makeText(getContext(), "Please Enter All Details", Toast.LENGTH_LONG).show();
@@ -1982,7 +1960,7 @@ RepeateDataAdapter.repeatInterface{
 
 
         rvParticipant.setVisibility(View.VISIBLE);
-        ParticipantNameShowAdapter participantNameShowAdapter = new ParticipantNameShowAdapter(getContext(), participantDetsilResponseList,this);
+        ParticipantNameShowAdapter participantNameShowAdapter = new ParticipantNameShowAdapter(getContext(), participantDetsilResponseList, this);
         rvParticipant.setAdapter(participantNameShowAdapter);
     }
 
@@ -2017,10 +1995,9 @@ RepeateDataAdapter.repeatInterface{
         List<Integer> attendeesList = new ArrayList<>();
 
 
-
         //Newly Participant Added
-        if(chipList!=null){
-            for (int i = 0; i <chipList.size() ; i++) {
+        if (chipList != null) {
+            for (int i = 0; i < chipList.size(); i++) {
                 attendeesList.add(chipList.get(i).getId());
             }
 
@@ -2047,7 +2024,7 @@ RepeateDataAdapter.repeatInterface{
                 chipList.clear();
 
                 BaseResponse baseResponse = response.body();
-                //System.out.println("MeetingRoomBookResponse" + baseResponse.getResultCode());
+                System.out.println("MeetingRoomBookResponse" + baseResponse.getResultCode());
 
                 openCheckoutDialog("Booking Succcessfull");
 
@@ -2123,14 +2100,14 @@ RepeateDataAdapter.repeatInterface{
 
         //New...
         String sDate = binding.locateCalendearView.getText().toString();
-        if (!(sDate.equalsIgnoreCase(""))){
+        if (!(sDate.equalsIgnoreCase(""))) {
             String dateTime = Utils.dateWithDayString(sDate);
-            if (dateTime.equalsIgnoreCase("")){
+            if (dateTime.equalsIgnoreCase("")) {
                 editDate.setText(binding.locateCalendearView.getText().toString());
-            }else {
+            } else {
                 editDate.setText(dateTime);
             }
-        }else {
+        } else {
             editDate.setText(binding.locateCalendearView.getText().toString());
         }
 
@@ -2178,14 +2155,14 @@ RepeateDataAdapter.repeatInterface{
 
         //Show Here Current Date
         String sDate = binding.locateCalendearView.getText().toString();
-        if (!(sDate.equalsIgnoreCase(""))){
+        if (!(sDate.equalsIgnoreCase(""))) {
             String dateTime = Utils.dateWithDayString(sDate);
-            if (dateTime.equalsIgnoreCase("")){
+            if (dateTime.equalsIgnoreCase("")) {
                 editDate.setText(binding.locateCalendearView.getText().toString());
-            }else {
+            } else {
                 editDate.setText(dateTime);
             }
-        }else {
+        } else {
             editDate.setText(binding.locateCalendearView.getText().toString());
         }
         //editDate.setText(binding.locateCalendearView.getText().toString());
@@ -2923,8 +2900,8 @@ RepeateDataAdapter.repeatInterface{
             tvLocateDeskBookLocation.setText(buildingName + "," + floorName);
             selectedLocation.setText(buildingName + "," + floorName);
         } else {
-            tvLocateDeskBookLocation.setText(CountryName + "," +buildingName + "," + floorName);
-            selectedLocation.setText(CountryName + "," +buildingName + "," + floorName);
+            tvLocateDeskBookLocation.setText(CountryName + "," + buildingName + "," + floorName);
+            selectedLocation.setText(CountryName + "," + buildingName + "," + floorName);
         }
 
 
@@ -3353,27 +3330,27 @@ RepeateDataAdapter.repeatInterface{
 
         //Need To Change Date Here
         String sDate = binding.locateCalendearView.getText().toString();
-        if (!(sDate.equalsIgnoreCase(""))){
+        if (!(sDate.equalsIgnoreCase(""))) {
             String dateTime = Utils.dateWithDayString(sDate);
-            if (dateTime.equalsIgnoreCase("")){
+            if (dateTime.equalsIgnoreCase("")) {
                 date.setText(binding.locateCalendearView.getText().toString());
-            }else {
+            } else {
                 date.setText(dateTime);
             }
-        }else {
+        } else {
             date.setText(binding.locateCalendearView.getText().toString());
         }
         //date.setText(binding.locateCalendearView.getText().toString());
 
-        if (bookings.getStatus()!=null){
-            if (bookings.getStatus().getBookingType().equalsIgnoreCase("REQGRN")){
+        if (bookings.getStatus() != null) {
+            if (bookings.getStatus().getBookingType().equalsIgnoreCase("REQGRN")) {
                 startTime.setEnabled(false);
                 endTime.setEnabled(false);
-            }else{
+            } else {
                 startTime.setEnabled(true);
                 endTime.setEnabled(true);
             }
-        }else {
+        } else {
             startTime.setEnabled(true);
             endTime.setEnabled(true);
         }
@@ -3511,7 +3488,7 @@ RepeateDataAdapter.repeatInterface{
 
                 BaseResponse baseResponse = response.body();
                 if (baseResponse != null) {
-                    if (locateEditBottomSheet!=null){
+                    if (locateEditBottomSheet != null) {
                         locateEditBottomSheet.dismiss();
                     }
                     callInitView();
@@ -3605,14 +3582,14 @@ RepeateDataAdapter.repeatInterface{
 
         //New...
         String sDate = binding.locateCalendearView.getText().toString();
-        if (!(sDate.equalsIgnoreCase(""))){
+        if (!(sDate.equalsIgnoreCase(""))) {
             String dateTime = Utils.dateWithDayString(sDate);
-            if (dateTime.equalsIgnoreCase("")){
+            if (dateTime.equalsIgnoreCase("")) {
                 date.setText(binding.locateCalendearView.getText().toString());
-            }else {
+            } else {
                 date.setText(dateTime);
             }
-        }else {
+        } else {
             date.setText(binding.locateCalendearView.getText().toString());
         }
 
@@ -3662,7 +3639,7 @@ RepeateDataAdapter.repeatInterface{
                 if (status) {
                     //Edit CarParkBooking
                     bottomSheetDialog.dismiss();
-                    doEditCarParkBooking(carParkBooking,startTime.getText().toString(),endTime.getText().toString());
+                    doEditCarParkBooking(carParkBooking, startTime.getText().toString(), endTime.getText().toString());
                 }
 
 
@@ -3694,8 +3671,8 @@ RepeateDataAdapter.repeatInterface{
 
         LocateCarParkEditRequest.CarParkingChangeSets.CarParkingChanges carParkingChanges = carParkingChangeSets.new CarParkingChanges();
         carParkingChanges.setVehicleRegNumber(carParkBooking.getVehicleRegNumber());
-        carParkingChanges.setFrom("2000-01-01T"+startTime+":00.000Z");
-        carParkingChanges.setTo("2000-01-01T"+endTime+":00.000Z");
+        carParkingChanges.setFrom("2000-01-01T" + startTime + ":00.000Z");
+        carParkingChanges.setTo("2000-01-01T" + endTime + ":00.000Z");
         carParkingChangeSets.setCarParkingChanges(carParkingChanges);
 
         carParkingChangeSetsList.add(carParkingChangeSets);
@@ -3900,8 +3877,8 @@ RepeateDataAdapter.repeatInterface{
 
 
                 locateCheckInDateCal.setText("" + dateInString);
-
                 checkIsCurrentDate(dateInString);
+
 
             }
         });
@@ -3939,6 +3916,7 @@ RepeateDataAdapter.repeatInterface{
         bottomSheetDatePicker.show();
 
     }
+
 
     private void checkIsCurrentDate(String dateInString) {
 
@@ -4071,6 +4049,7 @@ RepeateDataAdapter.repeatInterface{
 
     }
 
+
     private void checkStartEndtime(String startTime,String endTime) {
 
         String pattern = "HH:mm";
@@ -4092,6 +4071,9 @@ RepeateDataAdapter.repeatInterface{
         }
 
     }
+
+
+
 
     public void callInitView() {
         binding.firstLayout.removeAllViews();
