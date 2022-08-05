@@ -44,6 +44,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -277,6 +278,7 @@ RepeateDataAdapter.repeatInterface{
 
 
         binding.locateCalendearView.setText(getCurrentDate());
+        checkIsCurrentDate(binding.locateCalendearView.getText().toString());
         binding.locateCalendearView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1363,8 +1365,8 @@ RepeateDataAdapter.repeatInterface{
 
         relativeLayout.leftMargin = x;
         relativeLayout.topMargin = y;
-        relativeLayout.width = 80;
-        relativeLayout.height = 67;
+        relativeLayout.width = 100;
+        relativeLayout.height = 80;
         ivDesk.setLayoutParams(relativeLayout);
 
 
@@ -1650,12 +1652,32 @@ RepeateDataAdapter.repeatInterface{
         editClose = locateMeetEditBottomSheet.findViewById(R.id.editClose);
         editDate = locateMeetEditBottomSheet.findViewById(R.id.editDate);
 
+        //New...
+        String sDate = binding.locateCalendearView.getText().toString();
+        if (!(sDate.equalsIgnoreCase(""))){
+            String dateTime = Utils.dateWithDayString(sDate);
+            if (dateTime.equalsIgnoreCase("")){
+                editDate.setText(binding.locateCalendearView.getText().toString());
+            }else {
+                editDate.setText(dateTime);
+            }
+        }else {
+            editDate.setText(binding.locateCalendearView.getText().toString());
+        }
+
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvMeeingEditList.setLayoutManager(linearLayoutManager);
         rvMeeingEditList.setHasFixedSize(true);
+        for (int i = 0; i <meetingListToEditResponseList.size() ; i++) {
 
 
 
+            if(meetingListToEditResponseList.get(i).getStatus().getTimeStatus().equals("PAST")||
+                    meetingListToEditResponseList.get(i).getStatus().getTimeStatus().equals("ONGOING")){
+                meetingListToEditResponseList.remove(meetingListToEditResponseList.get(i));
+            }
+
+        }
         MeetingListToEditAdapter meetingListToEditAdapter = new MeetingListToEditAdapter(getContext(), meetingListToEditResponseList, this);
         rvMeeingEditList.setAdapter(meetingListToEditAdapter);
 
@@ -2025,7 +2047,7 @@ RepeateDataAdapter.repeatInterface{
                 chipList.clear();
 
                 BaseResponse baseResponse = response.body();
-                System.out.println("MeetingRoomBookResponse" + baseResponse.getResultCode());
+                //System.out.println("MeetingRoomBookResponse" + baseResponse.getResultCode());
 
                 openCheckoutDialog("Booking Succcessfull");
 
@@ -3879,31 +3901,7 @@ RepeateDataAdapter.repeatInterface{
 
                 locateCheckInDateCal.setText("" + dateInString);
 
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                Date date = new Date();
-                Date currrentDate = null, d2 = null;
-                try {
-                    currrentDate = formatter.parse(formatter.format(date));
-                    d2 = formatter.parse(dateInString);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                if (currrentDate.getDate() == d2.getDate()) {
-                    System.out.println("BothDateEqual");
-                } else if (currrentDate.getDate() < d2.getDate()) {
-                    System.out.println("SelecctedDateIsHigh");
-                    binding.locateStartTime.setText("08:30");
-                    binding.locateEndTime.setText("23:59");
-                } else if (currrentDate.getDate() > d2.getDate()) {
-                    System.out.println("SelecctedDateIsLow");
-                    binding.locateStartTime.setText("08:00");
-                    binding.locateEndTime.setText("23:59");
-
-                }
-
-                System.out.println("CurentDateSelected" + currrentDate + " " + d2);
-
+                checkIsCurrentDate(dateInString);
 
             }
         });
@@ -3939,6 +3937,61 @@ RepeateDataAdapter.repeatInterface{
 
 
         bottomSheetDatePicker.show();
+
+    }
+
+    private void checkIsCurrentDate(String dateInString) {
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        Date currrentDate = null, d2 = null;
+        try {
+            currrentDate = formatter.parse(formatter.format(date));
+            d2 = formatter.parse(dateInString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (currrentDate.getDate() == d2.getDate()) {
+            System.out.println("BothDateEqual");
+
+            SimpleDateFormat tFormat = new SimpleDateFormat("HH:mm");
+            Date currentTime = Calendar.getInstance().getTime();
+
+            try {
+                String time = tFormat.format(currentTime);
+
+                Date d = tFormat.parse(time);
+                Calendar cal = Calendar.getInstance();
+                if (d != null) {
+                    cal.setTime(d);
+                    cal.add(Calendar.MINUTE, 2);
+                    String newTime = tFormat.format(cal.getTime());
+
+                    binding.locateStartTime.setText(newTime);
+                    binding.locateEndTime.setText("23:59");
+                }else {
+                    binding.locateStartTime.setText(time);
+                    binding.locateEndTime.setText("23:59");
+                }
+
+            }catch (Exception e){
+                binding.locateStartTime.setText("08:30");
+                binding.locateEndTime.setText("23:59");
+            }
+
+        } else if (currrentDate.getDate() < d2.getDate()) {
+            System.out.println("SelecctedDateIsHigh");
+            binding.locateStartTime.setText("08:30");
+            binding.locateEndTime.setText("23:59");
+        } else if (currrentDate.getDate() > d2.getDate()) {
+            System.out.println("SelecctedDateIsLow");
+            binding.locateStartTime.setText("08:00");
+            binding.locateEndTime.setText("23:59");
+
+        }
+
+        System.out.println("CurentDateSelected" + currrentDate + " " + d2);
 
     }
 
@@ -4001,13 +4054,14 @@ RepeateDataAdapter.repeatInterface{
 
                 tv.setText(hour + ":" + minute);
 
-
-                if (i == 2) {
-                    //EndTime Called Here
-                    binding.firstLayout.removeAllViews();
-                    endTimeSelectedStats = 1;
-                    initLoadFloorDetails(2);
+                if (i == 1){
+                    String eTime = binding.locateEndTime.getText().toString();
+                    checkStartEndtime(hour + ":" + minute,eTime);
+                }else{
+                    String sTime = binding.locateStartTime.getText().toString();
+                    checkStartEndtime(sTime,hour + ":" + minute);
                 }
+
 
                 bottomSheetDialog.dismiss();
             }
@@ -4015,6 +4069,28 @@ RepeateDataAdapter.repeatInterface{
 
         bottomSheetDialog.show();
 
+
+    }
+
+    private void checkStartEndtime(String startTime,String endTime) {
+
+        String pattern = "HH:mm";
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+
+        try {
+            Date date1 = sdf.parse(startTime);
+            Date date2 = sdf.parse(endTime);
+
+            if(date1.before(date2)) {
+                binding.firstLayout.removeAllViews();
+                endTimeSelectedStats = 1;
+                initLoadFloorDetails(2);
+            } else {
+                Toast.makeText(getContext(), "Invalid Time Range", Toast.LENGTH_LONG).show();
+            }
+        } catch (ParseException e){
+            e.printStackTrace();
+        }
 
     }
 
