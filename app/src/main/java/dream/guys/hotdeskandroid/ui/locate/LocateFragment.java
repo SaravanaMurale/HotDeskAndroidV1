@@ -1547,13 +1547,15 @@ RepeateDataAdapter.repeatInterface{
                                 if (meetingStatusModelList.get(i).getStatus() == 0) {
                                     callDeskUnavaliable(meetingRoomName, key, id, code, requestTeamId, requestTeamDeskId);
                                 } else if (meetingStatusModelList.get(i).getStatus() == 1) {
-                                    callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName);
+                                    boolean isReqduest=false;
+                                    callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName,isReqduest);
                                 } else if (meetingStatusModelList.get(i).getStatus() == 2) {
                                     getMeetingBookingListToEdit(meetingRoomId);
                                 } else if (meetingStatusModelList.get(i).getStatus() == 3) {
 
                                 } else if (meetingStatusModelList.get(i).getStatus() == 4) {
-                                    callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName);
+                                    boolean isReqduest=true;
+                                    callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName,isReqduest);
                                 }
                                 System.out.println("ClickedRoomIdStatus" + meetingStatusModelList.get(i).getStatus() + " " + meetingStatusModelList.get(i).getKey() + " " + meetingStatusModelList.get(i).getId());
                             }
@@ -1786,7 +1788,7 @@ RepeateDataAdapter.repeatInterface{
 
     }
 
-    private void callMeetingRoomBookingBottomSheet(int meetingRoomId, String meetingRoomName) {
+    private void callMeetingRoomBookingBottomSheet(int meetingRoomId, String meetingRoomName, boolean isRequest) {
 
         TextView startRoomTime, endTRoomime, editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle;
         EditText etParticipants, etSubject, etComments;
@@ -1909,7 +1911,7 @@ RepeateDataAdapter.repeatInterface{
                 if (status) {
 
                     bottomSheetDialog.dismiss();
-                    doMeetingRoomBooking(meetingRoomId, startRoomTime.getText().toString(), endTRoomime.getText().toString(), subject, comment);
+                    doMeetingRoomBooking(meetingRoomId, startRoomTime.getText().toString(), endTRoomime.getText().toString(), subject, comment,isRequest);
 
                 } else {
                     Toast.makeText(getContext(), "Please Enter All Details", Toast.LENGTH_LONG).show();
@@ -1962,7 +1964,7 @@ RepeateDataAdapter.repeatInterface{
         rvParticipant.setAdapter(participantNameShowAdapter);
     }
 
-    private void doMeetingRoomBooking(int meetingRoomId, String startRoomTime, String endRoomTime, String subject, String comment) {
+    private void doMeetingRoomBooking(int meetingRoomId, String startRoomTime, String endRoomTime, String subject, String comment, boolean isRequest) {
 
         binding.locateProgressBar.setVisibility(View.VISIBLE);
 
@@ -1981,7 +1983,7 @@ RepeateDataAdapter.repeatInterface{
         changes.setMyto(getCurrentDate() + "" + "T" + endRoomTime + ":" + "00" + "." + "000" + "Z");
         changes.setComments(comment);
         changes.setSubject(subject);
-        changes.setRequest(false);
+        changes.setRequest(isRequest);
 
         m.setChanges(changes);
 
