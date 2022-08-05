@@ -1980,7 +1980,18 @@ RepeateDataAdapter.repeatInterface{
 
         meetingRoomRequest.setChangesets(changesetList);
 
-        List<MeetingRoomRequest.Changeset.Changes.Attendees> attendeesList = new ArrayList<>();
+        List<Integer> attendeesList = new ArrayList<>();
+
+
+
+        //Newly Participant Added
+        if(chipList!=null){
+            for (int i = 0; i <chipList.size() ; i++) {
+                attendeesList.add(chipList.get(i).getId());
+            }
+
+        } //End
+
         changes.setAttendees(attendeesList);
 
         List<MeetingRoomRequest.Changeset.Changes.ExternalAttendees> externalAttendeesList = new ArrayList<>();
@@ -4112,15 +4123,15 @@ RepeateDataAdapter.repeatInterface{
 
         meetingRoomRequest.setChangesets(changesetList);
 
-        List<MeetingRoomRequest.Changeset.Changes.Attendees> attendeesList = new ArrayList<>();
+        List<Integer> attendeesList = new ArrayList<>();
         //Newly Participant Added
         if(chipList!=null){
             MeetingRoomRequest.Changeset.Changes.Attendees attendees= changes.new Attendees();
-            for (int i = 0; i <changesetList.size() ; i++) {
-                attendees.setAttendId(changesetList.get(i).getId());
+            for (int i = 0; i <chipList.size() ; i++) {
+                attendeesList.add(chipList.get(i).getId());
             }
 
-            attendeesList.add(attendees);
+
         } //End
         changes.setAttendees(attendeesList);
 
@@ -4175,6 +4186,8 @@ RepeateDataAdapter.repeatInterface{
         chip.setCloseIconVisible(true);
         chip.setCheckable(false);
         chip.setClickable(false);
+
+        chipList.add(participantDetsilResponse);
 
         participantChipGroup.addView(chip);
         participantChipGroup.setVisibility(View.VISIBLE);
