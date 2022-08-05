@@ -4062,7 +4062,6 @@ RepeateDataAdapter.repeatInterface{
                     checkStartEndtime(sTime,hour + ":" + minute);
                 }
 
-
                 bottomSheetDialog.dismiss();
             }
         });
