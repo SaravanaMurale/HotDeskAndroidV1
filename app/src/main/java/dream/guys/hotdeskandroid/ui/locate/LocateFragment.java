@@ -1283,6 +1283,14 @@ RepeateDataAdapter.repeatInterface{
 
                                                 meetingStatusModelList.add(meetingStatusModel);
 
+                                            }else {
+
+                                                //I Added Newly
+                                                //MeetingRoomRequest
+                                                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_request));
+                                                meetingStatusModel = new MeetingStatusModel(key, id, code, 4);
+                                                meetingStatusModelList.add(meetingStatusModel);
+                                                System.out.println("MeetingRequest");
                                             }
 
                                         }
@@ -1643,6 +1651,8 @@ RepeateDataAdapter.repeatInterface{
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvMeeingEditList.setLayoutManager(linearLayoutManager);
         rvMeeingEditList.setHasFixedSize(true);
+
+
 
         MeetingListToEditAdapter meetingListToEditAdapter = new MeetingListToEditAdapter(getContext(), meetingListToEditResponseList, this);
         rvMeeingEditList.setAdapter(meetingListToEditAdapter);
@@ -2009,6 +2019,8 @@ RepeateDataAdapter.repeatInterface{
         call.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                chipList.clear();
 
                 BaseResponse baseResponse = response.body();
                 System.out.println("MeetingRoomBookResponse" + baseResponse.getResultCode());
@@ -4016,6 +4028,7 @@ RepeateDataAdapter.repeatInterface{
         TextView startRoomTime, endTRoomime, editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle;
         EditText etParticipants, etSubject, etComments;
         RelativeLayout startTimeLayout,endTimeLayout;
+        RecyclerView rvParticipant;
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_room_booking,
@@ -4025,6 +4038,8 @@ RepeateDataAdapter.repeatInterface{
         endTRoomime = bottomSheetDialog.findViewById(R.id.tvRoomEndTime);
         etParticipants = bottomSheetDialog.findViewById(R.id.etParticipants);
         etSubject = bottomSheetDialog.findViewById(R.id.etSubject);
+        rvParticipant = bottomSheetDialog.findViewById(R.id.rvParticipant);
+        participantChipGroup=bottomSheetDialog.findViewById(R.id.participantChipGroup);
 
         etComments = bottomSheetDialog.findViewById(R.id.etComments);
         editRoomBookingContinue = bottomSheetDialog.findViewById(R.id.editRoomBookingContinue);
@@ -4036,6 +4051,35 @@ RepeateDataAdapter.repeatInterface{
 
         startTimeLayout = bottomSheetDialog.findViewById(R.id.startTimeLayout);
         endTimeLayout = bottomSheetDialog.findViewById(R.id.endTimeLayout);
+
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvParticipant.setLayoutManager(linearLayoutManager);
+        rvParticipant.setHasFixedSize(true);
+
+        etParticipants.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().length() >= 2) {
+
+                    sendEnteredPartipantLetterToServer(s.toString(), rvParticipant);
+
+                } else {
+                    rvParticipant.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+//                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+//                imm.hideSoftInputFromWindow(binding.serachBar.getWindowToken(), 0);
+
+            }
+        });
 
 
         startTimeLayout.setOnClickListener(new View.OnClickListener() {
@@ -4150,7 +4194,7 @@ RepeateDataAdapter.repeatInterface{
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
                 BaseResponse baseResponse = response.body();
-
+                chipList.clear();
                 bottomSheetDialog.dismiss();
                 openCheckoutDialog("MeetingEditSuccess");
                 System.out.println("MeetingRoomEdit");
