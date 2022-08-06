@@ -119,6 +119,9 @@ public class MainActivity extends AppCompatActivity {
       mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.SimpleOnScaleGestureListener(){
             @Override
             public boolean onScale(ScaleGestureDetector detector) {
+
+                System.out.println("DectorValue"+detector.getScaleFactor());
+
                 float scale = 1 - detector.getScaleFactor();
                 float prevScale = mScale;
                 mScale += scale;
