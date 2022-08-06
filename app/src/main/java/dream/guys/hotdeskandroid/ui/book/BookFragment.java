@@ -1,32 +1,55 @@
 package dream.guys.hotdeskandroid.ui.book;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
 import butterknife.BindView;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.adapter.MeetingListToEditAdapter;
 import dream.guys.hotdeskandroid.databinding.FragmentBookBinding;
+import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
+import dream.guys.hotdeskandroid.model.response.AmenitiesResponse;
+import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.DeskRoomCountResponse;
+import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
+import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.CalendarView;
+import dream.guys.hotdeskandroid.utils.ProgressDialog;
+import dream.guys.hotdeskandroid.utils.SessionHandler;
+import dream.guys.hotdeskandroid.utils.Utils;
+import dream.guys.hotdeskandroid.webservice.ApiClient;
+import dream.guys.hotdeskandroid.webservice.ApiInterface;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class BookFragment extends Fragment {
+public class BookFragment extends Fragment implements MeetingListToEditAdapter.OnMeetingEditClickable {
     FragmentBookBinding binding;
     @BindView(R.id.desk_layout)
     LinearLayout deskLayout;
@@ -58,9 +81,9 @@ public class BookFragment extends Fragment {
     @BindView(R.id.tv_more)
     TextView tvMore;
 
-    HashSet<Date> events = new HashSet<>();
+    List<DeskRoomCountResponse> events = new ArrayList<>();
     List<String> dateList = new ArrayList<>();
-
+    Dialog dialog;
 
     int selectedicon = 0;
     @Override
@@ -74,81 +97,60 @@ public class BookFragment extends Fragment {
         binding = FragmentBookBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        tabToggleViewClicked(0);
+        dialog= new Dialog(getActivity());
+        tabToggleViewClicked(selectedicon);
 
         binding.calendarView.setEventHandler(new CalendarView.EventHandler() {
             @Override
             public void onDayLongPress(Date date, int pos) {
-                //  Log.e("Selected Date", df.format(date));
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-                dateList.add("2022-08-04");
-                dateList.add("2022-08-06");
-                dateList.add("2022-08-08");
-                dateList.add("2022-08-15");
-                dateList.add("2022-08-20");
-
-                for(int i=0;i<=dateList.size();i++){
-                    Date d = new Date();
-                    try
-                    {
-                        d = sdf.parse(dateList.get(i));
-                    }
-                    catch (ParseException e)
-                    {
-                        e.printStackTrace();
-                    }
-                    events.add(d);
-                }
-
-
-                calendarView.updateCalendar(events, pos);
-//                fillCalendar(df.format(date));
-
+                Toast.makeText(getActivity(), ""+date, Toast.LENGTH_SHORT).show();
+                getMeetingBookingListToEdit(null,""+date,""+date);
             }
+
+            @Override
+            public void onPrevClicked(String month) {
+                Toast.makeText(getActivity(), ""+month, Toast.LENGTH_LONG).show();
+                getDeskCount(month);
+            }
+
         });
 
         binding.deskLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectedicon=0;
                 tabToggleViewClicked(0);
+
             }
         });
         binding.roomLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectedicon=1;
                 tabToggleViewClicked(1);
             }
         });
         binding.parkingLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectedicon=2;
                 tabToggleViewClicked(2);
             }
         });
         binding.moreLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectedicon=3;
                 tabToggleViewClicked(3);
             }
         });
 
-
         return root;
     }
 
-    private void fillCalendar(String dateStr) {
-        events.clear();
-
-
-        calendarView.updateCalendar(events, -1);
-
-
-
-    }
 
     @SuppressLint("ResourceAsColor")
-    private void tabToggleViewClicked(int i) {
+    public void tabToggleViewClicked(int i) {
         resetLayout();
         switch (i){
             case 0:
@@ -160,6 +162,7 @@ public class BookFragment extends Fragment {
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 deskParams.weight = 1.0f;
                 binding.deskLayout.setLayoutParams(deskParams);
+                getDeskCount(Utils.getCurrentDate());
                 break;
             case 1:
                 binding.roomLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
@@ -169,7 +172,7 @@ public class BookFragment extends Fragment {
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 roomParams.weight = 1.0f;
                 binding.roomLayout.setLayoutParams(roomParams);
-
+                getDeskCount(Utils.getCurrentDate());
                 break;
             case 2:
                 binding.parkingLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
@@ -180,7 +183,7 @@ public class BookFragment extends Fragment {
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 parkingParams.weight = 1.0f;
                 binding.parkingLayout.setLayoutParams(parkingParams);
-
+                getDeskCount(Utils.getCurrentDate());
                 break;
             case 3:
                 binding.moreLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
@@ -191,11 +194,58 @@ public class BookFragment extends Fragment {
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 moreParams.weight = 1.0f;
                 binding.moreLayout.setLayoutParams(moreParams);
-
+                getDeskCount(Utils.getCurrentDate());
                 break;
             default:
                 break;
 
+        }
+    }
+
+    private void getDeskCount(String month) {
+        if (Utils.isNetworkAvailable(getActivity())) {
+            dialog= ProgressDialog.showProgressBar(getContext());
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<DeskRoomCountResponse>> call = null;
+            switch (selectedicon){
+                case 0:
+                    call = apiService.getDailyDeskCount(month, ""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
+                    break;
+                case 1:
+                    call = apiService.getDailyRoomCount(month, ""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
+                    break;
+                case 2:
+                    call = apiService.getDailyParkingCount(month, ""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
+                    break;
+            }
+            call.enqueue(new Callback<List<DeskRoomCountResponse>>() {
+                @Override
+                public void onResponse(Call<List<DeskRoomCountResponse>> call, Response<List<DeskRoomCountResponse>> response) {
+                    dialog.dismiss();
+                    if (response.code()==200){
+                        events.clear();
+                        events.addAll(response.body());
+                        if (events.size()>0){
+                            binding.calendarView.updateCalendar(events, -1);
+                        }
+                    } else if(response.code()==401){
+                        //Handle if token got expired
+//                        ProgressDialog.dismisProgressBar(getContext(),dialog);
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<DeskRoomCountResponse>> call, Throwable t) {
+                    Toast.makeText(getActivity(), "fail "+t.getMessage(), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
         }
     }
 
@@ -223,7 +273,77 @@ public class BookFragment extends Fragment {
         binding.parkingLayout.setLayoutParams(params);
         binding.moreLayout.setLayoutParams(params);
 
+    }
+    //Meeting room booking edit
+    private void getMeetingBookingListToEdit(String startDate, String endDate) {
+        if (Utils.isNetworkAvailable(getActivity())) {
+            dialog= ProgressDialog.showProgressBar(getContext());
 
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<MeetingListToEditResponse>> call=apiService.getMeetingListToEdit(startDate,endDate);
+            call.enqueue(new Callback<List<MeetingListToEditResponse>>() {
+                @Override
+                public void onResponse(Call<List<MeetingListToEditResponse>> call, Response<List<MeetingListToEditResponse>> response) {
+
+                    List<MeetingListToEditResponse> meetingListToEditResponseList  =response.body();
+
+                    dialog.dismiss();
+//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+                    callMeetingRoomEditListAdapterBottomSheet(meetingListToEditResponseList);
+
+
+                }
+
+                @Override
+                public void onFailure(Call<List<MeetingListToEditResponse>> call, Throwable t) {
+                    dialog.dismiss();
+//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+                }
+            });
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
+
+    }
+
+    private void callMeetingRoomEditListAdapterBottomSheet(List<MeetingListToEditResponse> meetingListToEditResponseList) {
+        RecyclerView rvMeeingEditList;
+        TextView editClose,editDate;
+        LinearLayoutManager linearLayoutManager;
+
+        BottomSheetDialog locateMeetEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        locateMeetEditBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_edit_booking_bottomsheet,
+                new RelativeLayout(getContext())));
+
+        rvMeeingEditList = locateMeetEditBottomSheet.findViewById(R.id.rvEditList);
+        editClose=locateMeetEditBottomSheet.findViewById(R.id.editClose);
+        editDate=locateMeetEditBottomSheet.findViewById(R.id.editDate);
+
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvMeeingEditList.setLayoutManager(linearLayoutManager);
+        rvMeeingEditList.setHasFixedSize(true);
+
+        MeetingListToEditAdapter meetingListToEditAdapter=new MeetingListToEditAdapter(getContext(),meetingListToEditResponseList,this);
+        rvMeeingEditList.setAdapter(meetingListToEditAdapter);
+
+        editClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locateMeetEditBottomSheet.dismiss();
+            }
+        });
+
+        //getMeetingListToEdit
+
+
+        locateMeetEditBottomSheet.show();
+    }
+
+    @Override
+    public void onMeetingEditClick(MeetingListToEditResponse meetingListToEditResponse) {
 
     }
 }

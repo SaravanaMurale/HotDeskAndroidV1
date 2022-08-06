@@ -28,6 +28,7 @@ import dream.guys.hotdeskandroid.model.response.CarParkingslotsResponse;
 import dream.guys.hotdeskandroid.model.response.CheckPinLoginResponse;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.DeskDescriptionResponse;
+import dream.guys.hotdeskandroid.model.response.DeskRoomCountResponse;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.ImageResponse;
@@ -65,6 +66,16 @@ public interface ApiInterface {
     //Qr enabled
     @GET("api/meetingrooms/amenities")
     Call<List<AmenitiesResponse>> getAmenities();
+
+    //Book desk count api
+    @GET("api/Calendar/DailyTeamDeskCount")
+    Call<List<DeskRoomCountResponse>> getDailyDeskCount(@Query("month") String s, @Query("teamId")String teamId);
+    //Book meeting room count api
+    @GET("api/MeetingRooms/DailyMeetingRoomCounts")
+    Call<List<DeskRoomCountResponse>> getDailyRoomCount(@Query("month") String s, @Query("teamId")String teamId);
+    //Book parking count api
+    @GET("api/ParkingSlot/DailyCarParkCounts")
+    Call<List<DeskRoomCountResponse>> getDailyParkingCount(@Query("month") String s, @Query("teamId")String teamId);
 
     @GET("api/Settings/QRCheckInEnforcementEnabled")
     Call<Boolean> getQrEnabled();
