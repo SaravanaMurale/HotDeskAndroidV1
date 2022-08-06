@@ -1,5 +1,7 @@
 package dream.guys.hotdeskandroid;
 
+import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
+
 import android.app.Dialog;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -30,6 +32,8 @@ import java.util.List;
 import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
 import dream.guys.hotdeskandroid.adapter.SearchRecyclerAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityMainBinding;
+import dream.guys.hotdeskandroid.example.MyCanvasDraw;
+import dream.guys.hotdeskandroid.model.request.Point;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
@@ -119,17 +123,27 @@ public class MainActivity extends AppCompatActivity {
                 float prevScale = mScale;
                 mScale += scale;
 
-                if (mScale > 10f)
-                    mScale = 10f;
+                System.out.println("ZoomMuraliScaleValue"+mScale);
+                System.out.println("ZoomScale"+scale);
 
-                ScaleAnimation scaleAnimation = new ScaleAnimation(1f / prevScale, 1f / mScale, 1f / prevScale, 1f / mScale, detector.getFocusX(), detector.getFocusY());
-                scaleAnimation.setDuration(0);
-                scaleAnimation.setFillAfter(true);
-                ScrollView layout =  findViewById(R.id.scrollView);
-                if(layout!=null) {
-                    layout.startAnimation(scaleAnimation);
+                if(mScale>0) {
+
+                    if (mScale > 10f)
+                        mScale = 10f;
+
+                    ScaleAnimation scaleAnimation = new ScaleAnimation(1f / prevScale, 1f / mScale, 1f / prevScale, 1f / mScale, detector.getFocusX(), detector.getFocusY());
+                    scaleAnimation.setDuration(0);
+                    scaleAnimation.setFillAfter(true);
+                    ScrollView layout = findViewById(R.id.scrollView);
+                    if (layout != null) {
+                        layout.startAnimation(scaleAnimation);
+                    }
+
+                }else {
+                    System.out.println("You Cant zoom more than this");
                 }
-                return true;
+                    return true;
+
             }
         });
     }
@@ -228,6 +242,32 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
+    }
+
+
+    public void getFloorCoordinatesInMain(List<List<Integer>> coordinateList, LinearLayout secondLayout){
+        List<Point> pointList=new ArrayList<>();
+        System.out.println("CoordinateSize" + coordinateList.size());
+        //List<Point> pointList=new ArrayList<>();
+        for (int i = 0; i < coordinateList.size(); i++) {
+
+            System.out.println("CoordinateData" + i + "position" + "size " + coordinateList.get(i).size());
+
+            Point point = new Point(coordinateList.get(i).get(0) + 40, coordinateList.get(i).get(1) + 20);
+            pointList.add(point);
+
+
+        }
+        System.out.println("PointListSize" + pointList.size());
+
+
+        if (pointList.size() > 0) {
+            MyCanvasDraw myCanvasDraw = new MyCanvasDraw(getContext(), pointList);
+
+            secondLayout.addView(myCanvasDraw);
+
+        }
 
     }
 }
