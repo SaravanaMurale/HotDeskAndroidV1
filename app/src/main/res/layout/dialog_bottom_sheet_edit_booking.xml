@@ -38,11 +38,12 @@
             <!--StartTime-->
 
             <RelativeLayout
+                android:id="@+id/startTimeBlock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:padding="@dimen/_3sdp"
-                android:background="@drawable/rectangle_bg_with_corner"
+                android:background="@drawable/rectangle_greybg_with_corner"
                 android:orientation="horizontal">
 
                 <TextView
@@ -63,7 +64,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="9:00"
+                    android:text=""
                     android:textColor="@color/figmaBlue"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
@@ -71,10 +72,11 @@
            <!--EndTime-->
 
             <RelativeLayout
+                android:id="@+id/endTimeBlock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/rectangle_bg_with_corner"
+                android:background="@drawable/rectangle_greybg_with_corner"
                 android:orientation="horizontal"
                 android:padding="@dimen/_3sdp"
                 >
@@ -97,7 +99,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="9:00"
+                    android:text=""
                     android:textColor="@color/figmaBlue"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
@@ -110,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:padding="@dimen/_1sdp"
-                android:background="@drawable/rectangle_bg_with_corner"
+                android:background="@drawable/rectangle_greybg_with_corner"
                 android:orientation="horizontal">
 
                 <TextView
@@ -140,7 +142,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/rectangle_bg_with_corner"
+                android:background="@drawable/rectangle_greybg_with_corner"
                 android:orientation="horizontal"
                 android:padding="@dimen/_3sdp"
                 >
@@ -175,7 +177,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/rectangle_bg_with_corner"
+                android:background="@drawable/rectangle_greybg_with_corner"
                 android:orientation="horizontal"
                 android:padding="@dimen/_3sdp"
                 >
@@ -209,7 +211,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/rectangle_bg_with_corner"
+                android:background="@drawable/rectangle_greybg_with_corner"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -349,7 +351,7 @@
                 android:id="@+id/ed_registration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rectangle_bg_with_corner"
+                android:background="@drawable/rectangle_greybg_with_corner"
                 android:hint="Registration"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:paddingHorizontal="@dimen/_15sdp"
@@ -359,7 +361,7 @@
                 android:id="@+id/etBookedBy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rectangle_bg_with_corner"
+                android:background="@drawable/rectangle_greybg_with_corner"
                 android:hint="BookedBy"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:paddingHorizontal="@dimen/_15sdp"

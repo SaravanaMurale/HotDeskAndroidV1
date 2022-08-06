@@ -98,7 +98,7 @@ public class MeetingRoomRequest {
             public String myto;
             public String comments;
             @SerializedName("attendees")
-            public List<Attendees> attendees;
+            public List<Integer> attendees;
             public String subject;
             @SerializedName("externalAttendees")
             public List<ExternalAttendees> externalAttendees;
@@ -128,11 +128,11 @@ public class MeetingRoomRequest {
                 this.comments = comments;
             }
 
-            public List<Attendees> getAttendees() {
+            public List<Integer> getAttendees() {
                 return attendees;
             }
 
-            public void setAttendees(List<Attendees> attendees) {
+            public void setAttendees(List<Integer> attendees) {
                 this.attendees = attendees;
             }
 

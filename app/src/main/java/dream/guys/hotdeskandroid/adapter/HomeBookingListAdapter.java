@@ -110,11 +110,16 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
             holder.rlBookingRemoteBlock.setVisibility(View.GONE);
             holder.rlInOffice.setVisibility(View.VISIBLE);
-            holder.bookingAddress.setText(new StringBuilder()
-                    .append("")
-                    .append(list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getfLoorName())
-                    .append(" - ").append(list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getBuildingName()).toString()
-            );
+            try{
+                holder.bookingAddress.setText(new StringBuilder()
+                        .append("")
+                        .append(list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getfLoorName())
+                        .append(" - ").append(list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getBuildingName()).toString()
+                );
+            }catch (Exception e){
+
+            }
+
             //Desk Booking
             Glide.with(context)
                     .load(R.drawable.chair)

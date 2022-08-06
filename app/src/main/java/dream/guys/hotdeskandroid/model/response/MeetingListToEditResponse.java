@@ -25,6 +25,29 @@ public class MeetingListToEditResponse {
         @SerializedName("recurrence")
         String recurrence;
 
+        @SerializedName("status")
+        Status status;
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public class Status{
+            String timeStatus;
+
+            public String getTimeStatus() {
+                return timeStatus;
+            }
+
+            public void setTimeStatus(String timeStatus) {
+                this.timeStatus = timeStatus;
+            }
+        }
+
     public String getRecurrence() {
         return recurrence;
     }

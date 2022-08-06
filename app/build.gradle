@@ -75,5 +75,6 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.1'
 
     implementation 'com.microsoft.identity.client:msal:2.+'
+    implementation 'com.alexvasilkov:gesture-views:2.8.3'
 
 }

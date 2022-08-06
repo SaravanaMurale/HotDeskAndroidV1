@@ -404,7 +404,7 @@ public class BookingForEditResponse {
             this.status = status;
         }
 
-        private class Status {
+        public class Status {
             public String timeStatus;
             public String bookingStatus;
             public String bookingType;

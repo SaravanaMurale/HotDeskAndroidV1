@@ -37,6 +37,7 @@ import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.LocationWithMR_Response;
 import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.MeetingRoomDescriptionResponse;
+import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
 import dream.guys.hotdeskandroid.model.response.TypeOfLoginResponse;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
@@ -180,14 +181,16 @@ public interface ApiInterface {
     @GET("api/teams")
     Call<List<TeamsResponse>>  getTeams();
 
+    //CarPark Availability Checking
     @GET("api/ParkingSlot/carparkparkingslots")
     Call<List<CarParkingslotsResponse>> getCarParkingSlots(@Query("locationId") int locationId);
-
+    //CarPark Availability Checking
     @GET("api/CarParkBooking/availability")
     Call<List<CarParkAvalibilityResponse>> getCarParkingSlotAvalibility(@Query("date") String toDate,
                                                                         @Query("from") String fromTime,
                                                                         @Query("to") String toTime);
 
+    //Get Parking List To Edit
     @GET("api/carparkbooking/bookings")
     Call<CarParkingForEditResponse> getCarParkingEditList(@Query("fromDate") String fromDate,
                                                                 @Query("toDate") String toDate,
@@ -223,6 +226,10 @@ public interface ApiInterface {
     //CarParkDescription
     @GET("api/ParkingSlot/{id}")
     Call<CarParkingDescriptionResponse> getCarParkingDescription(@Path("id") int carParkId);
+
+    //Meeting Participant Keyword Search
+    @GET("api/users/Suggessions")
+    Call<List<ParticipantDetsilResponse>> getParticipantDetails(@Query("term") String term,@Query("scope") int scope);
 
 
 }

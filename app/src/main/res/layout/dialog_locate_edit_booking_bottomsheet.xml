@@ -14,7 +14,7 @@
             android:id="@+id/bookingName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Book Parking"
+            android:text="Meeting Book"
             android:layout_marginTop="@dimen/_20sdp"
             android:textColor="@color/black"
             />

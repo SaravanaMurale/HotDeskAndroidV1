@@ -5,71 +5,53 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/figmaBgGrey"
+    android:orientation="vertical"
+    android:scrollbars="none"
     tools:context=".ui.locate.LocateFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-     android:layout_width="match_parent"
-     android:layout_height="match_parent">
 
 
-    <!--Floor Layout-->
     <ScrollView
         android:id="@+id/scrollView"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:scrollbars="none"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="2dp">
+        android:layout_width="match_parent"
+        android:layout_height="1500dp"
+        android:fillViewport="true">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <HorizontalScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_150sdp">
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:scrollbars="none">
 
 
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="none">
+            <RelativeLayout
+                android:id="@+id/firstLayout"
+                android:layout_width="700dp"
+                android:layout_height="1500dp"
+                android:layout_marginTop="@dimen/_150sdp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hai"
+                    android:layout_centerInParent="true"
+                    />
 
 
-                <RelativeLayout
-                    android:id="@+id/firstLayout"
-                    android:layout_width="1000dp"
-                    android:layout_height="1000dp">
+            </RelativeLayout>
 
+        </HorizontalScrollView>
 
-                    <LinearLayout
-                        android:id="@+id/secondLayout"
-                        android:layout_width="1000dp"
-                        android:layout_height="1000dp">
-
-                        <ImageView
-                            android:id="@+id/first"
-                            android:layout_width="@dimen/_30sdp"
-                            android:layout_height="@dimen/_30sdp"
-                            android:src="@drawable/desk_avaliable"
-                            android:visibility="gone" />
-
-
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-
-            </HorizontalScrollView>
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </ScrollView>
 
+
     <!--Locate Header-->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints">
+        android:layout_height="wrap_content">
 
         <!--Search-->
         <TextView
@@ -163,9 +145,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/_13sdp"
-                android:textSize="@dimen/_10sdp"
                 android:layout_toRightOf="@id/locateStartTime"
                 android:text="End"
+                android:textSize="@dimen/_10sdp"
 
                 />
 
@@ -187,30 +169,28 @@
     </RelativeLayout>
 
 
- </androidx.constraintlayout.widget.ConstraintLayout>
-
     <!--Bottom Filter-->
     <RelativeLayout
-            android:id="@+id/endBlock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="@dimen/_10sdp">
+        android:id="@+id/endBlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/_10sdp">
 
-            <ImageView
-                android:id="@+id/ivLocateMyTeam"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:src="@drawable/locate_myteam" />
+        <ImageView
+            android:id="@+id/ivLocateMyTeam"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:src="@drawable/locate_myteam" />
 
-            <ImageView
-                android:id="@+id/ivLocateFilter"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:layout_below="@+id/ivLocateMyTeam"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:src="@drawable/locate_filter" />
+        <ImageView
+            android:id="@+id/ivLocateFilter"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_below="@+id/ivLocateMyTeam"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:src="@drawable/locate_filter" />
 
         <ImageView
             android:id="@+id/ivLocateKey"
@@ -222,7 +202,6 @@
             android:src="@drawable/locate_key" />
 
     </RelativeLayout>
-
 
     <!--Visible and Invisible Status-->
     <RelativeLayout
@@ -317,11 +296,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="invisible"
         android:outlineAmbientShadowColor="@color/black"
-        android:outlineSpotShadowColor="@color/figmaGrey" />
-
-
+        android:outlineSpotShadowColor="@color/figmaGrey"
+        android:visibility="invisible" />
 
 
 </RelativeLayout>

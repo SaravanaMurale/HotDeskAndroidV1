@@ -137,7 +137,18 @@ public class Utils {
         TextView continueTv = bottomSheetDialog.findViewById(R.id.continue_tv);
         TextView backTv = bottomSheetDialog.findViewById(R.id.tv_back);
         titleTv.setText(title);
-        dateTv.setText(date);
+        //New...
+        if (!(date.equalsIgnoreCase(""))){
+            String dateTime = Utils.dateWithDayString(date);
+            if (dateTime.equalsIgnoreCase("")){
+                dateTv.setText(date);
+            }else {
+                dateTv.setText(dateTime);
+            }
+        }else {
+            dateTv.setText(date);
+        }
+
 
         backTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,7 +228,17 @@ public class Utils {
         TextView continueTv = bottomSheetDialog.findViewById(R.id.continue_tv);
         TextView backTv = bottomSheetDialog.findViewById(R.id.tv_back);
         titleTv.setText(title);
-        dateTv.setText(date);
+        //New...
+        if (!(date.equalsIgnoreCase(""))){
+            String dateTime = Utils.dateWithDayString(date);
+            if (dateTime.equalsIgnoreCase("")){
+                dateTv.setText(date);
+            }else {
+                dateTv.setText(dateTime);
+            }
+        }else {
+            dateTv.setText(date);
+        }
 
         String[] parts =Utils.convert12HrsTO24Hrs(tv.getText().toString()).split(":");
         simpleTimePicker.setHour(Integer.parseInt(parts[0]));
@@ -770,6 +791,8 @@ public class Utils {
             Date d2 = sdformat.parse(date2);
 
 
+
+
             if(d1.compareTo(d2)<0){
                 dateCompare=1;
                 System.out.println("CurrentTimeLessAddedTimeHigh");
@@ -881,5 +904,53 @@ public class Utils {
 
 
 
+    }
+
+    //New...
+    public static String dateWithDayString(String d){
+        String date="";
+        SimpleDateFormat spf=new SimpleDateFormat("yyyy-MM-dd");
+        Date newDate= null;
+        try {
+            newDate = spf.parse(d);
+            spf= new SimpleDateFormat("E, dd'th' MMM, yyyy");
+            if (newDate != null) {
+                date = spf.format(newDate);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return date;
+    }
+
+    public static int compareCurrentDateWithSelectedDate(String startDate){
+        SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date calDate,currrentDate=null;
+        int dateComparsionResult=-1;
+        try {
+            calDate = sdformat.parse(startDate);
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = new Date();
+            currrentDate=formatter.parse(formatter.format(date));
+
+            System.out.println("DateFormatInDate"+calDate+" "+currrentDate);
+            System.out.println("GetDateAlsoeInDeskChecking"+calDate.getDate()+" "+currrentDate.getDate());
+
+            if(calDate.compareTo(currrentDate)<0){
+                System.out.println("D1IsLess");
+                dateComparsionResult=1;
+            }else if(calDate.compareTo(currrentDate)>0){
+                System.out.println("D2IsLess");
+            }else if(calDate.compareTo(currrentDate)==0){
+                dateComparsionResult=2;
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return dateComparsionResult;
     }
 }

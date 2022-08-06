@@ -46,11 +46,12 @@
             />
 
         <RelativeLayout
+            android:id="@+id/startTimeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
             android:padding="@dimen/_3sdp"
-            android:background="@drawable/rectangle_bg_with_corner"
+            android:background="@drawable/rectangle_greybg_with_corner"
             android:orientation="horizontal">
 
             <TextView
@@ -71,17 +72,19 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginVertical="@dimen/_5sdp"
-                android:text="9:00"
+                android:text=""
                 android:textColor="@color/figmaBlue"
-                android:theme="@style/TextBold" />
+                android:theme="@style/TextBold"
+                />
         </RelativeLayout>
 
 
         <RelativeLayout
+            android:id="@+id/endTimeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
-            android:background="@drawable/rectangle_bg_with_corner"
+            android:background="@drawable/rectangle_greybg_with_corner"
             android:orientation="horizontal"
             android:padding="@dimen/_3sdp"
             >
@@ -104,7 +107,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginVertical="@dimen/_5sdp"
-                android:text="9:00"
+                android:text=""
                 android:textColor="@color/figmaBlue"
                 android:theme="@style/TextBold" />
         </RelativeLayout>
@@ -117,7 +120,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
             android:padding="@dimen/_1sdp"
-            android:background="@drawable/rectangle_bg_with_corner"
+            android:background="@drawable/rectangle_greybg_with_corner"
             android:orientation="horizontal">
 
             <TextView
@@ -147,7 +150,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
-            android:background="@drawable/rectangle_bg_with_corner"
+            android:background="@drawable/rectangle_greybg_with_corner"
             android:orientation="horizontal"
             android:padding="@dimen/_3sdp"
             >
@@ -180,7 +183,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
-            android:background="@drawable/rectangle_bg_with_corner"
+            android:background="@drawable/rectangle_greybg_with_corner"
             android:orientation="horizontal"
             android:visibility="gone"
             >
@@ -313,22 +316,37 @@
         </RelativeLayout>
 
 
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/participantChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
         <EditText
             android:id="@+id/etParticipants"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rectangle_bg_with_corner"
+            android:background="@drawable/rectangle_greybg_with_corner"
             android:hint="Participants(optional)"
             android:layout_marginVertical="@dimen/_5sdp"
             android:paddingHorizontal="@dimen/_15sdp"
             android:paddingVertical="@dimen/_10sdp"
             />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvParticipant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            />
+
+
+
         <EditText
             android:id="@+id/etSubject"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rectangle_bg_with_corner"
+            android:background="@drawable/rectangle_greybg_with_corner"
             android:hint="Subject"
             android:layout_marginVertical="@dimen/_5sdp"
             android:paddingHorizontal="@dimen/_15sdp"
@@ -339,7 +357,7 @@
             android:id="@+id/etComments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rectangle_bg_with_corner"
+            android:background="@drawable/rectangle_greybg_with_corner"
             android:hint="Comments"
             android:layout_marginVertical="@dimen/_5sdp"
             android:paddingHorizontal="@dimen/_15sdp"
