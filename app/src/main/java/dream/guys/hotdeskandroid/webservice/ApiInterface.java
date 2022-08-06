@@ -231,5 +231,9 @@ public interface ApiInterface {
     @GET("api/users/Suggessions")
     Call<List<ParticipantDetsilResponse>> getParticipantDetails(@Query("term") String term,@Query("scope") int scope);
 
+    //Update Setting
+    @POST("api/account/UpdateProfileSettings")
+    Call<BaseResponse> updateSetting(@Body UserDetailsResponse userDetailsResponse);
+
 
 }

@@ -104,7 +104,7 @@ public class BookFragment extends Fragment implements MeetingListToEditAdapter.O
             @Override
             public void onDayLongPress(Date date, int pos) {
                 Toast.makeText(getActivity(), ""+date, Toast.LENGTH_SHORT).show();
-                getMeetingBookingListToEdit(null,""+date,""+date);
+                //getMeetingBookingListToEdit(null,""+date,""+date);
             }
 
             @Override

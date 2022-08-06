@@ -2,6 +2,9 @@ package dream.guys.hotdeskandroid.model.response;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserDetailsResponse {
 
     @SerializedName("id")
@@ -42,6 +45,8 @@ public class UserDetailsResponse {
     private String highestRole;
 
     //@SerializedName("permissions")
+    List<String> permissionsList=new ArrayList<>();
+
 
     @SerializedName("tenantId")
     private int tenantId;
@@ -61,7 +66,70 @@ public class UserDetailsResponse {
     private boolean hasPinSetup;
     @SerializedName("calendarIntegrationType")
     private int calendarIntegrationType;
+    private  boolean rememberMe;
+    private String workHoursFromString;
+    private String workHoursToString;
 
+    public List<String> getPermissionsList() {
+        return permissionsList;
+    }
+
+    public void setPermissionsList(List<String> permissionsList) {
+        this.permissionsList = permissionsList;
+    }
+
+    public boolean isRememberMe() {
+        return rememberMe;
+    }
+
+    public void setRememberMe(boolean rememberMe) {
+        this.rememberMe = rememberMe;
+    }
+
+    public String getWorkHoursFromString() {
+        return workHoursFromString;
+    }
+
+    public void setWorkHoursFromString(String workHoursFromString) {
+        this.workHoursFromString = workHoursFromString;
+    }
+
+    public String getWorkHoursToString() {
+        return workHoursToString;
+    }
+
+    public void setWorkHoursToString(String workHoursToString) {
+        this.workHoursToString = workHoursToString;
+    }
+
+    void setPermission(){
+        permissionsList.add("users.manage");
+        permissionsList.add("users.edit.role");
+        permissionsList.add("users.delete");
+        permissionsList.add("teams.manage");
+        permissionsList.add("teams.addremove");
+        permissionsList.add("teams.edit.managers");
+        permissionsList.add("teams.manage.all");
+        permissionsList.add("calendar.view");
+        permissionsList.add("calendar.edit");
+        permissionsList.add("calendar.edit.all.teams");
+        permissionsList.add("memberships.manage");
+        permissionsList.add("desks.manage");
+        permissionsList.add("locations.manage");
+        permissionsList.add("locations.addremove");
+        permissionsList.add("locations.manage.all");
+        permissionsList.add("meetingrooms.manage.all");
+        permissionsList.add("meetingrooms.manage");
+        permissionsList.add("meetingrooms.view");
+        permissionsList.add("companysettings.manage.all");
+        permissionsList.add("orderform.manage");
+        permissionsList.add("parkingslot.manage");
+        permissionsList.add("calendar.view");
+        permissionsList.add("calendar.edit");
+        permissionsList.add("meetingrooms.view");
+
+
+    }
 
     public int getTeamMembershipId() {
         return teamMembershipId;
@@ -293,6 +361,8 @@ public class UserDetailsResponse {
         private String currentManagerUserIds;
         @SerializedName("automaticApprovalStatus")
         private String currentAutomaticApprovalStatus;
+        @SerializedName("isDeleted")
+        boolean isDeleted;
 
         public int getCurrentTeamId() {
             return currentTeamId;
