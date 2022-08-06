@@ -43,6 +43,10 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_15sdp"
             android:textColor="@color/black"
+<<<<<<< HEAD
+=======
+
+>>>>>>> 62021eb6c901bf84a30bd9441b0a538712b1528b
             app:height="@dimen/_40sdp"
             app:width="@dimen/_40sdp"
             app:bar_height="@dimen/_15sdp"

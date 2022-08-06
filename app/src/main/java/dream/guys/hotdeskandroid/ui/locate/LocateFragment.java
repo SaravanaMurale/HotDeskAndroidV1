@@ -209,7 +209,7 @@ RepeateDataAdapter.repeatInterface {
     boolean carParkingCheckingStatus = false;
 
     //MeetingAvalibilityChecking
-    List<LocationWithMR_Response> locationWithMR_response;
+    List<LocationWithMR_Response> locationWithMR_response=new ArrayList<>();
     List<UserAllowedMeetingResponse> userAllowedMeetingResponseList;
     //MatchList
     List<LocationWithMR_Response.Matches> matchesList;

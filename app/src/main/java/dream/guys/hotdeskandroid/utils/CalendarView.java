@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +16,24 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 
+import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.response.BookingListResponse;
+import dream.guys.hotdeskandroid.model.response.DeskRoomCountResponse;
+import dream.guys.hotdeskandroid.ui.book.BookFragment;
+import dream.guys.hotdeskandroid.ui.home.HomeFragment;
 
 public class CalendarView extends LinearLayout
 {
@@ -38,15 +49,8 @@ public class CalendarView extends LinearLayout
     private ImageView btnNext;
     private TextView txtDate;
     private GridView grid;
+    public OnPrevNxtInClickable onPrevNxtInClickable;
 
-    // seasons' rainbow
-   /* int[] rainbow = new int[]{
-            R.color.summer,
-            R.color.fall,
-            R.color.winter,
-            R.color.spring
-    };
-    int[] monthSeason = new int[]{2, 2, 3, 3, 3, 0, 0, 0, 1, 1, 1, 2};*/
     public CalendarView(Context context) {
         super(context);
     }
@@ -68,6 +72,9 @@ public class CalendarView extends LinearLayout
         assignUiElements(context);
         assignClickHandlers();
         updateCalendar();
+    }
+    public interface  OnPrevNxtInClickable{
+        public void onPreviousClicked();
     }
 
     private void loadDateFormat(AttributeSet attrs) {
@@ -101,7 +108,10 @@ public class CalendarView extends LinearLayout
             @Override
             public void onClick(View v) {
                 currentDate.add(Calendar.MONTH, 1);
-                updateCalendar();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                if (eventHandler != null)
+                    eventHandler.onPrevClicked(""+sdf.format(currentDate.getTime()));
+
             }
         });
 
@@ -109,7 +119,11 @@ public class CalendarView extends LinearLayout
             @Override
             public void onClick(View v) {
                 currentDate.add(Calendar.MONTH, -1);
-                updateCalendar();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+                if (eventHandler != null)
+                    eventHandler.onPrevClicked(""+sdf.format(currentDate.getTime()));
+
             }
         });
 
@@ -140,7 +154,7 @@ public class CalendarView extends LinearLayout
         updateCalendar(null, -1);
     }
 
-    public void updateCalendar(HashSet<Date> events, int selectedPosition) {
+    public void updateCalendar(List<DeskRoomCountResponse> events, int selectedPosition) {
         ArrayList<Date> cells = new ArrayList<>();
         Calendar calendar = (Calendar) currentDate.clone();
         calendar.set(Calendar.DAY_OF_MONTH, 1);
@@ -165,21 +179,41 @@ public class CalendarView extends LinearLayout
     }
 
 
-    private class CalendarAdapter extends ArrayAdapter<Date>
-    {
-        private HashSet<Date> eventDays;
+    private class CalendarAdapter extends ArrayAdapter<Date> {
+        private List<DeskRoomCountResponse> eventDays;
         private LayoutInflater inflater;
         Calendar selectedMonth;
         int selectedPosition;
+        private int firstDayOfMonth;
+        private int previousMonthMaxDays;
 
-        public CalendarAdapter(Context context, ArrayList<Date> days,
-                               HashSet<Date> eventDays, Calendar selectedMonth,
+        public CalendarAdapter(Context context,
+                               ArrayList<Date> days,
+                               List<DeskRoomCountResponse> eventDays,
+                               Calendar selectedMonth,
                                int selectedPosition) {
             super(context, R.layout.control_calendar_day, days);
             this.eventDays = eventDays;
             this.selectedMonth = selectedMonth;
             this.selectedPosition = selectedPosition;
             inflater = LayoutInflater.from(context);
+            setFirstDayOfMonth();
+            setPreviousMonthMax();
+        }
+        private void setFirstDayOfMonth() {
+            Calendar tempCalendar = (Calendar) currentDate.clone();
+            tempCalendar.set(Calendar.DAY_OF_MONTH, 1);
+            firstDayOfMonth = tempCalendar.get(Calendar.DAY_OF_WEEK) - 1;
+        }
+
+        private void setPreviousMonthMax() {
+            Calendar tempCalendar = (Calendar) currentDate.clone();
+            tempCalendar.set(Calendar.MONTH, currentDate.get(Calendar.MONTH) + 1);
+            this.previousMonthMaxDays = tempCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        }
+        @Override
+        public int getCount() {
+            return 42;
         }
 
         @Override
@@ -188,43 +222,82 @@ public class CalendarView extends LinearLayout
             int day = date.getDate();
             int month = date.getMonth();
             int year = date.getYear();
+            int maxNumberOfDays = currentDate.getActualMaximum(Calendar.DAY_OF_MONTH);
             Date today = new Date();
             TextView dateBox, count;
+
             if (view == null)
                 view = inflater.inflate(R.layout.control_calendar_day, parent, false);
             dateBox = view.findViewById(R.id.cal_text_view);
             count = view.findViewById(R.id.tv_count);
             view.setBackgroundResource(0);
             if (eventDays != null) {
-                for (Date eventDate : eventDays) {
-                    if (eventDate.getDate() == day &&
-                            eventDate.getMonth() == month &&
-                            eventDate.getYear() == year) {
-                        dateBox.setBackgroundResource(R.drawable.btn_bg_app_theme);
-                        ((TextView) view).setTextColor(Color.WHITE);
-                        break;
+                for (DeskRoomCountResponse eventDate : eventDays) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    Date d = new Date(); //Get system date
+                    try {
+                        d = sdf.parse(eventDate.getDate());
+                        if (d.getDate() == day &&
+                                d.getMonth() == month &&
+                                d.getYear() == year) {
+                            if (eventDate.getAvailableCount()>0)
+                                ((TextView) count).setText(""+eventDate.getAvailableCount());
+                            else if (eventDate.getAssignedCount()>0)
+                                ((TextView) count).setText(""+(eventDate.getAssignedCount()-eventDate.getUsedCount()));
+                            Log.d("CalendarView", "getView: "+eventDate.getAvailableCount());
+                            break;
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
+
+
                 }
             }
 
-            ((TextView) view).setTypeface(null, Typeface.NORMAL);
-            ((TextView) view).setTextColor(Color.BLACK);
+            ((TextView) dateBox).setTypeface(null, Typeface.NORMAL);
+            ((TextView) dateBox).setTextColor(Color.BLACK);
 
-            // if (month != today.getMonth() || year != today.getYear()) {
-           /* if (month !=  currentDate.get(Calendar.MONTH) || year !=  currentDate.get(Calendar.YEAR)) {
-                ((TextView) view).setTextColor(getResources().getColor(R.color.greyed_out));
-            } else */
+//            if (month !=  currentDate.get(Calendar.MONTH) || year !=  currentDate.get(Calendar.YEAR)) {
+//                ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGrey));
+//            }
 
-            /*if (day == today.getDate()) {
-                ((TextView) view).setTypeface(null, Typeface.BOLD);
-                ((TextView) view).setTextColor(getResources().getColor(R.color.colorAppTheme));
-            }*/
+            if (day == today.getDate()) {
+                ((TextView) dateBox).setTypeface(null, Typeface.BOLD);
+//                ((TextView) dateBox).setTextColor(getResources().getColor(R.color.colorAppTheme));
+            }
 
-            ((TextView) view).setText(String.valueOf(date.getDate()));
+            ((TextView) dateBox).setText(String.valueOf(date.getDate()));
 
             if (selectedPosition != -1 && position == selectedPosition) {
                 dateBox.setBackgroundResource(R.drawable.btn_bg_app_theme);
-                ((TextView) view).setTextColor(getResources().getColor(R.color.white));
+                ((TextView) dateBox).setTextColor(getResources().getColor(R.color.white));
+            }
+
+            if (position < firstDayOfMonth) {
+                Log.d("CardView : ", "getView: "+position);
+                int value = this.previousMonthMaxDays - firstDayOfMonth + position + 1;
+//                date.setText(String.valueOf(value));
+                dateBox.setTextColor(Color.rgb(166, 166, 166));
+                count.setVisibility(GONE);
+            }
+
+            if (position >= firstDayOfMonth && position < maxNumberOfDays + firstDayOfMonth) {
+                int value = position - firstDayOfMonth + 1;
+                if (currentDate.before(today)) {
+                    Toast.makeText(getContext(), " betweeen", Toast.LENGTH_SHORT).show();
+//                    date.setText(String.valueOf(value));
+                    dateBox.setTextColor(Color.rgb(166, 166, 166));
+                    dateBox.setVisibility(GONE);
+                    count.setVisibility(GONE);
+                }
+            }
+
+            if (position >= maxNumberOfDays + firstDayOfMonth) {
+                int value = position - (maxNumberOfDays + firstDayOfMonth - 1);
+                dateBox.setTextColor(Color.rgb(166, 166, 166));
+                dateBox.setVisibility(GONE);
+                count.setVisibility(GONE);
             }
 
             return view;
@@ -238,6 +311,7 @@ public class CalendarView extends LinearLayout
 
     public interface EventHandler {
         void onDayLongPress(Date date, int pos);
+        void onPrevClicked(String month);
     }
 }
 
