@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<com.alexvasilkov.gestures.views.GestureFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/figmaBgGrey"
+    tools:context=".ui.locate.LocateFragment">-->
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -24,13 +32,19 @@
             android:scrollbars="none">
 
 
-
+            <com.alexvasilkov.gestures.views.GestureFrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/figmaBgGrey"
+                app:gest_maxZoom="8"
+                app:gest_minZoom="0"
+                >
 
             <RelativeLayout
                 android:id="@+id/firstLayout"
                 android:layout_width="700dp"
-                android:layout_height="1500dp"
-                android:layout_marginTop="@dimen/_200sdp">
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_100sdp">
 
 
                 <TextView
@@ -41,6 +55,8 @@
 
 
             </RelativeLayout>
+
+            </com.alexvasilkov.gestures.views.GestureFrameLayout>
 
         </HorizontalScrollView>
 
@@ -305,3 +321,4 @@
 
 
 </RelativeLayout>
+<!--</com.alexvasilkov.gestures.views.GestureFrameLayout>-->

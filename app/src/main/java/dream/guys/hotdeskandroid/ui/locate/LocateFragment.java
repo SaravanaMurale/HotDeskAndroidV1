@@ -2829,7 +2829,7 @@ RepeateDataAdapter.repeatInterface {
             }
         }, 1000);
 
-        TextView tvDescription, tvLocateDeskBookLocation;
+        TextView tvDescription, tvLocateDeskBookLocation,tv_repeat;
 
         System.out.println("BookingRequestDetail" + selctedCode + " " + key + " " + id + " " + code);
 
@@ -2856,9 +2856,16 @@ RepeateDataAdapter.repeatInterface {
 
         tvLocateDeskBookLocation = locateCheckInBottomSheet.findViewById(R.id.tvLocateDeskBookLocation);
         tvDescription = locateCheckInBottomSheet.findViewById(R.id.tvDescription);
+        tv_repeat = locateCheckInBottomSheet.findViewById(R.id.tv_repeat);
 
         //new...
         locateCheckInDate.setText(binding.locateCalendearView.getText());
+        tv_repeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                repeateBottomSheet();
+            }
+        });
 
         if (deskDescriotion != null) {
             tvDescription.setText("Description:" + deskDescriotion);

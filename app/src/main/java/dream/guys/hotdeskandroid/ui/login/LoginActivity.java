@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.microsoft.identity.client.AcquireTokenParameters;
 import com.microsoft.identity.client.AuthenticationCallback;
@@ -519,6 +520,11 @@ public class LoginActivity extends AppCompatActivity {
                             SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.USER_ID,userDetailsResponse.getId());
 
                             ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+
+                            //New...
+                            Gson gson = new Gson();
+                            String json = gson.toJson(userDetailsResponse);
+                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.LOGIN_RESPONSE,json);
 
                             //Check welcome screen viewed status
                             //boolean welcomeViewStatus=SessionHandler.getInstance().getBoolean(LoginActivity.this,AppConstants.WELCOME_VIEWED_STATUS);

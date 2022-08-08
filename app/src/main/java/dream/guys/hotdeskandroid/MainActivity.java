@@ -137,10 +137,10 @@ public class MainActivity extends AppCompatActivity {
                     ScaleAnimation scaleAnimation = new ScaleAnimation(1f / prevScale, 1f / mScale, 1f / prevScale, 1f / mScale, detector.getFocusX(), detector.getFocusY());
                     scaleAnimation.setDuration(0);
                     scaleAnimation.setFillAfter(true);
-                    ScrollView layout = findViewById(R.id.scrollView);
+                    /*ScrollView layout = findViewById(R.id.scrollView);
                     if (layout != null) {
                         layout.startAnimation(scaleAnimation);
-                    }
+                    }*/
 
                 }else {
                     System.out.println("You Cant zoom more than this");

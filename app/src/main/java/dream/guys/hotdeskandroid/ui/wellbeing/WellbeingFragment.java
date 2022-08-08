@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +17,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
+
 import butterknife.BindView;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.databinding.FragmentWellbeingBinding;
+import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
+import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -56,6 +63,12 @@ public class WellbeingFragment extends Fragment {
             }
         });
 
+        Gson gson = new Gson();
+        String json = SessionHandler.getInstance().get(getActivity(),AppConstants.LOGIN_RESPONSE);
+        if (json!=null){
+            UserDetailsResponse obj = gson.fromJson(json, UserDetailsResponse.class);
+            Log.d("JSONLOGIN", String.valueOf(obj));
+        }
 
 
         return root;
