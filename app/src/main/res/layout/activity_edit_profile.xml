@@ -89,8 +89,7 @@
                         android:id="@+id/ivEditPrifle"
                         android:layout_width="@dimen/_50sdp"
                         android:layout_height="@dimen/_50sdp"
-                        android:src="@drawable/mygirl"
-                        />
+                        android:src="@drawable/mygirl" />
 
                     <TextView
                         android:id="@+id/tvUpdateImage"

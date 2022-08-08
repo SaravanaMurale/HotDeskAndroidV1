@@ -1,27 +1,40 @@
 package dream.guys.hotdeskandroid.ui.home;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
+
 import dream.guys.hotdeskandroid.databinding.ActivityEditProfileBinding;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
-import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
-import dream.guys.hotdeskandroid.model.response.CarParkingDescriptionResponse;
+
+import dream.guys.hotdeskandroid.model.response.ProfilePicResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -36,6 +49,11 @@ public class EditProfileActivity extends AppCompatActivity {
 
     ActivityEditProfileBinding binding;
     UserDetailsResponse profileData; //= new UserDetailsResponse();
+    private BottomSheetDialog attachChooser;
+    public static final int REQUEST_IMAGE = 100;
+
+    String encodedImage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +62,21 @@ public class EditProfileActivity extends AppCompatActivity {
         binding = ActivityEditProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        getProfilePicture();
+
         Gson gson = new Gson();
         String json = SessionHandler.getInstance().get(EditProfileActivity.this, AppConstants.LOGIN_RESPONSE);
         if (json!=null){
             profileData = gson.fromJson(json, UserDetailsResponse.class);
         }
 
+
+        binding.tvUpdateImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImage();
+            }
+        });
         binding.profileEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,6 +148,149 @@ public class EditProfileActivity extends AppCompatActivity {
         }
 
     }
+
+
+    private void getProfilePicture() {
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ProfilePicResponse> call = apiService.getProfilePicture();
+        call.enqueue(new Callback<ProfilePicResponse>() {
+            @Override
+            public void onResponse(Call<ProfilePicResponse> call, Response<ProfilePicResponse> response) {
+
+                ProfilePicResponse profilePicResponse=response.body();
+
+                System.out.println("Base64Image"+profilePicResponse.getImage());
+                String base64String = profilePicResponse.getImage();
+                String base64Image = base64String.split(",")[1];
+                byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                binding.ivEditPrifle.setImageBitmap(decodedByte);
+
+            }
+
+            @Override
+            public void onFailure(Call<ProfilePicResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void selectImage() {
+        attachChooser = new BottomSheetDialog(EditProfileActivity.this);
+        attachChooser.setContentView((EditProfileActivity.this).getLayoutInflater().inflate(R.layout.popup_add_attach_options,
+                new LinearLayout(EditProfileActivity.this)));
+        attachChooser.show();
+        //TODO: lang
+        LinearLayout btnStartCamera = (LinearLayout) attachChooser.findViewById(R.id.btn_from_camera);
+        LinearLayout btnStartFileBrowser = (LinearLayout) attachChooser.findViewById(R.id.btn_from_local);
+        btnStartCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attachChooser.dismiss();
+                if (Utils.checkCameraPermission(EditProfileActivity.this))
+                    cameraIntent();
+            }
+        });
+        btnStartFileBrowser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attachChooser.dismiss();
+                if (Utils.checkCameraPermission(EditProfileActivity.this))
+                    galleryIntent();
+            }
+        });
+    }
+
+    private void cameraIntent() {
+        Intent intent = new Intent(EditProfileActivity.this, ImagePickerActivity.class);
+        intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_IMAGE_CAPTURE);
+
+        // setting aspect ratio
+        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+
+        // setting maximum bitmap width and height
+        intent.putExtra(ImagePickerActivity.INTENT_SET_BITMAP_MAX_WIDTH_HEIGHT, true);
+        intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 1000);
+        intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_HEIGHT, 1000);
+
+        startActivityForResult(intent, REQUEST_IMAGE);
+    }
+
+    private void galleryIntent() {
+        Intent intent = new Intent(EditProfileActivity.this, ImagePickerActivity.class);
+        intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_GALLERY_IMAGE);
+
+        // setting aspect ratio
+        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
+        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
+        startActivityForResult(intent, REQUEST_IMAGE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Uri uri = data.getParcelableExtra("path");
+                // loading profile image from local cache
+                //loadProfile(uri.toString());
+                try {
+                    // You can update this bitmap to your server
+                    Bitmap bitmap = null;
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                    getStringImage(bitmap);
+                    String bast64InString= String.valueOf("data:image/png;base64," + encodedImage);
+                    //base64Img = RequestBody.create(MediaType.parse("text/plain"), "data:image/png;base64," + encodedImage);
+                    updateProfilePicture(bast64InString);
+                    System.out.println();
+                    Glide.with(this).load(uri.toString())
+                            .into(binding.ivEditPrifle);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public String getStringImage(Bitmap bmp) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        encodedImage = Base64.encodeToString(imageBytes, Base64.NO_WRAP);
+        return encodedImage;
+    }
+
+    private void updateProfilePicture(String bast64InString) {
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+        ProfilePicResponse profilePicResponse=new ProfilePicResponse();
+        profilePicResponse.setImage(bast64InString);
+
+        Call<BaseResponse> call = apiService.updateProfilePicture(profilePicResponse);
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                getProfilePicture();
+
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+            }
+        });
+
+
+
+    }
+
 
     private void callProfileUpdate() {
 
