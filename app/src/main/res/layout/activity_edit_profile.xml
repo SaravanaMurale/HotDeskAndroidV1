@@ -1,0 +1,725 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.home.EditProfileActivity">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            >
+
+            <!--Image-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/editProfileBlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_10sdp"
+                    >
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/ivEditPrifle"
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:src="@drawable/mygirl"
+                        />
+
+                    <TextView
+                        android:id="@+id/tvUpdateImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="upload photo"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_toRightOf="@+id/ivEditPrifle"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Use image at lease 250 px by 250px"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_toRightOf="@+id/ivEditPrifle"
+                        android:layout_below="@+id/tvUpdateImage"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        />
+
+
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!--Name-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textColor="@color/black"
+                android:layout_marginTop="@dimen/_10sdp"
+                />
+
+            <EditText
+                android:id="@+id/editName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Bessie Cooper"
+
+                />
+
+            </LinearLayout>
+
+            <!--Display Name-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Display Name"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:theme="@style/TextBold"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="The Name that will be displayed across  Hybrid Hero" />
+
+
+            <EditText
+                android:id="@+id/editDisplayName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Bessie Cooper"
+                android:layout_marginTop="@dimen/_3sdp"
+                />
+
+            </LinearLayout>
+
+            <!--Schedule-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginVertical="@dimen/_3sdp"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <LinearLayout
+                        android:id="@+id/ll_edit_schedule"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/ivEditSchedule"
+                        android:layout_toRightOf="@id/ivEditSchedule"
+                        android:layout_marginVertical="@dimen/_3sdp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Schedule"
+                            android:textSize="@dimen/_14sdp"
+                            android:theme="@style/TextBold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="@dimen/_2sdp"
+                            android:text="12 Jun - 19 Jun"
+                            android:textColor="@color/figmaBlack"
+                            android:theme="@style/TextSmall" />
+                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/ivEditSchedule"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:src="@drawable/edit"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginVertical="@dimen/_2sdp"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    >
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        >
+                        <ImageView
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/building_circle"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="M"
+                            android:textColor="@color/figmaBlack"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        >
+                        <ImageView
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/info_circle"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="T"
+                            android:textColor="@color/figmaBlack"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        >
+                        <ImageView
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/info_circle"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="W"
+                            android:textColor="@color/figmaBlack"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        >
+                        <ImageView
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/info_circle"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="T"
+                            android:textColor="@color/figmaBlack"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        >
+                        <ImageView
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/info_circle"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="F"
+                            android:textColor="@color/figmaBlack"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        >
+                        <ImageView
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/info_circle"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="S"
+                            android:textColor="@color/figmaBlack"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        >
+                        <ImageView
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/info_circle"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="S"
+                            android:textColor="@color/figmaBlack"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <!--Time-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/_10sdp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Default working hours"
+                    style="@style/TextBold"
+                    />
+
+            <!--Start-->
+            <RelativeLayout
+                android:id="@+id/editStartBlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@drawable/rectangle_greybg_with_corner"
+                android:orientation="horizontal"
+                android:padding="@dimen/_3sdp"
+                >
+
+                <TextView
+                    android:id="@+id/tvEditStartTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:text="Start"
+                    android:textColor="@color/figmaBlack"
+                    android:theme="@style/TextBold" />
+
+                <TextView
+                    android:id="@+id/editStartTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:text="9:00"
+                    android:textColor="@color/figmaBlue"
+                    android:theme="@style/TextBold" />
+            </RelativeLayout>
+
+            <!--End-->
+            <RelativeLayout
+                android:id="@+id/EditEndTimeBlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@drawable/rectangle_greybg_with_corner"
+                android:padding="@dimen/_1sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvEditEndTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:text="End"
+                    android:textColor="@color/figmaBlack"
+                    android:theme="@style/TextBold" />
+
+                <TextView
+                    android:id="@+id/editEndTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:text="10:00"
+                    android:textColor="@color/figmaBlue"
+                    android:theme="@style/TextBold" />
+            </RelativeLayout>
+
+
+
+
+
+            </LinearLayout>
+
+
+            <!--Default Location-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Default Location"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    />
+
+                <EditText
+                    android:id="@+id/editDefaultLocaton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="4oth Bank Street"
+
+                    />
+
+            </LinearLayout>
+
+            <!--Default Assets-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Workspaces"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/login_background_corner_white"
+                    android:padding="@dimen/_10sdp"
+
+                    >
+                <TextView
+                    android:id="@+id/editDesk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Desk-001"
+                    android:textColor="@color/black"
+
+                    />
+
+                <TextView
+                    android:id="@+id/editDeskChange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Change"
+                    android:layout_alignParentRight="true"
+
+                    />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Parking"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/login_background_corner_white"
+                    android:padding="@dimen/_10sdp"
+
+                    >
+                    <TextView
+                        android:id="@+id/editPark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Space-001"
+                        android:textColor="@color/black"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/editParkChange"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Change"
+                        android:layout_alignParentRight="true"
+
+                        />
+
+                </RelativeLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Room"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/login_background_corner_white"
+                    android:padding="@dimen/_10sdp"
+
+                    >
+                    <TextView
+                        android:id="@+id/editRoom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Room-001"
+                        android:textColor="@color/black"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/editRoomChange"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Change"
+                        android:layout_alignParentRight="true"
+
+                        />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginVertical="@dimen/_5sdp"
+                >
+
+                <TextView
+                    android:id="@+id/tvEditContact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_toLeftOf="@id/contact_edit"
+                    android:text="Contact"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="@dimen/_14sdp"
+                    android:theme="@style/TextBold" />
+                <ImageView
+                    android:id="@+id/contact_edit"
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:src="@drawable/edit"
+                    android:layout_marginHorizontal="@dimen/_2sdp"
+                    android:layout_alignParentEnd="true"
+                    />
+            </RelativeLayout>
+
+            <!--Email-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/editEmailBlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginVertical="@dimen/_5sdp"
+                app:cardCornerRadius="@dimen/_5sdp"
+                app:cardElevation="@dimen/_1sdp"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    >
+
+                    <TextView
+                        android:id="@+id/tvEditEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerInParent="true"
+                        android:layout_toLeftOf="@id/ivEditEmailIcon"
+                        android:text="Email"
+                        android:textColor="@color/figmaBlack"
+                        android:theme="@style/TextBold" />
+
+                    <ImageView
+                        android:id="@+id/ivEditEmailIcon"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
+                        android:src="@drawable/ic_outline_mail_outline_24"
+                        app:tint="@color/figmaBlue" />
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!--Teams-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/editTeamsBlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_5sdp"
+                app:cardCornerRadius="@dimen/_5sdp"
+                app:cardElevation="@dimen/_3sdp"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    >
+
+                    <TextView
+                        android:id="@+id/tvEditTeams"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_toLeftOf="@id/ivTeamsIcon"
+                        android:text="Teams"
+                        android:layout_centerInParent="true"
+                        android:textColor="@color/figmaBlack"
+                        android:theme="@style/TextBold" />
+
+                    <ImageView
+                        android:id="@+id/ivTeamsIcon"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
+                        android:src="@drawable/teams_icon"
+                        />
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!--Phone-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/EditPhoneBlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_5sdp"
+                app:cardCornerRadius="@dimen/_5sdp"
+                app:cardElevation="@dimen/_3sdp"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    >
+
+                    <TextView
+                        android:id="@+id/tvEditPhone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_toLeftOf="@id/tvEditPhoneIcon"
+                        android:text="Phone"
+                        android:layout_centerInParent="true"
+                        android:textColor="@color/figmaBlack"
+                        android:theme="@style/TextBold" />
+
+                    <ImageView
+                        android:id="@+id/tvEditPhoneIcon"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
+                        android:src="@drawable/ic_baseline_local_phone_24"
+                        app:tint="@color/figmaBlue"/>
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </LinearLayout>
+
+
+
+
+
+
+
+    </ScrollView>
+
+</RelativeLayout>
