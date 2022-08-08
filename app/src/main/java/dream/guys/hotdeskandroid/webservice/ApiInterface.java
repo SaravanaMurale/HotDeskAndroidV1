@@ -38,11 +38,13 @@ import dream.guys.hotdeskandroid.model.response.LocationWithMR_Response;
 import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.MeetingRoomDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
+import dream.guys.hotdeskandroid.model.response.ProfilePicResponse;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
 import dream.guys.hotdeskandroid.model.response.TypeOfLoginResponse;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -58,33 +60,42 @@ public interface ApiInterface {
     // to check wheter this user can setup pin or not
     @POST("api/settings/PrivacyPolicyURL")
     Call<String> privacyPolicy(@Body JsonObject jsonObject);
+
     @POST("api/account/TypeOfLogin")
     Call<TypeOfLoginResponse> typeOfLogin(@Body JsonObject jsonObject);
+
     @POST("api/account/TokenExchange")
     Call<GetTokenResponse> tokenExchange(@Body JsonObject jsonObject);
+
     @POST("api/settings/PinNumberSetting")
     Call<Boolean> checkPinEnabled();
+
     //Qr enabled
     @GET("api/meetingrooms/amenities")
     Call<List<AmenitiesResponse>> getAmenities();
 
     //Book desk count api
     @GET("api/Calendar/DailyTeamDeskCount")
-    Call<List<DeskRoomCountResponse>> getDailyDeskCount(@Query("month") String s, @Query("teamId")String teamId);
+    Call<List<DeskRoomCountResponse>> getDailyDeskCount(@Query("month") String s, @Query("teamId") String teamId);
+
     //Book meeting room count api
     @GET("api/MeetingRooms/DailyMeetingRoomCounts")
-    Call<List<DeskRoomCountResponse>> getDailyRoomCount(@Query("month") String s, @Query("teamId")String teamId);
+    Call<List<DeskRoomCountResponse>> getDailyRoomCount(@Query("month") String s, @Query("teamId") String teamId);
+
     //Book parking count api
     @GET("api/ParkingSlot/DailyCarParkCounts")
-    Call<List<DeskRoomCountResponse>> getDailyParkingCount(@Query("month") String s, @Query("teamId")String teamId);
+    Call<List<DeskRoomCountResponse>> getDailyParkingCount(@Query("month") String s, @Query("teamId") String teamId);
 
     @GET("api/Settings/QRCheckInEnforcementEnabled")
     Call<Boolean> getQrEnabled();
+
     // sign up for Pin login
     @POST("api/account/UpdateSecurityPin")
     Call<BaseResponse> createPin(@Body CreatePinRequest createPinRequest);
+
     @POST("api/account/HasSetupPinNumberForTenantUser")
     Call<CheckPinLoginResponse> checkPinLoginAvailable(@Body CreatePinRequest createPinRequest);
+
     @POST("api/account/pin")
     Call<GetTokenResponse> checkPinLogin(@Body CreatePinRequest createPinRequest);
 
@@ -105,17 +116,19 @@ public interface ApiInterface {
     Call<Void> requestPasswordReset(@Body ForgotPasswordRequest forgotPasswordRequest);
 
     @GET("api/requests/incoming")
-    Call<IncomingRequestResponse>  getIncomingRequest(@Query("includePastRequests") boolean includePastRequests);
+    Call<IncomingRequestResponse> getIncomingRequest(@Query("includePastRequests") boolean includePastRequests);
 
     @GET("api/Account/LoggedInUser")
-    Call<UserDetailsResponse>  getLoginUserDetails();
+    Call<UserDetailsResponse> getLoginUserDetails();
 
     @GET("api/mywork/teammemberstatus")
     Call<List<TeamMembersResponse>> getTeamMembers(@Query("date") String date,
-                                             @Query("teamId") int teamId);
+                                                   @Query("teamId") int teamId);
+
     @GET("api/globalsearch")
     Call<GlobalSearchResponse> getGlobalSearchData(@Query("pageSize") int pageSize,
                                                    @Query("filterText") String text);
+
     @GET("api/MyWork/UserMyWorkStatus")
     Call<BookingListResponse> getUserMyWorkDetails(@Query("dayOfTheWeek") String dayOfTheWeek,
                                                    @Query("includeNonWorkingDays") boolean includeNonWorkingDays);
@@ -135,7 +148,6 @@ public interface ApiInterface {
 //    Call<BaseResponse> carParkbookingBookings(@Body String body);
 
 
-
     @GET("api/locate/ImmediateChildLocations")
     Call<List<LocateCountryRespose>> getLocationCountryList();
 
@@ -148,9 +160,10 @@ public interface ApiInterface {
 
     @GET("api/deskLayouts/LocationDesksWithUser")
     Call<DeskAvaliabilityResponse> getAvaliableDeskDetails(@Query("locationId") int parentId,
-                                                                 @Query("toDate") String toDate,
-                                                                 @Query("fromTime") String fromTime,
-                                                                 @Query("toTime") String toTime);
+                                                           @Query("toDate") String toDate,
+                                                           @Query("fromTime") String fromTime,
+                                                           @Query("toTime") String toTime);
+
     @GET("api/booking/bookingsForEdit")
     Call<BookingForEditResponse> getBookingsForEdit(@Query("teamId") int parentId,
                                                     @Query("teamMembershipId") int toDate,
@@ -163,11 +176,11 @@ public interface ApiInterface {
 
     //DeskBooking
     @PUT("api/booking/bookings")
-    Call<BaseResponse>  doDeskBooking(@Body LocateBookingRequest locateBookingRequest);
+    Call<BaseResponse> doDeskBooking(@Body LocateBookingRequest locateBookingRequest);
 
     //DeskBookingRequest
     @PUT("api/booking/bookings")
-    Call<BaseResponse>  doRequestDeskBooking(@Body LocateDeskBookingRequest locateBookingRequest);
+    Call<BaseResponse> doRequestDeskBooking(@Body LocateDeskBookingRequest locateBookingRequest);
 
 
     //CarParkBooking
@@ -179,11 +192,12 @@ public interface ApiInterface {
     Call<BaseResponse> doCarParkingEdit(@Body LocateCarParkEditRequest locateCarParkBookingRequest);
 
     @GET("api/teams")
-    Call<List<TeamsResponse>>  getTeams();
+    Call<List<TeamsResponse>> getTeams();
 
     //CarPark Availability Checking
     @GET("api/ParkingSlot/carparkparkingslots")
     Call<List<CarParkingslotsResponse>> getCarParkingSlots(@Query("locationId") int locationId);
+
     //CarPark Availability Checking
     @GET("api/CarParkBooking/availability")
     Call<List<CarParkAvalibilityResponse>> getCarParkingSlotAvalibility(@Query("date") String toDate,
@@ -193,8 +207,8 @@ public interface ApiInterface {
     //Get Parking List To Edit
     @GET("api/carparkbooking/bookings")
     Call<CarParkingForEditResponse> getCarParkingEditList(@Query("fromDate") String fromDate,
-                                                                @Query("toDate") String toDate,
-                                                                @Query("slotId") int slotId);
+                                                          @Query("toDate") String toDate,
+                                                          @Query("slotId") int slotId);
 
     //MeetingRoomBook
     @PUT("api/MeetingRoomBooking/bookings")
@@ -203,22 +217,24 @@ public interface ApiInterface {
     //MeetingEditListResponse
     @GET("api/MeetingRoomBooking/bookings")
     Call<List<MeetingListToEditResponse>> getMeetingListToEdit(@Query("fromDate") String fromDate,
-                                                         @Query("toDate") String toDate);
+                                                               @Query("toDate") String toDate);
 
 
     //MettingRoomEdit
     @PUT("api/MeetingRoomBooking/bookings")
-    Call<BaseResponse>  doRoomEdit(@Body MeetingRoomRequest meetingRoomRequest);
+    Call<BaseResponse> doRoomEdit(@Body MeetingRoomRequest meetingRoomRequest);
 
     //MeetingUnavalibilityChecking
     @GET("api/meetingrooms/userallowedmeetingrooms")
     Call<List<UserAllowedMeetingResponse>> userAllowedMeetings();
+
     @POST("api/MeetingRooms/locationsWithMR")
     Call<List<LocationWithMR_Response>> getLocationMR(@Body LocationMR_Request locationMR_request);
 
     //DeskDescription
     @GET("api/Desks/{id}")
     Call<DeskDescriptionResponse> getDiskDescription(@Path("id") int deskId);
+
     //RoomDescription
     @GET("api/MeetingRooms/{id}")
     Call<MeetingRoomDescriptionResponse> getMeetingRoomDescription(@Path("id") int roomId);
@@ -229,11 +245,18 @@ public interface ApiInterface {
 
     //Meeting Participant Keyword Search
     @GET("api/users/Suggessions")
-    Call<List<ParticipantDetsilResponse>> getParticipantDetails(@Query("term") String term,@Query("scope") int scope);
+    Call<List<ParticipantDetsilResponse>> getParticipantDetails(@Query("term") String term, @Query("scope") int scope);
 
     //Update Setting
     @POST("api/account/UpdateProfileSettings")
     Call<BaseResponse> updateSetting(@Body UserDetailsResponse userDetailsResponse);
 
+    @POST("api/image/user")
+    Call<BaseResponse> updateProfilePicture(@Body ProfilePicResponse base64Img);
+
+    @GET("api/image/user")
+    Call<ProfilePicResponse> getProfilePicture();
 
 }
+
+

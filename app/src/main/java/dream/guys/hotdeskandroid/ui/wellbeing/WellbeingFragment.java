@@ -63,7 +63,7 @@ public class WellbeingFragment extends Fragment {
             }
         });
 
-        viewProfileBlock.setOnClickListener(new View.OnClickListener() {
+        binding.viewProfileBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
