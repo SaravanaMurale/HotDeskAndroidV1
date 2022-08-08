@@ -260,7 +260,6 @@ public class MainActivity extends AppCompatActivity {
             Point point = new Point(coordinateList.get(i).get(0) + 40, coordinateList.get(i).get(1) + 20);
             pointList.add(point);
 
-
         }
         System.out.println("PointListSize" + pointList.size());
 
