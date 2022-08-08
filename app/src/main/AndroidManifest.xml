@@ -24,7 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HotDeskAndroid">
         <activity
-            android:name=".EditProfileActivity"
+            android:name=".ui.home.EditProfileActivity"
             android:exported="false" />
         <activity
             android:name=".ui.home.ViewTeamsActivity"

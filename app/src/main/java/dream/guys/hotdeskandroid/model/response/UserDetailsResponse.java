@@ -44,7 +44,7 @@ public class UserDetailsResponse {
     @SerializedName("highestRole")
     private String highestRole;
 
-    //@SerializedName("permissions")
+    @SerializedName("permissions")
     List<String> permissionsList=new ArrayList<>();
 
 
