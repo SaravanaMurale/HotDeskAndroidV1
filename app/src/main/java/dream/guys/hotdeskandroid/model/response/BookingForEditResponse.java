@@ -237,6 +237,45 @@ public class BookingForEditResponse {
         @SerializedName("membershipNotAvailable")
         private boolean membershipNotAvailable;
 
+        public int getTeamDeskId() {
+            return teamDeskId;
+        }
+
+        public void setTeamDeskId(int teamDeskId) {
+            this.teamDeskId = teamDeskId;
+        }
+
+        public int getTeamId() {
+            return teamId;
+        }
+
+        public void setTeamId(int teamId) {
+            this.teamId = teamId;
+        }
+
+        public String getWorkHoursFrom() {
+            return workHoursFrom;
+        }
+
+        public void setWorkHoursFrom(String workHoursFrom) {
+            this.workHoursFrom = workHoursFrom;
+        }
+
+        public String getWorkHoursTo() {
+            return workHoursTo;
+        }
+
+        public void setWorkHoursTo(String workHoursTo) {
+            this.workHoursTo = workHoursTo;
+        }
+
+        public boolean isMembershipNotAvailable() {
+            return membershipNotAvailable;
+        }
+
+        public void setMembershipNotAvailable(boolean membershipNotAvailable) {
+            this.membershipNotAvailable = membershipNotAvailable;
+        }
     }
 
     public class Bookings {

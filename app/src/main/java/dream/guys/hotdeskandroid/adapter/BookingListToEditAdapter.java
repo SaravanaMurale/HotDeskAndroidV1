@@ -34,7 +34,9 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
     }
 
 
-    public BookingListToEditAdapter(Context context, List<BookingForEditResponse.Bookings> bookingsListToEdit, OnEditClickable onEditClickable, String code, List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities) {
+    public BookingListToEditAdapter(Context context,
+                                    List<BookingForEditResponse.Bookings> bookingsListToEdit,
+                                    OnEditClickable onEditClickable, String code, List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities) {
 
         this.context=context;
         this.bookingsListToEdit=bookingsListToEdit;

@@ -11,198 +11,326 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <LinearLayout
-            android:id="@+id/ll_book"
+            android:id="@+id/head"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
+
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginHorizontal="@dimen/_10sdp">
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            >
 
             <LinearLayout
-                android:id="@+id/desk_layout"
-                android:layout_width="wrap_content"
+                android:id="@+id/ll_book"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:layout_marginHorizontal="@dimen/_3sdp"
-                android:background="@drawable/custom_shape"
-                android:backgroundTint="@color/figmaBlue"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="@dimen/_10sdp"
-                android:paddingVertical="@dimen/_10sdp"
-                >
+                android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/iv_desk"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:src="@drawable/chair"
-                    app:tint="@color/figmaBlack" />
-
-                <view
-                    class="android.widget.TextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    />
-
-                <TextView
-                    android:id="@+id/tv_desk"
+                <LinearLayout
+                    android:id="@+id/desk_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:text="Workspace"
-                    android:visibility="gone"
-                    android:textColor="@color/white"
-                    android:theme="@style/TextBold" />
-                <view
-                    class="android.widget.TextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    />
+                    android:layout_weight="0"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:background="@drawable/custom_shape"
+                    android:backgroundTint="@color/figmaBlue"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:paddingVertical="@dimen/_10sdp"
+                    >
 
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/room_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_weight="0"
-                android:paddingVertical="@dimen/_10sdp"
-                android:paddingHorizontal="@dimen/_10sdp"
-                android:background="@drawable/custom_shape"
-                android:backgroundTint="@color/figmaBgGrey"
-                android:gravity="center_vertical"
-                android:layout_marginHorizontal="@dimen/_3sdp"
-                >
-                <ImageView
-                    android:id="@+id/iv_room"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:src="@drawable/room"
-                    app:tint="@color/figmaBlack"
-                    />
+                    <ImageView
+                        android:id="@+id/iv_desk"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/chair"
+                        app:tint="@color/figmaBlack" />
 
-                <view
-                    class="android.widget.TextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    />
+                    <view
+                        class="android.widget.TextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        />
 
-                <TextView
-                    android:id="@+id/tv_room"
+                    <TextView
+                        android:id="@+id/tv_desk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:text="Workspace"
+                        android:visibility="gone"
+                        android:textColor="@color/white"
+                        android:theme="@style/TextBold" />
+                    <view
+                        class="android.widget.TextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/room_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Room "
-                    android:theme="@style/TextBold"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:visibility="gone"
-                    android:textColor="@color/white"
-                    />
-                <view
-                    class="android.widget.TextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    />
+                    android:orientation="horizontal"
+                    android:layout_weight="0"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:background="@drawable/custom_shape"
+                    android:backgroundTint="@color/figmaBgGrey"
+                    android:gravity="center_vertical"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    >
+                    <ImageView
+                        android:id="@+id/iv_room"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/room"
+                        app:tint="@color/figmaBlack"
+                        />
 
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/parking_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_weight="0"
-                android:paddingVertical="@dimen/_10sdp"
-                android:paddingHorizontal="@dimen/_10sdp"
-                android:background="@drawable/custom_shape"
-                android:backgroundTint="@color/figmaBgGrey"
-                android:gravity="center_vertical"
-                android:layout_marginHorizontal="@dimen/_3sdp"
-                >
-                <ImageView
-                    android:id="@+id/iv_parking"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:src="@drawable/car"
-                    app:tint="@color/figmaBlack"
-                    />
-                <view
-                    class="android.widget.TextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    />
+                    <view
+                        class="android.widget.TextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        />
 
-                <TextView
-                    android:id="@+id/tv_parking"
+                    <TextView
+                        android:id="@+id/tv_room"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Room "
+                        android:theme="@style/TextBold"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:visibility="gone"
+                        android:textColor="@color/white"
+                        />
+                    <view
+                        class="android.widget.TextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/parking_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Parking "
-                    android:theme="@style/TextBold"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:visibility="gone"
-                    android:textColor="@color/white"
-                    />
-                <view
-                    class="android.widget.TextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/more_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_weight="0"
-                android:layout_toRightOf="@id/parking_layout"
-                android:paddingVertical="@dimen/_10sdp"
-                android:paddingHorizontal="@dimen/_10sdp"
-                android:background="@drawable/custom_shape"
-                android:backgroundTint="@color/figmaBgGrey"
-                android:gravity="center_vertical"
-                android:layout_marginHorizontal="@dimen/_3sdp"
-                >
-                <ImageView
-                    android:id="@+id/iv_more"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:src="@drawable/more_icon"
-                    app:tint="@color/figmaBlack"
-                    />
+                    android:orientation="horizontal"
+                    android:layout_weight="0"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:background="@drawable/custom_shape"
+                    android:backgroundTint="@color/figmaBgGrey"
+                    android:gravity="center_vertical"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    >
+                    <ImageView
+                        android:id="@+id/iv_parking"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/car"
+                        app:tint="@color/figmaBlack"
+                        />
+                    <view
+                        class="android.widget.TextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        />
 
-                <view
-                    class="android.widget.TextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    />
-
-                <TextView
-                    android:id="@+id/tv_more"
+                    <TextView
+                        android:id="@+id/tv_parking"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Parking "
+                        android:theme="@style/TextBold"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:visibility="gone"
+                        android:textColor="@color/white"
+                        />
+                    <view
+                        class="android.widget.TextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/more_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="more "
-                    android:theme="@style/TextBold"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:visibility="gone"
-                    android:textColor="@color/white"
-                    />
+                    android:orientation="horizontal"
+                    android:layout_weight="0"
+                    android:layout_toRightOf="@id/parking_layout"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:background="@drawable/custom_shape"
+                    android:backgroundTint="@color/figmaBgGrey"
+                    android:gravity="center_vertical"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    >
+                    <ImageView
+                        android:id="@+id/iv_more"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/more_icon"
+                        app:tint="@color/figmaBlack"
+                        />
 
-                <view
-                    class="android.widget.TextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    />
+                    <view
+                        class="android.widget.TextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="more "
+                        android:theme="@style/TextBold"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:visibility="gone"
+                        android:textColor="@color/white"
+                        />
+
+                    <view
+                        class="android.widget.TextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        />
+
+                </LinearLayout>
 
             </LinearLayout>
+            <!--Locate Header-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!--Search-->
+                <TextView
+                    android:id="@+id/searchLocate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginRight="@dimen/_9sdp"
+                    android:background="@drawable/rectangle_bg_with_corner"
+                    android:drawableRight="@drawable/locate_location"
+                    android:gravity="center_vertical"
+                    android:hint="Choose Location"
+                    android:padding="@dimen/_5sdp"
+                    android:textColorHint="@color/figmaBlack"
+                    android:textSize="@dimen/_10sdp" />
+
+                <!--Calender-->
+                <TextView
+                    android:id="@+id/locateCalendearView"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/searchLocate"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/rectangle_bg_with_corner"
+                    android:drawableRight="@drawable/locate_calender"
+                    android:paddingLeft="@dimen/_8sdp"
+                    android:paddingTop="@dimen/_3sdp"
+                    android:paddingRight="@dimen/_9sdp"
+                    android:paddingBottom="@dimen/_3sdp"
+                    android:text="Wed 4 May"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="@dimen/_10sdp"
+                    tools:ignore="MissingConstraints" />
+
+                <!--StartAndEndTime-->
+
+                <!--StartAndEndTime-->
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/searchLocate"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:background="@drawable/rectangle_bg_with_corner"
+                    android:paddingLeft="@dimen/_8sdp"
+                    android:paddingRight="@dimen/_8sdp"
+                    tools:ignore="MissingConstraints">
+
+
+                    <TextView
+                        android:id="@+id/tvStartLocate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Start"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <TextView
+                        android:id="@+id/locateStartTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/_4sdp"
+                        android:layout_toRightOf="@id/tvStartLocate"
+                        android:text="8:00"
+                        android:textColor="@color/figmaBlack"
+                        android:textSize="@dimen/_10sdp" />
+
+
+                    <view
+                        class="android.widget.TextView"
+                        android:layout_width="@dimen/_1sdp"
+                        android:layout_height="14dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginVertical="@dimen/_5sdp"
+                        android:layout_marginLeft="@dimen/_4sdp"
+                        android:layout_toRightOf="@id/locateStartTime"
+                        android:background="@color/grey"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/tvLocateEndTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/_13sdp"
+                        android:layout_toRightOf="@id/locateStartTime"
+                        android:text="End"
+                        android:textSize="@dimen/_10sdp"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/locateEndTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_toRightOf="@+id/tvLocateEndTime"
+                        android:text="17:30"
+                        android:textColor="@color/figmaBlack"
+                        android:textSize="@dimen/_10sdp" />
+
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
 
         </LinearLayout>
 
@@ -211,7 +339,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_285sdp"
             android:layout_marginTop="@dimen/_20sdp"
-            app:layout_constraintTop_toBottomOf="@+id/ll_book"
+            app:layout_constraintTop_toBottomOf="@+id/head"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"/>
 
