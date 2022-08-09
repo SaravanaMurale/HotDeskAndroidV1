@@ -119,6 +119,9 @@ public class MainActivity extends AppCompatActivity {
       mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.SimpleOnScaleGestureListener(){
             @Override
             public boolean onScale(ScaleGestureDetector detector) {
+
+                System.out.println("DectorValue"+detector.getScaleFactor());
+
                 float scale = 1 - detector.getScaleFactor();
                 float prevScale = mScale;
                 mScale += scale;
@@ -134,10 +137,10 @@ public class MainActivity extends AppCompatActivity {
                     ScaleAnimation scaleAnimation = new ScaleAnimation(1f / prevScale, 1f / mScale, 1f / prevScale, 1f / mScale, detector.getFocusX(), detector.getFocusY());
                     scaleAnimation.setDuration(0);
                     scaleAnimation.setFillAfter(true);
-                    ScrollView layout = findViewById(R.id.scrollView);
+                    /*ScrollView layout = findViewById(R.id.scrollView);
                     if (layout != null) {
                         layout.startAnimation(scaleAnimation);
-                    }
+                    }*/
 
                 }else {
                     System.out.println("You Cant zoom more than this");
@@ -256,7 +259,6 @@ public class MainActivity extends AppCompatActivity {
 
             Point point = new Point(coordinateList.get(i).get(0) + 40, coordinateList.get(i).get(1) + 20);
             pointList.add(point);
-
 
         }
         System.out.println("PointListSize" + pointList.size());

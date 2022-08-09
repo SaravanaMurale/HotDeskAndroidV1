@@ -15,8 +15,10 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.ScaleAnimation;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -109,8 +111,9 @@ RepeateDataAdapter.repeatInterface {
     @BindView(R.id.locateProgressBar)
     ProgressBar progressBar;
 
-    /*@BindView(R.id.scrollView)
-    ScrollView scrollView;*/
+    @BindView(R.id.scrollView)
+    ScrollView scrollView;
+
 
     //BottomSheetData
     TextView country, state, street, floor, back, bsApply;
@@ -228,7 +231,11 @@ RepeateDataAdapter.repeatInterface {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //dialog = new Dialog(getContext());
+
+
     }
+
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -236,9 +243,19 @@ RepeateDataAdapter.repeatInterface {
 
         System.out.println("OnViewCreated");
 
+
+
         //Initally Load Floor Details
         initLoadFloorDetails(0);
 
+    }
+
+    private void removeZoomInLayout(){
+        //Removes zoom in layout
+        ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1, 1, 1, 1, 1);
+        scaleAnimation.setDuration(0);
+        scaleAnimation.setFillAfter(true);
+        binding.scrollView.setAnimation(scaleAnimation);
     }
 
 
@@ -1005,6 +1022,7 @@ RepeateDataAdapter.repeatInterface {
 
 
 
+
         //Desk
         DeskStatusModel deskStatusModel = null;
         List<DeskStatusModel> deskStatusModelList = new ArrayList<>();
@@ -1319,10 +1337,10 @@ RepeateDataAdapter.repeatInterface {
 
                                                     //I Added Newly
                                                     //MeetingRoomRequest
-                                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_request));
+                                                    /*ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_request));
                                                     meetingStatusModel = new MeetingStatusModel(key, id, code, 4);
                                                     meetingStatusModelList.add(meetingStatusModel);
-                                                    System.out.println("MeetingRequest");
+                                                    System.out.println("MeetingRequest");*/
                                                 }
 
                                             }
@@ -1377,19 +1395,7 @@ RepeateDataAdapter.repeatInterface {
 
         }
 
-        //
 
-        //SetImageHereBased on Code
-             /* String[] result = key.split("_");
-              String splitValue=result[1];
-
-             if(splitValue.equals(AppConstants.DESK)){
-
-             }else if(splitValue.equals(AppConstants.MEETING)){
-
-             }else if(splitValue.equals(AppConstants.CAR_PARKING)){
-
-             }*/
 
         //Set Image Based on Position
         int x = Integer.parseInt(valueList.get(0));
@@ -1402,14 +1408,12 @@ RepeateDataAdapter.repeatInterface {
         ivDesk.setLayoutParams(relativeLayout);
 
 
-        //ivDesk.setLeft(x);
-       // ivDesk.setTop(y);
-
         //OnClickListener
         ivDesk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+               removeZoomInLayout();
 
                 List<String> onClickValue = locateCountryResposeList.get(floorPosition).getItems().get(key);
                       /*for (int j = 0; j <onClickValue.size() ; j++) {
@@ -2476,8 +2480,11 @@ RepeateDataAdapter.repeatInterface {
 
                 canvasss = 1;
 
+                //removes desk in layout
                 binding.firstLayout.removeAllViews();
-                //binding.secondLayout.removeAllViews();
+
+                removeZoomInLayout();
+
                 initLoadFloorDetails(1);
                 bottomSheetDialog.dismiss();
             }
@@ -2822,7 +2829,7 @@ RepeateDataAdapter.repeatInterface {
             }
         }, 1000);
 
-        TextView tvDescription, tvLocateDeskBookLocation;
+        TextView tvDescription, tvLocateDeskBookLocation,tv_repeat;
 
         System.out.println("BookingRequestDetail" + selctedCode + " " + key + " " + id + " " + code);
 
@@ -2849,9 +2856,16 @@ RepeateDataAdapter.repeatInterface {
 
         tvLocateDeskBookLocation = locateCheckInBottomSheet.findViewById(R.id.tvLocateDeskBookLocation);
         tvDescription = locateCheckInBottomSheet.findViewById(R.id.tvDescription);
+        tv_repeat = locateCheckInBottomSheet.findViewById(R.id.tv_repeat);
 
         //new...
         locateCheckInDate.setText(binding.locateCalendearView.getText());
+        tv_repeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                repeateBottomSheet();
+            }
+        });
 
         if (deskDescriotion != null) {
             tvDescription.setText("Description:" + deskDescriotion);

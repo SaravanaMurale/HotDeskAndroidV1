@@ -77,4 +77,9 @@ dependencies {
     implementation 'com.microsoft.identity.client:msal:2.+'
     implementation 'com.alexvasilkov:gesture-views:2.8.3'
 
+    //crop
+    implementation 'com.github.yalantis:ucrop:2.2.6'
+    //dexter permissions
+    implementation "com.karumi:dexter:5.0.0"
+
 }

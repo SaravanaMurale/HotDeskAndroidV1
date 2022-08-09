@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.databinding.FragmentWellbeingBinding;
+import dream.guys.hotdeskandroid.ui.home.EditProfileActivity;
 import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -27,10 +29,15 @@ import dream.guys.hotdeskandroid.utils.Utils;
 public class WellbeingFragment extends Fragment {
     FragmentWellbeingBinding binding;
 
+
+    @BindView(R.id.viewProfileBlock)
+    CardView viewProfileBlock;
+
     @BindView(R.id.btnResetPin)
     RelativeLayout btnResetPin;
     @BindView(R.id.btnLogout)
     RelativeLayout btnLogout;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,6 +59,16 @@ public class WellbeingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 checkPinPopUp();
+
+            }
+        });
+
+        binding.viewProfileBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent=new Intent(getContext(), EditProfileActivity.class);
+                startActivity(intent);
 
             }
         });
