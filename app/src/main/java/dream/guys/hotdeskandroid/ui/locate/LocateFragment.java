@@ -1515,7 +1515,7 @@ RepeateDataAdapter.repeatInterface {
 
                                     //Avaliable Booking
                                     //Booking Bottom Sheet
-                                    callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId);
+                                    callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId,1);
 
 
                                 } else if (deskStatusModelList.get(i).getStatus() == 4) {
@@ -1539,7 +1539,7 @@ RepeateDataAdapter.repeatInterface {
 
                                     //Booking Request Bottom Sheet
 
-                                    callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId);
+                                    callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId,4);
 
 
                                 } else if (deskStatusModelList.get(i).getStatus() == 2) {
@@ -1575,7 +1575,7 @@ RepeateDataAdapter.repeatInterface {
 
                                     //CarBooking
 
-                                    callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId);
+                                    callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId,1);
                                 } else if (carParkingStatusModelList.get(i).getStatus() == 2) {
                                     //EditCarParking
                                     getCarBookingEditList(id, code);
@@ -1587,7 +1587,7 @@ RepeateDataAdapter.repeatInterface {
                                     getCarDescriptionUsingCardId(id);
                                     //CarRequestBooking
 
-                                    callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId);
+                                    callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId,4);
                                 } else if (carParkingStatusModelList.get(i).getStatus() == 0) {
                                     callDeskUnavaliable(selctedCode, key, id, code, requestTeamId, requestTeamDeskId);
                                 }
@@ -2842,10 +2842,11 @@ RepeateDataAdapter.repeatInterface {
 
 
     //BookBottomSheet
-    private void callDeskBookingnBottomSheet(String selctedCode, String key, int id, String code, int requestTeamId, int requestTeamDeskId) {
+    private void callDeskBookingnBottomSheet(String selctedCode, String key, int id, String code, int requestTeamId, int requestTeamDeskId,int statusCode) {
 
         RelativeLayout selectDeskBlock;
-        TextView selectedLocation, tv_select_desk_room;
+        TextView selectedLocation, tv_select_desk_room,statusText;
+        ImageView ivOnline;
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -2865,6 +2866,14 @@ RepeateDataAdapter.repeatInterface {
         bookingStartBlock = locateCheckInBottomSheet.findViewById(R.id.bookingStartBlock);
         bookingEndBlock = locateCheckInBottomSheet.findViewById(R.id.bookingEndBlock);
         selectDeskBlock = locateCheckInBottomSheet.findViewById(R.id.selectDeskBlock);
+
+        ivOnline=locateCheckInBottomSheet.findViewById(R.id.ivOnline);
+        statusText=locateCheckInBottomSheet.findViewById(R.id.statusText);
+
+        if(statusCode==4){
+            ivOnline.setImageDrawable(getResources().getDrawable(R.drawable.byrequest));
+            statusText.setText("Request");
+        }
 
 
         locateCheckInDate = locateCheckInBottomSheet.findViewById(R.id.locateCheckInDate);

@@ -20,9 +20,8 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="1500dp"
-        android:scrollbars="none"
-        android:fillViewport="true">
-
+        android:fillViewport="true"
+        android:scrollbars="none">
 
 
         <HorizontalScrollView
@@ -37,15 +36,13 @@
                 android:layout_height="match_parent"
                 android:background="@color/figmaBgGrey"
                 app:gest_maxZoom="8"
-                app:gest_minZoom="0"
-                >
+                app:gest_minZoom="0">
 
                 <RelativeLayout
                     android:id="@+id/firstLayout"
                     android:layout_width="1000dp"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/_100sdp"
-                    >
+                    android:layout_marginTop="@dimen/_100sdp">
 
 
                     <LinearLayout
@@ -66,13 +63,9 @@
                 </RelativeLayout>
 
 
-
             </com.alexvasilkov.gestures.views.GestureFrameLayout>
 
         </HorizontalScrollView>
-
-
-
 
 
     </ScrollView>
@@ -112,13 +105,13 @@
             android:background="@drawable/rectangle_bg_with_corner"
             android:drawableRight="@drawable/locate_calender"
             android:paddingLeft="@dimen/_8sdp"
-            android:paddingTop="@dimen/_3sdp"
+            android:paddingTop="@dimen/_5sdp"
             android:paddingRight="@dimen/_9sdp"
+            android:layout_centerVertical="true"
             android:paddingBottom="@dimen/_3sdp"
             android:text="Wed 4 May"
             android:textColor="@color/figmaBlack"
-            android:textSize="@dimen/_10sdp"
-            tools:ignore="MissingConstraints" />
+            android:textSize="@dimen/_10sdp" />
 
         <!--StartAndEndTime-->
 
@@ -131,8 +124,8 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_10sdp"
             android:background="@drawable/rectangle_bg_with_corner"
-            android:paddingLeft="@dimen/_8sdp"
-            android:paddingRight="@dimen/_8sdp"
+            android:paddingLeft="@dimen/_25sdp"
+            android:paddingRight="@dimen/_25sdp"
             tools:ignore="MissingConstraints">
 
 
@@ -150,7 +143,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_marginRight="@dimen/_4sdp"
+                android:layout_marginRight="@dimen/_8sdp"
                 android:layout_toRightOf="@id/tvStartLocate"
                 android:text="8:00"
                 android:textColor="@color/figmaBlack"

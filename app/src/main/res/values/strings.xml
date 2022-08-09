@@ -35,5 +35,7 @@
     <string name="my_view_desc">heloo draw canva</string>
     <string name="repeat">Repeat</string>
 
+    <string name="select_date">Select date</string>
+
 
 </resources>
