@@ -40,6 +40,7 @@ import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.MeetingRoomDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
 import dream.guys.hotdeskandroid.model.response.ProfilePicResponse;
+import dream.guys.hotdeskandroid.model.response.TeamDeskResponse;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
 import dream.guys.hotdeskandroid.model.response.TypeOfLoginResponse;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
@@ -257,14 +258,24 @@ public interface ApiInterface {
     @POST("api/account/UpdateProfileSettings")
     Call<BaseResponse> updateSetting(@Body UserDetailsResponse userDetailsResponse);
 
+    //UpdateProfile Pic
     @POST("api/image/user")
     Call<BaseResponse> updateProfilePicture(@Body ProfilePicResponse base64Img);
 
+    //Get Profile Pic
     @GET("api/image/user")
     Call<ProfilePicResponse> getProfilePicture();
 
+    //Remove Profile Pic
     @DELETE("api/image/user")
     Call<BaseResponse>  removeProfilePicture();
+
+
+    //GetDesk Code in EditActivity
+    @GET("api/mywork/teamdesks")
+    Call<List<TeamDeskResponse>> getDeskListInEdit();
+
+
 
 }
 
