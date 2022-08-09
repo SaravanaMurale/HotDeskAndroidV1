@@ -22,6 +22,7 @@ import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkAvalibilityResponse;
+import dream.guys.hotdeskandroid.model.response.CarParkListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingslotsResponse;
@@ -218,6 +219,10 @@ public interface ApiInterface {
     //MeetingEditListResponse
     @GET("api/MeetingRoomBooking/bookings")
     Call<List<MeetingListToEditResponse>> getMeetingListToEdit(@Query("fromDate") String fromDate,
+                                                               @Query("toDate") String toDate);
+    //Car park edit list
+    @GET("api/CarParkBooking/dailyBookings")
+    Call<List<CarParkListToEditResponse>> getCarParkListToEdit(@Query("fromDate") String fromDate,
                                                                @Query("toDate") String toDate);
 
 

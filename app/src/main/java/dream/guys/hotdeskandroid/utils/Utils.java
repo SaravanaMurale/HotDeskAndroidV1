@@ -520,7 +520,7 @@ public class Utils {
         return df.format(date);
     }
     public static String getISO8601format(Date date){
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm'Z'");
         return df.format(date);
     }
 
