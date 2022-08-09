@@ -82,6 +82,16 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+
+        binding.removeProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                doRemoveProfilePicture();
+
+            }
+        });
+
         binding.profileUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -145,6 +155,29 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
+    private void doRemoveProfilePicture() {
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<BaseResponse> call = apiService.removeProfilePicture();
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+               Utils.toastMessage(EditProfileActivity.this,"Image Removed Successfully");
+
+                Glide.with(EditProfileActivity.this).load(R.drawable.mygirl)
+                        .into(binding.ivEditPrifle);
+
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+            }
+        });
+
+    }
+
 
     private void getProfilePicture() {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -156,12 +189,15 @@ public class EditProfileActivity extends AppCompatActivity {
                 ProfilePicResponse profilePicResponse=response.body();
 
                 System.out.println("Base64Image"+profilePicResponse.getImage());
-                String base64String = profilePicResponse.getImage();
-                String base64Image = base64String.split(",")[1];
-                byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
-                binding.ivEditPrifle.setImageBitmap(decodedByte);
+                if(profilePicResponse.getImage()!=null) {
+                    String base64String = profilePicResponse.getImage();
+                    String base64Image = base64String.split(",")[1];
+                    byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                    binding.ivEditPrifle.setImageBitmap(decodedByte);
+                }
 
             }
 

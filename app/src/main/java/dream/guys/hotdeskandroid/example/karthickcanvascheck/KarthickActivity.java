@@ -32,13 +32,25 @@ public class KarthickActivity extends AppCompatActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                KarthickPoint karthickPoint1=new KarthickPoint(100,200);
-                karthickPointList.add(karthickPoint1);
-                KarthickPoint karthickPoint2=new KarthickPoint(200,300);
-                karthickPointList.add(karthickPoint2);
 
-                KarthickCanvasDraw karthickCanvasDraw=new KarthickCanvasDraw(KarthickActivity.this,karthickPointList);
-                addCanvasLayout.addView(karthickCanvasDraw);
+
+                KarthickPoint karthickPoint1=new KarthickPoint(158,95);
+                karthickPointList.add(karthickPoint1);
+                KarthickPoint karthickPoint2=new KarthickPoint(576,100);
+                karthickPointList.add(karthickPoint2);
+                KarthickPoint karthickPoint3=new KarthickPoint(800,280);
+                karthickPointList.add(karthickPoint3);
+                KarthickPoint karthickPoint4=new KarthickPoint(490,470);
+                karthickPointList.add(karthickPoint4);
+                KarthickPoint karthickPoint5=new KarthickPoint(130,430);
+                karthickPointList.add(karthickPoint5);
+
+
+                    KarthickCanvasDraw karthickCanvasDraw=new KarthickCanvasDraw(KarthickActivity.this,karthickPointList);
+                    addCanvasLayout.addView(karthickCanvasDraw);
+
+
+
             }
         });
 

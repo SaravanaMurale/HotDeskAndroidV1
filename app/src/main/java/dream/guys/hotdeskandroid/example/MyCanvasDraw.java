@@ -25,8 +25,6 @@ public class MyCanvasDraw extends View {
         this.pointList=pointList;
         System.out.println("OnDrawConstructorCalled");
 
-        //drawUsingMethod();
-
     }
 
     private void drawUsingMethod() {
@@ -98,9 +96,6 @@ public class MyCanvasDraw extends View {
 
 
 
-
-
-
     }
 
     public void setDrawMethod() {
@@ -110,7 +105,6 @@ public class MyCanvasDraw extends View {
         paint.setStrokeWidth(3);
         paint.setStyle(Paint.Style.STROKE);
         Path path = new Path();
-
 
 
         //moves to the particular position
@@ -133,8 +127,13 @@ public class MyCanvasDraw extends View {
         postInvalidate();
     }
 
+}
 
-    /*@Override
+
+
+
+
+ /*@Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
 
@@ -164,10 +163,6 @@ public class MyCanvasDraw extends View {
 
         this.canvas.drawPath(path, paint);
     }*/
-
-
-
-}
 
     /*public void setDeskInActivity(){
 

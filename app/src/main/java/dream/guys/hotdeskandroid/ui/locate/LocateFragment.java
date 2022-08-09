@@ -1,5 +1,6 @@
 package dream.guys.hotdeskandroid.ui.locate;
 
+import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentTime;
 
@@ -838,7 +839,7 @@ RepeateDataAdapter.repeatInterface {
     }
 
 
-    private void getLocateDeskRoomCarDesign(int parentId, int id) {
+    private void getLocateDeskRoomCarDesign(int parentId, int canvasDrawId) {
         binding.locateProgressBar.setVisibility(View.VISIBLE);
 
         //dialog = ProgressDialog.showProgressBar(getContext());
@@ -883,7 +884,31 @@ RepeateDataAdapter.repeatInterface {
                 //ProgressDialog.dismisProgressBar(getContext(), dialog);
                 //getAvaliableDeskDetails(locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks(),0);
 
-                //getFloorCoordinates(locateCountryResposeList.get(floorPosition).getCoordinates());
+                if(canvasDrawId==1){
+                    List<List<Integer>> coordinateList=locateCountryResposeList.get(floorPosition).getCoordinates();
+                    List<Point> pointList=new ArrayList<>();
+                    System.out.println("CoordinateSize" + coordinateList.size());
+
+                    for (int i = 0; i < coordinateList.size(); i++) {
+
+                        System.out.println("CoordinateData" + i + "position" + "size " + coordinateList.get(i).size());
+
+                        Point point = new Point(coordinateList.get(i).get(0) + 40, coordinateList.get(i).get(1) + 20);
+                        pointList.add(point);
+
+                    }
+
+                    if (pointList.size() > 0) {
+                        MyCanvasDraw myCanvasDraw = new MyCanvasDraw(getContext(), pointList);
+
+                        binding.secondLayout.addView(myCanvasDraw);
+
+                    }
+                }else {
+                    getFloorCoordinates(locateCountryResposeList.get(floorPosition).getCoordinates());
+                }
+
+
 
 
                 //addDottedLine();
@@ -929,7 +954,7 @@ RepeateDataAdapter.repeatInterface {
     private void getFloorCoordinates(List<List<Integer>> coordinateList) {
 
 
-       // ((MainActivity) getActivity()).getFloorCoordinatesInMain(coordinateList,binding.secondLayout);
+       ((MainActivity) getActivity()).getFloorCoordinatesInMain(coordinateList,binding.secondLayout);
 
         /*System.out.println("CoordinateSize" + coordinateList.size());
         //List<Point> pointList=new ArrayList<>();
@@ -2485,7 +2510,7 @@ RepeateDataAdapter.repeatInterface {
 
                 removeZoomInLayout();
 
-                initLoadFloorDetails(1);
+                initLoadFloorDetails(canvasss);
                 bottomSheetDialog.dismiss();
             }
         });

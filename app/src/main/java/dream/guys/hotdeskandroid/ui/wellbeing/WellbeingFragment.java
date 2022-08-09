@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
+import dream.guys.hotdeskandroid.LanguageListActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.databinding.FragmentWellbeingBinding;
 import dream.guys.hotdeskandroid.ui.home.EditProfileActivity;
@@ -68,6 +69,16 @@ public class WellbeingFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent intent=new Intent(getContext(), EditProfileActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+        binding.welBeingLanguage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent=new Intent(getContext(), LanguageListActivity.class);
                 startActivity(intent);
 
             }

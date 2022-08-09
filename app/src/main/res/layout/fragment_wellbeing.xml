@@ -291,7 +291,10 @@
                     android:theme="@style/TextRegular" />
 
             </RelativeLayout>
+
+
             <androidx.cardview.widget.CardView
+                android:id="@+id/welBeingLanguage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_10sdp"
@@ -329,6 +332,8 @@
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
+
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

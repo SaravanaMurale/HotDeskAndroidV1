@@ -40,21 +40,32 @@
                 app:gest_minZoom="0"
                 >
 
-            <RelativeLayout
-                android:id="@+id/firstLayout"
-                android:layout_width="700dp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/_100sdp">
+                <RelativeLayout
+                    android:id="@+id/firstLayout"
+                    android:layout_width="1000dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_100sdp"
+                    >
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="Hai" />
+                    <LinearLayout
+                        android:id="@+id/secondLayout"
+                        android:layout_width="1000dp"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/first"
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:src="@drawable/desk_avaliable"
+                            android:visibility="gone" />
 
 
-            </RelativeLayout>
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+
 
             </com.alexvasilkov.gestures.views.GestureFrameLayout>
 
