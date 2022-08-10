@@ -39,7 +39,9 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
+        <activity
+            android:name=".ui.wellbeing.NotificationActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.home.ImagePickerActivity"
             android:exported="false" />

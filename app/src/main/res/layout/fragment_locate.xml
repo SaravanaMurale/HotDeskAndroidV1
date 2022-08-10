@@ -111,6 +111,28 @@
             android:paddingBottom="@dimen/_3sdp"
             android:text="Wed 4 May"
             android:textColor="@color/figmaBlack"
+            android:textSize="@dimen/_10sdp"
+            tools:ignore="MissingConstraints"
+            />
+
+        <TextView
+            android:id="@+id/show_calendar"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/searchLocate"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/rectangle_bg_with_corner"
+            android:drawableRight="@drawable/locate_calender"
+            android:paddingLeft="@dimen/_8sdp"
+            android:paddingTop="@dimen/_3sdp"
+            android:paddingRight="@dimen/_9sdp"
+            android:paddingBottom="@dimen/_3sdp"
+            android:text=""
+            android:textColor="@color/figmaBlack"
+            android:textSize="@dimen/_10sdp"
+            tools:ignore="MissingConstraints" />
             android:textSize="@dimen/_10sdp" />
 
         <!--StartAndEndTime-->

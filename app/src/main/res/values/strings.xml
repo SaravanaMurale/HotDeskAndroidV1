@@ -37,5 +37,22 @@
 
     <string name="select_date">Select date</string>
 
+    <!--New...-->
+    <string name="set_pin_title">Set up and edit a pin</string>
+    <string name="set_pin_content">A pin will allow you to quickly sign in to Hybrid Hero using a unique four character pin.</string>
+    <string name="enter_your_pin">Enter your pin</string>
+    <string name="reenter_your_pin">Re-enter your pin</string>
+    <string name="enter_your_old_pin">Enter your old pin</string>
+    <string name="enter_your_new_pin">Enter your new pin</string>
+    <string name="reenter_your_new_pin">Re-enter your new pin</string>
+    <string name="set">Set</string>
+    <string name="cancel">Cancel</string>
+    <string name="notifications">Notifications</string>
+    <string name="checkInOut_alert">Check-in &amp; Check-out alerts</string>
+    <string name="checkInOut_content">Notifications to remind you when an upcoming check-in is required. You will also be notified once you have been checked out.</string>
+    <string name="push">Push</string>
+    <string name="noty_booking_title">Booking change alerts</string>
+    <string name="noty_booking_content">You will be notified when a booking has been created on your behalf, modified, accepted or rejected.</string>
+    <string name="noty_covid_reminder_title">Covid-19 self-certification reminders</string>
 
 </resources>

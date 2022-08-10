@@ -12,7 +12,43 @@
         android:layout_height="@dimen/_130sdp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_40sdp"
-        android:src="@drawable/logo_splash" />
+        android:src="@drawable/logo_splash"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:orientation="horizontal"
+        android:id="@+id/tool_bar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp">
+
+            <ImageView
+                android:id="@+id/profile_back"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                app:tint="@color/figmaBlue"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/profile_back"
+                android:text="@string/set_pin_title"
+                android:textColor="@color/figmaBlack"
+                android:textSize="@dimen/_14sdp"
+                android:theme="@style/TextBold"
+                android:layout_centerVertical="true" />
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
 
     <!--Email and Password-->
@@ -20,7 +56,7 @@
         android:id="@+id/userLoginDetailsBlock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/loginLogo"
+        android:layout_below="@id/tool_bar"
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_10sdp"
@@ -32,22 +68,59 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginVertical="@dimen/_5sdp"
-            android:text="Create Login Pin"
-            android:textSize="@dimen/_18sdp"
-            android:theme="@style/TextBold" />
+            android:text="@string/set_pin_content"
+            android:textSize="@dimen/_12sdp"
+            android:theme="@style/TextRegular" />
+
+        <LinearLayout
+            android:id="@+id/old_pin_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/tvRest">
+
+            <TextView
+                android:id="@+id/tvOldPin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvRest"
+                android:focusable="false"
+                android:inputType="number"
+                android:text="@string/enter_your_old_pin"
+                android:textSize="@dimen/_14sdp"
+                android:theme="@style/TextRegular"
+                android:layout_marginTop="@dimen/_8sdp"/>
+
+            <in.aabhasjindal.otptextview.OtpTextView
+                android:id="@+id/etOldPin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvNewPin"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textColor="@color/black"
+                app:bar_height="20dp"
+                app:height="@dimen/_40sdp"
+                app:length="6"
+                app:otp_box_background="@drawable/otp_outline"
+                app:otp_box_background_inactive="@drawable/otp_outline"
+                app:otp_text_size="18dp"
+                app:width="@dimen/_40sdp" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvNewPin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvRest"
+            android:layout_below="@id/old_pin_layout"
             android:focusable="false"
             android:hint="Enter New Pin"
             android:inputType="number"
-            android:maxLength="6"
 			android:text="Enter New Pin"
             android:textSize="@dimen/_14sdp"
-            android:theme="@style/TextRegular"/>
+            android:theme="@style/TextRegular"
+            android:layout_marginTop="@dimen/_8sdp"/>
 
         <in.aabhasjindal.otptextview.OtpTextView
             android:id="@+id/etNewPin"
@@ -92,19 +165,28 @@
             app:otp_box_background="@drawable/otp_outline"
             app:otp_text_size="18dp" />
 
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/_12sdp"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginEnd="@dimen/_12sdp">
+
         <Button
             android:id="@+id/btnSubmit"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/etConfirmPin"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_height="@dimen/_28sdp"
+            android:layout_alignParentEnd="true"
             android:background="@drawable/button_blue_bg"
-            android:paddingLeft="@dimen/_20sdp"
-            android:paddingRight="@dimen/_20sdp"
-            android:text="Create Pin"
+            android:text="@string/set"
             android:textAllCaps="true"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_centerVertical="true"/>
 
         <TextView
             android:id="@+id/tv_back_to_home"
@@ -112,17 +194,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/btnSubmit"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="@dimen/_23sdp"
-            android:text="back to home"
-            android:textColor="@color/figmaGrey"
+            android:text="@string/cancel"
+            android:textColor="@color/figmaBlack"
             android:textSize="@dimen/_14sdp"
-            android:theme="@style/TextRegular"
-
-            />
+            android:theme="@style/TextBold"
+            android:layout_centerVertical="true"/>
 
     </RelativeLayout>
-
-
 
 
 </RelativeLayout>

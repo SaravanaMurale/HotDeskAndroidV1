@@ -346,7 +346,7 @@
                     android:background="@color/figmaBgGrey"
                     android:paddingVertical="@dimen/_10sdp"
                     android:paddingHorizontal="@dimen/_10sdp"
-                    >
+                    android:id="@+id/notification_layout">
 
                     <TextView
                         android:id="@+id/tv_noti"

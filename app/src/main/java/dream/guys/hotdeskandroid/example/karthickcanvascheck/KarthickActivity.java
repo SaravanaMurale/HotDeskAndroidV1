@@ -61,6 +61,12 @@ public class KarthickActivity extends AppCompatActivity {
                 karthickPointList.add(karthickPoint1);
                 KarthickPoint karthickPoint2=new KarthickPoint(500,600);
                 karthickPointList.add(karthickPoint2);
+                KarthickPoint karthickPoint3=new KarthickPoint(800,280);
+                karthickPointList.add(karthickPoint3);
+                KarthickPoint karthickPoint4=new KarthickPoint(490,470);
+                karthickPointList.add(karthickPoint4);
+                KarthickPoint karthickPoint5=new KarthickPoint(130,430);
+                karthickPointList.add(karthickPoint5);
 
                 KarthickCanvasDraw karthickCanvasDraw=new KarthickCanvasDraw(KarthickActivity.this,karthickPointList);
                 addCanvasLayout.addView(karthickCanvasDraw);

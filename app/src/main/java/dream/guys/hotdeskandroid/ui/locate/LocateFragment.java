@@ -2,6 +2,7 @@ package dream.guys.hotdeskandroid.ui.locate;
 
 import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
+import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDateWithDay;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentTime;
 
 import android.annotation.SuppressLint;
@@ -101,6 +102,7 @@ import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
+import okhttp3.internal.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -228,6 +230,8 @@ RepeateDataAdapter.repeatInterface {
     BottomSheetDialog repeatDataBottomSheetDialog, locateEditBottomSheet;
     List<ParticipantDetsilResponse> chipList = new ArrayList<>();
 
+    int page = 1;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -296,6 +300,7 @@ RepeateDataAdapter.repeatInterface {
 
 
         binding.locateCalendearView.setText(getCurrentDate());
+        binding.showCalendar.setText(getCurrentDateWithDay());
         checkIsCurrentDate(binding.locateCalendearView.getText().toString());
         binding.locateCalendearView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1717,6 +1722,19 @@ RepeateDataAdapter.repeatInterface {
         editClose = locateMeetEditBottomSheet.findViewById(R.id.editClose);
         editDate = locateMeetEditBottomSheet.findViewById(R.id.editDate);
 
+        //New...
+        String sDate = binding.locateCalendearView.getText().toString();
+        if (!(sDate.equalsIgnoreCase(""))) {
+            String dateTime = Utils.dateWithDayString(sDate);
+            if (dateTime.equalsIgnoreCase("")) {
+                editDate.setText(binding.locateCalendearView.getText().toString());
+            } else {
+                editDate.setText(dateTime);
+            }
+        } else {
+            editDate.setText(binding.locateCalendearView.getText().toString());
+        }
+
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvMeeingEditList.setLayoutManager(linearLayoutManager);
         rvMeeingEditList.setHasFixedSize(true);
@@ -1870,6 +1888,9 @@ RepeateDataAdapter.repeatInterface {
         RecyclerView rvParticipant;
         LinearLayoutManager linearLayoutManager;
         RelativeLayout startTimeLayout, endTimeLayout;
+        //New...
+        LinearLayout subCmtLay,child_layout;
+
 
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -1891,6 +1912,8 @@ RepeateDataAdapter.repeatInterface {
 
         startTimeLayout = bottomSheetDialog.findViewById(R.id.startTimeLayout);
         endTimeLayout = bottomSheetDialog.findViewById(R.id.endTimeLayout);
+        subCmtLay = bottomSheetDialog.findViewById(R.id.subCmtLay);
+        child_layout = bottomSheetDialog.findViewById(R.id.child_layout);
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvParticipant.setLayoutManager(linearLayoutManager);
@@ -1949,7 +1972,15 @@ RepeateDataAdapter.repeatInterface {
         editRoomBookingBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bottomSheetDialog.dismiss();
+
+                if (page==1){
+                    bottomSheetDialog.dismiss();
+                }else {
+                    subCmtLay.setVisibility(View.GONE);
+                    child_layout.setVisibility(View.VISIBLE);
+                    page = 1;
+                }
+
             }
         });
 
@@ -1957,39 +1988,58 @@ RepeateDataAdapter.repeatInterface {
             @Override
             public void onClick(View v) {
 
-                boolean status = true;
+                if (page == 1) {
+                    boolean status = true;
+                    if (startRoomTime.getText().toString().equals("")) {
+                        Toast.makeText(getContext(), "Please Select Start Time", Toast.LENGTH_LONG).show();
+                        status = false;
+                        return;
+                    }
+                    if (endTRoomime.getText().toString().equals("")) {
+                        Toast.makeText(getContext(), "Please Select End Time", Toast.LENGTH_LONG).show();
+                        status = false;
+                        return;
+                    }
 
-                if (startRoomTime.getText().toString().equals("")) {
-                    Toast.makeText(getContext(), "Please Select Start Time", Toast.LENGTH_LONG).show();
-                    status = false;
-                    return;
-                }
-                if (endTRoomime.getText().toString().equals("")) {
-                    Toast.makeText(getContext(), "Please Select End Time", Toast.LENGTH_LONG).show();
-                    status = false;
-                    return;
-                }
-                String subject = etSubject.getText().toString();
-                String comment = etComments.getText().toString();
-                if (subject.isEmpty() || subject.equals("") || subject == null) {
-                    Toast.makeText(getContext(), "Please Enter Subject", Toast.LENGTH_LONG).show();
-                    status = false;
-                    return;
-                }
+                    subCmtLay.setVisibility(View.VISIBLE);
+                    child_layout.setVisibility(View.GONE);
+                    page = 2;
 
-                if (comment.isEmpty() || comment.equals("") || comment == null) {
-                    Toast.makeText(getContext(), "Please Enter Comment", Toast.LENGTH_LONG).show();
-                    status = false;
-                    return;
-                }
+                }else {
+                    boolean status = true;
 
-                if (status) {
+                    if (startRoomTime.getText().toString().equals("")) {
+                        Toast.makeText(getContext(), "Please Select Start Time", Toast.LENGTH_LONG).show();
+                        status = false;
+                        return;
+                    }
+                    if (endTRoomime.getText().toString().equals("")) {
+                        Toast.makeText(getContext(), "Please Select End Time", Toast.LENGTH_LONG).show();
+                        status = false;
+                        return;
+                    }
+                    String subject = etSubject.getText().toString();
+                    String comment = etComments.getText().toString();
+                    if (subject.isEmpty() || subject.equals("") || subject == null) {
+                        Toast.makeText(getContext(), "Please Enter Subject", Toast.LENGTH_LONG).show();
+                        status = false;
+                        return;
+                    }
 
-                    bottomSheetDialog.dismiss();
-                    doMeetingRoomBooking(meetingRoomId, startRoomTime.getText().toString(), endTRoomime.getText().toString(), subject, comment, isRequest);
+                    if (comment.isEmpty() || comment.equals("") || comment == null) {
+                        Toast.makeText(getContext(), "Please Enter Comment", Toast.LENGTH_LONG).show();
+                        status = false;
+                        return;
+                    }
 
-                } else {
-                    Toast.makeText(getContext(), "Please Enter All Details", Toast.LENGTH_LONG).show();
+                    if (status) {
+                        page = 1;
+                        bottomSheetDialog.dismiss();
+                        doMeetingRoomBooking(meetingRoomId, startRoomTime.getText().toString(), endTRoomime.getText().toString(), subject, comment, isRequest);
+
+                    } else {
+                        Toast.makeText(getContext(), "Please Enter All Details", Toast.LENGTH_LONG).show();
+                    }
                 }
 
             }
@@ -2105,6 +2155,8 @@ RepeateDataAdapter.repeatInterface {
 
                 //ProgressDialog.dismisProgressBar(getContext(),dialog);
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                page = 1;
+                callInitView();
 
             }
 
@@ -3971,6 +4023,7 @@ RepeateDataAdapter.repeatInterface {
 
 
                 locateCheckInDateCal.setText("" + dateInString);
+                binding.showCalendar.setText("" + dateInString);
                 checkIsCurrentDate(dateInString);
 
 
@@ -4204,6 +4257,9 @@ RepeateDataAdapter.repeatInterface {
 
         startTimeLayout = bottomSheetDialog.findViewById(R.id.startTimeLayout);
         endTimeLayout = bottomSheetDialog.findViewById(R.id.endTimeLayout);
+
+        startRoomTime.setText(Utils.splitTime(meetingListToEditResponse.getFrom()));
+        endTRoomime.setText(Utils.splitTime(meetingListToEditResponse.getTo()));
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvParticipant.setLayoutManager(linearLayoutManager);

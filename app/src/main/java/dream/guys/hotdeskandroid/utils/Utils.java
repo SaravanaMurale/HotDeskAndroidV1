@@ -1018,4 +1018,18 @@ public class Utils {
             return true;
         }
     }
+
+    //New...
+    public static String getCurrentDateWithDay(){
+        String date= null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("E dd MMM");
+            LocalDateTime now = LocalDateTime.now();
+            //System.out.println(dtf.format(now));
+            date=dtf.format(now);
+
+        }
+        return date;
+    }
+
 }

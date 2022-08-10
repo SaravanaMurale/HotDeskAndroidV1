@@ -84,6 +84,13 @@ public class WellbeingFragment extends Fragment {
             }
         });
 
+        binding.notificationLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getContext(), NotificationActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         return root;
