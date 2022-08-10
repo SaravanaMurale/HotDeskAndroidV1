@@ -1,6 +1,10 @@
 package dream.guys.hotdeskandroid.adapter;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +14,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -23,6 +29,7 @@ public class LanguageListAdapter extends RecyclerView.Adapter<LanguageListAdapte
     Context context;
     List<LanguageListResponse.Multilanguages.ExistingLanguages> languageListResponseList;
     OnLanguageSelect onLanguageSelect;
+    int pos =-1;
 
 
     public interface OnLanguageSelect{
@@ -48,15 +55,37 @@ public class LanguageListAdapter extends RecyclerView.Adapter<LanguageListAdapte
     @Override
     public void onBindViewHolder(@NonNull LanguageListViewHolder holder, int position) {
 
-        //Glide.with(context).load("").into(holder.languageFlag);
+        /*String imageName = languageListResponseList.get(position).getImagesrc();
+
+        // get resource id by image name
+        Resources resources = context.getResources();
+        final int resourceId = resources.getIdentifier(imageName, "drawable", context.getPackageName());
+
+        // get drawable by resource id
+        //Drawable drawable = resources.getDrawable(resourceId);
+
+        // get bitmap by resource id
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resourceId);
+        holder.languageFlag.setImageBitmap(bitmap);*/
+
+        //Glide.with(context).load(bitmap).into(holder.languageFlag);
         holder.languageCountryName.setText(languageListResponseList.get(position).getText());
 
         holder.languageAdapterBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.languageSelectTick.setVisibility(View.VISIBLE);
+                pos = holder.getAbsoluteAdapterPosition();
+                notifyDataSetChanged();
+
             }
         });
+
+        if (pos == holder.getAbsoluteAdapterPosition()){
+            holder.languageSelectTick.setVisibility(View.VISIBLE);
+        }else {
+            holder.languageSelectTick.setVisibility(View.GONE);
+        }
+
     }
 
     @Override

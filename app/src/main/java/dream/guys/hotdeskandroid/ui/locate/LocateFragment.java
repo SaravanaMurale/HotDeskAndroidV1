@@ -460,7 +460,7 @@ RepeateDataAdapter.repeatInterface {
                 public void run() {
                     getLocateDeskRoomCarDesign(parentId, i);
                 }
-            },1000);
+            },4000);
 
 
 
