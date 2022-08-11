@@ -25,12 +25,17 @@ import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
+import dream.guys.hotdeskandroid.adapter.EditDefaultAssetAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityEditProfileBinding;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.DefaultAssetResponse;
 import dream.guys.hotdeskandroid.model.response.ProfilePicResponse;
+import dream.guys.hotdeskandroid.model.response.TeamDeskResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -41,7 +46,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EditProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends AppCompatActivity implements EditDefaultAssetAdapter.OnDefaultAssetSelectable {
 
     ActivityEditProfileBinding binding;
     UserDetailsResponse profileData; //= new UserDetailsResponse();
@@ -79,6 +84,23 @@ public class EditProfileActivity extends AppCompatActivity {
                 binding.profileUpdate.setVisibility(View.VISIBLE);
                 binding.profileEdit.setVisibility(View.GONE);
                 makeEnable();
+            }
+        });
+
+        binding.profileBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
+        binding.removeProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                doRemoveProfilePicture();
+
             }
         });
 
@@ -124,12 +146,7 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-        binding.editRoomChange.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                callDeskBottomSheetDialogToSelectDeskCode();
-            }
-        });
+
 
         if (profileData!=null) {
 
@@ -145,6 +162,51 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
+    private void getDeskName() {
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<TeamDeskResponse>> call = apiService.getDeskListInEdit();
+        call.enqueue(new Callback<List<TeamDeskResponse>>() {
+            @Override
+            public void onResponse(Call<List<TeamDeskResponse>> call, Response<List<TeamDeskResponse>> response) {
+
+                List<TeamDeskResponse> teamDeskResponseList =response.body();
+
+                callDeskBottomSheetDialogToSelectDeskCode(teamDeskResponseList);
+            }
+
+            @Override
+            public void onFailure(Call<List<TeamDeskResponse>> call, Throwable t) {
+
+            }
+        });
+
+
+
+    }
+
+    private void doRemoveProfilePicture() {
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<BaseResponse> call = apiService.removeProfilePicture();
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+               Utils.toastMessage(EditProfileActivity.this,"Image Removed Successfully");
+
+                Glide.with(EditProfileActivity.this).load(R.drawable.mygirl)
+                        .into(binding.ivEditPrifle);
+
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+            }
+        });
+
+    }
+
 
     private void getProfilePicture() {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -156,12 +218,15 @@ public class EditProfileActivity extends AppCompatActivity {
                 ProfilePicResponse profilePicResponse=response.body();
 
                 System.out.println("Base64Image"+profilePicResponse.getImage());
-                String base64String = profilePicResponse.getImage();
-                String base64Image = base64String.split(",")[1];
-                byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
-                binding.ivEditPrifle.setImageBitmap(decodedByte);
+                if(profilePicResponse.getImage()!=null) {
+                    String base64String = profilePicResponse.getImage();
+                    String base64Image = base64String.split(",")[1];
+                    byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                    binding.ivEditPrifle.setImageBitmap(decodedByte);
+                }
 
             }
 
@@ -339,6 +404,13 @@ public class EditProfileActivity extends AppCompatActivity {
             binding.editDisplayName.setEnabled(false);
         }
 
+        binding.editDeskChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDeskName();
+            }
+        });
+
     }
     private void makeDisable() {
         binding.editName.setEnabled(false);
@@ -356,10 +428,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
-    private void callDeskBottomSheetDialogToSelectDeskCode() {
+    private void callDeskBottomSheetDialogToSelectDeskCode(List<TeamDeskResponse> teamDeskResponseList) {
 
         RecyclerView rvDeskRecycler;
-        DeskListRecyclerAdapter deskListRecyclerAdapter;
+        EditDefaultAssetAdapter editDefaultAssetAdapter;
         TextView bsRepeatBack;
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.AppBottomSheetDialogTheme);
@@ -373,11 +445,32 @@ public class EditProfileActivity extends AppCompatActivity {
         rvDeskRecycler.setLayoutManager(linearLayoutManager);
         rvDeskRecycler.setHasFixedSize(true);
 
-        /*deskListRecyclerAdapter = new DeskListRecyclerAdapter(getContext(), this, getActivity(), teamDeskAvailabilities, getContext(), bottomSheetDialog);
-        rvDeskRecycler.setAdapter(deskListRecyclerAdapter);*/
+        bsRepeatBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+
+
+        List<DefaultAssetResponse> defaultAssetResponseList=new ArrayList<>();
+        for (int i = 0; i <teamDeskResponseList.size() ; i++) {
+            DefaultAssetResponse defaultAssetResponse=new DefaultAssetResponse(teamDeskResponseList.get(i).getId(),teamDeskResponseList.get(i).getDeskId(),teamDeskResponseList.get(i).getTeamId(),teamDeskResponseList.get(i).getDesk().getCode());
+            defaultAssetResponseList.add(defaultAssetResponse);
+
+        }
+
+        editDefaultAssetAdapter = new EditDefaultAssetAdapter(EditProfileActivity.this, defaultAssetResponseList,bottomSheetDialog,this);
+        rvDeskRecycler.setAdapter(editDefaultAssetAdapter);
 
         bottomSheetDialog.show();
 
     }
 
+
+    @Override
+    public void onDefaultAssetSelect(int deskId, String code) {
+        binding.editDesk.setText(code);
+    }
 }

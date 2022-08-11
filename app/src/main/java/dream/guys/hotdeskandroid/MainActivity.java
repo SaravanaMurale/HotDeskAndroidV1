@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -252,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
     public void getFloorCoordinatesInMain(List<List<Integer>> coordinateList, LinearLayout secondLayout){
         List<Point> pointList=new ArrayList<>();
         System.out.println("CoordinateSize" + coordinateList.size());
-        //List<Point> pointList=new ArrayList<>();
+
         for (int i = 0; i < coordinateList.size(); i++) {
 
             System.out.println("CoordinateData" + i + "position" + "size " + coordinateList.get(i).size());
@@ -261,8 +262,6 @@ public class MainActivity extends AppCompatActivity {
             pointList.add(point);
 
         }
-        System.out.println("PointListSize" + pointList.size());
-
 
         if (pointList.size() > 0) {
             MyCanvasDraw myCanvasDraw = new MyCanvasDraw(getContext(), pointList);

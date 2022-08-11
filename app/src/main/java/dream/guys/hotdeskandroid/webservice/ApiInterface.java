@@ -42,6 +42,7 @@ import dream.guys.hotdeskandroid.model.response.MeetingRoomDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
 import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
 import dream.guys.hotdeskandroid.model.response.ProfilePicResponse;
+import dream.guys.hotdeskandroid.model.response.TeamDeskResponse;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
 import dream.guys.hotdeskandroid.model.response.TypeOfLoginResponse;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
@@ -51,6 +52,9 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -264,11 +268,28 @@ public interface ApiInterface {
     @POST("api/account/UpdateProfileSettings")
     Call<BaseResponse> updateSetting(@Body UserDetailsResponse userDetailsResponse);
 
+    //UpdateProfile Pic
     @POST("api/image/user")
     Call<BaseResponse> updateProfilePicture(@Body ProfilePicResponse base64Img);
 
+    //Get Profile Pic
     @GET("api/image/user")
     Call<ProfilePicResponse> getProfilePicture();
+
+    @FormUrlEncoded
+    @POST("api/push/setting")
+    Call<BaseResponse> updateNotifications(@Field("notification") int notification);
+
+    //Remove Profile Pic
+    @DELETE("api/image/user")
+    Call<BaseResponse>  removeProfilePicture();
+
+
+    //GetDesk Code in EditActivity
+    @GET("api/mywork/teamdesks")
+    Call<List<TeamDeskResponse>> getDeskListInEdit();
+
+
 
 }
 

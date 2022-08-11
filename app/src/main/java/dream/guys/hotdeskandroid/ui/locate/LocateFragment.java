@@ -1,6 +1,8 @@
 package dream.guys.hotdeskandroid.ui.locate;
 
+import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
+import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDateWithDay;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentTime;
 
 import android.annotation.SuppressLint;
@@ -100,6 +102,7 @@ import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
+import okhttp3.internal.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -227,6 +230,8 @@ RepeateDataAdapter.repeatInterface {
     BottomSheetDialog repeatDataBottomSheetDialog, locateEditBottomSheet;
     List<ParticipantDetsilResponse> chipList = new ArrayList<>();
 
+    int page = 1;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -295,6 +300,7 @@ RepeateDataAdapter.repeatInterface {
 
 
         binding.locateCalendearView.setText(getCurrentDate());
+        binding.showCalendar.setText(getCurrentDateWithDay());
         checkIsCurrentDate(binding.locateCalendearView.getText().toString());
         binding.locateCalendearView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -454,7 +460,7 @@ RepeateDataAdapter.repeatInterface {
                 public void run() {
                     getLocateDeskRoomCarDesign(parentId, i);
                 }
-            },1000);
+            },4000);
 
 
 
@@ -837,7 +843,7 @@ RepeateDataAdapter.repeatInterface {
     }
 
 
-    private void getLocateDeskRoomCarDesign(int parentId, int id) {
+    private void getLocateDeskRoomCarDesign(int parentId, int canvasDrawId) {
         binding.locateProgressBar.setVisibility(View.VISIBLE);
 
         //dialog = ProgressDialog.showProgressBar(getContext());
@@ -882,7 +888,31 @@ RepeateDataAdapter.repeatInterface {
                 //ProgressDialog.dismisProgressBar(getContext(), dialog);
                 //getAvaliableDeskDetails(locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks(),0);
 
-                //getFloorCoordinates(locateCountryResposeList.get(floorPosition).getCoordinates());
+                if(canvasDrawId==1){
+                    List<List<Integer>> coordinateList=locateCountryResposeList.get(floorPosition).getCoordinates();
+                    List<Point> pointList=new ArrayList<>();
+                    System.out.println("CoordinateSize" + coordinateList.size());
+
+                    for (int i = 0; i < coordinateList.size(); i++) {
+
+                        System.out.println("CoordinateData" + i + "position" + "size " + coordinateList.get(i).size());
+
+                        Point point = new Point(coordinateList.get(i).get(0) + 40, coordinateList.get(i).get(1) + 20);
+                        pointList.add(point);
+
+                    }
+
+                    if (pointList.size() > 0) {
+                        MyCanvasDraw myCanvasDraw = new MyCanvasDraw(getContext(), pointList);
+
+                        binding.secondLayout.addView(myCanvasDraw);
+
+                    }
+                }else {
+                    getFloorCoordinates(locateCountryResposeList.get(floorPosition).getCoordinates());
+                }
+
+
 
 
                 //addDottedLine();
@@ -928,7 +958,7 @@ RepeateDataAdapter.repeatInterface {
     private void getFloorCoordinates(List<List<Integer>> coordinateList) {
 
 
-       // ((MainActivity) getActivity()).getFloorCoordinatesInMain(coordinateList,binding.secondLayout);
+       ((MainActivity) getActivity()).getFloorCoordinatesInMain(coordinateList,binding.secondLayout);
 
         /*System.out.println("CoordinateSize" + coordinateList.size());
         //List<Point> pointList=new ArrayList<>();
@@ -1489,7 +1519,7 @@ RepeateDataAdapter.repeatInterface {
 
                                     //Avaliable Booking
                                     //Booking Bottom Sheet
-                                    callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId);
+                                    callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId,1);
 
 
                                 } else if (deskStatusModelList.get(i).getStatus() == 4) {
@@ -1513,7 +1543,7 @@ RepeateDataAdapter.repeatInterface {
 
                                     //Booking Request Bottom Sheet
 
-                                    callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId);
+                                    callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId,4);
 
 
                                 } else if (deskStatusModelList.get(i).getStatus() == 2) {
@@ -1549,7 +1579,7 @@ RepeateDataAdapter.repeatInterface {
 
                                     //CarBooking
 
-                                    callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId);
+                                    callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId,1);
                                 } else if (carParkingStatusModelList.get(i).getStatus() == 2) {
                                     //EditCarParking
                                     getCarBookingEditList(id, code);
@@ -1561,7 +1591,7 @@ RepeateDataAdapter.repeatInterface {
                                     getCarDescriptionUsingCardId(id);
                                     //CarRequestBooking
 
-                                    callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId);
+                                    callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId,4);
                                 } else if (carParkingStatusModelList.get(i).getStatus() == 0) {
                                     callDeskUnavaliable(selctedCode, key, id, code, requestTeamId, requestTeamDeskId);
                                 }
@@ -1630,6 +1660,7 @@ RepeateDataAdapter.repeatInterface {
             }
         });
 
+        //binding.firstLayout.setPadding(0,0,50,0);
         binding.firstLayout.addView(deskView);
 
 
@@ -1689,6 +1720,19 @@ RepeateDataAdapter.repeatInterface {
         rvMeeingEditList = locateMeetEditBottomSheet.findViewById(R.id.rvEditList);
         editClose = locateMeetEditBottomSheet.findViewById(R.id.editClose);
         editDate = locateMeetEditBottomSheet.findViewById(R.id.editDate);
+
+        //New...
+        String sDate = binding.locateCalendearView.getText().toString();
+        if (!(sDate.equalsIgnoreCase(""))) {
+            String dateTime = Utils.dateWithDayString(sDate);
+            if (dateTime.equalsIgnoreCase("")) {
+                editDate.setText(binding.locateCalendearView.getText().toString());
+            } else {
+                editDate.setText(dateTime);
+            }
+        } else {
+            editDate.setText(binding.locateCalendearView.getText().toString());
+        }
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvMeeingEditList.setLayoutManager(linearLayoutManager);
@@ -1843,6 +1887,9 @@ RepeateDataAdapter.repeatInterface {
         RecyclerView rvParticipant;
         LinearLayoutManager linearLayoutManager;
         RelativeLayout startTimeLayout, endTimeLayout;
+        //New...
+        LinearLayout subCmtLay,child_layout;
+
 
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -1864,6 +1911,8 @@ RepeateDataAdapter.repeatInterface {
 
         startTimeLayout = bottomSheetDialog.findViewById(R.id.startTimeLayout);
         endTimeLayout = bottomSheetDialog.findViewById(R.id.endTimeLayout);
+        subCmtLay = bottomSheetDialog.findViewById(R.id.subCmtLay);
+        child_layout = bottomSheetDialog.findViewById(R.id.child_layout);
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvParticipant.setLayoutManager(linearLayoutManager);
@@ -1922,7 +1971,15 @@ RepeateDataAdapter.repeatInterface {
         editRoomBookingBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bottomSheetDialog.dismiss();
+
+                if (page==1){
+                    bottomSheetDialog.dismiss();
+                }else {
+                    subCmtLay.setVisibility(View.GONE);
+                    child_layout.setVisibility(View.VISIBLE);
+                    page = 1;
+                }
+
             }
         });
 
@@ -1930,39 +1987,58 @@ RepeateDataAdapter.repeatInterface {
             @Override
             public void onClick(View v) {
 
-                boolean status = true;
+                if (page == 1) {
+                    boolean status = true;
+                    if (startRoomTime.getText().toString().equals("")) {
+                        Toast.makeText(getContext(), "Please Select Start Time", Toast.LENGTH_LONG).show();
+                        status = false;
+                        return;
+                    }
+                    if (endTRoomime.getText().toString().equals("")) {
+                        Toast.makeText(getContext(), "Please Select End Time", Toast.LENGTH_LONG).show();
+                        status = false;
+                        return;
+                    }
 
-                if (startRoomTime.getText().toString().equals("")) {
-                    Toast.makeText(getContext(), "Please Select Start Time", Toast.LENGTH_LONG).show();
-                    status = false;
-                    return;
-                }
-                if (endTRoomime.getText().toString().equals("")) {
-                    Toast.makeText(getContext(), "Please Select End Time", Toast.LENGTH_LONG).show();
-                    status = false;
-                    return;
-                }
-                String subject = etSubject.getText().toString();
-                String comment = etComments.getText().toString();
-                if (subject.isEmpty() || subject.equals("") || subject == null) {
-                    Toast.makeText(getContext(), "Please Enter Subject", Toast.LENGTH_LONG).show();
-                    status = false;
-                    return;
-                }
+                    subCmtLay.setVisibility(View.VISIBLE);
+                    child_layout.setVisibility(View.GONE);
+                    page = 2;
 
-                if (comment.isEmpty() || comment.equals("") || comment == null) {
-                    Toast.makeText(getContext(), "Please Enter Comment", Toast.LENGTH_LONG).show();
-                    status = false;
-                    return;
-                }
+                }else {
+                    boolean status = true;
 
-                if (status) {
+                    if (startRoomTime.getText().toString().equals("")) {
+                        Toast.makeText(getContext(), "Please Select Start Time", Toast.LENGTH_LONG).show();
+                        status = false;
+                        return;
+                    }
+                    if (endTRoomime.getText().toString().equals("")) {
+                        Toast.makeText(getContext(), "Please Select End Time", Toast.LENGTH_LONG).show();
+                        status = false;
+                        return;
+                    }
+                    String subject = etSubject.getText().toString();
+                    String comment = etComments.getText().toString();
+                    if (subject.isEmpty() || subject.equals("") || subject == null) {
+                        Toast.makeText(getContext(), "Please Enter Subject", Toast.LENGTH_LONG).show();
+                        status = false;
+                        return;
+                    }
 
-                    bottomSheetDialog.dismiss();
-                    doMeetingRoomBooking(meetingRoomId, startRoomTime.getText().toString(), endTRoomime.getText().toString(), subject, comment, isRequest);
+                    if (comment.isEmpty() || comment.equals("") || comment == null) {
+                        Toast.makeText(getContext(), "Please Enter Comment", Toast.LENGTH_LONG).show();
+                        status = false;
+                        return;
+                    }
 
-                } else {
-                    Toast.makeText(getContext(), "Please Enter All Details", Toast.LENGTH_LONG).show();
+                    if (status) {
+                        page = 1;
+                        bottomSheetDialog.dismiss();
+                        doMeetingRoomBooking(meetingRoomId, startRoomTime.getText().toString(), endTRoomime.getText().toString(), subject, comment, isRequest);
+
+                    } else {
+                        Toast.makeText(getContext(), "Please Enter All Details", Toast.LENGTH_LONG).show();
+                    }
                 }
 
             }
@@ -2078,6 +2154,8 @@ RepeateDataAdapter.repeatInterface {
 
                 //ProgressDialog.dismisProgressBar(getContext(),dialog);
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                page = 1;
+                callInitView();
 
             }
 
@@ -2484,7 +2562,7 @@ RepeateDataAdapter.repeatInterface {
 
                 removeZoomInLayout();
 
-                initLoadFloorDetails(1);
+                initLoadFloorDetails(canvasss);
                 bottomSheetDialog.dismiss();
             }
         });
@@ -2816,10 +2894,11 @@ RepeateDataAdapter.repeatInterface {
 
 
     //BookBottomSheet
-    private void callDeskBookingnBottomSheet(String selctedCode, String key, int id, String code, int requestTeamId, int requestTeamDeskId) {
+    private void callDeskBookingnBottomSheet(String selctedCode, String key, int id, String code, int requestTeamId, int requestTeamDeskId,int statusCode) {
 
         RelativeLayout selectDeskBlock;
-        TextView selectedLocation, tv_select_desk_room;
+        TextView selectedLocation, tv_select_desk_room,statusText;
+        ImageView ivOnline;
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -2839,6 +2918,14 @@ RepeateDataAdapter.repeatInterface {
         bookingStartBlock = locateCheckInBottomSheet.findViewById(R.id.bookingStartBlock);
         bookingEndBlock = locateCheckInBottomSheet.findViewById(R.id.bookingEndBlock);
         selectDeskBlock = locateCheckInBottomSheet.findViewById(R.id.selectDeskBlock);
+
+        ivOnline=locateCheckInBottomSheet.findViewById(R.id.ivOnline);
+        statusText=locateCheckInBottomSheet.findViewById(R.id.statusText);
+
+        if(statusCode==4){
+            ivOnline.setImageDrawable(getResources().getDrawable(R.drawable.byrequest));
+            statusText.setText("Request");
+        }
 
 
         locateCheckInDate = locateCheckInBottomSheet.findViewById(R.id.locateCheckInDate);
@@ -3935,6 +4022,7 @@ RepeateDataAdapter.repeatInterface {
 
 
                 locateCheckInDateCal.setText("" + dateInString);
+                binding.showCalendar.setText("" + dateInString);
                 checkIsCurrentDate(dateInString);
 
 
@@ -4168,6 +4256,9 @@ RepeateDataAdapter.repeatInterface {
 
         startTimeLayout = bottomSheetDialog.findViewById(R.id.startTimeLayout);
         endTimeLayout = bottomSheetDialog.findViewById(R.id.endTimeLayout);
+
+        startRoomTime.setText(Utils.splitTime(meetingListToEditResponse.getFrom()));
+        endTRoomime.setText(Utils.splitTime(meetingListToEditResponse.getTo()));
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvParticipant.setLayoutManager(linearLayoutManager);
