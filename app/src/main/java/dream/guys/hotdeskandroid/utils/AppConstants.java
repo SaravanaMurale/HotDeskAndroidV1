@@ -52,6 +52,8 @@ public class AppConstants {
     public static final String OFFICE_TODAY="You are in the office today";
     public static final String WORKING_REMOTE="You are working remotely today";
     public static final String PIN_SETUP_DONE="PIN_SETUP_DONE";
+    public static final String DEFAULT_CAR_PARK_LOCATION_ID="DEFAULT_CAR_PARK_LOCATION_ID";
+    public static final String DEFAULT_CAR_PARK_TIMEZONE_ID="DEFAULT_CAR_PARK_TIMEZONE_ID";
 
     public static final String APPTHEME = "APPTHEME";
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;

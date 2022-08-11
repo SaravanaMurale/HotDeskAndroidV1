@@ -583,7 +583,6 @@ RepeateDataAdapter.repeatInterface {
             @Override
             public void onResponse(Call<List<UserAllowedMeetingResponse>> call, Response<List<UserAllowedMeetingResponse>> response) {
 
-
                 userAllowedMeetingResponseList = response.body();
 
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);

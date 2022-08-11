@@ -9,6 +9,7 @@ public class EditBookingDetails {
     String editEndTime;
     String deskCode;
     String vehicleRegNumber;
+    String bookedForUser;
     String parkingSlotCode;
     int calId=0;
     int parkingSlotId=0;

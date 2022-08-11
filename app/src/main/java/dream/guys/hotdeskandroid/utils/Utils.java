@@ -353,7 +353,15 @@ public class Utils {
         bottomSheetDatePicker.show();
 
     }
-
+    public long addHoursToTime(String time,int hours) throws ParseException {
+        SimpleDateFormat parser = new SimpleDateFormat("HH:mm");
+        Date myDate = parser.parse(time);
+        Calendar cal =Calendar.getInstance();
+        cal.setTime(myDate);
+        cal.add(Calendar.HOUR_OF_DAY,hours); // this will add two hours
+        myDate = cal.getTime();
+        return myDate.getTime();
+    }
     public static void showCustomAlertDialog(final Activity mContext, String aMessage) {
         final Dialog dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -520,7 +528,8 @@ public class Utils {
         return df.format(date);
     }
     public static String getISO8601format(Date date){
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm'Z'");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+
         return df.format(date);
     }
 
@@ -827,7 +836,7 @@ public class Utils {
 
     public static String addMinuteWithCurrentTime(int id,int addMin){
         String newTime="";
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         Date d = null;
         try {
             d = df.parse(Utils.getCurrentTimeIn24HourFormat());
@@ -854,6 +863,45 @@ public class Utils {
         Date d = null;
         try {
             d = df.parse(Utils.getCurrentTimeIn24HourFormat());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+        cal.add(Calendar.SECOND, currentTimeZoneOffset);
+        String newTime = df.format(cal.getTime());
+
+        return  newTime;
+
+
+    }
+    public static String addingHoursToCurrentDateWithTZ(int currentTimeZoneOffset){
+        //Should add seconds
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+        Date d = null;
+        try {
+            d = df.parse(Utils.getCurrentTimeIn24HourFormat());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+        cal.add(Calendar.SECOND, currentTimeZoneOffset);
+        String newTime = df.format(cal.getTime());
+
+        return  newTime;
+
+
+    }
+
+    public static String addingHoursToDate(String date,int currentTimeZoneOffset){
+        //Should add seconds
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        Date d = null;
+        try {
+            d = df.parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }

@@ -29,6 +29,7 @@ public class CarParkingForEditResponse {
     public class CarParkBooking{
         public int id;
         public int parkingSlotId;
+        public String parkingSlotName;
         public Date date;
         public String from;
         @SerializedName("to")
@@ -102,6 +103,14 @@ public class CarParkingForEditResponse {
 
         public String getTimeZoneId() {
             return timeZoneId;
+        }
+
+        public String getParkingSlotName() {
+            return parkingSlotName;
+        }
+
+        public void setParkingSlotName(String parkingSlotName) {
+            this.parkingSlotName = parkingSlotName;
         }
 
         public void setTimeZoneId(String timeZoneId) {

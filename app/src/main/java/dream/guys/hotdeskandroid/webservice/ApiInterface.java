@@ -23,6 +23,7 @@ import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkAvalibilityResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkListToEditResponse;
+import dream.guys.hotdeskandroid.model.response.CarParkLocationsModel;
 import dream.guys.hotdeskandroid.model.response.CarParkingDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingslotsResponse;
@@ -38,6 +39,7 @@ import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.LocationWithMR_Response;
 import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.MeetingRoomDescriptionResponse;
+import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
 import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
 import dream.guys.hotdeskandroid.model.response.ProfilePicResponse;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
@@ -74,10 +76,16 @@ public interface ApiInterface {
     //Qr enabled
     @GET("api/meetingrooms/amenities")
     Call<List<AmenitiesResponse>> getAmenities();
+    //get parking location list
+    @GET("api/ParkingSlot/locationswithparkingslots")
+    Call<List<CarParkLocationsModel>> getCarParkLocation();
 
     //Book desk count api
     @GET("api/Calendar/DailyTeamDeskCount")
     Call<List<DeskRoomCountResponse>> getDailyDeskCount(@Query("month") String s, @Query("teamId") String teamId);
+    //parking spot list
+    @GET("api/ParkingSlot/parkingslotsbylocation")
+    Call<List<ParkingSpotModel>> getParkingSpotModels(@Query("locationId") String s);
 
     //Book meeting room count api
     @GET("api/MeetingRooms/DailyMeetingRoomCounts")

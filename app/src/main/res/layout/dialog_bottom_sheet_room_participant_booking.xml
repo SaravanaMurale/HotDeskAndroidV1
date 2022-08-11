@@ -18,201 +18,42 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:orientation="vertical">
 
+
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/roomTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_3sdp"
-                android:text="Edit Your Booking"
+                android:text="Room Booking"
                 android:textSize="@dimen/_14sdp"
                 android:theme="@style/TextBold" />
 
             <TextView
-                android:id="@+id/date"
+                android:id="@+id/roomDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_15sdp"
                 android:text="Mon, 10th August, 2022"
-                android:theme="@style/TextSmall" />
+                android:theme="@style/TextSmall"
+                android:visibility="gone" />
 
-            <!--StartTime-->
+            <TextView
+                android:id="@+id/meetingRoomDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description:" />
+
 
             <RelativeLayout
-                android:id="@+id/startTimeBlock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
                 android:orientation="horizontal"
-                android:padding="@dimen/_3sdp">
-
-                <TextView
-                    android:id="@+id/tv_start"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="Start"
-                    android:textColor="@color/figmaBlack"
-                    android:theme="@style/TextBold" />
-
-                <TextView
-                    android:id="@+id/start_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:text=""
-                    android:textColor="@color/figmaBlue"
-                    android:theme="@style/TextBold" />
-            </RelativeLayout>
-
-            <!--EndTime-->
-
-            <RelativeLayout
-                android:id="@+id/endTimeBlock"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/rectangle_greybg_with_corner"
-                android:orientation="horizontal"
-                android:padding="@dimen/_3sdp">
-
-                <TextView
-                    android:id="@+id/tv_end"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="End"
-                    android:textColor="@color/figmaBlack"
-                    android:theme="@style/TextBold" />
-
-                <TextView
-                    android:id="@+id/end_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:text=""
-                    android:textColor="@color/figmaBlue"
-                    android:theme="@style/TextBold" />
-            </RelativeLayout>
-
-            <!--Teams-->
-
-            <RelativeLayout
-                android:id="@+id/rl_teams_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/rectangle_greybg_with_corner"
-                android:orientation="horizontal"
-                android:padding="@dimen/_1sdp">
-
-                <TextView
-                    android:id="@+id/tv_teams"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="Teams"
-                    android:textColor="@color/figmaBlack"
-                    android:theme="@style/TextBold" />
-
-                <CheckBox
-                    android:id="@+id/teams_check_box"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:buttonTint="@color/figmaBlue"
-                    android:checked="true" />
-            </RelativeLayout>
-
-            <!--Repeat-->
-            <RelativeLayout
-                android:id="@+id/rl_repeat_block"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/rectangle_greybg_with_corner"
-                android:orientation="horizontal"
-                android:padding="@dimen/_3sdp">
-
-                <TextView
-                    android:id="@+id/tv_repeat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="Repeat"
-                    android:textColor="@color/figmaBlack"
-                    android:theme="@style/TextBold" />
-
-                <TextView
-                    android:id="@+id/repeat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:enabled="false"
-                    android:text="none"
-                    android:textColor="@color/figmaBlue"
-                    android:theme="@style/TextBold" />
-            </RelativeLayout>
-
-            <!--Comment-->
-            <RelativeLayout
-                android:id="@+id/rl_comment_block"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/rectangle_greybg_with_corner"
-                android:orientation="horizontal"
-                android:padding="@dimen/_3sdp">
-
-                <TextView
-                    android:id="@+id/tv_comment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="Comment"
-                    android:textColor="@color/figmaBlack"
-                    android:theme="@style/TextBold" />
-
-                <TextView
-                    android:id="@+id/comment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:enabled="false"
-                    android:text="none"
-                    android:textColor="@color/figmaBlue"
-                    android:theme="@style/TextBold" />
-            </RelativeLayout>
-
-            <!--SelectDesk-->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/rectangle_greybg_with_corner"
-                android:orientation="horizontal">
+                android:visibility="gone">
 
                 <LinearLayout
-                    android:id="@+id/ll_desk_layout"
+                    android:id="@+id/ll_desk_layout_room"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/_5sdp"
@@ -240,15 +81,13 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_desk_room_name"
+                            android:id="@+id/tv_desk_room_name_room"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Room - 001"
-                            android:theme="@style/TextBold"
-                            android:textColor="@color/figmaBlack"/>
+                            android:theme="@style/TextBold" />
 
                         <TextView
-                            android:id="@+id/tv_location_details"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="@dimen/_3sdp"
@@ -256,7 +95,6 @@
                             android:theme="@style/TextRegular" />
 
                         <LinearLayout
-                            android:id="@+id/capacity_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
@@ -276,7 +114,6 @@
                                 android:backgroundTint="@color/figmaGrey" />
 
                             <TextView
-                                android:id="@+id/tv_capacity_no"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="5"
@@ -290,7 +127,7 @@
                         android:layout_weight="1">
 
                         <TextView
-                            android:id="@+id/select_desk_room"
+                            android:id="@+id/select_desk_room_room"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
@@ -306,7 +143,7 @@
                     android:id="@+id/list_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/ll_desk_layout"
+                    android:layout_below="@id/ll_desk_layout_room"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp">
 
@@ -315,7 +152,7 @@
                 </com.google.android.material.chip.ChipGroup>
 
                 <LinearLayout
-                    android:id="@+id/status_check_layout"
+                    android:id="@+id/status_check_layout_rrom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/list_item"
@@ -325,7 +162,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/user_status"
+                        android:id="@+id/user_status_room"
                         android:layout_width="@dimen/_10sdp"
                         android:layout_height="@dimen/_10sdp"
                         android:background="@drawable/bg_circle_vector"
@@ -338,35 +175,52 @@
                         android:text="Checked In"
                         android:theme="@style/TextRegular" />
                 </LinearLayout>
+
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_comments"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Registration Number"
-                android:theme="@style/TextSmall" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/participantChipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
 
             <EditText
-                android:id="@+id/ed_registration"
+                android:id="@+id/etParticipants"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
-                android:hint="Registration"
+                android:hint="Participants(optional)"
+                android:paddingHorizontal="@dimen/_15sdp"
+                android:paddingVertical="@dimen/_10sdp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvParticipant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+
+            <EditText
+                android:id="@+id/etSubject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_5sdp"
+                android:background="@drawable/rectangle_greybg_with_corner"
+                android:hint="Subject"
                 android:paddingHorizontal="@dimen/_15sdp"
                 android:paddingVertical="@dimen/_10sdp" />
 
             <EditText
-                android:id="@+id/etBookedBy"
+                android:id="@+id/etComments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
-                android:hint="BookedBy"
+                android:hint="Comments"
                 android:paddingHorizontal="@dimen/_15sdp"
-                android:paddingVertical="@dimen/_10sdp"
-                android:visibility="gone" />
+                android:paddingVertical="@dimen/_10sdp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -376,7 +230,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/editBookingBack"
+                    android:id="@+id/editRoomBookingBack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
@@ -387,7 +241,7 @@
                     android:theme="@style/TextBold" />
 
                 <TextView
-                    android:id="@+id/editBookingContinue"
+                    android:id="@+id/editRoomBookingContinue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -398,8 +252,10 @@
                     android:textSize="@dimen/_14sdp"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
 
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </RelativeLayout>

@@ -47,8 +47,8 @@
                 android:layout_below="@+id/etCompanyName"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:hint="@string/email"
-                android:text="dgadmin@yopmail.com"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:text="bcds-m@yopmail.com" />
 
             <EditText
                 android:id="@+id/etPassword"
