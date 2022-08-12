@@ -23,6 +23,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.LanguageListResponse;
+import dream.guys.hotdeskandroid.ui.login.LoginActivity;
+import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.SessionHandler;
 
 public class LanguageListAdapter extends RecyclerView.Adapter<LanguageListAdapter.LanguageListViewHolder> {
 
@@ -34,7 +37,7 @@ public class LanguageListAdapter extends RecyclerView.Adapter<LanguageListAdapte
 
     public interface OnLanguageSelect{
 
-        public void onLanguageSelect();
+        public void onLanguageSelect(String key);
     }
 
     public LanguageListAdapter(Context context, List<LanguageListResponse.Multilanguages.ExistingLanguages> languageListResponseList, OnLanguageSelect onLanguageSelect) {
@@ -82,6 +85,11 @@ public class LanguageListAdapter extends RecyclerView.Adapter<LanguageListAdapte
 
         if (pos == holder.getAbsoluteAdapterPosition()){
             holder.languageSelectTick.setVisibility(View.VISIBLE);
+
+            SessionHandler.getInstance().save(context, AppConstants.LANGUAGE_KEY,languageListResponseList.get(position).getName());
+            SessionHandler.getInstance().save(context, AppConstants.LANGUAGE,languageListResponseList.get(position).getText());
+
+            onLanguageSelect.onLanguageSelect(languageListResponseList.get(position).getName());
         }else {
             holder.languageSelectTick.setVisibility(View.GONE);
         }

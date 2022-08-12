@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +43,12 @@ public class CreatePinActivity extends AppCompatActivity {
     TextView tvBack;
     Dialog dialog;
     String pin="", conPin="";
+
+    //New...
+    @BindView(R.id.profile_back)
+    ImageView profile_back;
+    @BindView(R.id.old_pin_layout)
+    LinearLayout old_pin_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +93,12 @@ public class CreatePinActivity extends AppCompatActivity {
         });
 
         tvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        profile_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
