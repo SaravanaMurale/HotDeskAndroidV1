@@ -125,6 +125,7 @@ public class BookFragment extends Fragment implements
     BottomSheetDialog roomBottomSheet;
     int selectedicon = 0;
     String calSelectedDate="";
+    String calSelectedMont="";
 
     TextView startTime,endTime,repeat,date,deskRoomName,locationAddress;
     String repeatValue="None";
@@ -193,6 +194,7 @@ public class BookFragment extends Fragment implements
             @Override
             public void onPrevClicked(String month) {
                 Toast.makeText(getActivity(), ""+month, Toast.LENGTH_LONG).show();
+                calSelectedMont=month;
                 getDeskCount(month);
             }
 
@@ -250,7 +252,12 @@ public class BookFragment extends Fragment implements
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 deskParams.weight = 1.0f;
                 binding.deskLayout.setLayoutParams(deskParams);
-                getDeskCount(Utils.getCurrentDate());
+                binding.calendarView.setVisibility(View.VISIBLE);
+                if (calSelectedMont != "" && !calSelectedMont.isEmpty())
+                    getDeskCount(calSelectedMont);
+                else
+                    getDeskCount(Utils.getCurrentDate());
+
                 break;
             case 1:
                 binding.roomLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
@@ -260,7 +267,11 @@ public class BookFragment extends Fragment implements
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 roomParams.weight = 1.0f;
                 binding.roomLayout.setLayoutParams(roomParams);
-                getDeskCount(Utils.getCurrentDate());
+                binding.calendarView.setVisibility(View.VISIBLE);
+                if (calSelectedMont != "" && !calSelectedMont.isEmpty())
+                    getDeskCount(calSelectedMont);
+                else
+                    getDeskCount(Utils.getCurrentDate());
                 break;
             case 2:
                 binding.parkingLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
@@ -271,7 +282,11 @@ public class BookFragment extends Fragment implements
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 parkingParams.weight = 1.0f;
                 binding.parkingLayout.setLayoutParams(parkingParams);
-                getDeskCount(Utils.getCurrentDate());
+                binding.calendarView.setVisibility(View.VISIBLE);
+                if (calSelectedMont != "" && !calSelectedMont.isEmpty())
+                    getDeskCount(calSelectedMont);
+                else
+                    getDeskCount(Utils.getCurrentDate());
                 break;
             case 3:
                 binding.moreLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
@@ -282,7 +297,8 @@ public class BookFragment extends Fragment implements
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 moreParams.weight = 1.0f;
                 binding.moreLayout.setLayoutParams(moreParams);
-                getDeskCount(Utils.getCurrentDate());
+                binding.calendarView.setVisibility(View.GONE);
+//                getDeskCount(Utils.getCurrentDate());
                 break;
             default:
                 break;
@@ -411,11 +427,6 @@ public class BookFragment extends Fragment implements
                     List<CarParkListToEditResponse> carParkingForEditResponse = response.body();
 
                     CallCarBookingEditList(carParkingForEditResponse, "5");
-
-               /* for (int i = 0; i <carParkingForEditResponse.getCarParkBookings().size() ; i++) {
-                    System.out.println("CarParkingEditListVeHicleNumber"+carParkingForEditResponse.getCarParkBookings().get(i).getVehicleRegNumber());
-
-                }*/
 
                      ProgressDialog.dismisProgressBar(getContext(),dialog);
 //                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
@@ -628,7 +639,7 @@ public class BookFragment extends Fragment implements
                     editBookingDetails.setEditStartTTime(Utils.splitTime(meetingListToEditResponseList.get(meetingListToEditResponseList.size()-1).getTo()));
                     editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(meetingListToEditResponseList.get(meetingListToEditResponseList.size()-1).getTo(),
                             12000)));
-                }else {
+                } else {
                     editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
                     System.out.println("tim else" +" "+Utils.getCurrentDate()+"T"
                             +Utils.getCurrentTime()+"Z");
@@ -639,7 +650,6 @@ public class BookFragment extends Fragment implements
                 editBookingDetails.setDate(Utils.convertStringToDateFormet(calSelectedDate));
                 getRoomlist(editBookingDetails);
 
-//                callMeetingRoomBookingBottomSheet(0,"",false);
             }
         });
 
@@ -873,7 +883,7 @@ public class BookFragment extends Fragment implements
 
         startTime = roomBottomSheet.findViewById(R.id.start_time);
         endTime = roomBottomSheet.findViewById(R.id.end_time);
-        repeat=roomBottomSheet.findViewById(R.id.repeat);
+        repeat = roomBottomSheet.findViewById(R.id.repeat);
         deskRoomName=roomBottomSheet.findViewById(R.id.tv_desk_room_name);
         locationAddress=roomBottomSheet.findViewById(R.id.tv_location_details);
         date=roomBottomSheet.findViewById(R.id.date);
@@ -911,7 +921,7 @@ public class BookFragment extends Fragment implements
         }
 
         if (dskRoomParkStatus == 1) {
-            repeatBlock.setVisibility(View.GONE);
+            repeatBlock.setVisibility(View.VISIBLE);
             teamsBlock.setVisibility(View.GONE);
             commentRegistration.setHint("Comments");
             tvComments.setText("Comments");
@@ -921,7 +931,6 @@ public class BookFragment extends Fragment implements
             tvComments.setVisibility(View.GONE);
             deskRoomName.setText(editDeskBookingDetails.getDeskCode());
             selectedDeskId=editDeskBookingDetails.getDesktId();
-
 
         }else if (dskRoomParkStatus==2) {
             llDeskLayout.setVisibility(View.VISIBLE);
@@ -991,6 +1000,12 @@ public class BookFragment extends Fragment implements
                 if (editDeskBookingDetails.getDeskStatus() != 1)
                     Utils.bottomSheetTimePicker(getContext(),getActivity(),endTime,"End Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
 //                    Utils.popUpTimePicker(getActivity(),endTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
+            }
+        });
+        repeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "reapat", Toast.LENGTH_SHORT).show();
             }
         });
         continueEditBook.setOnClickListener(new View.OnClickListener() {
@@ -1299,6 +1314,7 @@ public class BookFragment extends Fragment implements
         ArrayList<Integer> list1 =new ArrayList<>();
 //        list1.add(editDeskBookingDetails.getCalId());
         jsonDeletedIdsArray.add(editDeskBookingDetails.getCalId());
+        
         jsonOuterObject.add("changesets", jsonChangesetArray);
         jsonOuterObject.add("deletedIds", jsonDeletedIdsArray);
 
@@ -1325,6 +1341,33 @@ public class BookFragment extends Fragment implements
         editDeskBookingDetails.setVehicleRegNumber(carParkBooking.getVehicleRegNumber());
         editDeskBookingDetails.setParkingSlotCode(carParkBooking.getParkingSlotName());
         getParkingSpotList(""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID),editDeskBookingDetails,"edit");
+
+
+    }
+
+    @Override
+    public void onCarDeleteClick(CarParkListToEditResponse carParkBooking) {
+        EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
+//        editBookingUsingBottomSheet(editDeskBookingDetails,1,0,"delete");
+
+        JsonObject jsonOuterObject = new JsonObject();
+        JsonObject jsonInnerObject = new JsonObject();
+        JsonObject jsonChangesObject = new JsonObject();
+        JsonArray jsonChangesetArray = new JsonArray();
+        JsonArray jsonDeletedIdsArray = new JsonArray();
+        jsonOuterObject.addProperty("parkingSlotId",carParkBooking.getId());
+
+        BookingsRequest bookingsRequest = new BookingsRequest();
+        ArrayList<BookingsRequest.ChangeSets> list =new ArrayList<>();
+        ArrayList<Integer> list1 =new ArrayList<>();
+//        list1.add(editDeskBookingDetails.getCalId());
+        jsonDeletedIdsArray.add(carParkBooking.getId());
+        jsonOuterObject.add("changesets", jsonChangesetArray);
+        jsonOuterObject.add("deletedIds", jsonDeletedIdsArray);
+
+        System.out.println("json un"+jsonOuterObject.toString());
+
+        editBookingCall(jsonOuterObject,0,3,"delete");
 
 
     }

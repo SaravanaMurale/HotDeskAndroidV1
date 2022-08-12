@@ -4454,6 +4454,11 @@ RepeateDataAdapter.repeatInterface {
 
     }
 
+    @Override
+    public void onCarDeleteClick(CarParkListToEditResponse carParkBooking) {
+
+    }
+
     private void doEditCarParkBooking(CarParkingForEditResponse.CarParkBooking carParkBooking, String startTime, String endTime) {
 
         binding.locateProgressBar.setVisibility(View.VISIBLE);

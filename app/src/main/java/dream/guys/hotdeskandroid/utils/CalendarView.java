@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -111,7 +112,6 @@ public class CalendarView extends LinearLayout
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 if (eventHandler != null)
                     eventHandler.onPrevClicked(""+sdf.format(currentDate.getTime()));
-
             }
         });
 
@@ -123,7 +123,6 @@ public class CalendarView extends LinearLayout
 
                 if (eventHandler != null)
                     eventHandler.onPrevClicked(""+sdf.format(currentDate.getTime()));
-
             }
         });
 
@@ -264,7 +263,9 @@ public class CalendarView extends LinearLayout
 
             if (day == today.getDate()) {
                 ((TextView) dateBox).setTypeface(null, Typeface.BOLD);
-//                ((TextView) dateBox).setTextColor(getResources().getColor(R.color.colorAppTheme));
+                ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.figmaBlack));
+            } else {
+                ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.white));
             }
 
             ((TextView) dateBox).setText(String.valueOf(date.getDate()));
@@ -284,13 +285,16 @@ public class CalendarView extends LinearLayout
 
             if (position >= firstDayOfMonth && position < maxNumberOfDays + firstDayOfMonth) {
                 int value = position - firstDayOfMonth + 1;
-                if (currentDate.before(today)) {
+                System.out.println("bala today"+ currentDate.getTime());
+                Toast.makeText(getContext(), " betweeen"+currentDate, Toast.LENGTH_SHORT).show();
+                if (currentDate.before(currentDate.getTime())) {
                     Toast.makeText(getContext(), " betweeen", Toast.LENGTH_SHORT).show();
 //                    date.setText(String.valueOf(value));
                     dateBox.setTextColor(Color.rgb(166, 166, 166));
-                    dateBox.setVisibility(GONE);
-                    count.setVisibility(GONE);
+                    dateBox.setVisibility(VISIBLE);
+                    count.setVisibility(VISIBLE);
                 }
+
             }
 
             if (position >= maxNumberOfDays + firstDayOfMonth) {

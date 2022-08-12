@@ -27,6 +27,7 @@ public class CarListToEditAdapter extends RecyclerView.Adapter<CarListToEditAdap
 
     public   interface CarEditClickable{
         public void onCarEditClick(CarParkListToEditResponse carParkBooking);
+        public void onCarDeleteClick(CarParkListToEditResponse carParkBooking);
     }
 
 
@@ -63,10 +64,13 @@ public class CarListToEditAdapter extends RecyclerView.Adapter<CarListToEditAdap
         holder.editTextEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 carEditClickable.onCarEditClick(carParkBookings.get(holder.getAbsoluteAdapterPosition()));
-
-
+            }
+        });
+        holder.editDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                carEditClickable.onCarDeleteClick(carParkBookings.get(holder.getAbsoluteAdapterPosition()));
             }
         });
 
