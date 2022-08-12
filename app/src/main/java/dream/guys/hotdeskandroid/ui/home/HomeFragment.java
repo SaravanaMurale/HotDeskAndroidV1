@@ -83,6 +83,7 @@ import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
+import dream.guys.hotdeskandroid.ui.settings.SettingsActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -200,7 +201,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         binding.profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),ProfileActivity.class);
+                /*Intent intent = new Intent(getActivity(),ProfileActivity.class);
+                getActivity().startActivity(intent);*/
+                Intent intent = new Intent(getActivity(), SettingsActivity.class);
                 getActivity().startActivity(intent);
             }
         });

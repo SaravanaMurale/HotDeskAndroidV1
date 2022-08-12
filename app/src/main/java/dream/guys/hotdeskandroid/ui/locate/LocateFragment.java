@@ -229,6 +229,8 @@ RepeateDataAdapter.repeatInterface {
     List<ParticipantDetsilResponse> chipList = new ArrayList<>();
 
     int page = 1;
+    int seatSize = 150;
+    int seatGaping = 50;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -1660,6 +1662,660 @@ RepeateDataAdapter.repeatInterface {
 
         //binding.firstLayout.setPadding(0,0,50,0);
         binding.firstLayout.addView(deskView);
+
+
+    }
+
+    @SuppressLint("ResourceType")
+    private void addViews(List<String> valueList, String key, int floorPosition, int itemTotalSize) {
+
+        String startDate = binding.locateCalendearView.getText().toString() + " " + binding.locateStartTime.getText().toString() + ":00";
+        String endDate = binding.locateCalendearView.getText().toString() + " " + binding.locateEndTime.getText().toString() + ":00";
+
+
+        System.out.println("AddViewDataPrintedHere" + binding.locateCalendearView.getText().toString() + " " + binding.locateStartTime.getText().toString() + " " + binding.locateEndTime.getText().toString());
+        System.out.println("AddViewStart" + startDate);
+        System.out.println("AddViewEnd" + endDate);
+
+        //Desk Avaliablity Checking Split key to get id and code
+        String[] result = key.split("_");
+        int id = Integer.parseInt(result[0]);
+        String code = result[1];
+
+        //deskView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
+        //ImageView ivDesk = deskView.findViewById(R.id.ivDesk);
+
+        /*LinearLayout layoutSeat = new LinearLayout(getActivity());
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        layoutSeat.setOrientation(LinearLayout.VERTICAL);
+        layoutSeat.setLayoutParams(params);*/
+
+        LinearLayout relativeLayout = new LinearLayout(getActivity());
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        relativeLayout.setOrientation(LinearLayout.VERTICAL);
+        relativeLayout.setLayoutParams(params);
+        //RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        ImageView ivDesk = new ImageView(getActivity());
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+
+
+        //Desk
+        DeskStatusModel deskStatusModel = null;
+        List<DeskStatusModel> deskStatusModelList = new ArrayList<>();
+
+        //Room
+        MeetingStatusModel meetingStatusModel = null;
+        List<MeetingStatusModel> meetingStatusModelList = new ArrayList<>();
+
+
+        //Desk Avaliablity Checking
+
+        if (code.equals(AppConstants.DESK)) {
+
+            if (teamDeskAvaliabilityList != null) {
+
+                for (int i = 0; i < teamDeskAvaliabilityList.size(); i++) {
+
+                    boolean wasAssigned = false;
+
+                    if (id == teamDeskAvaliabilityList.get(i).getDeskId()) {
+
+                        DeskAvaliabilityResponse.TeamDeskAvaliabilityList teamDeskAvaliability = teamDeskAvaliabilityList.get(i);
+
+                        //GET TEAM ID
+                        boolean getTeamId = false;
+                        TeamsResponse teamsResponse = new TeamsResponse();
+                        if (!getTeamId) {
+                            if (teamsResponseList != null) {
+                                for (int j = 0; j < teamsResponseList.size(); j++) {
+                                    if (teamDeskAvaliability.getTeamId() == teamsResponseList.get(j).getId()) {
+
+                                        teamsResponse = teamsResponseList.get(j);
+                                        getTeamId = true;
+                                    }
+                                }
+                            }
+                        }//
+
+                        System.out.println("TotalAvaliableDeskId" + teamDeskAvaliability.getDeskId());
+                        System.out.println("CurrentDateAndTimeIn24HoursFormat" + Utils.getCurrentTimeIn24HourFormat());
+
+                        //GetCurrentDate and Offset
+                        String offSetAddedDate = Utils.addingHoursToCurrentDate(teamDeskAvaliability.getCurrentTimeZoneOffset());
+
+                        System.out.println("NewlyAddedDateWithTime" + offSetAddedDate);
+                        System.out.println("NewlyAddedDateAlone" + Utils.splitGetDate(offSetAddedDate));
+
+
+                        for (int j = 0; j < teamDeskAvaliability.getAvailableTimeSlotsList().size(); j++) {
+
+                            if (!wasAssigned) {
+
+                                DeskAvaliabilityResponse.TeamDeskAvaliabilityList.AvailableTimeSlots availableTimeSlots = teamDeskAvaliability.getAvailableTimeSlotsList().get(j);
+
+                                System.out.println("SlotFrom" + availableTimeSlots.getFrom());
+                                System.out.println("SlotTo" + availableTimeSlots.getTo());
+
+
+                                int dateComparsionResult = Utils.compareCurrentDateWithSelectedDate(startDate);
+                                //int dateComparsionResult = Utils.compareTwoDates(startDate, offSetAddedDate);
+                                int second = Utils.compareTwoDates(startDate, Utils.removeTandZInDate(availableTimeSlots.getFrom()));
+                                int third = Utils.compareTwoDates(endDate, Utils.removeTandZInDate(availableTimeSlots.getTo()));
+
+                                if (dateComparsionResult == 1) {
+                                    System.out.println("BookingUnavaliable");
+                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+
+                                    deskStatusModel = new DeskStatusModel(key, id, code, 0);
+
+                                } else if (teamDeskAvaliability.isPartiallyAvailable() == true && second == 2 && third == 1) {
+
+                                    if (teamDeskAvaliability.isBookedByUser() == true) {
+                                        System.out.println("BookingbookedForMe");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
+                                        deskStatusModel = new DeskStatusModel(key, id, code, 2);
+
+                                    } else if (teamDeskAvaliability.isBookedByElse() == true) {
+                                        System.out.println("BookingBookedOther");
+                                        deskStatusModel = new DeskStatusModel(key, id, code, 3);
+                                    } else if (teamsResponse.getDeskCount() != 0 && teamsResponse.getAutomaticApprovalStatus() == 2) {
+                                        System.out.println("BookingAvaliable");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_avaliable));
+                                        deskStatusModel = new DeskStatusModel(key, id, code, 1);
+
+                                    } else if (teamDeskAvaliability.getTeamId() == SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID)) {
+                                        System.out.println("BookingAvaliable");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_avaliable));
+                                        deskStatusModel = new DeskStatusModel(key, id, code, 1);
+                                    } else {
+
+                                        if (teamsResponse != null && teamsResponse.getAutomaticApprovalStatus() == 3) {
+                                            System.out.println("BookingUnavaliable");
+                                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                            deskStatusModel = new DeskStatusModel(key, id, code, 0);
+                                        } else {
+                                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_request));
+                                            System.out.println("BookingRequest");
+                                            deskStatusModel = new DeskStatusModel(key, id, code, 4);
+                                        }
+                                    }
+                                    wasAssigned = true;
+
+                                } else {
+                                    System.out.println("BookingUnavaliable");
+                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                    deskStatusModel = new DeskStatusModel(key, id, code, 0);
+                                    if (teamDeskAvaliability.isBookedByUser() == true) {
+                                        System.out.println("BookingbookedForMe");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
+                                        deskStatusModel = new DeskStatusModel(key, id, code, 2);
+                                    } else if (teamDeskAvaliability.isBookedByElse() == true) {
+                                        System.out.println("BookingBookedOther");
+                                        deskStatusModel = new DeskStatusModel(key, id, code, 3);
+                                    }
+                                }
+
+
+                            }
+
+                            deskStatusModelList.add(deskStatusModel);
+
+
+                        }
+
+
+                    }
+
+
+                }
+            } else {
+                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                deskStatusModel = new DeskStatusModel(key, id, code, 0);
+                deskStatusModelList.add(deskStatusModel);
+            }
+
+
+        } else if (code.equals(AppConstants.CAR_PARKING)) {
+
+            //CarPark Avalibility Checking
+
+            //if(!carParkingCheckingStatus) {
+            for (int i = 0; i < carParkingStatusModelList.size(); i++) {
+
+                if (id == carParkingStatusModelList.get(i).getId()) {
+
+                    if (carParkingStatusModelList.get(i).getStatus() == 0) {
+                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                    } else if (carParkingStatusModelList.get(i).getStatus() == 1) {
+                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_avaliable));
+                    } else if (carParkingStatusModelList.get(i).getStatus() == 2) {
+
+                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
+
+                    } else if (carParkingStatusModelList.get(i).getStatus() == 3) {
+                        //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.des));
+                    } else if (carParkingStatusModelList.get(i).getStatus() == 4) {
+                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_request));
+                    }
+
+                }
+                // System.out.println("CarParkTesting" + carParkingStatusModelList.get(i).getKey() + " " + carParkingStatusModelList.get(i).getStatus());
+
+            }
+
+            // carParkingCheckingStatus=true;
+            //}
+        }
+        //MeetingChecking
+        if (code.equals(AppConstants.MEETING)) {
+
+            int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+
+            if (locationWithMR_response != null) {
+
+                for (int i = 0; i < locationWithMR_response.size(); i++) {
+
+                    if (parentId == locationWithMR_response.get(i).getParentLocationId()) {
+
+                        LocationWithMR_Response locationWithMR = locationWithMR_response.get(i);
+
+                        if (locationWithMR != null) {
+
+                            if (locationWithMR.getMatchesList() != null) {
+
+                                for (int j = 0; j < locationWithMR.getMatchesList().size(); j++) {
+
+                                    if(userAllowedMeetingResponseList!=null) {
+                                        for (int k = 0; k < userAllowedMeetingResponseList.size(); k++) {
+                                            if (locationWithMR.getMatchesList().get(j).getMatchesId() == userAllowedMeetingResponseList.get(k).getId()) {
+                                                locationWithMR.getMatchesList().get(j).setAllowedForBooking(true);
+                                                locationWithMR.getMatchesList().get(j).setCurrentTimeZoneOffset(locationWithMR_response.get(i).getTimeZoneOffsetMinutes());
+                                                LocationWithMR_Response.Matches lMatches = locationWithMR.getMatchesList().get(j);
+
+
+                                                //checkMeetingRoomAvailablity(lMatches);
+
+                                                if (id == lMatches.getMatchesId()) {
+
+                                                    //GetCurrentDate and Add OffsetTime
+                                                    String offSetAddedDate = Utils.addingHoursToCurrentDate(lMatches.getCurrentTimeZoneOffset());
+                                                    int dateComparsionResult = Utils.compareTwoDates(startDate, offSetAddedDate);
+
+                                                    if (dateComparsionResult == 1) {
+                                                        System.out.println("MeetingBookingUnavaliable");
+                                                        meetingStatusModel = new MeetingStatusModel(key, id, code, 0);
+                                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
+                                                        //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                                        //deskStatusModel=new DeskStatusModel(key,id,code,0);
+                                                    } else {
+
+                                                        System.out.println("MeeingAvvaliableDoubtHere");
+                                                        System.out.println("MeetingAvaliable");
+                                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_avaliable));
+                                                        meetingStatusModel = new MeetingStatusModel(key, id, code, 1);
+
+                                                        for (int l = 0; l < lMatches.getBookingsList().size(); l++) {
+
+                                                            LocationWithMR_Response.Matches.Bookings bookings = lMatches.getBookingsList().get(l);
+
+                                                            String[] fromUTCDate = bookings.getFromUtc().split("T");
+                                                            String fromUtcDateAlone = fromUTCDate[0];
+
+                                                            String[] toUTCDate = bookings.getToUtc().split("T");
+                                                            String toUtcDateAlone = toUTCDate[0];
+
+                                                            String[] fromDate = bookings.getFrom().split("T");
+                                                            String fromTimeAloneWithT = fromDate[1];
+                                                            String[] fromTimeAlonez = fromTimeAloneWithT.split("Z");
+                                                            String fromTimeAlone = fromTimeAlonez[0];
+
+                                                            String[] toDate = bookings.getTo().split("T");
+                                                            String toTimeAloneWithZ = toDate[1];
+                                                            String[] toTimeAlonez = toTimeAloneWithZ.split("Z");
+                                                            String toTimeAlone = toTimeAlonez[0];
+
+
+                                                            String fromDateTime = fromUtcDateAlone + " " + fromTimeAlone;
+                                                            String toDateTime = toUtcDateAlone + " " + toTimeAlone;
+
+                                                            //String startDate=binding.locateCalendearView.getText().toString()+" "+binding.locateStartTime.getText().toString()+":00";
+                                                            //String endDate=binding.locateCalendearView.getText().toString()+" "+binding.locateEndTime.getText().toString()+":00";
+
+                                                            //AddViewStart2022-08-02 11:13:00
+                                                            //AddViewEnd2022-08-02 23:59:00
+
+                                                            //fromTime! <= dateEndBook && dateStartBook <= toime!
+                                                            //fromDateTime!<=endDate  &&  startDate!<=toDateTime
+
+                                                            // 2022-08-02 17:05:00 UTC <= 2022-08-02 23:59:00 UTC  &&  2022-08-02 15:00:00 UTC <= 2022-08-02 17:42:00 UTC
+
+                                                            //fromDateTime less or equal
+                                                            int dateCompar1 = Utils.compareTwoDates(fromDateTime, endDate);
+
+                                                            //startDate less or equal
+                                                            int dateCompare2 = Utils.compareTwoDates(startDate, toDateTime);
+
+                                                            if ((dateCompar1 == 0 || dateCompar1 == 1) && (dateCompare2 == 0 || dateCompare2 == 1)) {
+
+                                                                if (bookings.getBookedByUserId() == SessionHandler.getInstance().getInt(getContext(), AppConstants.USER_ID)) {
+
+                                                                    if (!lMatches.isAllowedForBooking()) {
+
+                                                                        if (lMatches.getMatchType() == 2 && lMatches.getAutomaticApprovalStatus() == 0) {
+                                                                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_bookedbyme));
+                                                                            meetingStatusModel = new MeetingStatusModel(key, id, code, 2);
+                                                                            System.out.println("MeetingBookedForMe");
+                                                                        } else {
+                                                                            meetingStatusModel = new MeetingStatusModel(key, id, code, 4);
+                                                                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_request));
+                                                                            System.out.println("MeetingRequest");
+                                                                        }
+
+                                                                    } else {
+                                                                        System.out.println("MeetingBookedForMe");
+                                                                        meetingStatusModel = new MeetingStatusModel(key, id, code, 2);
+                                                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_bookedbyme));
+                                                                    }
+
+                                                                } else {
+                                                                    meetingStatusModel = new MeetingStatusModel(key, id, code, 3);
+                                                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_booked));
+                                                                    System.out.println("MeetingBookedOther");
+                                                                }
+
+
+                                                            } else if (lMatches.getAutomaticApprovalStatus() == 3 && !lMatches.isAllowedForBooking()) {
+                                                                meetingStatusModel = new MeetingStatusModel(key, id, code, 0);
+                                                                System.out.println("MeetingUnavaliable");
+                                                                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
+
+                                                            } else if (lMatches.getAutomaticApprovalStatus() == 2 || lMatches.isAllowedForBooking()) {
+                                                                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_avaliable));
+                                                                System.out.println("Meetingavaliable");
+                                                                meetingStatusModel = new MeetingStatusModel(key, id, code, 1);
+
+                                                            } else {
+                                                                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_request));
+                                                                System.out.println("MeetingRequest");
+                                                                meetingStatusModel = new MeetingStatusModel(key, id, code, 4);
+
+                                                            }
+
+
+                                                        }
+
+
+                                                    }
+
+                                                    meetingStatusModelList.add(meetingStatusModel);
+
+                                                } else {
+
+                                                    //I Added Newly
+                                                    //MeetingRoomRequest
+                                                    /*ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_request));
+                                                    meetingStatusModel = new MeetingStatusModel(key, id, code, 4);
+                                                    meetingStatusModelList.add(meetingStatusModel);
+                                                    System.out.println("MeetingRequest");*/
+                                                }
+
+                                            }
+                                        }
+
+                                    }
+
+                                }
+
+                            } else {
+                                //MeetingRoomRequest
+                                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_request));
+                                meetingStatusModel = new MeetingStatusModel(key, id, code, 4);
+                                meetingStatusModelList.add(meetingStatusModel);
+                                System.out.println("MeetingRequest");
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        }
+
+
+        //Head Facing
+        for (int i = 0; i < valueList.size(); i++) {
+
+            if (i == 2) {
+                int rotateValue = Integer.parseInt(valueList.get(2));
+                if (rotateValue == 1) {
+                    ivDesk.setRotation(90);
+                } else if (rotateValue == 2) {
+                    ivDesk.setRotation(135);
+                } else if (rotateValue == 3) {
+                    ivDesk.setRotation(180);
+                } else if (rotateValue == 4) {
+                    ivDesk.setRotation(225);
+                } else if (rotateValue == 5) {
+                    ivDesk.setRotation(270);
+                } else if (rotateValue == 6) {
+                    ivDesk.setRotation(315);
+                } else if (rotateValue == 7) {
+                    ivDesk.setRotation(360);
+                } else if (rotateValue == 8) {
+                    ivDesk.setRotation(405);
+                }
+            }
+            System.out.println("PositionValue" + valueList.get(i));
+
+        }
+
+
+
+        //Set Image Based on Position
+        int x = Integer.parseInt(valueList.get(0));
+        int y = Integer.parseInt(valueList.get(1));
+
+
+        layoutParams.leftMargin = x;
+        layoutParams.topMargin = y;
+        layoutParams.rightMargin = 25;
+
+        layoutParams.width = 40;
+        layoutParams.height = 80;
+        ivDesk.setLayoutParams(layoutParams);
+        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_avaliable));
+        relativeLayout.addView(ivDesk);
+
+
+        //OnClickListener
+        ivDesk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               removeZoomInLayout();
+
+                List<String> onClickValue = locateCountryResposeList.get(floorPosition).getItems().get(key);
+                      /*for (int j = 0; j <onClickValue.size() ; j++) {
+                         System.out.println("OnClickedKey"+key+"OnClickedValue"+onClickValue.get(j));
+                     }*/
+
+                //Split key to get id and code
+                String[] result = key.split("_");
+                int id = Integer.parseInt(result[0]);
+                String code = result[1];
+                String selctedCode = "";
+                int meetingRoomId = 0;
+                String meetingRoomName = "";
+
+                //Get code based on id
+                if (code.equals(AppConstants.DESK)) {
+                    //Get Code For Desk
+                    for (int i = 0; i < locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks().size(); i++) {
+
+                        if (id == locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks().get(i).getDesksId()) {
+
+                            selctedCode = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks().get(i).getDeskCode();
+
+                            System.out.println("ClickedCodeIs" + locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks().get(i).getDeskCode());
+
+                        }
+
+                    }
+
+                } else if (code.equals(AppConstants.MEETING)) {
+                    //Get Code For MEETING
+                    for (int i = 0; i < locateCountryResposeList.get(floorPosition).getLocationItemLayout().getMeetingRoomsList().size(); i++) {
+
+                        if (id == locateCountryResposeList.get(floorPosition).getLocationItemLayout().getMeetingRoomsList().get(i).getMeetingRoomId()) {
+
+                            meetingRoomName = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getMeetingRoomsList().get(i).getMeetingRoomCode();
+                            meetingRoomId = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getMeetingRoomsList().get(i).getMeetingRoomId();
+                        }
+
+                    }
+
+
+                } else if (code.equals(AppConstants.CAR_PARKING)) {
+                    //Get Code For CAR_PARKING
+                    for (int i = 0; i < locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList().size(); i++) {
+                        if (id == locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList().get(i).getId()) {
+
+                            selctedCode = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList().get(i).getCode();
+                        }
+
+                    }
+
+                }
+
+               /* if(deskStatusModelList.size()>0){
+                    for (int i = 0; i <deskStatusModelList.size() ; i++) {
+
+                        System.out.println("DESKNAMETOREQUESTTISERVER"+deskStatusModelList.get(i).getKey()+" "+deskStatusModelList.get(i).getStatus());
+
+                    }
+                }*/
+
+                int requestTeamId = 0, requestTeamDeskId = 0;
+                if (code.equals("3")) {
+                    if (deskStatusModelList != null) {
+                        for (int i = 0; i < deskStatusModelList.size(); i++) {
+                            if (key.equals(deskStatusModelList.get(i).getKey())) {
+
+                                if (deskStatusModelList.get(i).getStatus() == 1) {
+
+                                    //DeskDescription
+                                    getDescriptionUsingDeskId(id);
+
+
+                                    //Avaliable Booking
+                                    //Booking Bottom Sheet
+                                    callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId,1);
+
+
+                                } else if (deskStatusModelList.get(i).getStatus() == 4) {
+                                    //Booking Request
+                                    DeskStatusModel deskStatusModel1 = deskStatusModelList.get(i);
+                                    for (int j = 0; j < teamDeskAvaliabilityList.size(); j++) {
+
+                                        if (deskStatusModel1.getId() == teamDeskAvaliabilityList.get(j).getDeskId()) {
+
+                                            requestTeamId = teamDeskAvaliabilityList.get(j).getTeamId();
+                                            requestTeamDeskId = teamDeskAvaliabilityList.get(j).getTeamDeskId();
+                                            System.out.println("RequstedTeamId" + teamDeskAvaliabilityList.get(j).getTeamId());
+                                            System.out.println("RequestedTeamDeskId" + teamDeskAvaliabilityList.get(j).getTeamDeskId());
+
+                                        }
+
+                                    }
+
+                                    //DeskDescription
+                                    getDescriptionUsingDeskId(id);
+
+                                    //Booking Request Bottom Sheet
+
+                                    callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId,4);
+
+
+                                } else if (deskStatusModelList.get(i).getStatus() == 2) {
+                                    //Booking Edit BottomSheet
+                                    getBookingListToEdit(code);
+
+                                } else if (deskStatusModelList.get(i).getStatus() == 0) {
+                                    //Unavaliable
+                                    callDeskUnavaliable(selctedCode, key, id, code, requestTeamId, requestTeamDeskId);
+                                }
+
+
+                            }
+                        }
+
+                    }
+
+
+                } else if (code.equals("5")) {
+
+                    if (carParkingStatusModelList != null) {
+
+                        for (int i = 0; i < carParkingStatusModelList.size(); i++) {
+
+                            if (id == carParkingStatusModelList.get(i).getId()) {
+
+                                if (carParkingStatusModelList.get(i).getStatus() == 0) {
+                                    callDeskUnavaliable(selctedCode, key, id, code, requestTeamId, requestTeamDeskId);
+                                } else if (carParkingStatusModelList.get(i).getStatus() == 1) {
+
+                                    //CarDescription
+                                    getCarDescriptionUsingCardId(id);
+
+                                    //CarBooking
+
+                                    callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId,1);
+                                } else if (carParkingStatusModelList.get(i).getStatus() == 2) {
+                                    //EditCarParking
+                                    getCarBookingEditList(id, code);
+
+                                } else if (carParkingStatusModelList.get(i).getStatus() == 3) {
+
+                                } else if (carParkingStatusModelList.get(i).getStatus() == 4) {
+
+                                    getCarDescriptionUsingCardId(id);
+                                    //CarRequestBooking
+
+                                    callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId,4);
+                                } else if (carParkingStatusModelList.get(i).getStatus() == 0) {
+                                    callDeskUnavaliable(selctedCode, key, id, code, requestTeamId, requestTeamDeskId);
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+
+                } else if (code.equals("4")) {
+
+                    System.out.println("SelectedMeetingRoomId" + meetingRoomId);
+
+
+                    if (meetingStatusModelList != null) {
+
+                        for (int i = 0; i < meetingStatusModelList.size(); i++) {
+
+                            if (id == meetingStatusModelList.get(i).getId()) {
+
+                                if (meetingStatusModelList.get(i).getStatus() == 0) {
+                                    callDeskUnavaliable(meetingRoomName, key, id, code, requestTeamId, requestTeamDeskId);
+                                } else if (meetingStatusModelList.get(i).getStatus() == 1) {
+                                    boolean isReqduest = false;
+                                    callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest);
+                                } else if (meetingStatusModelList.get(i).getStatus() == 2) {
+                                    getMeetingBookingListToEdit(meetingRoomId);
+                                } else if (meetingStatusModelList.get(i).getStatus() == 3) {
+
+                                } else if (meetingStatusModelList.get(i).getStatus() == 4) {
+                                    boolean isReqduest = true;
+                                    callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest);
+                                }
+                                System.out.println("ClickedRoomIdStatus" + meetingStatusModelList.get(i).getStatus() + " " + meetingStatusModelList.get(i).getKey() + " " + meetingStatusModelList.get(i).getId());
+                            }
+
+                        }
+
+                    }
+
+
+                    //getMeetingRoomDescription(meetingRoomId);
+
+                    //callMeetingRoomBookingBottomSheet(meetingRoomId,meetingRoomName);
+
+                    //callMeetingRoomEditListAdapterBottomSheet();
+
+                    /*if(id==3){
+                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
+                        getMeetingBookingListToEdit(meetingRoomId);
+                        //callMeetingRoomEditListAdapterBottomSheet();
+
+                    }else if(id==4){
+                        //MeetingRoomBooking
+                        callMeetingRoomBookingBottomSheet(meetingRoomId,meetingRoomName);
+                    }*/
+
+
+                    //MeetingRoomEditListAdapter
+
+
+                }
+
+            }
+        });
+
+        //binding.firstLayout.setPadding(0,0,50,0);
+        binding.firstLayout.addView(relativeLayout);
 
 
     }

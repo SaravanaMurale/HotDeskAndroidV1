@@ -29,11 +29,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
@@ -52,6 +55,7 @@ import androidx.core.text.HtmlCompat;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.gson.Gson;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -60,8 +64,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
+import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.ui.locate.LocateFragment;
 import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.login.SignInActivity;
@@ -1083,6 +1090,171 @@ public class Utils {
 
         }
         return date;
+    }
+
+    public synchronized static void setLangInPref(LanguagePOJO myRes, Context mContext) {
+        LanguagePOJO langData = myRes;
+        if (langData != null ) {
+            try {
+                if (langData.getGlobal() != null) {
+                    String localeData = new Gson().toJson(langData.getGlobal());
+                    SessionHandler.getInstance().save(mContext, AppConstants.GLOBAL_PAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+            try {
+                if (langData.getWellBeing() != null) {
+                    String localeData = new Gson().toJson(langData.getWellBeing());
+                    SessionHandler.getInstance().save(mContext, AppConstants.WELLBEING_PAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+            /*try {
+                if (langData.getData().getLanguageKeywords().getLanguage().getRegisterpage() != null) {
+                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getRegisterpage());
+                    SessionHandler.getInstance().save(mContext, AppConstants.REGISTERPAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+            try {
+                if (langData.getData().getLanguageKeywords().getLanguage().getForgotpasswordpage() != null) {
+                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getForgotpasswordpage());
+                    SessionHandler.getInstance().save(mContext, AppConstants.FORGOTPASSWORDPAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+            try {
+                if (langData.getData().getLanguageKeywords().getLanguage().getNavigationpagedoctor() != null) {
+                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getNavigationpagedoctor());
+                    SessionHandler.getInstance().save(mContext, AppConstants.NAVPAGEDOCTOR, localeData);
+                }
+            } catch (Exception e) {
+            }
+            try {
+                if (langData.getData().getLanguageKeywords().getLanguage().getNavigationpagepatient() != null) {
+                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getNavigationpagepatient());
+                    SessionHandler.getInstance().save(mContext, AppConstants.NAVPAGEPATIENT, localeData);
+                }
+            } catch (Exception e) {
+            }
+            try {
+                if (langData.getData().getLanguageKeywords().getLanguage().getHomepage() != null) {
+                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getHomepage());
+                    SessionHandler.getInstance().save(mContext, AppConstants.HOMEPAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+            try {
+                if (langData.getData().getLanguageKeywords().getLanguage().getSearchdoctorpage() != null) {
+                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getSearchdoctorpage());
+                    SessionHandler.getInstance().save(mContext, AppConstants.SEARCHDOCTORSPAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+            try {
+                if (langData.getData().getLanguageKeywords().getLanguage().getDoctorprofilepage() != null) {
+                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getDoctorprofilepage());
+                    SessionHandler.getInstance().save(mContext, AppConstants.DOCTORPROFILEPAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+            try {
+                if (langData.getData().getLanguageKeywords().getLanguage().getDoctordashboardpage() != null) {
+                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getDoctordashboardpage());
+                    SessionHandler.getInstance().save(mContext, AppConstants.DOCTORDASHBOARD, localeData);
+                }
+            } catch (Exception e) {
+            }
+            try {
+                if (langData.getData().getLanguageKeywords().getLanguage().getAppointmentspage() != null) {
+                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getAppointmentspage());
+                    SessionHandler.getInstance().save(mContext, AppConstants.APPOINTMENTSPAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+            try {
+                if (langData.getData().getLanguageKeywords().getLanguage().getProfilesettingspage() != null) {
+                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getProfilesettingspage());
+                    SessionHandler.getInstance().save(mContext, AppConstants.PROFILESETTINGSPAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+            try {
+                if (langData.getData().getLanguageKeywords().getLanguage().getChangepasswordpage() != null) {
+                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getChangepasswordpage());
+                    SessionHandler.getInstance().save(mContext, AppConstants.CHANGEPASSWORDPAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+            try {
+                if (langData.getData().getLanguageKeywords().getLanguage().getScheduletimingspage() != null) {
+                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getScheduletimingspage());
+                    SessionHandler.getInstance().save(mContext, AppConstants.SCHEDULETIMINGSPAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+            try {
+                if (langData.getData().getLanguageKeywords().getLanguage().getCheckoutpage() != null) {
+                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getCheckoutpage());
+                    SessionHandler.getInstance().save(mContext, AppConstants.CHECKOUTPAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+            try {
+                if (langData.getData().getLanguageKeywords().getLanguage().getPatientdashboard() != null) {
+                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getPatientdashboard());
+                    SessionHandler.getInstance().save(mContext, AppConstants.PATIENTDASHBOARDPAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+            try {
+                if (langData.getData().getLanguageKeywords().getLanguage().getChatpage() != null) {
+                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getChatpage());
+                    SessionHandler.getInstance().save(mContext, AppConstants.CHATPAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+            try {
+                if (langData.getData().getLanguageKeywords().getLanguage().getCallpage() != null) {
+                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getCallpage());
+                    SessionHandler.getInstance().save(mContext, AppConstants.CALLPAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+            try {
+                if (langData.getData().getLanguageKeywords().getLanguage().getRateAndReviewPage() != null) {
+                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getRateAndReviewPage());
+                    SessionHandler.getInstance().save(mContext, AppConstants.REVIEWPAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+            try {
+                if (langData.getData().getLanguageKeywords().getLanguage().getPrescriptionpage() != null) {
+                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getPrescriptionpage());
+                    SessionHandler.getInstance().save(mContext, AppConstants.PRESCRIPTIONPAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+            try {
+                if (langData.getData().getLanguageKeywords().getLanguage().getPharmacypage() != null) {
+                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getPharmacypage());
+                    SessionHandler.getInstance().save(mContext, AppConstants.PHARMACYPAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+            try {
+                if (langData.getData().getLanguageKeywords().getLanguage().getPharmacyorderspage() != null) {
+                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getPharmacyorderspage());
+                    SessionHandler.getInstance().save(mContext, AppConstants.PHARMACYORDERSPAGE, localeData);
+                }
+            } catch (Exception e) {
+            }*/
+        }
+    }
+
+    public static LanguagePOJO.WellBeing getWellBeingScreenData(Context mContext) {
+        LanguagePOJO.WellBeing wellBeingPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.WELLBEING_PAGE), LanguagePOJO.WellBeing.class);
+        return wellBeingPage;
     }
 
 }

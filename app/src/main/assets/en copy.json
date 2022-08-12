@@ -1,0 +1,294 @@
+{
+    "Login": {
+        "UserName": "Username",
+        "Password": "Password",
+        "Tenant": "Tenant",
+        "InvalidCredentialsTitle": "Error",
+        "InvalidCredentials": "Invalid credentials provided.",
+        "SecondAuthentication": "Second Authentication",
+        "EnterYourCode": "Enter your 6 digit code:",
+        "Authenticate": "Authenticate"       
+     },
+    "ME": {
+        "TAB_TITLE": "Me",
+        "SLIDER": {
+            "HOME": "My Day",
+            "MY_WEEK": "My Week",
+            "MY_TEAM": "My Team",
+            "MY_VIRTUAL_TEAM": "My Virtual Team"
+        },
+        "EMPTY_LIST": "You don't have any bookings.",
+        "EMPTY_TEAM": "You don't have any team assigned to you",
+        "ERRORS": {
+            "UNABLE_TO_CHECKIN": "We're unable to check you in.",
+            "UNABLE_TO_CHECKOUT": "We're unable to check you out.",
+            "CHECKIN_TOO_EARLY": "It's too early",
+            "CHECKIN_TOO_LATE": "It's too late",
+            "NO_DESK_MATCHING": "There is no booking matching scanned desk"
+        },
+        "SUCCESS": {
+            "AUTO_CHECKED_IN": "You have been automatically checked-in",
+            "CHECKED_IN": "You have been checked-in"
+        }
+    },
+    "BOOKING": {
+        "TAB_TITLE": "Book",
+        "SLIDER": {
+            "DAY": "Day booking",
+            "WEEK": "Week booking"
+        },
+        "IN_OFFICE": "In office",
+        "WORKING_FROM_HOME": "Working from home",
+        "OUT_OF_OFFICE": "Out of office",
+        "ALTERNATE_OFFICE": "Working from alternate office",
+        "TRAINING": "Training",
+        "REQUEST_FOR_DESK": "Request for desk",
+        "TYPE_SELECT_TITLE": "Booking type",
+        "DESK_SELECT_TITLE": "Desk",
+        "PROJECT_SELECT_TITLE": "Project",
+        "TIME_FROM_PLACEHOLDER": "from",
+        "TIME_TO_PLACEHOLDER": "to",
+        "DESK_PLACEHOLDER": "Desk",
+        "PROJECT_PLACEHOLDER": "Project",
+        "DESKS": "Desks",
+        "NO_BOOKING": "No booking specified",
+        "TYPE": "Type",
+
+        "RESULT_CODES": {
+            "INVALID_TIMEZONE_ID": "Invalid timezone.",
+            "INVALID_TIMEPERIOD": "Invalid timeperiod.",
+            "INVALID_DESK_BOOKING": "Invalid desk.",
+            "INVALID_REQUEST": "Invalid request.",
+            "USER_TIME_OVERLAP": "Time overlaps another booking.",
+            "INVALID_USAGETYPE": "Invalid usage type.",
+            "INVALID_FROM": "Invalid booking start time.",
+            "INVALID_TO": "Invalid booking end time.",
+            "INVALID_TEAMDESKID": "Invalid desk id.",
+            "TIME_PASSED": "The time passed.",
+            "DESK_UNAVAILABLE": "Desk is unavailable.",
+            "OK": "Booking saved.",
+            "DEFAULT_ERROR": "Something went wrong updating your settings, try again"
+        }
+    },
+    "WELLBEING": {
+        "TAB_TITLE": "Wellbeing",
+        "DESK_REPORT": "Desk report",
+        "DESK_SURVEY": "Desk survey",
+        "BUILDING": "Location",
+        "AIR": "Air",
+        "TEMPERATURE": "Temperature",
+        "NOISE": "Noise",
+        "LIGHT": "Light",
+        "PHONE": "Phone",
+        "KEYBOARD": "Keyboard",
+        "CHAIR": "Chair",
+        "SCREEN": "Screen",
+        "CLEANLINESS": "Cleanliness",
+        "COMMENTS": "Comments",
+        "ENTER_COMMENTS": "Please enter your comments...",
+        "DOWNLOADS": "Downloads",
+        "DOWNLOAD_PDF": "Download a static PDF",
+        "SURVEYS_REPORTS": "Surveys & Reports",
+        "FILL_CHECKLIST": "Fill out a workstation checklist",
+        "FILL_SURVEY": "Workspace Survey",
+        "FILL_REPORT": "Report an Issue",
+        "FILL_REPORT_TEXT": "Submit a report about a desk",
+        "WORKPLACE_ASSESSMENT": "Workspace assessment",
+        "COVID_CERTIFICATION": "COVID19 Self-Certification",
+        "ASSESSMENT_DATE": "Assessment date",
+        "HEALTHY_EATING": "Healthy Eating",
+        "EXERCISE_TIPS": "Exercise Tips",
+        "BENEFITS": "Benefits",
+        "SURVEY": {
+            "ACCESSIBILITY": "Accesibility",
+            "AIR": "Air",
+            "CLEANLINESS": "Cleanliness",
+            "LIGHT": "Light",
+            "NOISE": "Noise",
+            "TEMPERATURE": "Temperature",
+            "CHAIR": "Chair",
+            "DESK": "Desk",
+            "DISPLAY": "Display",
+            "KEYBOARD": "Keyboard",
+            "MOUSE": "Mouse",
+            "PHONE": "Phone",
+            "MOBILE": "Mobile",
+            "WIFI": "Wifi",
+            "LAN": "Lan"
+        },
+        "COVID_SELF_CERTIFICATION":{
+            "CAR": "Car",
+            "PUBLICTRANSPORT": "PublicTransport",
+            "TAXIUBER": "TaxiUber",
+            "BIKE": "Bike",
+            "WALK": "Walk",
+            "WORKFROMHOME": "Work from home"
+        },
+        "PERSONAL_HELP": {
+            "TITLE": "Personal help",
+            "INTRODUCTION": "Sometimes everyone faces challenges in their working and personal lives. Every year, one in four of us will experience a mental health problem. We are dedicated to ensuring you get both support and respect at all times. This page is dedicated to supporting you and giving assistance if and when required. We can direct you to someone to help or you can go to some of the links below to get assistance.",
+            "DESCRIBE_INFO": "If you feel comfortable to describe the issue, please do below and we will forward to the personal help team.",
+            "PLACEHOLDER": "Please tell us about your issue.",
+            "SUBMIT_SUCCESS": "Personal help request sent!",
+            "SUBMIT_FAILED": "Something went wrong sending your request, try again"
+        }
+    },
+    "APPROVALS": {
+        "TAB_TITLE": "Approvals",
+        "PAST_APPROVALS": "Include past approvals"
+    },
+    "REQUESTS": {
+        "TAB_TITLE": "Requests",
+        "PAST_REQUESTS": "Include past requests",
+        "REQUESTET_BY": "Requested by",
+        "DESKS_AVAILABLE": "Desks Available",
+        "REQUEST_DATE": "Request Date",
+        "APPROVED_BY": "Approved by",
+        "REJECTED_BY": "Rejected by",
+        "REQUEST_APPROVED_TEXT": "Request approved!",
+        "REQUEST_REJECTED_TEXT": "Request rejected!",
+        "REQUESTED_ON": "Requested on",
+        "REJECT_COMMENT": "Reject comment",
+        "REJECT": "Reject",
+        "CANCEL": "Cancel",
+        "YOUR_COMMENT": "Your comment",
+        "COMMENT": "Comment",
+        "APPROVE_MODAL_TEXT": "Please pick which desk should be assigned"
+    },
+    "MEETING_ROOMS": {
+        "TAB_TITLE": "Meeting rooms",
+        "ROOM": "Meeting room",
+        "INVITE": "Invite",
+        "PARTICIPIANTS": "Attendees-internal",
+        "SUBJECT": "Subject",
+        "ROOMSAVAILABLE": "Rooms Available",
+        "ROOMS_REQUIREMENTS": "Rooms Requirements",
+        "CHOOSE_NUMBER_OF_PEOPLE": "Number of people",
+        "NO_BOOKING": "You don't have any meeting rooms booked.",
+        "CHOOSE_LOCATION_PLACEHOLDER": "choose location from the list",
+        "CHOOSE_ROOM_PLACEHOLDER": "choose room from the list",
+        "EXTERNAL_ATTENDEES": "Attendees-external (coma separeted)"
+    },
+    "HOLIDAYS": {
+        "TAB_TITLE": "My holidays"
+    },
+    "APPRAISALS": {
+        "TAB_TITLE": "My appraisals"
+    },
+    "DOCS": {
+        "TAB_TITLE": "My docs"
+    },
+    "KUDOS": {
+        "TAB_TITLE": "Kudos"
+    },
+    "GLOBAL": {
+        "INCOMING": "Incoming",
+        "OUTGOING": "Outgoing",
+        "REPORT": "Report",
+        "ADD": "Add",
+        "CANCEL": "Cancel",
+        "SUBMIT": "Submit",
+        "LOCATION": "Location",
+        "DESK": "Desk",
+        "RATING": "Rating",
+        "SELECT": "Select",
+        "CHECK_IN": "Check in",
+        "CHECK_OUT": "Check out",
+        "EDIT": "Edit",
+        "NOT_AVAILABLE": "Not available",
+        "APPROVED": "Approved",
+        "REJECTED": "Rejected",
+        "APPROVE": "Approve",
+        "REJECT": "Reject",
+        "COMMENT": "Comment",
+        "FROM": "From",
+        "START_HOUR": "Start time",
+        "TO": "To",
+        "FINISH_HOUR": "Finish time",
+        "SELECT_DATE": "Select date",
+        "SURVEY": "Survey",
+        "CHECKLIST": "Checklist",
+        "ANONYMOUS": "Anonymous",
+        "YES": "Yes",
+        "NO": "No",
+        "TEAM": "Team",
+        "DELETE": "Delete",
+        "START_TIME": "Start time",
+        "FINISH_TIME": "Finish time",
+        "ID": "Id",
+        "SAVE": "Save",
+        "COMMENTS": "Comments",
+        "OPTIONAL": "optional",
+        "ADD_NEW": "Add new",
+        "UNDER_DEVELOPMENT": "This page is currently under development",
+        "PROJECT": "Project",
+        "DATE": "date",
+        "CONTINUE": "continue",
+        "ADD_BOOKING": "Add booking",
+        "SAVE_ALL": "Save all",
+        "BOOKING_NOT_SPECIFIED": "booking not specified",
+        "CAR_PARK": "Car park",
+        "MEETING_ROOM": "Meeting Room",
+        "REQUESTED": "(Requested)",
+        "AVAILABLE": "available",
+        "ON_REQUEST": "on request",
+        "UNAVAILABLE": "unavailable",
+        "BOOKED_BY_YOU": "booked by me",
+        "BOOKED_BY_USER": "booked by user"
+    },
+    "RESET_PASSWORD": {
+        "REQUEST": {
+            "COMPANY": "Company",
+            "EMAIL": "E-mail",
+            "SUBMITTED_TEXT": "You will receive an email shortly with the instructions on how to reset your password.",
+            "SUBMIT_ERROR_TEXT": "An error occured while submitting your request. Please try again.",
+            "TITLE_TEXT": "Password reset",
+            "BACK_TO_LOGIN_TEXT": "Go back to login",
+            "UNAUTHORIZED": "Wrong username or tenant"
+        }
+    },
+    "ACCOUNT_SETTINGS": {
+        "TITLE_SHOW": "Account settings",
+        "TITLE_EDIT": "Edit account settings",
+        "DESK_PHONE": "Desk Phone",
+        "MOBILE": "Mobile",
+        "TEAM": "Team",
+        "PREFERRED_DESK": "Preferred Desk",
+        "DEFAULT_ZONE": "Default Zone",
+        "WORK_HOURS": "Work Hours",
+        "WORK_HOURS_START": "Start hour",
+        "WORK_HOURS_FINISH": "Finish hour",
+        "SETTINGS_UPDATED": "Account settings updated",
+        "SETTING_UPDATE_FAIL": "Something went wrong updating your settings, try again",
+        "PROFILE_PHOTO": "Profile Photo",
+        "NOTIFICATIONS_SETTING": "Notifications setting"
+    },
+    "LOCATION": {
+        "TAB_TITLE": "Locate"
+    },
+    "SEARCH": {
+        "BAR_PLACEHOLDER": "Search",
+        "NAME": "Name",
+        "EMAIL": "E-mail",
+        "TEAM": "Team",
+        "DESK_PHONE": "Desk phone",
+        "MOBILE": "Mobile",
+        "STATUS": "Status",
+        "LOCATION": "Location",
+        "DESK": "Desk"
+    },
+    "APP_FEEDBACK": {
+        "TITLE": "App Feedback",
+        "INTRODUCTION": "Please tell us if there is anything we can do to improve the application.",
+        "PLACEHOLDER": "Please give us some feedback.",
+        "SUBMIT_SUCCESS": "App feedback sent!",
+        "SUBMIT_FAILED": "Something went wrong sending your feedback, try again"
+    },
+    "ACTION_OVERLAYS": {
+        "SUCCESSFULLY_EDITED": "Successfully edited",
+        "SUCCESSFULLY_BOOKED": "Successfully booked",
+        "SUCCESSFULLY_DELETED": "Successfully deleted",
+        "CHECKED_IN": "Checked In",
+        "CHECKED_OUT": "Checked Out"
+    }
+}

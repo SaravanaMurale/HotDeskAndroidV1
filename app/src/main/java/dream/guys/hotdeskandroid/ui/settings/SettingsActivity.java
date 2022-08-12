@@ -1,64 +1,57 @@
-package dream.guys.hotdeskandroid.ui.wellbeing;
+package dream.guys.hotdeskandroid.ui.settings;
 
 import static dream.guys.hotdeskandroid.utils.Utils.getWellBeingScreenData;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import butterknife.BindView;
 import dream.guys.hotdeskandroid.LanguageListActivity;
 import dream.guys.hotdeskandroid.R;
-import dream.guys.hotdeskandroid.databinding.FragmentWellbeingBinding;
+import dream.guys.hotdeskandroid.databinding.ActivitySettingsBinding;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.ui.home.EditProfileActivity;
 import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
+import dream.guys.hotdeskandroid.ui.wellbeing.NotificationActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 
-public class WellbeingFragment extends Fragment {
-    FragmentWellbeingBinding binding;
+public class SettingsActivity extends AppCompatActivity {
 
-
-    @BindView(R.id.viewProfileBlock)
-    CardView viewProfileBlock;
-
-    @BindView(R.id.btnResetPin)
-    RelativeLayout btnResetPin;
-    @BindView(R.id.btnLogout)
-    RelativeLayout btnLogout;
-
+    ActivitySettingsBinding binding;
+    Context context;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        binding = FragmentWellbeingBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //setContentView(R.layout.activity_settings);
+        binding = ActivitySettingsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        
+        context = SettingsActivity.this;
 
         //New...
         setLanguage();
+
+        if (SessionHandler.getInstance().get(context, AppConstants.LANGUAGE_KEY)!=null){
+            binding.txtLang.setText(SessionHandler.getInstance().get(context, AppConstants.LANGUAGE_KEY));
+        }
 
         binding.btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                SessionHandler.getInstance().removeAll(getContext());
-                SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                Utils.finishAllActivity(getContext());
+                SessionHandler.getInstance().saveBoolean(context, AppConstants.LOGIN_CHECK,false);
+                Utils.finishAllActivity(context);
 
             }
         });
@@ -74,7 +67,7 @@ public class WellbeingFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Intent intent=new Intent(getContext(), EditProfileActivity.class);
+                Intent intent=new Intent(context, EditProfileActivity.class);
                 startActivity(intent);
 
             }
@@ -84,7 +77,7 @@ public class WellbeingFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Intent intent=new Intent(getContext(), LanguageListActivity.class);
+                Intent intent=new Intent(context, LanguageListActivity.class);
                 startActivity(intent);
 
             }
@@ -93,26 +86,30 @@ public class WellbeingFragment extends Fragment {
         binding.notificationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getContext(), NotificationActivity.class);
+                Intent intent=new Intent(context, NotificationActivity.class);
                 startActivity(intent);
             }
         });
 
+        binding.profileBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
-        return root;
     }
 
     public void setLanguage() {
 
-        LanguagePOJO.WellBeing wellBeingPage = getWellBeingScreenData(getActivity());
-        
+        LanguagePOJO.WellBeing wellBeingPage = getWellBeingScreenData(this);
+
         if (wellBeingPage!=null) {
-            
-            binding.profileBack.setText("");
+
             binding.tvContact.setText(wellBeingPage.getDefault());
-            binding.tvEmail.setText(wellBeingPage.getWorkSchedule());
-            binding.tvTeams.setText(wellBeingPage.getWorkHours());
-            binding.tvPhone.setText(wellBeingPage.getLocation());
+            binding.tvOrganization.setText(wellBeingPage.getChangeOrganization());
+            binding.tvDarkMode.setText(wellBeingPage.getDarkMode());
+            binding.tvPhone.setText(wellBeingPage.getWhatsNew());
             binding.tvDesk.setText(wellBeingPage.getDesks());
             binding.tvPreference.setText(wellBeingPage.getPreference());
             binding.tvLang.setText(wellBeingPage.getLanguage());
@@ -121,19 +118,20 @@ public class WellbeingFragment extends Fragment {
             binding.tvPin.setText(wellBeingPage.getSetUpPin());
             binding.tvBio.setText(wellBeingPage.getSetUpBiometric());
             binding.tvReset.setText(wellBeingPage.getResetPassword());
-            binding.tvReport.setText(wellBeingPage.getReportAnIssue());
-            binding.tvHelp.setText(wellBeingPage.getHelp());
+            binding.tvReport.setText(wellBeingPage.getHelpTroubleShoot());
+            binding.tvHelp.setText(wellBeingPage.getAbout());
             binding.tvLogout.setText(wellBeingPage.getLogOut());
-            
+            binding.tvSecurity.setText(wellBeingPage.getSecurity());
+
         }
 
     }
 
     private void checkPinPopUp() {
-        final Dialog dialog = new Dialog(getActivity());
+        final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        int width = (int) (getActivity().getResources().getDisplayMetrics().widthPixels * 0.80);
-        int height = (int) (getActivity().getResources().getDisplayMetrics().heightPixels * 0.20);
+        int width = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.80);
+        int height = (int) (context.getResources().getDisplayMetrics().heightPixels * 0.20);
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.dialog_pin_pop_up);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -144,8 +142,8 @@ public class WellbeingFragment extends Fragment {
         dialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CreatePinActivity.class);
-                getActivity().startActivity(intent);
+                Intent intent = new Intent(context, CreatePinActivity.class);
+                context.startActivity(intent);
                 dialog.dismiss();
             }
         });
