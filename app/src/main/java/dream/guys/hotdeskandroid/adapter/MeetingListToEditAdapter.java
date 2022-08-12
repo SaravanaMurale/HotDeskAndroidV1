@@ -24,8 +24,8 @@ public class MeetingListToEditAdapter extends RecyclerView.Adapter<MeetingListTo
     List<MeetingListToEditResponse> meetingListToEditResponseList;
     OnMeetingEditClickable onMeetingEditClickable;
     public interface OnMeetingEditClickable{
-
         public void onMeetingEditClick(MeetingListToEditResponse meetingListToEditResponse);
+        public void onMeetingDeleteClick(MeetingListToEditResponse meetingListToEditResponse);
 
     }
 
@@ -60,6 +60,15 @@ public class MeetingListToEditAdapter extends RecyclerView.Adapter<MeetingListTo
 
             }
         });
+        holder.editDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                onMeetingEditClickable.onMeetingDeleteClick(meetingListToEditResponseList.get(holder.getAbsoluteAdapterPosition()));
+
+            }
+        });
+
     }
 
     @Override

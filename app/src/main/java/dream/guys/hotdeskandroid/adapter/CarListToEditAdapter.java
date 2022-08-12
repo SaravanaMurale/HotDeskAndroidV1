@@ -15,22 +15,22 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
-import dream.guys.hotdeskandroid.model.response.CarParkingForEditResponse;
+import dream.guys.hotdeskandroid.model.response.CarParkListToEditResponse;
 import dream.guys.hotdeskandroid.utils.Utils;
 
 public class CarListToEditAdapter extends RecyclerView.Adapter<CarListToEditAdapter.CarListToEditViewHolder> {
 
     Context context;
-    List<CarParkingForEditResponse.CarParkBooking> carParkBookings;
+    List<CarParkListToEditResponse> carParkBookings;
     public CarEditClickable carEditClickable;
     private String code;
 
     public   interface CarEditClickable{
-        public void onCarEditClick(CarParkingForEditResponse.CarParkBooking carParkBooking);
+        public void onCarEditClick(CarParkListToEditResponse carParkBooking);
     }
 
 
-    public CarListToEditAdapter(Context context, List<CarParkingForEditResponse.CarParkBooking> carParkBookings, CarEditClickable carEditClickable, String code) {
+    public CarListToEditAdapter(Context context, List<CarParkListToEditResponse> carParkBookings, CarEditClickable carEditClickable, String code) {
 
         this.context=context;
         this.carParkBookings=carParkBookings;

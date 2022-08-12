@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,9 +55,11 @@ import dream.guys.hotdeskandroid.databinding.FragmentBookBinding;
 import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
+import dream.guys.hotdeskandroid.model.response.AmenitiesResponse;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
+import dream.guys.hotdeskandroid.model.response.CarParkListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkLocationsModel;
 import dream.guys.hotdeskandroid.model.response.CarParkingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.DeskRoomCountResponse;
@@ -151,6 +154,7 @@ public class BookFragment extends Fragment implements
     String deskDescriotion = null;
 
     List<ParticipantDetsilResponse> chipList = new ArrayList<>();
+    List<AmenitiesResponse> amenitiesList = new ArrayList<>();
     ParticipantDetsilResponse participantDetsilResponse;
 
 
@@ -178,9 +182,11 @@ public class BookFragment extends Fragment implements
                 } else if (selectedicon==1) {
                     getMeetingBookingListToEdit("" + Utils.getYearMonthDateFormat(date)+"T00:00:00.000Z");
                     calSelectedDate=Utils.getISO8601format(date);
-                } else {
+                } else if(selectedicon==2){
                     getCarParListToEdit(""+Utils.getISO8601format(date),""+Utils.getISO8601format(date));
                     calSelectedDate=Utils.getISO8601format(date);
+                }else {
+
                 }
             }
 
@@ -396,12 +402,13 @@ public class BookFragment extends Fragment implements
             dialog= ProgressDialog.showProgressBar(getContext());
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<CarParkingForEditResponse> call = apiService.getCarParkingEditList(startDate, endDate, 0);
-            call.enqueue(new Callback<CarParkingForEditResponse>() {
+//            System.out.println("check dat"+startDate+" adn"+endDate);
+            Call<List<CarParkListToEditResponse>> call = apiService.getCarParkListToEdit(startDate, endDate);
+            call.enqueue(new Callback<List<CarParkListToEditResponse>>() {
                 @Override
-                public void onResponse(Call<CarParkingForEditResponse> call, Response<CarParkingForEditResponse> response) {
+                public void onResponse(Call<List<CarParkListToEditResponse>> call, Response<List<CarParkListToEditResponse>> response) {
 
-                    CarParkingForEditResponse carParkingForEditResponse = response.body();
+                    List<CarParkListToEditResponse> carParkingForEditResponse = response.body();
 
                     CallCarBookingEditList(carParkingForEditResponse, "5");
 
@@ -416,7 +423,7 @@ public class BookFragment extends Fragment implements
                 }
 
                 @Override
-                public void onFailure(Call<CarParkingForEditResponse> call, Throwable t) {
+                public void onFailure(Call<List<CarParkListToEditResponse>> call, Throwable t) {
                     ProgressDialog.dismisProgressBar(getContext(),dialog);
 //                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 }
@@ -457,7 +464,7 @@ public class BookFragment extends Fragment implements
         }
 
     }
-    private void getParkingSpotList(String id, EditBookingDetails editBookingDetails) {
+    private void getParkingSpotList(String id, EditBookingDetails editBookingDetails,String newEdit) {
         if (Utils.isNetworkAvailable(getActivity())) {
             dialog= ProgressDialog.showProgressBar(getContext());
 
@@ -469,8 +476,11 @@ public class BookFragment extends Fragment implements
                     parkingSpotModelList=response.body();
 
                      ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    if (newEdit.equalsIgnoreCase("new"))
+                        editBookingUsingBottomSheet(editBookingDetails,3,0,"new");
+                    else
+                        editBookingUsingBottomSheet(editBookingDetails,3,0,"edit");
 
-                    editBookingUsingBottomSheet(editBookingDetails,3,0,"new");
 //                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
                 }
@@ -519,7 +529,7 @@ public class BookFragment extends Fragment implements
         }
 
     }
-    private void CallCarBookingEditList(CarParkingForEditResponse carParkingForEditResponse, String code) {
+    private void CallCarBookingEditList(List<CarParkListToEditResponse> carParkingForEditResponse, String code) {
 
         RecyclerView rvCarEditList;
         TextView editClose, editDate, bookingName,addNew;
@@ -544,7 +554,7 @@ public class BookFragment extends Fragment implements
         rvCarEditList.setLayoutManager(linearLayoutManager);
         rvCarEditList.setHasFixedSize(true);
 
-        CarListToEditAdapter carListToEditAdapter = new CarListToEditAdapter(getContext(), carParkingForEditResponse.getCarParkBookings(), this, code);
+        CarListToEditAdapter carListToEditAdapter = new CarListToEditAdapter(getContext(), carParkingForEditResponse, this, code);
         rvCarEditList.setAdapter(carListToEditAdapter);
 
         addNew.setOnClickListener(new View.OnClickListener() {
@@ -553,10 +563,10 @@ public class BookFragment extends Fragment implements
 //                getCarParkLocationsList();
 //                if (SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID)!=null)
                 EditBookingDetails editBookingDetails= new EditBookingDetails();
-                if (carParkingForEditResponse.getCarParkBookings().size() > 0){
-                    editBookingDetails.setEditStartTTime(Utils.splitTime(carParkingForEditResponse.getCarParkBookings().get(carParkingForEditResponse.getCarParkBookings().size()-1)
+                if (carParkingForEditResponse.size() > 0){
+                    editBookingDetails.setEditStartTTime(Utils.splitTime(carParkingForEditResponse.get(carParkingForEditResponse.size()-1)
                             .getMyto()));
-                    editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(carParkingForEditResponse.getCarParkBookings().get(carParkingForEditResponse.getCarParkBookings().size()-1)
+                    editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(carParkingForEditResponse.get(carParkingForEditResponse.size()-1)
                             .getMyto(),12000)));
 
                 }else {
@@ -568,7 +578,7 @@ public class BookFragment extends Fragment implements
 
                 }
                 editBookingDetails.setDate(Utils.convertStringToDateFormet(calSelectedDate));
-                getParkingSpotList(""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID),editBookingDetails);
+                getParkingSpotList(""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID),editBookingDetails,"new");
 
             }
         });
@@ -642,7 +652,109 @@ public class BookFragment extends Fragment implements
     @Override
     public void onMeetingEditClick(MeetingListToEditResponse meetingListToEditResponse) {
 
+        EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
+        editDeskBookingDetails.setEditStartTTime(Utils.splitTime(meetingListToEditResponse.getFrom()));
+        editDeskBookingDetails.setEditEndTime(Utils.splitTime(meetingListToEditResponse.getTo()));
+        editDeskBookingDetails.setDate(Utils.convertStringToDateFormet(meetingListToEditResponse.getDate()));
+        editDeskBookingDetails.setCalId(meetingListToEditResponse.getId());
+        editDeskBookingDetails.setMeetingRoomtId(meetingListToEditResponse.getMeetingRoomId());
+        callAmenitiesListForMeetingRoom(editDeskBookingDetails,
+                editDeskBookingDetails.getEditStartTTime(),
+                editDeskBookingDetails.getEditEndTime(),
+                editDeskBookingDetails.getDate(),
+                editDeskBookingDetails.getMeetingRoomtId(),
+                0);
+
     }
+
+    @Override
+    public void onMeetingDeleteClick(MeetingListToEditResponse meetingListToEditResponse) {
+        EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
+
+//        editBookingUsingBottomSheet(editDeskBookingDetails,1,0,"delete");
+
+        JsonObject jsonOuterObject = new JsonObject();
+        JsonObject jsonInnerObject = new JsonObject();
+        JsonObject jsonChangesObject = new JsonObject();
+        JsonArray jsonChangesetArray = new JsonArray();
+        JsonArray jsonDeletedIdsArray = new JsonArray();
+        jsonOuterObject.addProperty("meetingRoomId",meetingListToEditResponse.getMeetingRoomId());
+        jsonOuterObject.addProperty("handleRecurring",false);
+//        jsonOuterObject.addProperty("teamMembershipId",SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAMMEMBERSHIP_ID));
+
+        BookingsRequest bookingsRequest = new BookingsRequest();
+        ArrayList<BookingsRequest.ChangeSets> list =new ArrayList<>();
+        ArrayList<Integer> list1 =new ArrayList<>();
+//        list1.add(editDeskBookingDetails.getCalId());
+        jsonDeletedIdsArray.add(meetingListToEditResponse.getId());
+        jsonOuterObject.add("changesets", jsonChangesetArray);
+        jsonOuterObject.add("deletedIds", jsonDeletedIdsArray);
+
+        System.out.println("json un"+jsonOuterObject.toString());
+
+        editBookingCall(jsonOuterObject,0,2,"delete");
+
+    }
+
+    private void callAmenitiesListForMeetingRoom(EditBookingDetails editDeskBookingDetails, String editStartTTime,
+                                                 String editEndTime,
+                                                 Date date,
+                                                 int calId, int position) {
+
+        if (Utils.isNetworkAvailable(getActivity())) {
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<UserAllowedMeetingResponse>> call = apiService.userAllowedMeetings();
+            call.enqueue(new Callback<List<UserAllowedMeetingResponse>>() {
+                @Override
+                public void onResponse(Call<List<UserAllowedMeetingResponse>> call, Response<List<UserAllowedMeetingResponse>> response) {
+                    if (response.code()==200){
+
+                        List<Integer> amenitiesIntList =new ArrayList<>();
+                        List<String> amenitiesStringList =new ArrayList<>();
+                        goo:
+                        for (int i=0; i < response.body().size(); i++) {
+                            if (response.body().get(i).getId() == calId && response.body().get(i).getAmenities()!=null) {
+                                for (int j=0;j<response.body().get(i).getAmenities().size();j++){
+                                    amenitiesIntList.add(response.body().get(i).getAmenities().get(j).getId());
+                                }
+                                break goo;
+                            }
+                        }
+
+                        for (int i=0; i<amenitiesIntList.size();i++) {
+                            for (int j=0;j<amenitiesList.size();j++) {
+                                if (amenitiesIntList.get(i) == amenitiesList.get(j).getId()){
+                                    amenitiesStringList.add(amenitiesList.get(j).getName());
+                                }
+                            }
+                        }
+//                        Utils.toastMessage(getActivity(),"welcom bala "+amenitiesStringList.size());
+                        editDeskBookingDetails.setAmenities(amenitiesStringList);
+//                        Log.d(TAG, "onResponse: amenitySize"+editDeskBookingDetails.getAmenities().size());
+                        editBookingUsingBottomSheet(editDeskBookingDetails,2,position,"edit");
+
+                    } else if(response.code()==401){
+                        //Handle if token got expired
+//                        ProgressDialog.dismisProgressBar(getContext(),dialog);
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<UserAllowedMeetingResponse>> call, Throwable t) {
+//                    Log.d(TAG, "onFailure: amen"+t.getMessage());
+                    editBookingUsingBottomSheet(editDeskBookingDetails,2,position,"edit");
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
+    }
+
+
     private void getAddEditDesk(String code,String date) {
         if (Utils.isNetworkAvailable(getActivity())) {
             dialog= ProgressDialog.showProgressBar(getContext());
@@ -734,6 +846,7 @@ public class BookFragment extends Fragment implements
                         editBookingDetails.setDate(Utils.convertStringToDateFormet(calSelectedDate));
                         editBookingDetails.setCalId(0);
                         editBookingDetails.setDeskCode(bookingForEditResponseDesk.get(i).getDeskCode());
+                        editBookingDetails.setDesktId(bookingForEditResponseDesk.get(i).getTeamDeskId());
                         editBookingDetails.setDeskStatus(0);
                     }
                 }
@@ -807,6 +920,8 @@ public class BookFragment extends Fragment implements
             commentRegistration.setVisibility(View.GONE);
             tvComments.setVisibility(View.GONE);
             deskRoomName.setText(editDeskBookingDetails.getDeskCode());
+            selectedDeskId=editDeskBookingDetails.getDesktId();
+
 
         }else if (dskRoomParkStatus==2) {
             llDeskLayout.setVisibility(View.VISIBLE);
@@ -832,7 +947,7 @@ public class BookFragment extends Fragment implements
             commentRegistration.setText(editDeskBookingDetails.getVehicleRegNumber());
             chipGroup.setVisibility(View.GONE);
             capacitylayout.setVisibility(View.GONE);
-            System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
+//            System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
             if (parkingSpotModelList.size() > 0){
 //                System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
                 deskRoomName.setText(""+parkingSpotModelList.get(0).getCode());
@@ -898,7 +1013,7 @@ public class BookFragment extends Fragment implements
                             if (!commentRegistration.getText().toString().isEmpty() &&
                                     !commentRegistration.getText().toString().equalsIgnoreCase(""))
                                 jsonChangesObject.addProperty("comments",commentRegistration.getText().toString());
-                            if (selectedDeskId!=0){
+                            if (selectedDeskId!=0 && dskRoomParkStatus==1){
                                 jsonChangesObject.addProperty("teamDeskId",selectedDeskId);
                             }
 
@@ -928,9 +1043,9 @@ public class BookFragment extends Fragment implements
                     changeSets.setId(editDeskBookingDetails.getCalId());
                     changeSets.setDate(""+Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+"T00:00:00.000Z");
                     JsonObject jsonObject = new JsonObject();
-                    if (selectedDeskId!=0){
-                        jsonChangesObject.addProperty("teamDeskId",selectedDeskId);
-                    }
+//                    if (selectedDeskId!=0){
+//                        jsonChangesObject.addProperty("teamDeskId",selectedDeskId);
+//                    }
                     if (newEditStatus.equalsIgnoreCase("new")){
                         jsonChangesObject.addProperty("usageTypeId", "2");
                         jsonChangesObject.addProperty("timeZoneId", "India Standard Time");
@@ -950,7 +1065,7 @@ public class BookFragment extends Fragment implements
                     System.out.println("json un"+jsonOuterObject.toString());
 
                     if (jsonChangesObject.size() > 0){
-                        editBookingCall(jsonOuterObject,position,dskRoomParkStatus);
+                        editBookingCall(jsonOuterObject,position,dskRoomParkStatus,newEditStatus);
                     }
                     selectedDeskId=0;
                     roomBottomSheet.dismiss();
@@ -1019,7 +1134,7 @@ public class BookFragment extends Fragment implements
 
 
     }
-    public void editBookingCall(JsonObject data,int position,int dskRoomStatus) {
+    public void editBookingCall(JsonObject data,int position,int dskRoomStatus,String newEditDelete) {
         if (Utils.isNetworkAvailable(getActivity())) {
             dialog= ProgressDialog.showProgressBar(getContext());
             // TODO: 06-07-2022
@@ -1045,8 +1160,27 @@ public class BookFragment extends Fragment implements
 //                        Utils.showCustomAlertDialog(getActivity(),"Update Success");
 //                        Toast.makeText(getActivity(), "Success Bala", Toast.LENGTH_SHORT).show();
                         if (response.body().getResultCode()!=null && response.body().getResultCode().equalsIgnoreCase("ok")){
-                            openCheckoutDialog("Booking Updated",dskRoomStatus);
-                            tabToggleViewClicked(0);
+                            if (newEditDelete.equalsIgnoreCase("new"))
+                                openCheckoutDialog("Booking Successful",dskRoomStatus);
+                            else if (newEditDelete.equalsIgnoreCase("edit"))
+                                openCheckoutDialog("Booking Updated",dskRoomStatus);
+                            else
+                                openCheckoutDeleteDialog("Booking Deleted",dskRoomStatus);
+
+                            switch (dskRoomStatus){
+                                case 1:
+                                    tabToggleViewClicked(0);
+                                    break;
+                                case 2:
+                                    tabToggleViewClicked(1);
+                                    break;
+                                case 3:
+                                    tabToggleViewClicked(2);
+                                    break;
+                                default:
+                                    break;
+                            }
+
 //                            openCheckoutDialog("Booking Updated");
                         }else {
                             Utils.showCustomAlertDialog(getActivity(),"Booking Not Updated "+response.body().getResultCode().toString());
@@ -1101,9 +1235,76 @@ public class BookFragment extends Fragment implements
         });
         popDialog.show();
     }
+    private void openCheckoutDeleteDialog(String mesg, int dskRoomStatus) {
+        Dialog popDialog = new Dialog(getActivity());
+        popDialog.setContentView(R.layout.layout_checkout_success);
+        popDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        NavController navController= Navigation.findNavController(view);
+
+        TextView checkDialogClose = popDialog.findViewById(R.id.checkDialogClose);
+        TextView dialogMsg = popDialog.findViewById(R.id.dialog_text);
+        ImageView ivChecout = popDialog.findViewById(R.id.ivCheckoutSuccess);
+//        ivChecout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figma_red));
+        ivChecout.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.figma_red));
+        dialogMsg.setText(""+mesg);
+        if (dskRoomStatus==1)
+            bookEditBottomSheet.dismiss();
+        else if(dskRoomStatus==3)
+            bookEditBottomSheet.dismiss();
+        else{
+            bookEditBottomSheet.dismiss();
+            roomBottomSheet.dismiss();
+        }
+
+        checkDialogClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popDialog.dismiss();
+            }
+        });
+        popDialog.show();
+    }
 
     @Override
     public void onEditClick(BookingForEditResponse.Bookings bookings, String code, List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities) {
+        EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
+        editDeskBookingDetails.setEditStartTTime(Utils.splitTime(bookings.getFrom()));
+        editDeskBookingDetails.setEditEndTime(Utils.splitTime(bookings.getMyto()));
+        editDeskBookingDetails.setDate(Utils.convertStringToDateFormet(bookings.getDate()));
+        editDeskBookingDetails.setCalId(bookings.getId());
+        editDeskBookingDetails.setDeskCode(bookings.getDeskCode());
+        editDeskBookingDetails.setDeskStatus(0);
+        editDeskBookingDetails.setDesktId(bookings.getDeskId());
+        editBookingUsingBottomSheet(editDeskBookingDetails,1,0,"edit");
+
+
+    }
+
+    @Override
+    public void ondeskDeleteClick(BookingForEditResponse.Bookings bookings, String code, List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities) {
+        EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
+        editDeskBookingDetails.setCalId(bookings.getId());
+//        editBookingUsingBottomSheet(editDeskBookingDetails,1,0,"delete");
+
+        JsonObject jsonOuterObject = new JsonObject();
+        JsonObject jsonInnerObject = new JsonObject();
+        JsonObject jsonChangesObject = new JsonObject();
+        JsonArray jsonChangesetArray = new JsonArray();
+        JsonArray jsonDeletedIdsArray = new JsonArray();
+        jsonOuterObject.addProperty("teamId",SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
+        jsonOuterObject.addProperty("teamMembershipId",SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAMMEMBERSHIP_ID));
+
+        BookingsRequest bookingsRequest = new BookingsRequest();
+        ArrayList<BookingsRequest.ChangeSets> list =new ArrayList<>();
+        ArrayList<Integer> list1 =new ArrayList<>();
+//        list1.add(editDeskBookingDetails.getCalId());
+        jsonDeletedIdsArray.add(editDeskBookingDetails.getCalId());
+        jsonOuterObject.add("changesets", jsonChangesetArray);
+        jsonOuterObject.add("deletedIds", jsonDeletedIdsArray);
+
+        System.out.println("json un"+jsonOuterObject.toString());
+
+            editBookingCall(jsonOuterObject,0,1,"delete");
 
     }
 
@@ -1114,7 +1315,17 @@ public class BookFragment extends Fragment implements
     }
 
     @Override
-    public void onCarEditClick(CarParkingForEditResponse.CarParkBooking carParkBooking) {
+    public void onCarEditClick(CarParkListToEditResponse carParkBooking) {
+        EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
+        editDeskBookingDetails.setCalId(carParkBooking.getId());
+        editDeskBookingDetails.setParkingSlotId(carParkBooking.getParkingSlotId());
+        editDeskBookingDetails.setEditStartTTime(Utils.splitTime(carParkBooking.getFrom()));
+        editDeskBookingDetails.setEditEndTime(Utils.splitTime(carParkBooking.getMyto()));
+        editDeskBookingDetails.setDate(Utils.convertStringToDateFormet(carParkBooking.getDate()));
+        editDeskBookingDetails.setVehicleRegNumber(carParkBooking.getVehicleRegNumber());
+        editDeskBookingDetails.setParkingSlotCode(carParkBooking.getParkingSlotName());
+        getParkingSpotList(""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID),editDeskBookingDetails,"edit");
+
 
     }
 
@@ -1283,7 +1494,7 @@ public class BookFragment extends Fragment implements
 
         MeetingRoomRequest.Changeset m = meetingRoomRequest.new Changeset();
         m.setId(0);
-        m.setDate(calSelectedDate + "T" + "00:00:00.000" + "Z");
+        m.setDate(Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + "T" + "00:00:00.000" + "Z");
 
         MeetingRoomRequest.Changeset.Changes changes = m.new Changes();
         changes.setFrom(getCurrentDate() + "" + "T" + Utils.convert12HrsTO24Hrs(startRoomTime) + ":" + "00" + "." + "000" + "Z");

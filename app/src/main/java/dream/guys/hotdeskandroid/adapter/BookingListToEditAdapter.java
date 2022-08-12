@@ -28,9 +28,8 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
 
 
     public interface OnEditClickable{
-
         public void onEditClick(BookingForEditResponse.Bookings bookings, String code, List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities);
-
+        public void ondeskDeleteClick(BookingForEditResponse.Bookings bookings, String code, List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities);
     }
 
 
@@ -72,8 +71,15 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
         holder.editTextEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 onEditClickable.onEditClick(bookingsListToEdit.get(holder.getAbsoluteAdapterPosition()),code,teamDeskAvailabilities);
+
+            }
+        });
+        holder.editDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                onEditClickable.ondeskDeleteClick(bookingsListToEdit.get(holder.getAbsoluteAdapterPosition()),code,teamDeskAvailabilities);
 
 
             }

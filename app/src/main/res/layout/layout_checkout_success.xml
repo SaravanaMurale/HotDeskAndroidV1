@@ -35,9 +35,8 @@
                 android:id="@+id/ivCheckoutSuccess"
                 android:layout_width="@dimen/_200sdp"
                 android:layout_height="@dimen/_200sdp"
-                android:src="@drawable/checkout_success"
                 android:layout_centerInParent="true"
-                />
+                android:src="@drawable/checkout_success" />
 
             <TextView
                 android:id="@+id/checkDialogClose"

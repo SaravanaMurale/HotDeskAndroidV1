@@ -1,6 +1,5 @@
 package dream.guys.hotdeskandroid.ui.locate;
 
-import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDateWithDay;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentTime;
@@ -17,7 +16,6 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.ScaleAnimation;
@@ -85,6 +83,7 @@ import dream.guys.hotdeskandroid.model.request.SelectCode;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkAvalibilityResponse;
+import dream.guys.hotdeskandroid.model.response.CarParkListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingslotsResponse;
@@ -102,7 +101,6 @@ import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
-import okhttp3.internal.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -2243,8 +2241,8 @@ RepeateDataAdapter.repeatInterface {
         rvCarEditList.setLayoutManager(linearLayoutManager);
         rvCarEditList.setHasFixedSize(true);
 
-        CarListToEditAdapter carListToEditAdapter = new CarListToEditAdapter(getContext(), carParkingForEditResponse.getCarParkBookings(), this, code);
-        rvCarEditList.setAdapter(carListToEditAdapter);
+//        CarListToEditAdapter carListToEditAdapter = new CarListToEditAdapter(getContext(), carParkingForEditResponse, this, code);
+//        rvCarEditList.setAdapter(carListToEditAdapter);
 
         editClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -3582,6 +3580,11 @@ RepeateDataAdapter.repeatInterface {
 
     }
 
+    @Override
+    public void ondeskDeleteClick(BookingForEditResponse.Bookings bookings, String code, List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities) {
+
+    }
+
     private void doEditDeskBooking(BookingForEditResponse.Bookings bookings, String startTime, String endTime) {
 
         //dialog=ProgressDialog.showProgressBar(getContext());
@@ -3690,7 +3693,7 @@ RepeateDataAdapter.repeatInterface {
     }
 
     @Override
-    public void onCarEditClick(CarParkingForEditResponse.CarParkBooking carParkBooking) {
+    public void onCarEditClick(CarParkListToEditResponse carParkBooking) {
 
         TextView startTime, endTime, date, editBookingBack;
 
@@ -3784,7 +3787,7 @@ RepeateDataAdapter.repeatInterface {
                 if (status) {
                     //Edit CarParkBooking
                     bottomSheetDialog.dismiss();
-                    doEditCarParkBooking(carParkBooking, startTime.getText().toString(), endTime.getText().toString());
+//                    doEditCarParkBooking(carParkBooking, startTime.getText().toString(), endTime.getText().toString());
                 }
 
 
@@ -4346,6 +4349,11 @@ RepeateDataAdapter.repeatInterface {
         });
 
         bottomSheetDialog.show();
+
+    }
+
+    @Override
+    public void onMeetingDeleteClick(MeetingListToEditResponse meetingListToEditResponse) {
 
     }
 

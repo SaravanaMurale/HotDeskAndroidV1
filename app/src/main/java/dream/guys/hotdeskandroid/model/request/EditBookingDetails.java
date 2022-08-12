@@ -12,6 +12,7 @@ public class EditBookingDetails {
     String bookedForUser;
     String parkingSlotCode;
     int calId=0;
+    int desktId=0;
     int parkingSlotId=0;
     int meetingRoomtId=0;
     int deskStatus=0;
@@ -21,6 +22,14 @@ public class EditBookingDetails {
 
     public List<String> getAmenities() {
         return amenities;
+    }
+
+    public int getDesktId() {
+        return desktId;
+    }
+
+    public void setDesktId(int desktId) {
+        this.desktId = desktId;
     }
 
     public void setAmenities(List<String> amenities) {

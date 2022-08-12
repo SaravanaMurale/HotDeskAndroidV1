@@ -532,6 +532,11 @@ public class Utils {
 
         return df.format(date);
     }
+    public static String getISO8601formatSss(Date date){
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm.sss'Z'");
+
+        return df.format(date);
+    }
 
     public static String getYearMonthDateFormat(Date date){
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");

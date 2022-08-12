@@ -8,9 +8,42 @@
     tools:context=".ui.book.BookFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/profile_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:text="Calendar Booking"
+                    android:textSize="@dimen/_16sdp"
+                    android:theme="@style/TextBold"
+                    android:layout_centerVertical="true"
+                    app:tint="@color/figmaBlue" />
+
+
+            </RelativeLayout>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_2sdp"
+            android:background="@color/figmaBgGrey"
+            />
         <LinearLayout
             android:id="@+id/head"
             android:layout_width="match_parent"
@@ -25,6 +58,7 @@
                 android:id="@+id/ll_book"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_5sdp"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -224,7 +258,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginLeft="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_9sdp"
                     android:background="@drawable/rectangle_bg_with_corner"
                     android:drawableRight="@drawable/locate_location"
@@ -343,7 +377,7 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_15sdp"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 
 
