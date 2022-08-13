@@ -1,12 +1,8 @@
 package dream.guys.hotdeskandroid.ui.teams;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,34 +12,30 @@ import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.HorizontalCalendarView;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 import dream.guys.hotdeskandroid.R;
-import dream.guys.hotdeskandroid.databinding.FragmentTeamsBinding;
+import dream.guys.hotdeskandroid.databinding.ActivityUpComingBookingBinding;
 
-public class TeamsFragment extends Fragment {
+public class UpComingBookingActivity extends AppCompatActivity {
 
-    FragmentTeamsBinding binding;
     int day, month, year;
     HorizontalCalendar horizontalCalendar;
     String currendate = "",selectedDate="";
     HorizontalCalendarView calendarView;
+    ActivityUpComingBookingBinding binding;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_up_coming_booking);
+
+        binding = ActivityUpComingBookingBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        uiInit();
+
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        binding = FragmentTeamsBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+    private void uiInit() {
 
-        uiInit(root);
-
-        return root;
-    }
-
-    private void uiInit(View root) {
         calendarView = binding.calendarView;
         Calendar startDate = Calendar.getInstance();
 
@@ -58,11 +50,11 @@ public class TeamsFragment extends Fragment {
 
         //final HorizontalCalendar horizontalCalendar
         horizontalCalendar
-                = new HorizontalCalendar.Builder(root, R.id.calendarView)
+                = new HorizontalCalendar.Builder(this, R.id.calendarView)
                 .range(startDate, endDate)
-                .mode(HorizontalCalendar.Mode.DAYS)
+                .mode(HorizontalCalendar.Mode.MONTHS)
                 .datesNumberOnScreen(5)
-                .configure().formatBottomText("EEE").formatMiddleText("dd").formatTopText("MMM yyyy")
+                .configure().formatBottomText("yyyy").formatTopText("MMM")
                 .showBottomText(true)
                 .textSize(10.00f, 10.00f, 10.00f)
                 .end()
@@ -95,7 +87,5 @@ public class TeamsFragment extends Fragment {
             }
         });
 
-
     }
-
 }

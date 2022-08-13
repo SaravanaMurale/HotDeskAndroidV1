@@ -1,14 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.teams.TeamsFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.teams.TeamsFragment"
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Teams Fragment" />
+        android:orientation="vertical"
+        android:layout_margin="@dimen/_12sdp">
 
-</FrameLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="My Team"
+                android:textColor="@color/figmaBlack"
+                android:textSize="@dimen/_15sdp"
+                android:theme="@style/TextBold"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="My Team"
+                android:textColor="@color/figmaBlack"
+                android:textSize="@dimen/_12sdp"
+                android:theme="@style/TextRegular"
+                android:layout_below="@+id/title"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="My Team"
+                android:textColor="@color/figmaBlue"
+                android:textSize="@dimen/_13sdp"
+                android:theme="@style/TextBold"
+                android:layout_centerVertical="true" />
+
+        </RelativeLayout>
+
+        <devs.mulham.horizontalcalendar.HorizontalCalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:visibility="visible"
+            app:textColorNormal="@android:color/black"
+            app:textColorSelected="@color/figmaBlue"
+            android:layout_marginTop="@dimen/_8sdp"/>
+
+        <LinearLayout
+            android:id="@+id/search_block"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible"
+            android:background="@drawable/rectangle_greybg_with_corner"
+            android:layout_marginTop="@dimen/_8sdp">
+
+            <!--Notification,Search-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                >
+
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:src="@drawable/search_1px"
+                    android:id="@+id/search_ic"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/_5sdp"/>
+
+                <EditText
+                    android:id="@+id/serach_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/close"
+                    android:backgroundTint="@color/white"
+                    android:hint="Search"
+                    android:inputType="text"
+                    android:layout_toRightOf="@+id/search_ic"/>
+
+                <ImageView
+                    android:id="@+id/close"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:src="@drawable/close_circle" />
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp">
+
+            <TextView
+                android:id="@+id/list_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="Working from London Office"
+                android:textColor="@color/figmaBlack"
+                android:textSize="@dimen/_14sdp"
+                android:theme="@style/TextRegular"
+                android:layout_toStartOf="@+id/tv_exapnd"/>
+
+            <TextView
+                android:id="@+id/tv_adddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="Londan"
+                android:textColor="@color/figmaBlack"
+                android:textSize="@dimen/_14sdp"
+                android:theme="@style/TextRegular"
+                android:layout_below="@+id/list_title"
+                android:layout_marginTop="@dimen/_3sdp"/>
+
+            <TextView
+                android:id="@+id/tv_exapnd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="Expand all"
+                android:textColor="@color/figmaBlue"
+                android:textSize="@dimen/_12sdp"
+                android:theme="@style/TextRegular"
+                android:layout_marginStart="@dimen/_4sdp"/>
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/recyclerView"
+            android:layout_marginTop="@dimen/_8sdp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/expandRecyclerView"
+            android:layout_marginTop="@dimen/_8sdp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

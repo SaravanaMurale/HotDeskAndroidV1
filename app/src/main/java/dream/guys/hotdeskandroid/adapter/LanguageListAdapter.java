@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -58,20 +59,19 @@ public class LanguageListAdapter extends RecyclerView.Adapter<LanguageListAdapte
     @Override
     public void onBindViewHolder(@NonNull LanguageListViewHolder holder, int position) {
 
-        /*String imageName = languageListResponseList.get(position).getImagesrc();
+        String imageName = languageListResponseList.get(position).getImagesrc();
 
         // get resource id by image name
         Resources resources = context.getResources();
-        final int resourceId = resources.getIdentifier(imageName, "drawable", context.getPackageName());
+        //String resName = imageName.split("\\.")[2];
+        int resourceId = resources.getIdentifier(imageName, "drawable", context.getPackageName());
 
         // get drawable by resource id
-        //Drawable drawable = resources.getDrawable(resourceId);
+        Drawable drawable = ResourcesCompat.getDrawable(resources,resourceId,context.getTheme());// resources.getDrawable(resourceId);
 
-        // get bitmap by resource id
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resourceId);
-        holder.languageFlag.setImageBitmap(bitmap);*/
+        holder.languageFlag.setImageDrawable(drawable);
 
-        //Glide.with(context).load(bitmap).into(holder.languageFlag);
+        //Glide.with(context).load(drawable).into(holder.languageFlag);
         holder.languageCountryName.setText(languageListResponseList.get(position).getText());
 
         holder.languageAdapterBlock.setOnClickListener(new View.OnClickListener() {
