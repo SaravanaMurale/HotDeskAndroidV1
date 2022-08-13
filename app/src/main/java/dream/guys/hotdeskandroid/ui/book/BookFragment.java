@@ -427,11 +427,11 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onResponse(Call<List<CarParkListToEditResponse>> call, Response<List<CarParkListToEditResponse>> response) {
 
-                    List<CarParkListToEditResponse> carParkingForEditResponse = response.body();
+                   /* List<CarParkListToEditResponse> carParkingForEditResponse = response.body();
 
                     CallCarBookingEditList(carParkingForEditResponse, "5");
 
-                     ProgressDialog.dismisProgressBar(getContext(),dialog);
+                     ProgressDialog.dismisProgressBar(getContext(),dialog);*/
 //                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
                 }
@@ -490,11 +490,11 @@ public class BookFragment extends Fragment implements
                     parkingSpotModelList=response.body();
 
                      ProgressDialog.dismisProgressBar(getContext(),dialog);
-                    if (newEdit.equalsIgnoreCase("new"))
+                   /* if (newEdit.equalsIgnoreCase("new"))
                         editBookingUsingBottomSheet(editBookingDetails,3,0,"new");
                     else
                         editBookingUsingBottomSheet(editBookingDetails,3,0,"edit");
-
+*/
 //                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
                 }
