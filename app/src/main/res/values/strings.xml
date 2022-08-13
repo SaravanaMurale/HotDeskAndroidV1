@@ -55,4 +55,30 @@
     <string name="noty_booking_content">You will be notified when a booking has been created on your behalf, modified, accepted or rejected.</string>
     <string name="noty_covid_reminder_title">Covid-19 self-certification reminders</string>
 
+
+    <!--Wellbeing-->
+    <string name="wellbeing">Wellbeing</string>
+    <string name="health_safety">Health and Safety</string>
+    <string name="health_tips">Health tips</string>
+    <string name="fire_wardens">Fire wardens</string>
+    <string name="first_aid">First aid</string>
+    <string name="mental_health">Mental health</string>
+    <string name="human_resources">Human resources</string>
+    <string name="leave">Leave</string>
+    <string name="places">Places</string>
+    <string name="report_an_issue">Report an issue</string>
+    <string name="benefits">Benefits</string>
+    <string name="trainging">Training</string>
+    <string name="notices">Notices</string>
+    <string name="report_hazard">Report a hazzard</string>
+    <string name="eva_plan">Evacuation plan</string>
+    <string name="your_fire_warden">Your Fire wardens</string>
+    <string name="today">Today</string>
+    <string name="create_issue">Create an issue to raise to your administration team</string>
+    <string name="location">Location</string>
+    <string name="select_past">Select past booking(if applicable)</string>
+    <string name="report_select_date">Date(if applicable)</string>
+    <string name="desc">Description</string>
+    <string name="submit">Submit</string>
+
 </resources>

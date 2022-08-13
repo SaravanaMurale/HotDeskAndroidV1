@@ -27,6 +27,12 @@
             android:name=".ui.teams.UpComingBookingActivity"
             android:exported="false" />
         <activity
+            android:name=".ReportAnIssueActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FireWardensActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.settings.SettingsActivity"
             android:exported="false" />
         <activity
