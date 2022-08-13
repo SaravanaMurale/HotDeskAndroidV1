@@ -80,5 +80,31 @@
     <string name="report_select_date">Date(if applicable)</string>
     <string name="desc">Description</string>
     <string name="submit">Submit</string>
+    <string name="videos">Videos</string>
+    <string name="guides">Guides</string>
+    <string name="req_training">Request Training</string>
+    <string name="crate_notice">Create a notice</string>
+    <string name="topic">Topic</string>
+    <string name="recipents">Recipients</string>
+    <string name="select">Select</string>
+    <string name="avaliable_from">Avaliable From</string>
+    <string name="avaliable_to">Avaliable To</string>
+    <string name="if_applicable">If applicable</string>
+    <string name="active_notice">Active Notices</string>
+    <string name="issue_date">Issue date</string>
+    <string name="req_time_off">Request time off</string>
+    <string name="type">Type</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="half_day">Half Day</string>
+    <string name="note">Note</string>
+    <string name="send_request">Send request</string>
+
+    <string name="annual">Annual leave</string>
+    <string name="sick">Sick leave</string>
+    <string name="family">Family/Compassionate leave</string>
+    <string name="medical_appoint">Medical appointment</string>
+    <string name="other">Otehr</string>
+
 
 </resources>

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.wellbeing.FireWardensActivity">
+    android:orientation="vertical"
+    tools:context=".ui.wellbeing.CreateNoticeActivity">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,14 +33,14 @@
         <ImageView
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
-            android:src="@drawable/fire"
+            android:src="@drawable/notification_icon"
             android:id="@+id/profile_update"
             />
         <TextView
             android:id="@+id/activityTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/fire_wardens"
+            android:text="@string/notices"
             android:layout_marginLeft="@dimen/_10sdp"
             android:textColor="@color/black"
             android:textSize="@dimen/_15sdp"
@@ -49,9 +51,9 @@
     </LinearLayout>
 
 
-    <!--Report a hazzard-->
+    <!--Create Notice-->
     <androidx.cardview.widget.CardView
-        android:id="@+id/reportHazzardBlock"
+        android:id="@+id/createNoticeBlock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="@dimen/_5sdp"
@@ -66,12 +68,13 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/tvReportAnHazzard"
+                android:id="@+id/tvCreateNotice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:padding="@dimen/_5sdp"
-                android:text="@string/report_hazard"
+                android:textStyle="bold"
+                android:text="@string/crate_notice"
                 android:textColor="@color/black"
                 android:textSize="14dp" />
 
@@ -79,80 +82,56 @@
 
     </androidx.cardview.widget.CardView>
 
-    <!--Evacuation Plan-->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/evacuationBlock"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/reportHazzardBlock"
-        app:cardCornerRadius="@dimen/_5sdp"
-        android:background="@drawable/button_white_bg"
-        app:cardElevation="@dimen/_5sdp"
-        android:layout_marginLeft="@dimen/_20sdp"
-        android:layout_marginRight="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_10sdp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tvEvacuation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:padding="@dimen/_5sdp"
-                android:text="@string/eva_plan"
-                android:textColor="@color/black"
-                android:textSize="14dp" />
-
-        </RelativeLayout>
-
-    </androidx.cardview.widget.CardView>
-
-
-    <!--Date-->
-    <LinearLayout
-        android:id="@+id/dayBlock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/evacuationBlock"
-        android:layout_marginTop="@dimen/_30sdp"
-        android:layout_marginLeft="@dimen/_20sdp"
-        android:orientation="vertical"
-        >
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/your_fire_warden"
+        android:text="@string/active_notice"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
         />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/today"
-            />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Wed,6 June"
+            android:text="@string/topic"
+            android:layout_weight="1"
+            android:gravity="center"
             />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/recipents"
+            android:layout_weight="1"
+            android:gravity="center"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/issue_date"
+            android:layout_weight="1"
+            android:gravity="center"
+            />
+
+
 
     </LinearLayout>
 
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvFireWardens"
+        android:id="@+id/rvActiveNotices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/dayBlock"
-        android:layout_marginLeft="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_20sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="10"
-        tools:listitem="@layout/layout_firewardens_adapter"
+        tools:listitem="@layout/layout_notice_list_adapter"
+        android:layout_marginTop="@dimen/_10sdp"
         />
 
-
-</RelativeLayout>
+</LinearLayout>

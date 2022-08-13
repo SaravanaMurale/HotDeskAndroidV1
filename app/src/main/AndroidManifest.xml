@@ -24,13 +24,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HotDeskAndroid">
         <activity
+            android:name=".ui.wellbeing.LeaveActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.wellbeing.CreateNoticeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.wellbeing.TrainingActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.teams.UpComingBookingActivity"
             android:exported="false" />
         <activity
-            android:name=".ReportAnIssueActivity"
+            android:name=".ui.wellbeing.ReportAnIssueActivity"
             android:exported="false" />
         <activity
-            android:name=".FireWardensActivity"
+            android:name=".ui.wellbeing.FireWardensActivity"
             android:exported="false" />
         <activity
             android:name=".ui.settings.SettingsActivity"
