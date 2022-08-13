@@ -253,7 +253,6 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
-                    android:enabled="false"
                     android:text="none"
                     android:textColor="@color/figmaBlue"
                     android:theme="@style/TextBold" />

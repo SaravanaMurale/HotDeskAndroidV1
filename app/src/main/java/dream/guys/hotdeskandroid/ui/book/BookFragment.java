@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
@@ -126,6 +127,8 @@ public class BookFragment extends Fragment implements
     int selectedicon = 0;
     String calSelectedDate="";
     String calSelectedMont="";
+
+    String type="none";
 
     TextView startTime,endTime,repeat,date,deskRoomName,locationAddress;
     String repeatValue="None";
@@ -425,10 +428,11 @@ public class BookFragment extends Fragment implements
                 public void onResponse(Call<List<CarParkListToEditResponse>> call, Response<List<CarParkListToEditResponse>> response) {
 
                     List<CarParkListToEditResponse> carParkingForEditResponse = response.body();
+//                    List<CarParkListToEditResponse> carParkingForEditResponse = response.body();
 
                     CallCarBookingEditList(carParkingForEditResponse, "5");
 
-                     ProgressDialog.dismisProgressBar(getContext(),dialog);
+                     ProgressDialog.dismisProgressBar(getContext(),dialog);*/
 //                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
                 }
@@ -455,7 +459,7 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onResponse(Call<List<CarParkLocationsModel>> call, Response<List<CarParkLocationsModel>> response) {
 
-                    CarParkLocationsModel carParkLocationsModel = response.body().get(0);
+//                    CarParkLocationsModel carParkLocationsModel = response.body().get(0);
 //                    getParkingSpotList(""+carParkLocationsModel.getId(), editBookingDetails);
 
                      ProgressDialog.dismisProgressBar(getContext(),dialog);
@@ -1005,7 +1009,7 @@ public class BookFragment extends Fragment implements
         repeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "reapat", Toast.LENGTH_SHORT).show();
+                repeatBottomSheetDialog();
             }
         });
         continueEditBook.setOnClickListener(new View.OnClickListener() {
@@ -1112,6 +1116,537 @@ public class BookFragment extends Fragment implements
         roomBottomSheet.show();
 
     }
+
+    private void repeatBottomSheetDialog()
+    {
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_repeat_new,
+                new RelativeLayout(getContext()))));
+
+        ConstraintLayout cl_daily_layout = bottomSheetDialog.findViewById(R.id.cl_daily_layout);
+        ConstraintLayout cl_weekly_layout = bottomSheetDialog.findViewById(R.id.cl_weekly_layout);
+        ConstraintLayout cl_none = bottomSheetDialog.findViewById(R.id.cl_none);
+        ConstraintLayout cl_daily = bottomSheetDialog.findViewById(R.id.cl_daily);
+        ConstraintLayout cl_weekly = bottomSheetDialog.findViewById(R.id.cl_weekly);
+        ConstraintLayout cl_monthly = bottomSheetDialog.findViewById(R.id.cl_monthly);
+        ConstraintLayout cl_yearly = bottomSheetDialog.findViewById(R.id.cl_yearly);
+        ImageView iv_none = bottomSheetDialog.findViewById(R.id.iv_none);
+        ImageView iv_daily = bottomSheetDialog.findViewById(R.id.iv_daily);
+        ImageView iv_weekly = bottomSheetDialog.findViewById(R.id.iv_weekly);
+        ImageView iv_monthly = bottomSheetDialog.findViewById(R.id.iv_monthly);
+        ImageView iv_yearly = bottomSheetDialog.findViewById(R.id.iv_yearly);
+        TextView editBookingBack = bottomSheetDialog.findViewById(R.id.editBookingBack);
+        TextView editBookingContinue = bottomSheetDialog.findViewById(R.id.editBookingContinue);
+        TextView tv_repeat = bottomSheetDialog.findViewById(R.id.tv_repeat);
+
+        TextView tv_interval = bottomSheetDialog.findViewById(R.id.tv_interval);
+        TextView tv_until = bottomSheetDialog.findViewById(R.id.tv_until);
+        TextView tv_interval_weekly = bottomSheetDialog.findViewById(R.id.tv_interval_weekly);
+        TextView tv_day = bottomSheetDialog.findViewById(R.id.tv_day);
+        TextView tv_unit = bottomSheetDialog.findViewById(R.id.tv_unit);
+
+        editBookingBack.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        tv_day.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                openWeeks();
+            }
+        });
+
+
+        tv_until.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                openUntil();
+            }
+        });
+
+        tv_unit.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                openUntil();
+            }
+        });
+
+
+        tv_interval.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Toast.makeText(requireContext(),"onclick==="+type,Toast.LENGTH_LONG).show();
+                openIntervalsDialog(type);
+            }
+        });
+
+        tv_interval_weekly.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Toast.makeText(requireContext(),"onclick==="+type,Toast.LENGTH_LONG).show();
+                openIntervalsDialog(type);
+            }
+        });
+
+
+        cl_none.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                type ="none";
+                iv_none.setVisibility(View.VISIBLE);
+                iv_daily.setVisibility(View.GONE);
+                iv_weekly.setVisibility(View.GONE);
+                iv_monthly.setVisibility(View.GONE);
+                iv_yearly.setVisibility(View.GONE);
+                cl_daily_layout.setVisibility(View.GONE);
+                cl_weekly_layout.setVisibility(View.GONE);
+                tv_repeat.setVisibility(View.GONE);
+            }
+        });
+
+        cl_daily.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                type ="daily";
+                iv_none.setVisibility(View.GONE);
+                iv_daily.setVisibility(View.VISIBLE);
+                iv_weekly.setVisibility(View.GONE);
+                iv_monthly.setVisibility(View.GONE);
+                iv_yearly.setVisibility(View.GONE);
+                cl_daily_layout.setVisibility(View.VISIBLE);
+                tv_repeat.setVisibility(View.VISIBLE);
+                cl_weekly_layout.setVisibility(View.GONE);
+            }
+        });
+        cl_weekly.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                type ="weekly";
+                iv_none.setVisibility(View.GONE);
+                iv_daily.setVisibility(View.GONE);
+                iv_weekly.setVisibility(View.VISIBLE);
+                iv_monthly.setVisibility(View.GONE);
+                iv_yearly.setVisibility(View.GONE);
+                cl_daily_layout.setVisibility(View.GONE);
+                cl_weekly_layout.setVisibility(View.VISIBLE);
+                tv_repeat.setVisibility(View.VISIBLE);
+            }
+        });
+        cl_monthly.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                type ="monthly";
+                iv_none.setVisibility(View.GONE);
+                iv_daily.setVisibility(View.GONE);
+                iv_weekly.setVisibility(View.GONE);
+                iv_monthly.setVisibility(View.VISIBLE);
+                iv_yearly.setVisibility(View.GONE);
+                cl_daily_layout.setVisibility(View.GONE);
+                cl_weekly_layout.setVisibility(View.VISIBLE);
+                tv_repeat.setVisibility(View.VISIBLE);
+            }
+        });
+
+        cl_yearly.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                type ="yearly";
+                iv_none.setVisibility(View.GONE);
+                iv_daily.setVisibility(View.GONE);
+                iv_weekly.setVisibility(View.GONE);
+                iv_monthly.setVisibility(View.GONE);
+                iv_yearly.setVisibility(View.VISIBLE);
+                cl_daily_layout.setVisibility(View.VISIBLE);
+                tv_repeat.setVisibility(View.VISIBLE);
+                cl_weekly_layout.setVisibility(View.GONE);
+            }
+        });
+
+
+
+        bottomSheetDialog.show();
+
+
+    }
+
+    private void openUntil()
+    {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_until,
+                new RelativeLayout(getContext()))));
+
+        ConstraintLayout cl_forever = bottomSheetDialog.findViewById(R.id.cl_forever);
+        ConstraintLayout cl_specific = bottomSheetDialog.findViewById(R.id.cl_specific);
+        ImageView iv_forever = bottomSheetDialog.findViewById(R.id.iv_forever);
+        ImageView iv_specific = bottomSheetDialog.findViewById(R.id.iv_specific);
+        android.widget.CalendarView calendar_view = bottomSheetDialog.findViewById(R.id.calendar_view);
+        TextView editBookingBack = bottomSheetDialog.findViewById(R.id.tv_specific);
+        TextView editBookingContinue = bottomSheetDialog.findViewById(R.id.tv_specific);
+
+        calendar_view.setVisibility(View.GONE);
+
+        editBookingBack.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        cl_forever.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                iv_forever.setVisibility(View.VISIBLE);
+                iv_specific.setVisibility(View.GONE);
+                calendar_view.setVisibility(View.GONE);
+
+            }
+        });
+
+        cl_specific.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                iv_forever.setVisibility(View.GONE);
+                iv_specific.setVisibility(View.VISIBLE);
+                calendar_view.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+        editBookingBack.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        bottomSheetDialog.show();
+    }
+
+    private void openWeeks()
+    {
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_week,
+                new RelativeLayout(getContext()))));
+        bottomSheetDialog.show();
+    }
+
+    private void openIntervalsDialog(String type)
+    {
+
+        Toast.makeText(requireContext(),"openIntervalsDialog==="+type,Toast.LENGTH_LONG).show();
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_interval,
+                new RelativeLayout(getContext()))));
+
+        ConstraintLayout cl_1 = bottomSheetDialog.findViewById(R.id.cl_1);
+        TextView tv_1 = bottomSheetDialog.findViewById(R.id.tv_1);
+        ImageView iv_1 = bottomSheetDialog.findViewById(R.id.iv_1);
+        ConstraintLayout cl_2 = bottomSheetDialog.findViewById(R.id.cl_2);
+        TextView tv_2 = bottomSheetDialog.findViewById(R.id.tv_2);
+        ImageView iv_2 = bottomSheetDialog.findViewById(R.id.iv_2);
+        ConstraintLayout cl_3 = bottomSheetDialog.findViewById(R.id.cl_3);
+        TextView tv_3 = bottomSheetDialog.findViewById(R.id.tv_3);
+        ImageView iv_3 = bottomSheetDialog.findViewById(R.id.iv_3);
+        ConstraintLayout cl_4 = bottomSheetDialog.findViewById(R.id.cl_4);
+        TextView tv_4 = bottomSheetDialog.findViewById(R.id.tv_4);
+        ImageView iv_4 = bottomSheetDialog.findViewById(R.id.iv_4);
+        ConstraintLayout cl_5 = bottomSheetDialog.findViewById(R.id.cl_5);
+        TextView tv_5 = bottomSheetDialog.findViewById(R.id.tv_5);
+        ImageView iv_5 = bottomSheetDialog.findViewById(R.id.iv_5);
+        ConstraintLayout cl_6 = bottomSheetDialog.findViewById(R.id.cl_6);
+        TextView tv_6 = bottomSheetDialog.findViewById(R.id.tv_6);
+        ImageView iv_6 = bottomSheetDialog.findViewById(R.id.iv_6);
+        ConstraintLayout cl_7 = bottomSheetDialog.findViewById(R.id.cl_7);
+        TextView tv_7 = bottomSheetDialog.findViewById(R.id.tv_7);
+        ImageView iv_7 = bottomSheetDialog.findViewById(R.id.iv_7);
+        ConstraintLayout cl_8 = bottomSheetDialog.findViewById(R.id.cl_8);
+        TextView tv_8 = bottomSheetDialog.findViewById(R.id.tv_8);
+        ImageView iv_8 = bottomSheetDialog.findViewById(R.id.iv_8);
+        ConstraintLayout cl_9 = bottomSheetDialog.findViewById(R.id.cl_9);
+        TextView tv_9 = bottomSheetDialog.findViewById(R.id.tv_9);
+        ImageView iv_9 = bottomSheetDialog.findViewById(R.id.iv_9);
+        ConstraintLayout cl_10 = bottomSheetDialog.findViewById(R.id.cl_10);
+        TextView tv_10 = bottomSheetDialog.findViewById(R.id.tv_10);
+        ImageView iv_10 = bottomSheetDialog.findViewById(R.id.iv_10);
+
+        cl_1.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                iv_1.setVisibility(View.VISIBLE);
+                iv_2.setVisibility(View.GONE);
+                iv_3.setVisibility(View.GONE);
+                iv_4.setVisibility(View.GONE);
+                iv_5.setVisibility(View.GONE);
+                iv_6.setVisibility(View.GONE);
+                iv_7.setVisibility(View.GONE);
+                iv_8.setVisibility(View.GONE);
+                iv_9.setVisibility(View.GONE);
+                iv_10.setVisibility(View.GONE);
+
+            }
+        });
+
+        cl_2.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                iv_1.setVisibility(View.GONE);
+                iv_2.setVisibility(View.VISIBLE);
+                iv_3.setVisibility(View.GONE);
+                iv_4.setVisibility(View.GONE);
+                iv_5.setVisibility(View.GONE);
+                iv_6.setVisibility(View.GONE);
+                iv_7.setVisibility(View.GONE);
+                iv_8.setVisibility(View.GONE);
+                iv_9.setVisibility(View.GONE);
+                iv_10.setVisibility(View.GONE);
+
+            }
+        });
+
+        cl_3.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                iv_1.setVisibility(View.GONE);
+                iv_2.setVisibility(View.GONE);
+                iv_3.setVisibility(View.VISIBLE);
+                iv_4.setVisibility(View.GONE);
+                iv_5.setVisibility(View.GONE);
+                iv_6.setVisibility(View.GONE);
+                iv_7.setVisibility(View.GONE);
+                iv_8.setVisibility(View.GONE);
+                iv_9.setVisibility(View.GONE);
+                iv_10.setVisibility(View.GONE);
+
+            }
+        });
+
+        cl_4.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                iv_1.setVisibility(View.GONE);
+                iv_2.setVisibility(View.GONE);
+                iv_3.setVisibility(View.GONE);
+                iv_4.setVisibility(View.VISIBLE);
+                iv_5.setVisibility(View.GONE);
+                iv_6.setVisibility(View.GONE);
+                iv_7.setVisibility(View.GONE);
+                iv_8.setVisibility(View.GONE);
+                iv_9.setVisibility(View.GONE);
+                iv_10.setVisibility(View.GONE);
+
+            }
+        });
+
+        cl_5.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                iv_1.setVisibility(View.GONE);
+                iv_2.setVisibility(View.GONE);
+                iv_3.setVisibility(View.GONE);
+                iv_4.setVisibility(View.GONE);
+                iv_5.setVisibility(View.VISIBLE);
+                iv_6.setVisibility(View.GONE);
+                iv_7.setVisibility(View.GONE);
+                iv_8.setVisibility(View.GONE);
+                iv_9.setVisibility(View.GONE);
+                iv_10.setVisibility(View.GONE);
+
+            }
+        });
+
+        cl_6.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                iv_1.setVisibility(View.GONE);
+                iv_2.setVisibility(View.GONE);
+                iv_3.setVisibility(View.GONE);
+                iv_4.setVisibility(View.GONE);
+                iv_5.setVisibility(View.GONE);
+                iv_6.setVisibility(View.VISIBLE);
+                iv_7.setVisibility(View.GONE);
+                iv_8.setVisibility(View.GONE);
+                iv_9.setVisibility(View.GONE);
+                iv_10.setVisibility(View.GONE);
+
+            }
+        });
+
+        cl_7.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                iv_1.setVisibility(View.GONE);
+                iv_2.setVisibility(View.GONE);
+                iv_3.setVisibility(View.GONE);
+                iv_4.setVisibility(View.GONE);
+                iv_5.setVisibility(View.GONE);
+                iv_6.setVisibility(View.GONE);
+                iv_7.setVisibility(View.VISIBLE);
+                iv_8.setVisibility(View.GONE);
+                iv_9.setVisibility(View.GONE);
+                iv_10.setVisibility(View.GONE);
+
+            }
+        });
+
+        cl_8.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                iv_1.setVisibility(View.GONE);
+                iv_2.setVisibility(View.GONE);
+                iv_3.setVisibility(View.GONE);
+                iv_4.setVisibility(View.GONE);
+                iv_5.setVisibility(View.GONE);
+                iv_6.setVisibility(View.GONE);
+                iv_7.setVisibility(View.GONE);
+                iv_8.setVisibility(View.VISIBLE);
+                iv_9.setVisibility(View.GONE);
+                iv_10.setVisibility(View.GONE);
+
+            }
+        });
+
+        cl_9.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                iv_1.setVisibility(View.GONE);
+                iv_2.setVisibility(View.GONE);
+                iv_3.setVisibility(View.GONE);
+                iv_4.setVisibility(View.GONE);
+                iv_5.setVisibility(View.GONE);
+                iv_6.setVisibility(View.GONE);
+                iv_7.setVisibility(View.GONE);
+                iv_8.setVisibility(View.GONE);
+                iv_9.setVisibility(View.VISIBLE);
+                iv_10.setVisibility(View.GONE);
+
+            }
+        });
+
+        cl_10.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                iv_1.setVisibility(View.GONE);
+                iv_2.setVisibility(View.GONE);
+                iv_3.setVisibility(View.GONE);
+                iv_4.setVisibility(View.GONE);
+                iv_5.setVisibility(View.GONE);
+                iv_6.setVisibility(View.GONE);
+                iv_7.setVisibility(View.GONE);
+                iv_8.setVisibility(View.GONE);
+                iv_9.setVisibility(View.GONE);
+                iv_10.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+        if(type.equalsIgnoreCase("daily")){
+
+            tv_1.setText("1 day");
+            tv_2.setText("2 day");
+            tv_3.setText("3 day");
+            tv_4.setText("4 day");
+            tv_5.setText("5 day");
+            tv_6.setText("6 day");
+            tv_7.setText("7 day");
+            tv_8.setText("8 day");
+            tv_9.setText("9 day");
+            tv_10.setText("10 day");
+
+
+        } else if(type.equalsIgnoreCase("weekly")){
+            tv_1.setText("1 week");
+            tv_2.setText("2 week");
+            tv_3.setText("3 week");
+            tv_4.setText("4 week");
+            tv_5.setText("5 week");
+            tv_6.setText("6 week");
+            tv_7.setText("7 week");
+            tv_8.setText("8 week");
+            tv_9.setText("9 week");
+            tv_10.setText("10 week");
+
+        } else if (type.equalsIgnoreCase("monthly")){
+            tv_1.setText("1 month");
+            tv_2.setText("2 month");
+            tv_3.setText("3 month");
+            tv_4.setText("4 month");
+            tv_5.setText("5 month");
+            tv_6.setText("6 month");
+            tv_7.setText("7 month");
+            tv_8.setText("8 month");
+            tv_9.setText("9 month");
+            tv_10.setText("10 month");
+
+        } else {
+            tv_1.setText("1 year");
+            tv_2.setText("2 year");
+            tv_3.setText("3 year");
+            tv_4.setText("4 year");
+            tv_5.setText("5 year");
+            tv_6.setText("6 year");
+            tv_7.setText("7 year");
+            tv_8.setText("8 year");
+            tv_9.setText("9 year");
+            tv_10.setText("10 year");
+        }
+        bottomSheetDialog.show();
+    }
+
     private void callDeskBottomSheetDialog() {
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);

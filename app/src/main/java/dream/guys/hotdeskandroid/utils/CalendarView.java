@@ -286,7 +286,7 @@ public class CalendarView extends LinearLayout
             if (position >= firstDayOfMonth && position < maxNumberOfDays + firstDayOfMonth) {
                 int value = position - firstDayOfMonth + 1;
                 System.out.println("bala today"+ currentDate.getTime());
-                Toast.makeText(getContext(), " betweeen"+currentDate, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), " betweeen"+currentDate, Toast.LENGTH_SHORT).show();
                 if (currentDate.before(currentDate.getTime())) {
                     Toast.makeText(getContext(), " betweeen", Toast.LENGTH_SHORT).show();
 //                    date.setText(String.valueOf(value));
