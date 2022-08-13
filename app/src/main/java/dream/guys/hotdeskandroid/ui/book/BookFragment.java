@@ -431,10 +431,8 @@ public class BookFragment extends Fragment implements
 //                    List<CarParkListToEditResponse> carParkingForEditResponse = response.body();
 
                     CallCarBookingEditList(carParkingForEditResponse, "5");
-                    CallCarBookingEditList(carParkingForEditResponse, "5");
-                    CallCarBookingEditList(carParkingForEditResponse, "5");
 
-                     ProgressDialog.dismisProgressBar(getContext(),dialog);
+                     ProgressDialog.dismisProgressBar(getContext(),dialog);*/
 //                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
                 }
