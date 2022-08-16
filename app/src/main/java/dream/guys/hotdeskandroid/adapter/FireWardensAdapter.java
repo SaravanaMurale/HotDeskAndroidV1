@@ -19,7 +19,7 @@ public class FireWardensAdapter extends RecyclerView.Adapter<FireWardensAdapter.
     @NonNull
     @Override
     public FireWandensViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_locate_myteam_adaper, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_firewardens_adapter, parent, false);
         return  new FireWandensViewHolder(itemView);
     }
 

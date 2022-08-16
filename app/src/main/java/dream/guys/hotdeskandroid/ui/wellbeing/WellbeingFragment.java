@@ -50,6 +50,88 @@ public class WellbeingFragment extends Fragment {
         binding = FragmentWellbeingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+
+
+        binding.healthTipsBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(),FireWardensActivity.class);
+                intent.putExtra("WELL_BEING_KEY","HEALTH_TIPS");
+                startActivity(intent);
+            }
+        });
+
+        binding.fireWardensBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(),FireWardensActivity.class);
+                intent.putExtra("WELL_BEING_KEY","FIRE");
+                startActivity(intent);
+            }
+        });
+
+        binding.firstAidBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(),FireWardensActivity.class);
+                intent.putExtra("WELL_BEING_KEY","FIRST_AID");
+                startActivity(intent);
+            }
+        });
+
+        binding.mentalHealthBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(),FireWardensActivity.class);
+                intent.putExtra("WELL_BEING_KEY","MENTAL");
+                startActivity(intent);
+            }
+        });
+        
+        binding.noticesBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(),CreateNoticeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.reportAnIssueBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(),ReportAnIssueActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.reportAnIssueBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(),ReportAnIssueActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.traininBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(),TrainingActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.leaveBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent=new Intent(getActivity(),LeaveActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+
+
         //New...
         setLanguage();
 

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.wellbeing.FireWardensActivity">
+    android:orientation="vertical"
+    tools:context=".ui.wellbeing.TrainingActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,7 +39,7 @@
             android:id="@+id/activityTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/fire_wardens"
+            android:text="@string/trainging"
             android:layout_marginLeft="@dimen/_10sdp"
             android:textColor="@color/black"
             android:textSize="@dimen/_15sdp"
@@ -48,8 +49,7 @@
 
     </LinearLayout>
 
-
-    <!--Report a hazzard-->
+    <!--Videos-->
     <androidx.cardview.widget.CardView
         android:id="@+id/reportHazzardBlock"
         android:layout_width="match_parent"
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:padding="@dimen/_5sdp"
-                android:text="@string/report_hazard"
+                android:text="@string/videos"
                 android:textColor="@color/black"
                 android:textSize="14dp" />
 
@@ -79,30 +79,29 @@
 
     </androidx.cardview.widget.CardView>
 
-    <!--Evacuation Plan-->
+    <!--Guides-->
     <androidx.cardview.widget.CardView
-        android:id="@+id/evacuationBlock"
+        android:id="@+id/guidesBlock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/reportHazzardBlock"
         app:cardCornerRadius="@dimen/_5sdp"
         android:background="@drawable/button_white_bg"
         app:cardElevation="@dimen/_5sdp"
         android:layout_marginLeft="@dimen/_20sdp"
         android:layout_marginRight="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_10sdp">
+        android:layout_marginTop="@dimen/_20sdp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/tvEvacuation"
+                android:id="@+id/tvGuides"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:padding="@dimen/_5sdp"
-                android:text="@string/eva_plan"
+                android:text="@string/guides"
                 android:textColor="@color/black"
                 android:textSize="14dp" />
 
@@ -111,48 +110,34 @@
     </androidx.cardview.widget.CardView>
 
 
-    <!--Date-->
-    <LinearLayout
-        android:id="@+id/dayBlock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/evacuationBlock"
-        android:layout_marginTop="@dimen/_30sdp"
-        android:layout_marginLeft="@dimen/_20sdp"
-        android:orientation="vertical"
-        >
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/your_fire_warden"
-        />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/today"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Wed,6 June"
-            />
-
-    </LinearLayout>
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvFireWardens"
+    <!--Request Training-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/requestTrainingBlock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/dayBlock"
+        app:cardCornerRadius="@dimen/_5sdp"
+        android:background="@drawable/button_white_bg"
+        app:cardElevation="@dimen/_5sdp"
         android:layout_marginLeft="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_20sdp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:itemCount="10"
-        tools:listitem="@layout/layout_firewardens_adapter"
-        />
+        android:layout_marginRight="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_20sdp">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-</RelativeLayout>
+            <TextView
+                android:id="@+id/tvReqTraining"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/req_training"
+                android:textColor="@color/black"
+                android:textSize="14dp" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

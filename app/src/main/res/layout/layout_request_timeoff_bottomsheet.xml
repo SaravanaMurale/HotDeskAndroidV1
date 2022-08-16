@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginLeft="@dimen/_10sdp"
+    android:layout_marginRight="@dimen/_10sdp"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/req_time_off"
+        style="@style/TextBold"
+        android:layout_marginTop="@dimen/_10sdp"
+        />
+
+    <!--Type-->
+    <RelativeLayout
+        android:id="@+id/reqTimeOffTypeBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:padding="@dimen/_3sdp"
+        android:background="@drawable/rectangle_greybg_with_corner"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/reqTimeOffType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:text="@string/type"
+            android:textColor="@color/figmaBlack"
+            android:theme="@style/TextBold" />
+
+        <TextView
+            android:id="@+id/reqTimeOffSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:text="@string/select"
+            android:textColor="@color/figmaBlue"
+            android:theme="@style/TextBold" />
+    </RelativeLayout>
+
+
+    <!--From-->
+    <RelativeLayout
+        android:id="@+id/reqTimeOffFromeBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:padding="@dimen/_3sdp"
+        android:background="@drawable/rectangle_greybg_with_corner"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/reqTimeOffFrom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:text="@string/from"
+            android:textColor="@color/figmaBlack"
+            android:theme="@style/TextBold" />
+
+        <TextView
+            android:id="@+id/reqTimeOffFromDateTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:text="10 Aug"
+            android:textColor="@color/figmaBlue"
+            android:theme="@style/TextBold" />
+    </RelativeLayout>
+
+
+    <!--To-->
+    <RelativeLayout
+        android:id="@+id/reqTimeOffToBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:padding="@dimen/_3sdp"
+        android:background="@drawable/rectangle_greybg_with_corner"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/reqTimeOffTo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:text="@string/from"
+            android:textColor="@color/figmaBlack"
+            android:theme="@style/TextBold" />
+
+        <TextView
+            android:id="@+id/reqTimeOffToDateTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:text="10 Aug"
+            android:textColor="@color/figmaBlue"
+            android:theme="@style/TextBold" />
+    </RelativeLayout>
+
+    <!--Half Day-->
+    <RelativeLayout
+        android:id="@+id/reqTimeOffHalfDayBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:padding="@dimen/_3sdp"
+        android:background="@drawable/rectangle_greybg_with_corner"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/reqTimeOffHalfDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:text="@string/half_day"
+            android:textColor="@color/figmaBlack"
+            android:theme="@style/TextBold" />
+
+       <CheckBox
+           android:id="@+id/reqTimeHalfDayCheckBox"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentRight="true"
+           />
+    </RelativeLayout>
+
+
+    <!--Repeat-->
+    <RelativeLayout
+        android:id="@+id/reqTimeOffRepeatBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:padding="@dimen/_3sdp"
+        android:background="@drawable/rectangle_greybg_with_corner"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvReqTimeOffRepeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:text="@string/repeat"
+            android:textColor="@color/figmaBlack"
+            android:theme="@style/TextBold" />
+
+        <TextView
+            android:id="@+id/reqTimeOffRepeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:text="none"
+            android:textColor="@color/figmaBlue"
+            android:theme="@style/TextBold" />
+    </RelativeLayout>
+
+    <!--Note-->
+    <RelativeLayout
+        android:id="@+id/reqTimeOffNoteBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:padding="@dimen/_3sdp"
+        android:background="@drawable/rectangle_greybg_with_corner"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/reqTimeOffNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:hint="@string/note"
+            android:textColor="@color/figmaBlack"
+             />
+
+        <TextView
+            android:id="@+id/reqTimeOffBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/back"
+            android:layout_alignParentBottom="true"
+            />
+
+        <TextView
+            android:id="@+id/reqTimeOffSendReq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send_request"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            />
+
+
+    </RelativeLayout>
+
+</LinearLayout>
