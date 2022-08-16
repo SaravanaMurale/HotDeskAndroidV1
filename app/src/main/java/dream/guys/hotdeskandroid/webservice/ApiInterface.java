@@ -8,6 +8,7 @@ import java.util.List;
 
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
 import dream.guys.hotdeskandroid.model.request.CreatePinRequest;
+import dream.guys.hotdeskandroid.model.request.DeleteMeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.request.ForgotPasswordRequest;
 import dream.guys.hotdeskandroid.model.request.GDPRrequest;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
@@ -16,6 +17,7 @@ import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkEditRequest;
 import dream.guys.hotdeskandroid.model.request.LocateDeskBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocationMR_Request;
+import dream.guys.hotdeskandroid.model.request.MeetingRoomEditRequest;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.response.AmenitiesResponse;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
@@ -227,19 +229,30 @@ public interface ApiInterface {
     @PUT("api/MeetingRoomBooking/bookings")
     Call<BaseResponse> doMeetingRoomBook(@Body MeetingRoomRequest meetingRoomRequest);
 
-    //MeetingEditListResponse
+    //MeetingEditListResponseInBooking
     @GET("api/MeetingRoomBooking/bookings")
     Call<List<MeetingListToEditResponse>> getMeetingListToEdit(@Query("fromDate") String fromDate,
                                                                @Query("toDate") String toDate);
+
+    //MeetingEditListResponseILocate
+    @GET("api/MeetingRoomBooking/bookings")
+    Call<List<MeetingListToEditResponse>>  getMeetingListToEditInLocate( @Query("fromDate") String fromDate,
+                                                                        @Query("toDate") String toDate,
+                                                                         @Query("roomIds") String roomId);
+
     //Car park edit list
     @GET("api/CarParkBooking/dailyBookings")
     Call<List<CarParkListToEditResponse>> getCarParkListToEdit(@Query("fromDate") String fromDate,
                                                                @Query("toDate") String toDate);
 
 
-    //MettingRoomEdit
+    //MettingRoomEditInLocate
     @PUT("api/MeetingRoomBooking/bookings")
-    Call<BaseResponse> doRoomEdit(@Body MeetingRoomRequest meetingRoomRequest);
+    Call<BaseResponse> doRoomEdit(@Body MeetingRoomEditRequest meetingRoomRequest);
+
+    //MeetingRoomDelete
+    @PUT("api/MeetingRoomBooking/Bookings")
+    Call<BaseResponse> doDeleteMeetingRoom(@Body DeleteMeetingRoomRequest deleteMeetingRoomRequest);
 
     //MeetingUnavalibilityChecking
     @GET("api/meetingrooms/userallowedmeetingrooms")
