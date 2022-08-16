@@ -4,6 +4,7 @@ import android.provider.Settings;
 
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
@@ -30,6 +31,8 @@ import dream.guys.hotdeskandroid.model.response.CarParkingDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingslotsResponse;
 import dream.guys.hotdeskandroid.model.response.CheckPinLoginResponse;
+import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
+import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.DeskDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.DeskRoomCountResponse;
@@ -302,7 +305,13 @@ public interface ApiInterface {
     @GET("api/mywork/teamdesks")
     Call<List<TeamDeskResponse>> getDeskListInEdit();
 
+    //New...
+    //https://dev-api.hotdeskplus.com/api/locations/activeLocations
+    @GET("api/locations/activeLocations")
+    Call<ArrayList<DAOActiveLocation>> getActiveLocations();
 
+    @GET("api/mywork/myteammemberstatus")
+    Call<ArrayList<DAOTeamMember>> getTeamMembers(@Query("date") String date);
 
 }
 

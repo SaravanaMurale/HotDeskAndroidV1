@@ -6,9 +6,70 @@
     android:layout_height="wrap_content"
     tools:context=".LanguageListActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvLanguage"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp">
+
+            <ImageView
+                android:id="@+id/profile_back"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                app:tint="@color/figmaBlue"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/profile_back"
+                android:text="Language"
+                android:textColor="@color/figmaBlack"
+                android:textSize="@dimen/_14sdp"
+                android:theme="@style/TextBold"
+                android:layout_centerVertical="true" />
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_12sdp"
+            android:orientation="vertical">
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_5sdp"
+                android:text="@string/checkInOut_alert"
+                android:textSize="@dimen/_12sdp"
+                android:theme="@style/TextBold" />
+
+            <TextView
+                android:id="@+id/tvContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_5sdp"
+                android:text="This will impact both the mobile, and desktop apps. As well as all notifications"
+                android:textSize="@dimen/_12sdp"
+                android:theme="@style/TextRegular" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvLanguage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
 
 </RelativeLayout>

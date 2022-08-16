@@ -33,6 +33,9 @@
             android:name=".ui.wellbeing.TrainingActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.teams.TeamsUserActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.teams.UpComingBookingActivity"
             android:exported="false" />
         <activity
