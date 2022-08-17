@@ -114,11 +114,11 @@ public interface ApiInterface {
     @POST("api/account/HasSetupPinNumberForTenantUser")
     Call<CheckPinLoginResponse> checkPinLoginAvailable(@Body CreatePinRequest createPinRequest);
 
-    @POST("api/account/pin")
+    @POST("api/Account/pin")
     Call<GetTokenResponse> checkPinLogin(@Body CreatePinRequest createPinRequest);
 
 
-    @POST("api/account/updategdpracceptancesettings")
+    @POST("api/Account/updategdpracceptancesettings")
     Call<Void> updateGDPR(@Body GDPRrequest request);
 
     @POST("api/Account/Token")
