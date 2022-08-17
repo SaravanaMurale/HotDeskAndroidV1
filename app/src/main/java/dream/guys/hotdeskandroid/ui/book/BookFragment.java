@@ -1025,7 +1025,7 @@ public class BookFragment extends Fragment implements
                     JsonArray jsonChangesetArray = new JsonArray();
                     JsonArray jsonDeletedIdsArray = new JsonArray();
                     jsonInnerObject.addProperty("id",editDeskBookingDetails.getCalId());
-                    jsonInnerObject.addProperty("date",""+Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+"T00:00:00.000Z");
+                    jsonInnerObject.addProperty("date",""+Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+"T00:00:00Z");
                     switch (dskRoomParkStatus){
                         case 1:
                             jsonOuterObject.addProperty("teamId",SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));

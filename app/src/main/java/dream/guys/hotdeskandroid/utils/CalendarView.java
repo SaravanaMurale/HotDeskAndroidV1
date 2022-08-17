@@ -288,7 +288,7 @@ public class CalendarView extends LinearLayout
                 System.out.println("bala today"+ currentDate.getTime());
 //                Toast.makeText(getContext(), " betweeen"+currentDate, Toast.LENGTH_SHORT).show();
                 if (currentDate.before(currentDate.getTime())) {
-                    Toast.makeText(getContext(), " betweeen", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), " betweeen", Toast.LENGTH_SHORT).show();
 //                    date.setText(String.valueOf(value));
                     dateBox.setTextColor(Color.rgb(166, 166, 166));
                     dateBox.setVisibility(VISIBLE);
