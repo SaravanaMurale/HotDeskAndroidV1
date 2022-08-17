@@ -61,8 +61,6 @@ public class FireWardensActivity extends AppCompatActivity {
 
 
 
-
-
         binding.fireBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
