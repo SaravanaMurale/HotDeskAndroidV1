@@ -37,29 +37,37 @@ public class UpComingBookingActivity extends AppCompatActivity {
     private void uiInit() {
 
         calendarView = binding.calendarView;
-        Calendar startDate = Calendar.getInstance();
+        /*Calendar startDate = Calendar.getInstance();
 
         day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         month = Calendar.getInstance().get(Calendar.MONTH);
         year = Calendar.getInstance().get(Calendar.YEAR);
         currendate = String.valueOf(year + "-" + (month + 1) + "-" + day);
         selectedDate = String.valueOf(day + "-" + (month + 1) + "-" + year);
-        startDate.set(year, month, day);
+        startDate.set(year, month);
+        Calendar endDate = Calendar.getInstance();
+        endDate.add(Calendar.YEAR, 1);*/
+
+        /* starts before 1 month from now */
+        Calendar startDate = Calendar.getInstance();
+        startDate.add(Calendar.MONTH, 0);
+
+        /* ends after 1 month from now */
         Calendar endDate = Calendar.getInstance();
         endDate.add(Calendar.YEAR, 1);
 
         //final HorizontalCalendar horizontalCalendar
-        horizontalCalendar
-                = new HorizontalCalendar.Builder(this, R.id.calendarView)
+        horizontalCalendar = new HorizontalCalendar.Builder(this, R.id.calendarView)
                 .range(startDate, endDate)
+                .datesNumberOnScreen(4)
                 .mode(HorizontalCalendar.Mode.MONTHS)
-                .datesNumberOnScreen(5)
-                .configure().formatBottomText("yyyy").formatTopText("MMM")
+                .configure()
+                .formatMiddleText("MMM")
+                .formatBottomText("yyyy")
+                .showTopText(false)
                 .showBottomText(true)
-                .textSize(10.00f, 10.00f, 10.00f)
                 .end()
-                .defaultSelectedDate(startDate)
-                .build();
+                .defaultSelectedDate(startDate).build();
 
         horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
             @Override

@@ -37,6 +37,7 @@ import dream.guys.hotdeskandroid.model.response.DefaultAssetResponse;
 import dream.guys.hotdeskandroid.model.response.ProfilePicResponse;
 import dream.guys.hotdeskandroid.model.response.TeamDeskResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
+import dream.guys.hotdeskandroid.ui.wellbeing.NotificationActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
@@ -159,6 +160,14 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             binding.editEndTime.setText(Utils.splitTime(profileData.getWorkHoursTo()));
 
         }
+
+        binding.editDefaultLocaton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*Intent intent = new Intent(EditProfileActivity.this,EditProfileActivity.class);
+                startActivity(intent);*/
+            }
+        });
 
     }
 
@@ -367,6 +376,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 binding.profileUpdate.setVisibility(View.GONE);
                 binding.profileEdit.setVisibility(View.VISIBLE);
+                updateProfileValue();
                 makeDisable();
 
             }
@@ -375,12 +385,20 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             public void onFailure(Call<BaseResponse> call, Throwable t) {
 
                 //ProgressDialog.dismisProgressBar(getContext(),dialog);
-                Toast.makeText(EditProfileActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(EditProfileActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                updateProfileValue();
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
             }
         });
 
+    }
+
+    public void updateProfileValue(){
+        Gson gson = new Gson();
+        String json = gson.toJson(profileData);
+        SessionHandler.getInstance().save(EditProfileActivity.this,AppConstants.LOGIN_RESPONSE,json);
+        Toast.makeText(EditProfileActivity.this, "Success", Toast.LENGTH_SHORT).show();
     }
 
     private void makeEnable() {

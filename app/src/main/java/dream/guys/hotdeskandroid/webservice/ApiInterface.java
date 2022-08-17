@@ -4,6 +4,7 @@ import android.provider.Settings;
 
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
@@ -32,6 +33,8 @@ import dream.guys.hotdeskandroid.model.response.CarParkingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingslotsResponse;
 import dream.guys.hotdeskandroid.model.response.CheckPinLoginResponse;
 import dream.guys.hotdeskandroid.model.response.CovidQuestionsResponse;
+import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
+import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.DeskDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.DeskRoomCountResponse;
@@ -114,11 +117,11 @@ public interface ApiInterface {
     @POST("api/account/HasSetupPinNumberForTenantUser")
     Call<CheckPinLoginResponse> checkPinLoginAvailable(@Body CreatePinRequest createPinRequest);
 
-    @POST("api/account/pin")
+    @POST("api/Account/pin")
     Call<GetTokenResponse> checkPinLogin(@Body CreatePinRequest createPinRequest);
 
 
-    @POST("api/account/updategdpracceptancesettings")
+    @POST("api/Account/updategdpracceptancesettings")
     Call<Void> updateGDPR(@Body GDPRrequest request);
 
     @POST("api/Account/Token")
@@ -305,6 +308,10 @@ public interface ApiInterface {
     @GET("api/mywork/teamdesks")
     Call<List<TeamDeskResponse>> getDeskListInEdit();
 
+    //New...
+    //https://dev-api.hotdeskplus.com/api/locations/activeLocations
+    @GET("api/locations/activeLocations")
+    Call<ArrayList<DAOActiveLocation>> getActiveLocations();
 
     //Wellbeing
     @GET("api/wellness/CovidSelfCertificationdQuestions")
@@ -317,6 +324,8 @@ public interface ApiInterface {
     Call<List<FirstAidResponse>> getFirstAidResponse();
 
 
+    @GET("api/mywork/myteammemberstatus")
+    Call<ArrayList<DAOTeamMember>> getTeamMembers(@Query("date") String date);
 
 }
 
