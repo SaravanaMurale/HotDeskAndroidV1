@@ -1,5 +1,6 @@
 package dream.guys.hotdeskandroid.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +10,29 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.response.FirstAidResponse;
+import dream.guys.hotdeskandroid.ui.wellbeing.FireWardensActivity;
 
 public class FireWardensAdapter extends RecyclerView.Adapter<FireWardensAdapter.FireWandensViewHolder> {
+
+
+    Context context;
+    List<FirstAidResponse.Persons> firstAidResponseList;
+    String description;
+
+    public FireWardensAdapter(Context context, List<FirstAidResponse.Persons> firstAidResponseList, String description) {
+
+        this.context=context;
+        this.firstAidResponseList=firstAidResponseList;
+        this.description=description;
+
+    }
 
     @NonNull
     @Override
@@ -26,11 +44,16 @@ public class FireWardensAdapter extends RecyclerView.Adapter<FireWardensAdapter.
     @Override
     public void onBindViewHolder(@NonNull FireWandensViewHolder holder, int position) {
 
+
+        holder.firewandensName.setText(firstAidResponseList.get(position).getFullName());
+
+
+
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return firstAidResponseList.size();
     }
 
     public class FireWandensViewHolder extends RecyclerView.ViewHolder{

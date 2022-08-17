@@ -24,6 +24,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HotDeskAndroid">
         <activity
+            android:name=".ui.wellbeing.CovidCertificationActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.wellbeing.LeaveActivity"
             android:exported="false" />
         <activity
@@ -173,17 +176,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--
-<activity
-            android:name=".example.karthickcanvascheck.KarthickActivity"
+
+     <!--<activity
+            android:name=".ui.wellbeing.CovidCertificationActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        -->
+        </activity>-->
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

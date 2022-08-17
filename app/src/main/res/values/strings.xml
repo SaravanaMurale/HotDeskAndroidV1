@@ -105,6 +105,16 @@
     <string name="family">Family/Compassionate leave</string>
     <string name="medical_appoint">Medical appointment</string>
     <string name="other">Otehr</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="transport_method">Please indicate method of transportation to office</string>
+
+    <string name="car">Car</string>
+    <string name="public_trans">Public Transport</string>
+    <string name="taxi">Taxi Uber</string>
+    <string name="bike">Bike</string>
+    <string name="walk">Walk</string>
+    <string name="wfh">Work from home</string>
 
 
 </resources>

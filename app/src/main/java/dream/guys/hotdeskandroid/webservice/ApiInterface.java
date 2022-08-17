@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import java.util.List;
 
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
+import dream.guys.hotdeskandroid.model.request.CovidAnswerRequest;
 import dream.guys.hotdeskandroid.model.request.CreatePinRequest;
 import dream.guys.hotdeskandroid.model.request.DeleteMeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.request.ForgotPasswordRequest;
@@ -30,9 +31,11 @@ import dream.guys.hotdeskandroid.model.response.CarParkingDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingslotsResponse;
 import dream.guys.hotdeskandroid.model.response.CheckPinLoginResponse;
+import dream.guys.hotdeskandroid.model.response.CovidQuestionsResponse;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.DeskDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.DeskRoomCountResponse;
+import dream.guys.hotdeskandroid.model.response.FirstAidResponse;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.ImageResponse;
@@ -301,6 +304,17 @@ public interface ApiInterface {
     //GetDesk Code in EditActivity
     @GET("api/mywork/teamdesks")
     Call<List<TeamDeskResponse>> getDeskListInEdit();
+
+
+    //Wellbeing
+    @GET("api/wellness/CovidSelfCertificationdQuestions")
+    Call<List<CovidQuestionsResponse>> getCovidQuestions(@Query("language") String language);
+
+    @POST("api/wellness/SubmitCovidSelfCertification")
+    Call<BaseResponse> submitCovidAnswer(@Body CovidAnswerRequest covidAnswerRequest);
+
+    @GET("api/settings/WellbeingSectionConfig")
+    Call<List<FirstAidResponse>> getFirstAidResponse();
 
 
 
