@@ -24,6 +24,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HotDeskAndroid">
         <activity
+            android:name=".ui.wellbeing.NotificationsListActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.wellbeing.LeaveActivity"
             android:exported="false" />
         <activity
