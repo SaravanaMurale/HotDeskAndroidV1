@@ -21,6 +21,17 @@
         android:textStyle="bold"
         />
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       >
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -413,6 +424,7 @@
         android:layout_marginTop="@dimen/_20sdp"
         android:textSize="@dimen/_15sdp"
         />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/noticesBlock"
         android:layout_width="match_parent"
@@ -459,11 +471,13 @@
     </androidx.cardview.widget.CardView>
 
 
-
-
-
-
-
+    <Button
+        android:id="@+id/covidCertificate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Covid"
+        android:layout_gravity="center"
+        />
 
 
 
@@ -1088,4 +1102,7 @@
         </LinearLayout>
     </ScrollView>
 
+   </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

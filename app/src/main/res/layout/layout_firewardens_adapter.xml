@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
@@ -21,7 +21,9 @@
                 android:layout_height="@dimen/_50sdp"
                 android:src="@drawable/mygirl"
                 android:layout_centerVertical="true"
-                app:tint="@color/figmaBlack" />
+                app:tint="@color/figmaBlack"
+                android:visibility="gone"
+                />
 
             <ImageView
                 android:layout_width="@dimen/_10sdp"
@@ -30,8 +32,8 @@
                 android:layout_alignRight="@+id/firewardensProfilePic"
                 android:layout_alignBottom="@+id/firewardensProfilePic"
                 android:layout_marginBottom="@dimen/_5sdp"
+                android:visibility="gone"
                 />
-
 
 
             <TextView
@@ -52,6 +54,7 @@
                 android:layout_marginTop="1dp"
                 android:layout_toRightOf="@id/firewandensName"
                 android:src="@drawable/plus"
+                android:visibility="gone"
 
                 />
 
@@ -64,7 +67,9 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_toRightOf="@+id/firewardensProfilePic"
                 android:text="In Office"
-                android:textColor="@color/figmaBlack" />
+                android:textColor="@color/figmaBlack"
+                android:visibility="gone"
+                />
 
             <ImageView
                 android:id="@+id/locateMyTeamLocation"
@@ -74,6 +79,7 @@
                 android:layout_below="@+id/firewandensName"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/_5sdp"
+                android:visibility="gone"
                 />
 
 
@@ -88,7 +94,9 @@
                 android:layout_toRightOf="@+id/firewardensProfilePic"
                 android:text="4oth Bank Street-30th Floor"
                 android:textColor="@color/figmaBlack"
-                android:textSize="@dimen/_10sdp" />
+                android:textSize="@dimen/_10sdp"
+                android:visibility="gone"
+                />
 
 
 

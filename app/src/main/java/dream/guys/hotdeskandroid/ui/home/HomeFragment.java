@@ -84,6 +84,7 @@ import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
 import dream.guys.hotdeskandroid.ui.settings.SettingsActivity;
+import dream.guys.hotdeskandroid.ui.wellbeing.NotificationsListActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -245,6 +246,20 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 loadHomeList();
                 // Fetching data from server
 //                loadRecyclerViewData();
+            }
+        });
+
+        //New...
+        notiIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (notiList!=null && notiList.size()>0){
+
+                    /*Intent intent = new Intent(getActivity(), NotificationsListActivity.class);
+                    intent.putExtra(AppConstants.SHOWNOTIFICATION,notiList);
+                    startActivity(intent);*/
+
+                }
             }
         });
 

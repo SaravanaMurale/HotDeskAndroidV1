@@ -4,10 +4,13 @@ import android.provider.Settings;
 
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
+import dream.guys.hotdeskandroid.model.request.CovidAnswerRequest;
 import dream.guys.hotdeskandroid.model.request.CreatePinRequest;
+import dream.guys.hotdeskandroid.model.request.DeleteMeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.request.ForgotPasswordRequest;
 import dream.guys.hotdeskandroid.model.request.GDPRrequest;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
@@ -16,6 +19,7 @@ import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkEditRequest;
 import dream.guys.hotdeskandroid.model.request.LocateDeskBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocationMR_Request;
+import dream.guys.hotdeskandroid.model.request.MeetingRoomEditRequest;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.response.AmenitiesResponse;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
@@ -28,9 +32,13 @@ import dream.guys.hotdeskandroid.model.response.CarParkingDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingslotsResponse;
 import dream.guys.hotdeskandroid.model.response.CheckPinLoginResponse;
+import dream.guys.hotdeskandroid.model.response.CovidQuestionsResponse;
+import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
+import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.DeskDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.DeskRoomCountResponse;
+import dream.guys.hotdeskandroid.model.response.FirstAidResponse;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.ImageResponse;
@@ -109,11 +117,11 @@ public interface ApiInterface {
     @POST("api/account/HasSetupPinNumberForTenantUser")
     Call<CheckPinLoginResponse> checkPinLoginAvailable(@Body CreatePinRequest createPinRequest);
 
-    @POST("api/account/pin")
+    @POST("api/Account/pin")
     Call<GetTokenResponse> checkPinLogin(@Body CreatePinRequest createPinRequest);
 
 
-    @POST("api/account/updategdpracceptancesettings")
+    @POST("api/Account/updategdpracceptancesettings")
     Call<Void> updateGDPR(@Body GDPRrequest request);
 
     @POST("api/Account/Token")
@@ -227,19 +235,30 @@ public interface ApiInterface {
     @PUT("api/MeetingRoomBooking/bookings")
     Call<BaseResponse> doMeetingRoomBook(@Body MeetingRoomRequest meetingRoomRequest);
 
-    //MeetingEditListResponse
+    //MeetingEditListResponseInBooking
     @GET("api/MeetingRoomBooking/bookings")
     Call<List<MeetingListToEditResponse>> getMeetingListToEdit(@Query("fromDate") String fromDate,
                                                                @Query("toDate") String toDate);
+
+    //MeetingEditListResponseILocate
+    @GET("api/MeetingRoomBooking/bookings")
+    Call<List<MeetingListToEditResponse>>  getMeetingListToEditInLocate( @Query("fromDate") String fromDate,
+                                                                        @Query("toDate") String toDate,
+                                                                         @Query("roomIds") String roomId);
+
     //Car park edit list
     @GET("api/CarParkBooking/dailyBookings")
     Call<List<CarParkListToEditResponse>> getCarParkListToEdit(@Query("fromDate") String fromDate,
                                                                @Query("toDate") String toDate);
 
 
-    //MettingRoomEdit
+    //MettingRoomEditInLocate
     @PUT("api/MeetingRoomBooking/bookings")
-    Call<BaseResponse> doRoomEdit(@Body MeetingRoomRequest meetingRoomRequest);
+    Call<BaseResponse> doRoomEdit(@Body MeetingRoomEditRequest meetingRoomRequest);
+
+    //MeetingRoomDelete
+    @PUT("api/MeetingRoomBooking/Bookings")
+    Call<BaseResponse> doDeleteMeetingRoom(@Body DeleteMeetingRoomRequest deleteMeetingRoomRequest);
 
     //MeetingUnavalibilityChecking
     @GET("api/meetingrooms/userallowedmeetingrooms")
@@ -289,7 +308,24 @@ public interface ApiInterface {
     @GET("api/mywork/teamdesks")
     Call<List<TeamDeskResponse>> getDeskListInEdit();
 
+    //New...
+    //https://dev-api.hotdeskplus.com/api/locations/activeLocations
+    @GET("api/locations/activeLocations")
+    Call<ArrayList<DAOActiveLocation>> getActiveLocations();
 
+    //Wellbeing
+    @GET("api/wellness/CovidSelfCertificationdQuestions")
+    Call<List<CovidQuestionsResponse>> getCovidQuestions(@Query("language") String language);
+
+    @POST("api/wellness/SubmitCovidSelfCertification")
+    Call<BaseResponse> submitCovidAnswer(@Body CovidAnswerRequest covidAnswerRequest);
+
+    @GET("api/settings/WellbeingSectionConfig")
+    Call<List<FirstAidResponse>> getFirstAidResponse();
+
+
+    @GET("api/mywork/myteammemberstatus")
+    Call<ArrayList<DAOTeamMember>> getTeamMembers(@Query("date") String date);
 
 }
 

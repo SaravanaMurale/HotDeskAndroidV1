@@ -70,12 +70,14 @@ import dream.guys.hotdeskandroid.example.ItemAdapter;
 import dream.guys.hotdeskandroid.example.MyCanvasDraw;
 import dream.guys.hotdeskandroid.example.ValuesPOJO;
 import dream.guys.hotdeskandroid.model.request.CarParkingStatusModel;
+import dream.guys.hotdeskandroid.model.request.DeleteMeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.request.DeskStatusModel;
 import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkEditRequest;
 import dream.guys.hotdeskandroid.model.request.LocateDeskBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocationMR_Request;
+import dream.guys.hotdeskandroid.model.request.MeetingRoomEditRequest;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.request.MeetingStatusModel;
 import dream.guys.hotdeskandroid.model.request.Point;
@@ -2331,15 +2333,19 @@ RepeateDataAdapter.repeatInterface {
 
         //String startDate=binding.locateCalendearView.getText().toString()+"T00:00:00.000Z";
         //String endDate=binding.locateCalendearView.getText().toString()+"T00:00:00.000Z";
-        String startDate = binding.locateCalendearView.getText().toString();
-        String endDate = binding.locateCalendearView.getText().toString();
+        //String startDate = binding.locateCalendearView.getText().toString();
+        //String endDate = binding.locateCalendearView.getText().toString();
+
+        String startDate = binding.locateCalendearView.getText().toString() + " " + binding.locateStartTime.getText().toString() + ":00Z";
+        String endDate = binding.locateCalendearView.getText().toString() + " " + binding.locateEndTime.getText().toString() + ":00Z";
+
         int[] roomid = new int[1];
         roomid[0] = meetingRoomId;
         String roomId = Arrays.toString(roomid);
 
         binding.locateProgressBar.setVisibility(View.VISIBLE);
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<MeetingListToEditResponse>> call = apiService.getMeetingListToEdit(startDate, endDate);
+        Call<List<MeetingListToEditResponse>> call = apiService.getMeetingListToEditInLocate(startDate, endDate,roomId);
         call.enqueue(new Callback<List<MeetingListToEditResponse>>() {
             @Override
             public void onResponse(Call<List<MeetingListToEditResponse>> call, Response<List<MeetingListToEditResponse>> response) {
@@ -4928,6 +4934,8 @@ RepeateDataAdapter.repeatInterface {
         rvParticipant.setLayoutManager(linearLayoutManager);
         rvParticipant.setHasFixedSize(true);
 
+
+
         etParticipants.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -4950,6 +4958,13 @@ RepeateDataAdapter.repeatInterface {
 //                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 //                imm.hideSoftInputFromWindow(binding.serachBar.getWindowToken(), 0);
 
+            }
+        });
+
+        etSubject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rvParticipant.setVisibility(View.GONE);
             }
         });
 
@@ -5016,56 +5031,100 @@ RepeateDataAdapter.repeatInterface {
     @Override
     public void onMeetingDeleteClick(MeetingListToEditResponse meetingListToEditResponse) {
 
+        binding.locateProgressBar.setVisibility(View.VISIBLE);
+
+        DeleteMeetingRoomRequest deleteMeetingRoomRequest=new DeleteMeetingRoomRequest();
+        List<DeleteMeetingRoomRequest.DelChangesets> delChangesetsList=new ArrayList<>();
+
+
+        List<Integer> integerList=new ArrayList<>();
+        integerList.add(meetingListToEditResponse.getId());
+        deleteMeetingRoomRequest.setDeletedIdsList(integerList);
+        deleteMeetingRoomRequest.setChangesetsList(delChangesetsList);
+
+        System.out.println("DeleteDataFormet"+integerList);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<BaseResponse> call = apiService.doDeleteMeetingRoom(deleteMeetingRoomRequest);
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                binding.locateProgressBar.setVisibility(View.GONE);
+
+                openCheckoutDialog("MeetingRoomDeleted");
+                callInitView();
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                binding.locateProgressBar.setVisibility(View.GONE);
+            }
+        });
+
+
+
     }
 
     private void doEditMeetingRoomBooking(MeetingListToEditResponse meetingListToEditResponse, String startTime, String endTime, String subject, String comment, BottomSheetDialog bottomSheetDialog) {
 
-        MeetingRoomRequest meetingRoomRequest = new MeetingRoomRequest();
-        meetingRoomRequest.setMeetingRoomId(meetingListToEditResponse.getMeetingRoomId());
-        meetingRoomRequest.setMsTeams(false);
-        meetingRoomRequest.setHandleRecurring(false);
-        meetingRoomRequest.setOnlineMeeting(false);
 
-        MeetingRoomRequest.Changeset m = meetingRoomRequest.new Changeset();
-        m.setId(0);
-        m.setDate(binding.locateCalendearView.getText().toString() + "T" + "00:00:00.000" + "Z");
+        binding.locateProgressBar.setVisibility(View.VISIBLE);
 
-        MeetingRoomRequest.Changeset.Changes changes = m.new Changes();
-        changes.setFrom(getCurrentDate() + "" + "T" + startTime + ":" + "00" + "." + "000" + "Z");
-        changes.setMyto(getCurrentDate() + "" + "T" + endTime + ":" + "00" + "." + "000" + "Z");
-        changes.setComments(comment);
-        changes.setSubject(subject);
-        changes.setRequest(false);
+        MeetingRoomEditRequest meetingRoomEditRequest=new MeetingRoomEditRequest();
+        meetingRoomEditRequest.setMeetingRoomId(meetingListToEditResponse.getMeetingRoomId());
+        meetingRoomEditRequest.setMsTeams(false);
+        meetingRoomEditRequest.setHandleRecurring(false);
+        meetingRoomEditRequest.setOnlineMeeting(false);
 
-        m.setChanges(changes);
+        MeetingRoomEditRequest.Changesets changesets=meetingRoomEditRequest.new Changesets();
 
-        List<MeetingRoomRequest.Changeset> changesetList = new ArrayList<>();
-        changesetList.add(m);
+        changesets.setDate(binding.locateCalendearView.getText().toString() + "T" + "00:00:00.000" + "Z");
+        changesets.setId(meetingListToEditResponse.getId());
 
-        meetingRoomRequest.setChangesets(changesetList);
+
+        MeetingRoomEditRequest.Changesets.Changes changes=changesets.new Changes();
 
         List<Integer> attendeesList = new ArrayList<>();
-        //Newly Participant Added
+
         if(chipList!=null){
-            MeetingRoomRequest.Changeset.Changes.Attendees attendees= changes.new Attendees();
+            MeetingRoomEditRequest.Changesets.Changes.Attendees attendees= changes.new Attendees();
             for (int i = 0; i <chipList.size() ; i++) {
                 attendeesList.add(chipList.get(i).getId());
             }
 
 
-        } //End
-        changes.setAttendees(attendeesList);
+        }
+        changes.setAttendeesList(attendeesList);
 
-        List<MeetingRoomRequest.Changeset.Changes.ExternalAttendees> externalAttendeesList = new ArrayList<>();
-        changes.setExternalAttendees(externalAttendeesList);
+        changes.setFrom(getCurrentDate() + "" + "T" + startTime + ":" + "00" + "." + "000" + "Z");
+        changes.setSubject(subject);
+        changes.setRequest(false);
+        changes.setTo(getCurrentDate() + "" + "T" + endTime + ":" + "00" + "." + "000" + "Z");
 
-        List<MeetingRoomRequest.DeleteIds> deleteIdsList = new ArrayList<>();
-        meetingRoomRequest.setDeletedIds(deleteIdsList);
+        changesets.setChanges(changes);
 
-        System.out.println("BookingMeetingRoom" + meetingRoomRequest);
+        List<MeetingRoomEditRequest.Changesets> changesetList = new ArrayList<>();
+        changesetList.add(changesets);
+
+        meetingRoomEditRequest.setChangesetsList(changesetList);
+
+        List<MeetingRoomEditRequest.Changesets.Changes.ExternalAttendees> externalAttendeesList = new ArrayList<>();
+        changes.setExternalAttendeesList(externalAttendeesList);
+
+
+        List<MeetingRoomEditRequest.DeleteIds> deleteIdsList = new ArrayList<>();
+        meetingRoomEditRequest.setDeletedIds(deleteIdsList);
+
+
+        System.out.println("BookingMeetingRoom" + meetingRoomEditRequest);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<BaseResponse> call = apiService.doRoomEdit(meetingRoomRequest);
+        Call<BaseResponse> call = apiService.doRoomEdit(meetingRoomEditRequest);
+
+        //End
+
+
         call.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
@@ -5073,9 +5132,11 @@ RepeateDataAdapter.repeatInterface {
                 BaseResponse baseResponse = response.body();
                 chipList.clear();
                 bottomSheetDialog.dismiss();
+
+                binding.locateProgressBar.setVisibility(View.GONE);
+
                 openCheckoutDialog("MeetingEditSuccess");
                 System.out.println("MeetingRoomEdit");
-
 
                 callInitView();
 
@@ -5083,7 +5144,7 @@ RepeateDataAdapter.repeatInterface {
 
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
-
+                binding.locateProgressBar.setVisibility(View.GONE);
             }
         });
 
