@@ -11,11 +11,17 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
+import dream.guys.hotdeskandroid.adapter.AdapterNotificationList;
+import dream.guys.hotdeskandroid.databinding.FragmentRequestTabBinding;
+import dream.guys.hotdeskandroid.databinding.FragmentWellbeingBinding;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 
 public class OutgoingNotiFragment extends Fragment {
 
     ArrayList<IncomingRequestResponse.Result> notiList;
+    AdapterNotificationList adapterNotificationList;
+
+    FragmentRequestTabBinding binding;
 
     public OutgoingNotiFragment(ArrayList<IncomingRequestResponse.Result> notiList) {
         this.notiList = notiList;
@@ -27,6 +33,12 @@ public class OutgoingNotiFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        binding = FragmentRequestTabBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
+
+        adapterNotificationList = new AdapterNotificationList(getActivity(),notiList);
+        binding.recyclerview.setAdapter(adapterNotificationList);
+
+        return root;
     }
 }

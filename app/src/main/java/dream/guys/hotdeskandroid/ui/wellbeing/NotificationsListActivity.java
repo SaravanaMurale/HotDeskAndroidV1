@@ -49,15 +49,16 @@ public class NotificationsListActivity extends AppCompatActivity {
             pastNotiFragment = new PastNotiFragment(notiList);
 
             ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-            adapter.addFragment(inComingNotiFragment, "Incoming");
-            adapter.addFragment(outgoingNotiFragment, "Outgoing");
-            adapter.addFragment(pastNotiFragment, "Past");
+            adapter.addFragment(inComingNotiFragment, "Notification");
+            adapter.addFragment(outgoingNotiFragment, "Request");
+            //adapter.addFragment(pastNotiFragment, "Past");
 
             mainViewpager.setAdapter(adapter);
 
             tabLayout.setupWithViewPager(mainViewpager);
             //tabLayout.addOnTabSelectedListener(this);
             mainViewpager.setCurrentItem(0);
+
 
 
         }

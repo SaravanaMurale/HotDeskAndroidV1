@@ -36,11 +36,10 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<TeamsContactsAdap
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
 
-        if (position >= 5) {
-            if (position == teamMembersList.size()-1){
+        if (position > 5) {
+            if (position == 6){
                 holder.relative.setVisibility(View.VISIBLE);
-                holder.profile_image.setVisibility(View.GONE);
-                holder.tvCount.setText(String.valueOf(teamMembersList.size()-5));
+                holder.tvCount.setText(String.valueOf(teamMembersList.size()-7));
             }else {
                 holder.profile_image.setVisibility(View.GONE);
                 holder.relative.setVisibility(View.GONE);

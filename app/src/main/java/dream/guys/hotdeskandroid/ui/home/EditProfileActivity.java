@@ -56,7 +56,6 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
     String encodedImage;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -388,6 +387,9 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                 //Toast.makeText(EditProfileActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                 updateProfileValue();
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                binding.profileUpdate.setVisibility(View.GONE);
+                binding.profileEdit.setVisibility(View.VISIBLE);
+                makeDisable();
 
             }
         });
@@ -429,6 +431,12 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             }
         });
 
+        binding.editRoomChange.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
+        binding.editDeskChange.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
+        binding.editParkChange.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
+        binding.editStartTime.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
+        binding.editEndTime.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
+
     }
     private void makeDisable() {
         binding.editName.setEnabled(false);
@@ -443,6 +451,12 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.tvEditEmail.setEnabled(false);
         binding.tvEditPhone.setEnabled(false);
         binding.tvEditTeams.setEnabled(false);
+
+        binding.editRoomChange.setTextColor(getResources().getColor(R.color.grey,getTheme()));
+        binding.editDeskChange.setTextColor(getResources().getColor(R.color.grey,getTheme()));
+        binding.editParkChange.setTextColor(getResources().getColor(R.color.grey,getTheme()));
+        binding.editStartTime.setTextColor(getResources().getColor(R.color.grey,getTheme()));
+        binding.editEndTime.setTextColor(getResources().getColor(R.color.grey,getTheme()));
 
     }
 

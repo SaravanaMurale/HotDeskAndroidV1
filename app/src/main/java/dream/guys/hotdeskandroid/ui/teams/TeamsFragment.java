@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +50,7 @@ public class TeamsFragment extends Fragment {
     String currendate = "",selectedDate="";
     HorizontalCalendarView calendarView;
     ArrayList<DAOTeamMember> teamMembersList = new ArrayList<>();
+    ArrayList<DAOTeamMember> copyTeamMembersList = new ArrayList<>();
     TeamsContactsAdapter teamsContactsAdapter;
     TeamsAdapter teamsAdapter;
 
@@ -74,10 +77,47 @@ public class TeamsFragment extends Fragment {
                 binding.expandRecyclerView.setVisibility(View.VISIBLE);
                 binding.recyclerView.setVisibility(View.GONE);
 
-                setDataToExpandAdapter();
+                setDataToExpandAdapter(teamMembersList);
 
             }
         });
+
+        binding.serachBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if (!s.toString().equals("")){
+
+                    filter(s.toString().toLowerCase());
+                }else {
+
+                    teamMembersList = new ArrayList<>();
+                    teamMembersList.addAll(copyTeamMembersList);
+
+                    setDataToExpandAdapter(teamMembersList);
+
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                //filter(s.toString());
+            }
+        });
+
+        binding.close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.serachBar.setText("");
+            }
+        });
+
 
         getTeamMembers();
 
@@ -99,24 +139,29 @@ public class TeamsFragment extends Fragment {
                                        Response<ArrayList<DAOTeamMember>> response) {
 
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    if (response.body()!=null){
+                        if(response.code()==200){
 
-                    if(response.code()==200){
+                            teamMembersList = response.body();
+                            copyTeamMembersList = response.body();
 
-                        teamMembersList = response.body();
+                            if (teamMembersList!=null && teamMembersList.size()>0){
+                                setValueToAdapter(teamMembersList);
+                            }
 
-                        if (teamMembersList!=null && teamMembersList.size()>0){
-                            setValueToAdapter(teamMembersList);
+                        }else if(response.code()==401){
+                            //Handle if token got expired
+                            binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                            Utils.tokenExpiryAlert(getActivity(),"");
+
+                        } else {
+                            binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                            Log.d("Search", "onResponse: else");
+                            Utils.showCustomAlertDialog(getActivity(),"Api Issue Code: "+response.code());
                         }
-
-                    }else if(response.code()==401){
-                        //Handle if token got expired
+                    }else {
                         binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                        Utils.tokenExpiryAlert(getActivity(),"");
-
-                    } else {
-                        binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                        Log.d("Search", "onResponse: else");
-                        Utils.showCustomAlertDialog(getActivity(),"Api Issue Code: "+response.code());
+                        Utils.showCustomAlertDialog(getActivity(),"No Response");
                     }
 
                 }
@@ -148,7 +193,7 @@ public class TeamsFragment extends Fragment {
 
     public class OverlapDecoration extends RecyclerView.ItemDecoration {
 
-        private final static int vertOverlap = -40;
+        private final static int vertOverlap = -20;
 
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
@@ -161,7 +206,7 @@ public class TeamsFragment extends Fragment {
         }
     }
 
-    private void setDataToExpandAdapter() {
+    private void setDataToExpandAdapter(ArrayList<DAOTeamMember> teamMembersList) {
         teamsAdapter = new TeamsAdapter(getActivity(),teamMembersList);
         binding.expandRecyclerView.setAdapter(teamsAdapter);
     }
@@ -192,10 +237,16 @@ public class TeamsFragment extends Fragment {
                 = new HorizontalCalendar.Builder(root, R.id.calendarView)
                 .range(startDate, endDate)
                 .mode(HorizontalCalendar.Mode.DAYS)
-                .datesNumberOnScreen(5)
-                .configure().formatBottomText("EEE").formatMiddleText("dd").formatTopText("MMM yyyy")
+                .datesNumberOnScreen(4)
+                .configure()
+                .formatBottomText("EEE")
+                .formatMiddleText("dd MMM")
                 .showBottomText(true)
-                .textSize(10.00f, 10.00f, 10.00f)
+                .showTopText(false)
+                .sizeMiddleText(15.0f)
+                .sizeBottomText(12.0f)
+                .selectedDateBackground(getResources().getDrawable(R.drawable.sel_date_bg))
+                .selectorColor(R.color.white)
                 .end()
                 .defaultSelectedDate(startDate)
                 .build();
@@ -226,6 +277,24 @@ public class TeamsFragment extends Fragment {
             }
         });
 
+
+    }
+
+    //New...
+
+    private void filter(String text) {
+
+        teamMembersList = new ArrayList<>();
+
+        for(DAOTeamMember staff: copyTeamMembersList){
+
+            if (staff.getFirstName().toLowerCase().contains(text) ||
+                    staff.getLastName().toLowerCase().contains(text)){
+                teamMembersList.add(staff);
+            }
+        }
+
+        setDataToExpandAdapter(teamMembersList);
 
     }
 

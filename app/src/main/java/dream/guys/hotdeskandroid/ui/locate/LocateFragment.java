@@ -187,7 +187,7 @@ RepeateDataAdapter.repeatInterface {
     TextView locateDeskName, editBookingBack, editBookingContinue;
     RelativeLayout bookingDateBlock, bookingStartBlock, bookingEndBlock, bookingCommentBlock, bookingVechicleRegtBlock;
     EditText etComment, etVehicleReg;
-    TextView locateCheckInDate, locateCheckInTime, locateCheckoutTime;
+    TextView locateCheckInDate, locateCheckInTime, locateCheckoutTime,showlocateCheckInDate;
     int teamDeskIdForBooking = 0;
     int selectedCarParkingSlotId = 0;
 
@@ -2542,13 +2542,14 @@ RepeateDataAdapter.repeatInterface {
 
     private void callMeetingRoomBookingBottomSheet(int meetingRoomId, String meetingRoomName, boolean isRequest) {
 
-        TextView startRoomTime, endTRoomime, editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle;
+        TextView startRoomTime, endTRoomime, editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle,showtvRoomStartTime;
         EditText etParticipants, etSubject, etComments;
         RecyclerView rvParticipant;
         LinearLayoutManager linearLayoutManager;
         RelativeLayout startTimeLayout, endTimeLayout;
         //New...
         LinearLayout subCmtLay,child_layout;
+        TextView roomDate;
 
 
 
@@ -2557,6 +2558,7 @@ RepeateDataAdapter.repeatInterface {
                 new RelativeLayout(getContext()))));
 
         startRoomTime = bottomSheetDialog.findViewById(R.id.tvRoomStartTime);
+        showtvRoomStartTime = bottomSheetDialog.findViewById(R.id.showtvRoomStartTime);
         endTRoomime = bottomSheetDialog.findViewById(R.id.tvRoomEndTime);
         etParticipants = bottomSheetDialog.findViewById(R.id.etParticipants);
         etSubject = bottomSheetDialog.findViewById(R.id.etSubject);
@@ -2573,6 +2575,7 @@ RepeateDataAdapter.repeatInterface {
         endTimeLayout = bottomSheetDialog.findViewById(R.id.endTimeLayout);
         subCmtLay = bottomSheetDialog.findViewById(R.id.subCmtLay);
         child_layout = bottomSheetDialog.findViewById(R.id.child_layout);
+        roomDate = bottomSheetDialog.findViewById(R.id.roomDate);
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvParticipant.setLayoutManager(linearLayoutManager);
@@ -2580,6 +2583,21 @@ RepeateDataAdapter.repeatInterface {
 
 
         roomTitle.setText(meetingRoomName);
+
+
+
+        //New...
+        String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
+        String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
+        String CountryName = SessionHandler.getInstance().get(getContext(), AppConstants.COUNTRY_NAME);
+        if (CountryName == null && buildingName == null && floorName == null) {
+
+            roomDate.setText(buildingName + "," + floorName);
+
+        } else {
+            roomDate.setText(CountryName + "," + buildingName + "," + floorName);
+
+        }
 
         if (meetingRoomDescription != null) {
             tvMeetingRoomDescription.setText("Description:" + meetingRoomDescription);
@@ -2617,7 +2635,27 @@ RepeateDataAdapter.repeatInterface {
         startTimeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), startRoomTime, "Start", binding.locateCalendearView.getText().toString());
+               Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), startRoomTime, "Start", binding.locateCalendearView.getText().toString());
+            }
+        });
+
+        //New...
+        showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " " +binding.locateStartTime.getText().toString());
+        endTRoomime.setText(binding.locateEndTime.getText().toString());
+        startRoomTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " " +startRoomTime.getText().toString());
             }
         });
 
@@ -2637,6 +2675,7 @@ RepeateDataAdapter.repeatInterface {
                 }else {
                     subCmtLay.setVisibility(View.GONE);
                     child_layout.setVisibility(View.VISIBLE);
+                    roomDate.setText(buildingName + "," + floorName);
                     page = 1;
                 }
 
@@ -2662,6 +2701,9 @@ RepeateDataAdapter.repeatInterface {
 
                     subCmtLay.setVisibility(View.VISIBLE);
                     child_layout.setVisibility(View.GONE);
+                    roomDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()) +
+                            startRoomTime.getText().toString() + "to" + endTRoomime.getText().toString());
+
                     page = 2;
 
                 }else {
@@ -3591,6 +3633,7 @@ RepeateDataAdapter.repeatInterface {
         locateCheckInDate = locateCheckInBottomSheet.findViewById(R.id.locateCheckInDate);
         locateCheckInTime = locateCheckInBottomSheet.findViewById(R.id.locateCheckInTime);
         locateCheckoutTime = locateCheckInBottomSheet.findViewById(R.id.locateCheckoutTime);
+        showlocateCheckInDate = locateCheckInBottomSheet.findViewById(R.id.showlocateCheckInDate);
 
         locateDeskName = locateCheckInBottomSheet.findViewById(R.id.locateDeskName);
         editBookingContinue = locateCheckInBottomSheet.findViewById(R.id.editBookingContinue);
@@ -3606,6 +3649,11 @@ RepeateDataAdapter.repeatInterface {
 
         //new...
         locateCheckInDate.setText(binding.locateCalendearView.getText());
+        showlocateCheckInDate.setText(Utils.showBottomSheetDate(binding.locateCalendearView.getText().toString()));
+        locateCheckInTime.setText(binding.locateStartTime.getText().toString());
+        locateCheckoutTime.setText(binding.locateEndTime.getText().toString());
+
+
         tv_repeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -3674,7 +3722,7 @@ RepeateDataAdapter.repeatInterface {
             @Override
             public void onClick(View v) {
 
-                Utils.bottomSheetDatePicker(getContext(), getActivity(), "", "", locateCheckInDate);
+                Utils.bottomSheetDatePicker(getContext(), getActivity(), "", "", locateCheckInDate,showlocateCheckInDate);
 
                 //callBookingDatePickerBottomSheet();
             }
@@ -4692,7 +4740,7 @@ RepeateDataAdapter.repeatInterface {
 
 
                 locateCheckInDateCal.setText("" + dateInString);
-                binding.showCalendar.setText("" + dateInString);
+                binding.showCalendar.setText(Utils.showCalendarDate(dateInString));
                 checkIsCurrentDate(dateInString);
 
 

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true">
+        <shape android:dither="true" android:shape="rectangle" android:useLevel="false" android:visible="true">
+            <solid android:color="@color/figmaBlue" />
+            <corners android:radius="50dp" />
+            <size android:width="2dp" android:height="24dp" />
+        </shape>
+    </item>
+    <item android:state_checked="false">
+        <shape android:dither="true" android:shape="rectangle" android:useLevel="false" android:visible="true">
+
+            <corners android:radius="50dp" />
+            <size android:width="2dp" android:height="24dp" />
+            <stroke
+                android:width="2dp"
+                android:color="@color/white" />
+        </shape>
+    </item>
+</selector>-->
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="false">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/_100sdp" />
+            <solid android:color="#ffffff" />
+            <stroke android:color="#8c8c8c" android:width="1dp"/>
+            <size android:height="20dp" />
+        </shape>
+    </item>
+    <item android:state_checked="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/_100sdp" />
+            <solid android:color="@color/figmaBlue" />
+            <stroke android:color="@color/figmaBlue" android:width="1dp"/>
+            <size android:height="20dp" />
+        </shape>
+    </item>
+</selector>

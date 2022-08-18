@@ -153,7 +153,20 @@
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="10 Aug"
                     android:textColor="@color/figmaBlue"
+                    android:theme="@style/TextBold"
+                    android:visibility="invisible"/>
+
+                <TextView
+                    android:id="@+id/showlocateCheckInDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:text="10 Aug"
+                    android:textColor="@color/figmaBlue"
                     android:theme="@style/TextBold" />
+
             </RelativeLayout>
 
             <!--Start-->
