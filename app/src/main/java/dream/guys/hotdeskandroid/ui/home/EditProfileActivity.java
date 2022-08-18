@@ -158,6 +158,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             binding.editStartTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
             binding.editEndTime.setText(Utils.splitTime(profileData.getWorkHoursTo()));
 
+
         }
 
         binding.editDefaultLocaton.setOnClickListener(new View.OnClickListener() {
