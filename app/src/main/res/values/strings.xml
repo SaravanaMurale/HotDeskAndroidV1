@@ -70,6 +70,8 @@
     <string name="benefits">Benefits</string>
     <string name="trainging">Training</string>
     <string name="notices">Notices</string>
+    <string name="covid_txt">Covid</string>
+    <string name="covid">COVID-19 Self-Certification</string>
     <string name="report_hazard">Report a hazzard</string>
     <string name="eva_plan">Evacuation plan</string>
     <string name="your_fire_warden">Your Fire wardens</string>

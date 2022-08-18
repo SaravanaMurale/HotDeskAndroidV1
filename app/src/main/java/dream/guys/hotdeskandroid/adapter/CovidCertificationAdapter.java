@@ -68,13 +68,6 @@ public class CovidCertificationAdapter extends RecyclerView.Adapter<CovidCertifi
             }
         });
 
-
-
-        /*int selectedId=radioSexGroup.getCheckedRadioButtonId();
-            radioSexButton=(RadioButton)findViewById(selectedId);
-            Toast.makeText(MainActivity.this,radioSexButton.getText(),Toast.LENGTH_SHORT).show();*/
-
-
     }
 
     @Override

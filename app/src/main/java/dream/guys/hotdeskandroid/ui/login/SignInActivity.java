@@ -141,7 +141,7 @@ public class SignInActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<CheckPinLoginResponse> call, Response<CheckPinLoginResponse> response) {
                     if(response.code()==200){
-                        ProgressDialog.dismisProgressBar(SignInActivity.this,dialog);
+                        //ProgressDialog.dismisProgressBar(SignInActivity.this,dialog);
                         if (response.body().isHasPinSetup()){
                             btnPinSignIn.setVisibility(View.VISIBLE);
                             btnSignIn.setVisibility(View.VISIBLE);
