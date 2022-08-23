@@ -55,6 +55,9 @@ public class AppConstants {
     public static final String DEFAULT_CAR_PARK_LOCATION_ID="DEFAULT_CAR_PARK_LOCATION_ID";
     public static final String DEFAULT_CAR_PARK_TIMEZONE_ID="DEFAULT_CAR_PARK_TIMEZONE_ID";
 
+    public static final String DEFAULT_LOCATION_NAME="DEFAULT_LOCATION_NAME";
+    public static final String DEFAULT_LOCATION_ID="DEFAULT_LOCATION_ID";
+
     public static final String APPTHEME = "APPTHEME";
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
@@ -65,6 +68,10 @@ public class AppConstants {
     //New... LanguagePages
     public static final String GLOBAL_PAGE = "GLOBAL_PAGE";
     public static final String WELLBEING_PAGE = "WELLBEING_PAGE";
+
+    public static final String WELLBEING_TYPE="WELLBEING_TYPE";
+    public static final String PERSONAL_CONTENT="PERSONAL_CONTENT";
+    public static final String PERSONAL_LINKS="PERSONAL_LINKS";
 
     public static Boolean FIRSTREFERAL = false;
     public static String REFERALID = "REFERALID";

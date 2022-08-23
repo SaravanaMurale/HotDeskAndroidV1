@@ -1,6 +1,7 @@
 package dream.guys.hotdeskandroid.ui.wellbeing;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
@@ -11,6 +12,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.adapter.AdapterNotificationList;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 
@@ -23,6 +25,8 @@ public class NotificationsListActivity extends AppCompatActivity {
     PastNotiFragment pastNotiFragment;
 
     ArrayList<IncomingRequestResponse.Result> notiList;
+    AdapterNotificationList adapterNotificationList;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,7 @@ public class NotificationsListActivity extends AppCompatActivity {
     private void uiInit() {
         tabLayout = findViewById(R.id.tabs);
         mainViewpager = findViewById(R.id.viewpager);
+        recyclerView = findViewById(R.id.outgoing_recyclerview);
 
         Intent intent = getIntent();
 
@@ -60,6 +65,8 @@ public class NotificationsListActivity extends AppCompatActivity {
             mainViewpager.setCurrentItem(0);
 
 
+            adapterNotificationList = new AdapterNotificationList(NotificationsListActivity.this,notiList);
+            recyclerView.setAdapter(adapterNotificationList);
 
         }
 

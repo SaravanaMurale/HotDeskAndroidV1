@@ -52,7 +52,8 @@ public class FloorAdapter extends RecyclerView.Adapter<FloorAdapter.FloorAdapter
         holder.floorBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                SessionHandler.getInstance().saveInt(context, AppConstants.FLOOR_POSITION,holder.getAbsoluteAdapterPosition());
+                System.out.println("FloorPositionSaved");
                 pos = holder.getAbsoluteAdapterPosition();
                 notifyDataSetChanged();
 
@@ -61,7 +62,7 @@ public class FloorAdapter extends RecyclerView.Adapter<FloorAdapter.FloorAdapter
 
         if (pos == position) {
             //locateCountryResposeList.get(holder.getAbsoluteAdapterPosition());
-            SessionHandler.getInstance().saveInt(context, AppConstants.NEW_FLOOR_POSITION,holder.getAbsoluteAdapterPosition());
+            //SessionHandler.getInstance().saveInt(context, AppConstants.FLOOR_POSITION,holder.getAbsoluteAdapterPosition());
             holder.ivFloor.setImageDrawable(context.getDrawable(R.drawable.floor_enable));
         }else {
             //locateCountryResposeList.get(holder.getAbsoluteAdapterPosition());

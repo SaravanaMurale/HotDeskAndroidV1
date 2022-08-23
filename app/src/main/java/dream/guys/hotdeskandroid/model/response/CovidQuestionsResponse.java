@@ -1,10 +1,13 @@
 package dream.guys.hotdeskandroid.model.response;
 
+import com.google.gson.annotations.SerializedName;
+
 public class CovidQuestionsResponse {
 
     int number;
     String question;
     boolean answer;
+    @SerializedName("language")
     String language;
     boolean shouldPositiveAnswerTriggerFlow;
     int covidCertificationAnswerType;

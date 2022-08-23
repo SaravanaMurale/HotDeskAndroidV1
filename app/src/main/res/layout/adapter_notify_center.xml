@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="@dimen/_6sdp">
+
+    <androidx.cardview.widget.CardView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_6sdp"
+        android:id="@+id/card_booking_notify">
+
+        <RelativeLayout
+            android:id="@+id/rel_status"
+            android:layout_width="@dimen/_6sdp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:background="@color/figmaBlue" >
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/figmaBgGrey"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:visibility="gone"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txt_date"
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:text="10 Aug,2022"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="@dimen/_11sdp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true">
+                    <ImageView
+                        android:layout_width="@dimen/_13sdp"
+                        android:layout_height="@dimen/_13sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:src="@drawable/checkin"
+                        app:tint="@color/figmaBlack" />
+
+                    <TextView
+                        android:id="@+id/CheckInTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_3sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:text="8:00"
+                        android:textColor="@color/figmaBlack"
+                        android:textSize="@dimen/_10sdp" />
+
+
+                    <ImageView
+                        android:layout_width="@dimen/_13sdp"
+                        android:layout_height="@dimen/_13sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:src="@drawable/checkout"
+                        app:tint="@color/figmaBlack" />
+
+                    <TextView
+                        android:id="@+id/CheckOutTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_3sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:text="8:00"
+                        android:textColor="@color/figmaBlack"
+                        android:textSize="@dimen/_10sdp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/figmaBgGrey"
+                android:layout_marginTop="@dimen/_4sdp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_6sdp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/lay_profile"
+                    android:layout_marginEnd="@dimen/_8sdp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/ivMeeting"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:src="@drawable/chair" />
+
+                    <TextView
+                        android:id="@+id/tvDesk"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/ivMeeting"
+                        android:text="Desk"
+                        android:layout_marginLeft="@dimen/_6sdp"
+                        android:textColor="@color/figmaBlack"
+                        android:textSize="@dimen/_14sdp" />
+
+                    <ImageView
+                        android:id="@+id/img_info"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_toRightOf="@+id/tvDesk"
+                        android:text="Desk"
+                        android:textSize="@dimen/_14sdp"
+                        android:src="@drawable/info_circle"
+                        app:tint="@color/figmaBlue"/>
+
+                    <TextView
+                        android:id="@+id/tvAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pmo Office"
+                        android:layout_marginLeft="@dimen/_6sdp"
+                        android:layout_toEndOf="@+id/ivMeeting"
+                        android:layout_below="@+id/tvDesk"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        style="@style/TextRegular"
+                        android:textColor="@color/figmaBlack" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lay_profile"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/ivEditPrifle"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/avatar"
+                        android:layout_centerVertical="true"/>
+
+                    <TextView
+                        android:id="@+id/tvUserName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_toRightOf="@+id/ivEditPrifle"
+                        android:text="Desk"
+                        android:textColor="@color/figmaBlack"/>
+
+                    <TextView
+                        android:id="@+id/tvUserTeam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pmo Office"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_toRightOf="@+id/ivEditPrifle"
+                        android:layout_below="@+id/tvUserName"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        style="@style/TextRegular"
+                        android:textColor="@color/figmaBlack"
+                        />
+
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:id="@+id/btn_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@+id/tvUserName">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btnSubmit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_20sdp"
+                            android:text="Accept"
+                            android:textAllCaps="false"
+                            android:textSize="@dimen/_8sdp"
+                            android:textColor="@color/white"
+                            android:gravity="center"
+                            android:background="@drawable/button_blue_bg"/>
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btnReject"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_20sdp"
+                            android:text="Reject"
+                            android:textSize="@dimen/_8sdp"
+                            android:textAllCaps="false"
+                            android:textColor="@color/figmaBlack"
+                            android:gravity="center"
+                            android:layout_marginStart="@dimen/_4sdp"
+                            android:background="@drawable/button_grey_bg"
+                            />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnRemove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_20sdp"
+                    android:textSize="@dimen/_8sdp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/figmaBlack"
+                    android:gravity="center"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:background="@drawable/button_grey_bg"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:text="Remove"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_6sdp"
+        android:id="@+id/card_covid_notify">
+
+        <RelativeLayout
+            android:id="@+id/covid_rel_status"
+            android:layout_width="@dimen/_6sdp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:background="@color/figmaBlue" >
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/noty_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextBold"
+                android:textColor="@color/figmaBlack"
+                android:textSize="@dimen/_12sdp"
+                android:text="fghgdhfhgAGHSDJKJKJHGF"/>
+
+            <TextView
+                android:id="@+id/noty_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextRegular"
+                android:textSize="@dimen/_12sdp"
+                android:text="hjkgj"
+                android:layout_marginTop="@dimen/_4sdp"/>
+
+            <TextView
+                android:id="@+id/noty_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextRegular"
+                android:textSize="@dimen/_12sdp"
+                android:text="fghj"
+                android:layout_marginTop="@dimen/_4sdp"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

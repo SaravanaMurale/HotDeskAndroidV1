@@ -53,7 +53,7 @@ public class IncomingRequestResponse implements Serializable {
         this.totalRecords = totalRecords;
     }
 
-    public class Result {
+    public class Result implements Serializable{
 
         @SerializedName("calendarEntryId")
         @Expose
@@ -377,7 +377,7 @@ public class IncomingRequestResponse implements Serializable {
 
     }
 
-    public class TimeZone {
+    public class TimeZone implements Serializable {
 
         @SerializedName("startDate")
         @Expose
@@ -415,7 +415,7 @@ public class IncomingRequestResponse implements Serializable {
 
     }
 
-    public class TeamDeskAvailability {
+    public class TeamDeskAvailability implements Serializable{
 
         @SerializedName("teamDeskId")
         @Expose
@@ -563,7 +563,7 @@ public class IncomingRequestResponse implements Serializable {
 
     }
 
-    public class AvailableTimeSlot {
+    public class AvailableTimeSlot implements Serializable {
 
         @SerializedName("from")
         @Expose

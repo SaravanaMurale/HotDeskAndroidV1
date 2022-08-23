@@ -4,6 +4,7 @@ import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,10 +16,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.animation.ScaleAnimation;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,15 +30,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
-import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
 import dream.guys.hotdeskandroid.adapter.SearchRecyclerAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityMainBinding;
 import dream.guys.hotdeskandroid.example.MyCanvasDraw;
 import dream.guys.hotdeskandroid.model.request.Point;
-import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
+import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.utils.AppConstants;
-import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
@@ -50,7 +46,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SearchRecyclerAdapter.GlobalSearchOnClickable {
     ActivityMainBinding binding;
     BottomNavigationView navView;
     NavController navController;
@@ -83,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         binding.searchRecycler.setLayoutManager(linearLayoutManager);
         binding.searchRecycler.setHasFixedSize(true);
-        searchRecyclerAdapter=new SearchRecyclerAdapter(getApplicationContext(),MainActivity.this,list);
+        searchRecyclerAdapter=new SearchRecyclerAdapter(getApplicationContext(),MainActivity.this,list,this);
         binding.searchRecycler.setAdapter(searchRecyclerAdapter);
 
         // homeBookingListAdapter=new HomeBookingListAdapter(getContext(), getActivity(), recyclerModelArrayList);
@@ -254,6 +250,8 @@ public class MainActivity extends AppCompatActivity {
         return gestureDetector.onTouchEvent(ev);
     }
 
+
+
     public class GestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onDown(MotionEvent e) {
@@ -294,6 +292,59 @@ public class MainActivity extends AppCompatActivity {
             secondLayout.addView(myCanvasDraw);
 
         }
+
+    }
+
+    @Override
+    public void onClickGlobalSearch(GlobalSearchResponse.Results results) {
+
+        SessionHandler.getInstance().saveInt(getContext(), AppConstants.PARENT_ID, results.getCurrentLocation().getParentLocationId());
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<LocateCountryRespose>> call=apiService.getCountrysChild(results.getCurrentLocation().getParentLocationId());
+        call.enqueue(new Callback<List<LocateCountryRespose>>() {
+            @Override
+            public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
+
+                List<LocateCountryRespose> locateCountryResposeList=response.body();
+
+                for (int i = 0; i <locateCountryResposeList.size() ; i++) {
+
+                    if(results.getCurrentLocation().getId()==locateCountryResposeList.get(i).getLocateCountryId()){
+                        int floorPosition=i;
+                        System.out.println("FloorPositionInMainActivity"+floorPosition);
+                        SessionHandler.getInstance().saveInt(MainActivity.this, AppConstants.FLOOR_POSITION,floorPosition);
+                        binding.searchRecycler.setVisibility(View.GONE);
+                        NavController navController1 = Navigation.findNavController(MainActivity.this, R.id.navigation_home);
+                        //NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment_activity_main);
+                        navController1.navigate(R.id.navigation_locate);
+                    }else {
+                        Utils.toastMessage(MainActivity.this,"Selected Floor Is Not Avaliable");
+                    }
+
+
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
+
+            }
+        });
+
+        //Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_navigation_locate2);
+        //NavController navController = Navigation.findNavController(navView);
+        //navController.navigate(R.id.action_navigation_home_to_navigation_locate2);
+
+
+
+
+        /*navView = findViewById(R.id.nav_view);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+        NavigationUI.setupWithNavController(binding.navView, navController);
+        navView.setItemIconTintList(null);*/
 
     }
 }

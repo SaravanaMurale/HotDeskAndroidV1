@@ -1,7 +1,5 @@
 package dream.guys.hotdeskandroid.webservice;
 
-import android.provider.Settings;
-
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
@@ -21,6 +19,9 @@ import dream.guys.hotdeskandroid.model.request.LocateDeskBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocationMR_Request;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomEditRequest;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
+import dream.guys.hotdeskandroid.model.request.PersonalHelpRequest;
+import dream.guys.hotdeskandroid.model.request.QuestionListRequest;
+import dream.guys.hotdeskandroid.model.request.ReportIssueRequest;
 import dream.guys.hotdeskandroid.model.response.AmenitiesResponse;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
@@ -37,6 +38,7 @@ import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.DeskDescriptionResponse;
+import dream.guys.hotdeskandroid.model.response.DeskResponseNew;
 import dream.guys.hotdeskandroid.model.response.DeskRoomCountResponse;
 import dream.guys.hotdeskandroid.model.response.FirstAidResponse;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
@@ -50,13 +52,14 @@ import dream.guys.hotdeskandroid.model.response.MeetingRoomDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
 import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
 import dream.guys.hotdeskandroid.model.response.ProfilePicResponse;
+import dream.guys.hotdeskandroid.model.response.QuestionListResponse;
 import dream.guys.hotdeskandroid.model.response.TeamDeskResponse;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
 import dream.guys.hotdeskandroid.model.response.TypeOfLoginResponse;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
-import okhttp3.RequestBody;
+import dream.guys.hotdeskandroid.model.response.WellbeingConfigResponse;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -66,9 +69,9 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 public interface ApiInterface {
     // Pin APis
@@ -308,11 +311,16 @@ public interface ApiInterface {
     @GET("api/mywork/teamdesks")
     Call<List<TeamDeskResponse>> getDeskListInEdit();
 
+    //deskFeedback
+    @POST("api/wellness/deskFeedback")
+    Call<BaseResponse> postFeedback(@Body ReportIssueRequest reportIssueRequest);
     //New...
     //https://dev-api.hotdeskplus.com/api/locations/activeLocations
     @GET("api/locations/activeLocations")
     Call<ArrayList<DAOActiveLocation>> getActiveLocations();
 
+    @GET("api/settings/WellbeingSectionConfig")
+    Call<List<WellbeingConfigResponse>> getWellbeingSectionConfig();
     //Wellbeing
     @GET("api/wellness/CovidSelfCertificationdQuestions")
     Call<List<CovidQuestionsResponse>> getCovidQuestions(@Query("language") String language);
@@ -327,6 +335,21 @@ public interface ApiInterface {
     @GET("api/mywork/myteammemberstatus")
     Call<ArrayList<DAOTeamMember>> getTeamMembers(@Query("date") String date);
 
+    //https://dev-api.hotdeskplus.com/api/requests/outgoing?includePastRequests=true
+
+    @GET("api/requests/outgoing")
+    Call<IncomingRequestResponse> getOutgoingRequest(@Query("includePastRequests") boolean includePastRequests);
+    @GET
+    Call<DeskResponseNew> getDesk(@Url String url);
+
+    @POST("api/wellness/personalHelpRequest")
+    Call<BaseResponse> postPersonalHelp(@Body PersonalHelpRequest personalHelpRequest);
+
+    @POST("api/wellness/completeAndSign")
+    Call<BaseResponse> completeAndSign(@Body QuestionListRequest questionListRequest);
+
+    @GET("api/wellness/checklistQuestions")
+    Call<List<QuestionListResponse>> getQuestionList();
 }
 
 

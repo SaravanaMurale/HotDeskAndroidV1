@@ -35,7 +35,11 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
 
-        //holder.tv_address.setText(notiList.get(position).getP);
+        holder.tvUserName.setText(notiList.get(position).getRequesterName());
+        holder.tvUserTeam.setText(notiList.get(position).getRequesterTeam());
+        holder.txt_date.setText(notiList.get(position).getRequestedDate());
+        holder.CheckInTime.setText(notiList.get(position).getFromUtc());
+        holder.CheckOutTime.setText(notiList.get(position).getToUtc());
 
     }
 
@@ -46,13 +50,18 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
 
     public class viewHolder extends RecyclerView.ViewHolder{
 
-        TextView tv_desk_room_name,tv_address;
+        //Entity type = 5 -> car parking , 4 -> meeting , 3 -> desk , 1-> people
+
+        TextView tvUserName,tvUserTeam,txt_date,CheckInTime,CheckOutTime;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tv_desk_room_name = itemView.findViewById(R.id.tv_desk_room_name);
-            tv_address = itemView.findViewById(R.id.tv_address);
+            tvUserName = itemView.findViewById(R.id.tvUserName);
+            tvUserTeam = itemView.findViewById(R.id.tvUserTeam);
+            txt_date = itemView.findViewById(R.id.txt_date);
+            CheckInTime = itemView.findViewById(R.id.CheckInTime);
+            CheckOutTime = itemView.findViewById(R.id.CheckOutTime);
 
         }
     }

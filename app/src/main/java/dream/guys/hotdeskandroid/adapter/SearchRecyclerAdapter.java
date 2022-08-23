@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -18,18 +20,23 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import dream.guys.hotdeskandroid.R;
-import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 
 public class SearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context context;
     Activity activity;
     List<GlobalSearchResponse.Results> list;
+    GlobalSearchOnClickable globalSearchOnClickable;
 
-    public SearchRecyclerAdapter(Context context, Activity activity, List<GlobalSearchResponse.Results> list) {
+    public interface GlobalSearchOnClickable{
+        public void onClickGlobalSearch(GlobalSearchResponse.Results results);
+    }
+
+    public SearchRecyclerAdapter(Context context, Activity activity, List<GlobalSearchResponse.Results> list,GlobalSearchOnClickable globalSearchOnClickable) {
         this.context = context;
         this.activity = activity;
         this.list = list;
+        this.globalSearchOnClickable=globalSearchOnClickable;
     }
 
     @NonNull
@@ -81,6 +88,17 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
                 break;
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_navigation_locate2);
+                //NavController navController = Navigation.findNavController(view);
+                //navController.navigate(R.id.action_navigation_home_to_navigation_locate2);
+                globalSearchOnClickable.onClickGlobalSearch(list.get(holder.getAbsoluteAdapterPosition()));
+
+            }
+        });
     }
 
     @Override

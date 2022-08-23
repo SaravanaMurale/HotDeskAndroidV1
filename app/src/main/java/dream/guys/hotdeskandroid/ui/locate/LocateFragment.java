@@ -853,6 +853,7 @@ RepeateDataAdapter.repeatInterface {
 
 
         int floorPosition = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION);
+        System.out.println("SelectedFloorPosition"+floorPosition);
         Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(parentId);
         call.enqueue(new Callback<List<LocateCountryRespose>>() {
             @RequiresApi(api = Build.VERSION_CODES.O)
