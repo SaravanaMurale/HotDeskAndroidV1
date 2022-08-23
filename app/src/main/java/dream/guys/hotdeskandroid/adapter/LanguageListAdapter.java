@@ -94,6 +94,18 @@ public class LanguageListAdapter extends RecyclerView.Adapter<LanguageListAdapte
             holder.languageSelectTick.setVisibility(View.GONE);
         }
 
+        //New..
+        if (SessionHandler.getInstance().get(context, AppConstants.LANGUAGE_KEY)!=null){
+          String s =  SessionHandler.getInstance().get(context, AppConstants.LANGUAGE_KEY);
+
+          if (s.equalsIgnoreCase(languageListResponseList.get(position).getName())){
+              holder.languageSelectTick.setVisibility(View.VISIBLE);
+          }else {
+              holder.languageSelectTick.setVisibility(View.GONE);
+          }
+
+        }
+
     }
 
     @Override

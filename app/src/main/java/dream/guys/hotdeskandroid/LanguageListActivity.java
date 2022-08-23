@@ -9,6 +9,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -77,6 +78,13 @@ public class LanguageListActivity extends AppCompatActivity implements LanguageL
 
         languageListAdapter=new LanguageListAdapter(LanguageListActivity.this,languageListResponseList,this);
         activityLanguageListBinding.rvLanguage.setAdapter(languageListAdapter);
+
+        activityLanguageListBinding.profileBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
     }
 

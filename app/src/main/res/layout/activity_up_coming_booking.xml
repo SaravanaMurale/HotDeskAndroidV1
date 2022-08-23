@@ -48,8 +48,8 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:visibility="visible"
-            app:textColorNormal="@android:color/black"
-            app:textColorSelected="@color/figmaBlue"
+            app:textColorNormal="@color/figmaBlack"
+            app:textColorSelected="@color/white"
             android:layout_marginTop="@dimen/_8sdp"/>
 
         <LinearLayout

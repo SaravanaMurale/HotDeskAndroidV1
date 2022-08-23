@@ -144,7 +144,7 @@ public class BookFragment extends Fragment implements
     NestedScrollView nestedScrollView;
     LinearLayoutManager desklinearLayoutManager;
     List<BookingListResponse> bookingListResponseList;
-    List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponseDesk;
+    List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponseDesk=new ArrayList<>();
     List<ParkingSpotModel> parkingSpotModelList=new ArrayList<>();
     List<UserAllowedMeetingResponse> userAllowedMeetingResponseList=new ArrayList<>();
 
@@ -813,6 +813,7 @@ public class BookFragment extends Fragment implements
         TextView editClose, editDate, bookingName, addNew;
         LinearLayoutManager linearLayoutManager;
 
+        bookingForEditResponseDesk.addAll(bookingForEditResponse.getTeamDeskAvailabilities());
         bookEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bookEditBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_edit_booking_bottomsheet,
                 new RelativeLayout(getContext())));
@@ -844,7 +845,6 @@ public class BookFragment extends Fragment implements
             @Override
             public void onClick(View v) {
                 EditBookingDetails editBookingDetails= new EditBookingDetails();
-                bookingForEditResponseDesk = bookingForEditResponse.getTeamDeskAvailabilities();
                 for (int i=0; i<bookingForEditResponseDesk.size();i++){
                     if (bookingForEditResponse.getUserPreferences().getTeamDeskId()==bookingForEditResponseDesk.get(i).getTeamDeskId()){
                         if (bookingForEditResponse.getBookings().size() > 0){
@@ -1025,7 +1025,7 @@ public class BookFragment extends Fragment implements
                     JsonArray jsonChangesetArray = new JsonArray();
                     JsonArray jsonDeletedIdsArray = new JsonArray();
                     jsonInnerObject.addProperty("id",editDeskBookingDetails.getCalId());
-                    jsonInnerObject.addProperty("date",""+Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+"T00:00:00.000Z");
+                    jsonInnerObject.addProperty("date",""+Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+"T00:00:00Z");
                     switch (dskRoomParkStatus){
                         case 1:
                             jsonOuterObject.addProperty("teamId",SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
@@ -1033,7 +1033,7 @@ public class BookFragment extends Fragment implements
                             if (!commentRegistration.getText().toString().isEmpty() &&
                                     !commentRegistration.getText().toString().equalsIgnoreCase(""))
                                 jsonChangesObject.addProperty("comments",commentRegistration.getText().toString());
-                            if (selectedDeskId!=0 && dskRoomParkStatus==1){
+                            if (selectedDeskId!=0 && dskRoomParkStatus==1 && selectedDeskId!=editDeskBookingDetails.getDesktId()){
                                 jsonChangesObject.addProperty("teamDeskId",selectedDeskId);
                             }
 
@@ -1827,7 +1827,6 @@ public class BookFragment extends Fragment implements
         editDeskBookingDetails.setDeskStatus(0);
         editDeskBookingDetails.setDesktId(bookings.getDeskId());
         editBookingUsingBottomSheet(editDeskBookingDetails,1,0,"edit");
-
 
     }
 

@@ -74,6 +74,8 @@
     <string name="notices">Notices</string>
     <string name="personal_help">Personal Help</string>
     <string name="personal_txt">Sometimes everyone faces challenges in their working and personal lives. Every year, one in four of us will experience a mental health problem. We are dedicated to ensuring you get both support and respect at all times. This page is dedicated to supporting you and giving assistance if and when required. We can direct you to someone to help or you can go to some of the links below to get assistance.</string>
+    <string name="covid_txt">Covid</string>
+    <string name="covid">COVID-19 Self-Certification</string>
     <string name="workspace_assessment">Workspace Assessment</string>
     <string name="rewards">Rewards</string>
     <string name="workspace_survey">Workspace Survey</string>
@@ -123,6 +125,16 @@
     <string name="chair">Chair</string>
     <string name="desk">Desk</string>
     <string name="display">Display</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="transport_method">Please indicate method of transportation to office</string>
+
+    <string name="car">Car</string>
+    <string name="public_trans">Public Transport</string>
+    <string name="taxi">Taxi Uber</string>
+    <string name="bike">Bike</string>
+    <string name="walk">Walk</string>
+    <string name="wfh">Work from home</string>
     <string name="keyboard">Keyboard</string>
     <string name="mouse">Mouse</string>
     <string name="phone">Phone</string>

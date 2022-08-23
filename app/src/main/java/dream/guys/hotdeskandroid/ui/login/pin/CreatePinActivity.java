@@ -3,6 +3,7 @@ package dream.guys.hotdeskandroid.ui.login.pin;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,12 +13,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.request.CreatePinRequest;
 import dream.guys.hotdeskandroid.model.request.ForgotPasswordRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
+import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import dream.guys.hotdeskandroid.ui.login.ForgotPasswordActivity;
 import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
@@ -50,6 +56,17 @@ public class CreatePinActivity extends AppCompatActivity {
     @BindView(R.id.old_pin_layout)
     LinearLayout old_pin_layout;
 
+    @BindView(R.id.etOldPin)
+    OtpTextView etOldPin;
+    String oldPin = "";
+    boolean isPinSetup;
+
+    @BindView(R.id.tvConfirmPin)
+    TextView tvConfirmPin;
+    @BindView(R.id.tvNewPin)
+    TextView tvNewPin;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +75,7 @@ public class CreatePinActivity extends AppCompatActivity {
 
         dialog = new Dialog(CreatePinActivity.this);
 
+        getUserDetailsUsingToken();
 
         newPin.setOtpListener(new OTPListener()
         {
@@ -107,11 +125,21 @@ public class CreatePinActivity extends AppCompatActivity {
         btnSubmiot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validateLoginDetails(pin,conPin)){
-                    createPinLogin();
+
+                if (isPinSetup){
+                    if (threePinValidations(oldPin,pin,conPin)){
+                        callOldPincheck(oldPin);
+                    }else {
+                        Utils.toastMessage(getApplicationContext(),"Please enter Old Pin");
+                        etOldPin.setOTP("");
+                    }
                 }else {
-                    newPin.setOTP("");
-                    confirmPin.setOTP("");
+                    if (validateLoginDetails(pin,conPin)){
+                        createPinLogin();
+                    }else {
+                        newPin.setOTP("");
+                        confirmPin.setOTP("");
+                    }
                 }
 
                /* if (validateLoginDetails(newPin.getText().toString(),confirmPin.getText().toString())){
@@ -120,7 +148,94 @@ public class CreatePinActivity extends AppCompatActivity {
             }
         });
 
+        //New...
+        etOldPin.setOtpListener(new OTPListener() {
+            @Override
+            public void onInteractionListener() {
+
+            }
+
+            @Override
+            public void onOTPComplete(String otp) {
+                oldPin = otp;
+            }
+        });
+
+
     }
+
+    private boolean threePinValidations(String oldPin, String nwPin, String conPin) {
+        boolean userDetailStatus = false;
+
+        if (nwPin.equalsIgnoreCase("") || nwPin.isEmpty()
+                || conPin.equalsIgnoreCase("") || conPin.isEmpty()
+                || oldPin.equalsIgnoreCase("") || oldPin.isEmpty() ){
+            Utils.toastMessage(getApplicationContext(),"Please enter Pin");
+            userDetailStatus = false;
+        }else if (nwPin.length() < 6 || conPin.length() < 6 || oldPin.length() < 6 ){
+            Utils.toastMessage(getApplicationContext(),"Pin Should be 6 digits");
+            userDetailStatus = false;
+        }else if (!nwPin.equalsIgnoreCase(conPin)){
+            Utils.toastMessage(getApplicationContext(),"Pin Mismatch");
+            userDetailStatus = false;
+        }else {
+            userDetailStatus = true;
+        }
+
+        return userDetailStatus;
+    }
+
+    private void callOldPincheck(String oldPin) {
+
+        if (Utils.isNetworkAvailable(this)) {
+            dialog= ProgressDialog.showProgressBar(CreatePinActivity.this);
+//                GetTokenRequest getTokenRequest = new GetTokenRequest(companyName, email, password);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            CreatePinRequest createPinRequest = new CreatePinRequest();
+            createPinRequest.setPin(oldPin);
+            createPinRequest.setUserId(""+SessionHandler.getInstance().getInt(this,AppConstants.USER_ID));
+            Call<GetTokenResponse> call = apiService.checkPinLogin(createPinRequest);
+            call.enqueue(new Callback<GetTokenResponse>() {
+                @Override
+                public void onResponse(Call<GetTokenResponse> call, Response<GetTokenResponse> response) {
+                    if(response.code()==200){
+                        ProgressDialog.dismisProgressBar(CreatePinActivity.this,dialog);
+                        createPinLogin();
+
+                        /*GetTokenResponse getTokenResponse = response.body();
+                        if (getTokenResponse != null) {
+                            //Save token
+                            SessionHandler.getInstance().save(CreatePinActivity.this, AppConstants.USERTOKEN, getTokenResponse.getToken());
+                            SessionHandler.getInstance().saveBoolean(CreatePinActivity.this, AppConstants.LOGIN_CHECK,true);
+
+                        }*/
+                    } else if(response.code() == 401){
+                        ProgressDialog.dismisProgressBar(CreatePinActivity.this,dialog);
+                        Utils.toastMessage(CreatePinActivity.this, "Invalid Pin "+response.code());
+
+                    }else {
+                        ProgressDialog.dismisProgressBar(CreatePinActivity.this,dialog);
+                        Utils.toastMessage(CreatePinActivity.this, "Invalid Pin "+response.code());
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<GetTokenResponse> call, Throwable t) {
+                    ProgressDialog.dismisProgressBar(CreatePinActivity.this,dialog);
+                    Intent intent=new Intent(CreatePinActivity.this,LoginPinActivity.class);
+                    startActivity(intent);
+                    finish();
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(this, "Please Enable Internet");
+        }
+        
+    }
+
     private void createPinLogin() {
         if (Utils.isNetworkAvailable(this)) {
 
@@ -202,4 +317,58 @@ public class CreatePinActivity extends AppCompatActivity {
     public void onBackPressed() {
 
     }
+    
+    //New...
+
+    private void getUserDetailsUsingToken() {
+
+        if (Utils.isNetworkAvailable(this)) {
+            dialog=ProgressDialog.showProgressBar(CreatePinActivity.this);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<UserDetailsResponse> call = apiService.getLoginUserDetails();
+            call.enqueue(new Callback<UserDetailsResponse>() {
+                @Override
+                public void onResponse(Call<UserDetailsResponse> call, Response<UserDetailsResponse> response) {
+                    ProgressDialog.dismisProgressBar(CreatePinActivity.this,dialog);
+                    if(response.code()==200){
+                        UserDetailsResponse userDetailsResponse = response.body();
+
+                        if (userDetailsResponse != null) {
+
+                            isPinSetup = userDetailsResponse.isHasPinSetup();
+
+                            if (isPinSetup){
+                                old_pin_layout.setVisibility(View.VISIBLE);
+
+                            }else {
+                                old_pin_layout.setVisibility(View.GONE);
+                                tvNewPin.setText("Enter your pin");
+                                tvConfirmPin.setText("Re-enter your pin");
+
+                            }
+
+                        } else {
+                            ProgressDialog.dismisProgressBar(CreatePinActivity.this,dialog);
+                            Utils.toastMessage(CreatePinActivity.this, "User Details Not Found");
+                        }
+
+                    }else if(response.code()==401){
+                        ProgressDialog.dismisProgressBar(CreatePinActivity.this,dialog);
+                        Utils.toastMessage(CreatePinActivity.this, "Please Try Again");
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<UserDetailsResponse> call, Throwable t) {
+                    ProgressDialog.dismisProgressBar(CreatePinActivity.this,dialog);
+                }
+            });
+        } else {
+            Utils.toastMessage(this, "Please Enable Internet");
+        }
+
+
+    }
+    
 }

@@ -88,6 +88,7 @@
         android:layout_height="wrap_content"
         android:text="@string/active_notice"
         android:layout_marginTop="@dimen/_20sdp"
+        style="@style/TextBold"
         android:layout_marginLeft="@dimen/_20sdp"
         />
 

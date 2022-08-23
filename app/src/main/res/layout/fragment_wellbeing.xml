@@ -25,13 +25,24 @@
             android:textStyle="bold"
             />
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       >
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/health_safety"
             android:textColor="@color/black"
             android:layout_marginTop="@dimen/_20sdp"
-            android:textSize="@dimen/_15sdp"
+        style="@style/TextBold"
             />
 
         <!--Health and Safety-->
@@ -58,6 +69,7 @@
                     android:layout_toLeftOf="@+id/tvHealthTips"
                     android:layout_marginRight="@dimen/_20sdp"
                     />
+            android:src="@drawable/healthtips" />
 
                 <TextView
                     android:id="@+id/tvHealthTips"
@@ -250,7 +262,7 @@
             android:text="@string/human_resources"
             android:textColor="@color/black"
             android:layout_marginTop="@dimen/_20sdp"
-            android:textSize="@dimen/_15sdp"
+        style="@style/TextBold"
             />
         <androidx.cardview.widget.CardView
             android:id="@+id/leaveBlock"
@@ -274,10 +286,10 @@
                 <ImageView
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
-                    android:src="@drawable/plane"
-                    android:layout_toLeftOf="@+id/tvLeave"
                     android:layout_marginRight="@dimen/_20sdp"
+                android:layout_toLeftOf="@+id/tvLeave"
                     android:padding="@dimen/_2sdp"
+                android:src="@drawable/plane"
 
                     />
 
@@ -306,7 +318,7 @@
             android:text="@string/places"
             android:textColor="@color/black"
             android:layout_marginTop="@dimen/_20sdp"
-            android:textSize="@dimen/_15sdp"
+        style="@style/TextBold"
             />
         <androidx.cardview.widget.CardView
             android:id="@+id/reportAnIssueBlock"
@@ -360,7 +372,7 @@
             android:text="@string/benefits"
             android:textColor="@color/black"
             android:layout_marginTop="@dimen/_20sdp"
-            android:textSize="@dimen/_15sdp"
+        style="@style/TextBold"
             />
         <androidx.cardview.widget.CardView
             android:id="@+id/traininBlock"
@@ -523,8 +535,9 @@
             android:text="@string/notices"
             android:textColor="@color/black"
             android:layout_marginTop="@dimen/_20sdp"
-            android:textSize="@dimen/_15sdp"
+        style="@style/TextBold"
             />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/noticesBlock"
             android:layout_width="match_parent"
@@ -619,6 +632,54 @@
 
 
             </RelativeLayout>
+       <!--Covid-->
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/covid_txt"
+           android:textColor="@color/black"
+           android:layout_marginTop="@dimen/_20sdp"
+           style="@style/TextBold"
+           />
+
+
+       <androidx.cardview.widget.CardView
+           android:id="@+id/covidCertifcatetBlock"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           app:cardCornerRadius="@dimen/_5sdp"
+           android:background="@drawable/button_white_bg"
+           app:cardElevation="@dimen/_5sdp"
+           android:layout_marginLeft="@dimen/_3sdp"
+           android:layout_marginRight="@dimen/_3sdp"
+           android:layout_marginTop="@dimen/_10sdp"
+           android:layout_marginBottom="@dimen/_20sdp"
+           >
+
+           <RelativeLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:padding="@dimen/_3sdp"
+               >
+
+               <ImageView
+                   android:layout_width="@dimen/_25sdp"
+                   android:layout_height="@dimen/_25sdp"
+                   android:layout_marginRight="@dimen/_20sdp"
+                   android:layout_toLeftOf="@+id/tvCovid"
+                   android:padding="@dimen/_2sdp"
+                   android:src="@drawable/notification_icon"
+
+                   />
+
+               <TextView
+                   android:id="@+id/tvCovid"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_centerInParent="true"
+                   android:text="@string/covid"
+                   android:textColor="@color/black"
+                   android:textSize="14dp" />
 
         </androidx.cardview.widget.CardView>
 
@@ -721,6 +782,9 @@
 
 
             </RelativeLayout>
+
+       </androidx.cardview.widget.CardView>
+
 
         </androidx.cardview.widget.CardView>
 
@@ -1396,6 +1460,8 @@
         </ScrollView>
 
 
+
+    </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 
 

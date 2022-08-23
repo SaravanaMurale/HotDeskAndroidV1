@@ -223,6 +223,14 @@ public class WellbeingFragment extends Fragment {
             }
         });
 
+        binding.covidCertifcatetBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getContext(),CovidCertificationActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
 
         //New...

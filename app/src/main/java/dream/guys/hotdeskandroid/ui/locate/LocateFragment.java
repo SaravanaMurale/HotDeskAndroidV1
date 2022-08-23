@@ -70,12 +70,14 @@ import dream.guys.hotdeskandroid.example.ItemAdapter;
 import dream.guys.hotdeskandroid.example.MyCanvasDraw;
 import dream.guys.hotdeskandroid.example.ValuesPOJO;
 import dream.guys.hotdeskandroid.model.request.CarParkingStatusModel;
+import dream.guys.hotdeskandroid.model.request.DeleteMeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.request.DeskStatusModel;
 import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkEditRequest;
 import dream.guys.hotdeskandroid.model.request.LocateDeskBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocationMR_Request;
+import dream.guys.hotdeskandroid.model.request.MeetingRoomEditRequest;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.request.MeetingStatusModel;
 import dream.guys.hotdeskandroid.model.request.Point;
@@ -185,7 +187,7 @@ RepeateDataAdapter.repeatInterface {
     TextView locateDeskName, editBookingBack, editBookingContinue;
     RelativeLayout bookingDateBlock, bookingStartBlock, bookingEndBlock, bookingCommentBlock, bookingVechicleRegtBlock;
     EditText etComment, etVehicleReg;
-    TextView locateCheckInDate, locateCheckInTime, locateCheckoutTime;
+    TextView locateCheckInDate, locateCheckInTime, locateCheckoutTime,showlocateCheckInDate;
     int teamDeskIdForBooking = 0;
     int selectedCarParkingSlotId = 0;
 
@@ -2331,15 +2333,19 @@ RepeateDataAdapter.repeatInterface {
 
         //String startDate=binding.locateCalendearView.getText().toString()+"T00:00:00.000Z";
         //String endDate=binding.locateCalendearView.getText().toString()+"T00:00:00.000Z";
-        String startDate = binding.locateCalendearView.getText().toString();
-        String endDate = binding.locateCalendearView.getText().toString();
+        //String startDate = binding.locateCalendearView.getText().toString();
+        //String endDate = binding.locateCalendearView.getText().toString();
+
+        String startDate = binding.locateCalendearView.getText().toString() + " " + binding.locateStartTime.getText().toString() + ":00Z";
+        String endDate = binding.locateCalendearView.getText().toString() + " " + binding.locateEndTime.getText().toString() + ":00Z";
+
         int[] roomid = new int[1];
         roomid[0] = meetingRoomId;
         String roomId = Arrays.toString(roomid);
 
         binding.locateProgressBar.setVisibility(View.VISIBLE);
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<MeetingListToEditResponse>> call = apiService.getMeetingListToEdit(startDate, endDate);
+        Call<List<MeetingListToEditResponse>> call = apiService.getMeetingListToEditInLocate(startDate, endDate,roomId);
         call.enqueue(new Callback<List<MeetingListToEditResponse>>() {
             @Override
             public void onResponse(Call<List<MeetingListToEditResponse>> call, Response<List<MeetingListToEditResponse>> response) {
@@ -2536,13 +2542,14 @@ RepeateDataAdapter.repeatInterface {
 
     private void callMeetingRoomBookingBottomSheet(int meetingRoomId, String meetingRoomName, boolean isRequest) {
 
-        TextView startRoomTime, endTRoomime, editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle;
+        TextView startRoomTime, endTRoomime, editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle,showtvRoomStartTime;
         EditText etParticipants, etSubject, etComments;
         RecyclerView rvParticipant;
         LinearLayoutManager linearLayoutManager;
         RelativeLayout startTimeLayout, endTimeLayout;
         //New...
         LinearLayout subCmtLay,child_layout;
+        TextView roomDate;
 
 
 
@@ -2551,6 +2558,7 @@ RepeateDataAdapter.repeatInterface {
                 new RelativeLayout(getContext()))));
 
         startRoomTime = bottomSheetDialog.findViewById(R.id.tvRoomStartTime);
+        showtvRoomStartTime = bottomSheetDialog.findViewById(R.id.showtvRoomStartTime);
         endTRoomime = bottomSheetDialog.findViewById(R.id.tvRoomEndTime);
         etParticipants = bottomSheetDialog.findViewById(R.id.etParticipants);
         etSubject = bottomSheetDialog.findViewById(R.id.etSubject);
@@ -2567,6 +2575,7 @@ RepeateDataAdapter.repeatInterface {
         endTimeLayout = bottomSheetDialog.findViewById(R.id.endTimeLayout);
         subCmtLay = bottomSheetDialog.findViewById(R.id.subCmtLay);
         child_layout = bottomSheetDialog.findViewById(R.id.child_layout);
+        roomDate = bottomSheetDialog.findViewById(R.id.roomDate);
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvParticipant.setLayoutManager(linearLayoutManager);
@@ -2574,6 +2583,21 @@ RepeateDataAdapter.repeatInterface {
 
 
         roomTitle.setText(meetingRoomName);
+
+
+
+        //New...
+        String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
+        String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
+        String CountryName = SessionHandler.getInstance().get(getContext(), AppConstants.COUNTRY_NAME);
+        if (CountryName == null && buildingName == null && floorName == null) {
+
+            roomDate.setText(buildingName + "," + floorName);
+
+        } else {
+            roomDate.setText(CountryName + "," + buildingName + "," + floorName);
+
+        }
 
         if (meetingRoomDescription != null) {
             tvMeetingRoomDescription.setText("Description:" + meetingRoomDescription);
@@ -2611,7 +2635,27 @@ RepeateDataAdapter.repeatInterface {
         startTimeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), startRoomTime, "Start", binding.locateCalendearView.getText().toString());
+               Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), startRoomTime, "Start", binding.locateCalendearView.getText().toString());
+            }
+        });
+
+        //New...
+        showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " " +binding.locateStartTime.getText().toString());
+        endTRoomime.setText(binding.locateEndTime.getText().toString());
+        startRoomTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " " +startRoomTime.getText().toString());
             }
         });
 
@@ -2631,6 +2675,7 @@ RepeateDataAdapter.repeatInterface {
                 }else {
                     subCmtLay.setVisibility(View.GONE);
                     child_layout.setVisibility(View.VISIBLE);
+                    roomDate.setText(buildingName + "," + floorName);
                     page = 1;
                 }
 
@@ -2656,6 +2701,9 @@ RepeateDataAdapter.repeatInterface {
 
                     subCmtLay.setVisibility(View.VISIBLE);
                     child_layout.setVisibility(View.GONE);
+                    roomDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()) +
+                            startRoomTime.getText().toString() + "to" + endTRoomime.getText().toString());
+
                     page = 2;
 
                 }else {
@@ -3585,6 +3633,7 @@ RepeateDataAdapter.repeatInterface {
         locateCheckInDate = locateCheckInBottomSheet.findViewById(R.id.locateCheckInDate);
         locateCheckInTime = locateCheckInBottomSheet.findViewById(R.id.locateCheckInTime);
         locateCheckoutTime = locateCheckInBottomSheet.findViewById(R.id.locateCheckoutTime);
+        showlocateCheckInDate = locateCheckInBottomSheet.findViewById(R.id.showlocateCheckInDate);
 
         locateDeskName = locateCheckInBottomSheet.findViewById(R.id.locateDeskName);
         editBookingContinue = locateCheckInBottomSheet.findViewById(R.id.editBookingContinue);
@@ -3600,6 +3649,11 @@ RepeateDataAdapter.repeatInterface {
 
         //new...
         locateCheckInDate.setText(binding.locateCalendearView.getText());
+        showlocateCheckInDate.setText(Utils.showBottomSheetDate(binding.locateCalendearView.getText().toString()));
+        locateCheckInTime.setText(binding.locateStartTime.getText().toString());
+        locateCheckoutTime.setText(binding.locateEndTime.getText().toString());
+
+
         tv_repeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -3668,7 +3722,7 @@ RepeateDataAdapter.repeatInterface {
             @Override
             public void onClick(View v) {
 
-                Utils.bottomSheetDatePicker(getContext(), getActivity(), "", "", locateCheckInDate);
+                Utils.bottomSheetDatePicker(getContext(), getActivity(), "", "", locateCheckInDate,showlocateCheckInDate);
 
                 //callBookingDatePickerBottomSheet();
             }
@@ -4686,7 +4740,7 @@ RepeateDataAdapter.repeatInterface {
 
 
                 locateCheckInDateCal.setText("" + dateInString);
-                binding.showCalendar.setText("" + dateInString);
+                binding.showCalendar.setText(Utils.showCalendarDate(dateInString));
                 checkIsCurrentDate(dateInString);
 
 
@@ -4928,6 +4982,8 @@ RepeateDataAdapter.repeatInterface {
         rvParticipant.setLayoutManager(linearLayoutManager);
         rvParticipant.setHasFixedSize(true);
 
+
+
         etParticipants.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -4950,6 +5006,13 @@ RepeateDataAdapter.repeatInterface {
 //                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 //                imm.hideSoftInputFromWindow(binding.serachBar.getWindowToken(), 0);
 
+            }
+        });
+
+        etSubject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rvParticipant.setVisibility(View.GONE);
             }
         });
 
@@ -5016,56 +5079,100 @@ RepeateDataAdapter.repeatInterface {
     @Override
     public void onMeetingDeleteClick(MeetingListToEditResponse meetingListToEditResponse) {
 
+        binding.locateProgressBar.setVisibility(View.VISIBLE);
+
+        DeleteMeetingRoomRequest deleteMeetingRoomRequest=new DeleteMeetingRoomRequest();
+        List<DeleteMeetingRoomRequest.DelChangesets> delChangesetsList=new ArrayList<>();
+
+
+        List<Integer> integerList=new ArrayList<>();
+        integerList.add(meetingListToEditResponse.getId());
+        deleteMeetingRoomRequest.setDeletedIdsList(integerList);
+        deleteMeetingRoomRequest.setChangesetsList(delChangesetsList);
+
+        System.out.println("DeleteDataFormet"+integerList);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<BaseResponse> call = apiService.doDeleteMeetingRoom(deleteMeetingRoomRequest);
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                binding.locateProgressBar.setVisibility(View.GONE);
+
+                openCheckoutDialog("MeetingRoomDeleted");
+                callInitView();
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                binding.locateProgressBar.setVisibility(View.GONE);
+            }
+        });
+
+
+
     }
 
     private void doEditMeetingRoomBooking(MeetingListToEditResponse meetingListToEditResponse, String startTime, String endTime, String subject, String comment, BottomSheetDialog bottomSheetDialog) {
 
-        MeetingRoomRequest meetingRoomRequest = new MeetingRoomRequest();
-        meetingRoomRequest.setMeetingRoomId(meetingListToEditResponse.getMeetingRoomId());
-        meetingRoomRequest.setMsTeams(false);
-        meetingRoomRequest.setHandleRecurring(false);
-        meetingRoomRequest.setOnlineMeeting(false);
 
-        MeetingRoomRequest.Changeset m = meetingRoomRequest.new Changeset();
-        m.setId(0);
-        m.setDate(binding.locateCalendearView.getText().toString() + "T" + "00:00:00.000" + "Z");
+        binding.locateProgressBar.setVisibility(View.VISIBLE);
 
-        MeetingRoomRequest.Changeset.Changes changes = m.new Changes();
-        changes.setFrom(getCurrentDate() + "" + "T" + startTime + ":" + "00" + "." + "000" + "Z");
-        changes.setMyto(getCurrentDate() + "" + "T" + endTime + ":" + "00" + "." + "000" + "Z");
-        changes.setComments(comment);
-        changes.setSubject(subject);
-        changes.setRequest(false);
+        MeetingRoomEditRequest meetingRoomEditRequest=new MeetingRoomEditRequest();
+        meetingRoomEditRequest.setMeetingRoomId(meetingListToEditResponse.getMeetingRoomId());
+        meetingRoomEditRequest.setMsTeams(false);
+        meetingRoomEditRequest.setHandleRecurring(false);
+        meetingRoomEditRequest.setOnlineMeeting(false);
 
-        m.setChanges(changes);
+        MeetingRoomEditRequest.Changesets changesets=meetingRoomEditRequest.new Changesets();
 
-        List<MeetingRoomRequest.Changeset> changesetList = new ArrayList<>();
-        changesetList.add(m);
+        changesets.setDate(binding.locateCalendearView.getText().toString() + "T" + "00:00:00.000" + "Z");
+        changesets.setId(meetingListToEditResponse.getId());
 
-        meetingRoomRequest.setChangesets(changesetList);
+
+        MeetingRoomEditRequest.Changesets.Changes changes=changesets.new Changes();
 
         List<Integer> attendeesList = new ArrayList<>();
-        //Newly Participant Added
+
         if(chipList!=null){
-            MeetingRoomRequest.Changeset.Changes.Attendees attendees= changes.new Attendees();
+            MeetingRoomEditRequest.Changesets.Changes.Attendees attendees= changes.new Attendees();
             for (int i = 0; i <chipList.size() ; i++) {
                 attendeesList.add(chipList.get(i).getId());
             }
 
 
-        } //End
-        changes.setAttendees(attendeesList);
+        }
+        changes.setAttendeesList(attendeesList);
 
-        List<MeetingRoomRequest.Changeset.Changes.ExternalAttendees> externalAttendeesList = new ArrayList<>();
-        changes.setExternalAttendees(externalAttendeesList);
+        changes.setFrom(getCurrentDate() + "" + "T" + startTime + ":" + "00" + "." + "000" + "Z");
+        changes.setSubject(subject);
+        changes.setRequest(false);
+        changes.setTo(getCurrentDate() + "" + "T" + endTime + ":" + "00" + "." + "000" + "Z");
 
-        List<MeetingRoomRequest.DeleteIds> deleteIdsList = new ArrayList<>();
-        meetingRoomRequest.setDeletedIds(deleteIdsList);
+        changesets.setChanges(changes);
 
-        System.out.println("BookingMeetingRoom" + meetingRoomRequest);
+        List<MeetingRoomEditRequest.Changesets> changesetList = new ArrayList<>();
+        changesetList.add(changesets);
+
+        meetingRoomEditRequest.setChangesetsList(changesetList);
+
+        List<MeetingRoomEditRequest.Changesets.Changes.ExternalAttendees> externalAttendeesList = new ArrayList<>();
+        changes.setExternalAttendeesList(externalAttendeesList);
+
+
+        List<MeetingRoomEditRequest.DeleteIds> deleteIdsList = new ArrayList<>();
+        meetingRoomEditRequest.setDeletedIds(deleteIdsList);
+
+
+        System.out.println("BookingMeetingRoom" + meetingRoomEditRequest);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<BaseResponse> call = apiService.doRoomEdit(meetingRoomRequest);
+        Call<BaseResponse> call = apiService.doRoomEdit(meetingRoomEditRequest);
+
+        //End
+
+
         call.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
@@ -5073,9 +5180,11 @@ RepeateDataAdapter.repeatInterface {
                 BaseResponse baseResponse = response.body();
                 chipList.clear();
                 bottomSheetDialog.dismiss();
+
+                binding.locateProgressBar.setVisibility(View.GONE);
+
                 openCheckoutDialog("MeetingEditSuccess");
                 System.out.println("MeetingRoomEdit");
-
 
                 callInitView();
 
@@ -5083,7 +5192,7 @@ RepeateDataAdapter.repeatInterface {
 
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
-
+                binding.locateProgressBar.setVisibility(View.GONE);
             }
         });
 

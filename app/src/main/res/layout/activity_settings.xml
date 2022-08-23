@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".ui.wellbeing.WellbeingFragment">
 
     <LinearLayout
@@ -20,8 +21,8 @@
 
             <ImageView
                 android:id="@+id/profile_back"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:src="@drawable/ic_baseline_arrow_back_ios_24"
                 app:tint="@color/figmaBlue"
@@ -53,15 +54,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginStart="@dimen/_8sdp"
-            android:layout_marginEnd="@dimen/_8sdp">
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_12sdp">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:layout_marginHorizontal="@dimen/_10sdp"
-                >
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_contact"
@@ -73,37 +74,29 @@
                     android:theme="@style/TextRegular" />
             </RelativeLayout>
 
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/viewProfileBlock"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                app:cardCornerRadius="@dimen/_5sdp"
-                >
-
-
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/_10sdp"
-                    >
+                    android:id="@+id/viewProfileBlock"
+                    android:background="@drawable/setting_item_bg">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/ivViewPrifle"
                         android:layout_width="@dimen/_50sdp"
                         android:layout_height="@dimen/_50sdp"
-                        android:src="@drawable/mygirl"
-                        />
+                        android:src="@drawable/avatar" />
 
                     <TextView
                         android:id="@+id/tvViewProfileName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Bessie Cooper"
+                        android:text=""
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_toRightOf="@+id/ivViewPrifle"
-                        />
+                        android:textColor="@color/figmaBlack"
+                        style="@style/TextBold"
+                        android:textSize="@dimen/_13sdp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -113,12 +106,14 @@
                         android:layout_toRightOf="@+id/ivViewPrifle"
                         android:layout_below="@+id/tvViewProfileName"
                         android:layout_marginTop="@dimen/_5sdp"
-                        />
+                        android:textColor="@color/figmaBlack"
+                        style="@style/TextBold"
+                        android:textSize="@dimen/_13sdp"/>
 
                     <ImageView
                         android:id="@+id/viewPrfileIcon"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginHorizontal="@dimen/_2sdp"
@@ -128,21 +123,15 @@
 
                 </RelativeLayout>
 
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:background="@color/figmaBgGrey"
+                    android:background="@drawable/setting_item_bg"
                     android:paddingHorizontal="@dimen/_10sdp"
-                    android:paddingVertical="@dimen/_10sdp">
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_8sdp">
 
                     <TextView
                         android:id="@+id/tv_organization"
@@ -158,22 +147,19 @@
 
                     <ImageView
                         android:id="@+id/organize_icon"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
                         android:layout_alignParentEnd="true"
                         android:layout_marginHorizontal="@dimen/_2sdp"
                         android:src="@drawable/ic_baseline_arrow_forward_ios_24"
                         app:tint="@color/figmaBlue" />
                 </RelativeLayout>
-            </androidx.cardview.widget.CardView>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginVertical="@dimen/_5sdp"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                >
+                android:layout_marginTop="@dimen/_8sdp">
 
                 <TextView
                     android:id="@+id/tv_preference"
@@ -185,19 +171,16 @@
                     android:theme="@style/TextRegular" />
 
             </RelativeLayout>
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp">
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:background="@color/figmaBgGrey"
-                    android:paddingVertical="@dimen/_10sdp"
+                    android:background="@drawable/setting_item_bg"
+
                     android:paddingHorizontal="@dimen/_10sdp"
-                    >
+                    android:layout_marginTop="@dimen/_8sdp">
 
                     <TextView
                         android:id="@+id/tv_dark_mode"
@@ -211,30 +194,25 @@
                         android:textSize="@dimen/_14sdp"
                         android:theme="@style/TextBold" />
 
-                    <Switch
+                    <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/switchDarkMode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginHorizontal="@dimen/_2sdp" />
+                        android:thumb="@drawable/thumb_selector"
+                        app:track="@drawable/track_selector"/>
                 </RelativeLayout>
 
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:id="@+id/welBeingLanguage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                >
                 <RelativeLayout
+                    android:id="@+id/lang_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:background="@color/figmaBgGrey"
+                    android:background="@drawable/setting_item_bg"
                     android:paddingVertical="@dimen/_10sdp"
                     android:paddingHorizontal="@dimen/_10sdp"
-                    >
+                    android:layout_marginTop="@dimen/_2sdp">
 
                     <TextView
                         android:id="@+id/tv_lang"
@@ -252,26 +230,32 @@
                         android:id="@+id/txt_lang"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
+                        android:layout_toLeftOf="@+id/fwd_lang"
                         android:layout_marginHorizontal="@dimen/_2sdp"
                         android:layout_centerVertical="true"
-                        app:tint="@color/figmaBlue" />
-                </RelativeLayout>
+                        app:tint="@color/figmaBlue"
+                        style="@style/TextRegular"/>
 
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                >
+                    <ImageView
+                        android:id="@+id/fwd_lang"
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
+                        android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+                        app:tint="@color/figmaBlue" />
+
+                </RelativeLayout>
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="@color/figmaBgGrey"
+                    android:background="@drawable/setting_item_bg"
                     android:paddingVertical="@dimen/_10sdp"
                     android:paddingHorizontal="@dimen/_10sdp"
-                    android:id="@+id/notification_layout">
+                    android:id="@+id/notification_layout"
+                    android:layout_marginTop="@dimen/_2sdp">
 
                     <TextView
                         android:id="@+id/tv_noti"
@@ -287,8 +271,8 @@
 
                     <ImageView
                         android:id="@+id/noti_icon"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
                         android:layout_alignParentEnd="true"
                         android:layout_marginHorizontal="@dimen/_2sdp"
                         android:src="@drawable/ic_baseline_arrow_forward_ios_24"
@@ -296,14 +280,11 @@
                         />
                 </RelativeLayout>
 
-            </androidx.cardview.widget.CardView>
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginVertical="@dimen/_5sdp"
-                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 >
 
                 <TextView
@@ -317,19 +298,14 @@
 
             </RelativeLayout>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                >
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="@color/figmaBgGrey"
+                    android:background="@drawable/setting_item_bg"
                     android:paddingVertical="@dimen/_10sdp"
                     android:paddingHorizontal="@dimen/_10sdp"
-                    >
+                    android:layout_marginTop="@dimen/_8sdp">
 
                     <TextView
                         android:id="@+id/tv_bio"
@@ -345,31 +321,24 @@
 
                     <ImageView
                         android:id="@+id/bio_icon"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
                         android:layout_alignParentEnd="true"
                         android:layout_marginHorizontal="@dimen/_2sdp"
                         android:src="@drawable/ic_baseline_arrow_forward_ios_24"
                         app:tint="@color/figmaBlue"
                         />
                 </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                >
                 <RelativeLayout
                     android:id="@+id/btnResetPin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:background="@color/figmaBgGrey"
+                    android:background="@drawable/setting_item_bg"
                     android:paddingVertical="@dimen/_10sdp"
                     android:paddingHorizontal="@dimen/_10sdp"
-                    >
+                    android:layout_marginTop="@dimen/_2sdp">
 
                     <TextView
                         android:id="@+id/tv_pin"
@@ -385,28 +354,22 @@
 
                     <ImageView
                         android:id="@+id/pin_icon"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
                         android:layout_alignParentEnd="true"
                         android:layout_marginHorizontal="@dimen/_2sdp"
                         android:src="@drawable/ic_baseline_arrow_forward_ios_24"
                         app:tint="@color/figmaBlue" />
                 </RelativeLayout>
 
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                >
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="@color/figmaBgGrey"
+                    android:background="@drawable/setting_item_bg"
                     android:paddingVertical="@dimen/_10sdp"
                     android:paddingHorizontal="@dimen/_10sdp"
-                    >
+                    android:layout_marginTop="@dimen/_2sdp">
 
                     <TextView
                         android:id="@+id/tv_reset"
@@ -422,48 +385,38 @@
 
                     <ImageView
                         android:id="@+id/reset_icon"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
                         android:layout_alignParentEnd="true"
                         android:layout_marginHorizontal="@dimen/_2sdp"
                         android:src="@drawable/ic_baseline_arrow_forward_ios_24"
                         app:tint="@color/figmaBlue"
                         />
                 </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <RelativeLayout
+                <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginVertical="@dimen/_5sdp"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                >
+                android:layout_marginTop="@dimen/_8sdp">
 
-                <TextView
-                    android:id="@+id/tv_app"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:text="App"
-                    android:textColor="@color/figmaBlack"
-                    android:theme="@style/TextRegular" />
+                    <TextView
+                        android:id="@+id/tv_app"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:text="App"
+                        android:textColor="@color/figmaBlack"
+                        android:theme="@style/TextRegular" />
 
             </RelativeLayout>
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                >
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="@color/figmaBgGrey"
+                    android:background="@drawable/setting_item_bg"
                     android:paddingVertical="@dimen/_10sdp"
                     android:paddingHorizontal="@dimen/_10sdp"
-                    >
+                    android:layout_marginTop="@dimen/_8sdp">
 
                     <TextView
                         android:id="@+id/tv_report"
@@ -479,8 +432,8 @@
 
                     <ImageView
                         android:id="@+id/report_icon"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
                         android:layout_alignParentEnd="true"
                         android:layout_marginHorizontal="@dimen/_2sdp"
                         android:src="@drawable/ic_baseline_arrow_forward_ios_24"
@@ -488,20 +441,14 @@
                         />
                 </RelativeLayout>
 
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                >
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="@color/figmaBgGrey"
+                    android:background="@drawable/setting_item_bg"
                     android:paddingVertical="@dimen/_10sdp"
                     android:paddingHorizontal="@dimen/_10sdp"
-                    >
+                    android:layout_marginTop="@dimen/_2sdp">
 
                     <TextView
                         android:id="@+id/tv_phone"
@@ -517,28 +464,22 @@
 
                     <ImageView
                         android:id="@+id/phone_icon"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
                         android:layout_alignParentEnd="true"
                         android:layout_marginHorizontal="@dimen/_2sdp"
                         android:src="@drawable/ic_baseline_arrow_forward_ios_24"
                         app:tint="@color/figmaBlue"/>
                 </RelativeLayout>
 
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                >
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="@color/figmaBgGrey"
+                    android:background="@drawable/setting_item_bg"
                     android:paddingVertical="@dimen/_10sdp"
                     android:paddingHorizontal="@dimen/_10sdp"
-                    >
+                    android:layout_marginTop="@dimen/_2sdp">
 
                     <TextView
                         android:id="@+id/tv_desk"
@@ -558,27 +499,21 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:text="Feedback"
+                        android:text="feedback@hybridhero.com"
                         android:textColor="@color/figmaBlue"
                         android:textSize="@dimen/_11sdp"
                         android:theme="@style/TextBold"
                         />
                 </RelativeLayout>
 
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                >
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="@color/figmaBgGrey"
+                    android:background="@drawable/setting_item_bg"
                     android:paddingVertical="@dimen/_10sdp"
                     android:paddingHorizontal="@dimen/_10sdp"
-                    >
+                    android:layout_marginTop="@dimen/_2sdp">
 
                     <TextView
                         android:id="@+id/tv_help"
@@ -598,29 +533,21 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_marginHorizontal="@dimen/_2sdp"
-                        android:text="1.2.3.44"
+                        android:text="1.2"
                         android:textColor="@color/figmaBlack"
-                        android:textSize="@dimen/_14sdp"
-                        android:theme="@style/TextBold"
+                        android:textSize="@dimen/_12sdp"
+                        android:theme="@style/TextRegular"
                         />
                 </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_14sdp"
-                >
                 <RelativeLayout
                     android:id="@+id/btnLogout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:background="@color/figmaBgGrey"
+                    android:background="@drawable/setting_item_bg"
                     android:paddingVertical="@dimen/_10sdp"
                     android:paddingHorizontal="@dimen/_10sdp"
-                    >
+                    android:layout_marginTop="@dimen/_2sdp">
 
                     <TextView
                         android:id="@+id/tv_logout"
@@ -630,22 +557,20 @@
                         android:layout_centerInParent="true"
                         android:layout_toLeftOf="@id/logout_icon"
                         android:text="Logout"
-                        android:textColor="@color/figmaBlack"
+                        android:textColor="@color/figma_red"
                         android:textSize="@dimen/_14sdp"
                         android:theme="@style/TextBold" />
 
                     <ImageView
                         android:id="@+id/logout_icon"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
                         android:layout_alignParentEnd="true"
                         android:layout_marginHorizontal="@dimen/_2sdp"
                         android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                        app:tint="@color/figmaBlue"
+                        app:tint="@color/figma_red"
                         />
                 </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
 
 
         </LinearLayout>

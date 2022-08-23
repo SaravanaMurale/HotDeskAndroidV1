@@ -71,6 +71,8 @@ import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.listener.QuestionListEditListener;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
+import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
+import dream.guys.hotdeskandroid.ui.home.EditProfileActivity;
 import dream.guys.hotdeskandroid.ui.locate.LocateFragment;
 import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.login.SignInActivity;
@@ -176,6 +178,8 @@ public class Utils {
             @Override
             public void onClick(View v) {
 
+                //setData(simpleTimePicker24Hours,tv);
+
                 String hour=null,minute=null;
                 String getHHour=String.valueOf(simpleTimePicker24Hours.getHour());
                 String getMMinute=String.valueOf(simpleTimePicker24Hours.getMinute());
@@ -203,9 +207,33 @@ public class Utils {
 
         bottomSheetDialog.show();
 
-
     }
 
+    public static String setData(TimePicker simpleTimePicker24Hours, TextView tv){
+
+        String hour=null,minute=null;
+        String getHHour=String.valueOf(simpleTimePicker24Hours.getHour());
+        String getMMinute=String.valueOf(simpleTimePicker24Hours.getMinute());
+
+        if(getHHour.length()==1){
+            hour="0"+getHHour;
+        }else {
+            hour=getHHour;
+        }
+
+
+        if(getMMinute.length()==1){
+            minute="0"+getMMinute;
+        }else {
+            minute=getMMinute;
+        }
+
+        System.out.println("GETDATATATATA"+hour+" "+minute);
+
+        tv.setText(hour+":"+minute);
+
+        return hour+":"+minute;
+    }
 
     public static void tokenExpiryAlert(final Context mContext, String msg) {
         final Activity activity = (Activity) mContext;
@@ -302,7 +330,8 @@ public class Utils {
     }
 
     //BotomSheet DatePicker
-    public static void bottomSheetDatePicker(Context mContext, Activity activity, String title, String date, TextView locateCheckInDate){
+    public static void bottomSheetDatePicker(Context mContext, Activity activity, String title, String date,
+                                             TextView locateCheckInDate,TextView showLocateCheckInDate){
 
         BottomSheetDialog bottomSheetDatePicker = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
         bottomSheetDatePicker.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_date_picker,
@@ -334,6 +363,8 @@ public class Utils {
                 //locateCheckInDate.setText(dateInString+"T"+getCurrentTimeIn24HourFormat()+".000"+"Z");
                 //locateCheckInDate.setText(dateInString+"T"+"00:00:00.000"+"Z");
                 locateCheckInDate.setText(""+dateInString);
+
+                showLocateCheckInDate.setText(showBottomSheetDate(dateInString));
 
 
             }
@@ -1279,6 +1310,67 @@ public class Utils {
     public static LanguagePOJO.WellBeing getWellBeingScreenData(Context mContext) {
         LanguagePOJO.WellBeing wellBeingPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.WELLBEING_PAGE), LanguagePOJO.WellBeing.class);
         return wellBeingPage;
+    }
+
+    public static UserDetailsResponse getLoginData(Context context) {
+        UserDetailsResponse profileData = null; //= new UserDetailsResponse();
+        Gson gson = new Gson();
+        String json = SessionHandler.getInstance().get(context, AppConstants.LOGIN_RESPONSE);
+        if (json!=null){
+            profileData = gson.fromJson(json, UserDetailsResponse.class);
+        }
+
+        return profileData;
+    }
+
+    public static String showCalendarDate(String d){
+        String date=d;
+        SimpleDateFormat spf=new SimpleDateFormat("yyyy-MM-dd");
+        Date newDate= null;
+        try {
+            newDate = spf.parse(d);
+            spf= new SimpleDateFormat("E dd MMM");
+            if (newDate != null) {
+                date = spf.format(newDate);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return date;
+    }
+
+    public static String showBottomSheetDate(String d){
+        String date=d;
+        SimpleDateFormat spf=new SimpleDateFormat("yyyy-MM-dd");
+        Date newDate= null;
+        try {
+            newDate = spf.parse(d);
+            spf= new SimpleDateFormat("dd MMM");
+            if (newDate != null) {
+                date = spf.format(newDate);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return date;
+    }
+    public static String showBottomSheetDateTime(String d){
+        String date=d;
+        SimpleDateFormat spf=new SimpleDateFormat("yyyy-MM-dd");
+        Date newDate= null;
+        try {
+            newDate = spf.parse(d);
+            spf= new SimpleDateFormat("dd'th' MMM");
+            if (newDate != null) {
+                date = spf.format(newDate);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return date;
     }
 
 }

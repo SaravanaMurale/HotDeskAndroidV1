@@ -7,8 +7,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -18,17 +23,25 @@ import dream.guys.hotdeskandroid.LanguageListActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.databinding.ActivitySettingsBinding;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
+import dream.guys.hotdeskandroid.model.response.ProfilePicResponse;
+import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import dream.guys.hotdeskandroid.ui.home.EditProfileActivity;
 import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
 import dream.guys.hotdeskandroid.ui.wellbeing.NotificationActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
+import dream.guys.hotdeskandroid.webservice.ApiClient;
+import dream.guys.hotdeskandroid.webservice.ApiInterface;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SettingsActivity extends AppCompatActivity {
 
     ActivitySettingsBinding binding;
     Context context;
+    UserDetailsResponse profileData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +54,24 @@ public class SettingsActivity extends AppCompatActivity {
 
         //New...
         setLanguage();
+        getProfilePicture();
+        profileData = Utils.getLoginData(context);
 
-        if (SessionHandler.getInstance().get(context, AppConstants.LANGUAGE_KEY)!=null){
-            binding.txtLang.setText(SessionHandler.getInstance().get(context, AppConstants.LANGUAGE_KEY));
+        try {
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            String version = pInfo.versionName;
+            //int num = pInfo.versionCode;
+            binding.helpIcon.setText("Version" + String.valueOf(version));
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (profileData!=null) {
+            binding.tvViewProfileName.setText(profileData.getFullName());
+        }
+
+        if (SessionHandler.getInstance().get(context, AppConstants.LANGUAGE)!=null){
+            binding.txtLang.setText(SessionHandler.getInstance().get(context, AppConstants.LANGUAGE));
         }
 
         binding.btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +101,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        binding.welBeingLanguage.setOnClickListener(new View.OnClickListener() {
+        binding.langLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -100,17 +128,47 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+
+    private void getProfilePicture() {
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ProfilePicResponse> call = apiService.getProfilePicture();
+        call.enqueue(new Callback<ProfilePicResponse>() {
+            @Override
+            public void onResponse(Call<ProfilePicResponse> call, Response<ProfilePicResponse> response) {
+
+                ProfilePicResponse profilePicResponse=response.body();
+
+                System.out.println("Base64Image"+profilePicResponse.getImage());
+
+                if(profilePicResponse.getImage()!=null) {
+                    String base64String = profilePicResponse.getImage();
+                    String base64Image = base64String.split(",")[1];
+                    byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                    binding.ivViewPrifle.setImageBitmap(decodedByte);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ProfilePicResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
     public void setLanguage() {
 
         LanguagePOJO.WellBeing wellBeingPage = getWellBeingScreenData(this);
 
         if (wellBeingPage!=null) {
 
-            binding.tvContact.setText(wellBeingPage.getDefault());
+            //binding.tvContact.setText(wellBeingPage.getDefault());
             binding.tvOrganization.setText(wellBeingPage.getChangeOrganization());
             binding.tvDarkMode.setText(wellBeingPage.getDarkMode());
             binding.tvPhone.setText(wellBeingPage.getWhatsNew());
-            binding.tvDesk.setText(wellBeingPage.getDesks());
+            binding.tvDesk.setText(wellBeingPage.getFeedback());
             binding.tvPreference.setText(wellBeingPage.getPreference());
             binding.tvLang.setText(wellBeingPage.getLanguage());
             binding.tvNoti.setText(wellBeingPage.getNotifications());

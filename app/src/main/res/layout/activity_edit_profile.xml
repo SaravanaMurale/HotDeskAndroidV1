@@ -25,6 +25,16 @@
                 android:src="@drawable/ic_baseline_arrow_back_ios_24"
                 app:tint="@color/figmaBlue" />
 
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/profile_back"
+                android:text="Profile"
+                android:textColor="@color/figmaBlack"
+                android:textSize="@dimen/_14sdp"
+                android:theme="@style/TextBold"
+                android:layout_centerVertical="true" />
 
         </RelativeLayout>
         <view
@@ -40,6 +50,7 @@
             android:src="@drawable/tick"
             android:id="@+id/profile_update"
             android:visibility="gone"/>
+
         <ImageView
             android:id="@+id/profile_edit"
             android:layout_width="@dimen/_20sdp"
@@ -58,7 +69,7 @@
         android:layout_below="@+id/tool_bar"
         android:visibility="gone"/>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tool_bar">
@@ -71,7 +82,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_10sdp"
-            >
+            android:layout_marginBottom="@dimen/_8sdp">
 
             <!--Image-->
             <androidx.cardview.widget.CardView
@@ -89,7 +100,7 @@
                         android:id="@+id/ivEditPrifle"
                         android:layout_width="@dimen/_50sdp"
                         android:layout_height="@dimen/_50sdp"
-                        android:src="@drawable/mygirl" />
+                        android:src="@drawable/avatar" />
 
                     <TextView
                         android:id="@+id/tvUpdateImage"
@@ -98,7 +109,8 @@
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_toRightOf="@+id/ivEditPrifle"
-                        android:text="upload photo" />
+                        android:text="upload photo"
+                        android:textColor="@color/figmaBlue"/>
 
                     <TextView
                         android:id="@+id/tvImageSize"
@@ -109,7 +121,8 @@
                         android:layout_toRightOf="@+id/ivEditPrifle"
                         android:layout_below="@+id/tvUpdateImage"
                         android:layout_marginTop="@dimen/_5sdp"
-                        />
+                        style="@style/TextRegular"
+                        android:textColor="@color/figmaBlack"/>
 
                     <TextView
                         android:id="@+id/removeProfilePic"
@@ -119,7 +132,7 @@
                         android:layout_below="@+id/tvImageSize"
                         android:layout_toRightOf="@+id/ivEditPrifle"
                         android:layout_marginLeft="@dimen/_10sdp"
-                        />
+                        android:visibility="gone"/>
 
 
 
@@ -140,14 +153,17 @@
                 android:text="Name"
                 android:textColor="@color/black"
                 android:layout_marginTop="@dimen/_10sdp"
-                />
+                android:textSize="@dimen/_12sdp"
+                style="@style/TextBold"/>
 
             <EditText
                 android:id="@+id/editName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Bessie Cooper"
-                android:enabled="false"/>
+                android:hint=""
+                android:enabled="false"
+                android:background="@drawable/edittext_bg"
+                android:padding="@dimen/_5sdp"/>
 
             </LinearLayout>
 
@@ -164,7 +180,8 @@
                 android:text="Display Name"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:theme="@style/TextBold"
-                />
+                android:textColor="@color/figmaBlack"
+                android:textSize="@dimen/_12sdp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -176,9 +193,11 @@
                 android:id="@+id/editDisplayName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Bessie Cooper"
+                android:hint=""
                 android:layout_marginTop="@dimen/_3sdp"
-                android:enabled="false"/>
+                android:enabled="false"
+                android:background="@drawable/edittext_bg"
+                android:padding="@dimen/_5sdp"/>
 
             </LinearLayout>
 
@@ -208,8 +227,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Schedule"
-                            android:textSize="@dimen/_14sdp"
-                            android:theme="@style/TextBold" />
+                            android:textSize="@dimen/_12sdp"
+                            android:theme="@style/TextBold"
+                            android:textColor="@color/figmaBlack"/>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -236,14 +256,15 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginVertical="@dimen/_2sdp"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
-                    >
+                    android:background="@drawable/rectangle_greybg_with_corner"
+                    android:padding="@dimen/_8sdp"
+                    android:weightSum="7">
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center_horizontal"
-                        >
+                        android:layout_weight="1">
                         <ImageView
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
@@ -262,7 +283,7 @@
                         android:orientation="vertical"
                         android:gravity="center_horizontal"
                         android:layout_marginStart="@dimen/_5sdp"
-                        >
+                        android:layout_weight="1">
                         <ImageView
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
@@ -281,7 +302,7 @@
                         android:orientation="vertical"
                         android:gravity="center_horizontal"
                         android:layout_marginStart="@dimen/_5sdp"
-                        >
+                        android:layout_weight="1">
                         <ImageView
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
@@ -300,7 +321,7 @@
                         android:orientation="vertical"
                         android:gravity="center_horizontal"
                         android:layout_marginStart="@dimen/_5sdp"
-                        >
+                        android:layout_weight="1">
                         <ImageView
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
@@ -319,7 +340,7 @@
                         android:orientation="vertical"
                         android:gravity="center_horizontal"
                         android:layout_marginStart="@dimen/_5sdp"
-                        >
+                        android:layout_weight="1">
                         <ImageView
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
@@ -338,7 +359,7 @@
                         android:orientation="vertical"
                         android:gravity="center_horizontal"
                         android:layout_marginStart="@dimen/_5sdp"
-                        >
+                        android:layout_weight="1">
                         <ImageView
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
@@ -357,7 +378,7 @@
                         android:orientation="vertical"
                         android:gravity="center_horizontal"
                         android:layout_marginStart="@dimen/_5sdp"
-                        >
+                        android:layout_weight="1">
                         <ImageView
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
@@ -387,14 +408,15 @@
                     android:layout_height="wrap_content"
                     android:text="Default working hours"
                     style="@style/TextBold"
-                    />
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/figmaBlack"/>
 
             <!--Start-->
             <RelativeLayout
                 android:id="@+id/editStartBlock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_4sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
                 android:orientation="horizontal"
                 android:padding="@dimen/_3sdp"
@@ -419,7 +441,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="9:00"
-                    android:textColor="@color/figmaBlue"
+                    android:textColor="@color/grey"
                     android:theme="@style/TextBold"
                     android:enabled="false"/>
             </RelativeLayout>
@@ -429,9 +451,9 @@
                 android:id="@+id/EditEndTimeBlock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_6sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
-                android:padding="@dimen/_1sdp"
+                android:padding="@dimen/_3sdp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -454,11 +476,10 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="10:00"
-                    android:textColor="@color/figmaBlue"
+                    android:textColor="@color/grey"
                     android:theme="@style/TextBold"
                     android:enabled="false"/>
             </RelativeLayout>
-
 
 
 
@@ -479,6 +500,8 @@
                     android:text="Default Location"
                     android:textColor="@color/black"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:textSize="@dimen/_12sdp"
+                    style="@style/TextBold"
                     />
 
                 <EditText
@@ -486,7 +509,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="4oth Bank Street"
-                    android:enabled="false"/>
+                    android:enabled="false"
+                    android:background="@drawable/edittext_bg"
+                    android:padding="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_4sdp"/>
 
             </LinearLayout>
 
@@ -500,17 +526,24 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Workspaces"
+                    android:text="Default Assets"
                     android:layout_marginTop="@dimen/_10sdp"
+                    style="@style/TextBold"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="@dimen/_12sdp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Workspaces"
+                    android:layout_marginTop="@dimen/_4sdp"
                     />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/login_background_corner_white"
-                    android:padding="@dimen/_10sdp"
-
-                    >
+                    android:background="@drawable/rectangle_greybg_with_corner"
+                    android:padding="@dimen/_6sdp">
 
                     <TextView
                         android:id="@+id/editDesk"
@@ -527,7 +560,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:enabled="false"
-                        android:hint="Change" />
+                        android:text="Change"
+                        />
 
                 </RelativeLayout>
 
@@ -541,10 +575,9 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/login_background_corner_white"
-                    android:padding="@dimen/_10sdp"
+                    android:background="@drawable/rectangle_greybg_with_corner"
+                    android:padding="@dimen/_6sdp">
 
-                    >
                     <TextView
                         android:id="@+id/editPark"
                         android:layout_width="wrap_content"
@@ -558,7 +591,7 @@
                         android:id="@+id/editParkChange"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="Change"
+                        android:text="Change"
                         android:layout_alignParentRight="true"
                         android:enabled="false"/>
 
@@ -575,10 +608,9 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/login_background_corner_white"
-                    android:padding="@dimen/_10sdp"
+                    android:background="@drawable/rectangle_greybg_with_corner"
+                    android:padding="@dimen/_6sdp">
 
-                    >
                     <TextView
                         android:id="@+id/editRoom"
                         android:layout_width="wrap_content"
@@ -592,7 +624,7 @@
                         android:id="@+id/editRoomChange"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="Change"
+                        android:text="Change"
                         android:layout_alignParentRight="true"
                         android:enabled="false"/>
 
@@ -604,7 +636,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginVertical="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 >
 
                 <TextView
@@ -615,7 +647,7 @@
                     android:layout_toLeftOf="@id/contact_edit"
                     android:text="Contact"
                     android:textColor="@color/figmaBlack"
-                    android:textSize="@dimen/_14sdp"
+                    android:textSize="@dimen/_12sdp"
                     android:theme="@style/TextBold" />
                 <ImageView
                     android:id="@+id/contact_edit"
@@ -628,22 +660,15 @@
             </RelativeLayout>
 
             <!--Email-->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/editEmailBlock"
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
-                android:layout_marginVertical="@dimen/_5sdp"
-                app:cardCornerRadius="@dimen/_5sdp"
-                app:cardElevation="@dimen/_1sdp"
-                >
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    >
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/rectangle_greybg_with_corner"
+                android:padding="@dimen/_6sdp"
+                android:layout_marginTop="@dimen/_3sdp">
 
                     <EditText
                         android:id="@+id/tvEditEmail"
@@ -654,8 +679,9 @@
                         android:layout_toLeftOf="@id/ivEditEmailIcon"
                         android:text="Email"
                         android:textColor="@color/figmaBlack"
-                        android:theme="@style/TextBold"
-                        android:enabled="false"/>
+                        android:theme="@style/TextRegular"
+                        android:enabled="false"
+                        android:background="@null"/>
 
                     <ImageView
                         android:id="@+id/ivEditEmailIcon"
@@ -667,23 +693,15 @@
                         app:tint="@color/figmaBlue" />
                 </RelativeLayout>
 
-            </androidx.cardview.widget.CardView>
-
             <!--Teams-->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/editTeamsBlock"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/_5sdp"
-                app:cardCornerRadius="@dimen/_5sdp"
-                app:cardElevation="@dimen/_3sdp"
-                >
-                <RelativeLayout
+
+            <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginVertical="@dimen/_5sdp"
-                    >
+                    android:background="@drawable/rectangle_greybg_with_corner"
+                    android:padding="@dimen/_6sdp">
 
                     <EditText
                         android:id="@+id/tvEditTeams"
@@ -694,8 +712,9 @@
                         android:text="Teams"
                         android:layout_centerInParent="true"
                         android:textColor="@color/figmaBlack"
-                        android:theme="@style/TextBold"
-                        android:enabled="false"/>
+                        android:theme="@style/TextRegular"
+                        android:enabled="false"
+                        android:background="@null"/>
 
                     <ImageView
                         android:id="@+id/ivTeamsIcon"
@@ -707,23 +726,14 @@
                         />
                 </RelativeLayout>
 
-            </androidx.cardview.widget.CardView>
-
             <!--Phone-->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/EditPhoneBlock"
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/_5sdp"
-                app:cardCornerRadius="@dimen/_5sdp"
-                app:cardElevation="@dimen/_3sdp"
-                >
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    >
+                android:orientation="horizontal"
+                android:background="@drawable/rectangle_greybg_with_corner"
+                android:padding="@dimen/_6sdp">
 
                     <EditText
                         android:id="@+id/tvEditPhone"
@@ -734,8 +744,9 @@
                         android:text="Phone"
                         android:layout_centerInParent="true"
                         android:textColor="@color/figmaBlack"
-                        android:theme="@style/TextBold"
-                        android:enabled="false"/>
+                        android:theme="@style/TextRegular"
+                        android:enabled="false"
+                        android:background="@null"/>
 
                     <ImageView
                         android:id="@+id/tvEditPhoneIcon"
@@ -746,9 +757,6 @@
                         android:src="@drawable/ic_baseline_local_phone_24"
                         app:tint="@color/figmaBlue"/>
                 </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
-
 
 
 
@@ -782,7 +790,7 @@
 
 
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <ProgressBar
         android:id="@+id/locateProgressBar"

@@ -120,6 +120,7 @@
         android:layout_marginTop="@dimen/_30sdp"
         android:layout_marginLeft="@dimen/_20sdp"
         android:orientation="vertical"
+        android:visibility="gone"
         >
 
     <TextView
@@ -142,11 +143,46 @@
     </LinearLayout>
 
 
+    <!--TextBlock-->
+    <LinearLayout
+        android:id="@+id/textBlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/evacuationBlock"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:orientation="vertical"
+
+        >
+
+        <TextView
+            android:id="@+id/headFire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="First Aid"
+            />
+        <TextView
+            android:id="@+id/titleFire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/today"
+            />
+
+        <TextView
+            android:id="@+id/subTitleFire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wed,6 June"
+            />
+
+    </LinearLayout>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvFireWardens"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/dayBlock"
+        android:layout_below="@+id/textBlock"
         android:layout_marginLeft="@dimen/_20sdp"
         android:layout_marginTop="@dimen/_20sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
