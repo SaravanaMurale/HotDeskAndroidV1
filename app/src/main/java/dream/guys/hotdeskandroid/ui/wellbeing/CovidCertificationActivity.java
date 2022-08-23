@@ -44,7 +44,7 @@ public class CovidCertificationActivity extends AppCompatActivity {
 
                 CovidAnswerRequest covidAnswerRequest=new CovidAnswerRequest();
                 covidAnswerRequest.setCovidQuestionsResponseList(covidCertificationAdapter.getList());
-                covidAnswerRequest.setResult(2);
+                covidAnswerRequest.setResult(1);
                 covidAnswerRequest.setCovidCertificationTransportMode(1);
 
                 submitCovidAnswer(covidAnswerRequest);
@@ -59,6 +59,11 @@ public class CovidCertificationActivity extends AppCompatActivity {
         call.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                BaseResponse baseResponse=response.body();
+                System.out.println();
+
+                System.out.println("CovidResultCode"+baseResponse.getResultCode());
 
             }
 

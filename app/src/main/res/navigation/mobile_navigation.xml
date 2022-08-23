@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_qrFragment"
             app:destination="@id/qrFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_locate2"
+            app:destination="@id/navigation_locate" />
     </fragment>
 
     <fragment
@@ -50,6 +53,10 @@
         android:id="@+id/qrFragment"
         android:name="dream.guys.hotdeskandroid.ui.home.QrFragment"
         android:label="qr_fragment"
-        tools:layout="@layout/fragment_qr" />
+        tools:layout="@layout/fragment_qr" >
+        <action
+            android:id="@+id/action_qrFragment_self"
+            app:destination="@id/qrFragment" />
+    </fragment>
 
 </navigation>

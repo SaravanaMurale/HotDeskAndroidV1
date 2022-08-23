@@ -53,7 +53,7 @@ public class GlobalSearchResponse {
         private int noOfPeople;
         private String phoneNumber;
 
-        private class CurrentLocation {
+        public class CurrentLocation {
             private int id;
             private String name;
             private String description;
