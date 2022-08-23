@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context=".ui.wellbeing.WellbeingFragment"
     android:layout_marginLeft="@dimen/_10sdp"
+<<<<<<< HEAD
     android:layout_marginRight="@dimen/_10sdp">
 
     <LinearLayout
@@ -24,6 +25,19 @@
             android:layout_marginTop="@dimen/_20sdp"
             android:textStyle="bold"
             />
+=======
+    android:layout_marginRight="@dimen/_10sdp"
+    >
+
+    <TextView
+        android:layout_width="118dp"
+        android:layout_height="36dp"
+        android:text="@string/wellbeing"
+        android:textSize="26dp"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:textStyle="bold"
+        />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -36,14 +50,70 @@
        android:orientation="vertical"
        >
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/health_safety"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_20sdp"
+        style="@style/TextBold"
+        />
+
+    <!--Health and Safety-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/healthTipsBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_5sdp"
+        android:background="@drawable/button_white_bg"
+        app:cardElevation="@dimen/_5sdp"
+        android:layout_marginLeft="@dimen/_3sdp"
+        android:layout_marginRight="@dimen/_3sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_toLeftOf="@+id/tvHealthTips"
+            android:src="@drawable/healthtips" />
+>>>>>>> a81eaf1ff10a3c21788d35553bfdbc74338cbe56
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/health_safety"
             android:textColor="@color/black"
+<<<<<<< HEAD
             android:layout_marginTop="@dimen/_20sdp"
-        style="@style/TextBold"
+            android:textSize="@dimen/_15sdp"
             />
+=======
+            android:textSize="14dp" />
+
+
+
+
+
+    </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+    <!--Fire,FirstAid & Mental Health-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3"
+        android:layout_marginTop="@dimen/_10sdp">
+
+>>>>>>> a81eaf1ff10a3c21788d35553bfdbc74338cbe56
 
         <!--Health and Safety-->
         <androidx.cardview.widget.CardView
@@ -69,7 +139,6 @@
                     android:layout_toLeftOf="@+id/tvHealthTips"
                     android:layout_marginRight="@dimen/_20sdp"
                     />
-            android:src="@drawable/healthtips" />
 
                 <TextView
                     android:id="@+id/tvHealthTips"
@@ -215,12 +284,33 @@
 
                     >
 
+<<<<<<< HEAD
                     <ImageView
                         android:layout_width="@dimen/_30sdp"
                         android:layout_height="@dimen/_30sdp"
                         android:src="@drawable/person"
                         android:layout_gravity="center_horizontal"
                         />
+=======
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/human_resources"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_20sdp"
+        style="@style/TextBold"
+        />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/leaveBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_5sdp"
+        android:background="@drawable/button_white_bg"
+        app:cardElevation="@dimen/_5sdp"
+        android:layout_marginLeft="@dimen/_3sdp"
+        android:layout_marginRight="@dimen/_3sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+>>>>>>> a81eaf1ff10a3c21788d35553bfdbc74338cbe56
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -231,6 +321,16 @@
                         android:textColor="@color/black"
 
 
+<<<<<<< HEAD
+=======
+            <ImageView
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:layout_toLeftOf="@+id/tvLeave"
+                android:padding="@dimen/_2sdp"
+                android:src="@drawable/plane"
+>>>>>>> a81eaf1ff10a3c21788d35553bfdbc74338cbe56
 
                         />
 
@@ -244,6 +344,35 @@
 
             </androidx.cardview.widget.CardView>
 
+<<<<<<< HEAD
+=======
+    <!--Places-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/places"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_20sdp"
+        style="@style/TextBold"
+        />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/reportAnIssueBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_5sdp"
+        android:background="@drawable/button_white_bg"
+        app:cardElevation="@dimen/_5sdp"
+        android:layout_marginLeft="@dimen/_3sdp"
+        android:layout_marginRight="@dimen/_3sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_3sdp"
+            >
+>>>>>>> a81eaf1ff10a3c21788d35553bfdbc74338cbe56
 
 
 
@@ -256,16 +385,41 @@
 
         <!--Human resources-->
 
+<<<<<<< HEAD
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/human_resources"
             android:textColor="@color/black"
             android:layout_marginTop="@dimen/_20sdp"
-        style="@style/TextBold"
+            android:textSize="@dimen/_15sdp"
             />
         <androidx.cardview.widget.CardView
             android:id="@+id/leaveBlock"
+=======
+    <!--Benefits-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/benefits"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_20sdp"
+        style="@style/TextBold"
+        />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/traininBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_5sdp"
+        android:background="@drawable/button_white_bg"
+        app:cardElevation="@dimen/_5sdp"
+        android:layout_marginLeft="@dimen/_3sdp"
+        android:layout_marginRight="@dimen/_3sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        >
+
+        <RelativeLayout
+>>>>>>> a81eaf1ff10a3c21788d35553bfdbc74338cbe56
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="@dimen/_5sdp"
@@ -286,10 +440,10 @@
                 <ImageView
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
+                    android:src="@drawable/plane"
+                    android:layout_toLeftOf="@+id/tvLeave"
                     android:layout_marginRight="@dimen/_20sdp"
-                android:layout_toLeftOf="@+id/tvLeave"
                     android:padding="@dimen/_2sdp"
-                android:src="@drawable/plane"
 
                     />
 
@@ -311,6 +465,7 @@
         </androidx.cardview.widget.CardView>
 
 
+<<<<<<< HEAD
         <!--Places-->
         <TextView
             android:layout_width="wrap_content"
@@ -318,10 +473,35 @@
             android:text="@string/places"
             android:textColor="@color/black"
             android:layout_marginTop="@dimen/_20sdp"
-        style="@style/TextBold"
+            android:textSize="@dimen/_15sdp"
             />
         <androidx.cardview.widget.CardView
             android:id="@+id/reportAnIssueBlock"
+=======
+    <!--Notices-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/notices"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_20sdp"
+        style="@style/TextBold"
+        />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/noticesBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_5sdp"
+        android:background="@drawable/button_white_bg"
+        app:cardElevation="@dimen/_5sdp"
+        android:layout_marginLeft="@dimen/_3sdp"
+        android:layout_marginRight="@dimen/_3sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        >
+
+        <RelativeLayout
+>>>>>>> a81eaf1ff10a3c21788d35553bfdbc74338cbe56
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="@dimen/_5sdp"
@@ -357,8 +537,54 @@
                     android:textColor="@color/black"
                     android:textSize="14dp" />
 
+       <!--Covid-->
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="@string/covid_txt"
+           android:textColor="@color/black"
+           android:layout_marginTop="@dimen/_20sdp"
+           style="@style/TextBold"
+           />
 
 
+       <androidx.cardview.widget.CardView
+           android:id="@+id/covidCertifcatetBlock"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           app:cardCornerRadius="@dimen/_5sdp"
+           android:background="@drawable/button_white_bg"
+           app:cardElevation="@dimen/_5sdp"
+           android:layout_marginLeft="@dimen/_3sdp"
+           android:layout_marginRight="@dimen/_3sdp"
+           android:layout_marginTop="@dimen/_10sdp"
+           android:layout_marginBottom="@dimen/_20sdp"
+           >
+
+           <RelativeLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:padding="@dimen/_3sdp"
+               >
+
+               <ImageView
+                   android:layout_width="@dimen/_25sdp"
+                   android:layout_height="@dimen/_25sdp"
+                   android:layout_marginRight="@dimen/_20sdp"
+                   android:layout_toLeftOf="@+id/tvCovid"
+                   android:padding="@dimen/_2sdp"
+                   android:src="@drawable/notification_icon"
+
+                   />
+
+               <TextView
+                   android:id="@+id/tvCovid"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_centerInParent="true"
+                   android:text="@string/covid"
+                   android:textColor="@color/black"
+                   android:textSize="14dp" />
 
 
             </RelativeLayout>
@@ -372,7 +598,7 @@
             android:text="@string/benefits"
             android:textColor="@color/black"
             android:layout_marginTop="@dimen/_20sdp"
-        style="@style/TextBold"
+            android:textSize="@dimen/_15sdp"
             />
         <androidx.cardview.widget.CardView
             android:id="@+id/traininBlock"
@@ -386,11 +612,20 @@
             android:layout_marginTop="@dimen/_10sdp"
             >
 
+<<<<<<< HEAD
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_3sdp"
                 >
+=======
+           </RelativeLayout>
+
+       </androidx.cardview.widget.CardView>
+
+
+
+>>>>>>> a81eaf1ff10a3c21788d35553bfdbc74338cbe56
 
                 <ImageView
                     android:layout_width="@dimen/_25sdp"
@@ -426,7 +661,7 @@
             android:text="@string/events"
             android:textColor="@color/black"
             android:layout_marginTop="@dimen/_20sdp"
-            android:theme="@style/TextBold"
+            android:textSize="@dimen/_15sdp"
             />
         <androidx.cardview.widget.CardView
             android:id="@+id/eventBlock"
@@ -480,7 +715,8 @@
             android:text="@string/health_eating"
             android:textColor="@color/black"
             android:layout_marginTop="@dimen/_20sdp"
-            android:theme="@style/TextBold"/>
+            android:textSize="@dimen/_15sdp"
+            />
         <androidx.cardview.widget.CardView
             android:id="@+id/healthBlock"
             android:layout_width="match_parent"
@@ -534,9 +770,8 @@
             android:text="@string/notices"
             android:textColor="@color/black"
             android:layout_marginTop="@dimen/_20sdp"
-        style="@style/TextBold"
+            android:textSize="@dimen/_15sdp"
             />
-
         <androidx.cardview.widget.CardView
             android:id="@+id/noticesBlock"
             android:layout_width="match_parent"
@@ -582,57 +817,7 @@
 
         </androidx.cardview.widget.CardView>
 
-       <!--Covid-->
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="@string/covid_txt"
-           android:textColor="@color/black"
-           android:layout_marginTop="@dimen/_20sdp"
-           style="@style/TextBold"
-           />
 
-
-       <androidx.cardview.widget.CardView
-           android:id="@+id/covidCertifcatetBlock"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           app:cardCornerRadius="@dimen/_5sdp"
-           android:background="@drawable/button_white_bg"
-           app:cardElevation="@dimen/_5sdp"
-           android:layout_marginLeft="@dimen/_3sdp"
-           android:layout_marginRight="@dimen/_3sdp"
-           android:layout_marginTop="@dimen/_10sdp"
-           >
-
-           <RelativeLayout
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:padding="@dimen/_3sdp"
-               >
-
-               <ImageView
-                   android:layout_width="@dimen/_25sdp"
-                   android:layout_height="@dimen/_25sdp"
-                   android:layout_marginRight="@dimen/_20sdp"
-                   android:layout_toLeftOf="@+id/tvCovid"
-                   android:padding="@dimen/_2sdp"
-                   android:src="@drawable/notification_icon"
-
-                   />
-
-               <TextView
-                   android:id="@+id/tvCovid"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_centerInParent="true"
-                   android:text="@string/covid"
-                   android:textColor="@color/black"
-                   android:textSize="14dp" />
-
-           </RelativeLayout>
-
-       </androidx.cardview.widget.CardView>
         <!--Personal Help-->
         <TextView
             android:layout_width="wrap_content"
@@ -640,7 +825,7 @@
             android:text="@string/personal_help"
             android:textColor="@color/black"
             android:layout_marginTop="@dimen/_20sdp"
-            android:theme="@style/TextBold"
+            android:textSize="@dimen/_15sdp"
             />
         <androidx.cardview.widget.CardView
             android:id="@+id/personalBlock"
@@ -682,111 +867,109 @@
 
             </RelativeLayout>
 
+        </androidx.cardview.widget.CardView>
+
+        <!--Rewards-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rewards"
+            android:textColor="@color/black"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:textSize="@dimen/_15sdp"
+            />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/rewardsBlock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/_5sdp"
+            android:background="@drawable/button_white_bg"
+            app:cardElevation="@dimen/_5sdp"
+            android:layout_marginLeft="@dimen/_3sdp"
+            android:layout_marginRight="@dimen/_3sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_30sdp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_3sdp"
+                >
+
+                <ImageView
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
+                    android:layout_toLeftOf="@+id/tvRewards"
+                    android:padding="@dimen/_2sdp"
+                    android:src="@drawable/ic_assessment"
+
+                    />
+
+                <TextView
+                    android:id="@+id/tvRewards"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/rewards"
+                    android:textColor="@color/black"
+                    android:textSize="14dp" />
 
 
-
-
-
+            </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
 
-       <!--Rewards-->
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="@string/rewards"
-           android:textColor="@color/black"
-           android:layout_marginTop="@dimen/_20sdp"
-           android:theme="@style/TextBold"/>
-       <androidx.cardview.widget.CardView
-           android:id="@+id/rewardsBlock"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           app:cardCornerRadius="@dimen/_5sdp"
-           android:background="@drawable/button_white_bg"
-           app:cardElevation="@dimen/_5sdp"
-           android:layout_marginLeft="@dimen/_3sdp"
-           android:layout_marginRight="@dimen/_3sdp"
-           android:layout_marginTop="@dimen/_10sdp">
+        <!--Workspace Assessment-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/workspace_assessment"
+            android:textColor="@color/black"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:textSize="@dimen/_15sdp"
+            />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/workspaceBlock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/_5sdp"
+            android:background="@drawable/button_white_bg"
+            app:cardElevation="@dimen/_5sdp"
+            android:layout_marginLeft="@dimen/_3sdp"
+            android:layout_marginRight="@dimen/_3sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_30sdp">
 
-           <RelativeLayout
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:padding="@dimen/_3sdp"
-               >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_3sdp"
+                >
 
-               <ImageView
-                   android:layout_width="@dimen/_25sdp"
-                   android:layout_height="@dimen/_25sdp"
-                   android:layout_marginRight="@dimen/_20sdp"
-                   android:layout_toLeftOf="@+id/tvRewards"
-                   android:padding="@dimen/_2sdp"
-                   android:src="@drawable/ic_assessment"
+                <ImageView
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
+                    android:layout_toLeftOf="@+id/tvWorkspace"
+                    android:padding="@dimen/_2sdp"
+                    android:src="@drawable/ic_assessment"
 
-                   />
+                    />
 
-               <TextView
-                   android:id="@+id/tvRewards"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_centerInParent="true"
-                   android:text="@string/rewards"
-                   android:textColor="@color/black"
-                   android:textSize="14dp" />
-
-
-           </RelativeLayout>
-
-       </androidx.cardview.widget.CardView>
-
-       <!--Workspace Assessment-->
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="@string/workspace_assessment"
-           android:textColor="@color/black"
-           android:layout_marginTop="@dimen/_20sdp"
-           android:theme="@style/TextBold"/>
-       <androidx.cardview.widget.CardView
-           android:id="@+id/workspaceBlock"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           app:cardCornerRadius="@dimen/_5sdp"
-           android:background="@drawable/button_white_bg"
-           app:cardElevation="@dimen/_5sdp"
-           android:layout_marginLeft="@dimen/_3sdp"
-           android:layout_marginRight="@dimen/_3sdp"
-           android:layout_marginTop="@dimen/_10sdp">
-
-           <RelativeLayout
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:padding="@dimen/_3sdp"
-               >
-
-               <ImageView
-                   android:layout_width="@dimen/_25sdp"
-                   android:layout_height="@dimen/_25sdp"
-                   android:layout_marginRight="@dimen/_20sdp"
-                   android:layout_toLeftOf="@+id/tvWorkspace"
-                   android:padding="@dimen/_2sdp"
-                   android:src="@drawable/ic_assessment"
-
-                   />
-
-               <TextView
-                   android:id="@+id/tvWorkspace"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_centerInParent="true"
-                   android:text="@string/workspace_assessment"
-                   android:textColor="@color/black"
-                   android:textSize="14dp" />
+                <TextView
+                    android:id="@+id/tvWorkspace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/workspace_assessment"
+                    android:textColor="@color/black"
+                    android:textSize="14dp" />
 
 
-           </RelativeLayout>
+            </RelativeLayout>
 
-       </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
         <!--Workspace Survey-->
         <TextView
@@ -795,7 +978,8 @@
             android:text="@string/workspace_survey"
             android:textColor="@color/black"
             android:layout_marginTop="@dimen/_20sdp"
-            android:theme="@style/TextBold"/>
+            android:textSize="@dimen/_15sdp"
+            />
         <androidx.cardview.widget.CardView
             android:id="@+id/workspaceSurveyBlock"
             android:layout_width="match_parent"
@@ -1458,11 +1642,16 @@
             </LinearLayout>
         </ScrollView>
 
-   </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 
 
 
+<<<<<<< HEAD
 </androidx.core.widget.NestedScrollView>
+=======
+   </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>
+>>>>>>> a81eaf1ff10a3c21788d35553bfdbc74338cbe56
