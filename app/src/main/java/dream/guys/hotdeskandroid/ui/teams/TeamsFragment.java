@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,12 +25,15 @@ import java.util.List;
 import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.HorizontalCalendarView;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
+import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.adapter.SearchRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.TeamsAdapter;
 import dream.guys.hotdeskandroid.adapter.TeamsContactsAdapter;
 import dream.guys.hotdeskandroid.databinding.FragmentTeamsBinding;
 import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
+import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
 import dream.guys.hotdeskandroid.ui.home.ViewTeamsActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
@@ -53,6 +57,10 @@ public class TeamsFragment extends Fragment {
     ArrayList<DAOTeamMember> copyTeamMembersList = new ArrayList<>();
     TeamsContactsAdapter teamsContactsAdapter;
     TeamsAdapter teamsAdapter;
+
+    List<GlobalSearchResponse.Results> list = new ArrayList<>();
+    SearchRecyclerAdapter searchRecyclerAdapter;
+    LinearLayoutManager linearLayoutManager,contactLinearLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,7 +99,7 @@ public class TeamsFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                if (!s.toString().equals("")){
+                /*if (!s.toString().equals("")){
 
                     filter(s.toString().toLowerCase());
                 }else {
@@ -101,6 +109,12 @@ public class TeamsFragment extends Fragment {
 
                     setDataToExpandAdapter(teamMembersList);
 
+                }*/
+
+                if(s.toString().length()==0){
+                    list.clear();
+                    binding.searchRecycler.setVisibility(View.GONE);
+                    searchRecyclerAdapter.notifyDataSetChanged();
                 }
 
             }
@@ -108,6 +122,7 @@ public class TeamsFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 //filter(s.toString());
+                callSearchRecyclerData(s.toString());
             }
         });
 
@@ -115,11 +130,20 @@ public class TeamsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 binding.serachBar.setText("");
+                setValueToAdapter(teamMembersList);
             }
         });
 
 
         getTeamMembers();
+
+        //New...
+        linearLayoutManager = new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.VERTICAL, false);
+        binding.searchRecycler.setLayoutManager(linearLayoutManager);
+        binding.searchRecycler.setHasFixedSize(true);
+        searchRecyclerAdapter=new SearchRecyclerAdapter(getActivity(),getActivity(),list);
+        binding.searchRecycler.setAdapter(searchRecyclerAdapter);
 
         return root;
     }
@@ -182,10 +206,6 @@ public class TeamsFragment extends Fragment {
 
     private void setValueToAdapter(ArrayList<DAOTeamMember> teamMembersList) {
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
-        binding.recyclerView.setLayoutManager(linearLayoutManager);
-        binding.recyclerView.addItemDecoration(new OverlapDecoration());
-        binding.recyclerView.setHasFixedSize(true);
         teamsContactsAdapter = new TeamsContactsAdapter(getActivity(),teamMembersList);
         binding.recyclerView.setAdapter(teamsContactsAdapter);
 
@@ -213,7 +233,17 @@ public class TeamsFragment extends Fragment {
 
 
     private void uiInit(View root) {
-        calendarView = binding.calendarView;
+
+        contactLinearLayout = new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.HORIZONTAL,false);
+        binding.recyclerView.setLayoutManager(contactLinearLayout);
+        binding.recyclerView.addItemDecoration(new OverlapDecoration());
+        binding.recyclerView.setHasFixedSize(true);
+        teamsContactsAdapter = new TeamsContactsAdapter(getActivity(),teamMembersList);
+        binding.recyclerView.setAdapter(teamsContactsAdapter);
+
+
+
         Calendar startDate = Calendar.getInstance();
 
         day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
@@ -251,6 +281,7 @@ public class TeamsFragment extends Fragment {
                 .defaultSelectedDate(startDate)
                 .build();
 
+
         horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
             @Override
             public void onDateSelected(Calendar date, int position) {
@@ -260,6 +291,8 @@ public class TeamsFragment extends Fragment {
                 try {
                     currendate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new SimpleDateFormat("yyyy-M-d").parse(currendate));
                     selectedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new SimpleDateFormat("yyyy-M-d").parse(currendate));
+
+                    getTeamMembers();
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -269,6 +302,7 @@ public class TeamsFragment extends Fragment {
             @Override
             public void onCalendarScroll(HorizontalCalendarView calendarView,
                                          int dx, int dy) {
+
             }
 
             @Override
@@ -296,6 +330,49 @@ public class TeamsFragment extends Fragment {
 
         setDataToExpandAdapter(teamMembersList);
 
+    }
+
+    private void callSearchRecyclerData(String searchText) {
+        if (Utils.isNetworkAvailable(getActivity())) {
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<GlobalSearchResponse> call = apiService.getGlobalSearchData(40,searchText);
+            call.enqueue(new Callback<GlobalSearchResponse>() {
+                @Override
+                public void onResponse(Call<GlobalSearchResponse> call, Response<GlobalSearchResponse> response) {
+
+                    if(response.code()==200){
+
+                        list.clear();
+                        if (response.body().getResults()!=null)
+                            list.addAll(response.body().getResults());
+                        Toast.makeText(getActivity(), "ls "+list.size(), Toast.LENGTH_SHORT).show();
+
+                        Toast.makeText(getActivity(), "200"+searchText, Toast.LENGTH_SHORT).show();
+                        binding.searchRecycler.setVisibility(View.VISIBLE);
+                        searchRecyclerAdapter.notifyDataSetChanged();
+
+                    }else if(response.code()==401){
+
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+
+                    } else {
+                        Log.d("Search", "onResponse: else");
+                    }
+
+                }
+                @Override
+                public void onFailure(Call<GlobalSearchResponse> call, Throwable t) {
+                    Toast.makeText(getActivity(), "on fail", Toast.LENGTH_SHORT).show();
+//                    ProgressDialog.dismisProgressBar(getActivity(),dialog);
+                    Log.d("Search", "onResponse: fail"+t.getMessage());
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
     }
 
 }

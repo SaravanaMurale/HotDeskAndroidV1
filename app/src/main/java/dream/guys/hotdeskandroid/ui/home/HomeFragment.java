@@ -108,7 +108,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     FrameLayout qrLayout;
 
     //Header
-    ImageView notiIcon,closeSearch;
+    ImageView notiIcon,closeSearch,homeNotificationIcon;
     ImageView userStatus;
 
     //HomeBooking
@@ -136,6 +136,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
     SwipeRefreshLayout mSwipeRefreshLayout;
     List<AmenitiesResponse> amenitiesList = new ArrayList<>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -250,14 +251,15 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         });
 
         //New...
-        notiIcon.setOnClickListener(new View.OnClickListener() {
+        homeNotificationIcon = root.findViewById(R.id.homeNotificationIcon);
+        homeNotificationIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (notiList!=null && notiList.size()>0){
 
-                    /*Intent intent = new Intent(getActivity(), NotificationsListActivity.class);
+                    Intent intent = new Intent(getActivity(), NotificationsListActivity.class);
                     intent.putExtra(AppConstants.SHOWNOTIFICATION,notiList);
-                    startActivity(intent);*/
+                    startActivity(intent);
 
                 }
             }
@@ -418,7 +420,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 //            dialog= ProgressDialog.showProgressBar(getContext());
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<IncomingRequestResponse> call = apiService.getIncomingRequest(false);
+            Call<IncomingRequestResponse> call = apiService.getIncomingRequest(true);
             call.enqueue(new Callback<IncomingRequestResponse>() {
                 @Override
                 public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {

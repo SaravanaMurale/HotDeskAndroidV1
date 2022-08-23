@@ -335,6 +335,10 @@ public interface ApiInterface {
     @GET("api/mywork/myteammemberstatus")
     Call<ArrayList<DAOTeamMember>> getTeamMembers(@Query("date") String date);
 
+    //https://dev-api.hotdeskplus.com/api/requests/outgoing?includePastRequests=true
+
+    @GET("api/requests/outgoing")
+    Call<IncomingRequestResponse> getOutgoingRequest(@Query("includePastRequests") boolean includePastRequests);
     @GET
     Call<DeskResponseNew> getDesk(@Url String url);
 

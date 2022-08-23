@@ -24,6 +24,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HotDeskAndroid">
         <activity
+            android:name=".ui.notify.NotificationManageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.notify.NotificationRequestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.notify.NotificationCenterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.wellbeing.NotificationsListActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.wellbeing.CovidCertificationActivity"
             android:exported="false" />
         <activity
@@ -188,8 +200,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-     <!--<activity
+        <!--
+<activity
             android:name=".ui.wellbeing.CovidCertificationActivity"
             android:exported="true">
             <intent-filter>
@@ -197,7 +209,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>-->
+        </activity>
+        -->
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
