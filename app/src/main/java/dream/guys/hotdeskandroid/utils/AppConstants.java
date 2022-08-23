@@ -66,5 +66,9 @@ public class AppConstants {
     public static final String GLOBAL_PAGE = "GLOBAL_PAGE";
     public static final String WELLBEING_PAGE = "WELLBEING_PAGE";
 
+    public static Boolean FIRSTREFERAL = false;
+    public static String REFERALID = "REFERALID";
+    public static String REFERALCODEE = "REFERALCODEE";
+
 
 }

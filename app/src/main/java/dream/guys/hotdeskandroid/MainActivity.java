@@ -3,7 +3,9 @@ package dream.guys.hotdeskandroid;
 import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -72,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         dialog = new Dialog(this);
 
+        deepLinking();
         uiInit();
         nightModeConfig();
 //        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
@@ -150,6 +153,28 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void deepLinking() {
+        // ATTENTION: This was auto-generated to handle app links.
+        Intent appLinkIntent = getIntent();
+        String appLinkAction = appLinkIntent.getAction();
+        Uri appLinkData = appLinkIntent.getData();
+
+        if(appLinkData != null) {
+
+            AppConstants.FIRSTREFERAL = true;
+
+            List<String> params = appLinkData.getPathSegments();
+
+            AppConstants.REFERALID = params.get(params.size() - 1);
+            AppConstants.REFERALCODEE = params.get(params.size() - 2);
+
+            System.out.println("Referal id =" + AppConstants.REFERALID + " Referall Code = " + AppConstants.REFERALCODEE);
+//            Toast.makeText(this, "Referal id =" + AppConstants.REFERALID + " Referall Code = " + AppConstants.REFERALCODEE, Toast.LENGTH_LONG).show();
+        }
+
+
     }
 
     private void callSearchRecyclerData(String searchText) {
