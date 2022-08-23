@@ -66,6 +66,8 @@ public class UpComingBookingActivity extends AppCompatActivity {
                 .formatBottomText("yyyy")
                 .showTopText(false)
                 .showBottomText(true)
+                .selectedDateBackground(getResources().getDrawable(R.drawable.sel_date_bg))
+                .selectorColor(R.color.white)
                 .end()
                 .defaultSelectedDate(startDate).build();
 

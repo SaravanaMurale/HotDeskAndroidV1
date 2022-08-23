@@ -18,5 +18,5 @@
         android:width="1.5dp"
         android:color="@color/figmaBgGrey" />
     <corners android:radius="15dp" />
-    <solid android:color="#ffffff" />
+    <solid android:color="@color/bg_grey" />
 </shape>

@@ -53,7 +53,7 @@ public class IncomingRequestResponse implements Serializable {
         this.totalRecords = totalRecords;
     }
 
-    public class Result implements Serializable{
+    public class Result {
 
         @SerializedName("calendarEntryId")
         @Expose
@@ -66,7 +66,7 @@ public class IncomingRequestResponse implements Serializable {
         private Integer requestedTeamDeskId;
         @SerializedName("actionedByUserId")
         @Expose
-        private Integer actionedByUserId;
+        private Object actionedByUserId;
         @SerializedName("rejectionReason")
         @Expose
         private Object rejectionReason;
@@ -81,7 +81,7 @@ public class IncomingRequestResponse implements Serializable {
         private String deskTeam;
         @SerializedName("deskDescription")
         @Expose
-        private Object deskDescription;
+        private String deskDescription;
         @SerializedName("deskLocation")
         @Expose
         private Object deskLocation;
@@ -108,10 +108,10 @@ public class IncomingRequestResponse implements Serializable {
         private Integer availableDeskCount;
         @SerializedName("availableTeamDeskIds")
         @Expose
-        private Object availableTeamDeskIds;
+        private ArrayList<Object> availableTeamDeskIds = null;
         @SerializedName("teamDeskAvailability")
         @Expose
-        private Object teamDeskAvailability;
+        private ArrayList<TeamDeskAvailability> teamDeskAvailability = null;
         @SerializedName("id")
         @Expose
         private Integer id;
@@ -167,11 +167,11 @@ public class IncomingRequestResponse implements Serializable {
             this.requestedTeamDeskId = requestedTeamDeskId;
         }
 
-        public Integer getActionedByUserId() {
+        public Object getActionedByUserId() {
             return actionedByUserId;
         }
 
-        public void setActionedByUserId(Integer actionedByUserId) {
+        public void setActionedByUserId(Object actionedByUserId) {
             this.actionedByUserId = actionedByUserId;
         }
 
@@ -207,11 +207,11 @@ public class IncomingRequestResponse implements Serializable {
             this.deskTeam = deskTeam;
         }
 
-        public Object getDeskDescription() {
+        public String getDeskDescription() {
             return deskDescription;
         }
 
-        public void setDeskDescription(Object deskDescription) {
+        public void setDeskDescription(String deskDescription) {
             this.deskDescription = deskDescription;
         }
 
@@ -279,19 +279,19 @@ public class IncomingRequestResponse implements Serializable {
             this.availableDeskCount = availableDeskCount;
         }
 
-        public Object getAvailableTeamDeskIds() {
+        public ArrayList<Object> getAvailableTeamDeskIds() {
             return availableTeamDeskIds;
         }
 
-        public void setAvailableTeamDeskIds(Object availableTeamDeskIds) {
+        public void setAvailableTeamDeskIds(ArrayList<Object> availableTeamDeskIds) {
             this.availableTeamDeskIds = availableTeamDeskIds;
         }
 
-        public Object getTeamDeskAvailability() {
+        public ArrayList<TeamDeskAvailability> getTeamDeskAvailability() {
             return teamDeskAvailability;
         }
 
-        public void setTeamDeskAvailability(Object teamDeskAvailability) {
+        public void setTeamDeskAvailability(ArrayList<TeamDeskAvailability> teamDeskAvailability) {
             this.teamDeskAvailability = teamDeskAvailability;
         }
 
@@ -373,6 +373,219 @@ public class IncomingRequestResponse implements Serializable {
 
         public void setRequestedDate(String requestedDate) {
             this.requestedDate = requestedDate;
+        }
+
+    }
+
+    public class TimeZone {
+
+        @SerializedName("startDate")
+        @Expose
+        private String startDate;
+        @SerializedName("endDate")
+        @Expose
+        private Object endDate;
+        @SerializedName("timeZoneId")
+        @Expose
+        private String timeZoneId;
+
+        public String getStartDate() {
+            return startDate;
+        }
+
+        public void setStartDate(String startDate) {
+            this.startDate = startDate;
+        }
+
+        public Object getEndDate() {
+            return endDate;
+        }
+
+        public void setEndDate(Object endDate) {
+            this.endDate = endDate;
+        }
+
+        public String getTimeZoneId() {
+            return timeZoneId;
+        }
+
+        public void setTimeZoneId(String timeZoneId) {
+            this.timeZoneId = timeZoneId;
+        }
+
+    }
+
+    public class TeamDeskAvailability {
+
+        @SerializedName("teamDeskId")
+        @Expose
+        private Integer teamDeskId;
+        @SerializedName("deskId")
+        @Expose
+        private Integer deskId;
+        @SerializedName("teamId")
+        @Expose
+        private Integer teamId;
+        @SerializedName("teamName")
+        @Expose
+        private String teamName;
+        @SerializedName("code")
+        @Expose
+        private String code;
+        @SerializedName("teamAllocationStartDate")
+        @Expose
+        private String teamAllocationStartDate;
+        @SerializedName("teamAllocationEndDate")
+        @Expose
+        private Object teamAllocationEndDate;
+        @SerializedName("availableTimeSlots")
+        @Expose
+        private ArrayList<AvailableTimeSlot> availableTimeSlots = null;
+        @SerializedName("timeZones")
+        @Expose
+        private ArrayList<TimeZone> timeZones = null;
+        @SerializedName("currentTimeZoneOffset")
+        @Expose
+        private Integer currentTimeZoneOffset;
+        @SerializedName("isBookedByUser")
+        @Expose
+        private Boolean isBookedByUser;
+        @SerializedName("isPartiallyAvailable")
+        @Expose
+        private Boolean isPartiallyAvailable;
+        @SerializedName("isBookedByElse")
+        @Expose
+        private Boolean isBookedByElse;
+
+        public Integer getTeamDeskId() {
+            return teamDeskId;
+        }
+
+        public void setTeamDeskId(Integer teamDeskId) {
+            this.teamDeskId = teamDeskId;
+        }
+
+        public Integer getDeskId() {
+            return deskId;
+        }
+
+        public void setDeskId(Integer deskId) {
+            this.deskId = deskId;
+        }
+
+        public Integer getTeamId() {
+            return teamId;
+        }
+
+        public void setTeamId(Integer teamId) {
+            this.teamId = teamId;
+        }
+
+        public String getTeamName() {
+            return teamName;
+        }
+
+        public void setTeamName(String teamName) {
+            this.teamName = teamName;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public String getTeamAllocationStartDate() {
+            return teamAllocationStartDate;
+        }
+
+        public void setTeamAllocationStartDate(String teamAllocationStartDate) {
+            this.teamAllocationStartDate = teamAllocationStartDate;
+        }
+
+        public Object getTeamAllocationEndDate() {
+            return teamAllocationEndDate;
+        }
+
+        public void setTeamAllocationEndDate(Object teamAllocationEndDate) {
+            this.teamAllocationEndDate = teamAllocationEndDate;
+        }
+
+        public ArrayList<AvailableTimeSlot> getAvailableTimeSlots() {
+            return availableTimeSlots;
+        }
+
+        public void setAvailableTimeSlots(ArrayList<AvailableTimeSlot> availableTimeSlots) {
+            this.availableTimeSlots = availableTimeSlots;
+        }
+
+        public ArrayList<TimeZone> getTimeZones() {
+            return timeZones;
+        }
+
+        public void setTimeZones(ArrayList<TimeZone> timeZones) {
+            this.timeZones = timeZones;
+        }
+
+        public Integer getCurrentTimeZoneOffset() {
+            return currentTimeZoneOffset;
+        }
+
+        public void setCurrentTimeZoneOffset(Integer currentTimeZoneOffset) {
+            this.currentTimeZoneOffset = currentTimeZoneOffset;
+        }
+
+        public Boolean getIsBookedByUser() {
+            return isBookedByUser;
+        }
+
+        public void setIsBookedByUser(Boolean isBookedByUser) {
+            this.isBookedByUser = isBookedByUser;
+        }
+
+        public Boolean getIsPartiallyAvailable() {
+            return isPartiallyAvailable;
+        }
+
+        public void setIsPartiallyAvailable(Boolean isPartiallyAvailable) {
+            this.isPartiallyAvailable = isPartiallyAvailable;
+        }
+
+        public Boolean getIsBookedByElse() {
+            return isBookedByElse;
+        }
+
+        public void setIsBookedByElse(Boolean isBookedByElse) {
+            this.isBookedByElse = isBookedByElse;
+        }
+
+    }
+
+    public class AvailableTimeSlot {
+
+        @SerializedName("from")
+        @Expose
+        private String from;
+        @SerializedName("to")
+        @Expose
+        private String to;
+
+        public String getFrom() {
+            return from;
+        }
+
+        public void setFrom(String from) {
+            this.from = from;
+        }
+
+        public String getTo() {
+            return to;
+        }
+
+        public void setTo(String to) {
+            this.to = to;
         }
 
     }

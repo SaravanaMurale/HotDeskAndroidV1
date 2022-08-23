@@ -61,6 +61,12 @@ public class CreatePinActivity extends AppCompatActivity {
     String oldPin = "";
     boolean isPinSetup;
 
+    @BindView(R.id.tvConfirmPin)
+    TextView tvConfirmPin;
+    @BindView(R.id.tvNewPin)
+    TextView tvNewPin;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -333,8 +339,12 @@ public class CreatePinActivity extends AppCompatActivity {
 
                             if (isPinSetup){
                                 old_pin_layout.setVisibility(View.VISIBLE);
+
                             }else {
                                 old_pin_layout.setVisibility(View.GONE);
+                                tvNewPin.setText("Enter your pin");
+                                tvConfirmPin.setText("Re-enter your pin");
+
                             }
 
                         } else {

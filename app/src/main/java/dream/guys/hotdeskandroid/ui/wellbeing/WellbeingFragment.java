@@ -130,7 +130,7 @@ public class WellbeingFragment extends Fragment {
             }
         });
 
-        binding.covidCertificate.setOnClickListener(new View.OnClickListener() {
+        binding.covidCertifcatetBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getContext(),CovidCertificationActivity.class);
