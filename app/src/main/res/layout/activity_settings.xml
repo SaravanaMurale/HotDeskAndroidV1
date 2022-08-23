@@ -100,10 +100,9 @@
                         android:id="@+id/tvViewProfileName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Bessie Cooper"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_toRightOf="@+id/ivViewPrifle"
-                        />
+                        android:text="Bessie Cooper" />
 
                     <TextView
                         android:layout_width="wrap_content"

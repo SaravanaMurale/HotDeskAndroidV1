@@ -81,10 +81,11 @@ public class SignInActivity extends AppCompatActivity {
         } catch (java.security.NoSuchAlgorithmException e) {
 
         }
-        checkForPinLogin();
+//        checkForPinLogin();
 
         //Already loggedin user
         System.out.println("login chec"+SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.PIN_SETUP_DONE));
+//        System.out.println("login chec"+SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.AppConstants.LOGIN_CHECK));
         if(tokenStatus &&!SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.LOGIN_CHECK)
                 && SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.PIN_SETUP_DONE)){
             btnPinSignIn.setVisibility(View.VISIBLE);
@@ -98,6 +99,8 @@ public class SignInActivity extends AppCompatActivity {
             startActivity(intent);
             finish();*/
         }else {
+            btnPinSignIn.setVisibility(View.GONE);
+
             //NormalFlow
             int userId=SessionHandler.getInstance().getInt(SignInActivity.this, AppConstants.USER_ID);
             if(SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.LOGIN_CHECK)){
@@ -143,14 +146,14 @@ public class SignInActivity extends AppCompatActivity {
                     if(response.code()==200){
                         ProgressDialog.dismisProgressBar(SignInActivity.this,dialog);
                         if (response.body().isHasPinSetup()){
-                            btnPinSignIn.setVisibility(View.VISIBLE);
-                            btnSignIn.setVisibility(View.VISIBLE);
+//                            btnPinSignIn.setVisibility(View.VISIBLE);
+//                            btnSignIn.setVisibility(View.VISIBLE);
                             /*Intent intent=new Intent(SignInActivity.this,LoginActivity.class);
                             startActivity(intent);
                             finish();*/
                         }else {
-                            btnSignIn.setVisibility(View.VISIBLE);
-                            btnPinSignIn.setVisibility(View.GONE);
+//                            btnSignIn.setVisibility(View.VISIBLE);
+//                            btnPinSignIn.setVisibility(View.GONE);
 /*
                             Intent intent=new Intent(SignInActivity.this,LoginActivity.class);
                             startActivity(intent);
