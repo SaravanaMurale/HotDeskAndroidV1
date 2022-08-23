@@ -41,6 +41,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CalendarView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -68,6 +69,7 @@ import java.util.Locale;
 
 import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.listener.QuestionListEditListener;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.ui.locate.LocateFragment;
 import dream.guys.hotdeskandroid.ui.login.LoginActivity;
@@ -326,7 +328,6 @@ public class Utils {
                     monthInStringFormat="0"+monthInString;
                 }
 
-
                 String dayInString=String.valueOf(dayOfMonth);
                 String dateInString= yearInString+"-"+monthInStringFormat+"-"+dayInString;
                 System.out.println("PickedDate"+dateInString);
@@ -384,6 +385,29 @@ public class Utils {
             @Override
             public void onClick(View v) {
 //                mContext.startActivityForResult(intent, 123);
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+    }
+
+    public static void showCustomAlertWithEditTextDialog(final Activity mContext, String aMessage, QuestionListEditListener listener) {
+        final Dialog dialog = new Dialog(mContext);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        int width = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.80);
+        int height = (int) (mContext.getResources().getDisplayMetrics().heightPixels * 0.20);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog_with_edit_text);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        TextView text = dialog.findViewById(R.id.tv_err_msg);
+        text.setText(aMessage);
+        TextView dialogButton = dialog.findViewById(R.id.tv_ok);
+        TextView etDescription = dialog.findViewById(R.id.etDescription);
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.getText(etDescription.getText().toString());
                 dialog.dismiss();
             }
         });

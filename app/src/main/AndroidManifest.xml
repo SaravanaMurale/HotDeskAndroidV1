@@ -65,6 +65,18 @@
             android:name=".ui.wellbeing.NotificationActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.wellbeing.PersonalHelpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.wellbeing.WorkspaceAssessmentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.wellbeing.WorkspaceSurveyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.wellbeing.WellbeingCommonActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.home.ImagePickerActivity"
             android:exported="false" />
         <activity
