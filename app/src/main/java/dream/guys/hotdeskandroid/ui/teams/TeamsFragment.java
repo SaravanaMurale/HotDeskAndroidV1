@@ -46,7 +46,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TeamsFragment extends Fragment {
+public class TeamsFragment extends Fragment implements SearchRecyclerAdapter.GlobalSearchOnClickable {
 
     FragmentTeamsBinding binding;
     int day, month, year;
@@ -142,7 +142,7 @@ public class TeamsFragment extends Fragment {
                 LinearLayoutManager.VERTICAL, false);
         binding.searchRecycler.setLayoutManager(linearLayoutManager);
         binding.searchRecycler.setHasFixedSize(true);
-        searchRecyclerAdapter=new SearchRecyclerAdapter(getActivity(),getActivity(),list);
+        searchRecyclerAdapter=new SearchRecyclerAdapter(getActivity(),getActivity(),list,this);
         binding.searchRecycler.setAdapter(searchRecyclerAdapter);
 
         return root;
@@ -208,6 +208,11 @@ public class TeamsFragment extends Fragment {
 
         teamsContactsAdapter = new TeamsContactsAdapter(getActivity(),teamMembersList);
         binding.recyclerView.setAdapter(teamsContactsAdapter);
+
+    }
+
+    @Override
+    public void onClickGlobalSearch(GlobalSearchResponse.Results results) {
 
     }
 

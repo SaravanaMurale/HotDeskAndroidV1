@@ -266,7 +266,7 @@ public class WorkspaceSurveyActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Utils.bottomSheetDatePicker(WorkspaceSurveyActivity.this,WorkspaceSurveyActivity.this,"","",reportFromDate);
+                Utils.bottomSheetDatePicker(WorkspaceSurveyActivity.this,WorkspaceSurveyActivity.this,"","",reportFromDate,null);
             }
         });
 
@@ -275,7 +275,7 @@ public class WorkspaceSurveyActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Utils.bottomSheetDatePicker(WorkspaceSurveyActivity.this,WorkspaceSurveyActivity.this,"","",reportToDate);
+                Utils.bottomSheetDatePicker(WorkspaceSurveyActivity.this,WorkspaceSurveyActivity.this,"","",reportToDate,null);
             }
         });
 
