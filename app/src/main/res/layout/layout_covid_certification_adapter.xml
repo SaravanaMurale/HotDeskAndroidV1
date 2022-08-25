@@ -5,21 +5,21 @@
 
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/figmaBgGrey"
-        android:layout_margin="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="4dp"
+        android:padding="@dimen/_3sdp"
+
         >
 
         <TextView
             android:id="@+id/covidQuestion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginRight="@dimen/_5sdp"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/covidRadioGroup"
+            android:layout_centerHorizontal="true"
             android:text="wergqwrgqwrgwqrgwergqewrgqewrgqegrrqegrew" />
 
 
@@ -27,8 +27,10 @@
             android:id="@+id/covidRadioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_below="@+id/covidQuestion"
             android:layout_marginRight="@dimen/_10sdp"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
             >
 
             <RadioButton

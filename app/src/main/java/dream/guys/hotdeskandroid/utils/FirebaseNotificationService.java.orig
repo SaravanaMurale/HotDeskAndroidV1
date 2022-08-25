@@ -15,6 +15,10 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> a511804b0b173621dcb1f99c61ac703447611f2b
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -27,6 +31,12 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
+<<<<<<< HEAD
+
+        System.out.println("NewTokenReceived "+token);
+
+=======
+>>>>>>> a511804b0b173621dcb1f99c61ac703447611f2b
     }
 
     @Override

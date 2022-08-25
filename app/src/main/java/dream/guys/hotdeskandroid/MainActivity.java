@@ -27,6 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -56,6 +58,7 @@ import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
+import dream.guys.hotdeskandroid.ui.locate.LocateFragment;
 import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
@@ -949,9 +952,9 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
                         list.clear();
                         if (response.body().getResults()!=null)
                             list.addAll(response.body().getResults());
-                        Toast.makeText(MainActivity.this, "ls "+list.size(), Toast.LENGTH_SHORT).show();
-
-                        Toast.makeText(MainActivity.this, "200"+searchText, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, "ls "+list.size(), Toast.LENGTH_SHORT).show();
+                        binding.searchRecycler.setVisibility(View.VISIBLE);
+                        //Toast.makeText(MainActivity.this, "200"+searchText, Toast.LENGTH_SHORT).show();
                         searchRecyclerAdapter.notifyDataSetChanged();
                         Log.d("Search", "onResponse: 200");
                     }else if(response.code()==401){
@@ -1098,7 +1101,7 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
     }
 
     @Override
-    public void onClickGlobalSearch(GlobalSearchResponse.Results results) {
+    public void onClickGlobalSearch(GlobalSearchResponse.Results results, View v) {
 
         SessionHandler.getInstance().saveInt(getContext(), AppConstants.PARENT_ID, results.getCurrentLocation().getParentLocationId());
 
@@ -1113,16 +1116,17 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
                 for (int i = 0; i <locateCountryResposeList.size() ; i++) {
 
                     if(results.getCurrentLocation().getId()==locateCountryResposeList.get(i).getLocateCountryId()){
-                        int floorPosition=i;
-                        System.out.println("FloorPositionInMainActivity"+floorPosition);
-                        SessionHandler.getInstance().saveInt(MainActivity.this, AppConstants.FLOOR_POSITION,floorPosition);
+
+                        SessionHandler.getInstance().saveInt(MainActivity.this, AppConstants.FLOOR_POSITION,i);
                         binding.searchRecycler.setVisibility(View.GONE);
+                        binding.serachBar.setText("");
                         binding.serachBar.clearComposingText();
                         binding.searchLayout.setVisibility(View.GONE);
                         binding.navView.setSelectedItemId(R.id.navigation_locate);
-                    }else {
+
+                    }/*else {
                         Utils.toastMessage(MainActivity.this,"Selected Floor Is Not Avaliable");
-                    }
+                    }*/
 
 
 
@@ -1136,17 +1140,6 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
             }
         });
 
-        //Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_navigation_locate2);
-        //NavController navController = Navigation.findNavController(navView);
-        //navController.navigate(R.id.action_navigation_home_to_navigation_locate2);
-
-
-
-
-        /*navView = findViewById(R.id.nav_view);
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
-        NavigationUI.setupWithNavController(binding.navView, navController);
-        navView.setItemIconTintList(null);*/
 
     }
 }

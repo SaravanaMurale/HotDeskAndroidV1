@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,7 +28,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     GlobalSearchOnClickable globalSearchOnClickable;
 
     public interface GlobalSearchOnClickable{
-        public void onClickGlobalSearch(GlobalSearchResponse.Results results);
+        public void onClickGlobalSearch(GlobalSearchResponse.Results results, View v);
     }
 
     public SearchRecyclerAdapter(Context context, Activity activity, List<GlobalSearchResponse.Results> list,GlobalSearchOnClickable globalSearchOnClickable) {
@@ -92,10 +91,10 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_navigation_locate2);
+                //Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_navigation_locate2);
                 //NavController navController = Navigation.findNavController(view);
                 //navController.navigate(R.id.action_navigation_home_to_navigation_locate2);
-                globalSearchOnClickable.onClickGlobalSearch(list.get(holder.getAbsoluteAdapterPosition()));
+                globalSearchOnClickable.onClickGlobalSearch(list.get(holder.getAbsoluteAdapterPosition()),v);
 
             }
         });
