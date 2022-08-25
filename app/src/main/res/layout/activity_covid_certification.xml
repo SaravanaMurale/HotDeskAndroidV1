@@ -29,14 +29,19 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/transport_method" />
+            android:text="@string/transport_method"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            />
 
         <RadioGroup
             android:id="@+id/covidRadioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/_10sdp">
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_5sdp"
+            >
 
             <RadioButton
                 android:id="@+id/car"
@@ -87,13 +92,31 @@
 
     </androidx.core.widget.NestedScrollView>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        >
+
+    <Button
+        android:id="@+id/covidCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/_5sdp"
+        />
+
     <Button
         android:id="@+id/covidSubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/submit"
-        android:layout_gravity="center"
+      android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/_5sdp"
         />
+
+    </RelativeLayout>
 
 
 </LinearLayout>

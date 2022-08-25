@@ -38,6 +38,13 @@ public class CovidCertificationActivity extends AppCompatActivity {
 
         getCovidRelatedQuestions();
 
+        binding.covidCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         binding.covidSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

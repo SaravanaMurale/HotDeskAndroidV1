@@ -31,6 +31,9 @@ public class CovidCertificationAdapter extends RecyclerView.Adapter<CovidCertifi
 
 
     public List<CovidQuestionsResponse> getList(){
+
+
+
         return covidQuestionsResponseList;
     }
 
@@ -47,6 +50,9 @@ public class CovidCertificationAdapter extends RecyclerView.Adapter<CovidCertifi
     public void onBindViewHolder(@NonNull CovidCertificationViewHolder holder, int position) {
 
         holder.covidQuestion.setText(covidQuestionsResponseList.get(position).getQuestion());
+
+        //covidQuestionsResponseList.set(holder.getAbsoluteAdapterPosition()).setLanguage("");
+        covidQuestionsResponseList.get(position).setLanguage("");
 
         if(covidQuestionsResponseList.get(position).isAnswer()){
            holder.covidYes.setChecked(true);
