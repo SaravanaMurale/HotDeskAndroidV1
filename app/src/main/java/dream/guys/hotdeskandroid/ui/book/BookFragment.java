@@ -4,8 +4,10 @@ import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -235,6 +237,93 @@ public class BookFragment extends Fragment implements
 
         return root;
     }
+    private void deepLinking() {
+        // ATTENTION: This was auto-generated to handle app links.
+        Intent appLinkIntent = getActivity().getIntent();
+        String appLinkAction = appLinkIntent.getAction();
+        Uri appLinkData = appLinkIntent.getData();
+
+        if(appLinkData != null) {
+            //NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment_activity_main);
+//            navController.navigate(R.id.navigation_book);
+            String data1= appLinkData.getQueryParameter("typekey"); // you will get the value "value1" from application 1
+
+            Toast.makeText(getActivity(), "deep data", Toast.LENGTH_SHORT).show();
+            AppConstants.FIRSTREFERAL = true;
+
+            if (data1.equalsIgnoreCase("desk")){
+                selectedicon=0;
+
+                String deskCode = appLinkData.getQueryParameter("deskCode");
+                String deskId = appLinkData.getQueryParameter("deskId");
+                EditBookingDetails editBookingDetails= new EditBookingDetails();
+
+                editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
+                System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
+                editBookingDetails.setEditEndTime(Utils.addingHoursToCurrentDate(2));
+
+
+                calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
+//                editBookingDetails.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
+                editBookingDetails.setDate(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
+                editBookingDetails.setCalId(0);
+                editBookingDetails.setDeskCode(deskCode);
+                editBookingDetails.setDesktId(Integer.parseInt(deskId));
+                editBookingDetails.setDeskStatus(0);
+
+                editBookingUsingBottomSheet(editBookingDetails,1,0,"new");
+            } else if (data1.equalsIgnoreCase("room")){
+                selectedicon=1;
+                String roomId = appLinkData.getQueryParameter("meetingRoomId");
+                String roomName = appLinkData.getQueryParameter("meetingRoomName");
+                EditBookingDetails editBookingDetails= new EditBookingDetails();
+
+                editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
+                System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
+                editBookingDetails.setEditEndTime(Utils.addingHoursToCurrentDate(2));
+
+                calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
+
+                editBookingDetails.setDate(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
+                editBookingDetails.setCalId(0);
+                editBookingDetails.setMeetingRoomtId(Integer.parseInt(roomId));
+                editBookingDetails.setRoomName(roomName);
+
+                getRoomlist(editBookingDetails);
+
+            } else {
+                selectedicon=2;
+                String parkingId = appLinkData.getQueryParameter("parkingId");
+                String parkingName = appLinkData.getQueryParameter("parkingName");
+                EditBookingDetails editBookingDetails= new EditBookingDetails();
+
+                editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
+                System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
+                editBookingDetails.setEditEndTime(Utils.addingHoursToCurrentDate(2));
+
+                calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
+//
+//                editBookingDetails.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
+                editBookingDetails.setDate(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
+                editBookingDetails.setCalId(0);
+                editBookingDetails.setParkingSlotId(Integer.parseInt(parkingId));
+                editBookingDetails.setParkingSlotCode(parkingName);
+
+                getParkingSpotList(""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID),editBookingDetails,"new");
+
+            }
+//
+//            List<String> params = appLinkData.getPathSegments();
+//
+//            AppConstants.REFERALID = params.get(params.size() - 1);
+//            AppConstants.REFERALCODEE = params.get(params.size() - 2);
+//
+//            System.out.println("Referal id =" + AppConstants.REFERALID + " Referall Code = " + AppConstants.REFERALCODEE);
+//            Toast.makeText(this, "Referal id =" + AppConstants.REFERALID + " Referall Code = " + AppConstants.REFERALCODEE, Toast.LENGTH_LONG).show();
+        }
+
+    }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

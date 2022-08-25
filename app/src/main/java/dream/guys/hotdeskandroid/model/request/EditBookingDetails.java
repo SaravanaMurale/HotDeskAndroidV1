@@ -8,6 +8,7 @@ public class EditBookingDetails {
     String editStartTTime;
     String editEndTime;
     String deskCode;
+    String roomName;
     String vehicleRegNumber;
     String bookedForUser;
     String parkingSlotCode;
@@ -19,6 +20,14 @@ public class EditBookingDetails {
     Date date;
     String abbrevation;
     List<String> amenities;
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
 
     public List<String> getAmenities() {
         return amenities;

@@ -1,6 +1,7 @@
 package dream.guys.hotdeskandroid;
 
 import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
+import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -31,6 +32,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -42,15 +44,20 @@ import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import dream.guys.hotdeskandroid.adapter.ParticipantNameShowAdapter;
 import dream.guys.hotdeskandroid.adapter.SearchRecyclerAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityMainBinding;
 import dream.guys.hotdeskandroid.example.MyCanvasDraw;
 import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
+import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.request.Point;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
+import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
+import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
+import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -62,7 +69,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class MainActivity extends AppCompatActivity implements SearchRecyclerAdapter.GlobalSearchOnClickable {
+public class MainActivity extends AppCompatActivity implements SearchRecyclerAdapter.GlobalSearchOnClickable, ParticipantNameShowAdapter.OnParticipantSelectable {
     ActivityMainBinding binding;
     BottomNavigationView navView;
     NavController navController;
@@ -82,6 +89,15 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
     BottomSheetDialog roomBottomSheet;
     TextView startTime,endTime,repeat,date,deskRoomName,locationAddress;
     int teamId=0,teamMembershipId=0,selectedDeskId=0,selectedicon=0;
+
+    List<UserAllowedMeetingResponse> userAllowedMeetingResponseList=new ArrayList<>();
+    //room bookings
+    ChipGroup participantChipGroup;
+    ParticipantDetsilResponse participantDetsilResponse;
+    List<ParticipantDetsilResponse> chipList = new ArrayList<>();
+    String calSelectedDate="";
+    String calSelectedMont="";
+    List<ParkingSpotModel> parkingSpotModelList=new ArrayList<>();
 
 
     @Override
@@ -187,6 +203,8 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
             AppConstants.FIRSTREFERAL = true;
 
             if (data1.equalsIgnoreCase("desk")){
+                selectedicon=0;
+
                 String deskCode = appLinkData.getQueryParameter("deskCode");
                 String deskId = appLinkData.getQueryParameter("deskId");
                 EditBookingDetails editBookingDetails= new EditBookingDetails();
@@ -194,8 +212,9 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
                 editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
                 System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
                 editBookingDetails.setEditEndTime(Utils.addingHoursToCurrentDate(2));
-                System.out.println();
-//
+
+
+                calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
 //                editBookingDetails.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
                         editBookingDetails.setDate(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
                         editBookingDetails.setCalId(0);
@@ -204,6 +223,45 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
                         editBookingDetails.setDeskStatus(0);
 
                 editBookingUsingBottomSheet(editBookingDetails,1,0,"new");
+            } else if (data1.equalsIgnoreCase("room")){
+                selectedicon=1;
+                String roomId = appLinkData.getQueryParameter("meetingRoomId");
+                String roomName = appLinkData.getQueryParameter("meetingRoomName");
+                EditBookingDetails editBookingDetails= new EditBookingDetails();
+
+                editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
+                System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
+                editBookingDetails.setEditEndTime(Utils.addingHoursToCurrentDate(2));
+
+                calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
+
+                editBookingDetails.setDate(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
+                editBookingDetails.setCalId(0);
+                editBookingDetails.setMeetingRoomtId(Integer.parseInt(roomId));
+                editBookingDetails.setRoomName(roomName);
+
+                getRoomlist(editBookingDetails);
+
+            } else {
+                selectedicon=2;
+                String parkingId = appLinkData.getQueryParameter("parkingId");
+                String parkingName = appLinkData.getQueryParameter("parkingName");
+                EditBookingDetails editBookingDetails= new EditBookingDetails();
+
+                editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
+                System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
+                editBookingDetails.setEditEndTime(Utils.addingHoursToCurrentDate(2));
+
+                calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
+//
+//                editBookingDetails.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
+                editBookingDetails.setDate(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
+                editBookingDetails.setCalId(0);
+                editBookingDetails.setParkingSlotId(Integer.parseInt(parkingId));
+                editBookingDetails.setParkingSlotCode(parkingName);
+
+                getParkingSpotList(""+SessionHandler.getInstance().getInt(this,AppConstants.DEFAULT_CAR_PARK_LOCATION_ID),editBookingDetails,"new");
+
             }
 //
 //            List<String> params = appLinkData.getPathSegments();
@@ -216,6 +274,38 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
         }
 
     }
+    private void getRoomlist(EditBookingDetails editBookingDetails) {
+        if (Utils.isNetworkAvailable(this)) {
+            dialog= ProgressDialog.showProgressBar(this);
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<UserAllowedMeetingResponse>> call = apiService.userAllowedMeetings();
+            call.enqueue(new Callback<List<UserAllowedMeetingResponse>>() {
+                @Override
+                public void onResponse(Call<List<UserAllowedMeetingResponse>> call, Response<List<UserAllowedMeetingResponse>> response) {
+                    userAllowedMeetingResponseList=response.body();
+
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+
+                    editBookingUsingBottomSheet(editBookingDetails,2,0,"new");
+//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+                }
+
+                @Override
+                public void onFailure(Call<List<UserAllowedMeetingResponse>> call, Throwable t) {
+                    ProgressDialog.dismisProgressBar(MainActivity.this,dialog);
+                    editBookingUsingBottomSheet(editBookingDetails,2,0,"new");
+//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
+
+        } else {
+            Utils.toastMessage(this, "Please Enable Internet");
+        }
+
+    }
+
     private void editBookingUsingBottomSheet(EditBookingDetails editDeskBookingDetails, int dskRoomParkStatus, int position,String newEditStatus) {
 
         roomBottomSheet = new BottomSheetDialog(MainActivity.this, R.style.AppBottomSheetDialogTheme);
@@ -260,7 +350,7 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
             statusCheckLayout.setVisibility(View.GONE);
 //            chipGroup.setVisibility(View.GONE);
         }
-
+        select.setVisibility(View.GONE);
         if (dskRoomParkStatus == 1) {
             repeatBlock.setVisibility(View.VISIBLE);
             teamsBlock.setVisibility(View.GONE);
@@ -281,6 +371,8 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
             teamsBlock.setVisibility(View.GONE);
             chipGroup.setVisibility(View.VISIBLE);
             capacitylayout.setVisibility(View.VISIBLE);
+            deskRoomName.setText(""+editDeskBookingDetails.getRoomName());
+            selectedDeskId = editDeskBookingDetails.getMeetingRoomtId();
 //            if (userAllowedMeetingResponseList.size() > 0){
 ////                System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
 //                deskRoomName.setText(""+userAllowedMeetingResponseList.get(0).getName());
@@ -297,6 +389,9 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
             commentRegistration.setText(editDeskBookingDetails.getVehicleRegNumber());
             chipGroup.setVisibility(View.GONE);
             capacitylayout.setVisibility(View.GONE);
+            deskRoomName.setText(""+editDeskBookingDetails.getParkingSlotCode());
+            selectedDeskId = editDeskBookingDetails.getParkingSlotId();
+
 //            System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
 //            if (parkingSpotModelList.size() > 0){
 ////                System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
@@ -353,7 +448,7 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
             @Override
             public void onClick(View v) {
                 if (selectedicon==1 && newEditStatus.equalsIgnoreCase("new")) {
-//                    callMeetingRoomBookingBottomSheet(editDeskBookingDetails, startTime, endTime, selectedDeskId, deskRoomName.getText().toString(), false);
+                    callMeetingRoomBookingBottomSheet(editDeskBookingDetails, startTime, endTime, selectedDeskId, deskRoomName.getText().toString(), false);
                 }
                 else {
                     JsonObject jsonOuterObject = new JsonObject();
@@ -453,6 +548,231 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
         roomBottomSheet.show();
 
     }
+    //Room Booking Methods
+    private void callMeetingRoomBookingBottomSheet(EditBookingDetails editDeskBookingDetails, TextView startTime, TextView endTime, int meetingRoomId, String meetingRoomName, boolean isRequest) {
+
+        TextView startRoomTime, endTRoomime, editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle;
+        EditText etParticipants, etSubject, etComments;
+        RecyclerView rvParticipant;
+        LinearLayoutManager linearLayoutManager;
+        RelativeLayout startTimeLayout, endTimeLayout;
+
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_room_participant_booking,
+                new RelativeLayout(getContext()))));
+
+        etParticipants = bottomSheetDialog.findViewById(R.id.etParticipants);
+        etSubject = bottomSheetDialog.findViewById(R.id.etSubject);
+
+        etComments = bottomSheetDialog.findViewById(R.id.etComments);
+        editRoomBookingContinue = bottomSheetDialog.findViewById(R.id.editRoomBookingContinue);
+        editRoomBookingBack = bottomSheetDialog.findViewById(R.id.editRoomBookingBack);
+        roomTitle = bottomSheetDialog.findViewById(R.id.roomTitle);
+        rvParticipant = bottomSheetDialog.findViewById(R.id.rvParticipant);
+        participantChipGroup = bottomSheetDialog.findViewById(R.id.participantChipGroup);
+
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rvParticipant.setLayoutManager(linearLayoutManager);
+        rvParticipant.setHasFixedSize(true);
+
+
+        roomTitle.setText(meetingRoomName);
+
+
+        etParticipants.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().length() >= 2) {
+                    sendEnteredPartipantLetterToServer(s.toString(), rvParticipant);
+                } else {
+                    rvParticipant.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+//                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+//                imm.hideSoftInputFromWindow(binding.serachBar.getWindowToken(), 0);
+            }
+        });
+
+        editRoomBookingBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        editRoomBookingContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                boolean status = true;
+
+                String subject = etSubject.getText().toString();
+                String comment = etComments.getText().toString();
+                if (subject.isEmpty() || subject.equals("") || subject == null) {
+                    Toast.makeText(getContext(), "Please Enter Subject", Toast.LENGTH_LONG).show();
+                    status = false;
+                    return;
+                }
+
+                if (comment.isEmpty() || comment.equals("") || comment == null) {
+                    Toast.makeText(getContext(), "Please Enter Comment", Toast.LENGTH_LONG).show();
+                    status = false;
+                    return;
+                }
+
+                if (status) {
+//
+                    bottomSheetDialog.dismiss();
+                    doMeetingRoomBooking(meetingRoomId, startTime.getText().toString(), endTime.getText().toString(), subject, comment, isRequest);
+
+                } else {
+                    Toast.makeText(getContext(), "Please Enter All Details", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+
+        bottomSheetDialog.show();
+
+    }
+    private void sendEnteredPartipantLetterToServer(String participantLetter, RecyclerView rvParticipant) {
+
+//        binding.locateProgressBar.setVisibility(View.VISIBLE);
+        dialog = ProgressDialog.showProgressBar(getContext());
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<ParticipantDetsilResponse>> call = apiService.getParticipantDetails(participantLetter, 1);
+        call.enqueue(new Callback<List<ParticipantDetsilResponse>>() {
+            @Override
+            public void onResponse(Call<List<ParticipantDetsilResponse>> call, Response<List<ParticipantDetsilResponse>> response) {
+
+
+                List<ParticipantDetsilResponse> participantDetsilResponseList = response.body();
+
+//                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                dialog.dismiss();
+                if (participantDetsilResponseList != null) {
+
+                    //System.out.println("ParticipantNameList" + participantDetsilResponseList.get(0).getFirstName());
+
+                    showParticipantNameInRecyclerView(participantDetsilResponseList, rvParticipant);
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<ParticipantDetsilResponse>> call, Throwable t) {
+//                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void showParticipantNameInRecyclerView(List<ParticipantDetsilResponse> participantDetsilResponseList, RecyclerView rvParticipant) {
+
+
+        rvParticipant.setVisibility(View.VISIBLE);
+        ParticipantNameShowAdapter participantNameShowAdapter = new ParticipantNameShowAdapter(getContext(), participantDetsilResponseList, this);
+        rvParticipant.setAdapter(participantNameShowAdapter);
+    }
+
+    private void doMeetingRoomBooking(int meetingRoomId,
+                                      String startRoomTime,
+                                      String endRoomTime,
+                                      String subject,
+                                      String comment,
+                                      boolean isRequest) {
+
+//        binding.locateProgressBar.setVisibility(View.VISIBLE);
+        dialog= ProgressDialog.showProgressBar(this);
+        MeetingRoomRequest meetingRoomRequest = new MeetingRoomRequest();
+        meetingRoomRequest.setMeetingRoomId(meetingRoomId);
+        meetingRoomRequest.setMsTeams(false);
+        meetingRoomRequest.setHandleRecurring(false);
+        meetingRoomRequest.setOnlineMeeting(false);
+
+        MeetingRoomRequest.Changeset m = meetingRoomRequest.new Changeset();
+        m.setId(0);
+        m.setDate(Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + "T" + "00:00:00.000" + "Z");
+
+        MeetingRoomRequest.Changeset.Changes changes = m.new Changes();
+        changes.setFrom(getCurrentDate() + "" + "T" + Utils.convert12HrsTO24Hrs(startRoomTime) + ":" + "00" + "." + "000" + "Z");
+        changes.setMyto(getCurrentDate() + "" + "T" + Utils.convert12HrsTO24Hrs(endRoomTime) + ":" + "00" + "." + "000" + "Z");
+        changes.setComments(comment);
+        changes.setSubject(subject);
+        changes.setRequest(isRequest);
+
+        m.setChanges(changes);
+
+        List<MeetingRoomRequest.Changeset> changesetList = new ArrayList<>();
+        changesetList.add(m);
+
+        meetingRoomRequest.setChangesets(changesetList);
+
+        List<Integer> attendeesList = new ArrayList<>();
+
+
+        //Newly Participant Added
+        if (chipList != null) {
+            for (int i = 0; i < chipList.size(); i++) {
+                attendeesList.add(chipList.get(i).getId());
+            }
+
+        } //End
+
+        changes.setAttendees(attendeesList);
+
+        List<MeetingRoomRequest.Changeset.Changes.ExternalAttendees> externalAttendeesList = new ArrayList<>();
+        changes.setExternalAttendees(externalAttendeesList);
+
+        List<MeetingRoomRequest.DeleteIds> deleteIdsList = new ArrayList<>();
+        meetingRoomRequest.setDeletedIds(deleteIdsList);
+
+        System.out.println("BookingMeetingRoom" + meetingRoomRequest);
+
+
+        //dialog = ProgressDialog.showProgressBar(getContext());
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<BaseResponse> call = apiService.doMeetingRoomBook(meetingRoomRequest);
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                chipList.clear();
+
+                if (response.code()==200){
+                    openCheckoutDialog("Booking Succcessfull",2);
+                }else {
+                    roomBottomSheet.dismiss();
+                    Utils.showCustomAlertDialog(MainActivity.this, "Booking Not Successfull");
+                }
+
+                ProgressDialog.dismisProgressBar(MainActivity.this,dialog);
+//                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                ProgressDialog.dismisProgressBar(MainActivity.this,dialog);
+//                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+            }
+        });
+
+
+    }
+
     public void editBookingCall(JsonObject data,int position,int dskRoomStatus,String newEditDelete) {
         if (Utils.isNetworkAvailable(this)) {
             dialog= ProgressDialog.showProgressBar(this);
@@ -585,6 +905,35 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
         popDialog.show();
     }
 
+    private void getParkingSpotList(String id, EditBookingDetails editBookingDetails,String newEdit) {
+        if (Utils.isNetworkAvailable(this)) {
+            dialog= ProgressDialog.showProgressBar(this);
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<ParkingSpotModel>> call = apiService.getParkingSpotModels(id);
+            call.enqueue(new Callback<List<ParkingSpotModel>>() {
+                @Override
+                public void onResponse(Call<List<ParkingSpotModel>> call, Response<List<ParkingSpotModel>> response) {
+                    parkingSpotModelList=response.body();
+
+                    ProgressDialog.dismisProgressBar(MainActivity.this,dialog);
+                        editBookingUsingBottomSheet(editBookingDetails,3,0,"new");
+
+                }
+
+                @Override
+                public void onFailure(Call<List<ParkingSpotModel>> call, Throwable t) {
+                    ProgressDialog.dismisProgressBar(MainActivity.this,dialog);
+                    editBookingUsingBottomSheet(editBookingDetails,3,0,"new");
+//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
+
+        } else {
+            Utils.toastMessage(this, "Please Enable Internet");
+        }
+
+    }
 
     private void callSearchRecyclerData(String searchText) {
         if (Utils.isNetworkAvailable(this)) {
@@ -664,6 +1013,45 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
         return gestureDetector.onTouchEvent(ev);
     }
 
+    @Override
+    public void onParticipantSelect(ParticipantDetsilResponse participantDetsilResponse) {
+
+        this.participantDetsilResponse= participantDetsilResponse;
+
+        Chip chip=new Chip(getContext());
+        chip.setText(participantDetsilResponse.getFullName());
+        chip.setCloseIconVisible(true);
+        chip.setCheckable(false);
+        chip.setClickable(false);
+
+        chipList.add(participantDetsilResponse);
+
+        participantChipGroup.addView(chip);
+        participantChipGroup.setVisibility(View.VISIBLE);
+
+
+        chip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(chipList!=null){
+                    for (int i = 0; i <chipList.size() ; i++) {
+
+                        if(chip.getText().toString().contains(chipList.get(i).getFullName())){
+                            chipList.remove(chipList.get(i));
+                        }
+
+                    }
+                }
+
+                System.out.println("RemoveChipGroupName"+chip.getText().toString());
+
+                participantChipGroup.removeView(chip);
+
+            }
+        });
+
+    }
 
 
     public class GestureListener extends GestureDetector.SimpleOnGestureListener {
@@ -729,9 +1117,9 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
                         System.out.println("FloorPositionInMainActivity"+floorPosition);
                         SessionHandler.getInstance().saveInt(MainActivity.this, AppConstants.FLOOR_POSITION,floorPosition);
                         binding.searchRecycler.setVisibility(View.GONE);
-                        NavController navController1 = Navigation.findNavController(MainActivity.this, R.id.navigation_home);
-                        //NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment_activity_main);
-                        navController1.navigate(R.id.navigation_locate);
+                        binding.serachBar.clearComposingText();
+                        binding.searchLayout.setVisibility(View.GONE);
+                        binding.navView.setSelectedItemId(R.id.navigation_locate);
                     }else {
                         Utils.toastMessage(MainActivity.this,"Selected Floor Is Not Avaliable");
                     }
