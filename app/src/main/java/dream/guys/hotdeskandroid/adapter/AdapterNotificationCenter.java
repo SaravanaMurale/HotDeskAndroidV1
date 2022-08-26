@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -137,7 +138,7 @@ public class AdapterNotificationCenter extends RecyclerView.Adapter<AdapterNotif
         switch (notiList.get(position).getEntityType()){
             case 3:
                 holder.imgEntity.setImageDrawable(context.getDrawable(R.drawable.chair));
-                holder.tvDesk.setText(notiList.get(position).getDeskCode());
+                holder.tvDesk.setText(notiList.get(position).getDeskTeam());
                 holder.tvAddress.setText(notiList.get(position).getDeskTeam());
                 break;
             case 4:
@@ -164,7 +165,7 @@ public class AdapterNotificationCenter extends RecyclerView.Adapter<AdapterNotif
         TextView txt_date,CheckInTime,CheckOutTime,tvUserName,tvUserTeam,txt_count,tvDesk,tvAddress;
         CardView cardBookingNotify,cardCovidNotify;
         RelativeLayout pending_count_lay,date_time_lay,req_lay,rel_status;
-        CircleImageView imgEntity;
+        ImageView imgEntity;
 
         public viewholder(@NonNull View itemView) {
             super(itemView);

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.CovidQuestionsResponse;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 
 public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotificationList.viewHolder> {
@@ -35,6 +37,7 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
     AccRejInterface accRejInterface;
 
     int cBoxPos = -1;
+    int oldPos = -1;
 
     public AdapterNotificationList(Context context,ArrayList<IncomingRequestResponse.Result>
             notiList,String page,int cIncoming,int cOutGoing) {
@@ -124,7 +127,13 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
                 }else {
                     holder.hdr_lay.setVisibility(View.GONE);
                 }
-                holder.txt_title.setText("Incoming ");
+
+                if (page.equalsIgnoreCase("Manage")){
+                    holder.txt_title.setText("Pending ");
+                }else {
+                    holder.txt_title.setText("Incoming ");
+                }
+
                 holder.txt_title_count.setText("(" + String.valueOf(cIncoming) + ")");
             }else {
                 //holder.txt_title.setVisibility(View.GONE);
@@ -137,6 +146,17 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
                     }else {
                         holder.hdr_lay.setVisibility(View.GONE);
                     }
+
+                    if (oldPos==-1){
+                        oldPos = pos;
+                    }
+
+                    if (oldPos == pos){
+                        holder.txt_title.setVisibility(View.VISIBLE);
+                    }else {
+                        holder.txt_title.setVisibility(View.GONE);
+                    }
+
                     holder.hdr_lay.setVisibility(View.VISIBLE);
                     holder.txt_title.setText("Old");
                     holder.txt_title_count.setVisibility(View.GONE);
@@ -185,12 +205,14 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
             @Override
             public void onClick(View view) {
 
-                int id = notiList.get(pos).getId();
-                int reqTeamId = notiList.get(pos).getRequestedTeamDeskId();
-                int entity = notiList.get(pos).getEntityType();
+                if (notiList.get(pos).getEntityType()==3) {
+                    int id = notiList.get(pos).getId();
+                    int reqTeamId = notiList.get(pos).getRequestedTeamDeskId();
+                    int entity = notiList.get(pos).getEntityType();
 
-                if (accRejInterface!=null){
-                    accRejInterface.clickEvents(id,reqTeamId,entity, AppConstants.ACCEPT);
+                    if (accRejInterface!=null){
+                        accRejInterface.clickEvents(id,reqTeamId,entity, AppConstants.ACCEPT);
+                    }
                 }
             }
         });
@@ -198,12 +220,17 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
         holder.btnReject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int id = notiList.get(pos).getId();
-                int reqTeamId = notiList.get(pos).getRequestedTeamDeskId();
-                int entity = notiList.get(pos).getEntityType();
 
-                if (accRejInterface!=null){
-                    accRejInterface.clickEvents(id,reqTeamId,entity, AppConstants.REJECT);
+                if (notiList.get(pos).getEntityType()==3){
+
+                    int id = notiList.get(pos).getId();
+                    int reqTeamId = notiList.get(pos).getRequestedTeamDeskId();
+                    int entity = notiList.get(pos).getEntityType();
+
+                    if (accRejInterface!=null){
+                        accRejInterface.clickEvents(id,reqTeamId,entity, AppConstants.REJECT);
+                    }
+
                 }
 
             }
@@ -224,6 +251,15 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
             }
         });
 
+
+        if (SessionHandler.getInstance().get(context,AppConstants.ROLE)!=null &&
+                SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase("Administrator")){
+
+        }else {
+            holder.profile_layout.setVisibility(View.GONE);
+            holder.line_view.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -239,10 +275,11 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
                 tvAddress,txt_title,txt_title_count;
         AppCompatButton btnRemove,btnAccept,btnReject;
         CheckBox checkBox;
-        RelativeLayout hdr_lay,rel_status;
+        RelativeLayout hdr_lay,rel_status,profile_layout;
         CardView card_view;
         LinearLayout btn_layout;
-        CircleImageView imgEntity;
+        ImageView imgEntity;
+        View line_view;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
@@ -265,6 +302,8 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
             rel_status = itemView.findViewById(R.id.rel_status);
             imgEntity = itemView.findViewById(R.id.ivMeeting);
             tvDesk = itemView.findViewById(R.id.tvDesk);
+            profile_layout = itemView.findViewById(R.id.profile_layout);
+            line_view = itemView.findViewById(R.id.line_view);
 
         }
     }

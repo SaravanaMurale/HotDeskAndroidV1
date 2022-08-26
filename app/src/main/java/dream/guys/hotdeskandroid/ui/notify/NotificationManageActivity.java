@@ -119,7 +119,7 @@ public class NotificationManageActivity extends AppCompatActivity {
 
                 if (response.body()!=null) {
                     if (response.code() == 200){
-                        Log.d("ACCEPT","Success");
+                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
                     }else if(response.code() == 400){
                         Log.d("ACCEPT","Logout");
                     }else {
@@ -155,7 +155,7 @@ public class NotificationManageActivity extends AppCompatActivity {
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 if (response.body()!=null) {
                     if (response.code() == 200){
-                        Log.d("REJECT","Success");
+                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
                     }else if(response.code() == 400){
                         Log.d("REJECT","Logout");
                     }else {

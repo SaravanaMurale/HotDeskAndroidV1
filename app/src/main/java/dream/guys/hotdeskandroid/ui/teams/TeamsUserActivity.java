@@ -12,6 +12,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.AdapterAllTeams;
 import dream.guys.hotdeskandroid.databinding.ActivityTeamsUserBinding;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
@@ -35,21 +36,29 @@ public class TeamsUserActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_teams_user);
+        setContentView(R.layout.activity_teams_user);
 
         binding = ActivityTeamsUserBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         context = TeamsUserActivity.this;
 
-        binding.viewAllUpcoming.setOnClickListener(new View.OnClickListener() {
+        /*binding.viewAllUpcoming.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context,UpComingBookingActivity.class);
                 startActivity(intent);
             }
+        });*/
+
+        binding.profileBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
         });
 
+        getTeams();
 
 
     }

@@ -60,23 +60,24 @@ public class UserNotificationActivity extends AppCompatActivity {
 
         if (Utils.isNetworkAvailable(context)) {
             notificationList = new ArrayList<>();
-            callIncomingNotification();
+            callOutgoingNotification();
 
         } else {
             Utils.toastMessage(context, "Please Enable Internet");
         }
     }
 
-    private void callIncomingNotification() {
+    private void callOutgoingNotification() {
 
         binding.locateProgressBar.setVisibility(View.VISIBLE);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<IncomingRequestResponse> call = apiService.getIncomingRequest(true);
+        Call<IncomingRequestResponse> call = apiService.getOutgoingRequest(true);
         call.enqueue(new Callback<IncomingRequestResponse>() {
             @Override
             public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {
                 if(response.code()==200){
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
                     notiList = new ArrayList<>();
                     if (response.body()!=null && response.body().getResults()!=null){
                         notiList.addAll(response.body().getResults());

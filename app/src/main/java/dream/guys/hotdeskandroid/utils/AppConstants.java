@@ -83,4 +83,6 @@ public class AppConstants {
     public static final String ACCEPT = "ACCEPT";
     public static final String REJECT = "REJECT";
 
+    public static final String ROLE = "ROLE";
+
 }

@@ -68,12 +68,18 @@ public class ShowProfileActivity extends AppCompatActivity {
 
                 if (daoTeamMember!=null){
 
-                    fName = daoTeamMember.getFirstName();
+                    if (daoTeamMember.getLastName()!=null){
+                        fName = daoTeamMember.getFirstName() + " " +daoTeamMember.getLastName();
+                    }else {
+                        fName = daoTeamMember.getFirstName();// + " " +daoTeamMember.getLastName();
+                    }
+
+
                     lName = daoTeamMember.getLastName();
                     userID = daoTeamMember.getUserId();
 
                     //Show Person Profile Only
-                    callSearchRecyclerData(fName + " " + lName,userID);
+                    callSearchRecyclerData(fName,userID);
                     //Shows upcoming data
 
                     callTeamMemberStatus(date,daoTeamMember.getTeamId());
