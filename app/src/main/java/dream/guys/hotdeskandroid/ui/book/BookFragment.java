@@ -981,6 +981,7 @@ public class BookFragment extends Fragment implements
         deskRoomName=roomBottomSheet.findViewById(R.id.tv_desk_room_name);
         locationAddress=roomBottomSheet.findViewById(R.id.tv_location_details);
         date=roomBottomSheet.findViewById(R.id.date);
+        TextView title=roomBottomSheet.findViewById(R.id.title);
         TextView back=roomBottomSheet.findViewById(R.id.editBookingBack);
         TextView select=roomBottomSheet.findViewById(R.id.select_desk_room);
         TextView continueEditBook=roomBottomSheet.findViewById(R.id.editBookingContinue);
@@ -1025,6 +1026,9 @@ public class BookFragment extends Fragment implements
             tvComments.setVisibility(View.GONE);
             deskRoomName.setText(editDeskBookingDetails.getDeskCode());
             selectedDeskId=editDeskBookingDetails.getDesktId();
+            if(newEditStatus.equalsIgnoreCase("new")){
+                title.setText("Book Desk");
+            }
 
         }else if (dskRoomParkStatus==2) {
             llDeskLayout.setVisibility(View.VISIBLE);
@@ -1034,6 +1038,9 @@ public class BookFragment extends Fragment implements
             teamsBlock.setVisibility(View.GONE);
             chipGroup.setVisibility(View.VISIBLE);
             capacitylayout.setVisibility(View.VISIBLE);
+            if(newEditStatus.equalsIgnoreCase("new")){
+                title.setText("Book Meeting Room");
+            }
             if (userAllowedMeetingResponseList.size() > 0){
 //                System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
                 deskRoomName.setText(""+userAllowedMeetingResponseList.get(0).getName());
@@ -1050,6 +1057,9 @@ public class BookFragment extends Fragment implements
             commentRegistration.setText(editDeskBookingDetails.getVehicleRegNumber());
             chipGroup.setVisibility(View.GONE);
             capacitylayout.setVisibility(View.GONE);
+            if(newEditStatus.equalsIgnoreCase("new")){
+                title.setText("Book Parking Slot");
+            }
 //            System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
             if (parkingSpotModelList.size() > 0){
 //                System.out.println("tim else"+parkingSpotModelList.get(0).getCode());

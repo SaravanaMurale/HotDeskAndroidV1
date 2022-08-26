@@ -216,8 +216,12 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
 
     @Override
+<<<<<<< HEAD
+    public void onClickGlobalSearch(GlobalSearchResponse.Results results, View v) {
+=======
     public void clickEvent(DAOTeamMember daoTeamMember) {
         selID = daoTeamMember.getUserId();
+>>>>>>> 2b1dacc052ab47c66fd739106d568df048813981
 
         Intent intent = new Intent(getActivity(),ShowProfileActivity.class);
         intent.putExtra(AppConstants.USER_CURRENT_STATUS,daoTeamMember);
@@ -227,9 +231,6 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         /*callSearchRecyclerData(fName + " " + lName);
         callTeamMemberStatus();*/
     }
-
-
-
 
     public class OverlapDecoration extends RecyclerView.ItemDecoration {
 
@@ -265,6 +266,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
 
         Calendar startDate = Calendar.getInstance();
+
         day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         month = Calendar.getInstance().get(Calendar.MONTH);
         year = Calendar.getInstance().get(Calendar.YEAR);
