@@ -211,8 +211,9 @@ public class TeamsFragment extends Fragment implements SearchRecyclerAdapter.Glo
 
     }
 
+
     @Override
-    public void onClickGlobalSearch(GlobalSearchResponse.Results results) {
+    public void onClickGlobalSearch(GlobalSearchResponse.Results results, View v) {
 
     }
 

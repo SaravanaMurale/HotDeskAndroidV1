@@ -14,12 +14,21 @@ public class EditBookingDetails {
     String parkingSlotCode;
     int calId=0;
     int desktId=0;
+    int deskTeamId=0;
     int parkingSlotId=0;
     int meetingRoomtId=0;
     int deskStatus=0;
     Date date;
     String abbrevation;
     List<String> amenities;
+
+    public int getDeskTeamId() {
+        return deskTeamId;
+    }
+
+    public void setDeskTeamId(int deskTeamId) {
+        this.deskTeamId = deskTeamId;
+    }
 
     public String getRoomName() {
         return roomName;

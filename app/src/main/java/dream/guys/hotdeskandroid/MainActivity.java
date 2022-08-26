@@ -55,6 +55,7 @@ import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.request.Point;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
@@ -93,6 +94,8 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
     TextView startTime,endTime,repeat,date,deskRoomName,locationAddress;
     int teamId=0,teamMembershipId=0,selectedDeskId=0,selectedicon=0;
 
+    List<BookingForEditResponse.TeamDeskAvailabilities> bookingDeskList =new ArrayList<>();
+    List<ParkingSpotModel> parkingSpotModelList=new ArrayList<>();
     List<UserAllowedMeetingResponse> userAllowedMeetingResponseList=new ArrayList<>();
     //room bookings
     ChipGroup participantChipGroup;
@@ -100,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
     List<ParticipantDetsilResponse> chipList = new ArrayList<>();
     String calSelectedDate="";
     String calSelectedMont="";
-    List<ParkingSpotModel> parkingSpotModelList=new ArrayList<>();
 
 
     @Override
@@ -112,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
 
         dialog = new Dialog(this);
 
+        getAddEditDesk("3",Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate())));
         uiInit();
         nightModeConfig();
 //        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
@@ -191,7 +194,39 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
             }
         });
     }
+    private void getAddEditDesk(String code,String date) {
+        if (Utils.isNetworkAvailable(this)) {
+            dialog= ProgressDialog.showProgressBar(this);
 
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+            Call<BookingForEditResponse> call = apiService.getBookingsForEdit(
+                    SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID),
+                    SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID),
+                    date,
+                    date);
+
+            call.enqueue(new Callback<BookingForEditResponse>() {
+                @Override
+                public void onResponse(Call<BookingForEditResponse> call, Response<BookingForEditResponse> response) {
+
+                    bookingDeskList = response.body().getTeamDeskAvailabilities();
+                    ProgressDialog.dismisProgressBar(MainActivity.this,dialog);
+
+                }
+
+                @Override
+                public void onFailure(Call<BookingForEditResponse> call, Throwable t) {
+                    ProgressDialog.dismisProgressBar(MainActivity.this,dialog);
+                }
+            });
+
+
+        } else {
+            Utils.toastMessage(this, "Please Enable Internet");
+        }
+
+    }
     private void deepLinking() {
         // ATTENTION: This was auto-generated to handle app links.
         Intent appLinkIntent = getIntent();
@@ -206,26 +241,42 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
             AppConstants.FIRSTREFERAL = true;
 
             if (data1.equalsIgnoreCase("desk")){
+                boolean checkIsRequest = false;
                 selectedicon=0;
 
                 String deskCode = appLinkData.getQueryParameter("deskCode");
                 String deskId = appLinkData.getQueryParameter("deskId");
+                String requestedTeamId = appLinkData.getQueryParameter("teamId");
                 EditBookingDetails editBookingDetails= new EditBookingDetails();
 
                 editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
                 System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
-                editBookingDetails.setEditEndTime(Utils.addingHoursToCurrentDate(2));
+                editBookingDetails.setEditEndTime(Utils.addMinuteWithCurrentTime(2,2));
 
 
                 calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
 //                editBookingDetails.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
-                        editBookingDetails.setDate(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
-                        editBookingDetails.setCalId(0);
-                        editBookingDetails.setDeskCode(deskCode);
-                        editBookingDetails.setDesktId(Integer.parseInt(deskId));
-                        editBookingDetails.setDeskStatus(0);
+                editBookingDetails.setDate(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
+                editBookingDetails.setCalId(0);
+                editBookingDetails.setDeskCode(deskCode);
+                editBookingDetails.setDesktId(Integer.parseInt(deskId));
+                editBookingDetails.setDeskTeamId(Integer.parseInt(requestedTeamId));
+                editBookingDetails.setDeskStatus(0);
 
-                editBookingUsingBottomSheet(editBookingDetails,1,0,"new");
+
+                if (bookingDeskList!=null && bookingDeskList.size()>0){
+                    loo :
+                    for (int i=0;i<bookingDeskList.size();i++){
+                        if (deskId.equalsIgnoreCase(""+bookingDeskList.get(i).getTeamDeskId())){
+                            checkIsRequest=true;
+                            break loo;
+                        }
+                    }
+                }
+                if (checkIsRequest)
+                    editBookingUsingBottomSheet(editBookingDetails,1,0,"new");
+                else
+                    editBookingUsingBottomSheet(editBookingDetails,1,0,"request");
             } else if (data1.equalsIgnoreCase("room")){
                 selectedicon=1;
                 String roomId = appLinkData.getQueryParameter("meetingRoomId");
@@ -234,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
 
                 editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
                 System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
-                editBookingDetails.setEditEndTime(Utils.addingHoursToCurrentDate(2));
+                editBookingDetails.setEditEndTime(Utils.addMinuteWithCurrentTime(2,2));
 
                 calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
 
@@ -253,7 +304,7 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
 
                 editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
                 System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
-                editBookingDetails.setEditEndTime(Utils.addingHoursToCurrentDate(2));
+                editBookingDetails.setEditEndTime(Utils.addMinuteWithCurrentTime(2,2));
 
                 calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
 //
@@ -288,9 +339,22 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
                 public void onResponse(Call<List<UserAllowedMeetingResponse>> call, Response<List<UserAllowedMeetingResponse>> response) {
                     userAllowedMeetingResponseList=response.body();
 
-                    ProgressDialog.dismisProgressBar(getContext(),dialog);
-
-                    editBookingUsingBottomSheet(editBookingDetails,2,0,"new");
+                    ProgressDialog.dismisProgressBar(MainActivity.this,dialog);
+                    boolean checkIsRequest=false;
+                    if (userAllowedMeetingResponseList!=null && userAllowedMeetingResponseList.size()>0){
+                        loo :
+                        for (int i=0;i<userAllowedMeetingResponseList.size();i++){
+                            if (editBookingDetails.getMeetingRoomtId()==userAllowedMeetingResponseList.get(i).getId()){
+                                checkIsRequest=true;
+                                break loo;
+                            }
+                        }
+                    }
+                    if (checkIsRequest)
+                        editBookingUsingBottomSheet(editBookingDetails,2,0,"new");
+                    else
+                        editBookingUsingBottomSheet(editBookingDetails,2,0,"request");
+//                    editBookingUsingBottomSheet(editBookingDetails,2,0,"new");
 //                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
                 }
@@ -321,6 +385,7 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
         deskRoomName=roomBottomSheet.findViewById(R.id.tv_desk_room_name);
         locationAddress=roomBottomSheet.findViewById(R.id.tv_location_details);
         date=roomBottomSheet.findViewById(R.id.date);
+        TextView title=roomBottomSheet.findViewById(R.id.title);
         TextView back=roomBottomSheet.findViewById(R.id.editBookingBack);
         TextView select=roomBottomSheet.findViewById(R.id.select_desk_room);
         TextView continueEditBook=roomBottomSheet.findViewById(R.id.editBookingContinue);
@@ -365,7 +430,9 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
             tvComments.setVisibility(View.GONE);
             deskRoomName.setText(editDeskBookingDetails.getDeskCode());
             selectedDeskId=editDeskBookingDetails.getDesktId();
-
+            if(newEditStatus.equalsIgnoreCase("new")){
+                title.setText("Book Desk");
+            }
         }else if (dskRoomParkStatus==2) {
             llDeskLayout.setVisibility(View.VISIBLE);
             commentRegistration.setVisibility(View.GONE);
@@ -376,6 +443,9 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
             capacitylayout.setVisibility(View.VISIBLE);
             deskRoomName.setText(""+editDeskBookingDetails.getRoomName());
             selectedDeskId = editDeskBookingDetails.getMeetingRoomtId();
+            if(newEditStatus.equalsIgnoreCase("new")){
+                title.setText("Book Meeting Room");
+            }
 //            if (userAllowedMeetingResponseList.size() > 0){
 ////                System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
 //                deskRoomName.setText(""+userAllowedMeetingResponseList.get(0).getName());
@@ -392,6 +462,9 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
             commentRegistration.setText(editDeskBookingDetails.getVehicleRegNumber());
             chipGroup.setVisibility(View.GONE);
             capacitylayout.setVisibility(View.GONE);
+            if(newEditStatus.equalsIgnoreCase("new")){
+                title.setText("Book Parking Slot");
+            }
             deskRoomName.setText(""+editDeskBookingDetails.getParkingSlotCode());
             selectedDeskId = editDeskBookingDetails.getParkingSlotId();
 
@@ -450,8 +523,17 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
         continueEditBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (selectedicon==1 && newEditStatus.equalsIgnoreCase("new")) {
-                    callMeetingRoomBookingBottomSheet(editDeskBookingDetails, startTime, endTime, selectedDeskId, deskRoomName.getText().toString(), false);
+                if (selectedicon==1) {
+                    if (newEditStatus.equalsIgnoreCase("request"))
+                        callMeetingRoomBookingBottomSheet(editDeskBookingDetails,
+                                startTime,
+                                endTime,
+                                selectedDeskId, deskRoomName.getText().toString(), true);
+                    else
+                        callMeetingRoomBookingBottomSheet(editDeskBookingDetails,
+                                startTime,
+                                endTime,
+                                selectedDeskId, deskRoomName.getText().toString(), false);
                 }
                 else {
                     JsonObject jsonOuterObject = new JsonObject();
@@ -468,8 +550,13 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
                             if (!commentRegistration.getText().toString().isEmpty() &&
                                     !commentRegistration.getText().toString().equalsIgnoreCase(""))
                                 jsonChangesObject.addProperty("comments",commentRegistration.getText().toString());
-
-                            jsonChangesObject.addProperty("teamDeskId",editDeskBookingDetails.getDesktId());
+                            if (newEditStatus.equalsIgnoreCase("request")){
+                                jsonChangesObject.addProperty("requestedTeamDeskId",editDeskBookingDetails.getDesktId());
+                                jsonChangesObject.addProperty("requestedTeamId",editDeskBookingDetails.getDeskTeamId());
+                                jsonChangesObject.addProperty("usageTypeId", "7");
+                                jsonChangesObject.addProperty("typeOfCheckIn", "7");
+                            }else
+                                jsonChangesObject.addProperty("teamDeskId",editDeskBookingDetails.getDesktId());
 
 
                             break;
@@ -635,7 +722,9 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
                 if (status) {
 //
                     bottomSheetDialog.dismiss();
-                    doMeetingRoomBooking(meetingRoomId, startTime.getText().toString(), endTime.getText().toString(), subject, comment, isRequest);
+                    doMeetingRoomBooking(meetingRoomId,
+                            startTime.getText().toString(),
+                            endTime.getText().toString(), subject, comment, isRequest);
 
                 } else {
                     Toast.makeText(getContext(), "Please Enter All Details", Toast.LENGTH_LONG).show();
@@ -918,10 +1007,22 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
                 @Override
                 public void onResponse(Call<List<ParkingSpotModel>> call, Response<List<ParkingSpotModel>> response) {
                     parkingSpotModelList=response.body();
-
                     ProgressDialog.dismisProgressBar(MainActivity.this,dialog);
+                    boolean checkIsRequest=false;
+                    if (parkingSpotModelList!=null && parkingSpotModelList.size()>0){
+                        loo :
+                        for (int i=0;i<parkingSpotModelList.size();i++){
+                            if (editBookingDetails.getParkingSlotId()==parkingSpotModelList.get(i).getId()){
+                                checkIsRequest=true;
+                                break loo;
+                            }
+                        }
+                    }
+                    if (checkIsRequest)
                         editBookingUsingBottomSheet(editBookingDetails,3,0,"new");
-
+                    else
+                        editBookingUsingBottomSheet(editBookingDetails,3,0,"request");
+                        
                 }
 
                 @Override
