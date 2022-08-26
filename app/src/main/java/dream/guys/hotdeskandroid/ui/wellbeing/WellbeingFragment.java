@@ -55,13 +55,14 @@ public class WellbeingFragment extends Fragment {
     @BindView(R.id.btnLogout)
     RelativeLayout btnLogout;
 
-    String type="",personalData= "", benefits="", events="", health="", notice="", rewards="";
+    String type="",personalData= "", benefits="", events="", health="", notice="", rewards="",healthtips="";
     List<WellbeingConfigResponse.Link> linksArrayPersonal = new ArrayList<>();
     List<WellbeingConfigResponse.Link> linksArrayBenefits = new ArrayList<>();
     List<WellbeingConfigResponse.Link> linksArrayEvents = new ArrayList<>();
     List<WellbeingConfigResponse.Link> linksArrayHealth = new ArrayList<>();
     List<WellbeingConfigResponse.Link> linksArrayNotice = new ArrayList<>();
     List<WellbeingConfigResponse.Link> linksArrayRewards = new ArrayList<>();
+    List<WellbeingConfigResponse.Link> linksArrayHealthTips = new ArrayList<>();
 
 
     @Override
@@ -77,9 +78,16 @@ public class WellbeingFragment extends Fragment {
         binding.healthTipsBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
+                intent.putExtra(AppConstants.WELLBEING_TYPE, "Health Tips");
+                intent.putExtra(AppConstants.PERSONAL_CONTENT, healthtips);
+                Log.d(TAG, "onClick: "+linksArrayHealthTips.size());
+                intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayHealthTips);
+                startActivity(intent);
+                /*
                 Intent intent=new Intent(getActivity(),FireWardensActivity.class);
                 intent.putExtra("WELL_BEING_KEY","HEALTH_TIPS");
-                startActivity(intent);
+                startActivity(intent);*/
             }
         });
 
@@ -110,7 +118,20 @@ public class WellbeingFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        binding.mentalHealthBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /* Intent intent=new Intent(getActivity(),TrainingActivity.class);*/
+                Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
+                intent.putExtra(AppConstants.WELLBEING_TYPE, "Mental Health");
+                intent.putExtra(AppConstants.PERSONAL_CONTENT, health);
+                Log.d(TAG, "onClick: "+linksArrayPersonal.size());
+                intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayHealth);
+                startActivity(intent);
+            }
+        });
 
+/*
         binding.mentalHealthBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,7 +140,8 @@ public class WellbeingFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        
+*/
+
         binding.noticesBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -299,12 +321,18 @@ public class WellbeingFragment extends Fragment {
                 health = response.body().get(5).getDescription();
                 notice = response.body().get(7).getDescription();
                 rewards = response.body().get(10).getDescription();
+                healthtips =response.body().get(2).getDescription();
                 personalData = response.body().get(8).getDescription();
 
 //                Toast.makeText(getActivity(), ""+response.body().size(), Toast.LENGTH_SHORT).show();
                 for(int i=0;i<response.body().get(0).getLinks().size();i++){
                     Log.d(TAG, "onResponse: "+response.body().get(0).getLinks().size());
                     linksArrayBenefits.add(response.body().get(0).getLinks().get(i));
+                }
+
+                for(int i=0;i<response.body().get(2).getLinks().size();i++){
+                    Log.d(TAG, "onResponse: "+response.body().get(2).getLinks().size());
+                    linksArrayHealthTips.add(response.body().get(2).getLinks().get(i));
                 }
 
                 for(int i=0;i<response.body().get(1).getLinks().size();i++){

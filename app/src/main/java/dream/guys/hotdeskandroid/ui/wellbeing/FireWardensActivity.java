@@ -36,25 +36,27 @@ public class FireWardensActivity extends AppCompatActivity {
         //Set Title Here
         if(receivedActivity.equals("HEALTH_TIPS")){
             binding.activityTitle.setText("Health tips");
+            binding.headFire.setText("Health tips");
             binding.tvReportAnHazzard.setVisibility(View.GONE);
             binding.tvEvacuation.setVisibility(View.GONE);
         }
         else if(receivedActivity.equals("FIRE")){
             //binding.activityTitle.setText("Fire wardens");
-            //binding.headFire.setText("Fire wardens");
+            binding.headFire.setText("Fire wardens");
             binding.titleFire.setText("Fire wardens");
             binding.subTitleFire.setText("Persons");
             getFirstAidPersonsDetails("Firewardenss");
         }else if(receivedActivity.equals("FIRST_AID")){
             binding.activityTitle.setText("First aid");
             binding.tvEvacuation.setText("First aid guide");
-            //binding.headFire.setText("First Aid");
+            binding.headFire.setText("First Aid");
             binding.titleFire.setText("Adminss");
             binding.subTitleFire.setText("Persons");
             getFirstAidPersonsDetails("Adminss");
             
         }else if(receivedActivity.equals("MENTAL")) {
             binding.activityTitle.setText("Mental health");
+            binding.headFire.setText("Mental health");
             binding.tvReportAnHazzard.setText("Report an issue");
             binding.tvEvacuation.setText("Stress relief tips");
         }
