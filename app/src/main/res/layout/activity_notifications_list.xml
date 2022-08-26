@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/profile_back"
-            android:text="Notifications"
+            android:text="Request"
             android:textColor="@color/figmaBlack"
             android:textSize="@dimen/_14sdp"
             android:theme="@style/TextBold"
@@ -116,6 +116,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">

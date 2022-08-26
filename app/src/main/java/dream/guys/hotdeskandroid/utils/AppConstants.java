@@ -77,5 +77,9 @@ public class AppConstants {
     public static String REFERALID = "REFERALID";
     public static String REFERALCODEE = "REFERALCODEE";
 
+    public static final String INCOMING = "INCOMING";
+    public static final String OUTGOING = "OUTGOING";
+    public static final String ACCEPT = "ACCEPT";
+    public static final String REJECT = "REJECT";
 
 }

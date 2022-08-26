@@ -31,23 +31,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/profile_back"
-                android:text="Manage"
+                android:text="Requests"
                 android:textColor="@color/figmaBlack"
                 android:textSize="@dimen/_14sdp"
                 android:theme="@style/TextBold"
                 android:layout_centerVertical="true" />
-
-            <TextView
-                android:id="@+id/tv_manage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="Select All"
-                android:textColor="@color/figmaBlue"
-                android:textSize="@dimen/_12sdp"
-                android:theme="@style/TextBold"
-                android:layout_centerVertical="true"
-                />
 
         </RelativeLayout>
 
@@ -115,8 +103,7 @@
         android:layout_height="match_parent"
         android:layout_margin="@dimen/_12sdp"
         android:orientation="vertical"
-        android:layout_below="@+id/toolbar_lay"
-        android:layout_above="@+id/btn_lay">
+        android:layout_below="@+id/toolbar_lay">
 
         <LinearLayout
             android:visibility="gone"
@@ -189,135 +176,15 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/outgoing_recyclerview"
+                android:id="@+id/incoming_req_recyclerview"
                 android:layout_below="@+id/txt_outgoing"
                 android:layout_marginTop="@dimen/_8sdp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp">
-
-            <TextView
-                android:id="@+id/txt_incoming"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Outgoing"
-                android:textColor="@color/figmaBlack"
-                android:textSize="@dimen/_12sdp"
-                android:theme="@style/TextRegular" />
-
-            <TextView
-                android:id="@+id/txt_val_incoming"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/txt_incoming"
-                android:text="(2)"
-                android:textColor="@color/figma_red"
-                android:textSize="@dimen/_12sdp"
-                android:theme="@style/TextRegular"
-                android:layout_marginStart="@dimen/_4sdp"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/incoming_recyclerview"
-                android:layout_below="@+id/txt_incoming"
-                android:layout_marginTop="@dimen/_8sdp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp">
-
-            <TextView
-                android:id="@+id/txt_old"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Old"
-                android:textColor="@color/figmaBlack"
-                android:textSize="@dimen/_12sdp"
-                android:theme="@style/TextRegular" />
-
-            <TextView
-                android:id="@+id/txt_val_old"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/txt_old"
-                android:text="(2)"
-                android:textColor="@color/figma_red"
-                android:textSize="@dimen/_12sdp"
-                android:theme="@style/TextRegular"
-                android:layout_marginStart="@dimen/_4sdp"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/old_recyclerview"
-                android:layout_below="@+id/txt_old"
-                android:layout_marginTop="@dimen/_8sdp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-        </RelativeLayout>
-
     </LinearLayout>
 
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/grey"
-        android:layout_above="@+id/btn_lay"/>
-    <LinearLayout
-        android:id="@+id/btn_lay"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_35sdp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/edittext_bg"
-        android:orientation="horizontal"
-        android:weightSum="3">
-
-        <TextView
-            android:id="@+id/txt_reject"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.4"
-            style="@style/TextRegular"
-            android:textColor="@color/figma_red"
-            android:textSize="@dimen/_14sdp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Reject"/>
-
-        <View
-            android:layout_width="@dimen/_1sdp"
-            android:layout_height="@dimen/_1sdp"
-            android:background="@color/grey"
-            android:layout_weight="0.2"
-            android:layout_gravity="center"
-            android:rotation="90"/>
-
-        <TextView
-            android:id="@+id/txt_accept"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.4"
-            style="@style/TextRegular"
-            android:textColor="@color/figmaBlue"
-            android:textSize="@dimen/_14sdp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Accept"/>
-
-    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/locateProgressBar"

@@ -83,6 +83,7 @@ import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
+import dream.guys.hotdeskandroid.ui.notify.NotificationCenterActivity;
 import dream.guys.hotdeskandroid.ui.settings.SettingsActivity;
 import dream.guys.hotdeskandroid.ui.wellbeing.NotificationsListActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
@@ -257,7 +258,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             public void onClick(View view) {
                 if (notiList!=null && notiList.size()>0){
 
-                    Intent intent = new Intent(getActivity(), NotificationsListActivity.class);
+                    Intent intent = new Intent(getActivity(), NotificationCenterActivity.class);
                     intent.putExtra(AppConstants.SHOWNOTIFICATION,notiList);
                     startActivity(intent);
 

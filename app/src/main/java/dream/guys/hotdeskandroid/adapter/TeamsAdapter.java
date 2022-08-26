@@ -19,10 +19,12 @@ public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.viewHolder> 
 
     Context context;
     ArrayList<DAOTeamMember> teamMembersList;
+    TeamMemberInterface teamMemberInterface;
 
-    public TeamsAdapter(Context context, ArrayList<DAOTeamMember> teamMembersList) {
+    public TeamsAdapter(Context context, ArrayList<DAOTeamMember> teamMembersList,TeamMemberInterface teamMemberInterface) {
         this.context = context;
         this.teamMembersList = teamMembersList;
+        this.teamMemberInterface = teamMemberInterface;
 
     }
 
@@ -41,6 +43,13 @@ public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.viewHolder> 
 
         holder.mTxtName.setText(fName + " " + lName);
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                teamMemberInterface.clickEvent(teamMembersList.get(holder.getAbsoluteAdapterPosition()));
+            }
+        });
+
     }
 
     @Override
@@ -58,6 +67,11 @@ public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.viewHolder> 
             mTxtName = itemView.findViewById(R.id.bookingDeskName);
 
         }
+    }
+
+    public interface TeamMemberInterface {
+
+        void clickEvent(DAOTeamMember daoTeamMember);
     }
 
 }

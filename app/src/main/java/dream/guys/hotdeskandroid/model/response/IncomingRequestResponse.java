@@ -37,6 +37,7 @@ public class IncomingRequestResponse implements Serializable {
     @Expose
     private Integer totalRecords;
 
+
     public ArrayList<Result> getResults() {
         return results;
     }
@@ -53,7 +54,7 @@ public class IncomingRequestResponse implements Serializable {
         this.totalRecords = totalRecords;
     }
 
-    public class Result implements Serializable{
+    public static class Result implements Serializable{
 
         @SerializedName("calendarEntryId")
         @Expose
@@ -142,6 +143,73 @@ public class IncomingRequestResponse implements Serializable {
         @SerializedName("requestedDate")
         @Expose
         private String requestedDate;
+
+
+        //New...
+        //Car...5
+        @SerializedName("carParkBookingId")
+        @Expose
+        private Integer carParkBookingId;
+        @SerializedName("parkingSlotId")
+        @Expose
+        private Integer parkingSlotId;
+        @SerializedName("parkingSlotCode")
+        @Expose
+        private String parkingSlotCode;
+        @SerializedName("locationName")
+        @Expose
+        private String locationName;
+
+        //Meeting... 4
+        @SerializedName("meetingRoomBookingId")
+        @Expose
+        private Integer meetingRoomBookingId;
+        @SerializedName("meetingRoomId")
+        @Expose
+        private Integer meetingRoomId;
+        @SerializedName("meetingRoomName")
+        @Expose
+        private String meetingRoomName;
+
+
+        private String incoming = "incoming";
+        public String getIncoming() {
+            return incoming;
+        }
+        public void setIncoming(String incoming) {
+            this.incoming = incoming;
+        }
+
+        private boolean isTitle;
+        public boolean isTitle() {
+            return isTitle;
+        }
+        public void setTitle(boolean title) {
+            isTitle = title;
+        }
+
+        private boolean checkBoxStatus;
+        public boolean isCheckBoxStatus() {
+            return checkBoxStatus;
+        }
+        public void setCheckBoxStatus(boolean checkBoxStatus) {
+            this.checkBoxStatus = checkBoxStatus;
+        }
+
+        public Result(Integer status) {
+            this.status = status;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            return status.equals(((Result)o).status);
+        }
+        @Override
+        public int hashCode() {
+            int hash = 13;
+            hash = (31 * hash) + (null == status ? 0 : status.hashCode());
+            return hash;
+        }
 
         public Integer getCalendarEntryId() {
             return calendarEntryId;
@@ -375,6 +443,61 @@ public class IncomingRequestResponse implements Serializable {
             this.requestedDate = requestedDate;
         }
 
+        public Integer getCarParkBookingId() {
+            return carParkBookingId;
+        }
+
+        public void setCarParkBookingId(Integer carParkBookingId) {
+            this.carParkBookingId = carParkBookingId;
+        }
+
+        public Integer getParkingSlotId() {
+            return parkingSlotId;
+        }
+
+        public void setParkingSlotId(Integer parkingSlotId) {
+            this.parkingSlotId = parkingSlotId;
+        }
+
+        public String getParkingSlotCode() {
+            return parkingSlotCode;
+        }
+
+        public void setParkingSlotCode(String parkingSlotCode) {
+            this.parkingSlotCode = parkingSlotCode;
+        }
+
+        public String getLocationName() {
+            return locationName;
+        }
+
+        public void setLocationName(String locationName) {
+            this.locationName = locationName;
+        }
+
+        public Integer getMeetingRoomBookingId() {
+            return meetingRoomBookingId;
+        }
+
+        public void setMeetingRoomBookingId(Integer meetingRoomBookingId) {
+            this.meetingRoomBookingId = meetingRoomBookingId;
+        }
+
+        public Integer getMeetingRoomId() {
+            return meetingRoomId;
+        }
+
+        public void setMeetingRoomId(Integer meetingRoomId) {
+            this.meetingRoomId = meetingRoomId;
+        }
+
+        public String getMeetingRoomName() {
+            return meetingRoomName;
+        }
+
+        public void setMeetingRoomName(String meetingRoomName) {
+            this.meetingRoomName = meetingRoomName;
+        }
     }
 
     public class TimeZone implements Serializable {
@@ -589,5 +712,26 @@ public class IncomingRequestResponse implements Serializable {
         }
 
     }
+
+
+    /*@Override
+    public boolean equals(Object o)
+    {
+        Result s;
+        if(!(o instanceof Result))
+        {
+            return false;
+        }
+
+        else
+        {
+            s=(Result)o;
+
+            if (s.status.equals(1)) {
+                return true;
+            }
+        }
+        return false;
+    }*/
 
 }

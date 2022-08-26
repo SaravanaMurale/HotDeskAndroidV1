@@ -2,12 +2,13 @@ package dream.guys.hotdeskandroid.model.response;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import dream.guys.hotdeskandroid.model.SearchPeople;
 
-public class GlobalSearchResponse {
+public class GlobalSearchResponse implements Serializable {
 
     List<Results> results;
     private int totalRecords;
@@ -28,7 +29,7 @@ public class GlobalSearchResponse {
         this.totalRecords = totalRecords;
     }
 
-    public class Results {
+    public class Results implements Serializable{
         //entity type 1 people
         private int id;
         private String name;
@@ -53,7 +54,7 @@ public class GlobalSearchResponse {
         private int noOfPeople;
         private String phoneNumber;
 
-        public class CurrentLocation {
+        public class CurrentLocation implements Serializable{
             private int id;
             private String name;
             private String description;

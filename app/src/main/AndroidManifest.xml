@@ -29,6 +29,15 @@
             android:exported="true">
         </activity>
         <activity
+            android:name=".ui.notify.UserNotifyReqActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.notify.UserNotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.teams.ShowProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.notify.NotificationManageActivity"
             android:exported="false" />
         <activity
@@ -261,13 +270,6 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
-        <service
-            android:name=".utils.FirebaseNotificationService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
         <activity
             android:name=".example.DummyActivity"
             android:exported="false" />
@@ -280,6 +282,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+        <service
+            android:name=".utils.FirebaseNotificationService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+
         <!--
 <activity
             android:name=".ui.wellbeing.CovidCertificationActivity"

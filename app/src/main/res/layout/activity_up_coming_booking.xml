@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/profile_back"
-            android:text="@string/notifications"
+            android:text="Upcoming Bookings"
             android:textColor="@color/figmaBlack"
             android:textSize="@dimen/_14sdp"
             android:theme="@style/TextBold"
