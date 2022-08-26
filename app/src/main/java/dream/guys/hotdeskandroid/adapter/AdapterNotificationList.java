@@ -99,14 +99,14 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
             if (cBoxPos>=0 && cBoxPos == pos){
                 notiList.get(cBoxPos).setCheckBoxStatus(true);
             }else {
-                notiList.get(cBoxPos).setCheckBoxStatus(false);
+                notiList.get(pos).setCheckBoxStatus(false);
             }
         }
 
         holder.card_view.setVisibility(View.VISIBLE);
         if (notiList.get(pos).getIncoming().equalsIgnoreCase("outgoing") &&
         notiList.get(pos).getStatus().equals(0)){
-
+            holder.btn_layout.setVisibility(View.GONE);
             if (notiList.get(pos).isTitle()){
                 holder.hdr_lay.setVisibility(View.VISIBLE);
             }else {
@@ -139,6 +139,8 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
                     }
                     holder.hdr_lay.setVisibility(View.VISIBLE);
                     holder.txt_title.setText("Old");
+                    holder.txt_title_count.setVisibility(View.GONE);
+                    holder.btn_layout.setVisibility(View.GONE);
                     //holder.txt_title_count.setText("(" + String.valueOf(cIncoming) + ")");
                 }
 
@@ -158,13 +160,13 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
         }else {
             holder.checkBox.setVisibility(View.GONE);
             holder.btnRemove.setVisibility(View.VISIBLE);
-            holder.btn_layout.setVisibility(View.VISIBLE);
+            //holder.btn_layout.setVisibility(View.VISIBLE);
         }
 
         switch (notiList.get(position).getEntityType()){
             case 3:
                 holder.imgEntity.setImageDrawable(context.getDrawable(R.drawable.chair));
-                holder.tvDesk.setText(notiList.get(position).getDeskCode());
+                holder.tvDesk.setText(notiList.get(position).getDeskTeam());
                 holder.tvAddress.setText(notiList.get(position).getDeskTeam());
                 break;
             case 4:
@@ -262,6 +264,7 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
             btnReject = itemView.findViewById(R.id.btnReject);
             rel_status = itemView.findViewById(R.id.rel_status);
             imgEntity = itemView.findViewById(R.id.ivMeeting);
+            tvDesk = itemView.findViewById(R.id.tvDesk);
 
         }
     }
