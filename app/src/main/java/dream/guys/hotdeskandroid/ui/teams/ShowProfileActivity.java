@@ -75,6 +75,7 @@ public class ShowProfileActivity extends AppCompatActivity {
                     //Show Person Profile Only
                     callSearchRecyclerData(fName + " " + lName,userID);
                     //Shows upcoming data
+
                     callTeamMemberStatus(date,daoTeamMember.getTeamId());
 
                 }
