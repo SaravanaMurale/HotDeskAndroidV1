@@ -43,7 +43,10 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import dream.guys.hotdeskandroid.adapter.ParticipantNameShowAdapter;
@@ -55,12 +58,14 @@ import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.request.Point;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
 import dream.guys.hotdeskandroid.ui.locate.LocateFragment;
 import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
+import dream.guys.hotdeskandroid.ui.teams.ShowProfileActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -1103,42 +1108,75 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
     @Override
     public void onClickGlobalSearch(GlobalSearchResponse.Results results, View v) {
 
-        SessionHandler.getInstance().saveInt(getContext(), AppConstants.PARENT_ID, results.getCurrentLocation().getParentLocationId());
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<LocateCountryRespose>> call=apiService.getCountrysChild(results.getCurrentLocation().getParentLocationId());
-        call.enqueue(new Callback<List<LocateCountryRespose>>() {
-            @Override
-            public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
+        if(results.getEntityType()==1){
+            //Show Person Details
 
-                List<LocateCountryRespose> locateCountryResposeList=response.body();
+            Calendar startDate = Calendar.getInstance();
 
-                for (int i = 0; i <locateCountryResposeList.size() ; i++) {
+            int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+            int month = Calendar.getInstance().get(Calendar.MONTH);
+            int year = Calendar.getInstance().get(Calendar.YEAR);
+            String currendate = String.valueOf(year + "-" + (month + 1) + "-" + day);
 
-                    if(results.getCurrentLocation().getId()==locateCountryResposeList.get(i).getLocateCountryId()){
+            try {
+                currendate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new SimpleDateFormat("yyyy-M-d").parse(currendate));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
-                        SessionHandler.getInstance().saveInt(MainActivity.this, AppConstants.FLOOR_POSITION,i);
-                        binding.searchRecycler.setVisibility(View.GONE);
-                        binding.serachBar.setText("");
-                        binding.serachBar.clearComposingText();
-                        binding.searchLayout.setVisibility(View.GONE);
-                        binding.navView.setSelectedItemId(R.id.navigation_locate);
+            DAOTeamMember daoTeamMember=new DAOTeamMember();
+            daoTeamMember.setFirstName(results.getName());
+            daoTeamMember.setUserId(results.getId());
 
-                    }/*else {
+
+            Intent intent = new Intent(MainActivity.this, ShowProfileActivity.class);
+            intent.putExtra(AppConstants.USER_CURRENT_STATUS,daoTeamMember);
+            intent.putExtra("DATE",currendate);
+            startActivity(intent);
+
+        }else if(results.getEntityType()==3|| results.getEntityType()==5 || results.getEntityType()==4){
+            //Set Floor In Locate
+            SessionHandler.getInstance().saveInt(getContext(), AppConstants.PARENT_ID, results.getCurrentLocation().getParentLocationId());
+            SessionHandler.getInstance().save(getContext(),AppConstants.FULLPATHLOCATION,results.getFullLocationPath());
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<LocateCountryRespose>> call=apiService.getCountrysChild(results.getCurrentLocation().getParentLocationId());
+            call.enqueue(new Callback<List<LocateCountryRespose>>() {
+                @Override
+                public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
+
+                    List<LocateCountryRespose> locateCountryResposeList=response.body();
+
+                    for (int i = 0; i <locateCountryResposeList.size() ; i++) {
+
+                        if(results.getCurrentLocation().getId()==locateCountryResposeList.get(i).getLocateCountryId()){
+
+                            SessionHandler.getInstance().saveInt(MainActivity.this, AppConstants.FLOOR_POSITION,i);
+                            binding.searchRecycler.setVisibility(View.GONE);
+                            binding.serachBar.setText("");
+                            binding.serachBar.clearComposingText();
+                            binding.searchLayout.setVisibility(View.GONE);
+                            binding.navView.setSelectedItemId(R.id.navigation_locate);
+
+                        }/*else {
                         Utils.toastMessage(MainActivity.this,"Selected Floor Is Not Avaliable");
                     }*/
 
 
 
+                    }
+
                 }
 
-            }
+                @Override
+                public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
 
-            @Override
-            public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
+                }
+            });
+        }
 
-            }
-        });
+
 
 
     }

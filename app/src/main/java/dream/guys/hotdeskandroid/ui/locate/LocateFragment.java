@@ -18,6 +18,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.ScaleAnimation;
 import android.widget.CalendarView;
 import android.widget.EditText;
@@ -99,6 +100,7 @@ import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
@@ -405,16 +407,24 @@ RepeateDataAdapter.repeatInterface {
 
 
     public void initLoadFloorDetails(int i) {
+
         int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
         if (parentId > 0) {
+            //Disable touch Screen
+            ProgressDialog.touchLock(getContext(),getActivity());
             String CountryName = SessionHandler.getInstance().get(getContext(), AppConstants.COUNTRY_NAME);
             String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
             String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
+            String fullPathLocation = SessionHandler.getInstance().get(getContext(), AppConstants.FULLPATHLOCATION);
 
-            if (CountryName == null && buildingName == null && floorName == null) {
+            if (CountryName == null && buildingName == null && floorName == null && fullPathLocation==null) {
                 binding.searchLocate.setHint("Choose Location");
             } else {
-                binding.searchLocate.setHint(CountryName + "," + buildingName + "," + floorName);
+                if(fullPathLocation==null) {
+                    binding.searchLocate.setHint(CountryName + "," + buildingName + "," + floorName);
+                }else {
+                    binding.searchLocate.setHint(fullPathLocation);
+                }
             }
 
             //ForCoordinate
@@ -463,6 +473,7 @@ RepeateDataAdapter.repeatInterface {
                     getLocateDeskRoomCarDesign(parentId, i);
                 }
             },4000);
+
 
 
 
@@ -859,6 +870,8 @@ RepeateDataAdapter.repeatInterface {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
+
+               ProgressDialog.clearTouchLock(getContext(),getActivity());
 
                 locateCountryResposeList = response.body();
                 if (desksCode != null) {
@@ -3378,6 +3391,7 @@ RepeateDataAdapter.repeatInterface {
                 floor.setVisibility(View.VISIBLE);
                 floor.setText(locateCountryRespose.getName());
                 SessionHandler.getInstance().save(getContext(), AppConstants.FLOOR, locateCountryRespose.getName());
+                SessionHandler.getInstance().remove(getContext(),AppConstants.FULLPATHLOCATION);
                 rvStreet.setVisibility(View.GONE);
                 rvFloor.setVisibility(View.VISIBLE);
                 SessionHandler.getInstance().saveInt(getContext(), AppConstants.PARENT_ID, locateCountryRespose.getLocateCountryId());

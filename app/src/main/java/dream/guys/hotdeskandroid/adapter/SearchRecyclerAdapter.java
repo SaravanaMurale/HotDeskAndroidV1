@@ -98,9 +98,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_navigation_locate2);
-                //NavController navController = Navigation.findNavController(view);
-                //navController.navigate(R.id.action_navigation_home_to_navigation_locate2);
+
                 globalSearchOnClickable.onClickGlobalSearch(list.get(holder.getAbsoluteAdapterPosition()),v);
 
             }
