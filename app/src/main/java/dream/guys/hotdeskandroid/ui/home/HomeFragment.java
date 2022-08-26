@@ -512,15 +512,17 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         ImageResponse imageResponse = response.body();
                         if (imageResponse.getMessage()!=null && !imageResponse.isStatus()){
 //                            Utils.toastMessage(getContext(),imageResponse.getMessage().getCode());
-                            userProfile.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.mygirl));
+                            userProfile.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.avatar));
                         }
-                        if (imageResponse.getImage()!=null){
+                        if (imageResponse.getImage()!=null && !imageResponse.getImage().equalsIgnoreCase("") && !imageResponse.getImage().isEmpty()){
                             String cleanImage = imageResponse.getImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");
                             SessionHandler.getInstance().save(getActivity(), AppConstants.USERIMAGE
                                     , cleanImage);
                             byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
                             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                             userProfile.setImageBitmap(decodedByte);
+                        } else {
+                            userProfile.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.avatar));
                         }
                     }else if(response.code()==401){
                         Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");

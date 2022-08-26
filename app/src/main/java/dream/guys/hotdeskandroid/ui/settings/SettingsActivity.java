@@ -140,7 +140,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                 System.out.println("Base64Image"+profilePicResponse.getImage());
 
-                if(profilePicResponse.getImage()!=null) {
+                if(profilePicResponse.getImage()!=null && !profilePicResponse.getImage().equalsIgnoreCase("") && !profilePicResponse.getImage().isEmpty()) {
                     String base64String = profilePicResponse.getImage();
                     String base64Image = base64String.split(",")[1];
                     byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);

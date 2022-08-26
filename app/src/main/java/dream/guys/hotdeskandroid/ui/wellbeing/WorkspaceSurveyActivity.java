@@ -266,7 +266,7 @@ public class WorkspaceSurveyActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Utils.bottomSheetDatePicker(WorkspaceSurveyActivity.this,WorkspaceSurveyActivity.this,"","",reportFromDate,null);
+                Utils.bottomSheetDatePickerWorkSpaceSurveyAsement(WorkspaceSurveyActivity.this,WorkspaceSurveyActivity.this,"","",reportFromDate);
             }
         });
 
@@ -275,7 +275,7 @@ public class WorkspaceSurveyActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Utils.bottomSheetDatePicker(WorkspaceSurveyActivity.this,WorkspaceSurveyActivity.this,"","",reportToDate,null);
+                Utils.bottomSheetDatePickerWorkSpaceSurveyAsement(WorkspaceSurveyActivity.this,WorkspaceSurveyActivity.this,"","",reportToDate);
             }
         });
 
@@ -649,19 +649,18 @@ public class WorkspaceSurveyActivity extends AppCompatActivity
     private void postSubmit(ReportIssueRequest reportIssueRequest)
     {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<BaseResponse> call = apiService.postFeedback(reportIssueRequest);
-        call.enqueue(new Callback<BaseResponse>() {
+        Call<Void> call = apiService.postFeedback(reportIssueRequest);
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-
-                Toast.makeText(getApplicationContext(),"Successfully Reported",Toast.LENGTH_LONG).show();
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Toast.makeText(getApplicationContext(),"Successfully Updated",Toast.LENGTH_LONG).show();
                 finish();
 
             }
 
             @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"Successfully Reported",Toast.LENGTH_LONG).show();
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),"Not Updated",Toast.LENGTH_LONG).show();
                 finish();
                 t.printStackTrace();
             }

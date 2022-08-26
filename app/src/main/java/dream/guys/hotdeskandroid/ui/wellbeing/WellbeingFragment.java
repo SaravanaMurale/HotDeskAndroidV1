@@ -18,6 +18,7 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -300,7 +301,7 @@ public class WellbeingFragment extends Fragment {
                 rewards = response.body().get(10).getDescription();
                 personalData = response.body().get(8).getDescription();
 
-
+//                Toast.makeText(getActivity(), ""+response.body().size(), Toast.LENGTH_SHORT).show();
                 for(int i=0;i<response.body().get(0).getLinks().size();i++){
                     Log.d(TAG, "onResponse: "+response.body().get(0).getLinks().size());
                     linksArrayBenefits.add(response.body().get(0).getLinks().get(i));
@@ -336,10 +337,9 @@ public class WellbeingFragment extends Fragment {
             @Override
             public void onFailure(Call<List<WellbeingConfigResponse>> call, Throwable t)
             {
-
+                System.out.println("on failure weill" + t.getMessage());
+//                Toast.makeText(getActivity(), "onFailure", Toast.LENGTH_SHORT).show();
             }
-
-
         });
     }
 

@@ -188,20 +188,18 @@ public class ReportAnIssueActivity extends AppCompatActivity {
     private void postSubmit(ReportIssueRequest request)
     {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<BaseResponse> call = apiService.postFeedback(request);
-        call.enqueue(new Callback<BaseResponse>() {
+        Call<Void> call = apiService.postFeedback(request);
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 Log.d(TAG, "onResponse: ");
                 Toast.makeText(getApplicationContext(),"Successfully Reported",Toast.LENGTH_LONG).show();
                 finish();
-
             }
 
             @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"Successfully Reported",Toast.LENGTH_LONG).show();
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),"Not Updated",Toast.LENGTH_LONG).show();
                 finish();
                 Log.d(TAG, "onFailure: "+t.getMessage());
                 t.printStackTrace();
