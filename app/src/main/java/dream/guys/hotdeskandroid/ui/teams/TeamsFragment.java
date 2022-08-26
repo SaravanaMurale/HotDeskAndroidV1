@@ -228,6 +228,9 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         callTeamMemberStatus();*/
     }
 
+
+
+
     public class OverlapDecoration extends RecyclerView.ItemDecoration {
 
         private final static int vertOverlap = -20;
@@ -262,7 +265,6 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
 
         Calendar startDate = Calendar.getInstance();
-
         day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         month = Calendar.getInstance().get(Calendar.MONTH);
         year = Calendar.getInstance().get(Calendar.YEAR);

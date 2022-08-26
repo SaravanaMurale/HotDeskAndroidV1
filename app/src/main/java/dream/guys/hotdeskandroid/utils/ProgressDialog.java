@@ -1,8 +1,10 @@
 package dream.guys.hotdeskandroid.utils;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.view.WindowManager;
 
 import dream.guys.hotdeskandroid.R;
 
@@ -27,6 +29,15 @@ public class ProgressDialog {
             dialog.cancel();
         }
 
+    }
+
+    public static void touchLock(Context context, Activity activity){
+        activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    public static void clearTouchLock(Context context, Activity activity){
+        activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
 }
