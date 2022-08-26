@@ -8,6 +8,8 @@ import java.util.List;
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
 import dream.guys.hotdeskandroid.model.request.CovidAnswerRequest;
 import dream.guys.hotdeskandroid.model.request.CreatePinRequest;
+import dream.guys.hotdeskandroid.model.request.DAODeskAccept;
+import dream.guys.hotdeskandroid.model.request.DAODeskReject;
 import dream.guys.hotdeskandroid.model.request.DeleteMeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.request.ForgotPasswordRequest;
 import dream.guys.hotdeskandroid.model.request.GDPRrequest;
@@ -350,6 +352,14 @@ public interface ApiInterface {
 
     @GET("api/wellness/checklistQuestions")
     Call<List<QuestionListResponse>> getQuestionList();
+
+    @POST("api/requests/rejectdesk")
+    Call<BaseResponse> rejectDesk(@Body DAODeskReject daoDeskReject);
+    //Call<BaseResponse> rejectDesk(@Field("id") int id,@Field("reason") String reason);
+
+    @POST("api/requests/approvedesk")
+    Call<BaseResponse> acceptDesk(@Body DAODeskAccept daoDeskAccept);
+
 }
 
 

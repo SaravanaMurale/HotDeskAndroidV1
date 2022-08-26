@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TeamsFragment extends Fragment implements SearchRecyclerAdapter.GlobalSearchOnClickable {
+public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberInterface {
 
     FragmentTeamsBinding binding;
     int day, month, year;
@@ -61,6 +62,8 @@ public class TeamsFragment extends Fragment implements SearchRecyclerAdapter.Glo
     List<GlobalSearchResponse.Results> list = new ArrayList<>();
     SearchRecyclerAdapter searchRecyclerAdapter;
     LinearLayoutManager linearLayoutManager,contactLinearLayout;
+
+    int selID = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,7 +102,7 @@ public class TeamsFragment extends Fragment implements SearchRecyclerAdapter.Glo
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                /*if (!s.toString().equals("")){
+                if (!s.toString().equals("")){
 
                     filter(s.toString().toLowerCase());
                 }else {
@@ -109,20 +112,20 @@ public class TeamsFragment extends Fragment implements SearchRecyclerAdapter.Glo
 
                     setDataToExpandAdapter(teamMembersList);
 
-                }*/
+                }
 
-                if(s.toString().length()==0){
+                /*if(s.toString().length()==0){
                     list.clear();
                     binding.searchRecycler.setVisibility(View.GONE);
                     searchRecyclerAdapter.notifyDataSetChanged();
-                }
+                }*/
 
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 //filter(s.toString());
-                callSearchRecyclerData(s.toString());
+                //callSearchRecyclerData(s.toString());
             }
         });
 
@@ -142,7 +145,7 @@ public class TeamsFragment extends Fragment implements SearchRecyclerAdapter.Glo
                 LinearLayoutManager.VERTICAL, false);
         binding.searchRecycler.setLayoutManager(linearLayoutManager);
         binding.searchRecycler.setHasFixedSize(true);
-        searchRecyclerAdapter=new SearchRecyclerAdapter(getActivity(),getActivity(),list,this);
+        searchRecyclerAdapter=new SearchRecyclerAdapter(getActivity(),list);
         binding.searchRecycler.setAdapter(searchRecyclerAdapter);
 
         return root;
@@ -212,8 +215,16 @@ public class TeamsFragment extends Fragment implements SearchRecyclerAdapter.Glo
     }
 
     @Override
-    public void onClickGlobalSearch(GlobalSearchResponse.Results results) {
+    public void clickEvent(DAOTeamMember daoTeamMember) {
+        selID = daoTeamMember.getUserId();
 
+        Intent intent = new Intent(getActivity(),ShowProfileActivity.class);
+        intent.putExtra(AppConstants.USER_CURRENT_STATUS,daoTeamMember);
+        intent.putExtra("DATE",currendate);
+        startActivity(intent);
+
+        /*callSearchRecyclerData(fName + " " + lName);
+        callTeamMemberStatus();*/
     }
 
     public class OverlapDecoration extends RecyclerView.ItemDecoration {
@@ -232,7 +243,7 @@ public class TeamsFragment extends Fragment implements SearchRecyclerAdapter.Glo
     }
 
     private void setDataToExpandAdapter(ArrayList<DAOTeamMember> teamMembersList) {
-        teamsAdapter = new TeamsAdapter(getActivity(),teamMembersList);
+        teamsAdapter = new TeamsAdapter(getActivity(),teamMembersList,this);
         binding.expandRecyclerView.setAdapter(teamsAdapter);
     }
 
@@ -337,8 +348,10 @@ public class TeamsFragment extends Fragment implements SearchRecyclerAdapter.Glo
 
     }
 
-    private void callSearchRecyclerData(String searchText) {
+    /*private void callSearchRecyclerData(String searchText) {
         if (Utils.isNetworkAvailable(getActivity())) {
+
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<GlobalSearchResponse> call = apiService.getGlobalSearchData(40,searchText);
@@ -348,27 +361,50 @@ public class TeamsFragment extends Fragment implements SearchRecyclerAdapter.Glo
 
                     if(response.code()==200){
 
+                        binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
                         list.clear();
                         if (response.body().getResults()!=null)
                             list.addAll(response.body().getResults());
                         Toast.makeText(getActivity(), "ls "+list.size(), Toast.LENGTH_SHORT).show();
 
                         Toast.makeText(getActivity(), "200"+searchText, Toast.LENGTH_SHORT).show();
-                        binding.searchRecycler.setVisibility(View.VISIBLE);
-                        searchRecyclerAdapter.notifyDataSetChanged();
+
+                        if (list!=null && list.size()>0){
+
+                            for (int i=0;i<list.size();i++){
+
+                                if (selID == list.get(i).getId()) {
+
+                                    List<GlobalSearchResponse.Results> resultsList = new ArrayList<>();
+                                    resultsList.add(list.get(i));
+
+                                    Intent intent = new Intent(getActivity(),ShowProfileActivity.class);
+                                    intent.putExtra(AppConstants.USER_ID,selID);
+                                    intent.putExtra("USER_DETAILS", (Serializable) resultsList);
+                                    startActivity(intent);
+                                    break;
+                                }
+                            }
+                        }
+
+                        //binding.searchRecycler.setVisibility(View.VISIBLE);
+                        //searchRecyclerAdapter.notifyDataSetChanged();
 
                     }else if(response.code()==401){
-
+                        binding.locateProgressBar.setVisibility(View.INVISIBLE);
                         Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
 
                     } else {
+                        binding.locateProgressBar.setVisibility(View.INVISIBLE);
                         Log.d("Search", "onResponse: else");
                     }
 
                 }
                 @Override
                 public void onFailure(Call<GlobalSearchResponse> call, Throwable t) {
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
                     Toast.makeText(getActivity(), "on fail", Toast.LENGTH_SHORT).show();
 //                    ProgressDialog.dismisProgressBar(getActivity(),dialog);
                     Log.d("Search", "onResponse: fail"+t.getMessage());
@@ -379,5 +415,51 @@ public class TeamsFragment extends Fragment implements SearchRecyclerAdapter.Glo
             Utils.toastMessage(getActivity(), "Please Enable Internet");
         }
     }
+
+    private void callTeamMemberStatus() {
+        if (Utils.isNetworkAvailable(getActivity())) {
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<TeamMembersResponse>> call = apiService.getTeamMembers(Utils.getCurrentDate(),
+                    SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
+            call.enqueue(new Callback<List<TeamMembersResponse>>() {
+                @Override
+                public void onResponse(Call<List<TeamMembersResponse>> call, Response<List<TeamMembersResponse>> response) {
+//                    Toast.makeText(MainActivity.this, "on res", Toast.LENGTH_SHORT).show();
+                    if(response.code()==200){
+
+                        teamMembersResponses = response.body();
+                        if (teamMembersResponses!=null &&
+                                teamMembersResponses.size()>0){
+                            for (int i=0;i<teamMembersResponses.size();i++){
+                                arrayString.add(" "+teamMembersResponses.get(i).getFirstName()+" "+
+                                        teamMembersResponses.get(i).getLastName());
+                            }
+                            //adapter.notifyDataSetChanged();
+                        }
+
+                    }else if(response.code()==401){
+                        //Handle if token got expired
+                        Utils.tokenExpiryAlert(getActivity(),"");
+
+                    } else {
+                        Log.d("Search", "onResponse: else");
+                        Utils.showCustomAlertDialog(getActivity(),"Api Issue Code: "+response.code());
+                    }
+
+                }
+                @Override
+                public void onFailure(Call<List<TeamMembersResponse>> call, Throwable t) {
+//                    Toast.makeText(getActivity(), "on fail", Toast.LENGTH_SHORT).show();
+                    Utils.showCustomAlertDialog(getActivity(),"Response Failure: "+t.getMessage());
+                    ProgressDialog.dismisProgressBar(getActivity(),dialog);
+                    Log.d("Search", "onResponse: fail"+t.getMessage());
+                }
+            });
+
+        } else {
+            Utils.toastMessage(this, "Please Enable Internet");
+        }
+    }*/
 
 }

@@ -29,6 +29,15 @@
             android:exported="true">
         </activity>
         <activity
+            android:name=".ui.notify.UserNotifyReqActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.notify.UserNotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.teams.ShowProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.notify.NotificationManageActivity"
             android:exported="false" />
         <activity

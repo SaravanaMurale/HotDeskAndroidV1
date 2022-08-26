@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +28,11 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     Activity activity;
     List<GlobalSearchResponse.Results> list;
     GlobalSearchOnClickable globalSearchOnClickable;
+
+    public SearchRecyclerAdapter(Context context, List<GlobalSearchResponse.Results> list) {
+        this.context = context;
+        this.list = list;
+    }
 
     public interface GlobalSearchOnClickable{
         public void onClickGlobalSearch(GlobalSearchResponse.Results results, View v);

@@ -2,7 +2,6 @@ package dream.guys.hotdeskandroid.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,40 +18,32 @@ import java.util.Collections;
 import de.hdodenhof.circleimageview.CircleImageView;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
-import dream.guys.hotdeskandroid.ui.notify.NotificationRequestActivity;
+import dream.guys.hotdeskandroid.ui.notify.UserNotifyReqActivity;
 import dream.guys.hotdeskandroid.ui.wellbeing.NotificationsListActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.Utils;
 
-public class AdapterNotificationCenter extends RecyclerView.Adapter<AdapterNotificationCenter.viewholder> {
+public class AdapterUserNotify extends RecyclerView.Adapter<AdapterUserNotify.viewHolder> {
 
     Context context;
     ArrayList<IncomingRequestResponse.Result> notiList;
     int count = 0;
 
-    ArrayList<IncomingRequestResponse.Result> incoming;
-    ArrayList<IncomingRequestResponse.Result> outgoing;
-
-    public AdapterNotificationCenter(Context context, ArrayList<IncomingRequestResponse.Result>
-            notiList,int count,ArrayList<IncomingRequestResponse.Result> incoming, ArrayList<IncomingRequestResponse.Result> outgoing) {
+    public AdapterUserNotify(Context context, ArrayList<IncomingRequestResponse.Result> notificationList, int count) {
         this.context = context;
-        this.notiList = notiList;
         this.count = count;
-
-        this.incoming = incoming;
-        this.outgoing = outgoing;
+        notiList = notificationList;
     }
-
 
     @NonNull
     @Override
-    public viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_notify_center, parent, false);
-        return new viewholder(itemView);
+    public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_user_notify, parent, false);
+        return new viewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull viewholder holder, int position) {
+    public void onBindViewHolder(@NonNull viewHolder holder, int position) {
 
         holder.tvUserName.setText(notiList.get(position).getRequesterName());
         holder.tvUserTeam.setText(notiList.get(position).getRequesterTeam());
@@ -99,36 +90,37 @@ public class AdapterNotificationCenter extends RecyclerView.Adapter<AdapterNotif
             holder.pending_count_lay.setVisibility(View.GONE);
         }
 
+        switch (notiList.get(position).getStatus()){
+            case 0:
+                holder.txt_status.setText("Pending");
+                holder.txt_status.setTextColor(context.getResources().getColor(R.color.figmaLiteGreen, context.getTheme()));
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+        }
+
         //holder.req_lay
         holder.req_lay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 ArrayList<IncomingRequestResponse.Result> notyManageList = new ArrayList<>();
-                int cIncoming = 0,cOutGoing = 0;
+                int cIncoming = 0;
 
-                if (outgoing!=null && outgoing.size()>0){
-                    outgoing.get(0).setTitle(true);
-                    notyManageList.addAll(outgoing);
+                IncomingRequestResponse.Result result = new IncomingRequestResponse.Result(0);
 
-                    IncomingRequestResponse.Result result = new IncomingRequestResponse.Result(0);
-                    cOutGoing = Collections.frequency(outgoing, result); //outgoing.size();
-                }
+                cIncoming = Collections.frequency(notiList, result); //incoming.size();
 
-                if (incoming!=null && incoming.size()>0){
-                    incoming.get(0).setTitle(true);
-                    notyManageList.addAll(incoming);
-
-                    IncomingRequestResponse.Result result = new IncomingRequestResponse.Result(0);
-
-                    cIncoming = Collections.frequency(incoming, result); //incoming.size();
-                }
-
-                Intent intent = new Intent(context, NotificationsListActivity.class);
+                Intent intent = new Intent(context, UserNotifyReqActivity.class);
                 intent.putExtra(AppConstants.SHOWNOTIFICATION,notyManageList);
-                intent.putExtra("IncomingList",incoming);
-                intent.putExtra("OutGoingList",outgoing);
-                intent.putExtra(AppConstants.OUTGOING,cOutGoing);
                 intent.putExtra(AppConstants.INCOMING,cIncoming);
                 context.startActivity(intent);
             }
@@ -159,14 +151,14 @@ public class AdapterNotificationCenter extends RecyclerView.Adapter<AdapterNotif
         return notiList.size();
     }
 
-    public class viewholder extends RecyclerView.ViewHolder{
+    public class viewHolder extends RecyclerView.ViewHolder{
 
-        TextView txt_date,CheckInTime,CheckOutTime,tvUserName,tvUserTeam,txt_count,tvDesk,tvAddress;
+        TextView txt_date,CheckInTime,CheckOutTime,tvUserName,tvUserTeam,txt_count,tvDesk,tvAddress,txt_status;
         CardView cardBookingNotify,cardCovidNotify;
         RelativeLayout pending_count_lay,date_time_lay,req_lay,rel_status;
         CircleImageView imgEntity;
 
-        public viewholder(@NonNull View itemView) {
+        public viewHolder(@NonNull View itemView) {
             super(itemView);
 
             txt_date = itemView.findViewById(R.id.txt_date);
@@ -184,6 +176,7 @@ public class AdapterNotificationCenter extends RecyclerView.Adapter<AdapterNotif
             tvDesk = itemView.findViewById(R.id.tvDesk);
             tvAddress = itemView.findViewById(R.id.tvAddress);
             imgEntity = itemView.findViewById(R.id.ivMeeting);
+            txt_status = itemView.findViewById(R.id.txt_status);
 
         }
     }

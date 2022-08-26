@@ -36,8 +36,8 @@ public class OutgoingNotiFragment extends Fragment {
         binding = FragmentRequestTabBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        adapterNotificationList = new AdapterNotificationList(getActivity(),notiList);
-        binding.recyclerview.setAdapter(adapterNotificationList);
+        //adapterNotificationList = new AdapterNotificationList(getActivity(),notiList,"");
+        //binding.recyclerview.setAdapter(adapterNotificationList);
 
         return root;
     }

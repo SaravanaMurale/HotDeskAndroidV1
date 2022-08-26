@@ -1,55 +1,43 @@
 package dream.guys.hotdeskandroid.ui.notify;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.collection.ArraySet;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-import dream.guys.hotdeskandroid.adapter.AdapterNotificationCenter;
-import dream.guys.hotdeskandroid.databinding.ActivityNotificationCenterBinding;
+import dream.guys.hotdeskandroid.adapter.AdapterUserNotify;
+import dream.guys.hotdeskandroid.databinding.ActivityUserNotificationBinding;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
-import kotlin.sequences.Sequence;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NotificationCenterActivity extends AppCompatActivity {
+public class UserNotificationActivity extends AppCompatActivity {
 
-    ActivityNotificationCenterBinding binding;
-    AdapterNotificationCenter adapterNotificationList;
+    ActivityUserNotificationBinding binding;
     Context context;
     ArrayList<IncomingRequestResponse.Result> notiList;
-    ArrayList<IncomingRequestResponse.Result> outGoingNotificationList;
     ArrayList<IncomingRequestResponse.Result> notificationList;
+    AdapterUserNotify adapterUserNotify;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_notification_center);
-        binding = ActivityNotificationCenterBinding.inflate(getLayoutInflater());
+        //setContentView(R.layout.activity_user_notification);
+        binding = ActivityUserNotificationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        context = NotificationCenterActivity.this;
-
-        uiInit();
+        context = UserNotificationActivity.this;
 
         binding.profileBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,19 +48,13 @@ public class NotificationCenterActivity extends AppCompatActivity {
 
     }
 
-    private void uiInit() {
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-        Intent intent = getIntent();
-
-        if (intent!=null) {
-
-            //notiList = (ArrayList<IncomingRequestResponse.Result>) intent.getSerializableExtra(AppConstants.SHOWNOTIFICATION);
-
-        }
-
+        loadNotification();
 
     }
-
 
     private void loadNotification() {
 
@@ -83,55 +65,6 @@ public class NotificationCenterActivity extends AppCompatActivity {
         } else {
             Utils.toastMessage(context, "Please Enable Internet");
         }
-    }
-
-    private void callOutGoingNotification() {
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<IncomingRequestResponse> call = apiService.getOutgoingRequest(true);
-        call.enqueue(new Callback<IncomingRequestResponse>() {
-            @Override
-            public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {
-                if(response.code()==200){
-                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                    outGoingNotificationList = new ArrayList<>();
-                    if (response.body()!=null && response.body().getResults()!=null){
-
-                        outGoingNotificationList.addAll(response.body().getResults());
-
-                        outGoingNotificationList.replaceAll(val ->{
-                            val.setIncoming("outgoing");
-                            return val;
-                        });
-
-                        outGoingNotificationList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
-
-                        notificationList.addAll(outGoingNotificationList);
-                        setAdapter();
-
-                    }else {
-                        setAdapter();
-                    }
-                }
-            }
-            @Override
-            public void onFailure(Call<IncomingRequestResponse> call, Throwable t) {
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                setAdapter();
-            }
-        });
-    }
-
-    private void setAdapter() {
-
-        notificationList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
-
-        IncomingRequestResponse.Result result = new IncomingRequestResponse.Result(0);
-        int count = Collections.frequency(notificationList, result);
-
-        adapterNotificationList = new AdapterNotificationCenter(context,notificationList,count,notiList,outGoingNotificationList);
-        binding.notificationRecyclerview.setAdapter(adapterNotificationList);
-
     }
 
     private void callIncomingNotification() {
@@ -145,7 +78,7 @@ public class NotificationCenterActivity extends AppCompatActivity {
             public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {
                 if(response.code()==200){
                     notiList = new ArrayList<>();
-                    if (response.body().getResults()!=null){
+                    if (response.body()!=null && response.body().getResults()!=null){
                         notiList.addAll(response.body().getResults());
                             loo :
                             for (int i=0;i<notiList.size();i++){
@@ -164,14 +97,17 @@ public class NotificationCenterActivity extends AppCompatActivity {
 
                         notificationList.addAll(notiList);
 
-                        callOutGoingNotification();
+                        IncomingRequestResponse.Result result = new IncomingRequestResponse.Result(0);
+                        int count = Collections.frequency(notificationList, result);
+
+                        adapterUserNotify = new AdapterUserNotify(context,notificationList,count);
+                        binding.notificationRecyclerview.setAdapter(adapterUserNotify);
 
                     }
                 }else if(response.code()==401){
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                    Utils.showCustomTokenExpiredDialog(NotificationCenterActivity.this,"Token Expired");
+                    Utils.showCustomTokenExpiredDialog(UserNotificationActivity.this,"Token Expired");
                     SessionHandler.getInstance().saveBoolean(context, AppConstants.LOGIN_CHECK,false);
-//                        Utils.finishAllActivity(getContext());
                 }
             }
             @Override
@@ -181,11 +117,4 @@ public class NotificationCenterActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        loadNotification();
-
-    }
 }
