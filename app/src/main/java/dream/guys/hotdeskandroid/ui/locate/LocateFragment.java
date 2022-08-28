@@ -1941,7 +1941,7 @@ RepeateDataAdapter.repeatInterface {
                                                     if (dateComparsionResult == 1) {
                                                         System.out.println("MeetingBookingUnavaliable");
                                                         meetingStatusModel = new MeetingStatusModel(key, id, code, 0);
-                                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
+                                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_booked));
                                                         //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
                                                         //deskStatusModel=new DeskStatusModel(key,id,code,0);
                                                     } else {
@@ -2016,7 +2016,7 @@ RepeateDataAdapter.repeatInterface {
 
                                                                 } else {
                                                                     meetingStatusModel = new MeetingStatusModel(key, id, code, 3);
-                                                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_booked));
+                                                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
                                                                     System.out.println("MeetingBookedOther");
                                                                 }
 
@@ -2024,7 +2024,7 @@ RepeateDataAdapter.repeatInterface {
                                                             } else if (lMatches.getAutomaticApprovalStatus() == 3 && !lMatches.isAllowedForBooking()) {
                                                                 meetingStatusModel = new MeetingStatusModel(key, id, code, 0);
                                                                 System.out.println("MeetingUnavaliable");
-                                                                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
+                                                                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_booked));
 
                                                             } else if (lMatches.getAutomaticApprovalStatus() == 2 || lMatches.isAllowedForBooking()) {
                                                                 ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_avaliable));
