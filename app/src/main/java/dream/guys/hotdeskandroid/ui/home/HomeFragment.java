@@ -57,6 +57,7 @@ import org.json.JSONObject;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -84,6 +85,7 @@ import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
 import dream.guys.hotdeskandroid.ui.notify.NotificationCenterActivity;
+import dream.guys.hotdeskandroid.ui.notify.UserNotificationActivity;
 import dream.guys.hotdeskandroid.ui.settings.SettingsActivity;
 import dream.guys.hotdeskandroid.ui.wellbeing.NotificationsListActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
@@ -231,8 +233,15 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         qrEnabledCall();
         loadUserImage();
         loadTenantImage();
-        loadNotification();
+        //loadNotification();
         loadHomeList();
+
+        if (SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE)!=null &&
+                SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE).equalsIgnoreCase("Administrator")){
+            loadNotification();
+        }else {
+            callOutGoingNotification();
+        }
 
 
         /**
@@ -258,9 +267,18 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             public void onClick(View view) {
                 if (notiList!=null && notiList.size()>0){
 
-                    Intent intent = new Intent(getActivity(), NotificationCenterActivity.class);
-                    intent.putExtra(AppConstants.SHOWNOTIFICATION,notiList);
-                    startActivity(intent);
+                    if (SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE)!=null &&
+                            SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE).equalsIgnoreCase("Administrator")){
+
+                        Intent intent = new Intent(getActivity(), NotificationCenterActivity.class);
+                        intent.putExtra(AppConstants.SHOWNOTIFICATION,notiList);
+                        startActivity(intent);
+
+                    }else {
+                        Intent intent = new Intent(getActivity(), UserNotificationActivity.class);
+                        intent.putExtra(AppConstants.SHOWNOTIFICATION,notiList);
+                        startActivity(intent);
+                    }
 
                 }
             }
@@ -456,6 +474,40 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         }
     }
 
+    private void callOutGoingNotification() {
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<IncomingRequestResponse> call = apiService.getOutgoingRequest(true);
+        call.enqueue(new Callback<IncomingRequestResponse>() {
+            @Override
+            public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {
+                if(response.code()==200){
+
+                    notiList = new ArrayList<>();
+                    if (response.body()!=null && response.body().getResults()!=null){
+
+                        notiList.addAll(response.body().getResults());
+                        loo :
+                        for (int i=0;i<notiList.size();i++){
+                            if (notiList.get(i).getStatus()==0){
+                                SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.SHOWNOTIFICATION,true);
+                                notiIcon.setVisibility(View.VISIBLE);
+                                break loo;
+                            }
+                            SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.SHOWNOTIFICATION,false);
+                        }
+
+                    }else {
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<IncomingRequestResponse> call, Throwable t) {
+                
+            }
+        });
+    }
+
     private void loadTenantImage() {
         if (Utils.isNetworkAvailable(getActivity())) {
 
@@ -512,15 +564,17 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         ImageResponse imageResponse = response.body();
                         if (imageResponse.getMessage()!=null && !imageResponse.isStatus()){
 //                            Utils.toastMessage(getContext(),imageResponse.getMessage().getCode());
-                            userProfile.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.mygirl));
+                            userProfile.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.avatar));
                         }
-                        if (imageResponse.getImage()!=null){
+                        if (imageResponse.getImage()!=null && !imageResponse.getImage().equalsIgnoreCase("") && !imageResponse.getImage().isEmpty()){
                             String cleanImage = imageResponse.getImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");
                             SessionHandler.getInstance().save(getActivity(), AppConstants.USERIMAGE
                                     , cleanImage);
                             byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
                             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                             userProfile.setImageBitmap(decodedByte);
+                        } else {
+                            userProfile.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.avatar));
                         }
                     }else if(response.code()==401){
                         Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");

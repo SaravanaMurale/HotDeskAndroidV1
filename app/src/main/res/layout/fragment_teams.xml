@@ -32,21 +32,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:text="PMO Office"
+                android:text="dgguys"
                 android:textColor="@color/figmaBlack"
                 android:textSize="@dimen/_12sdp"
                 android:theme="@style/TextRegular"
                 android:layout_below="@+id/title"/>
 
             <TextView
+                android:id="@+id/txt_allteam"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:text="All Team"
                 android:textColor="@color/figmaBlue"
                 android:textSize="@dimen/_11sdp"
-                android:theme="@style/TextBold"
-                android:layout_centerVertical="true" />
+                android:theme="@style/TextBold" />
 
         </RelativeLayout>
 
@@ -146,13 +147,26 @@
                 android:id="@+id/tv_adddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:text="Londan"
-                android:textColor="@color/figmaBlack"
-                android:textSize="@dimen/_14sdp"
-                android:theme="@style/TextRegular"
                 android:layout_below="@+id/list_title"
-                android:layout_marginTop="@dimen/_3sdp"/>
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:text="40 Bank Street (GMT)"
+                android:textColor="@color/figmaBlack"
+                android:textSize="@dimen/_11sdp"
+                android:theme="@style/TextRegular" />
+
+            <TextView
+                android:id="@+id/tv_total_avail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_adddress"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:text="5/15 desks available"
+                android:textColor="@color/figmaBlack"
+                android:textSize="@dimen/_10sdp"
+                android:theme="@style/TextRegular"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/tv_exapnd"

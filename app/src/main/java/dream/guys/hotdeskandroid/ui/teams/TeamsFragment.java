@@ -87,9 +87,18 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
                 binding.expandRecyclerView.setVisibility(View.VISIBLE);
                 binding.recyclerView.setVisibility(View.GONE);
+                binding.tvTotalAvail.setVisibility(View.VISIBLE);
 
                 setDataToExpandAdapter(teamMembersList);
 
+            }
+        });
+
+        binding.txtAllteam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),TeamsUserActivity.class);
+                startActivity(intent);
             }
         });
 

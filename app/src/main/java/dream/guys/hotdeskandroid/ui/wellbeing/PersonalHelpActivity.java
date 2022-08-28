@@ -67,7 +67,7 @@ public class PersonalHelpActivity extends AppCompatActivity {
         personalHelpAdapter = new PersonalHelpAdapter(this, linksArray);
         rvPersonal.setAdapter(personalHelpAdapter);
 
-        Log.d(TAG, "onCreate: "+linksArray.get(0).getUrl());
+//        Log.d(TAG, "onCreate: "+linksArray.get(0).getUrl());
 
         tvContent.setText(intent.getStringExtra(AppConstants.PERSONAL_CONTENT));
 
@@ -110,10 +110,10 @@ public class PersonalHelpActivity extends AppCompatActivity {
         PersonalHelpRequest personalHelpRequest = new PersonalHelpRequest();
         personalHelpRequest.setDescription(tvDescription.getText().toString());
         personalHelpRequest.setAnonymous(cb_anonymous.isChecked());
-        Call<BaseResponse> call = apiService.postPersonalHelp(personalHelpRequest);
-        call.enqueue(new Callback<BaseResponse>() {
+        Call<Void> call = apiService.postPersonalHelp(personalHelpRequest);
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
 
                 Log.d(TAG, "onResponse: ");
                 Toast.makeText(getApplicationContext(),"Successfully Updated",Toast.LENGTH_LONG).show();
@@ -122,8 +122,8 @@ public class PersonalHelpActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"Issue Reported",Toast.LENGTH_LONG).show();
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),"Not Updated",Toast.LENGTH_LONG).show();
                 finish();
                 Log.d(TAG, "onFailure: "+call.request());
                 t.printStackTrace();

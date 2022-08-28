@@ -316,7 +316,7 @@ public interface ApiInterface {
 
     //deskFeedback
     @POST("api/wellness/deskFeedback")
-    Call<BaseResponse> postFeedback(@Body ReportIssueRequest reportIssueRequest);
+    Call<Void> postFeedback(@Body ReportIssueRequest reportIssueRequest);
     //New...
     //https://dev-api.hotdeskplus.com/api/locations/activeLocations
     @GET("api/locations/activeLocations")
@@ -346,7 +346,7 @@ public interface ApiInterface {
     Call<DeskResponseNew> getDesk(@Url String url);
 
     @POST("api/wellness/personalHelpRequest")
-    Call<BaseResponse> postPersonalHelp(@Body PersonalHelpRequest personalHelpRequest);
+    Call<Void> postPersonalHelp(@Body PersonalHelpRequest personalHelpRequest);
 
     @POST("api/wellness/completeAndSign")
     Call<BaseResponse> completeAndSign(@Body QuestionListRequest questionListRequest);

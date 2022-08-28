@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -77,6 +78,7 @@ public class AdapterUserNotify extends RecyclerView.Adapter<AdapterUserNotify.vi
             holder.txt_count.setText("+" + String.valueOf(count) + " more");
             holder.date_time_lay.setVisibility(View.GONE);
             holder.pending_count_lay.setVisibility(View.VISIBLE);
+            holder.txt_status.setVisibility(View.GONE);
 
             if (position<1){
                 holder.cardBookingNotify.setVisibility(View.VISIBLE);
@@ -96,15 +98,18 @@ public class AdapterUserNotify extends RecyclerView.Adapter<AdapterUserNotify.vi
                 holder.txt_status.setTextColor(context.getResources().getColor(R.color.figmaLiteGreen, context.getTheme()));
                 break;
             case 1:
+                holder.txt_status.setText("Approved");
+                holder.txt_status.setTextColor(context.getResources().getColor(R.color.figmaLiteGreen, context.getTheme()));
                 break;
             case 2:
+                holder.txt_status.setText("Rejected");
+                holder.txt_status.setTextColor(context.getResources().getColor(R.color.figma_red, context.getTheme()));
                 break;
             case 3:
+                holder.txt_status.setText("Expired");
+                holder.txt_status.setTextColor(context.getResources().getColor(R.color.line_gray, context.getTheme()));
                 break;
-            case 4:
-                break;
-            case 5:
-                break;
+
         }
 
         //holder.req_lay
@@ -119,8 +124,8 @@ public class AdapterUserNotify extends RecyclerView.Adapter<AdapterUserNotify.vi
 
                 cIncoming = Collections.frequency(notiList, result); //incoming.size();
 
-                Intent intent = new Intent(context, UserNotifyReqActivity.class);
-                intent.putExtra(AppConstants.SHOWNOTIFICATION,notyManageList);
+                Intent intent = new Intent(context, NotificationsListActivity.class);
+                intent.putExtra(AppConstants.SHOWNOTIFICATION,notiList);
                 intent.putExtra(AppConstants.INCOMING,cIncoming);
                 context.startActivity(intent);
             }
@@ -129,7 +134,7 @@ public class AdapterUserNotify extends RecyclerView.Adapter<AdapterUserNotify.vi
         switch (notiList.get(position).getEntityType()){
             case 3:
                 holder.imgEntity.setImageDrawable(context.getDrawable(R.drawable.chair));
-                holder.tvDesk.setText(notiList.get(position).getDeskCode());
+                holder.tvDesk.setText(notiList.get(position).getDeskTeam());
                 holder.tvAddress.setText(notiList.get(position).getDeskTeam());
                 break;
             case 4:
@@ -156,7 +161,7 @@ public class AdapterUserNotify extends RecyclerView.Adapter<AdapterUserNotify.vi
         TextView txt_date,CheckInTime,CheckOutTime,tvUserName,tvUserTeam,txt_count,tvDesk,tvAddress,txt_status;
         CardView cardBookingNotify,cardCovidNotify;
         RelativeLayout pending_count_lay,date_time_lay,req_lay,rel_status;
-        CircleImageView imgEntity;
+        ImageView imgEntity;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);

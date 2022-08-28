@@ -35,6 +35,7 @@ import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.ui.notify.NotificationCenterActivity;
 import dream.guys.hotdeskandroid.ui.notify.NotificationManageActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
 import retrofit2.Call;
@@ -68,6 +69,13 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
         uiInit();
         context = NotificationsListActivity.this;
 
+        if (SessionHandler.getInstance().get(context,AppConstants.ROLE)!=null &&
+                SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase("Administrator")){
+            tv_manage.setVisibility(View.VISIBLE);
+        }else {
+            tv_manage.setVisibility(View.GONE);
+        }
+
         tv_manage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,9 +85,12 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
                 manageList = (ArrayList<IncomingRequestResponse.Result>) notiList.stream().filter(val -> val.getStatus() == 0).collect(Collectors.toList());
                 IncomingRequestResponse.Result result = new IncomingRequestResponse.Result(0);
 
-                int c = Collections.frequency(manageList, result);
+                ArrayList<IncomingRequestResponse.Result> inComingList = new ArrayList<>();
+                inComingList = (ArrayList<IncomingRequestResponse.Result>) manageList.stream().filter(val -> val.getIncoming().equalsIgnoreCase("incoming")).collect(Collectors.toList());
+
+                int c = Collections.frequency(inComingList, result);
                 Intent intent = new Intent(NotificationsListActivity.this, NotificationManageActivity.class);
-                intent.putExtra(AppConstants.SHOWNOTIFICATION,manageList);
+                intent.putExtra(AppConstants.SHOWNOTIFICATION,inComingList);
                 intent.putExtra(AppConstants.INCOMING,c);
                 startActivity(intent);
 
@@ -116,7 +127,11 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
 
             notiList = (ArrayList<IncomingRequestResponse.Result>) intent.getSerializableExtra(AppConstants.SHOWNOTIFICATION);
             IncomingList = (ArrayList<IncomingRequestResponse.Result>) intent.getSerializableExtra("IncomingList");
-            OutGoingList = (ArrayList<IncomingRequestResponse.Result>) intent.getSerializableExtra("OutGoingList");
+
+            if (intent.getSerializableExtra("OutGoingList")!=null){
+                OutGoingList = (ArrayList<IncomingRequestResponse.Result>) intent.getSerializableExtra("OutGoingList");
+
+            }
 
             cIncoming = intent.getIntExtra(AppConstants.INCOMING,0);
             cOutGoing = intent.getIntExtra(AppConstants.OUTGOING,0);
@@ -150,7 +165,7 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
                     public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                         if (response.body()!=null) {
                             if (response.code() == 200){
-                                Log.d("ACCEPT","Success");
+                                Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
                             }else if(response.code() == 400){
                                 Log.d("ACCEPT","Logout");
                             }else {
@@ -229,7 +244,7 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                 if (response.body()!=null) {
                     if (response.code() == 200){
-                        Log.d("REJECT","Success");
+                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
                     }else if(response.code() == 400){
                         Log.d("REJECT","Logout");
                     }else {

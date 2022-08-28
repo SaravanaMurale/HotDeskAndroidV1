@@ -32,6 +32,9 @@
             android:name=".ui.notify.UserNotifyReqActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.teams.TeamsUserActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.notify.UserNotificationActivity"
             android:exported="false" />
         <activity

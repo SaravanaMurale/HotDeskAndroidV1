@@ -95,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="3"
-            android:layout_marginTop="@dimen/_30sdp">
+            android:layout_marginTop="@dimen/_15sdp">
 
 
             <androidx.cardview.widget.CardView

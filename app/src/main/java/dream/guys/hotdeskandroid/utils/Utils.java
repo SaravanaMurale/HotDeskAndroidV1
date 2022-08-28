@@ -1373,4 +1373,65 @@ public class Utils {
         return date;
     }
 
+    public static void bottomSheetDatePickerWorkSpaceSurveyAsement(Context mContext, Activity activity, String title, String date,TextView showLocateCheckInDate){
+
+        BottomSheetDialog bottomSheetDatePicker = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
+        bottomSheetDatePicker.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_date_picker,
+                new RelativeLayout(activity)));
+
+        TextView calContinue = bottomSheetDatePicker.findViewById(R.id.calenderContinue);
+        TextView calBack = bottomSheetDatePicker.findViewById(R.id.calenderBack);
+        CalendarView calendarView=bottomSheetDatePicker.findViewById(R.id.datePicker);
+
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+
+                String yearInString=String.valueOf(year);
+
+                int actualMonth=month+1;
+                String monthInStringFormat;
+
+                if(actualMonth>=10){
+                    monthInStringFormat=String.valueOf(actualMonth);
+                }else {
+                    String monthInString=String.valueOf(actualMonth);
+                    monthInStringFormat="0"+monthInString;
+                }
+
+                String dayInString=String.valueOf(dayOfMonth);
+                String dateInString= yearInString+"-"+monthInStringFormat+"-"+dayInString;
+                System.out.println("PickedDate"+dateInString);
+                //locateCheckInDate.setText(dateInString+"T"+getCurrentTimeIn24HourFormat()+".000"+"Z");
+                //locateCheckInDate.setText(dateInString+"T"+"00:00:00.000"+"Z");
+//                locateCheckInDate.setText(""+dateInString);
+
+                showLocateCheckInDate.setText(""+dateInString);
+
+
+            }
+        });
+
+        calContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                System.out.println("ContinuPrintHere"+showLocateCheckInDate.getText());
+                //Utils.dayDateMonthFormat();
+
+                bottomSheetDatePicker.dismiss();
+            }
+        });
+
+        calBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDatePicker.dismiss();
+            }
+        });
+
+
+        bottomSheetDatePicker.show();
+
+    }
 }

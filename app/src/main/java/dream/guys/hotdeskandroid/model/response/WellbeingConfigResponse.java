@@ -20,7 +20,8 @@ public class WellbeingConfigResponse implements Serializable
 
     private List<Persons> persons;
 
-    private List<Emails> emails;
+    private List<String> emails;
+
 
     public int getType()
     {
@@ -82,12 +83,12 @@ public class WellbeingConfigResponse implements Serializable
         this.persons = persons;
     }
 
-    public List<Emails> getEmails()
+    public List<String> getEmails()
     {
         return emails;
     }
 
-    public void setEmails(List<Emails> emails)
+    public void setEmails(List<String> emails)
     {
         this.emails = emails;
     }

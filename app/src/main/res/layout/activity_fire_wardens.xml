@@ -149,7 +149,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/evacuationBlock"
-        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginLeft="@dimen/_20sdp"
         android:orientation="vertical"
 
@@ -159,13 +159,15 @@
             android:id="@+id/headFire"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="First Aid"
+            android:text="Fire Warden"
+            android:theme="@style/TextBold"
             />
         <TextView
             android:id="@+id/titleFire"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/today"
+            android:theme="@style/TextRegular"
             />
 
         <TextView
@@ -173,6 +175,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Wed,6 June"
+            android:theme="@style/TextRegular"
             />
 
     </LinearLayout>

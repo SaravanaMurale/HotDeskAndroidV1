@@ -118,6 +118,30 @@ public class CalendarView extends LinearLayout
         btnPrev.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+                Date now =Calendar.getInstance().getTime();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+
+                if (eventHandler != null){
+                    if(!sdf.format(currentDate.getTime()).equalsIgnoreCase(sdf.format(now))){
+//                        Log.d(TAG, "onClick: "+sdf.format(currentDate.getTime())+"===="+sdf.format(now));
+                        currentDate.add(Calendar.MONTH, -1);
+                        eventHandler.onPrevClicked(""+sdf.format(currentDate.getTime()));
+                    } else {
+                        Toast.makeText(getContext(),"Cannot select previous month",Toast.LENGTH_LONG).show();
+                        currentDate.add(Calendar.MONTH, 0);
+                        eventHandler.onPrevClicked(Calendar.MONTH+sdf.format(currentDate.getTime()));
+                    }
+
+                }
+
+            }
+        });/*
+        btnPrev.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 currentDate.add(Calendar.MONTH, -1);
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -125,7 +149,7 @@ public class CalendarView extends LinearLayout
                     eventHandler.onPrevClicked(""+sdf.format(currentDate.getTime()));
             }
         });
-
+*/
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view,
