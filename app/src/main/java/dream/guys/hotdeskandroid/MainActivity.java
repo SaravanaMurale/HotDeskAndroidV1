@@ -107,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
     String calSelectedMont="";
     List<ParkingSpotModel> parkingSpotModelList=new ArrayList<>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,9 +118,7 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
 
         uiInit();
         nightModeConfig();
-//        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-//        imm.hideSoftInputFromWindow(binding.serachBar.getWindowToken(), 0);
-//        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         binding.searchRecycler.setLayoutManager(linearLayoutManager);
         binding.searchRecycler.setHasFixedSize(true);
@@ -158,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
                 binding.searchLayout.setVisibility(View.GONE);
             }
         });
-
 
       gestureDetector = new GestureDetector(this, new GestureListener());
 
@@ -208,77 +204,8 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
 //            navController.navigate(R.id.navigation_book);
             String data1= appLinkData.getQueryParameter("typekey"); // you will get the value "value1" from application 1
 
-            AppConstants.FIRSTREFERAL = true;
+            navView.setSelectedItemId(R.id.navigation_book);
 
-            if (data1.equalsIgnoreCase("desk")){
-                selectedicon=0;
-
-                String deskCode = appLinkData.getQueryParameter("deskCode");
-                String deskId = appLinkData.getQueryParameter("deskId");
-                EditBookingDetails editBookingDetails= new EditBookingDetails();
-
-                editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
-                System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
-                editBookingDetails.setEditEndTime(Utils.addingHoursToCurrentDate(2));
-
-
-                calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
-//                editBookingDetails.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
-                        editBookingDetails.setDate(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
-                        editBookingDetails.setCalId(0);
-                        editBookingDetails.setDeskCode(deskCode);
-                        editBookingDetails.setDesktId(Integer.parseInt(deskId));
-                        editBookingDetails.setDeskStatus(0);
-
-                editBookingUsingBottomSheet(editBookingDetails,1,0,"new");
-            } else if (data1.equalsIgnoreCase("room")){
-                selectedicon=1;
-                String roomId = appLinkData.getQueryParameter("meetingRoomId");
-                String roomName = appLinkData.getQueryParameter("meetingRoomName");
-                EditBookingDetails editBookingDetails= new EditBookingDetails();
-
-                editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
-                System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
-                editBookingDetails.setEditEndTime(Utils.addingHoursToCurrentDate(2));
-
-                calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
-
-                editBookingDetails.setDate(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
-                editBookingDetails.setCalId(0);
-                editBookingDetails.setMeetingRoomtId(Integer.parseInt(roomId));
-                editBookingDetails.setRoomName(roomName);
-
-                getRoomlist(editBookingDetails);
-
-            } else {
-                selectedicon=2;
-                String parkingId = appLinkData.getQueryParameter("parkingId");
-                String parkingName = appLinkData.getQueryParameter("parkingName");
-                EditBookingDetails editBookingDetails= new EditBookingDetails();
-
-                editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
-                System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
-                editBookingDetails.setEditEndTime(Utils.addingHoursToCurrentDate(2));
-
-                calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
-//
-//                editBookingDetails.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
-                editBookingDetails.setDate(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
-                editBookingDetails.setCalId(0);
-                editBookingDetails.setParkingSlotId(Integer.parseInt(parkingId));
-                editBookingDetails.setParkingSlotCode(parkingName);
-
-                getParkingSpotList(""+SessionHandler.getInstance().getInt(this,AppConstants.DEFAULT_CAR_PARK_LOCATION_ID),editBookingDetails,"new");
-
-            }
-//
-//            List<String> params = appLinkData.getPathSegments();
-//
-//            AppConstants.REFERALID = params.get(params.size() - 1);
-//            AppConstants.REFERALCODEE = params.get(params.size() - 2);
-//
-//            System.out.println("Referal id =" + AppConstants.REFERALID + " Referall Code = " + AppConstants.REFERALCODEE);
-//            Toast.makeText(this, "Referal id =" + AppConstants.REFERALID + " Referall Code = " + AppConstants.REFERALCODEE, Toast.LENGTH_LONG).show();
         }
 
     }
@@ -458,6 +385,18 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
                 if (selectedicon==1 && newEditStatus.equalsIgnoreCase("new")) {
                     callMeetingRoomBookingBottomSheet(editDeskBookingDetails, startTime, endTime, selectedDeskId, deskRoomName.getText().toString(), false);
                 }
+                if (selectedicon==1) {
+                    if (newEditStatus.equalsIgnoreCase("request"))
+                        callMeetingRoomBookingBottomSheet(editDeskBookingDetails,
+                                startTime,
+                                endTime,
+                                selectedDeskId, deskRoomName.getText().toString(), true);
+                    else
+                        callMeetingRoomBookingBottomSheet(editDeskBookingDetails,
+                                startTime,
+                                endTime,
+                                selectedDeskId, deskRoomName.getText().toString(), false);
+                }
                 else {
                     JsonObject jsonOuterObject = new JsonObject();
                     JsonObject jsonInnerObject = new JsonObject();
@@ -474,7 +413,14 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
                                     !commentRegistration.getText().toString().equalsIgnoreCase(""))
                                 jsonChangesObject.addProperty("comments",commentRegistration.getText().toString());
 
-                            jsonChangesObject.addProperty("teamDeskId",editDeskBookingDetails.getDesktId());
+//                            jsonChangesObject.addProperty("teamDeskId",editDeskBookingDetails.getDesktId());
+                            if (newEditStatus.equalsIgnoreCase("request")){
+                                jsonChangesObject.addProperty("requestedTeamDeskId",editDeskBookingDetails.getDesktId());
+                                jsonChangesObject.addProperty("requestedTeamId",editDeskBookingDetails.getDeskTeamId());
+                                jsonChangesObject.addProperty("usageTypeId", "7");
+                                jsonChangesObject.addProperty("typeOfCheckIn", "7");
+                            }else
+                                jsonChangesObject.addProperty("teamDeskId",editDeskBookingDetails.getDesktId());
 
 
                             break;
@@ -530,7 +476,6 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
                     selectedDeskId=0;
                     roomBottomSheet.dismiss();
                 }
-
             }
         });
         select.setOnClickListener(new View.OnClickListener() {

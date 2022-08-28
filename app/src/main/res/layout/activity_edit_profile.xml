@@ -44,11 +44,11 @@
             android:layout_weight="1"
             />
         <ImageView
+            android:id="@+id/profile_update"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
             android:layout_marginHorizontal="@dimen/_15sdp"
             android:src="@drawable/tick"
-            android:id="@+id/profile_update"
             android:visibility="gone"/>
 
         <ImageView
@@ -114,15 +114,15 @@
 
                     <TextView
                         android:id="@+id/tvImageSize"
+                        style="@style/TextRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Use image at lease 250 px by 250px"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/ivEditPrifle"
                         android:layout_below="@+id/tvUpdateImage"
+                        android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_5sdp"
-                        style="@style/TextRegular"
-                        android:textColor="@color/figmaBlack"/>
+                        android:layout_toRightOf="@+id/ivEditPrifle"
+                        android:text="Use image at least 250 px by 250px"
+                        android:textColor="@color/figmaBlack" />
 
                     <TextView
                         android:id="@+id/removeProfilePic"

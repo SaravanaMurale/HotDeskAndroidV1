@@ -939,9 +939,8 @@ public class Utils {
         String newTime = df.format(cal.getTime());
 
         return  newTime;
-
-
     }
+
     public static String addingHoursToCurrentDateWithTZ(int currentTimeZoneOffset){
         //Should add seconds
 
@@ -978,8 +977,6 @@ public class Utils {
         String newTime = df.format(cal.getTime());
 
         return  newTime;
-
-
     }
 
 

@@ -75,10 +75,10 @@
             </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/viewProfileBlock"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/_10sdp"
-                    android:id="@+id/viewProfileBlock"
                     android:background="@drawable/setting_item_bg">
 
                     <de.hdodenhof.circleimageview.CircleImageView

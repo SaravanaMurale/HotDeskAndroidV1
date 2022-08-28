@@ -181,7 +181,7 @@
         <Button
             android:id="@+id/btnSubmit"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_28sdp"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:background="@drawable/button_blue_bg"
             android:text="@string/set"

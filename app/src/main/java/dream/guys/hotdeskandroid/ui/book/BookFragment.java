@@ -3,7 +3,9 @@ package dream.guys.hotdeskandroid.ui.book;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -147,6 +149,7 @@ public class BookFragment extends Fragment implements
     LinearLayoutManager desklinearLayoutManager;
     List<BookingListResponse> bookingListResponseList;
     List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponseDesk=new ArrayList<>();
+    List<BookingForEditResponse.TeamDeskAvailabilities> bookingDeskList=new ArrayList<>();
     List<ParkingSpotModel> parkingSpotModelList=new ArrayList<>();
     List<UserAllowedMeetingResponse> userAllowedMeetingResponseList=new ArrayList<>();
 
@@ -162,8 +165,10 @@ public class BookFragment extends Fragment implements
     List<ParticipantDetsilResponse> chipList = new ArrayList<>();
     List<AmenitiesResponse> amenitiesList = new ArrayList<>();
     ParticipantDetsilResponse participantDetsilResponse;
+    Uri appLinkData;
 
-
+    Context context;
+    Activity activityContext;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,23 +182,25 @@ public class BookFragment extends Fragment implements
 
         dialog= new Dialog(getActivity());
         tabToggleViewClicked(selectedicon);
-
         binding.calendarView.setEventHandler(new CalendarView.EventHandler() {
             @Override
             public void onDayLongPress(Date date, int pos) {
                 Toast.makeText(getActivity(), ""+Utils.getISO8601format(date), Toast.LENGTH_SHORT).show();
-                if (selectedicon==0){
-                    getAddEditDesk("3",Utils.getISO8601format(date));
-                    calSelectedDate=Utils.getISO8601format(date);
-                } else if (selectedicon==1) {
-                    getMeetingBookingListToEdit("" + Utils.getYearMonthDateFormat(date)+"T00:00:00.000Z");
-                    calSelectedDate=Utils.getISO8601format(date);
-                } else if(selectedicon==2){
-                    getCarParListToEdit(""+Utils.getISO8601format(date),""+Utils.getISO8601format(date));
-                    calSelectedDate=Utils.getISO8601format(date);
-                }else {
+                if (!(Utils.compareTwoDate(date,Utils.getCurrentDate()) == 1)){
+                    if (selectedicon==0){
+                        getAddEditDesk("3",Utils.getISO8601format(date));
+                        calSelectedDate=Utils.getISO8601format(date);
+                    } else if (selectedicon==1) {
+                        getMeetingBookingListToEdit("" + Utils.getYearMonthDateFormat(date)+"T00:00:00.000Z", "new");
+                        calSelectedDate=Utils.getISO8601format(date);
+                    } else if(selectedicon==2){
+                        getCarParListToEdit(""+Utils.getISO8601format(date),""+Utils.getISO8601format(date));
+                        calSelectedDate=Utils.getISO8601format(date);
+                    }else {
 
+                    }
                 }
+
             }
 
             @Override
@@ -237,31 +244,60 @@ public class BookFragment extends Fragment implements
 
         return root;
     }
+
     private void deepLinking() {
         // ATTENTION: This was auto-generated to handle app links.
         Intent appLinkIntent = getActivity().getIntent();
         String appLinkAction = appLinkIntent.getAction();
-        Uri appLinkData = appLinkIntent.getData();
+        appLinkData = appLinkIntent.getData();
 
         if(appLinkData != null) {
             //NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment_activity_main);
 //            navController.navigate(R.id.navigation_book);
             String data1= appLinkData.getQueryParameter("typekey"); // you will get the value "value1" from application 1
 
-            Toast.makeText(getActivity(), "deep data", Toast.LENGTH_SHORT).show();
             AppConstants.FIRSTREFERAL = true;
 
             if (data1.equalsIgnoreCase("desk")){
+                boolean checkIsRequest = false;
                 selectedicon=0;
 
                 String deskCode = appLinkData.getQueryParameter("deskCode");
                 String deskId = appLinkData.getQueryParameter("deskId");
+                String requestedTeamId = appLinkData.getQueryParameter("teamId");
+
                 EditBookingDetails editBookingDetails= new EditBookingDetails();
+                lop :
+                for (int i=0; i<bookingDeskList.size();i++){
+                    if (Integer.parseInt(deskId)
+                            == bookingDeskList.get(i).getTeamDeskId()){
+                        Toast.makeText(getActivity(), ""+bookingForEditResponse.getBookings().size(), Toast.LENGTH_SHORT).show();
+                        if (bookingForEditResponse.getBookings().size() > 0){
+                            editBookingDetails.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
+                                    .getMyto()));
+                            editBookingDetails.setEditEndTime(Utils.addingHoursToDate(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
+                                    .getMyto(),2));
+                        }else {
+                            editBookingDetails.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursFrom()));
+                            editBookingDetails.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
+                        }
+                        break lop;
 
-                editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
-                System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
-                editBookingDetails.setEditEndTime(Utils.addingHoursToCurrentDate(2));
+                    } else {
 
+                        System.out.println("date con"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+"Z");
+                        editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
+                        editBookingDetails.setEditEndTime(Utils.addingHoursToDate(Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z",2));
+
+                    }
+                }
+/*
+                if (bookingForEditResponseDesk.size()==0){
+                    editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
+                    System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
+                    editBookingDetails.setEditEndTime(Utils.addingHoursToCurrentDate(2));
+
+                }*/
 
                 calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
 //                editBookingDetails.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
@@ -269,11 +305,28 @@ public class BookFragment extends Fragment implements
                 editBookingDetails.setCalId(0);
                 editBookingDetails.setDeskCode(deskCode);
                 editBookingDetails.setDesktId(Integer.parseInt(deskId));
+                editBookingDetails.setDeskTeamId(Integer.parseInt(requestedTeamId));
                 editBookingDetails.setDeskStatus(0);
 
-                editBookingUsingBottomSheet(editBookingDetails,1,0,"new");
+                if (bookingDeskList!=null && bookingDeskList.size()>0){
+                    loo :
+                    for (int i=0;i<bookingDeskList.size();i++){
+                        if (deskId.equalsIgnoreCase(""+bookingDeskList.get(i).getTeamDeskId())){
+                            checkIsRequest=true;
+                            break loo;
+                        }
+                    }
+                }
+                System.out.println("cajec vava"+bookingDeskList.size() +"  "+checkIsRequest);
+                if (checkIsRequest)
+                    editBookingUsingBottomSheet(editBookingDetails,1,0,"new_deep_link");
+                else
+                    editBookingUsingBottomSheet(editBookingDetails,1,0,"request");
+
             } else if (data1.equalsIgnoreCase("room")){
                 selectedicon=1;
+                tabToggleViewClicked(selectedicon);
+
                 String roomId = appLinkData.getQueryParameter("meetingRoomId");
                 String roomName = appLinkData.getQueryParameter("meetingRoomName");
                 EditBookingDetails editBookingDetails= new EditBookingDetails();
@@ -288,8 +341,8 @@ public class BookFragment extends Fragment implements
                 editBookingDetails.setCalId(0);
                 editBookingDetails.setMeetingRoomtId(Integer.parseInt(roomId));
                 editBookingDetails.setRoomName(roomName);
-
-                getRoomlist(editBookingDetails);
+                getMeetingBookingListToEdit("" + Utils.getCurrentDate()+"T00:00:00.000Z", "new_deep_link");
+//                getRoomlist(editBookingDetails, "new_deep_link");
 
             } else {
                 selectedicon=2;
@@ -309,7 +362,7 @@ public class BookFragment extends Fragment implements
                 editBookingDetails.setParkingSlotId(Integer.parseInt(parkingId));
                 editBookingDetails.setParkingSlotCode(parkingName);
 
-                getParkingSpotList(""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID),editBookingDetails,"new");
+                getParkingSpotList(""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID),editBookingDetails,"new_deep_link");
 
             }
 //
@@ -329,6 +382,10 @@ public class BookFragment extends Fragment implements
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view=view;
+        this.context = getContext();
+        this.activityContext=getActivity();
+        getAddEditDesk("-1",Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate())));
+
     }
 
     @SuppressLint("ResourceAsColor")
@@ -472,9 +529,9 @@ public class BookFragment extends Fragment implements
     }
 
     //Meeting room booking edit list
-    private void getMeetingBookingListToEdit(String date) {
+    private void getMeetingBookingListToEdit(String date, String newEditStatus) {
         if (Utils.isNetworkAvailable(getActivity())) {
-            dialog= ProgressDialog.showProgressBar(getContext());
+            dialog= ProgressDialog.showProgressBar(context);
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<List<MeetingListToEditResponse>> call=apiService.getMeetingListToEdit(date,date);
@@ -483,18 +540,42 @@ public class BookFragment extends Fragment implements
                 public void onResponse(Call<List<MeetingListToEditResponse>> call, Response<List<MeetingListToEditResponse>> response) {
 
                     List<MeetingListToEditResponse> meetingListToEditResponseList  =response.body();
-
-                    dialog.dismiss();
+                    ProgressDialog.dismisProgressBar(context,dialog);
+//                    dialog.dismiss();
 //                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    if (newEditStatus.equalsIgnoreCase("new_deep_link")){
+                        String roomId = appLinkData.getQueryParameter("meetingRoomId");
+                        String roomName = appLinkData.getQueryParameter("meetingRoomName");
 
-                    callMeetingRoomEditListAdapterBottomSheet(meetingListToEditResponseList);
+                        EditBookingDetails editBookingDetails= new EditBookingDetails();
+                        if (meetingListToEditResponseList.size() > 0){
+                            editBookingDetails.setEditStartTTime(Utils.splitTime(meetingListToEditResponseList.get(meetingListToEditResponseList.size()-1).getTo()));
+                            editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(meetingListToEditResponseList.get(meetingListToEditResponseList.size()-1).getTo(),
+                                    12000)));
+                        } else {
+                            editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
+                            System.out.println("tim else" +" "+Utils.getCurrentDate()+"T"
+                                    +Utils.getCurrentTime()+"Z");
+                            editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(Utils.getCurrentDate()+"T"
+                                    +Utils.getCurrentTime()+":00Z",12000)));
 
+                        }
+                        editBookingDetails.setDate(Utils.convertStringToDateFormet(calSelectedDate));
+                        editBookingDetails.setCalId(0);
+                        editBookingDetails.setMeetingRoomtId(Integer.parseInt(roomId));
+                        editBookingDetails.setRoomName(roomName);
+
+                        getRoomlist(editBookingDetails,"new_deep_link");
+
+                    } else {
+                        callMeetingRoomEditListAdapterBottomSheet(meetingListToEditResponseList,"new");
+                    }
 
                 }
 
                 @Override
                 public void onFailure(Call<List<MeetingListToEditResponse>> call, Throwable t) {
-                    dialog.dismiss();
+                    ProgressDialog.dismisProgressBar(context,dialog);
 //                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
                 }
@@ -581,9 +662,25 @@ public class BookFragment extends Fragment implements
                     parkingSpotModelList=response.body();
 
                      ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    boolean checkIsRequest=false;
+                    if (parkingSpotModelList!=null && parkingSpotModelList.size()>0){
+                        loo :
+                        for (int i=0;i<parkingSpotModelList.size();i++){
+                            if (editBookingDetails.getParkingSlotId()==parkingSpotModelList.get(i).getId()){
+                                checkIsRequest=true;
+                                break loo;
+                            }
+                        }
+                    }
+
                     if (newEdit.equalsIgnoreCase("new"))
                         editBookingUsingBottomSheet(editBookingDetails,3,0,"new");
-                    else
+                    else if (newEdit.equalsIgnoreCase("new_deep_link")){
+                        if (checkIsRequest)
+                            editBookingUsingBottomSheet(editBookingDetails,3,0,"new_deep_link");
+                        else
+                            editBookingUsingBottomSheet(editBookingDetails,3,0,"request");
+                    }else
                         editBookingUsingBottomSheet(editBookingDetails,3,0,"edit");
 
 //                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
@@ -603,9 +700,9 @@ public class BookFragment extends Fragment implements
         }
 
     }
-    private void getRoomlist(EditBookingDetails editBookingDetails) {
+    private void getRoomlist(EditBookingDetails editBookingDetails, String newEditStatus) {
         if (Utils.isNetworkAvailable(getActivity())) {
-            dialog= ProgressDialog.showProgressBar(getContext());
+//            dialog= ProgressDialog.showProgressBar(getContext());
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<List<UserAllowedMeetingResponse>> call = apiService.userAllowedMeetings();
@@ -613,18 +710,37 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onResponse(Call<List<UserAllowedMeetingResponse>> call, Response<List<UserAllowedMeetingResponse>> response) {
                     userAllowedMeetingResponseList=response.body();
+//                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    boolean checkIsRequest=false;
+                    if (userAllowedMeetingResponseList!=null && userAllowedMeetingResponseList.size()>0){
+                        loo :
+                        for (int i=0;i<userAllowedMeetingResponseList.size();i++){
+                            if (editBookingDetails.getMeetingRoomtId()==userAllowedMeetingResponseList.get(i).getId()){
+                                checkIsRequest=true;
+                                break loo;
+                            }
+                        }
+                    }
+                    if (newEditStatus.equalsIgnoreCase("new_deep_link")){
+                        if (checkIsRequest)
+                            editBookingUsingBottomSheet(editBookingDetails,2,0,"new_deep_link");
+                        else
+                            editBookingUsingBottomSheet(editBookingDetails,2,0,"request");
+                    }else {
+                        editBookingUsingBottomSheet(editBookingDetails,2,0,"new");
+                    }
 
-                     ProgressDialog.dismisProgressBar(getContext(),dialog);
+//                    editBookingUsingBottomSheet(editBookingDetails,2,0,"new");
+//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
-                    editBookingUsingBottomSheet(editBookingDetails,2,0,"new");
 //                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
                 }
 
                 @Override
                 public void onFailure(Call<List<UserAllowedMeetingResponse>> call, Throwable t) {
-                    ProgressDialog.dismisProgressBar(getContext(),dialog);
-                    editBookingUsingBottomSheet(editBookingDetails,3,0,"new");
+//                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    editBookingUsingBottomSheet(editBookingDetails,2,0,"new");
 //                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 }
             });
@@ -698,7 +814,7 @@ public class BookFragment extends Fragment implements
     }
 
 
-    private void callMeetingRoomEditListAdapterBottomSheet(List<MeetingListToEditResponse> meetingListToEditResponseList) {
+    private void callMeetingRoomEditListAdapterBottomSheet(List<MeetingListToEditResponse> meetingListToEditResponseList, String newEditStatus) {
         RecyclerView rvMeeingEditList;
         TextView editClose,editDate,addNew;
         LinearLayoutManager linearLayoutManager;
@@ -742,7 +858,7 @@ public class BookFragment extends Fragment implements
 
                 }
                 editBookingDetails.setDate(Utils.convertStringToDateFormet(calSelectedDate));
-                getRoomlist(editBookingDetails);
+                getRoomlist(editBookingDetails,"new");
 
             }
         });
@@ -861,7 +977,6 @@ public class BookFragment extends Fragment implements
 
     private void getAddEditDesk(String code,String date) {
         if (Utils.isNetworkAvailable(getActivity())) {
-            dialog= ProgressDialog.showProgressBar(getContext());
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
@@ -874,18 +989,21 @@ public class BookFragment extends Fragment implements
             call.enqueue(new Callback<BookingForEditResponse>() {
                 @Override
                 public void onResponse(Call<BookingForEditResponse> call, Response<BookingForEditResponse> response) {
-
+                    bookingDeskList.clear();
                     bookingForEditResponse = response.body();
-
-                    ProgressDialog.dismisProgressBar(getContext(),dialog);
-
-                    callBottomSheetToEdit(bookingForEditResponse, code);
+                    bookingDeskList = response.body().getTeamDeskAvailabilities();
+//                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    if (code.equalsIgnoreCase("3"))
+                        callBottomSheetToEdit(bookingForEditResponse, code);
+                    else
+                        deepLinking();
 
                 }
 
                 @Override
                 public void onFailure(Call<BookingForEditResponse> call, Throwable t) {
-                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    deepLinking();
+
                 }
             });
 
@@ -935,7 +1053,8 @@ public class BookFragment extends Fragment implements
             public void onClick(View v) {
                 EditBookingDetails editBookingDetails= new EditBookingDetails();
                 for (int i=0; i<bookingForEditResponseDesk.size();i++){
-                    if (bookingForEditResponse.getUserPreferences().getTeamDeskId()==bookingForEditResponseDesk.get(i).getTeamDeskId()){
+                    if (bookingForEditResponse.getUserPreferences().getTeamDeskId()
+                            == bookingForEditResponseDesk.get(i).getTeamDeskId()){
                         if (bookingForEditResponse.getBookings().size() > 0){
                             editBookingDetails.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
                                     .getMyto()));
@@ -982,6 +1101,8 @@ public class BookFragment extends Fragment implements
         locationAddress=roomBottomSheet.findViewById(R.id.tv_location_details);
         date=roomBottomSheet.findViewById(R.id.date);
         TextView title=roomBottomSheet.findViewById(R.id.title);
+        TextView checkInDate=roomBottomSheet.findViewById(R.id.checkInDate);
+        TextView showcheckInDate=roomBottomSheet.findViewById(R.id.showCheckInDate);
         TextView back=roomBottomSheet.findViewById(R.id.editBookingBack);
         TextView select=roomBottomSheet.findViewById(R.id.select_desk_room);
         TextView continueEditBook=roomBottomSheet.findViewById(R.id.editBookingContinue);
@@ -990,11 +1111,14 @@ public class BookFragment extends Fragment implements
         RelativeLayout repeatBlock=roomBottomSheet.findViewById(R.id.rl_repeat_block);
         RelativeLayout commentBlock=roomBottomSheet.findViewById(R.id.rl_comment_block);
         RelativeLayout teamsBlock=roomBottomSheet.findViewById(R.id.rl_teams_layout);
+        RelativeLayout dateBlock=roomBottomSheet.findViewById(R.id.bookingDateBlock);
         LinearLayout statusCheckLayout=roomBottomSheet.findViewById(R.id.status_check_layout);
         LinearLayout llDeskLayout=roomBottomSheet.findViewById(R.id.ll_desk_layout);
         LinearLayout capacitylayout=roomBottomSheet.findViewById(R.id.capacity_layout);
 
         ChipGroup chipGroup = roomBottomSheet.findViewById(R.id.list_item);
+        showcheckInDate.setText(Utils.showBottomSheetDate(calSelectedDate));
+        checkInDate.setText("");
 
         if (editDeskBookingDetails.getDeskStatus() == 1){
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
@@ -1014,6 +1138,14 @@ public class BookFragment extends Fragment implements
             statusCheckLayout.setVisibility(View.GONE);
 //            chipGroup.setVisibility(View.GONE);
         }
+        if (newEditStatus.equalsIgnoreCase("new_deep_link")
+                || newEditStatus.equalsIgnoreCase("request")){
+            select.setVisibility(View.GONE);
+            dateBlock.setVisibility(View.VISIBLE);
+        } else {
+            dateBlock.setVisibility(View.GONE);
+            select.setVisibility(View.VISIBLE);
+        }
 
         if (dskRoomParkStatus == 1) {
             repeatBlock.setVisibility(View.VISIBLE);
@@ -1024,9 +1156,11 @@ public class BookFragment extends Fragment implements
             chipGroup.setVisibility(View.GONE);
             commentRegistration.setVisibility(View.GONE);
             tvComments.setVisibility(View.GONE);
+
             deskRoomName.setText(editDeskBookingDetails.getDeskCode());
             selectedDeskId=editDeskBookingDetails.getDesktId();
-            if(newEditStatus.equalsIgnoreCase("new")){
+            if(newEditStatus.equalsIgnoreCase("new") || newEditStatus.equalsIgnoreCase("new_deep_link")
+                    || newEditStatus.equalsIgnoreCase("request")){
                 title.setText("Book Desk");
             }
 
@@ -1038,7 +1172,8 @@ public class BookFragment extends Fragment implements
             teamsBlock.setVisibility(View.GONE);
             chipGroup.setVisibility(View.VISIBLE);
             capacitylayout.setVisibility(View.VISIBLE);
-            if(newEditStatus.equalsIgnoreCase("new")){
+            if(newEditStatus.equalsIgnoreCase("new") || newEditStatus.equalsIgnoreCase("new_deep_link")
+                    || newEditStatus.equalsIgnoreCase("request")){
                 title.setText("Book Meeting Room");
             }
             if (userAllowedMeetingResponseList.size() > 0){
@@ -1057,7 +1192,8 @@ public class BookFragment extends Fragment implements
             commentRegistration.setText(editDeskBookingDetails.getVehicleRegNumber());
             chipGroup.setVisibility(View.GONE);
             capacitylayout.setVisibility(View.GONE);
-            if(newEditStatus.equalsIgnoreCase("new")){
+            if(newEditStatus.equalsIgnoreCase("new") ||newEditStatus.equalsIgnoreCase("new_deep_link")
+                    || newEditStatus.equalsIgnoreCase("request")){
                 title.setText("Book Parking Slot");
             }
 //            System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
@@ -1089,6 +1225,12 @@ public class BookFragment extends Fragment implements
             }
         }
 
+        showcheckInDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.bottomSheetDatePicker(getContext(), getActivity(), "", "", checkInDate,showcheckInDate);
+            }
+        });
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1117,6 +1259,18 @@ public class BookFragment extends Fragment implements
             public void onClick(View v) {
                 if (selectedicon==1 && newEditStatus.equalsIgnoreCase("new"))
                     callMeetingRoomBookingBottomSheet(editDeskBookingDetails, startTime, endTime, selectedDeskId, deskRoomName.getText().toString(), false);
+                else if (selectedicon==1) {
+                    if (newEditStatus.equalsIgnoreCase("request"))
+                        callMeetingRoomBookingBottomSheet(editDeskBookingDetails,
+                                startTime,
+                                endTime,
+                                selectedDeskId, deskRoomName.getText().toString(), true);
+                    else
+                        callMeetingRoomBookingBottomSheet(editDeskBookingDetails,
+                                startTime,
+                                endTime,
+                                selectedDeskId, deskRoomName.getText().toString(), false);
+                }
                 else {
                     JsonObject jsonOuterObject = new JsonObject();
                     JsonObject jsonInnerObject = new JsonObject();
@@ -1124,7 +1278,17 @@ public class BookFragment extends Fragment implements
                     JsonArray jsonChangesetArray = new JsonArray();
                     JsonArray jsonDeletedIdsArray = new JsonArray();
                     jsonInnerObject.addProperty("id",editDeskBookingDetails.getCalId());
-                    jsonInnerObject.addProperty("date",""+Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+"T00:00:00Z");
+                    if (newEditStatus.equalsIgnoreCase("new_deep_link")
+                            || newEditStatus.equalsIgnoreCase("request")){
+                        if (checkInDate.getText().toString().equalsIgnoreCase("")){
+                            jsonInnerObject.addProperty("date",""+Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+"T00:00:00Z");
+                        }else {
+                            jsonInnerObject.addProperty("date",""+checkInDate.getText().toString()+"T00:00:00Z");
+                        }
+                    }else {
+
+                        jsonInnerObject.addProperty("date",""+Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+"T00:00:00Z");
+                    }
                     switch (dskRoomParkStatus){
                         case 1:
                             jsonOuterObject.addProperty("teamId",SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
@@ -1132,10 +1296,19 @@ public class BookFragment extends Fragment implements
                             if (!commentRegistration.getText().toString().isEmpty() &&
                                     !commentRegistration.getText().toString().equalsIgnoreCase(""))
                                 jsonChangesObject.addProperty("comments",commentRegistration.getText().toString());
-                            if (selectedDeskId!=0 && dskRoomParkStatus==1 && selectedDeskId!=editDeskBookingDetails.getDesktId()){
+                            if (selectedDeskId!=0 && dskRoomParkStatus==1 && selectedDeskId != editDeskBookingDetails.getDesktId()){
                                 jsonChangesObject.addProperty("teamDeskId",selectedDeskId);
                             }
 
+                            if (newEditStatus.equalsIgnoreCase("request")){
+                                jsonChangesObject.addProperty("requestedTeamDeskId",editDeskBookingDetails.getDesktId());
+                                jsonChangesObject.addProperty("requestedTeamId",editDeskBookingDetails.getDeskTeamId());
+                                jsonChangesObject.addProperty("usageTypeId", "7");
+//                                jsonChangesObject.addProperty("typeOfCheckIn", "1");
+                            }else{
+                                if (!newEditStatus.equalsIgnoreCase("edit"))
+                                    jsonChangesObject.addProperty("teamDeskId",editDeskBookingDetails.getDesktId());
+                            }
                             break;
                         case 2:
                             jsonOuterObject.addProperty("meetingRoomId",editDeskBookingDetails.getMeetingRoomtId());
@@ -1165,13 +1338,22 @@ public class BookFragment extends Fragment implements
 //                    if (selectedDeskId!=0){
 //                        jsonChangesObject.addProperty("teamDeskId",selectedDeskId);
 //                    }
-                    if (newEditStatus.equalsIgnoreCase("new")){
+                    if (newEditStatus.equalsIgnoreCase("new")
+                            || newEditStatus.equalsIgnoreCase("new_deep_link")){
                         jsonChangesObject.addProperty("usageTypeId", "2");
                         jsonChangesObject.addProperty("timeZoneId", "India Standard Time");
                     }
-                    if (!Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()).equalsIgnoreCase(startTime.getText().toString()) || newEditStatus.equalsIgnoreCase("new")){
+                    if (!Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()).equalsIgnoreCase(startTime.getText().toString())
+                            || newEditStatus.equalsIgnoreCase("new")
+                            || newEditStatus.equalsIgnoreCase("new_deep_link")
+                            || newEditStatus.equalsIgnoreCase("request")
+                    ){
                         jsonChangesObject.addProperty("from", "2000-01-01T"+Utils.convert12HrsTO24Hrs(startTime.getText().toString())+":00.000Z");
-                    }if (!Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditEndTime()).equalsIgnoreCase(endTime.getText().toString()) || newEditStatus.equalsIgnoreCase("new")){
+                    }if (!Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditEndTime()).equalsIgnoreCase(endTime.getText().toString())
+                            || newEditStatus.equalsIgnoreCase("new")
+                            || newEditStatus.equalsIgnoreCase("new_deep_link")
+                            || newEditStatus.equalsIgnoreCase("request")
+                    ){
                         jsonChangesObject.addProperty("to","2000-01-01T"+Utils.convert12HrsTO24Hrs(endTime.getText().toString())+":00.000Z");
                     }
 
@@ -1810,9 +1992,13 @@ public class BookFragment extends Fragment implements
 //                        Utils.showCustomAlertDialog(getActivity(),"Update Success");
 //                        Toast.makeText(getActivity(), "Success Bala", Toast.LENGTH_SHORT).show();
                         if (response.body().getResultCode()!=null && response.body().getResultCode().equalsIgnoreCase("ok")){
-                            if (newEditDelete.equalsIgnoreCase("new"))
+                            if (newEditDelete.equalsIgnoreCase("new")
+                                    || newEditDelete.equalsIgnoreCase("new_deep_link")
+                                    )
                                 openCheckoutDialog("Booking Successful",dskRoomStatus);
                             else if (newEditDelete.equalsIgnoreCase("edit"))
+                                openCheckoutDialog("Booking Updated",dskRoomStatus);
+                            else if (newEditDelete.equalsIgnoreCase("request"))
                                 openCheckoutDialog("Booking Updated",dskRoomStatus);
                             else
                                 openCheckoutDeleteDialog("Booking Deleted",dskRoomStatus);
@@ -1868,12 +2054,13 @@ public class BookFragment extends Fragment implements
         TextView checkDialogClose = popDialog.findViewById(R.id.checkDialogClose);
         TextView dialogMsg = popDialog.findViewById(R.id.dialog_text);
         dialogMsg.setText(""+mesg);
-        if (dskRoomStatus==1)
+        if (dskRoomStatus==1 && bookEditBottomSheet!=null)
             bookEditBottomSheet.dismiss();
-        else if(dskRoomStatus==3)
+        else if(dskRoomStatus==3 && bookEditBottomSheet!=null)
             bookEditBottomSheet.dismiss();
         else{
-            bookEditBottomSheet.dismiss();
+            if (bookEditBottomSheet!=null)
+                bookEditBottomSheet.dismiss();
             roomBottomSheet.dismiss();
         }
 
@@ -1897,13 +2084,15 @@ public class BookFragment extends Fragment implements
 //        ivChecout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figma_red));
         ivChecout.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.figma_red));
         dialogMsg.setText(""+mesg);
-        if (dskRoomStatus==1)
+        if (dskRoomStatus==1 && bookEditBottomSheet!=null)
             bookEditBottomSheet.dismiss();
-        else if(dskRoomStatus==3)
+        else if(dskRoomStatus==3 && bookEditBottomSheet!=null)
             bookEditBottomSheet.dismiss();
         else{
-            bookEditBottomSheet.dismiss();
-            roomBottomSheet.dismiss();
+            if (bookEditBottomSheet!=null)
+                bookEditBottomSheet.dismiss();
+            if (roomBottomSheet!=null)
+                roomBottomSheet.dismiss();
         }
 
         checkDialogClose.setOnClickListener(new View.OnClickListener() {
@@ -1924,7 +2113,7 @@ public class BookFragment extends Fragment implements
         editDeskBookingDetails.setCalId(bookings.getId());
         editDeskBookingDetails.setDeskCode(bookings.getDeskCode());
         editDeskBookingDetails.setDeskStatus(0);
-        editDeskBookingDetails.setDesktId(bookings.getDeskId());
+        editDeskBookingDetails.setDesktId(bookings.getTeamDeskId());
         editBookingUsingBottomSheet(editDeskBookingDetails,1,0,"edit");
 
     }
@@ -1961,7 +2150,7 @@ public class BookFragment extends Fragment implements
     @Override
     public void onSelectDesk(int deskId, String deskName) {
         deskRoomName.setText(""+deskName);
-        selectedDeskId= deskId;
+        selectedDeskId = deskId;
     }
 
     @Override
@@ -2096,7 +2285,7 @@ public class BookFragment extends Fragment implements
                 }
 
                 if (status) {
-//
+                    bottomSheetDialog.dismiss();
                     bottomSheetDialog.dismiss();
                     doMeetingRoomBooking(meetingRoomId, startTime.getText().toString(), endTime.getText().toString(), subject, comment, isRequest);
 

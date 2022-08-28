@@ -151,6 +151,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         if (profileData!=null) {
 
             binding.editName.setText(profileData.getFullName());
+            binding.editDisplayName.setText(profileData.getFullName());
             binding.tvEditTeams.setText(profileData.getCurrentTeam().getCurrentTeamName());
             binding.tvEditPhone.setText(profileData.getPhoneNumber());
             binding.tvEditEmail.setText(profileData.getEmail());
