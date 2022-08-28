@@ -57,6 +57,7 @@ import org.json.JSONObject;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -81,9 +82,11 @@ import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.model.response.LocationWithMR_Response;
 import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
+import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
 import dream.guys.hotdeskandroid.ui.notify.NotificationCenterActivity;
+import dream.guys.hotdeskandroid.ui.notify.UserNotificationActivity;
 import dream.guys.hotdeskandroid.ui.settings.SettingsActivity;
 import dream.guys.hotdeskandroid.ui.wellbeing.NotificationsListActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
@@ -137,6 +140,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
     SwipeRefreshLayout mSwipeRefreshLayout;
     List<AmenitiesResponse> amenitiesList = new ArrayList<>();
+
+    //New...
+    UserDetailsResponse profileData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -229,10 +235,17 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         getAmenities();
         meetingRecurenceCall();
         qrEnabledCall();
-        loadUserImage();
+        //loadUserImage();
         loadTenantImage();
-        loadNotification();
+        //loadNotification();
         loadHomeList();
+
+        if (SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE)!=null &&
+                SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE).equalsIgnoreCase("Administrator")){
+            loadNotification();
+        }else {
+            callOutGoingNotification();
+        }
 
 
         /**
@@ -258,9 +271,18 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             public void onClick(View view) {
                 if (notiList!=null && notiList.size()>0){
 
-                    Intent intent = new Intent(getActivity(), NotificationCenterActivity.class);
-                    intent.putExtra(AppConstants.SHOWNOTIFICATION,notiList);
-                    startActivity(intent);
+                    if (SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE)!=null &&
+                            SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE).equalsIgnoreCase("Administrator")){
+
+                        Intent intent = new Intent(getActivity(), NotificationCenterActivity.class);
+                        intent.putExtra(AppConstants.SHOWNOTIFICATION,notiList);
+                        startActivity(intent);
+
+                    }else {
+                        Intent intent = new Intent(getActivity(), UserNotificationActivity.class);
+                        intent.putExtra(AppConstants.SHOWNOTIFICATION,notiList);
+                        startActivity(intent);
+                    }
 
                 }
             }
@@ -454,6 +476,40 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         } else {
             Utils.toastMessage(getActivity(), "Please Enable Internet");
         }
+    }
+
+    private void callOutGoingNotification() {
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<IncomingRequestResponse> call = apiService.getOutgoingRequest(true);
+        call.enqueue(new Callback<IncomingRequestResponse>() {
+            @Override
+            public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {
+                if(response.code()==200){
+
+                    notiList = new ArrayList<>();
+                    if (response.body()!=null && response.body().getResults()!=null){
+
+                        notiList.addAll(response.body().getResults());
+                        loo :
+                        for (int i=0;i<notiList.size();i++){
+                            if (notiList.get(i).getStatus()==0){
+                                SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.SHOWNOTIFICATION,true);
+                                notiIcon.setVisibility(View.VISIBLE);
+                                break loo;
+                            }
+                            SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.SHOWNOTIFICATION,false);
+                        }
+
+                    }else {
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<IncomingRequestResponse> call, Throwable t) {
+                
+            }
+        });
     }
 
     private void loadTenantImage() {
@@ -1426,5 +1482,18 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     @Override
     public void onRefresh() {
         loadHomeList();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadUserImage();
+
+        //binding.homeUserName.setText(SessionHandler.getInstance().get(getContext(),AppConstants.USERNAME));
+        profileData = Utils.getLoginData(getActivity());
+        if (profileData!=null) {
+            binding.homeUserName.setText(profileData.getFullName());
+        }
+
     }
 }

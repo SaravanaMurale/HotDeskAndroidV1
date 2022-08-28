@@ -50,6 +50,7 @@ import butterknife.BindView;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.BookingListToEditAdapter;
 import dream.guys.hotdeskandroid.adapter.CarListToEditAdapter;
+import dream.guys.hotdeskandroid.adapter.CarListToEditAdapterBooking;
 import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
 import dream.guys.hotdeskandroid.adapter.MeetingListToEditAdapter;
@@ -87,7 +88,7 @@ public class BookFragment extends Fragment implements
         MeetingListToEditAdapter.OnMeetingEditClickable,
         BookingListToEditAdapter.OnEditClickable,
         DeskListRecyclerAdapter.OnSelectSelected,
-        CarListToEditAdapter.CarEditClickable,
+        CarListToEditAdapterBooking.CarEditClickableBooking,
         ParkingSpotListRecyclerAdapter.OnSelectSelected,
         ParticipantNameShowAdapter.OnParticipantSelectable,
         RoomListRecyclerAdapter.OnSelectSelected {
@@ -775,7 +776,10 @@ public class BookFragment extends Fragment implements
         rvCarEditList.setLayoutManager(linearLayoutManager);
         rvCarEditList.setHasFixedSize(true);
 
-        CarListToEditAdapter carListToEditAdapter = new CarListToEditAdapter(getContext(), carParkingForEditResponse, this, code);
+        //CarListToEditAdapter carListToEditAdapter = new CarListToEditAdapter(getContext(), carParkingForEditResponse, this, code);
+        //rvCarEditList.setAdapter(carListToEditAdapter);
+
+        CarListToEditAdapterBooking carListToEditAdapter=new CarListToEditAdapterBooking(getContext(),carParkingForEditResponse,this,code);
         rvCarEditList.setAdapter(carListToEditAdapter);
 
         addNew.setOnClickListener(new View.OnClickListener() {
@@ -2154,7 +2158,7 @@ public class BookFragment extends Fragment implements
     }
 
     @Override
-    public void onCarEditClick(CarParkListToEditResponse carParkBooking) {
+    public void onCarEditClicks(CarParkListToEditResponse carParkBooking) {
         EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
         editDeskBookingDetails.setCalId(carParkBooking.getId());
         editDeskBookingDetails.setParkingSlotId(carParkBooking.getParkingSlotId());
@@ -2169,7 +2173,7 @@ public class BookFragment extends Fragment implements
     }
 
     @Override
-    public void onCarDeleteClick(CarParkListToEditResponse carParkBooking) {
+    public void onCarDeleteClicks(CarParkListToEditResponse carParkBooking) {
         EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
 //        editBookingUsingBottomSheet(editDeskBookingDetails,1,0,"delete");
 

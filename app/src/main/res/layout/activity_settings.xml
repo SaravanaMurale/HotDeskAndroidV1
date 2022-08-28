@@ -32,12 +32,12 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/profile_back"
                 android:text="Settings"
                 android:textColor="@color/figmaBlack"
                 android:textSize="@dimen/_14sdp"
-                android:theme="@style/TextBold"
-                android:layout_centerVertical="true" />
+                android:theme="@style/TextBold" />
 
 
         </RelativeLayout>
@@ -363,6 +363,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/passwordResetBlock"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"

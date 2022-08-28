@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="@dimen/_6sdp"
         android:id="@+id/card_booking_notify"
-        >
+        android:layout_margin="@dimen/_2sdp">
 
         <RelativeLayout
             android:id="@+id/rel_status"
@@ -168,11 +168,13 @@
                     android:layout_toLeftOf="@+id/lay_profile"
                     android:layout_marginEnd="@dimen/_8sdp">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
+                    <ImageView
                         android:id="@+id/ivMeeting"
                         android:layout_width="@dimen/_30sdp"
                         android:layout_height="@dimen/_30sdp"
-                        android:src="@drawable/chair" />
+                        android:src="@drawable/chair"
+                        android:layout_centerVertical="true"
+                        android:scaleType="fitXY"/>
 
                     <TextView
                         android:id="@+id/tvDesk"
@@ -280,7 +282,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="@dimen/_6sdp"
-        android:id="@+id/card_covid_notify">
+        android:id="@+id/card_covid_notify"
+        android:layout_margin="@dimen/_2sdp">
 
         <RelativeLayout
             android:id="@+id/covid_rel_status"

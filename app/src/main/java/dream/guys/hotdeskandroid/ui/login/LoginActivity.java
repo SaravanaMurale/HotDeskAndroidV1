@@ -513,15 +513,23 @@ public class LoginActivity extends AppCompatActivity {
                             SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.TEAMMEMBERSHIP_ID,userDetailsResponse.getTeamMembershipId());
                             SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.TEAM_ID,userDetailsResponse.getCurrentTeam().getCurrentTeamId());
                             SessionHandler.getInstance().saveBoolean(LoginActivity.this,AppConstants.PIN_SETUP_DONE,userDetailsResponse.isHasPinSetup());
-                            Log.d(TAG, "onResponse: "+userDetailsResponse.getDefaultLocation().getParentLocationId());
-                            SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.DEFAULT_CAR_PARK_LOCATION_ID,userDetailsResponse.getDefaultCarParkLocation().getId());
-                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.DEFAULT_LOCATION_NAME,userDetailsResponse.getDefaultLocation().getName());
-                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.DEFAULT_LOCATION_ID,String.valueOf(userDetailsResponse.getDefaultLocation().getParentLocationId()));
+                            //Log.d(TAG, "onResponse: "+userDetailsResponse.getDefaultLocation().getParentLocationId());
+                            if (userDetailsResponse.getDefaultCarParkLocation()!=null){
+                                SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.DEFAULT_CAR_PARK_LOCATION_ID,userDetailsResponse.getDefaultCarParkLocation().getId());
+
+                            }
+
+                            if (userDetailsResponse.getDefaultLocation()!=null){
+                                SessionHandler.getInstance().save(LoginActivity.this,AppConstants.DEFAULT_LOCATION_NAME,userDetailsResponse.getDefaultLocation().getName());
+                                SessionHandler.getInstance().save(LoginActivity.this,AppConstants.DEFAULT_LOCATION_ID,String.valueOf(userDetailsResponse.getDefaultLocation().getParentLocationId()));
+                            }
+
                             System.out.println("login chec"+SessionHandler.getInstance().getBoolean(LoginActivity.this,AppConstants.PIN_SETUP_DONE));
                             System.out.println("login chec respos"+userDetailsResponse.isHasPinSetup());
 
                             //Save UserId
                             SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.USER_ID,userDetailsResponse.getId());
+                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.ROLE,userDetailsResponse.getHighestRole());
 
                             ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
 

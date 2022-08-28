@@ -4,8 +4,10 @@ import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
+import dream.guys.hotdeskandroid.model.request.ChangePasswordRequest;
 import dream.guys.hotdeskandroid.model.request.CovidAnswerRequest;
 import dream.guys.hotdeskandroid.model.request.CreatePinRequest;
 import dream.guys.hotdeskandroid.model.request.DAODeskAccept;
@@ -66,6 +68,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -359,6 +362,20 @@ public interface ApiInterface {
 
     @POST("api/requests/approvedesk")
     Call<BaseResponse> acceptDesk(@Body DAODeskAccept daoDeskAccept);
+
+    //To save firebase token
+    @POST("/push/register")
+    Call<BaseResponse> saveFirebaseToken();
+
+    @POST("api/Account/ChangePassword")
+    Call<BaseResponse> changePassword(@Body ChangePasswordRequest changePasswordRequest);
+
+    //Parking Slot...
+    @POST("api/requests/rejectps")
+    Call<BaseResponse> rejectParking(@Body DAODeskReject daoDeskReject);
+
+    @POST("api/requests/approveps")
+    Call<BaseResponse> acceptParking(@FieldMap Map<String, String> params);
 
 }
 

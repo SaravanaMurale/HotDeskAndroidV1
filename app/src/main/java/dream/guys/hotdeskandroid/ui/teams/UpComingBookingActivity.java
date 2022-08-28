@@ -155,10 +155,10 @@ public class UpComingBookingActivity extends AppCompatActivity {
         endDate.add(Calendar.YEAR, 1);*/
 
         /* starts before 1 month from now */
-        Calendar startDate = Calendar.getInstance();
+        /*Calendar startDate = Calendar.getInstance();
         startDate.add(Calendar.MONTH, 0);
 
-        /* ends after 1 month from now */
+        *//* ends after 1 month from now *//*
         Calendar endDate = Calendar.getInstance();
         endDate.add(Calendar.YEAR, 1);
 
@@ -201,7 +201,74 @@ public class UpComingBookingActivity extends AppCompatActivity {
             public boolean onDateLongClicked(Calendar date, int position) {
                 return true;
             }
+        });*/
+
+        Calendar startDate = Calendar.getInstance();
+        day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        month = Calendar.getInstance().get(Calendar.MONTH);
+        year = Calendar.getInstance().get(Calendar.YEAR);
+        currendate = String.valueOf(year + "-" + (month + 1) + "-" + day);
+        selectedDate = String.valueOf(day + "-" + (month + 1) + "-" + year);
+        startDate.set(year, month, day);
+        Calendar endDate = Calendar.getInstance();
+        endDate.add(Calendar.YEAR, 1);
+
+        try {
+            currendate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new SimpleDateFormat("yyyy-M-d").parse(currendate));
+            selectedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new SimpleDateFormat("yyyy-M-d").parse(currendate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        horizontalCalendar
+                = new HorizontalCalendar.Builder(this, R.id.calendarView)
+                .range(startDate, endDate)
+                .mode(HorizontalCalendar.Mode.DAYS)
+                .datesNumberOnScreen(4)
+                .configure()
+                .formatBottomText("EEE")
+                .formatMiddleText("dd MMM")
+                .showBottomText(true)
+                .showTopText(false)
+                .sizeMiddleText(15.0f)
+                .sizeBottomText(12.0f)
+                .selectedDateBackground(getResources().getDrawable(R.drawable.sel_date_bg))
+                .selectorColor(R.color.white)
+                .end()
+                .defaultSelectedDate(startDate)
+                .build();
+
+
+        horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
+            @Override
+            public void onDateSelected(Calendar date, int position) {
+                currendate = date.get(Calendar.YEAR) + "-" +
+                        (date.get(Calendar.MONTH) + 1) + "-" + date.get(Calendar.DATE);
+//2022-08-13T10:51:17.830Z
+                try {
+                    currendate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new SimpleDateFormat("yyyy-M-d").parse(currendate));
+                    selectedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new SimpleDateFormat("yyyy-M-d").parse(currendate));
+
+                    callTeamMemberStatus(currendate,daoTeamMember.getTeamId());
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onCalendarScroll(HorizontalCalendarView calendarView,
+                                         int dx, int dy) {
+
+            }
+
+            @Override
+            public boolean onDateLongClicked(Calendar date, int position) {
+                return true;
+            }
         });
+
 
     }
 
@@ -309,9 +376,13 @@ public class UpComingBookingActivity extends AppCompatActivity {
 //                    Toast.makeText(MainActivity.this, "on res", Toast.LENGTH_SHORT).show();
                     if(response.code()==200){
 
+                        teamMembersResponses = new ArrayList<>();
                         teamMembersResponses = response.body();
                         if (teamMembersResponses!=null &&
                                 teamMembersResponses.size()>0){
+
+                            recyclerModelArrayList = new ArrayList<>();
+
                             for (int i=0;i<teamMembersResponses.size();i++){
 
                                 if (userID == teamMembersResponses.get(i).getUserId()) {

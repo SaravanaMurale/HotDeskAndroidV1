@@ -19,6 +19,13 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.CarParkingDescriptionResponse;
+import dream.guys.hotdeskandroid.webservice.ApiClient;
+import dream.guys.hotdeskandroid.webservice.ApiInterface;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FirebaseNotificationService extends FirebaseMessagingService {
 
@@ -30,7 +37,13 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
 
         System.out.println("NewTokenReceived"+token);
 
+        SessionHandler.getInstance().save(getApplicationContext(),AppConstants.SAVETOKEN,token);
+
+        saveTokenInserver(token);
+
     }
+
+
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage message) {
@@ -87,6 +100,23 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
         notificationManager.notify(notificationID, notification);
 
 
+    }
+
+
+    private void saveTokenInserver(String token) {
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<BaseResponse> call = apiService.saveFirebaseToken();
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+            }
+        });
     }
 
 }

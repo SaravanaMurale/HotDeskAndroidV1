@@ -15,6 +15,7 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import dream.guys.hotdeskandroid.R;
@@ -35,6 +38,8 @@ import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.ui.notify.NotificationCenterActivity;
 import dream.guys.hotdeskandroid.ui.notify.NotificationManageActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.SessionHandler;
+import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
 import retrofit2.Call;
@@ -59,6 +64,7 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
 
     int cIncoming = 0,cOutGoing = 0;
     Context context;
+    ProgressBar locateProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +73,13 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
 
         uiInit();
         context = NotificationsListActivity.this;
+
+        if (SessionHandler.getInstance().get(context,AppConstants.ROLE)!=null &&
+                SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase("Administrator")){
+            tv_manage.setVisibility(View.VISIBLE);
+        }else {
+            tv_manage.setVisibility(View.GONE);
+        }
 
         tv_manage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,9 +90,12 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
                 manageList = (ArrayList<IncomingRequestResponse.Result>) notiList.stream().filter(val -> val.getStatus() == 0).collect(Collectors.toList());
                 IncomingRequestResponse.Result result = new IncomingRequestResponse.Result(0);
 
-                int c = Collections.frequency(manageList, result);
+                ArrayList<IncomingRequestResponse.Result> inComingList = new ArrayList<>();
+                inComingList = (ArrayList<IncomingRequestResponse.Result>) manageList.stream().filter(val -> val.getIncoming().equalsIgnoreCase("incoming")).collect(Collectors.toList());
+
+                int c = Collections.frequency(inComingList, result);
                 Intent intent = new Intent(NotificationsListActivity.this, NotificationManageActivity.class);
-                intent.putExtra(AppConstants.SHOWNOTIFICATION,manageList);
+                intent.putExtra(AppConstants.SHOWNOTIFICATION,inComingList);
                 intent.putExtra(AppConstants.INCOMING,c);
                 startActivity(intent);
 
@@ -109,6 +125,7 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
         recyclerView = findViewById(R.id.outgoing_recyclerview);
         tv_manage= findViewById(R.id.tv_manage);
         profile_back = findViewById(R.id.profile_back);
+        locateProgressBar = findViewById(R.id.locateProgressBar);
 
         Intent intent = getIntent();
 
@@ -116,7 +133,11 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
 
             notiList = (ArrayList<IncomingRequestResponse.Result>) intent.getSerializableExtra(AppConstants.SHOWNOTIFICATION);
             IncomingList = (ArrayList<IncomingRequestResponse.Result>) intent.getSerializableExtra("IncomingList");
-            OutGoingList = (ArrayList<IncomingRequestResponse.Result>) intent.getSerializableExtra("OutGoingList");
+
+            if (intent.getSerializableExtra("OutGoingList")!=null){
+                OutGoingList = (ArrayList<IncomingRequestResponse.Result>) intent.getSerializableExtra("OutGoingList");
+
+            }
 
             cIncoming = intent.getIntExtra(AppConstants.INCOMING,0);
             cOutGoing = intent.getIntExtra(AppConstants.OUTGOING,0);
@@ -132,50 +153,95 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
     }
 
     @Override
-    public void clickEvents(int id, int reqTeamID, int Entity, String Action) {
+    public void clickEvents(int id, int reqTeamID, int entity, String Action) {
 
         switch (Action){
             case AppConstants.ACCEPT:
 
-                ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+                if (entity == 3){
+                    //Desk...
+                    DAODeskAccept daoDeskAccept = new DAODeskAccept();
+                    daoDeskAccept.setId(id);
+                    daoDeskAccept.setRequestedTeamDeskId(reqTeamID);
+                    callDeskAccept(daoDeskAccept);
+                }else if(entity == 4){
 
-                DAODeskAccept daoDeskAccept = new DAODeskAccept();
-                daoDeskAccept.setId(id);
-                daoDeskAccept.setRequestedTeamDeskId(reqTeamID);
-
-                Call<BaseResponse> call = apiService.acceptDesk(daoDeskAccept);
-
-                call.enqueue(new Callback<BaseResponse>() {
-                    @Override
-                    public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                        if (response.body()!=null) {
-                            if (response.code() == 200){
-                                Log.d("ACCEPT","Success");
-                            }else if(response.code() == 400){
-                                Log.d("ACCEPT","Logout");
-                            }else {
-                                Log.d("ACCEPT","No Response" + response.code());
-                            }
-                        }else {
-                            Log.d("ACCEPT","No Response");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<BaseResponse> call, Throwable t) {
-                        Log.d("ACCEPT",t.getMessage());
-                    }
-                });
+                }else if (entity == 5) {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("", String.valueOf(id));
+                    callParkingAccept(params);
+                }
                 break;
 
             case AppConstants.REJECT:
-                rejectPopUp(id);
+                rejectPopUp(id,entity);
                 break;
         }
 
     }
 
-    private void rejectPopUp(int id) {
+    private void callParkingAccept(Map<String, String> params) {
+        locateProgressBar.setVisibility(View.VISIBLE);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<BaseResponse> call = apiService.acceptParking(params);
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                locateProgressBar.setVisibility(View.INVISIBLE);
+
+                if (response.body()!=null) {
+                    if (response.code() == 200){
+                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+                    }else if(response.code() == 400){
+                        Log.d("ACCEPT","Logout");
+                    }else {
+                        Log.d("ACCEPT","No Response" + response.code());
+                    }
+                }else {
+                    Log.d("ACCEPT","No Response");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Utils.toastMessage(context,t.getMessage());
+                locateProgressBar.setVisibility(View.INVISIBLE);
+            }
+        });
+
+    }
+
+    private void callDeskAccept(DAODeskAccept daoDeskAccept) {
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<BaseResponse> call = apiService.acceptDesk(daoDeskAccept);
+
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.body()!=null) {
+                    if (response.code() == 200){
+                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+                    }else if(response.code() == 400){
+                        Log.d("ACCEPT","Logout");
+                    }else {
+                        Log.d("ACCEPT","No Response" + response.code());
+                    }
+                }else {
+                    Log.d("ACCEPT","No Response");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Log.d("ACCEPT",t.getMessage());
+            }
+        });
+
+    }
+
+    private void rejectPopUp(int id,int entity) {
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         int width = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.80);
@@ -199,7 +265,14 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
                 if (reason.isEmpty()){
                     Toast.makeText(context, "Enter Reason", Toast.LENGTH_SHORT).show();
                 }else {
-                    callRejectAPI(id,reason);
+
+                    if (entity == 3){
+                        callRejectAPI(id,reason);
+                    }else if (entity == 4){
+
+                    }else if (entity == 5){
+                        callParkingReject(id,reason);
+                    }
                     dialog.dismiss();
                 }
             }
@@ -229,7 +302,7 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                 if (response.body()!=null) {
                     if (response.code() == 200){
-                        Log.d("REJECT","Success");
+                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
                     }else if(response.code() == 400){
                         Log.d("REJECT","Logout");
                     }else {
@@ -245,6 +318,43 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
                 Log.d("REJECT",t.getMessage());
             }
         });
+    }
+
+    private void callParkingReject(Integer id,String reason) {
+        locateProgressBar.setVisibility(View.VISIBLE);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+        DAODeskReject daoDeskReject = new DAODeskReject();
+        daoDeskReject.setId(id);
+        daoDeskReject.setReason(reason);
+
+        Call<BaseResponse> call = apiService.rejectParking(daoDeskReject);
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                locateProgressBar.setVisibility(View.INVISIBLE);
+
+                if (response.body()!=null) {
+                    if (response.code() == 200){
+                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+                    }else if(response.code() == 400){
+                        Log.d("ACCEPT","Logout");
+                    }else {
+                        Log.d("ACCEPT","No Response" + response.code());
+                    }
+                }else {
+                    Log.d("ACCEPT","No Response");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Utils.toastMessage(context,t.getMessage());
+                locateProgressBar.setVisibility(View.INVISIBLE);
+            }
+        });
+
     }
 
 }

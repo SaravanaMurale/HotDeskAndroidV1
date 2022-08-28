@@ -75,8 +75,6 @@ public class CreatePinActivity extends AppCompatActivity {
 
         dialog = new Dialog(CreatePinActivity.this);
 
-        getUserDetailsUsingToken();
-
         newPin.setOtpListener(new OTPListener()
         {
             @Override

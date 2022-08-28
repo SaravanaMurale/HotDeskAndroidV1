@@ -159,9 +159,13 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
             binding.editName.setText(profileData.getFullName());
             binding.editDisplayName.setText(profileData.getFullName());
+<<<<<<< HEAD
+            binding.tvEditTeams.setText(profileData.getCurrentTeam().getCurrentTeamName());
+=======
             if (profileData.getCurrentTeam()!=null){
                 binding.tvEditTeams.setText(profileData.getCurrentTeam().getCurrentTeamName());
             }
+>>>>>>> 72d07a8bf188c75038f461d417cae114ec5286f3
             binding.tvEditPhone.setText(profileData.getPhoneNumber());
             binding.tvEditEmail.setText(profileData.getEmail());
             if (profileData.getDefaultLocation()!=null){
