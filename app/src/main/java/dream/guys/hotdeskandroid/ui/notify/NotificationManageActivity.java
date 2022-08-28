@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.AdapterNotificationCenter;
@@ -85,6 +87,10 @@ public class NotificationManageActivity extends AppCompatActivity {
                     if (manageList.get(0).getEntityType() == 3){
                         //Desk...
                         callDeskAccept(manageList.get(0).getId(),manageList.get(0).getRequestedTeamDeskId());
+                    }else if(manageList.get(0).getEntityType() == 4){
+
+                    }else if (manageList.get(0).getEntityType() == 5) {
+                        callParkingAccept(manageList.get(0).getId());
                     }
 
                 }
@@ -97,6 +103,79 @@ public class NotificationManageActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 rejectPopUp();
+            }
+        });
+
+    }
+
+    private void callParkingAccept(Integer id) {
+        binding.locateProgressBar.setVisibility(View.VISIBLE);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+        Map<String, String> params = new HashMap<>();
+        params.put("", String.valueOf(id));
+
+        Call<BaseResponse> call = apiService.acceptParking(params);
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+                if (response.body()!=null) {
+                    if (response.code() == 200){
+                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+                    }else if(response.code() == 400){
+                        Log.d("ACCEPT","Logout");
+                    }else {
+                        Log.d("ACCEPT","No Response" + response.code());
+                    }
+                }else {
+                    Log.d("ACCEPT","No Response");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Utils.toastMessage(context,t.getMessage());
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+            }
+        });
+
+    }
+
+    private void callParkingReject(Integer id,String reason) {
+        binding.locateProgressBar.setVisibility(View.VISIBLE);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+        DAODeskReject daoDeskReject = new DAODeskReject();
+        daoDeskReject.setId(id);
+        daoDeskReject.setReason(reason);
+
+        Call<BaseResponse> call = apiService.rejectParking(daoDeskReject);
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+                if (response.body()!=null) {
+                    if (response.code() == 200){
+                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+                    }else if(response.code() == 400){
+                        Log.d("ACCEPT","Logout");
+                    }else {
+                        Log.d("ACCEPT","No Response" + response.code());
+                    }
+                }else {
+                    Log.d("ACCEPT","No Response");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Utils.toastMessage(context,t.getMessage());
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -213,7 +292,11 @@ public class NotificationManageActivity extends AppCompatActivity {
                     if (manageList!=null && manageList.size()>0){
                         if (manageList.get(0).getEntityType() == 3){
                             //Desk...
-                            callDeskReject(manageList.get(0).getId(),"");
+                            callDeskReject(manageList.get(0).getId(),reason);
+                        }else if(manageList.get(0).getEntityType() == 4){
+
+                        }else if (manageList.get(0).getEntityType() == 5) {
+                            callParkingReject(manageList.get(0).getId(),reason);
                         }
                     }
 

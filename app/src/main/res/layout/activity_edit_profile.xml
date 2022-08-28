@@ -630,6 +630,57 @@
 
                 </RelativeLayout>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Country"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rectangle_greybg_with_corner"
+                    android:padding="@dimen/_6sdp">
+
+                    <TextView
+                        android:id="@+id/editCountry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:textColor="@color/black"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/changeCountry"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:enabled="false"
+                        android:text="Change"
+                        />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vehicle Number"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    />
+
+
+                <EditText
+                    android:id="@+id/editVehicleNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint=""
+                    android:enabled="false"
+                    android:background="@drawable/edittext_bg"
+                    android:padding="@dimen/_5sdp"
+                    android:textColor="@color/figmaBlue"/>
+
             </LinearLayout>
 
             <RelativeLayout
@@ -656,7 +707,7 @@
                     android:src="@drawable/edit"
                     android:layout_marginHorizontal="@dimen/_2sdp"
                     android:layout_alignParentEnd="true"
-                    />
+                    android:visibility="gone"/>
             </RelativeLayout>
 
             <!--Email-->
@@ -746,7 +797,9 @@
                         android:textColor="@color/figmaBlack"
                         android:theme="@style/TextRegular"
                         android:enabled="false"
-                        android:background="@null"/>
+                        android:background="@null"
+                        android:inputType="number"
+                        android:maxLength="10"/>
 
                     <ImageView
                         android:id="@+id/tvEditPhoneIcon"
@@ -759,7 +812,38 @@
                 </RelativeLayout>
 
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/rectangle_greybg_with_corner"
+                android:padding="@dimen/_6sdp"
+                android:layout_marginVertical="@dimen/_5sdp">
 
+                <EditText
+                    android:id="@+id/tvEditTel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_toLeftOf="@id/tvEditTelIcon"
+                    android:text=""
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/figmaBlack"
+                    android:theme="@style/TextRegular"
+                    android:enabled="false"
+                    android:background="@null"
+                    android:inputType="number"
+                    android:maxLength="10"/>
+
+                <ImageView
+                    android:id="@+id/tvEditTelIcon"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginHorizontal="@dimen/_2sdp"
+                    android:src="@drawable/ic_baseline_local_phone_24"
+                    app:tint="@color/figmaBlue"/>
+            </RelativeLayout>
 
 
 

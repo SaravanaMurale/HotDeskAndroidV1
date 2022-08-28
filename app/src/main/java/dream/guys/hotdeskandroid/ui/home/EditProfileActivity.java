@@ -6,8 +6,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PatternMatcher;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -115,15 +117,20 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                 String teams = binding.tvEditTeams.getText().toString();
                 String startTime = binding.editStartTime.getText().toString();
                 String endTime = binding.editEndTime.getText().toString();
+                String vehicleNum = binding.editVehicleNum.getText().toString();
 
-                profileData.setFullName(name);
-                profileData.setPhoneNumber(phone);
-                profileData.setEmail(email);
-                profileData.getCurrentTeam().setCurrentTeamName(teams);
-                profileData.setWorkHoursFrom("2000-01-01T" + startTime + ":00.000Z");
-                profileData.setWorkHoursTo("2000-01-01T" + endTime + ":00.000Z");
+                if (isValidate(phone,email)){
+                    //profileData.setFullName(name);
+                    profileData.setFullName(editDisplayName);
+                    profileData.setPhoneNumber(phone);
+                    profileData.setEmail(email);
+                    profileData.getCurrentTeam().setCurrentTeamName(teams);
+                    profileData.setWorkHoursFrom("2000-01-01T" + startTime + ":00.000Z");
+                    profileData.setWorkHoursTo("2000-01-01T" + endTime + ":00.000Z");
+                    profileData.setVehicleRegNumber(vehicleNum);
 
-                callProfileUpdate();
+                    callProfileUpdate();
+                }
 
             }
         });
@@ -151,13 +158,20 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         if (profileData!=null) {
 
             binding.editName.setText(profileData.getFullName());
-            binding.tvEditTeams.setText(profileData.getCurrentTeam().getCurrentTeamName());
+            binding.editDisplayName.setText(profileData.getFullName());
+            if (profileData.getCurrentTeam()!=null){
+                binding.tvEditTeams.setText(profileData.getCurrentTeam().getCurrentTeamName());
+            }
             binding.tvEditPhone.setText(profileData.getPhoneNumber());
             binding.tvEditEmail.setText(profileData.getEmail());
-            binding.editDefaultLocaton.setText(profileData.getDefaultLocation().getName());
+            if (profileData.getDefaultLocation()!=null){
+                binding.editDefaultLocaton.setText(profileData.getDefaultLocation().getName());
+            }
+
             binding.editStartTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
             binding.editEndTime.setText(Utils.splitTime(profileData.getWorkHoursTo()));
-
+            binding.editVehicleNum.setText(profileData.getVehicleRegNumber());
+            binding.tvEditTel.setText(profileData.getDeskPhoneNumber());
 
         }
 
@@ -168,6 +182,20 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                 startActivity(intent);*/
             }
         });
+
+    }
+
+    private boolean isValidate(String phone,String email) {
+
+        if (phone.isEmpty() || phone.length()<=6){
+            Toast.makeText(EditProfileActivity.this, "Enter Valid Mobile Number", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if (email.isEmpty() || !(Patterns.EMAIL_ADDRESS.matcher(email.toString()).matches())){
+            Toast.makeText(EditProfileActivity.this, "Enter Valid Email", Toast.LENGTH_SHORT).show();
+            return false;
+        }else {
+            return true;
+        }
 
     }
 
@@ -317,7 +345,16 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                     getStringImage(bitmap);
                     String bast64InString= String.valueOf("data:image/png;base64," + encodedImage);
                     //base64Img = RequestBody.create(MediaType.parse("text/plain"), "data:image/png;base64," + encodedImage);
-                    updateProfilePicture(bast64InString);
+
+                    //New...
+                    BitmapFactory.Options options = Utils.getImageSize(uri);
+                    if (options.outWidth>=250 && options.outHeight>=250){
+                        updateProfilePicture(bast64InString);
+                    }else {
+                        Utils.toastMessage(EditProfileActivity.this,"Please Select Image more than 250X250 ");
+                    }
+
+
                     System.out.println();
                     Glide.with(this).load(uri.toString())
                             .into(binding.ivEditPrifle);
@@ -419,12 +456,16 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.tvEditEmail.setEnabled(true);
         binding.tvEditPhone.setEnabled(true);
         binding.tvEditTeams.setEnabled(true);
+        binding.editVehicleNum.setEnabled(true);
+        binding.tvEditTel.setEnabled(true);
 
         if (profileData!=null && profileData.getHighestRole()!=null &&
                 profileData.getHighestRole().equalsIgnoreCase("Administrator")){
             binding.editDisplayName.setEnabled(true);
+            binding.editName.setEnabled(false);
         }else {
             binding.editDisplayName.setEnabled(false);
+            binding.editName.setEnabled(false);
         }
 
         binding.editDeskChange.setOnClickListener(new View.OnClickListener() {
@@ -439,6 +480,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.editParkChange.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
         binding.editStartTime.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
         binding.editEndTime.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
+        binding.changeCountry.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
 
     }
     private void makeDisable() {
@@ -454,12 +496,15 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.tvEditEmail.setEnabled(false);
         binding.tvEditPhone.setEnabled(false);
         binding.tvEditTeams.setEnabled(false);
+        binding.editVehicleNum.setEnabled(false);
+        binding.tvEditTel.setEnabled(false);
 
         binding.editRoomChange.setTextColor(getResources().getColor(R.color.grey,getTheme()));
         binding.editDeskChange.setTextColor(getResources().getColor(R.color.grey,getTheme()));
         binding.editParkChange.setTextColor(getResources().getColor(R.color.grey,getTheme()));
         binding.editStartTime.setTextColor(getResources().getColor(R.color.grey,getTheme()));
         binding.editEndTime.setTextColor(getResources().getColor(R.color.grey,getTheme()));
+        binding.changeCountry.setTextColor(getResources().getColor(R.color.grey,getTheme()));
 
     }
 

@@ -82,6 +82,7 @@ import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.model.response.LocationWithMR_Response;
 import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
+import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
 import dream.guys.hotdeskandroid.ui.notify.NotificationCenterActivity;
@@ -139,6 +140,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
     SwipeRefreshLayout mSwipeRefreshLayout;
     List<AmenitiesResponse> amenitiesList = new ArrayList<>();
+
+    //New...
+    UserDetailsResponse profileData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -231,7 +235,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         getAmenities();
         meetingRecurenceCall();
         qrEnabledCall();
-        loadUserImage();
+        //loadUserImage();
         loadTenantImage();
         //loadNotification();
         loadHomeList();
@@ -1478,5 +1482,18 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     @Override
     public void onRefresh() {
         loadHomeList();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadUserImage();
+
+        //binding.homeUserName.setText(SessionHandler.getInstance().get(getContext(),AppConstants.USERNAME));
+        profileData = Utils.getLoginData(getActivity());
+        if (profileData!=null) {
+            binding.homeUserName.setText(profileData.getFullName());
+        }
+
     }
 }

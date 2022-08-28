@@ -60,7 +60,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         //New...
         setLanguage();
-        getProfilePicture();
+        //getProfilePicture();
         profileData = Utils.getLoginData(context);
 
         try {
@@ -289,4 +289,13 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getProfilePicture();
+        profileData = Utils.getLoginData(context);
+        if (profileData!=null) {
+            binding.tvViewProfileName.setText(profileData.getFullName());
+        }
+    }
 }
