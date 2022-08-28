@@ -409,9 +409,12 @@ RepeateDataAdapter.repeatInterface {
     public void initLoadFloorDetails(int i) {
 
         int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+
         if (parentId > 0) {
             //Disable touch Screen
             ProgressDialog.touchLock(getContext(),getActivity());
+
+            //Set Selected Floor In SearchView
             String CountryName = SessionHandler.getInstance().get(getContext(), AppConstants.COUNTRY_NAME);
             String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
             String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
@@ -433,6 +436,7 @@ RepeateDataAdapter.repeatInterface {
             //getFloorDetails(subParentId,findCoordinateStatus);
 
             binding.locateProgressBar.setVisibility(View.VISIBLE);
+
             //Used For Desk Avaliability Checking
             getAvaliableDeskDetails(null, 0);
 
@@ -467,6 +471,8 @@ RepeateDataAdapter.repeatInterface {
             },1000);
 
 
+
+            //Final Call To Set Desk,Car and Meeting Room
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -1066,12 +1072,9 @@ RepeateDataAdapter.repeatInterface {
         RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
 
-
-
         //Desk
         DeskStatusModel deskStatusModel = null;
         List<DeskStatusModel> deskStatusModelList = new ArrayList<>();
-
         //Room
         MeetingStatusModel meetingStatusModel = null;
         List<MeetingStatusModel> meetingStatusModelList = new ArrayList<>();
@@ -1133,7 +1136,7 @@ RepeateDataAdapter.repeatInterface {
 
                                 if (dateComparsionResult == 1) {
                                     System.out.println("BookingUnavaliable");
-                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
 
                                     deskStatusModel = new DeskStatusModel(key, id, code, 0);
 
@@ -1142,7 +1145,8 @@ RepeateDataAdapter.repeatInterface {
                                     if (teamDeskAvaliability.isBookedByUser() == true) {
                                         System.out.println("BookingbookedForMe");
                                         ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
-                                        deskStatusModel = new DeskStatusModel(key, id, code, 2);
+                                        deskStatusModel
+                                                = new DeskStatusModel(key, id, code, 2);
 
                                     } else if (teamDeskAvaliability.isBookedByElse() == true) {
                                         System.out.println("BookingBookedOther");
@@ -1196,7 +1200,11 @@ RepeateDataAdapter.repeatInterface {
                     }
 
 
+
                 }
+
+
+
             } else {
                 ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
                 deskStatusModel = new DeskStatusModel(key, id, code, 0);
@@ -1348,7 +1356,7 @@ RepeateDataAdapter.repeatInterface {
 
                                                                 } else {
                                                                     meetingStatusModel = new MeetingStatusModel(key, id, code, 3);
-                                                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_booked));
+                                                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
                                                                     System.out.println("MeetingBookedOther");
                                                                 }
 
@@ -1356,7 +1364,7 @@ RepeateDataAdapter.repeatInterface {
                                                             } else if (lMatches.getAutomaticApprovalStatus() == 3 && !lMatches.isAllowedForBooking()) {
                                                                 meetingStatusModel = new MeetingStatusModel(key, id, code, 0);
                                                                 System.out.println("MeetingUnavaliable");
-                                                                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
+                                                                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_booked));
 
                                                             } else if (lMatches.getAutomaticApprovalStatus() == 2 || lMatches.isAllowedForBooking()) {
                                                                 ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_avaliable));
@@ -1449,7 +1457,7 @@ RepeateDataAdapter.repeatInterface {
         relativeLayout.leftMargin = x;
         relativeLayout.topMargin = y;
         relativeLayout.width = 80;
-        relativeLayout.height = 67;
+        relativeLayout.height = 80;
         ivDesk.setLayoutParams(relativeLayout);
 
 
@@ -1458,7 +1466,7 @@ RepeateDataAdapter.repeatInterface {
             @Override
             public void onClick(View v) {
 
-               removeZoomInLayout();
+               //removeZoomInLayout();
 
                 List<String> onClickValue = locateCountryResposeList.get(floorPosition).getItems().get(key);
                       /*for (int j = 0; j <onClickValue.size() ; j++) {
@@ -1524,56 +1532,67 @@ RepeateDataAdapter.repeatInterface {
                 int requestTeamId = 0, requestTeamDeskId = 0;
                 if (code.equals("3")) {
                     if (deskStatusModelList != null) {
-                        for (int i = 0; i < deskStatusModelList.size(); i++) {
-                            if (key.equals(deskStatusModelList.get(i).getKey())) {
 
-                                if (deskStatusModelList.get(i).getStatus() == 1) {
+                        if(deskStatusModelList.size()==0){
+                            //Unavaliable
+                            callDeskUnavaliable(selctedCode, key, id, code, requestTeamId, requestTeamDeskId);
+                        }else {
+                            for (int i = 0; i < deskStatusModelList.size(); i++) {
+                                if (key.equals(deskStatusModelList.get(i).getKey())) {
 
-                                    //DeskDescription
-                                    getDescriptionUsingDeskId(id);
+                                    if (deskStatusModelList.get(i).getStatus() == 1) {
+
+                                        //DeskDescription
+                                        getDescriptionUsingDeskId(id);
 
 
-                                    //Avaliable Booking
-                                    //Booking Bottom Sheet
-                                    callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId,1);
+                                        //Avaliable Booking
+                                        //Booking Bottom Sheet
+                                        callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId,1);
 
 
-                                } else if (deskStatusModelList.get(i).getStatus() == 4) {
-                                    //Booking Request
-                                    DeskStatusModel deskStatusModel1 = deskStatusModelList.get(i);
-                                    for (int j = 0; j < teamDeskAvaliabilityList.size(); j++) {
+                                    } else if (deskStatusModelList.get(i).getStatus() == 4) {
+                                        //Booking Request
+                                        DeskStatusModel deskStatusModel1 = deskStatusModelList.get(i);
+                                        for (int j = 0; j < teamDeskAvaliabilityList.size(); j++) {
 
-                                        if (deskStatusModel1.getId() == teamDeskAvaliabilityList.get(j).getDeskId()) {
+                                            if (deskStatusModel1.getId() == teamDeskAvaliabilityList.get(j).getDeskId()) {
 
-                                            requestTeamId = teamDeskAvaliabilityList.get(j).getTeamId();
-                                            requestTeamDeskId = teamDeskAvaliabilityList.get(j).getTeamDeskId();
-                                            System.out.println("RequstedTeamId" + teamDeskAvaliabilityList.get(j).getTeamId());
-                                            System.out.println("RequestedTeamDeskId" + teamDeskAvaliabilityList.get(j).getTeamDeskId());
+                                                requestTeamId = teamDeskAvaliabilityList.get(j).getTeamId();
+                                                requestTeamDeskId = teamDeskAvaliabilityList.get(j).getTeamDeskId();
+                                                System.out.println("RequstedTeamId" + teamDeskAvaliabilityList.get(j).getTeamId());
+                                                System.out.println("RequestedTeamDeskId" + teamDeskAvaliabilityList.get(j).getTeamDeskId());
+
+                                            }
 
                                         }
 
+                                        //DeskDescription
+                                        getDescriptionUsingDeskId(id);
+
+                                        //Booking Request Bottom Sheet
+
+                                        callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId,4);
+
+
+                                    } else if (deskStatusModelList.get(i).getStatus() == 2) {
+                                        //Booking Edit BottomSheet
+                                        getBookingListToEdit(code);
+
+                                    } else if (deskStatusModelList.get(i).getStatus() == 0) {
+                                        //Unavaliable
+                                        callDeskUnavaliable(selctedCode, key, id, code, requestTeamId, requestTeamDeskId);
+                                    }
+                                    else if (deskStatusModelList.get(i).getStatus() == 3) {
+                                        //Booked
+                                        Toast.makeText(getContext(),"Desk Is Already Booked",Toast.LENGTH_LONG).show();
                                     }
 
-                                    //DeskDescription
-                                    getDescriptionUsingDeskId(id);
 
-                                    //Booking Request Bottom Sheet
-
-                                    callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId,4);
-
-
-                                } else if (deskStatusModelList.get(i).getStatus() == 2) {
-                                    //Booking Edit BottomSheet
-                                    getBookingListToEdit(code);
-
-                                } else if (deskStatusModelList.get(i).getStatus() == 0) {
-                                    //Unavaliable
-                                    callDeskUnavaliable(selctedCode, key, id, code, requestTeamId, requestTeamDeskId);
                                 }
-
-
                             }
                         }
+
 
                     }
 
@@ -2112,7 +2131,7 @@ RepeateDataAdapter.repeatInterface {
             @Override
             public void onClick(View v) {
 
-               removeZoomInLayout();
+               //removeZoomInLayout();
 
                 List<String> onClickValue = locateCountryResposeList.get(floorPosition).getItems().get(key);
                       /*for (int j = 0; j <onClickValue.size() ; j++) {
@@ -2864,14 +2883,26 @@ RepeateDataAdapter.repeatInterface {
                 chipList.clear();
 
                 BaseResponse baseResponse = response.body();
-                System.out.println("MeetingRoomBookResponse" + baseResponse.getResultCode());
 
-                openCheckoutDialog("Booking Succcessfull");
+                if (response.code()==200){
+                    if (response.body().getResultCode()!=null && response.body().getResultCode().equalsIgnoreCase("ok")){
+                        openCheckoutDialog("Booking Succcessfull");
+                        page = 1;
+                        callInitView();
+                    }else {
+                        Utils.showCustomAlertDialog(getActivity(),"Booking Not Updated "+response.body().getResultCode().toString());
+                    }
+                }else if (response.code() == 500){
+                    Utils.showCustomAlertDialog(getActivity(),"500 Response");
+                }else if (response.code() == 401){
+                    Utils.showCustomTokenExpiredDialog(getActivity(),"401 Error Response");
+                }else {
+                    Toast.makeText(getActivity(), "Response Failure", Toast.LENGTH_SHORT).show();
+                }
 
                 //ProgressDialog.dismisProgressBar(getContext(),dialog);
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                page = 1;
-                callInitView();
+
 
             }
 
@@ -2959,8 +2990,8 @@ RepeateDataAdapter.repeatInterface {
         rvCarEditList.setLayoutManager(linearLayoutManager);
         rvCarEditList.setHasFixedSize(true);
 
-//        CarListToEditAdapter carListToEditAdapter = new CarListToEditAdapter(getContext(), carParkingForEditResponse, this, code);
-//        rvCarEditList.setAdapter(carListToEditAdapter);
+        CarListToEditAdapter carListToEditAdapter = new CarListToEditAdapter(getContext(), carParkingForEditResponse.getCarParkBookings(), this, code);
+        rvCarEditList.setAdapter(carListToEditAdapter);
 
         editClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -3276,7 +3307,7 @@ RepeateDataAdapter.repeatInterface {
                 //removes desk in layout
                 binding.firstLayout.removeAllViews();
 
-                removeZoomInLayout();
+                //removeZoomInLayout();
 
                 initLoadFloorDetails(canvasss);
                 bottomSheetDialog.dismiss();
@@ -4079,19 +4110,22 @@ RepeateDataAdapter.repeatInterface {
 
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 BaseResponse baseResponse = response.body();
-                if (baseResponse != null) {
-//                    Toast.makeText(getContext(), baseResponse.getResultCode(), Toast.LENGTH_LONG).show();
-                    openCheckoutDialog("Booking Succcessfull");
 
-                    callInitView();
-
-
-                } else {
-                    Toast.makeText(getContext(), "Not Avaliable", Toast.LENGTH_LONG).show();
+                if (response.code()==200){
+                    if (response.body().getResultCode()!=null && response.body().getResultCode().equalsIgnoreCase("ok")){
+                        openCheckoutDialog("Booking Succcessfull");
+                        callInitView();
+                    }else {
+                        Utils.showCustomAlertDialog(getActivity(),"Booking Not Updated "+response.body().getResultCode().toString());
+                    }
+                }else if (response.code() == 500){
+                    Utils.showCustomAlertDialog(getActivity(),"500 Response");
+                }else if (response.code() == 401){
+                    Utils.showCustomTokenExpiredDialog(getActivity(),"401 Error Response");
+                }else {
+                    Toast.makeText(getActivity(), "Response Failure", Toast.LENGTH_SHORT).show();
                 }
 
-                //ProgressDialog.dismisProgressBar(getContext(), dialog);
-                System.out.println("BookingSuccessInLocate");
 
             }
 
@@ -4148,15 +4182,21 @@ RepeateDataAdapter.repeatInterface {
                 //ProgressDialog.dismisProgressBar(getContext(), dialog);
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 BaseResponse baseResponse = response.body();
-                if (baseResponse != null) {
-                    callInitView();
-                    openCheckoutDialog("Booking Succcessfull");
-                } else {
-                    Toast.makeText(getContext(), "Parking Not Avaliable", Toast.LENGTH_LONG).show();
+
+                if (response.code()==200){
+                    if (response.body().getResultCode()!=null && response.body().getResultCode().equalsIgnoreCase("ok")){
+                        openCheckoutDialog("Booking Succcessfull");
+                        callInitView();
+                    }else {
+                        Utils.showCustomAlertDialog(getActivity(),"Booking Not Updated "+response.body().getResultCode().toString());
+                    }
+                }else if (response.code() == 500){
+                    Utils.showCustomAlertDialog(getActivity(),"500 Response");
+                }else if (response.code() == 401){
+                    Utils.showCustomTokenExpiredDialog(getActivity(),"401 Error Response");
+                }else {
+                    Toast.makeText(getActivity(), "Response Failure", Toast.LENGTH_SHORT).show();
                 }
-                /*if(response.code()==200){
-                    Toast.makeText(getContext(),"Car Parking Booked Successfully",Toast.LENGTH_LONG).show();
-                }*/
 
             }
 
@@ -4358,22 +4398,25 @@ RepeateDataAdapter.repeatInterface {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
-
                 BaseResponse baseResponse = response.body();
-                if (baseResponse != null) {
-                    if (locateEditBottomSheet != null) {
-                        locateEditBottomSheet.dismiss();
-                    }
-                    callInitView();
-                    openCheckoutDialog("Booking Succcessfull");
 
-                } else {
-                    Toast.makeText(getContext(), "Not Avaliable" + baseResponse.getResultCode(), Toast.LENGTH_LONG).show();
+                if (response.code()==200){
+                    if (response.body().getResultCode()!=null && response.body().getResultCode().equalsIgnoreCase("ok")){
+                        openCheckoutDialog("Booking Succcessfull");
+                        callInitView();
+                    }else {
+                        Utils.showCustomAlertDialog(getActivity(),"Booking Not Updated "+response.body().getResultCode().toString());
+                    }
+                }else if (response.code() == 500){
+                    Utils.showCustomAlertDialog(getActivity(),"500 Response");
+                }else if (response.code() == 401){
+                    Utils.showCustomTokenExpiredDialog(getActivity(),"401 Error Response");
+                }else {
+                    Toast.makeText(getActivity(), "Response Failure", Toast.LENGTH_SHORT).show();
                 }
 
                 // ProgressDialog.dismisProgressBar(getContext(), dialog);
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                System.out.println("BookingSuccessInLocate");
 
             }
 
@@ -4418,7 +4461,7 @@ RepeateDataAdapter.repeatInterface {
     }
 
     @Override
-    public void onCarEditClick(CarParkListToEditResponse carParkBooking) {
+    public void onCarEditClick(CarParkingForEditResponse.CarParkBooking carParkBooking) {
 
         TextView startTime, endTime, date, editBookingBack;
 
@@ -4512,7 +4555,7 @@ RepeateDataAdapter.repeatInterface {
                 if (status) {
                     //Edit CarParkBooking
                     bottomSheetDialog.dismiss();
-//                    doEditCarParkBooking(carParkBooking, startTime.getText().toString(), endTime.getText().toString());
+                   doEditCarParkBooking(carParkBooking, startTime.getText().toString(), endTime.getText().toString());
                 }
 
 
@@ -4524,7 +4567,7 @@ RepeateDataAdapter.repeatInterface {
     }
 
     @Override
-    public void onCarDeleteClick(CarParkListToEditResponse carParkBooking) {
+    public void onCarDeleteClick(CarParkingForEditResponse.CarParkBooking carParkBooking) {
 
     }
 
@@ -4570,16 +4613,23 @@ RepeateDataAdapter.repeatInterface {
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                openCheckoutDialog("Success");
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+                BaseResponse baseResponse = response.body();
+
+                if (response.code()==200){
+                    if (response.body().getResultCode()!=null && response.body().getResultCode().equalsIgnoreCase("ok")){
+                        openCheckoutDialog("CarEditSuccessfull");
                         callInitView();
+                    }else {
+                        Utils.showCustomAlertDialog(getActivity(),"Booking Not Updated "+response.body().getResultCode().toString());
                     }
-                }, 2000);
-
-                System.out.println("CarEditSuccessfull");
+                }else if (response.code() == 500){
+                    Utils.showCustomAlertDialog(getActivity(),"500 Response");
+                }else if (response.code() == 401){
+                    Utils.showCustomTokenExpiredDialog(getActivity(),"401 Error Response");
+                }else {
+                    Toast.makeText(getActivity(), "Response Failure", Toast.LENGTH_SHORT).show();
+                }
 
             }
 
@@ -5198,10 +5248,21 @@ RepeateDataAdapter.repeatInterface {
 
                 binding.locateProgressBar.setVisibility(View.GONE);
 
-                openCheckoutDialog("MeetingEditSuccess");
-                System.out.println("MeetingRoomEdit");
+                if (response.code()==200){
+                    if (response.body().getResultCode()!=null && response.body().getResultCode().equalsIgnoreCase("ok")){
+                        openCheckoutDialog("MeetingEditSuccess");
+                        callInitView();
+                    }else {
+                        Utils.showCustomAlertDialog(getActivity(),"Booking Not Updated "+response.body().getResultCode().toString());
+                    }
+                }else if (response.code() == 500){
+                    Utils.showCustomAlertDialog(getActivity(),"500 Response");
+                }else if (response.code() == 401){
+                    Utils.showCustomTokenExpiredDialog(getActivity(),"401 Error Response");
+                }else {
+                    Toast.makeText(getActivity(), "Response Failure", Toast.LENGTH_SHORT).show();
+                }
 
-                callInitView();
 
             }
 

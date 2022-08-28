@@ -1,5 +1,6 @@
 package dream.guys.hotdeskandroid.ui.settings;
 
+import static dream.guys.hotdeskandroid.utils.Utils.dateWithDayString;
 import static dream.guys.hotdeskandroid.utils.Utils.getWellBeingScreenData;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,8 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,6 +26,8 @@ import dream.guys.hotdeskandroid.LanguageListActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.databinding.ActivitySettingsBinding;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
+import dream.guys.hotdeskandroid.model.request.ChangePasswordRequest;
+import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.ProfilePicResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import dream.guys.hotdeskandroid.ui.home.EditProfileActivity;
@@ -42,6 +47,7 @@ public class SettingsActivity extends AppCompatActivity {
     ActivitySettingsBinding binding;
     Context context;
     UserDetailsResponse profileData;
+    Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +93,73 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 checkPinPopUp();
+
+            }
+        });
+
+        binding.passwordResetBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog=new Dialog(SettingsActivity.this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                int width = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.80);
+                int height = (int) (context.getResources().getDisplayMetrics().heightPixels * 0.20);
+                dialog.setCancelable(true);
+                dialog.setContentView(R.layout.layout_change_password);
+                dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                EditText etCurrentPassword=dialog.findViewById(R.id.etCurrentPassword);
+                EditText etNewPassword=dialog.findViewById(R.id.etNewPassword);
+                EditText etConfirmPassword=dialog.findViewById(R.id.etConfirmPassword);
+
+                Button buttonChangePassword=dialog.findViewById(R.id.btnChangePasswordSubmit);
+                Button buttonChangePasswordCancel=dialog.findViewById(R.id.btnChangePasswordCancel);
+                buttonChangePasswordCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                buttonChangePassword.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String currentPassword=etCurrentPassword.getText().toString().trim();
+                        String newPassword=etNewPassword.getText().toString().trim();
+                        String confirmPassword=etConfirmPassword.getText().toString().trim();
+                        if(currentPassword!=null && newPassword.equalsIgnoreCase(confirmPassword)){
+
+                            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+                            ChangePasswordRequest changePasswordRequest=new ChangePasswordRequest(currentPassword,newPassword,confirmPassword);
+                            Call<BaseResponse> call=apiService.changePassword(changePasswordRequest);
+                            call.enqueue(new Callback<BaseResponse>() {
+                                @Override
+                                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                                    BaseResponse baseResponse=response.body();
+
+                                    dialog.dismiss();
+                                }
+
+                                @Override
+                                public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+                                }
+                            });
+
+
+                        }
+
+
+                    }
+                });
+
+
+
+
+
+                dialog.show();
+
+
 
             }
         });
@@ -141,12 +214,12 @@ public class SettingsActivity extends AppCompatActivity {
                 System.out.println("Base64Image"+profilePicResponse.getImage());
 
                 if(profilePicResponse.getImage()!=null) {
-                    String base64String = profilePicResponse.getImage();
+                    /*String base64String = profilePicResponse.getImage();
                     String base64Image = base64String.split(",")[1];
                     byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
-                    binding.ivViewPrifle.setImageBitmap(decodedByte);
+                    binding.ivViewPrifle.setImageBitmap(decodedByte);*/
                 }
 
             }

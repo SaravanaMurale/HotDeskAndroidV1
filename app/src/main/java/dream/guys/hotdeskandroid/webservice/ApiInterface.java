@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
+import dream.guys.hotdeskandroid.model.request.ChangePasswordRequest;
 import dream.guys.hotdeskandroid.model.request.CovidAnswerRequest;
 import dream.guys.hotdeskandroid.model.request.CreatePinRequest;
 import dream.guys.hotdeskandroid.model.request.DAODeskAccept;
@@ -359,6 +360,13 @@ public interface ApiInterface {
 
     @POST("api/requests/approvedesk")
     Call<BaseResponse> acceptDesk(@Body DAODeskAccept daoDeskAccept);
+
+    //To save firebase token
+    @POST("/push/register")
+    Call<BaseResponse> saveFirebaseToken();
+
+    @POST("api/Account/ChangePassword")
+    Call<BaseResponse> changePassword(@Body ChangePasswordRequest changePasswordRequest);
 
 }
 

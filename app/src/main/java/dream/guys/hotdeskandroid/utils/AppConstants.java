@@ -47,6 +47,7 @@ public class AppConstants {
     public static final String CAR_PARKING="5";
     public static final String NEW_FLOOR_POSITION="NEW_FLOOR_POSITION";
     public static final String LOGIN_RESPONSE = "LOGIN_RESPONSE";
+    public static final String SAVETOKEN="SAVETOKEN";
 
 
 

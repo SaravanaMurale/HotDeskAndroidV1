@@ -16,24 +16,23 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.CarParkListToEditResponse;
-import dream.guys.hotdeskandroid.model.response.CarParkingForEditResponse;
-import dream.guys.hotdeskandroid.ui.locate.LocateFragment;
 import dream.guys.hotdeskandroid.utils.Utils;
 
-public class CarListToEditAdapter extends RecyclerView.Adapter<CarListToEditAdapter.CarListToEditViewHolder> {
+public class CarListToEditAdapterBooking extends RecyclerView.Adapter<CarListToEditAdapterBooking.CarListToEditViewHolder>  {
 
     Context context;
-    List<CarParkingForEditResponse.CarParkBooking> carParkBookings;
-    public CarEditClickable carEditClickable;
+    List<CarParkListToEditResponse> carParkBookings;
+    public CarEditClickableBooking carEditClickable;
     private String code;
 
-    public  interface CarEditClickable{
-        public void onCarEditClick(CarParkingForEditResponse.CarParkBooking carParkBooking);
-        public void onCarDeleteClick(CarParkingForEditResponse.CarParkBooking carParkBooking);
+
+    public  interface CarEditClickableBooking{
+        public void onCarEditClicks(CarParkListToEditResponse carParkBooking);
+        public void onCarDeleteClicks(CarParkListToEditResponse carParkBooking);
     }
 
 
-    public CarListToEditAdapter(Context context, List<CarParkingForEditResponse.CarParkBooking> carParkBookings, CarEditClickable carEditClickable, String code) {
+    public CarListToEditAdapterBooking(Context context, List<CarParkListToEditResponse> carParkBookings, CarEditClickableBooking carEditClickable, String code) {
 
         this.context=context;
         this.carParkBookings=carParkBookings;
@@ -66,13 +65,13 @@ public class CarListToEditAdapter extends RecyclerView.Adapter<CarListToEditAdap
         holder.editTextEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                carEditClickable.onCarEditClick(carParkBookings.get(holder.getAbsoluteAdapterPosition()));
+                carEditClickable.onCarEditClicks(carParkBookings.get(holder.getAbsoluteAdapterPosition()));
             }
         });
         holder.editDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                carEditClickable.onCarDeleteClick(carParkBookings.get(holder.getAbsoluteAdapterPosition()));
+                carEditClickable.onCarDeleteClicks(carParkBookings.get(holder.getAbsoluteAdapterPosition()));
             }
         });
 
@@ -99,11 +98,11 @@ public class CarListToEditAdapter extends RecyclerView.Adapter<CarListToEditAdap
         TextView editTextEdit;
 
 
-
         public CarListToEditViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
     }
+
 
 }

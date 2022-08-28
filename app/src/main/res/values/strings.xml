@@ -141,6 +141,7 @@
     <string name="mobile">Mobile</string>
     <string name="wifi">Wifi</string>
     <string name="lan">Lan</string>
+    <string name="change_password">Change Password</string>
 
 
 </resources>
