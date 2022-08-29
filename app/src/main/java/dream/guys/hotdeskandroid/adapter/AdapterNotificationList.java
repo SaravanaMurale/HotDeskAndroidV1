@@ -22,8 +22,10 @@ import java.util.stream.Collectors;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.CovidQuestionsResponse;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
+import dream.guys.hotdeskandroid.ui.wellbeing.NotificationsListActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
@@ -31,6 +33,7 @@ import dream.guys.hotdeskandroid.utils.Utils;
 public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotificationList.viewHolder> {
 
     Context context;
+
     ArrayList<IncomingRequestResponse.Result> notiList;
     String page;
     int cIncoming,cOutGoing;
@@ -186,7 +189,22 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
         switch (notiList.get(position).getEntityType()){
             case 3:
                 holder.imgEntity.setImageDrawable(context.getDrawable(R.drawable.chair));
-                holder.tvDesk.setText(notiList.get(position).getDeskTeam());
+                if (notiList.get(position).getDeskCode().equalsIgnoreCase("")||notiList.get(position).getDeskCode().isEmpty()){
+                    List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities = new ArrayList<>();
+                    teamDeskAvailabilities = ((NotificationsListActivity) context).bookingDeskList;
+                    System.out.println("deaasdasd"+teamDeskAvailabilities.size());
+
+                    loop:
+                    for (int i=0; i <teamDeskAvailabilities.size();i++){
+                        if (notiList.get(position).getRequestedTeamDeskId() == teamDeskAvailabilities.get(i).getTeamDeskId()){
+                            holder.tvDesk.setText(teamDeskAvailabilities.get(i).getDeskCode());
+                            break loop;
+                        }
+                    }
+
+                } else {
+                    holder.tvDesk.setText(notiList.get(position).getDeskCode());
+                }
                 holder.tvAddress.setText(notiList.get(position).getDeskTeam());
                 break;
             case 4:
@@ -212,6 +230,14 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
 
                     if (accRejInterface!=null){
                         accRejInterface.clickEvents(id,reqTeamId,entity, AppConstants.ACCEPT);
+                    }
+                } else if (notiList.get(pos).getEntityType()==5){
+                    int id = notiList.get(pos).getId();
+//                    int reqTeamId = notiList.get(pos).getRequestedTeamDeskId();
+                    int entity = notiList.get(pos).getEntityType();
+
+                    if (accRejInterface!=null){
+                        accRejInterface.clickEvents(id,0,entity, AppConstants.ACCEPT);
                     }
                 }
             }

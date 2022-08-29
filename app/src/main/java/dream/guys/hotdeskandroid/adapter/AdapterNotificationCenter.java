@@ -138,7 +138,7 @@ public class AdapterNotificationCenter extends RecyclerView.Adapter<AdapterNotif
         switch (notiList.get(position).getEntityType()){
             case 3:
                 holder.imgEntity.setImageDrawable(context.getDrawable(R.drawable.chair));
-                holder.tvDesk.setText(notiList.get(position).getDeskTeam());
+                holder.tvDesk.setText(notiList.get(position).getDeskCode());
                 holder.tvAddress.setText(notiList.get(position).getDeskTeam());
                 break;
             case 4:

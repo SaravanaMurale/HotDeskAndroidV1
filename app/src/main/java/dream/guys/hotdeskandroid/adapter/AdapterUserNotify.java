@@ -134,7 +134,7 @@ public class AdapterUserNotify extends RecyclerView.Adapter<AdapterUserNotify.vi
         switch (notiList.get(position).getEntityType()){
             case 3:
                 holder.imgEntity.setImageDrawable(context.getDrawable(R.drawable.chair));
-                holder.tvDesk.setText(notiList.get(position).getDeskTeam());
+                holder.tvDesk.setText(notiList.get(position).getDeskCode());
                 holder.tvAddress.setText(notiList.get(position).getDeskTeam());
                 break;
             case 4:
@@ -148,7 +148,6 @@ public class AdapterUserNotify extends RecyclerView.Adapter<AdapterUserNotify.vi
                 holder.tvAddress.setText(notiList.get(position).getLocationName());
                 break;
         }
-
     }
 
     @Override

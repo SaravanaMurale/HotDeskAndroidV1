@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -35,6 +36,7 @@ import dream.guys.hotdeskandroid.adapter.AdapterNotificationList;
 import dream.guys.hotdeskandroid.model.request.DAODeskAccept;
 import dream.guys.hotdeskandroid.model.request.DAODeskReject;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.ui.notify.NotificationCenterActivity;
 import dream.guys.hotdeskandroid.ui.notify.NotificationManageActivity;
@@ -67,12 +69,16 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
     Context context;
     ProgressBar locateProgressBar;
 
+
+    List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponseDesk=new ArrayList<>();
+    public List<BookingForEditResponse.TeamDeskAvailabilities> bookingDeskList=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notifications_list);
 
         uiInit();
+        getDeskList("0",Utils.getCurrentDate());
         context = NotificationsListActivity.this;
 
         if (SessionHandler.getInstance().get(context,AppConstants.ROLE)!=null &&
@@ -180,7 +186,7 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
                 }else if (entity == 5) {
                     Map<String, String> params = new HashMap<>();
                     params.put("", String.valueOf(id));
-                    callParkingAccept(params);
+                    callParkingAccept(String.valueOf(id));
                 }
                 break;
 
@@ -191,7 +197,7 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
 
     }
 
-    private void callParkingAccept(Map<String, String> params) {
+    private void callParkingAccept(String params) {
         locateProgressBar.setVisibility(View.VISIBLE);
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
@@ -395,7 +401,8 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
         locateProgressBar.setVisibility(View.VISIBLE);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<IncomingRequestResponse> call = apiService.getIncomingRequest(true);
+//        Call<IncomingRequestResponse> call = apiService.getIncomingRequest(true);
+        Call<IncomingRequestResponse> call = apiService.getIncomingRequest(false);
         call.enqueue(new Callback<IncomingRequestResponse>() {
             @Override
             public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {
@@ -429,10 +436,44 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
         });
     }
 
+    private void getDeskList(String code,String date) {
+        if (Utils.isNetworkAvailable(this)) {
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+            Call<List<BookingForEditResponse.TeamDeskAvailabilities>> call = apiService.getTeamDeskAvailability(
+                    SessionHandler.getInstance().getInt(NotificationsListActivity.this, AppConstants.TEAM_ID),
+                    date,
+                    date);
+
+            call.enqueue(new Callback<List<BookingForEditResponse.TeamDeskAvailabilities>>() {
+                @Override
+                public void onResponse(Call<List<BookingForEditResponse.TeamDeskAvailabilities>> call, Response<List<BookingForEditResponse.TeamDeskAvailabilities>> response) {
+                    bookingDeskList.clear();
+                    bookingDeskList = response.body();
+//                    bookingDeskList = response.body().getTeamDeskAvailabilities();
+//                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    System.out.println("dasdadas"+bookingDeskList.size());
+                }
+
+                @Override
+                public void onFailure(Call<List<BookingForEditResponse.TeamDeskAvailabilities>> call, Throwable t) {
+//                    deepLinking();
+
+                }
+            });
+
+
+        } else {
+            Utils.toastMessage(NotificationsListActivity.this, "Please Enable Internet");
+        }
+
+    }
     private void callOutGoingNotification() {
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<IncomingRequestResponse> call = apiService.getOutgoingRequest(true);
+//        Call<IncomingRequestResponse> call = apiService.getOutgoingRequest(true);
+        Call<IncomingRequestResponse> call = apiService.getOutgoingRequest(false);
         call.enqueue(new Callback<IncomingRequestResponse>() {
             @Override
             public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {

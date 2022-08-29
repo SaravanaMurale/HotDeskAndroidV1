@@ -199,6 +199,11 @@ public interface ApiInterface {
                                                     @Query("fromDate") String fromTime,
                                                     @Query("toDate") String toTime);
 
+    @GET("api/booking/teamDeskAvailability")
+    Call<List<BookingForEditResponse.TeamDeskAvailabilities>> getTeamDeskAvailability(@Query("teamId") int parentId,
+                                                    @Query("fromDate") String fromTime,
+                                                    @Query("toDate") String toTime);
+
 
     @GET("api/locate/ImmediateChildLocations")
     Call<List<String>> getItemJsonObject(@Query("parentId") int parentId);
@@ -375,7 +380,7 @@ public interface ApiInterface {
     Call<BaseResponse> rejectParking(@Body DAODeskReject daoDeskReject);
 
     @POST("api/requests/approveps")
-    Call<BaseResponse> acceptParking(@FieldMap Map<String, String> params);
+    Call<BaseResponse> acceptParking(@Body String params);
 
 }
 

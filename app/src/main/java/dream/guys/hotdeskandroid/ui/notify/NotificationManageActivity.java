@@ -121,7 +121,7 @@ public class NotificationManageActivity extends AppCompatActivity {
         Map<String, String> params = new HashMap<>();
         params.put("", String.valueOf(id));
 
-        Call<BaseResponse> call = apiService.acceptParking(params);
+        Call<BaseResponse> call = apiService.acceptParking(String.valueOf(id));
         call.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
@@ -331,7 +331,7 @@ public class NotificationManageActivity extends AppCompatActivity {
         binding.locateProgressBar.setVisibility(View.VISIBLE);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<IncomingRequestResponse> call = apiService.getIncomingRequest(true);
+        Call<IncomingRequestResponse> call = apiService.getIncomingRequest(false);
         call.enqueue(new Callback<IncomingRequestResponse>() {
             @Override
             public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {

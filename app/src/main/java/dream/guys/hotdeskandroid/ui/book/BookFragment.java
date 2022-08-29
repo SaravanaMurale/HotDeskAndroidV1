@@ -907,7 +907,6 @@ public class BookFragment extends Fragment implements
                 editDeskBookingDetails.getDate(),
                 editDeskBookingDetails.getMeetingRoomtId(),
                 0,"edit");
-
     }
 
     @Override

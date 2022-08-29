@@ -89,13 +89,13 @@
                 <EditText
                     android:id="@+id/serach_bar"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_30sdp"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@id/close"
+                    android:layout_toRightOf="@+id/search_ic"
                     android:backgroundTint="@color/white"
                     android:hint="Search"
-                    android:inputType="text"
-                    android:layout_toRightOf="@+id/search_ic"/>
+                    android:inputType="text" />
 
                 <ImageView
                     android:id="@+id/close"
