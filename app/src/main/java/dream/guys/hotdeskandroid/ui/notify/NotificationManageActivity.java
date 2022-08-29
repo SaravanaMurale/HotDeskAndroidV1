@@ -16,8 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.AdapterNotificationCenter;
@@ -30,6 +33,7 @@ import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
 import dream.guys.hotdeskandroid.ui.wellbeing.NotificationsListActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
@@ -44,6 +48,8 @@ public class NotificationManageActivity extends AppCompatActivity {
     Context context;
     AdapterNotificationList adapterNotificationList;
     int cIncoming;
+
+    ArrayList<IncomingRequestResponse.Result> incomingList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +131,7 @@ public class NotificationManageActivity extends AppCompatActivity {
                 if (response.body()!=null) {
                     if (response.code() == 200){
                         Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+                        callIncomingNotification();
                     }else if(response.code() == 400){
                         Log.d("ACCEPT","Logout");
                     }else {
@@ -162,6 +169,7 @@ public class NotificationManageActivity extends AppCompatActivity {
                 if (response.body()!=null) {
                     if (response.code() == 200){
                         Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+                        callIncomingNotification();
                     }else if(response.code() == 400){
                         Log.d("ACCEPT","Logout");
                     }else {
@@ -199,6 +207,7 @@ public class NotificationManageActivity extends AppCompatActivity {
                 if (response.body()!=null) {
                     if (response.code() == 200){
                         Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+                        callIncomingNotification();
                     }else if(response.code() == 400){
                         Log.d("ACCEPT","Logout");
                     }else {
@@ -235,6 +244,7 @@ public class NotificationManageActivity extends AppCompatActivity {
                 if (response.body()!=null) {
                     if (response.code() == 200){
                         Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+                        callIncomingNotification();
                     }else if(response.code() == 400){
                         Log.d("REJECT","Logout");
                     }else {
@@ -313,6 +323,53 @@ public class NotificationManageActivity extends AppCompatActivity {
         dialog.show();
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
+    }
+
+
+    private void callIncomingNotification() {
+
+        binding.locateProgressBar.setVisibility(View.VISIBLE);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<IncomingRequestResponse> call = apiService.getIncomingRequest(true);
+        call.enqueue(new Callback<IncomingRequestResponse>() {
+            @Override
+            public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {
+                if(response.code()==200){
+                    if (response.body()!=null && response.body().getResults()!=null){
+                        incomingList = new ArrayList<>();
+                        incomingList.addAll(response.body().getResults());
+
+                        incomingList.replaceAll(val ->{
+                            val.setIncoming("incoming");
+                            return val;
+                        });
+                        incomingList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
+
+                        notiList = new ArrayList<>();
+                        notiList = (ArrayList<IncomingRequestResponse.Result>) incomingList.stream().filter(val -> val.getStatus() == 0).collect(Collectors.toList());
+                        IncomingRequestResponse.Result result = new IncomingRequestResponse.Result(0);
+
+                        if (notiList.size()>0){
+                            cIncoming = Collections.frequency(notiList, result);
+                            setAdapter();
+                        }
+
+
+                    }else {
+                    }
+                }else if(response.code()==401){
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    Utils.showCustomTokenExpiredDialog(NotificationManageActivity.this,"Token Expired");
+                    SessionHandler.getInstance().saveBoolean(context, AppConstants.LOGIN_CHECK,false);
+//                        Utils.finishAllActivity(getContext());
+                }
+            }
+            @Override
+            public void onFailure(Call<IncomingRequestResponse> call, Throwable t) {
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
 

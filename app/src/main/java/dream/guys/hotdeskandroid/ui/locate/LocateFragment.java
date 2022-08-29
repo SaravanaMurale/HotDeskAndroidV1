@@ -1272,6 +1272,7 @@ RepeateDataAdapter.repeatInterface {
 
                                                 //checkMeetingRoomAvailablity(lMatches);
 
+
                                                 if (id == lMatches.getMatchesId()) {
 
                                                     //GetCurrentDate and Add OffsetTime
@@ -1281,7 +1282,7 @@ RepeateDataAdapter.repeatInterface {
                                                     if (dateComparsionResult == 1) {
                                                         System.out.println("MeetingBookingUnavaliable");
                                                         meetingStatusModel = new MeetingStatusModel(key, id, code, 0);
-                                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
+                                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_booked));
                                                         //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
                                                         //deskStatusModel=new DeskStatusModel(key,id,code,0);
                                                     } else {

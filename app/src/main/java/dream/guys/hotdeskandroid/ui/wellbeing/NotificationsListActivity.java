@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.adapter.AdapterNotificationCenter;
 import dream.guys.hotdeskandroid.adapter.AdapterNotificationList;
 import dream.guys.hotdeskandroid.model.request.DAODeskAccept;
 import dream.guys.hotdeskandroid.model.request.DAODeskReject;
@@ -85,19 +86,25 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
             @Override
             public void onClick(View view) {
 
-                ArrayList<IncomingRequestResponse.Result> manageList = new ArrayList<>();
+                if (notiList.size()>0){
+                    ArrayList<IncomingRequestResponse.Result> manageList = new ArrayList<>();
 
-                manageList = (ArrayList<IncomingRequestResponse.Result>) notiList.stream().filter(val -> val.getStatus() == 0).collect(Collectors.toList());
-                IncomingRequestResponse.Result result = new IncomingRequestResponse.Result(0);
+                    manageList = (ArrayList<IncomingRequestResponse.Result>) notiList.stream().filter(val -> val.getStatus() == 0).collect(Collectors.toList());
+                    IncomingRequestResponse.Result result = new IncomingRequestResponse.Result(0);
 
-                ArrayList<IncomingRequestResponse.Result> inComingList = new ArrayList<>();
-                inComingList = (ArrayList<IncomingRequestResponse.Result>) manageList.stream().filter(val -> val.getIncoming().equalsIgnoreCase("incoming")).collect(Collectors.toList());
+                    ArrayList<IncomingRequestResponse.Result> inComingList = new ArrayList<>();
+                    inComingList = (ArrayList<IncomingRequestResponse.Result>) manageList.stream().filter(val -> val.getIncoming().equalsIgnoreCase("incoming")).collect(Collectors.toList());
 
-                int c = Collections.frequency(inComingList, result);
-                Intent intent = new Intent(NotificationsListActivity.this, NotificationManageActivity.class);
-                intent.putExtra(AppConstants.SHOWNOTIFICATION,inComingList);
-                intent.putExtra(AppConstants.INCOMING,c);
-                startActivity(intent);
+                    if (inComingList!=null && inComingList.size()>0){
+
+                        int c = Collections.frequency(inComingList, result);
+                        Intent intent = new Intent(NotificationsListActivity.this, NotificationManageActivity.class);
+                        intent.putExtra(AppConstants.SHOWNOTIFICATION,inComingList);
+                        intent.putExtra(AppConstants.INCOMING,c);
+                        startActivity(intent);
+                    }else {
+                        Toast.makeText(context, "No Incoming Notifications", Toast.LENGTH_SHORT).show();
+                    }
 
                 /*for (int i=0;i<notiList.size();i++) {
 
@@ -106,6 +113,10 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
                     }
 
                 }*/
+
+                }else {
+                    Toast.makeText(context, "No Incoming Notifications", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -127,9 +138,9 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
         profile_back = findViewById(R.id.profile_back);
         locateProgressBar = findViewById(R.id.locateProgressBar);
 
-        Intent intent = getIntent();
+        //Intent intent = getIntent();
 
-        if (intent!=null) {
+        /*if (intent!=null) {
 
             notiList = (ArrayList<IncomingRequestResponse.Result>) intent.getSerializableExtra(AppConstants.SHOWNOTIFICATION);
             IncomingList = (ArrayList<IncomingRequestResponse.Result>) intent.getSerializableExtra("IncomingList");
@@ -147,7 +158,7 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
             adapterNotificationList = new AdapterNotificationList(NotificationsListActivity.this,notiList,"",cIncoming,cOutGoing,this);
             recyclerView.setAdapter(adapterNotificationList);
 
-        }
+        }*/
 
 
     }
@@ -194,6 +205,7 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
                 if (response.body()!=null) {
                     if (response.code() == 200){
                         Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+                        callIncomingNotification();
                     }else if(response.code() == 400){
                         Log.d("ACCEPT","Logout");
                     }else {
@@ -223,6 +235,7 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
                 if (response.body()!=null) {
                     if (response.code() == 200){
                         Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+                        callIncomingNotification();
                     }else if(response.code() == 400){
                         Log.d("ACCEPT","Logout");
                     }else {
@@ -303,6 +316,7 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
                 if (response.body()!=null) {
                     if (response.code() == 200){
                         Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+                        callIncomingNotification();
                     }else if(response.code() == 400){
                         Log.d("REJECT","Logout");
                     }else {
@@ -338,6 +352,7 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
                 if (response.body()!=null) {
                     if (response.code() == 200){
                         Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+                        callIncomingNotification();
                     }else if(response.code() == 400){
                         Log.d("ACCEPT","Logout");
                     }else {
@@ -356,5 +371,154 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
         });
 
     }
+    
+    
+    //New...
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        if (SessionHandler.getInstance().get(context,AppConstants.ROLE)!=null &&
+                SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase("Administrator")){
+            //Call both API's...
+            callIncomingNotification();
+        }else {
+            //Outgoing Only...
+            callOutGoingNotification();
+        }
+    }
+
+    
+    private void callIncomingNotification() {
+
+        locateProgressBar.setVisibility(View.VISIBLE);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<IncomingRequestResponse> call = apiService.getIncomingRequest(true);
+        call.enqueue(new Callback<IncomingRequestResponse>() {
+            @Override
+            public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {
+                if(response.code()==200){
+                    IncomingList = new ArrayList<>();
+                    if (response.body()!=null && response.body().getResults()!=null){
+                        IncomingList.addAll(response.body().getResults());
+
+                        IncomingList.replaceAll(val ->{
+                            val.setIncoming("incoming");
+                            return val;
+                        });
+                        IncomingList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
+
+                        callOutGoingNotification();
+
+                    }else {
+                        callOutGoingNotification();
+                    }
+                }else if(response.code()==401){
+                    locateProgressBar.setVisibility(View.INVISIBLE);
+                    Utils.showCustomTokenExpiredDialog(NotificationsListActivity.this,"Token Expired");
+                    SessionHandler.getInstance().saveBoolean(context, AppConstants.LOGIN_CHECK,false);
+//                        Utils.finishAllActivity(getContext());
+                }
+            }
+            @Override
+            public void onFailure(Call<IncomingRequestResponse> call, Throwable t) {
+                locateProgressBar.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
+    private void callOutGoingNotification() {
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<IncomingRequestResponse> call = apiService.getOutgoingRequest(true);
+        call.enqueue(new Callback<IncomingRequestResponse>() {
+            @Override
+            public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {
+                if(response.code()==200){
+                    locateProgressBar.setVisibility(View.INVISIBLE);
+                    OutGoingList = new ArrayList<>();
+                    if (response.body()!=null && response.body().getResults()!=null){
+
+                        OutGoingList.addAll(response.body().getResults());
+
+                        OutGoingList.replaceAll(val ->{
+                            val.setIncoming("outgoing");
+                            return val;
+                        });
+
+                        OutGoingList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
+
+                        setAdapter();
+
+                    }else {
+                        setAdapter();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<IncomingRequestResponse> call, Throwable t) {
+                locateProgressBar.setVisibility(View.INVISIBLE);
+                setAdapter();
+            }
+        });
+    }
+
+    private void setAdapter() {
+
+        //ArrayList<IncomingRequestResponse.Result> notyManageList = new ArrayList<>();
+        //int cIncoming = 0,cOutGoing = 0;
+
+
+        if (SessionHandler.getInstance().get(context,AppConstants.ROLE)!=null &&
+                SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase("Administrator")){
+
+            notiList = new ArrayList<>();
+
+            if (OutGoingList!=null && OutGoingList.size()>0){
+                OutGoingList.get(0).setTitle(true);
+                notiList.addAll(OutGoingList);
+
+                IncomingRequestResponse.Result result = new IncomingRequestResponse.Result(0);
+                cOutGoing = Collections.frequency(OutGoingList, result); //outgoing.size();
+            }
+
+            if (IncomingList!=null && IncomingList.size()>0){
+                IncomingList.get(0).setTitle(true);
+                notiList.addAll(IncomingList);
+
+                IncomingRequestResponse.Result result = new IncomingRequestResponse.Result(0);
+
+                cIncoming = Collections.frequency(IncomingList, result); //incoming.size();
+            }
+
+            if (notiList.size()>0){
+                adapterNotificationList = new AdapterNotificationList(NotificationsListActivity.this,notiList,"",cIncoming,cOutGoing,this);
+                recyclerView.setAdapter(adapterNotificationList);
+            }
+
+        }else {
+
+            notiList = new ArrayList<>();
+
+            if (OutGoingList!=null && OutGoingList.size()>0){
+                OutGoingList.get(0).setTitle(true);
+                notiList.addAll(OutGoingList);
+
+                IncomingRequestResponse.Result result = new IncomingRequestResponse.Result(0);
+                cOutGoing = Collections.frequency(OutGoingList, result); //outgoing.size();
+
+                if (notiList.size()>0){
+                    adapterNotificationList = new AdapterNotificationList(NotificationsListActivity.this,notiList,"",cIncoming,cOutGoing,this);
+                    recyclerView.setAdapter(adapterNotificationList);
+                }
+
+            }
+
+        }
+
+    }
+    
+    
 }

@@ -91,7 +91,7 @@ public class UserNotificationActivity extends AppCompatActivity {
                                 SessionHandler.getInstance().saveBoolean(context, AppConstants.SHOWNOTIFICATION,false);
                             }
                         notiList.replaceAll(val ->{
-                            val.setIncoming("incoming");
+                            val.setIncoming("outgoing");
                             return val;
                         });
                         notiList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
