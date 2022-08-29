@@ -133,7 +133,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     int teamId=0,teamMembershipId=0,selectedDeskId=0;
     ArrayList<BookingListResponse.DayGroup> recyclerModelArrayList;
     ArrayList<IncomingRequestResponse.Result> notiList;
-    List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse;
+    List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse=new ArrayList<>();
     HashMap<Integer,String> meetingRecurenceMap = new HashMap<Integer, String>();
     public boolean qrEnabled = false;
     private static final int PERMISSION_REQUEST_CODE = 1;
@@ -787,7 +787,13 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 @Override
                 public void onResponse(Call<BookingForEditResponse> call, Response<BookingForEditResponse> response) {
                     if (response.code()==200){
-                        bookingForEditResponse = response.body().getTeamDeskAvailabilities();
+                        bookingForEditResponse.clear();
+                        for (int i=0; i<response.body().getTeamDeskAvailabilities().size(); i++){
+                            if(!response.body().getTeamDeskAvailabilities().get(i).isBookedByElse()){
+                                bookingForEditResponse.add(response.body().getTeamDeskAvailabilities().get(i));
+                            }
+                        }
+//                        bookingForEditResponse = response.body().getTeamDeskAvailabilities();
                         for (int i=0;i<bookingForEditResponse.size();i++){
                             System.out.println("desk Code Check"+bookingForEditResponse.get(i).getDeskCode());
 

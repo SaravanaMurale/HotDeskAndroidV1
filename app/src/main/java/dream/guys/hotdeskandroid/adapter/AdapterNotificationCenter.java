@@ -58,8 +58,8 @@ public class AdapterNotificationCenter extends RecyclerView.Adapter<AdapterNotif
         holder.tvUserName.setText(notiList.get(position).getRequesterName());
         holder.tvUserTeam.setText(notiList.get(position).getRequesterTeam());
         holder.txt_date.setText(Utils.dateWithDayString(Utils.splitDate(notiList.get(position).getRequestedDate())));
-        holder.CheckInTime.setText(Utils.splitTime(notiList.get(position).getFromUtc()));
-        holder.CheckOutTime.setText(Utils.splitTime(notiList.get(position).getToUtc()));
+        holder.CheckInTime.setText(Utils.splitTime(notiList.get(position).getFrom()));
+        holder.CheckOutTime.setText(Utils.splitTime(notiList.get(position).getTo()));
 
         switch (notiList.get(position).getStatus()){
             case 0:

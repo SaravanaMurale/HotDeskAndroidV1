@@ -440,7 +440,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         Gson gson = new Gson();
         String json = gson.toJson(profileData);
         SessionHandler.getInstance().save(EditProfileActivity.this,AppConstants.LOGIN_RESPONSE,json);
-        Toast.makeText(EditProfileActivity.this, "Success", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(EditProfileActivity.this, "Success", Toast.LENGTH_SHORT).show();
     }
 
     private void makeEnable() {

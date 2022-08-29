@@ -88,7 +88,8 @@ public class NotificationCenterActivity extends AppCompatActivity {
     private void callOutGoingNotification() {
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<IncomingRequestResponse> call = apiService.getOutgoingRequest(true);
+//        Call<IncomingRequestResponse> call = apiService.getOutgoingRequest(true);
+        Call<IncomingRequestResponse> call = apiService.getOutgoingRequest(false);
         call.enqueue(new Callback<IncomingRequestResponse>() {
             @Override
             public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {
@@ -139,7 +140,8 @@ public class NotificationCenterActivity extends AppCompatActivity {
         binding.locateProgressBar.setVisibility(View.VISIBLE);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<IncomingRequestResponse> call = apiService.getIncomingRequest(true);
+//        Call<IncomingRequestResponse> call = apiService.getIncomingRequest(true);
+        Call<IncomingRequestResponse> call = apiService.getIncomingRequest(false);
         call.enqueue(new Callback<IncomingRequestResponse>() {
             @Override
             public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {

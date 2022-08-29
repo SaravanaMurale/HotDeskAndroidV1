@@ -37,8 +37,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/company_name"
-                android:text="dreamguys"
-                android:inputType="text" />
+                android:inputType="text"
+                android:text="" />
 
             <EditText
                 android:id="@+id/etEmail"
@@ -48,7 +48,7 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
-                android:text="bcds-m@yopmail.com" />
+                android:text="" />
 
             <EditText
                 android:id="@+id/etPassword"
@@ -57,7 +57,7 @@
                 android:layout_below="@+id/etEmail"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:hint="@string/password"
-                android:text="Pwd.123"
+                android:text=""
                 android:inputType="textPassword" />
 
             <Button

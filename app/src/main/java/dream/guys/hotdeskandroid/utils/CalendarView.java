@@ -284,7 +284,7 @@ public class CalendarView extends LinearLayout
 //            if (month !=  currentDate.get(Calendar.MONTH) || year !=  currentDate.get(Calendar.YEAR)) {
 //                ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGrey));
 //            }
-
+            System.out.println("mont check"+month+" "+today.getMonth());
             if (day == today.getDate() && month==today.getMonth()) {
                 ((TextView) dateBox).setTypeface(null, Typeface.BOLD);
                 ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.figmaBlack));
@@ -309,6 +309,7 @@ public class CalendarView extends LinearLayout
                     int value = this.previousMonthMaxDays - Integer.parseInt(currentDay) + position + 1;
 //                date.setText(String.valueOf(value));
                     dateBox.setTextColor(Color.rgb(166, 166, 166));
+                    ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.white));
                     count.setVisibility(GONE);
                 }
 
@@ -319,6 +320,7 @@ public class CalendarView extends LinearLayout
                     int value = this.previousMonthMaxDays - firstDayOfMonth + position + 1;
 //                date.setText(String.valueOf(value));
                     dateBox.setTextColor(Color.rgb(166, 166, 166));
+                    ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.white));
                     count.setVisibility(GONE);
                 }
             }
@@ -342,6 +344,7 @@ public class CalendarView extends LinearLayout
             if (position >= maxNumberOfDays + firstDayOfMonth) {
                 int value = position - (maxNumberOfDays + firstDayOfMonth - 1);
                 dateBox.setTextColor(Color.rgb(166, 166, 166));
+                ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.white));
                 dateBox.setVisibility(GONE);
                 count.setVisibility(GONE);
             }
