@@ -25,9 +25,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HotDeskAndroid">
         <activity
+            android:name=".ui.settings.CountryListActivity"
+            android:exported="false" />
+        <activity
             android:name=".DeepLinkActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".ui.notify.UserNotifyReqActivity"
             android:exported="false" />
@@ -209,8 +211,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="http"
-                    android:host="www.example.com" />
+                    android:host="www.example.com"
+                    android:scheme="http" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -219,8 +221,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="http"
-                    android:host="example" />
+                    android:host="example"
+                    android:scheme="http" />
             </intent-filter>
 
             <!-- Accept chrome links -->
@@ -286,7 +288,6 @@
             </intent-filter>
         </activity>
 
-
         <service
             android:name=".utils.FirebaseNotificationService"
             android:exported="false">
@@ -294,8 +295,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-
         <!--
 <activity
             android:name=".ui.wellbeing.CovidCertificationActivity"

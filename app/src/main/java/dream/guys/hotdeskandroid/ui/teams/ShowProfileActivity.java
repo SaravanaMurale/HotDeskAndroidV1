@@ -234,6 +234,8 @@ public class ShowProfileActivity extends AppCompatActivity {
         binding.txtTeam.setText(results.getTeam());
         binding.tvEditEmail.setText(results.getEmail());
 
+        binding.txtTname.setText(results.getTeam());
+
     }
 
     private void createRecyclerList(TeamMembersResponse bookingListResponses) {

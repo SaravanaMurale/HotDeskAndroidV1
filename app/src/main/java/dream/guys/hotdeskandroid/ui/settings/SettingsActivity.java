@@ -207,15 +207,17 @@ public class SettingsActivity extends AppCompatActivity {
 
                 ProfilePicResponse profilePicResponse=response.body();
 
-                System.out.println("Base64Image"+profilePicResponse.getImage());
+                //System.out.println("Base64Image"+profilePicResponse.getImage());
 
-                if(profilePicResponse.getImage()!=null && !profilePicResponse.getImage().equalsIgnoreCase("") && !profilePicResponse.getImage().isEmpty()) {
-                    /*String base64String = profilePicResponse.getImage();
+                if(profilePicResponse.getImage()!=null &&
+                        !profilePicResponse.getImage().equalsIgnoreCase("") &&
+                        !profilePicResponse.getImage().isEmpty() ) {
+                    String base64String = profilePicResponse.getImage();
                     String base64Image = base64String.split(",")[1];
                     byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
-                    binding.ivViewPrifle.setImageBitmap(decodedByte);*/
+                    binding.ivViewPrifle.setImageBitmap(decodedByte);
                 }
 
             }

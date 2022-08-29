@@ -239,6 +239,14 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
                     if (accRejInterface!=null){
                         accRejInterface.clickEvents(id,0,entity, AppConstants.ACCEPT);
                     }
+                }else if (notiList.get(pos).getEntityType()==4){
+                    int id = notiList.get(pos).getId();
+//                    int reqTeamId = notiList.get(pos).getRequestedTeamDeskId();
+                    int entity = notiList.get(pos).getEntityType();
+
+                    if (accRejInterface!=null){
+                        accRejInterface.clickEvents(id,0,entity, AppConstants.ACCEPT);
+                    }
                 }
             }
         });
@@ -257,6 +265,22 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
                         accRejInterface.clickEvents(id,reqTeamId,entity, AppConstants.REJECT);
                     }
 
+                }else if (notiList.get(pos).getEntityType()==5){
+                    int id = notiList.get(pos).getId();
+//                    int reqTeamId = notiList.get(pos).getRequestedTeamDeskId();
+                    int entity = notiList.get(pos).getEntityType();
+
+                    if (accRejInterface!=null){
+                        accRejInterface.clickEvents(id,0,entity, AppConstants.REJECT);
+                    }
+                } else if (notiList.get(pos).getEntityType()==4){
+                    int id = notiList.get(pos).getId();
+//                    int reqTeamId = notiList.get(pos).getRequestedTeamDeskId();
+                    int entity = notiList.get(pos).getEntityType();
+
+                    if (accRejInterface!=null){
+                        accRejInterface.clickEvents(id,0,entity, AppConstants.REJECT);
+                    }
                 }
 
             }
