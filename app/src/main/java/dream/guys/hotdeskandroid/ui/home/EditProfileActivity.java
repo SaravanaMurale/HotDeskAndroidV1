@@ -35,10 +35,12 @@ import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.EditDefaultAssetAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityEditProfileBinding;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.DAOCountryList;
 import dream.guys.hotdeskandroid.model.response.DefaultAssetResponse;
 import dream.guys.hotdeskandroid.model.response.ProfilePicResponse;
 import dream.guys.hotdeskandroid.model.response.TeamDeskResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
+import dream.guys.hotdeskandroid.ui.settings.CountryListActivity;
 import dream.guys.hotdeskandroid.ui.wellbeing.NotificationActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -57,6 +59,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     public static final int REQUEST_IMAGE = 100;
 
     String encodedImage;
+    ArrayList<DAOCountryList> countryList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +76,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             profileData = gson.fromJson(json, UserDetailsResponse.class);
         }
 
+        getCountry();
 
         binding.tvUpdateImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,6 +177,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             binding.editVehicleNum.setText(profileData.getVehicleRegNumber());
             binding.tvEditTel.setText(profileData.getDeskPhoneNumber());
 
+
         }
 
         binding.editDefaultLocaton.setOnClickListener(new View.OnClickListener() {
@@ -180,6 +185,14 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             public void onClick(View view) {
                 /*Intent intent = new Intent(EditProfileActivity.this,EditProfileActivity.class);
                 startActivity(intent);*/
+            }
+        });
+
+        binding.changeCountry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(EditProfileActivity.this, CountryListActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -458,6 +471,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.tvEditTeams.setEnabled(true);
         binding.editVehicleNum.setEnabled(true);
         binding.tvEditTel.setEnabled(true);
+        binding.changeCountry.setEnabled(true);
 
         if (profileData!=null && profileData.getHighestRole()!=null &&
                 profileData.getHighestRole().equalsIgnoreCase("Administrator")){
@@ -498,6 +512,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.tvEditTeams.setEnabled(false);
         binding.editVehicleNum.setEnabled(false);
         binding.tvEditTel.setEnabled(false);
+        binding.changeCountry.setEnabled(false);
 
         binding.editRoomChange.setTextColor(getResources().getColor(R.color.grey,getTheme()));
         binding.editDeskChange.setTextColor(getResources().getColor(R.color.grey,getTheme()));
@@ -553,4 +568,73 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     public void onDefaultAssetSelect(int deskId, String code) {
         binding.editDesk.setText(code);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (SessionHandler.getInstance().get(EditProfileActivity.this,AppConstants.SELECTED_COUNTRY)!=null){
+
+            binding.editCountry.setText(SessionHandler.getInstance().get(EditProfileActivity.this,AppConstants.SELECTED_COUNTRY));
+
+            int id = SessionHandler.getInstance().getInt(EditProfileActivity.this,AppConstants.SELECTED_COUNTRY_ID);
+            profileData.setCountryId(id);
+
+            SessionHandler.getInstance().remove(EditProfileActivity.this,AppConstants.SELECTED_COUNTRY);
+            SessionHandler.getInstance().remove(EditProfileActivity.this,AppConstants.SELECTED_COUNTRY_ID);
+        }
+
+    }
+
+    private void getCountry() {
+        //binding.locateProgressBar.setVisibility(View.VISIBLE);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ArrayList<DAOCountryList>> call = apiService.getCountryList();
+        call.enqueue(new Callback<ArrayList<DAOCountryList>>() {
+            @Override
+            public void onResponse(Call<ArrayList<DAOCountryList>> call, Response<ArrayList<DAOCountryList>> response) {
+
+                //binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+                if (response.body()!=null){
+
+                    if (response.code() == 200) {
+
+                        countryList = new ArrayList<>();
+                        countryList = response.body();
+
+                        if (profileData!=null && countryList.size()>0){
+
+                            for (int i=0;i<countryList.size();i++){
+                                if (profileData.getCountryId() == countryList.get(i).getId()){
+                                    binding.editCountry.setText(countryList.get(i).getName());
+                                    break;
+                                }
+                            }
+
+                        }
+
+                    }else if(response.code() == 401){
+                        Utils.showCustomTokenExpiredDialog(EditProfileActivity.this,"Token Expired");
+                        SessionHandler.getInstance().saveBoolean(EditProfileActivity.this, AppConstants.LOGIN_CHECK,false);
+
+                    }else {
+                        //Toast.makeText(EditProfileActivity.this, "No Response", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<DAOCountryList>> call, Throwable t) {
+                //ProgressDialog.dismisProgressBar(getContext(), dialog);
+                //binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+            }
+        });
+
+    }
+
 }

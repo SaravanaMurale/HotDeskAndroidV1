@@ -182,7 +182,7 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
                     daoDeskAccept.setRequestedTeamDeskId(reqTeamID);
                     callDeskAccept(daoDeskAccept);
                 }else if(entity == 4){
-
+                    callMeetingApprove(id);
                 }else if (entity == 5) {
                     Map<String, String> params = new HashMap<>();
                     params.put("", String.valueOf(id));
@@ -194,6 +194,81 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
                 rejectPopUp(id,entity);
                 break;
         }
+
+    }
+
+
+    private void callMeetingApprove(Integer id) {
+
+        locateProgressBar.setVisibility(View.VISIBLE);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<BaseResponse> call = apiService.acceptMeeting(String.valueOf(id));
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                locateProgressBar.setVisibility(View.INVISIBLE);
+
+                if (response.body()!=null) {
+                    if (response.code() == 200){
+                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+                        callIncomingNotification();
+                    }else if(response.code() == 400){
+                        Log.d("ACCEPT","Logout");
+                    }else {
+                        Log.d("ACCEPT","No Response" + response.code());
+                    }
+                }else {
+                    Log.d("ACCEPT","No Response");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Utils.toastMessage(context,t.getMessage());
+                locateProgressBar.setVisibility(View.INVISIBLE);
+            }
+        });
+
+    }
+
+    private void callMeetingReject(Integer id, String reason) {
+
+        locateProgressBar.setVisibility(View.VISIBLE);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+        DAODeskReject daoDeskReject = new DAODeskReject();
+        daoDeskReject.setId(id);
+        daoDeskReject.setReason(reason);
+
+        Call<BaseResponse> call = apiService.rejectMeeting(daoDeskReject);
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                locateProgressBar.setVisibility(View.INVISIBLE);
+
+                if (response.body()!=null) {
+                    if (response.code() == 200){
+                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
+                        callIncomingNotification();
+                    }else if(response.code() == 400){
+                        Log.d("ACCEPT","Logout");
+                    }else {
+                        Log.d("ACCEPT","No Response" + response.code());
+                    }
+                }else {
+                    Log.d("ACCEPT","No Response");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Utils.toastMessage(context,t.getMessage());
+                locateProgressBar.setVisibility(View.INVISIBLE);
+            }
+        });
 
     }
 
@@ -288,7 +363,7 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
                     if (entity == 3){
                         callRejectAPI(id,reason);
                     }else if (entity == 4){
-
+                        callMeetingReject(id,reason);
                     }else if (entity == 5){
                         callParkingReject(id,reason);
                     }

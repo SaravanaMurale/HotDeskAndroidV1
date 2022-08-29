@@ -85,5 +85,7 @@ public class AppConstants {
     public static final String REJECT = "REJECT";
 
     public static final String ROLE = "ROLE";
+    public static final String SELECTED_COUNTRY = "SELECTED_COUNTRY";
+    public static final String SELECTED_COUNTRY_ID = "SELECTED_COUNTRY_ID";
 
 }

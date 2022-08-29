@@ -39,6 +39,7 @@ import dream.guys.hotdeskandroid.model.response.CarParkingslotsResponse;
 import dream.guys.hotdeskandroid.model.response.CheckPinLoginResponse;
 import dream.guys.hotdeskandroid.model.response.CovidQuestionsResponse;
 import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
+import dream.guys.hotdeskandroid.model.response.DAOCountryList;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.DeskDescriptionResponse;
@@ -381,6 +382,16 @@ public interface ApiInterface {
 
     @POST("api/requests/approveps")
     Call<BaseResponse> acceptParking(@Body String params);
+
+    @GET("api/Users/Countries")
+    Call<ArrayList<DAOCountryList>> getCountryList();
+
+    //Meeting...
+    @POST("api/requests/rejectmr")
+    Call<BaseResponse> rejectMeeting(@Body DAODeskReject daoDeskReject);
+
+    @POST("api/requests/approvemr")
+    Call<BaseResponse> acceptMeeting(@Body String params);
 
 }
 

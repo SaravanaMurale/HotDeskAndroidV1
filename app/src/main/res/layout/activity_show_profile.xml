@@ -154,14 +154,14 @@
 
                     <TextView
                         android:id="@+id/tvViewProfileName"
+                        style="@style/TextBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="skm"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_toRightOf="@+id/ivViewPrifle"
+                        android:text="skm"
                         android:textColor="@color/figmaBlack"
-                        style="@style/TextBold"
-                        android:textSize="@dimen/_13sdp"/>
+                        android:textSize="@dimen/_13sdp" />
 
                     <TextView
                         android:id="@+id/txt_team"
@@ -259,15 +259,16 @@
                     style="@style/TextBold"/>
 
                 <TextView
+                    android:id="@+id/txt_tname"
+                    style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/title_team"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="@dimen/_4sdp"
                     android:text="Name"
                     android:textColor="@color/black"
-                    android:layout_marginTop="@dimen/_4sdp"
-                    android:textSize="@dimen/_12sdp"
-                    style="@style/TextRegular"
-                    android:layout_below="@+id/title_team"
-                    android:layout_alignParentStart="true"/>
+                    android:textSize="@dimen/_12sdp" />
 
                 <TextView
                     android:layout_width="wrap_content"

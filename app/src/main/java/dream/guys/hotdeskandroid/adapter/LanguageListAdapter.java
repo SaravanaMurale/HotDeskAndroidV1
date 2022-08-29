@@ -59,17 +59,11 @@ public class LanguageListAdapter extends RecyclerView.Adapter<LanguageListAdapte
     @Override
     public void onBindViewHolder(@NonNull LanguageListViewHolder holder, int position) {
 
-        String imageName = languageListResponseList.get(position).getImagesrc();
-
-        // get resource id by image name
+        /*String imageName = languageListResponseList.get(position).getImagesrc();
         Resources resources = context.getResources();
-        //String resName = imageName.split("\\.")[2];
         int resourceId = resources.getIdentifier(imageName, "drawable", context.getPackageName());
-
-        // get drawable by resource id
         Drawable drawable = ResourcesCompat.getDrawable(resources,resourceId,context.getTheme());// resources.getDrawable(resourceId);
-
-        holder.languageFlag.setImageDrawable(drawable);
+        holder.languageFlag.setImageDrawable(drawable);*/
 
         //Glide.with(context).load(drawable).into(holder.languageFlag);
         holder.languageCountryName.setText(languageListResponseList.get(position).getText());
