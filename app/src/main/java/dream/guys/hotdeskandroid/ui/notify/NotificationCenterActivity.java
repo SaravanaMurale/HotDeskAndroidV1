@@ -145,7 +145,7 @@ public class NotificationCenterActivity extends AppCompatActivity {
             public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {
                 if(response.code()==200){
                     notiList = new ArrayList<>();
-                    if (response.body().getResults()!=null){
+                    if (response.body()!=null && response.body().getResults()!=null){
                         notiList.addAll(response.body().getResults());
                             loo :
                             for (int i=0;i<notiList.size();i++){
@@ -166,6 +166,8 @@ public class NotificationCenterActivity extends AppCompatActivity {
 
                         callOutGoingNotification();
 
+                    }else {
+                        callOutGoingNotification();
                     }
                 }else if(response.code()==401){
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
