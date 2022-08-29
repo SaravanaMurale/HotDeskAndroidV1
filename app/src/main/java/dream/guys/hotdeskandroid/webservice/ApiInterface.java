@@ -336,7 +336,7 @@ public interface ApiInterface {
     Call<List<CovidQuestionsResponse>> getCovidQuestions(@Query("language") String language);
 
     @POST("api/wellness/SubmitCovidSelfCertification")
-    Call<BaseResponse> submitCovidAnswer(@Body CovidAnswerRequest covidAnswerRequest);
+    Call<Void> submitCovidAnswer(@Body CovidAnswerRequest covidAnswerRequest);
 
     @GET("api/settings/WellbeingSectionConfig")
     Call<List<FirstAidResponse>> getFirstAidResponse();

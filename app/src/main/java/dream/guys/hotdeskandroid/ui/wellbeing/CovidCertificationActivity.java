@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -62,20 +63,24 @@ public class CovidCertificationActivity extends AppCompatActivity {
 
     private void submitCovidAnswer(CovidAnswerRequest covidAnswerRequest) {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<BaseResponse> call = apiService.submitCovidAnswer(covidAnswerRequest);
-        call.enqueue(new Callback<BaseResponse>() {
+        Call<Void> call = apiService.submitCovidAnswer(covidAnswerRequest);
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
 
-                BaseResponse baseResponse=response.body();
+//                BaseResponse baseResponse=response.body();
+                if(response.code()==200){
+                    Toast.makeText(CovidCertificationActivity.this, "Successfull Updated", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
                 System.out.println();
 
-                System.out.println("CovidResultCode"+baseResponse.getResultCode());
+//                System.out.println("CovidResultCode"+baseResponse.getResultCode());
 
             }
 
             @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
 
             }
         });
