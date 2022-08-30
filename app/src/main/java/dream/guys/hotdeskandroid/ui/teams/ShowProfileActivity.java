@@ -130,9 +130,9 @@ public class ShowProfileActivity extends AppCompatActivity {
                         list.clear();
                         if (response.body().getResults()!=null)
                             list.addAll(response.body().getResults());
-                        Toast.makeText(context, "ls "+list.size(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context, "ls "+list.size(), Toast.LENGTH_SHORT).show();
 
-                        Toast.makeText(context, "200"+searchText, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context, "200"+searchText, Toast.LENGTH_SHORT).show();
 
                         if (list!=null && list.size()>0){
 

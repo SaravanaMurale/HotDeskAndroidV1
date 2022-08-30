@@ -190,17 +190,6 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
             case 3:
                 holder.imgEntity.setImageDrawable(context.getDrawable(R.drawable.chair));
                 if (notiList.get(position).getDeskCode().equalsIgnoreCase("")||notiList.get(position).getDeskCode().isEmpty()){
-                    List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities = new ArrayList<>();
-                    teamDeskAvailabilities = ((NotificationsListActivity) context).bookingDeskList;
-                    System.out.println("deaasdasd"+teamDeskAvailabilities.size());
-
-                    loop:
-                    for (int i=0; i <teamDeskAvailabilities.size();i++){
-                        if (notiList.get(position).getRequestedTeamDeskId() == teamDeskAvailabilities.get(i).getTeamDeskId()){
-                            holder.tvDesk.setText(teamDeskAvailabilities.get(i).getDeskCode());
-                            break loop;
-                        }
-                    }
 
                 } else {
                     holder.tvDesk.setText(notiList.get(position).getDeskCode());

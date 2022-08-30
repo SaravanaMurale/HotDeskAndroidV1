@@ -1194,8 +1194,9 @@ public class BookFragment extends Fragment implements
         }
 
         if (dskRoomParkStatus == 1) {
-            repeatBlock.setVisibility(View.VISIBLE);
+            repeatBlock.setVisibility(View.GONE);
             teamsBlock.setVisibility(View.GONE);
+            commentBlock.setVisibility(View.GONE);
             commentRegistration.setHint("Comments");
             tvComments.setText("Comments");
             capacitylayout.setVisibility(View.GONE);

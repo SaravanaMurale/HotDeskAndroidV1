@@ -211,8 +211,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="www.example.com"
-                    android:scheme="http" />
+                    android:host="dev-app.hotdeskplus.com"
+                    android:scheme="https" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -261,7 +261,7 @@
 
                 <data
                     android:host="dream.guys.hotdeskandroid"
-                    android:pathPrefix="/booking/"
+                    android:pathPrefix="/booking"
                     android:scheme="https" />
             </intent-filter>
             <intent-filter>
@@ -286,6 +286,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <service

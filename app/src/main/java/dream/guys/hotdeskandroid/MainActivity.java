@@ -65,6 +65,7 @@ import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
 import dream.guys.hotdeskandroid.ui.locate.LocateFragment;
 import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
+import dream.guys.hotdeskandroid.ui.login.SignInActivity;
 import dream.guys.hotdeskandroid.ui.teams.ShowProfileActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
@@ -115,15 +116,21 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
         setContentView(binding.getRoot());
 
         dialog = new Dialog(this);
+        if (SessionHandler.getInstance().getBoolean(MainActivity.this,AppConstants.LOGIN_CHECK) ){
+//            Toast.makeText(this, "toast daaaa", Toast.LENGTH_SHORT).show();
+            uiInit();
+            nightModeConfig();
 
-        uiInit();
-        nightModeConfig();
-
-        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        binding.searchRecycler.setLayoutManager(linearLayoutManager);
-        binding.searchRecycler.setHasFixedSize(true);
-        searchRecyclerAdapter=new SearchRecyclerAdapter(getApplicationContext(),MainActivity.this,list,this);
-        binding.searchRecycler.setAdapter(searchRecyclerAdapter);
+            linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+            binding.searchRecycler.setLayoutManager(linearLayoutManager);
+            binding.searchRecycler.setHasFixedSize(true);
+            searchRecyclerAdapter=new SearchRecyclerAdapter(getApplicationContext(),MainActivity.this,list,this);
+            binding.searchRecycler.setAdapter(searchRecyclerAdapter);
+        } else {
+            Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+            intent.putExtra("qr_deep_link",true);
+            startActivity(intent);
+        }
 
         // homeBookingListAdapter=new HomeBookingListAdapter(getContext(), getActivity(), recyclerModelArrayList);
 
@@ -156,9 +163,9 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
             }
         });
 
-      gestureDetector = new GestureDetector(this, new GestureListener());
+        gestureDetector = new GestureDetector(this, new GestureListener());
 
-      mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.SimpleOnScaleGestureListener(){
+        mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.SimpleOnScaleGestureListener(){
             @Override
             public boolean onScale(ScaleGestureDetector detector) {
 
@@ -187,10 +194,11 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
                 }else {
                     System.out.println("You Cant zoom more than this");
                 }
-                    return true;
+                return true;
 
             }
         });
+
     }
 
     private void deepLinking() {
@@ -200,6 +208,8 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
         Uri appLinkData = appLinkIntent.getData();
 
         if(appLinkData != null) {
+            AppConstants.FIRSTREFERAL=false;
+
             //NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment_activity_main);
 //            navController.navigate(R.id.navigation_book);
             String data1= appLinkData.getQueryParameter("typekey"); // you will get the value "value1" from application 1

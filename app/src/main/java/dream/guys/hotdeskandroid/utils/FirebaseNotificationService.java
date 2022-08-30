@@ -55,7 +55,6 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
             String messageBody = message.getNotification().getBody();
 
             showSmallNotification(title, messageBody);
-
         }
     }
 

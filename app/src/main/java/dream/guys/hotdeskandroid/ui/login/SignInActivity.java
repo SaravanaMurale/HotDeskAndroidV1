@@ -60,6 +60,10 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signin);
         ButterKnife.bind(this);
         dialog= new Dialog(this);
+        if (getIntent().getExtras() != null &&
+                getIntent().getExtras().getBoolean("qr_deep_link")){
+            Utils.showCustomAlertDialog(this, "Please Login then scan the Qr Code for booking.");
+        }
         boolean tokenStatus =
                 SessionHandler.getInstance().getBoolean(
                         MyApp.getContext(),
