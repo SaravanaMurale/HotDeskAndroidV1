@@ -42,7 +42,7 @@ public class ShowProfileActivity extends AppCompatActivity {
     DAOTeamMember daoTeamMember;
     Context context;
 
-    String date = "",fName = "",lName ="";int userID;
+    String date = "",fName = "",lName ="";int userID,teamId;
     LinearLayoutManager linearLayoutManager;
     UpComingBookingAdapter upComingBookingAdapter;
     ArrayList<TeamMembersResponse.DayGroup> recyclerModelArrayList = new ArrayList();
@@ -77,6 +77,7 @@ public class ShowProfileActivity extends AppCompatActivity {
 
                     lName = daoTeamMember.getLastName();
                     userID = daoTeamMember.getUserId();
+                    teamId = daoTeamMember.getTeamId();
 
                     //Show Person Profile Only
                     callSearchRecyclerData(fName,userID);
@@ -108,7 +109,20 @@ public class ShowProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        
+
+        binding.tvViewTeam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (teamMembersResponses!=null && teamMembersResponses.size()>0){
+                    Intent intent = new Intent(context,TeamMembersActivity.class);
+                    intent.putExtra(AppConstants.TEAM_ID,teamId);
+                    intent.putExtra("DATE",date);
+                    startActivity(intent);
+                }
+
+            }
+        });
 
     }
 
@@ -235,6 +249,7 @@ public class ShowProfileActivity extends AppCompatActivity {
         binding.tvEditEmail.setText(results.getEmail());
 
         binding.txtTname.setText(results.getTeam());
+        //binding.tvEditPhone.setText(results.getMobile());
 
     }
 

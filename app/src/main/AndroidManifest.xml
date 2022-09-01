@@ -25,11 +25,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HotDeskAndroid">
         <activity
+            android:name=".ui.teams.TeamMembersActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.settings.CountryListActivity"
             android:exported="false" />
         <activity
             android:name=".DeepLinkActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".ui.notify.UserNotifyReqActivity"
             android:exported="false" />

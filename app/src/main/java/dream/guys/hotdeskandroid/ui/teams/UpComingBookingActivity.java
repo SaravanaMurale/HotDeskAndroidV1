@@ -25,8 +25,10 @@ import devs.mulham.horizontalcalendar.HorizontalCalendarView;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.UpComingBookingAdapter;
+import dream.guys.hotdeskandroid.adapter.UpComingMonthlyBookingAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityUpComingBookingBinding;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
+import dream.guys.hotdeskandroid.model.response.DAOUpcomingBooking;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.Utils;
@@ -56,13 +58,14 @@ public class UpComingBookingActivity extends AppCompatActivity {
     int selectedicon = 0;
     Context context;
 
-    List<TeamMembersResponse> teamMembersResponses = new ArrayList<>();
+    ArrayList<DAOUpcomingBooking> teamMembersResponses = new ArrayList<>();
     List<String> arrayString= new ArrayList<>();
     DAOTeamMember daoTeamMember;
     String date = "",fName = "",lName ="";int userID;
     LinearLayoutManager linearLayoutManager;
-    UpComingBookingAdapter upComingBookingAdapter;
+    UpComingMonthlyBookingAdapter upComingBookingAdapter;
     ArrayList<TeamMembersResponse.DayGroup> recyclerModelArrayList = new ArrayList();
+    ArrayList<DAOUpcomingBooking.PersonDayViewEntry.CalendarEntry> upcomingArrayList = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +94,7 @@ public class UpComingBookingActivity extends AppCompatActivity {
                     lName = daoTeamMember.getLastName();
                     userID = daoTeamMember.getUserId();
 
-                    callTeamMemberStatus(date,daoTeamMember.getTeamId());
+                    callTeamMemberStatus(Utils.splitDate(date),daoTeamMember.getTeamId());
 
                 }
 
@@ -246,7 +249,7 @@ public class UpComingBookingActivity extends AppCompatActivity {
                         (date.get(Calendar.MONTH) + 1) + "-" + date.get(Calendar.DATE);
 //2022-08-13T10:51:17.830Z
                 try {
-                    currendate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new SimpleDateFormat("yyyy-M-d").parse(currendate));
+                    currendate = new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("yyyy-M-d").parse(currendate));
                     selectedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new SimpleDateFormat("yyyy-M-d").parse(currendate));
 
                     callTeamMemberStatus(currendate,daoTeamMember.getTeamId());
@@ -369,10 +372,10 @@ public class UpComingBookingActivity extends AppCompatActivity {
         if (Utils.isNetworkAvailable(context)) {
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<List<TeamMembersResponse>> call = apiService.getTeamMembers(date,teamID);
-            call.enqueue(new Callback<List<TeamMembersResponse>>() {
+            Call<ArrayList<DAOUpcomingBooking>> call = apiService.getMonthBookings(date,userID,teamID);
+            call.enqueue(new Callback<ArrayList<DAOUpcomingBooking>>() {
                 @Override
-                public void onResponse(Call<List<TeamMembersResponse>> call, Response<List<TeamMembersResponse>> response) {
+                public void onResponse(Call<ArrayList<DAOUpcomingBooking>> call, Response<ArrayList<DAOUpcomingBooking>> response) {
 //                    Toast.makeText(MainActivity.this, "on res", Toast.LENGTH_SHORT).show();
                     if(response.code()==200){
 
@@ -382,19 +385,13 @@ public class UpComingBookingActivity extends AppCompatActivity {
                                 teamMembersResponses.size()>0){
 
                             recyclerModelArrayList = new ArrayList<>();
+                            createUpcomingRecyclerList(teamMembersResponses.get(0).getPersonDayViewEntries());
 
-                            for (int i=0;i<teamMembersResponses.size();i++){
+                            /*for (int i=0;i<teamMembersResponses.size();i++){
 
-                                if (userID == teamMembersResponses.get(i).getUserId()) {
-                                    TeamMembersResponse body = teamMembersResponses.get(i);
-                                    createRecyclerList(body);
-                                    break;
-
-                                }
-
-                                /*arrayString.add(" "+teamMembersResponses.get(i).getFirstName()+" "+
-                                        teamMembersResponses.get(i).getLastName());*/
-                            }
+                                TeamMembersResponse body = teamMembersResponses.get(0);
+                                createRecyclerList(body);
+                            }*/
 
                         }
 
@@ -409,7 +406,7 @@ public class UpComingBookingActivity extends AppCompatActivity {
 
                 }
                 @Override
-                public void onFailure(Call<List<TeamMembersResponse>> call, Throwable t) {
+                public void onFailure(Call<ArrayList<DAOUpcomingBooking>> call, Throwable t) {
 //                    Toast.makeText(context, "on fail", Toast.LENGTH_SHORT).show();
                     Utils.showCustomAlertDialog(UpComingBookingActivity.this,"Response Failure: "+t.getMessage());
                     Log.d("Search", "onResponse: fail"+t.getMessage());
@@ -421,7 +418,9 @@ public class UpComingBookingActivity extends AppCompatActivity {
         }
     }
 
-    private void createRecyclerList(TeamMembersResponse bookingListResponses) {
+
+
+    /*private void createRecyclerList(TeamMembersResponse bookingListResponses) {
 
         for (int i=0; i<bookingListResponses.getDayGroups().size(); i++){
             boolean dateCheck =true;
@@ -508,6 +507,35 @@ public class UpComingBookingActivity extends AppCompatActivity {
             binding.upbookingRecyclerview.setHasFixedSize(true);
 
             upComingBookingAdapter=new UpComingBookingAdapter(context,recyclerModelArrayList,"");
+            binding.upbookingRecyclerview.setAdapter(upComingBookingAdapter);
+        }
+
+    }*/
+
+    private void createUpcomingRecyclerList(ArrayList<DAOUpcomingBooking.PersonDayViewEntry>
+                                                    bookingListResponses) {
+
+        for (int i=0; i<bookingListResponses.size(); i++){
+
+            ArrayList<DAOUpcomingBooking.PersonDayViewEntry.CalendarEntry> calendarEntries = null;
+            //ArrayList<DAOUpcomingBooking.PersonDayViewEntry.MeetingBooking> meetingEntries = null;
+            //ArrayList<DAOUpcomingBooking.PersonDayViewEntry.CarParkBooking> carParkEntries = null;
+
+            if (bookingListResponses.get(i).getCalendarEntries()!=null &&
+            bookingListResponses.get(i).getCalendarEntries().size()>0){
+
+                upcomingArrayList.addAll(bookingListResponses.get(i).getCalendarEntries());
+
+            }
+
+        }
+
+        if (upcomingArrayList!=null && upcomingArrayList.size()>0){
+            linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+            binding.upbookingRecyclerview.setLayoutManager(linearLayoutManager);
+            binding.upbookingRecyclerview.setHasFixedSize(true);
+
+            upComingBookingAdapter=new UpComingMonthlyBookingAdapter(context,upcomingArrayList,"");
             binding.upbookingRecyclerview.setAdapter(upComingBookingAdapter);
         }
 

@@ -1446,4 +1446,22 @@ public class Utils {
         return options;
     }
 
+    //New...
+    public static String MonthAndDateString(String d){
+        String date="";
+        SimpleDateFormat spf=new SimpleDateFormat("yyyy-MM-dd");
+        Date newDate= null;
+        try {
+            newDate = spf.parse(d);
+            spf= new SimpleDateFormat("MMM, dd");
+            if (newDate != null) {
+                date = spf.format(newDate);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return date;
+    }
+
 }

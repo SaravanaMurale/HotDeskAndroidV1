@@ -271,15 +271,16 @@
                     android:textSize="@dimen/_12sdp" />
 
                 <TextView
+                    android:id="@+id/tv_viewTeam"
+                    style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/title_team"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/_4sdp"
                     android:text="View Team"
                     android:textColor="@color/figmaBlue"
-                    android:layout_marginTop="@dimen/_4sdp"
-                    android:textSize="@dimen/_12sdp"
-                    style="@style/TextRegular"
-                    android:layout_below="@+id/title_team"
-                    android:layout_alignParentEnd="true"/>
+                    android:textSize="@dimen/_12sdp" />
 
 
             </RelativeLayout>

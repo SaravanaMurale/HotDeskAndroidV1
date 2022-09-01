@@ -41,6 +41,7 @@ import dream.guys.hotdeskandroid.model.response.CovidQuestionsResponse;
 import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
 import dream.guys.hotdeskandroid.model.response.DAOCountryList;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
+import dream.guys.hotdeskandroid.model.response.DAOUpcomingBooking;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.DeskDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.DeskResponseNew;
@@ -393,6 +394,8 @@ public interface ApiInterface {
     @POST("api/requests/approvemr")
     Call<BaseResponse> acceptMeeting(@Body String params);
 
+    @GET("api/calendar/entries")
+    Call<ArrayList<DAOUpcomingBooking>> getMonthBookings(@Query("month") String s, @Query("userId") int userId, @Query("teamId") int teamId);
 }
 
 
