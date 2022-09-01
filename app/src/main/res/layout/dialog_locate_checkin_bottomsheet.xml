@@ -431,6 +431,7 @@
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:hint="Comment"
+                    android:background="@null"
                     android:textColor="@color/figmaBlack"
                     android:theme="@style/TextBold" />
 
@@ -447,18 +448,19 @@
                 android:background="@drawable/rectangle_greybg_with_corner"
                 android:padding="@dimen/_1sdp"
                 android:orientation="horizontal"
-                android:visibility="gone"
+                android:visibility="visible"
                 >
 
                 <EditText
                     android:id="@+id/etVehicleReg"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_60sdp"
+                    android:layout_height="@dimen/_35sdp"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
-                    android:hint="Vehicle Reg Number"
+                    android:background="@null"
+                    android:hint="@string/reg"
                     android:textColor="@color/figmaBlack"
                     android:theme="@style/TextBold" />
 

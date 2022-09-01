@@ -9,6 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -20,12 +23,24 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
 
     Context context;
     List<String> stringName;
+    ShowMyTeamLocationClickable showMyTeamLocationClickable;
+    BottomSheetDialog bottomSheetDialog;
+    BottomSheetBehavior bottomSheetBehavior;
+
+
+    public interface ShowMyTeamLocationClickable{
+        public void showMyTeamLocation(int i, int i1, BottomSheetDialog bottomSheetDialog, BottomSheetBehavior bottomSheetBehavior);
+    }
 
 
 
-    public LocateMyTeamAdapter(Context context, List<String> stringName) {
+    public LocateMyTeamAdapter(Context context, List<String> stringName, ShowMyTeamLocationClickable showMyTeamLocationClickable, BottomSheetDialog myTeamBottomSheet, BottomSheetBehavior bottomSheetBehavior) {
         this.context=context;
         this.stringName=stringName;
+        this.showMyTeamLocationClickable=showMyTeamLocationClickable;
+        this.bottomSheetDialog=myTeamBottomSheet;
+        this.bottomSheetBehavior=bottomSheetBehavior;
+
     }
 
     @NonNull
@@ -40,6 +55,16 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
     public void onBindViewHolder(@NonNull LocateMyTeamViewHolder holder, int position) {
 
         holder.locateMyTeamName.setText(stringName.get(position));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                showMyTeamLocationClickable.showMyTeamLocation(175,273,bottomSheetDialog,bottomSheetBehavior);
+
+            }
+        });
+
 
     }
 

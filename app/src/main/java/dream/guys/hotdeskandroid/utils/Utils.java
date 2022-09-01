@@ -124,6 +124,10 @@ public class Utils {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
+    public static boolean isValiedCompanyName(String text){
+        return !TextUtils.isEmpty(text) && !text.equals("") && text!=null &&text.matches("^[a-zA-Z]*$");
+    }
+
     public static boolean isValiedText(String text){
         return !TextUtils.isEmpty(text) && !text.equals("") && text!=null;
     }
@@ -991,6 +995,36 @@ public class Utils {
         String dateAlone= result[0];
 
         return dateAlone;
+
+    }
+
+
+    public static int doCompareDateAlone(String strDate1,String strDate2){
+
+        int dateSelectedStatus=0;
+        Date date1=null,date2=null;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+            date1 = formatter.parse(strDate1);
+            date2=formatter.parse(strDate2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if(date1.getDate()==date2.getDate()){
+            System.out.println("BothDateEqual");
+            dateSelectedStatus=1;
+        }else if(date1.getDate()<date2.getDate()){
+            System.out.println("SelecctedDateIsHigh");
+            dateSelectedStatus=2;
+        }else if(date1.getDate()>date2.getDate()){
+            System.out.println("SelecctedDateIsLow");
+            dateSelectedStatus=0;
+
+        }
+
+        return dateSelectedStatus;
 
     }
 

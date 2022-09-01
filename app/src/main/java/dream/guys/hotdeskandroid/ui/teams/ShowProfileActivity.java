@@ -54,23 +54,23 @@ public class ShowProfileActivity extends AppCompatActivity {
         //setContentView(R.layout.activity_show_profile);
         binding = ActivityShowProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        
+
         context = ShowProfileActivity.this;
 
         try {
 
             Intent intent = getIntent();
 
-            if (intent!=null){
+            if (intent != null) {
 
                 daoTeamMember = (DAOTeamMember) intent.getSerializableExtra(AppConstants.USER_CURRENT_STATUS);
                 date = intent.getStringExtra("DATE");
 
-                if (daoTeamMember!=null){
+                if (daoTeamMember != null) {
 
-                    if (daoTeamMember.getLastName()!=null){
-                        fName = daoTeamMember.getFirstName() + " " +daoTeamMember.getLastName();
-                    }else {
+                    if (daoTeamMember.getLastName() != null) {
+                        fName = daoTeamMember.getFirstName() + " " + daoTeamMember.getLastName();
+                    } else {
                         fName = daoTeamMember.getFirstName();// + " " +daoTeamMember.getLastName();
                     }
 
@@ -80,16 +80,16 @@ public class ShowProfileActivity extends AppCompatActivity {
                     teamId = daoTeamMember.getTeamId();
 
                     //Show Person Profile Only
-                    callSearchRecyclerData(fName,userID);
+                    callSearchRecyclerData(fName, userID);
                     //Shows upcoming data
 
-                    callTeamMemberStatus(date,daoTeamMember.getTeamId());
+                    callTeamMemberStatus(date, daoTeamMember.getTeamId());
 
                 }
-                
+
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 
@@ -103,30 +103,24 @@ public class ShowProfileActivity extends AppCompatActivity {
         binding.txtViewAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context,UpComingBookingActivity.class);
-                intent.putExtra(AppConstants.USER_CURRENT_STATUS,daoTeamMember);
-                intent.putExtra("DATE",date);
+                Intent intent = new Intent(context, UpComingBookingActivity.class);
+                intent.putExtra(AppConstants.USER_CURRENT_STATUS, daoTeamMember);
+                intent.putExtra("DATE", date);
                 startActivity(intent);
             }
-        });
 
-        binding.tvViewTeam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                if (teamMembersResponses!=null && teamMembersResponses.size()>0){
-                    Intent intent = new Intent(context,TeamMembersActivity.class);
-                    intent.putExtra(AppConstants.TEAM_ID,teamId);
-                    intent.putExtra("DATE",date);
-                    startActivity(intent);
-                }
-
-            }
         });
 
     }
 
-    private void callSearchRecyclerData(String searchText,int selID) {
+
+
+
+
+
+
+private void callSearchRecyclerData(String searchText,int selID) {
         if (Utils.isNetworkAvailable(context)) {
 
             binding.locateProgressBar.setVisibility(View.VISIBLE);
@@ -144,9 +138,9 @@ public class ShowProfileActivity extends AppCompatActivity {
                         list.clear();
                         if (response.body().getResults()!=null)
                             list.addAll(response.body().getResults());
-//                        Toast.makeText(context, "ls "+list.size(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "ls "+list.size(), Toast.LENGTH_SHORT).show();
 
-//                        Toast.makeText(context, "200"+searchText, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "200"+searchText, Toast.LENGTH_SHORT).show();
 
                         if (list!=null && list.size()>0){
 
@@ -247,6 +241,8 @@ public class ShowProfileActivity extends AppCompatActivity {
         binding.tvViewProfileName.setText(results.getName());
         binding.txtTeam.setText(results.getTeam());
         binding.tvEditEmail.setText(results.getEmail());
+        binding.tvTeamName.setText(results.getTeam());
+        binding.tvEditPhone.setText(results.getPhoneNumber());
 
         binding.txtTname.setText(results.getTeam());
         //binding.tvEditPhone.setText(results.getMobile());

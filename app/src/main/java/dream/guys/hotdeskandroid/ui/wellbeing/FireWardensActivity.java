@@ -6,19 +6,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
+import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.adapter.FireWardensAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityFireWardensBinding;
+import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.FirstAidResponse;
+import dream.guys.hotdeskandroid.ui.teams.ShowProfileActivity;
+import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FireWardensActivity extends AppCompatActivity {
+public class FireWardensActivity extends AppCompatActivity implements FireWardensAdapter.ViewPersonDetailCliclable {
 
     ActivityFireWardensBinding binding;
 
@@ -28,6 +35,7 @@ public class FireWardensActivity extends AppCompatActivity {
         //setContentView(R.layout.activity_fire_wardens);
         binding=ActivityFireWardensBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
 
 
         Intent intent=getIntent();
@@ -107,9 +115,9 @@ public class FireWardensActivity extends AppCompatActivity {
                 }
 
 
+                callSetAdapter(personsList,description);
 
-                FireWardensAdapter fireWardensAdapter=new FireWardensAdapter(FireWardensActivity.this,personsList,description);
-                binding.rvFireWardens.setAdapter(fireWardensAdapter);
+
 
             }
 
@@ -118,6 +126,40 @@ public class FireWardensActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    private void callSetAdapter(List<FirstAidResponse.Persons> personsList, String description) {
+        FireWardensAdapter fireWardensAdapter=new FireWardensAdapter(FireWardensActivity.this,personsList,description,this);
+        binding.rvFireWardens.setAdapter(fireWardensAdapter);
+    }
+
+    @Override
+    public void viewPersonClick(FirstAidResponse.Persons persons) {
+
+
+        Calendar startDate = Calendar.getInstance();
+
+        int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        int month = Calendar.getInstance().get(Calendar.MONTH);
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        String currendate = String.valueOf(year + "-" + (month + 1) + "-" + day);
+
+        try {
+            currendate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new SimpleDateFormat("yyyy-M-d").parse(currendate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        DAOTeamMember daoTeamMember=new DAOTeamMember();
+        daoTeamMember.setFirstName(persons.getFullName());
+        daoTeamMember.setUserId(persons.getId());
+
+
+        Intent intent = new Intent(FireWardensActivity.this, ShowProfileActivity.class);
+        intent.putExtra(AppConstants.USER_CURRENT_STATUS,daoTeamMember);
+        intent.putExtra("DATE",currendate);
+        startActivity(intent);
 
     }
 }

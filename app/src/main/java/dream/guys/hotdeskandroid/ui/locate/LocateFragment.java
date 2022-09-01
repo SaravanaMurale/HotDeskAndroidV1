@@ -18,7 +18,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.ScaleAnimation;
 import android.widget.CalendarView;
 import android.widget.EditText;
@@ -86,7 +85,6 @@ import dream.guys.hotdeskandroid.model.request.SelectCode;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkAvalibilityResponse;
-import dream.guys.hotdeskandroid.model.response.CarParkListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingslotsResponse;
@@ -110,7 +108,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSelectListener, BookingListToEditAdapter.OnEditClickable, DeskListRecyclerAdapter.OnSelectSelected, CarListToEditAdapter.CarEditClickable, MeetingListToEditAdapter.OnMeetingEditClickable, DeskSelectListAdapter.OnDeskSelectClickable, ParticipantNameShowAdapter.OnParticipantSelectable,
-RepeateDataAdapter.repeatInterface {
+        RepeateDataAdapter.repeatInterface, LocateMyTeamAdapter.ShowMyTeamLocationClickable {
 
 
     @BindView(R.id.locateProgressBar)
@@ -406,7 +404,7 @@ RepeateDataAdapter.repeatInterface {
     }
 
 
-    public void initLoadFloorDetails(int i) {
+    public void initLoadFloorDetails(int canvasDrawStatus) {
 
         int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
 
@@ -440,57 +438,18 @@ RepeateDataAdapter.repeatInterface {
             //Used For Desk Avaliability Checking
             getAvaliableDeskDetails(null, 0);
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    getTeams();
-                }
-            }, 1000);
+            //CarChecking
+            doInitCarAvalibilityHere(parentId);
 
-
-            //Used For Car Parking Avaliability Checking
-           /* getCarParkingSlots(parentId);
-            getCarParkingAvalibilitySlots();
-            carParkAvalibilityChecking();*/
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    //CarChecking
-                    doInitCarAvalibilityHere(parentId);
-                }
-            },1000);
-
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    //Meeting Checking
-                    doInitMeetingAvalibilityHere(parentId);
-                }
-            },1000);
-
-
-
-            //Final Call To Set Desk,Car and Meeting Room
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    getLocateDeskRoomCarDesign(parentId, i);
-                }
-            },4000);
-
-
-
-
-
+            //Meeting Checking
+            doInitMeetingAvalibilityHere(parentId,canvasDrawStatus);
 
         } else {
             Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void doInitMeetingAvalibilityHere(int parentId) {
+    private void doInitMeetingAvalibilityHere(int parentId,int canvasDrawStatus ) {
 
         LocationMR_Request locationMR_request = new LocationMR_Request();
 
@@ -512,25 +471,14 @@ RepeateDataAdapter.repeatInterface {
 
         locationMR_request.setTimezone(timezone);
 
-        getLocationMR(locationMR_request);
+        getLocationMR(locationMR_request,parentId,canvasDrawStatus);
 
-        new Handler().postDelayed(new Runnable() {
+       /* new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 getUserAllowedMeeting();
             }
-        }, 1000);
-
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //meetingAvalibilityCheck(parentId);
-            }
-        }, 1000);
-
-
-
+        }, 1000);*/
 
     }
 
@@ -576,7 +524,7 @@ RepeateDataAdapter.repeatInterface {
     }*/
 
 
-    private void getLocationMR(LocationMR_Request locationMR_request) {
+    private void getLocationMR(LocationMR_Request locationMR_request, int parentId,int canvasDrawStatus) {
 
         binding.locateProgressBar.setVisibility(View.VISIBLE);
 
@@ -587,6 +535,8 @@ RepeateDataAdapter.repeatInterface {
             public void onResponse(Call<List<LocationWithMR_Response>> call, Response<List<LocationWithMR_Response>> response) {
 
                 locationWithMR_response = response.body();
+
+                getUserAllowedMeeting(parentId,canvasDrawStatus);
 
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
@@ -599,7 +549,7 @@ RepeateDataAdapter.repeatInterface {
         });
     }
 
-    private void getUserAllowedMeeting() {
+    private void getUserAllowedMeeting(int parentId,int canvasDrawStatus) {
         binding.locateProgressBar.setVisibility(View.VISIBLE);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -609,6 +559,9 @@ RepeateDataAdapter.repeatInterface {
             public void onResponse(Call<List<UserAllowedMeetingResponse>> call, Response<List<UserAllowedMeetingResponse>> response) {
 
                 userAllowedMeetingResponseList = response.body();
+
+                //Final Call To Set Desk,Car and Meeting Room
+                getLocateDeskRoomCarDesign(parentId, canvasDrawStatus);
 
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
@@ -624,31 +577,26 @@ RepeateDataAdapter.repeatInterface {
 
     private void doInitCarAvalibilityHere(int parentId) {
 
-
         getCarParkingSlots(parentId);
 
-        new Handler().postDelayed(new Runnable() {
+       /* new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 getCarParkingAvalibilitySlots();
             }
-        },2000);
+        },2000);*/
 
 
-        int dateStatus = Utils.doDateCompareHere(binding.locateCalendearView.getText().toString());
-
-
+       /* int dateStatus = Utils.doDateCompareHere(binding.locateCalendearView.getText().toString());
         if (dateStatus == 0) {
             //unavaliable
 
             carParkingStatusModelList.clear();
             if (carParkingslots != null) {
                 for (int i = 0; i < carParkingslots.size(); i++) {
-
                     CarParkingStatusModel carParkingStatusModel = new CarParkingStatusModel(carParkingslots.get(i).getCarParkingSlotId(), carParkingslots.get(i).getCode(), 0);
                     System.out.println("CarParkUnAvaliable");
                     carParkingStatusModelList.add(carParkingStatusModel);
-
                 }
             }
             System.out.println("CarParkUnAvaliable");
@@ -663,7 +611,7 @@ RepeateDataAdapter.repeatInterface {
 
         if (dateStatus > 0) {
             carParkAvalibilityChecking();
-        }
+        }*/
 
 
     }
@@ -768,14 +716,8 @@ RepeateDataAdapter.repeatInterface {
 
                 carParkAvalibilityResponseList = response.body();
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+                checkCarParkAvalibilityAndUnAvalibility();
 
-                    }
-                }, 2000);
-
-                // ProgressDialog.dismisProgressBar(getContext(), dialog);
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
 
@@ -790,10 +732,38 @@ RepeateDataAdapter.repeatInterface {
 
     }
 
+    private void checkCarParkAvalibilityAndUnAvalibility() {
+
+        int dateStatus = Utils.doDateCompareHere(binding.locateCalendearView.getText().toString());
+        if (dateStatus == 0) {
+            //unavaliable
+
+            carParkingStatusModelList.clear();
+            if (carParkingslots != null) {
+                for (int i = 0; i < carParkingslots.size(); i++) {
+                    CarParkingStatusModel carParkingStatusModel = new CarParkingStatusModel(carParkingslots.get(i).getCarParkingSlotId(), carParkingslots.get(i).getCode(), 0);
+                    System.out.println("CarParkUnAvaliable");
+                    carParkingStatusModelList.add(carParkingStatusModel);
+                }
+            }
+            System.out.println("CarParkUnAvaliable");
+        } else if (dateStatus == 1) {
+            //todayDate
+            System.out.println("CarParktodayDate");
+        } else if (dateStatus == 2) {
+            //nextdayDate
+            System.out.println("CarParknextdayDate");
+        }
+
+        if (dateStatus > 0) {
+            carParkAvalibilityChecking();
+        }
+
+    }
+
     private void getCarParkingSlots(int parentId) {
 
         binding.locateProgressBar.setVisibility(View.VISIBLE);
-        //dialog = ProgressDialog.showProgressBar(getContext());
         System.out.println("CarPArkingSlotCAlled");
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -801,24 +771,17 @@ RepeateDataAdapter.repeatInterface {
         call.enqueue(new Callback<List<CarParkingslotsResponse>>() {
             @Override
             public void onResponse(Call<List<CarParkingslotsResponse>> call, Response<List<CarParkingslotsResponse>> response) {
-                //ProgressDialog.dismisProgressBar(getContext(), dialog);
                 carParkingslots = response.body();
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                    }
-                }, 2000);
+                //CallCarParkAvalibilitySlotsAPI
+                getCarParkingAvalibilitySlots();
 
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                //ProgressDialog.dismisProgressBar(getContext(), dialog);
 
             }
 
             @Override
             public void onFailure(Call<List<CarParkingslotsResponse>> call, Throwable t) {
-                //ProgressDialog.dismisProgressBar(getContext(), dialog);
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
             }
@@ -1145,8 +1108,7 @@ RepeateDataAdapter.repeatInterface {
                                     if (teamDeskAvaliability.isBookedByUser() == true) {
                                         System.out.println("BookingbookedForMe");
                                         ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
-                                        deskStatusModel
-                                                = new DeskStatusModel(key, id, code, 2);
+                                        deskStatusModel = new DeskStatusModel(key, id, code, 2);
 
                                     } else if (teamDeskAvaliability.isBookedByElse() == true) {
                                         System.out.println("BookingBookedOther");
@@ -1164,7 +1126,7 @@ RepeateDataAdapter.repeatInterface {
 
                                         if (teamsResponse != null && teamsResponse.getAutomaticApprovalStatus() == 3) {
                                             System.out.println("BookingUnavaliable");
-                                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
                                             deskStatusModel = new DeskStatusModel(key, id, code, 0);
                                         } else {
                                             ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_request));
@@ -1176,7 +1138,7 @@ RepeateDataAdapter.repeatInterface {
 
                                 } else {
                                     System.out.println("BookingUnavaliable");
-                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
                                     deskStatusModel = new DeskStatusModel(key, id, code, 0);
                                     if (teamDeskAvaliability.isBookedByUser() == true) {
                                         System.out.println("BookingbookedForMe");
@@ -1184,6 +1146,7 @@ RepeateDataAdapter.repeatInterface {
                                         deskStatusModel = new DeskStatusModel(key, id, code, 2);
                                     } else if (teamDeskAvaliability.isBookedByElse() == true) {
                                         System.out.println("BookingBookedOther");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
                                         deskStatusModel = new DeskStatusModel(key, id, code, 3);
                                     }
                                 }
@@ -1206,7 +1169,7 @@ RepeateDataAdapter.repeatInterface {
 
 
             } else {
-                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
                 deskStatusModel = new DeskStatusModel(key, id, code, 0);
                 deskStatusModelList.add(deskStatusModel);
             }
@@ -1222,16 +1185,19 @@ RepeateDataAdapter.repeatInterface {
                 if (id == carParkingStatusModelList.get(i).getId()) {
 
                     if (carParkingStatusModelList.get(i).getStatus() == 0) {
-                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                        System.out.println("Unavaliable");
+                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
                     } else if (carParkingStatusModelList.get(i).getStatus() == 1) {
+                        System.out.println("Avaliable");
                         ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_avaliable));
                     } else if (carParkingStatusModelList.get(i).getStatus() == 2) {
-
+                        System.out.println("BookedByMe");
                         ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
 
                     } else if (carParkingStatusModelList.get(i).getStatus() == 3) {
-                        //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.des));
+                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
                     } else if (carParkingStatusModelList.get(i).getStatus() == 4) {
+                        System.out.println("Request");
                         ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_request));
                     }
 
@@ -1277,15 +1243,19 @@ RepeateDataAdapter.repeatInterface {
 
                                                     //GetCurrentDate and Add OffsetTime
                                                     String offSetAddedDate = Utils.addingHoursToCurrentDate(lMatches.getCurrentTimeZoneOffset());
-                                                    int dateComparsionResult = Utils.compareTwoDates(startDate, offSetAddedDate);
+                                                    //int dateComparsionResult = Utils.compareTwoDates(startDate, offSetAddedDate);
 
-                                                    if (dateComparsionResult == 1) {
+                                                    int dateComparsionResult = Utils.doCompareDateAlone(startDate, offSetAddedDate);
+
+                                                    if (dateComparsionResult == 2) {
+                                                        //28,27,26
                                                         System.out.println("MeetingBookingUnavaliable");
                                                         meetingStatusModel = new MeetingStatusModel(key, id, code, 0);
                                                         ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_booked));
                                                         //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
                                                         //deskStatusModel=new DeskStatusModel(key,id,code,0);
                                                     } else {
+                                                        //29,30
 
                                                         System.out.println("MeeingAvvaliableDoubtHere");
                                                         System.out.println("MeetingAvaliable");
@@ -1420,7 +1390,6 @@ RepeateDataAdapter.repeatInterface {
 
             }
         }
-
 
         //Head Facing
         for (int i = 0; i < valueList.size(); i++) {
@@ -1621,7 +1590,8 @@ RepeateDataAdapter.repeatInterface {
                                     getCarBookingEditList(id, code);
 
                                 } else if (carParkingStatusModelList.get(i).getStatus() == 3) {
-
+                                    //Booked
+                                    Toast.makeText(getContext(),"Park Is Already Booked",Toast.LENGTH_LONG).show();
                                 } else if (carParkingStatusModelList.get(i).getStatus() == 4) {
 
                                     getCarDescriptionUsingCardId(id);
@@ -3097,7 +3067,6 @@ RepeateDataAdapter.repeatInterface {
 
 
         binding.locateProgressBar.setVisibility(View.VISIBLE);
-        // dialog = ProgressDialog.showProgressBar(getContext());
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         //"2022-07-05T00:00:00.000Z"
         //"2000-01-01T15:50:38.000Z"
@@ -3128,18 +3097,13 @@ RepeateDataAdapter.repeatInterface {
 
                 DeskAvaliabilityResponse deskAvaliabilityResponseList = response.body();
 
+                //Call GetTeams API
+                getTeams();
+
+
                 if (deskAvaliabilityResponseList != null) {
                     teamDeskAvaliabilityList = deskAvaliabilityResponseList.getTeamDeskAvaliabilityList();
                 }
-
-
-                //ProgressDialog.dismisProgressBar(getContext(), dialog);
-
-
-                System.out.println("InsideDataValaibelity");
-                //System.out.println("AllDeskSize"+desks.size());
-                // System.out.println("ActiveDeskSize"+ deskAvaliabilityResponseList.getLocationDesksList().size());
-
 
                 //GetTeamDeskIdForBooking
                 if (id > 0) {
@@ -3154,12 +3118,6 @@ RepeateDataAdapter.repeatInterface {
                     }
                 }
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                    }
-                }, 2000);
 
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
@@ -3189,8 +3147,6 @@ RepeateDataAdapter.repeatInterface {
 
                 System.out.println("Failure" + t.getMessage().toString());
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
-
-                //ProgressDialog.dismisProgressBar(getContext(), dialog);
             }
         });
 
@@ -3752,7 +3708,7 @@ RepeateDataAdapter.repeatInterface {
         etComment = locateCheckInBottomSheet.findViewById(R.id.etComment);
         etComment.setText("Comment");
         etVehicleReg = locateCheckInBottomSheet.findViewById(R.id.etVehicleReg);
-        etVehicleReg.setText("TN20CX2443");
+        //etVehicleReg.setText("TN20CX2443");
 
         //Desk Avaliability Checking
         if (code.equals("3")) {
@@ -3760,7 +3716,7 @@ RepeateDataAdapter.repeatInterface {
             bookingVechicleRegtBlock.setVisibility(View.GONE);
             getAvaliableDeskDetails(null, id);
         } else if (code.equals("5")) {
-            bookingCommentBlock.setVisibility(View.VISIBLE);
+            bookingCommentBlock.setVisibility(View.GONE);
             bookingVechicleRegtBlock.setVisibility(View.VISIBLE);
             getParkingSlotId(selctedCode);
         }
@@ -4649,9 +4605,17 @@ RepeateDataAdapter.repeatInterface {
 
         TextView myTeamClose;
 
-        BottomSheetDialog myTeamBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        /*BottomSheetDialog myTeamBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         myTeamBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_myteam_bottomsheet,
-                new RelativeLayout(getContext())));
+                new RelativeLayout(getContext())));*/
+
+
+        BottomSheetDialog myTeamBottomSheet = new BottomSheetDialog(getContext());
+        View view = View.inflate(getContext(), R.layout.dialog_locate_myteam_bottomsheet, null);
+        myTeamBottomSheet.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        //bottomSheetBehavior.setPeekHeight(500);
+
 
         rvMyTeam = myTeamBottomSheet.findViewById(R.id.rvLocateMyTeam);
         myTeamClose = myTeamBottomSheet.findViewById(R.id.myTeamClose);
@@ -4675,7 +4639,7 @@ RepeateDataAdapter.repeatInterface {
         stringName.add("Cody Fisher");
 
 
-        locateMyTeamAdapter = new LocateMyTeamAdapter(getContext(), stringName);
+        locateMyTeamAdapter = new LocateMyTeamAdapter(getContext(), stringName,this,myTeamBottomSheet,bottomSheetBehavior);
         rvMyTeam.setAdapter(locateMyTeamAdapter);
 
 
@@ -5366,5 +5330,37 @@ RepeateDataAdapter.repeatInterface {
     public void repeatDataClick(int pos,String data) {
         txtInterval.setText(data);
         repeatDataBottomSheetDialog.dismiss();
+    }
+
+    @Override
+    public void showMyTeamLocation(int i, int i1, BottomSheetDialog bottomSheetDialog, BottomSheetBehavior bottomSheetBehavior) {
+
+        /*relativeLayout.leftMargin = i;
+        relativeLayout.topMargin = i1;
+        ivDesk.setLayoutParams(relativeLayout);*/
+
+        bottomSheetBehavior.setPeekHeight(500);
+
+        View perSonView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
+        ImageView desk = perSonView.findViewById(R.id.ivDesk);
+
+        ImageView ivPerson = perSonView.findViewById(R.id.ivUserImage);
+        RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        desk.setVisibility(View.GONE);
+        ivPerson.setVisibility(View.VISIBLE);
+
+        relativeLayout.leftMargin = i;
+        relativeLayout.topMargin = i1;
+        relativeLayout.width = 60;
+        relativeLayout.height =60;
+
+        ivPerson.setLayoutParams(relativeLayout);
+
+        binding.firstLayout.addView(perSonView);
+
+
+
+
+
     }
 }

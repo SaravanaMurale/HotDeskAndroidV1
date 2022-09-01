@@ -165,16 +165,16 @@
 
                     <TextView
                         android:id="@+id/txt_team"
+                        style="@style/TextRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pmo"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/ivViewPrifle"
                         android:layout_below="@+id/tvViewProfileName"
+                        android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_toRightOf="@+id/ivViewPrifle"
+                        android:text="Pmo"
                         android:textColor="@color/figmaBlack"
-                        style="@style/TextRegular"
-                        android:textSize="@dimen/_13sdp"/>
+                        android:textSize="@dimen/_13sdp" />
 
                     <ImageView
                         android:id="@+id/viewPrfileIcon"
@@ -488,10 +488,11 @@
                 android:visibility="gone">
 
                 <TextView
+                    android:id="@+id/tvTeamName"
+                    style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Default working hours"
-                    style="@style/TextBold"
                     android:textSize="@dimen/_12sdp"
                     android:textColor="@color/figmaBlack"/>
 
@@ -724,14 +725,13 @@
 
                 <TextView
                     android:id="@+id/title_upcoming"
+                    style="@style/TextBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:text="Upcoming Bookings"
                     android:textColor="@color/black"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:textSize="@dimen/_12sdp"
-                    style="@style/TextBold"
-                    />
+                    android:textSize="@dimen/_12sdp" />
 
 
                 <TextView

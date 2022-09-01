@@ -20,5 +20,15 @@
         android:padding="@dimen/_7sdp"
         />
 
+    <ImageView
+        android:id="@+id/ivUserImage"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:src="@drawable/avatar"
+        android:padding="@dimen/_7sdp"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        />
+
 
 </RelativeLayout>

@@ -163,7 +163,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String companyName = etCompanyName.getText().toString().trim();
+                String companyName = etCompanyName.getText().toString();
                 String email = etEmail.getText().toString().trim();
                 String password = etPassword.getText().toString().trim();
 
@@ -571,7 +571,7 @@ public class LoginActivity extends AppCompatActivity {
 
         boolean userDetailStatus = false;
 
-        if (Utils.isValiedText(companyName)) {
+        if (Utils.isValiedCompanyName(companyName)) {
             if (Utils.isValidEmail(email)) {
                 if (Utils.isValiedText(password)) {
                     userDetailStatus=true;

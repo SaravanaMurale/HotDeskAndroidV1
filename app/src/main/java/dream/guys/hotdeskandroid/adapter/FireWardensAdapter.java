@@ -26,11 +26,18 @@ public class FireWardensAdapter extends RecyclerView.Adapter<FireWardensAdapter.
     List<FirstAidResponse.Persons> firstAidResponseList;
     String description;
 
-    public FireWardensAdapter(Context context, List<FirstAidResponse.Persons> firstAidResponseList, String description) {
+    ViewPersonDetailCliclable viewPersonDetailCliclable;
+
+    public interface ViewPersonDetailCliclable{
+        public void  viewPersonClick(FirstAidResponse.Persons persons);
+    }
+
+    public FireWardensAdapter(Context context, List<FirstAidResponse.Persons> firstAidResponseList, String description,ViewPersonDetailCliclable viewPersonDetailCliclable) {
 
         this.context=context;
         this.firstAidResponseList=firstAidResponseList;
         this.description=description;
+        this.viewPersonDetailCliclable=viewPersonDetailCliclable;
 
     }
 
@@ -46,6 +53,18 @@ public class FireWardensAdapter extends RecyclerView.Adapter<FireWardensAdapter.
 
 
         holder.firewandensName.setText(firstAidResponseList.get(position).getFullName());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                viewPersonDetailCliclable.viewPersonClick(firstAidResponseList.get(holder.getAbsoluteAdapterPosition()));
+
+
+
+
+            }
+        });
 
 
 

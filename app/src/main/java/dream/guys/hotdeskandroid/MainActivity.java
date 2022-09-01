@@ -929,7 +929,7 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
                 }
                 @Override
                 public void onFailure(Call<GlobalSearchResponse> call, Throwable t) {
-                    Toast.makeText(MainActivity.this, "on fail", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this, "on fail", Toast.LENGTH_SHORT).show();
 //                    ProgressDialog.dismisProgressBar(MainActivity.this,dialog);
                     Log.d("Search", "onResponse: fail"+t.getMessage());
                 }

@@ -17,6 +17,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="forget_password">Forgot your password?</string>
+    <string name="reg">Registration</string>
     <string name="signinwith">Or sign in with</string>
     <string name="welcome">Welcome</string>
     <string name="logout">Logout</string>
@@ -142,6 +143,7 @@
     <string name="wifi">Wifi</string>
     <string name="lan">Lan</string>
     <string name="change_password">Change Password</string>
+    <string name="avaliable">Avaliable</string>
 
 
 </resources>
