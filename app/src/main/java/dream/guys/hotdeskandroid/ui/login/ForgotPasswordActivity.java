@@ -114,7 +114,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         boolean userDetailStatus = false;
 
-        if (Utils.isValiedText(companyName)) {
+        if (Utils.isValiedCompanyName(companyName)) {
             if (Utils.isValidEmail(email)) {
                 userDetailStatus=true;
             } else {
