@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
+import dream.guys.hotdeskandroid.model.request.CarParkingDeleteRequest;
 import dream.guys.hotdeskandroid.model.request.ChangePasswordRequest;
 import dream.guys.hotdeskandroid.model.request.CovidAnswerRequest;
 import dream.guys.hotdeskandroid.model.request.CreatePinRequest;
@@ -20,6 +21,7 @@ import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkEditRequest;
 import dream.guys.hotdeskandroid.model.request.LocateDeskBookingRequest;
+import dream.guys.hotdeskandroid.model.request.LocateDeskDeleteRequest;
 import dream.guys.hotdeskandroid.model.request.LocationMR_Request;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomEditRequest;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
@@ -218,6 +220,10 @@ public interface ApiInterface {
     @PUT("api/booking/bookings")
     Call<BaseResponse> doRequestDeskBooking(@Body LocateDeskBookingRequest locateBookingRequest);
 
+    //DeskBookingDelete
+    @PUT("api/booking/bookings")
+    Call<BaseResponse> doDeleteDeskBooking(@Body LocateDeskDeleteRequest locateDeskDeleteRequest);
+
 
     //CarParkBooking
     @PUT("api/carparkbooking/bookings")
@@ -226,6 +232,10 @@ public interface ApiInterface {
     //CarPark edit
     @PUT("api/carparkbooking/bookings")
     Call<BaseResponse> doCarParkingEdit(@Body LocateCarParkEditRequest locateCarParkBookingRequest);
+
+    //CarPark Delete
+    @PUT("api/carparkbooking/bookings")
+    Call<BaseResponse> doDeleteCarParking(@Body CarParkingDeleteRequest carParkingDeleteRequest);
 
     @GET("api/teams")
     Call<List<TeamsResponse>> getTeams();

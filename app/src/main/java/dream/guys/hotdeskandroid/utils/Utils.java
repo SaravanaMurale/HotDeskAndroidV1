@@ -1498,4 +1498,25 @@ public class Utils {
         return date;
     }
 
+
+    public static String MonthAndDateAndTwithZString(String d){
+        String date="";
+
+        System.out.println("2000-01-01T18:00:00Z");
+        System.out.println("\"2000-01-01T18:00:00.000Z\",");
+        SimpleDateFormat spf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        Date newDate= null;
+        try {
+            newDate = spf.parse(d);
+            spf= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            if (newDate != null) {
+                date = spf.format(newDate);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return date;
+    }
+
 }
