@@ -30,14 +30,14 @@
             android:layout_centerInParent="true"
             android:scrollbars="none">
 
+
             <com.alexvasilkov.gestures.views.GestureFrameLayout
-                android:id="@+id/zoom_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/figmaBgGrey"
                 app:gest_doubleTapEnabled="false"
                 app:gest_maxZoom="8"
-                app:gest_minZoom="1">
+                app:gest_minZoom="0">
 
                 <RelativeLayout
                     android:id="@+id/firstLayout"

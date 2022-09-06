@@ -86,6 +86,11 @@ public class SettingsActivity extends AppCompatActivity {
 //                SessionHandler.getInstance().removeAll(getContext());
                 SessionHandler.getInstance().saveBoolean(context, AppConstants.LOGIN_CHECK,false);
                 Utils.finishAllActivity(context);
+                SessionHandler.getInstance().remove(context,AppConstants.COUNTRY_NAME);
+                SessionHandler.getInstance().remove(context,AppConstants.BUILDING);
+                SessionHandler.getInstance().remove(context,AppConstants.FLOOR);
+                SessionHandler.getInstance().remove(context,AppConstants.FULLPATHLOCATION);
+                SessionHandler.getInstance().remove(context,AppConstants.PARENT_ID);
 
             }
         });

@@ -27,7 +27,8 @@ public class FloorAdapter extends RecyclerView.Adapter<FloorAdapter.FloorAdapter
     List<LocateCountryRespose> locateCountryResposeList;
     String identifier;
 
-    int pos = -1;
+    int pos = -1;int sPos=-1;
+    boolean selectedPosition=false;
 
     public FloorAdapter(Context context, List<LocateCountryRespose> locateCountryResposeList, LocateFragment locateFragment, String identifier) {
 
@@ -60,13 +61,26 @@ public class FloorAdapter extends RecyclerView.Adapter<FloorAdapter.FloorAdapter
             }
         });
 
-        if (pos == position) {
+        if (pos == position ) {
             //locateCountryResposeList.get(holder.getAbsoluteAdapterPosition());
             //SessionHandler.getInstance().saveInt(context, AppConstants.FLOOR_POSITION,holder.getAbsoluteAdapterPosition());
-            holder.ivFloor.setImageDrawable(context.getDrawable(R.drawable.floor_enable));
+
+            if(pos>=sPos && sPos==pos){
+                holder.ivFloor.setImageDrawable(context.getDrawable(R.drawable.floor_disable));
+                sPos=-1;
+            }else {
+
+                holder.ivFloor.setImageDrawable(context.getDrawable(R.drawable.floor_enable));
+                SessionHandler.getInstance().saveInt(context, AppConstants.FLOOR_POSITION,holder.getAbsoluteAdapterPosition());
+                sPos=pos;
+            }
+
+            sPos=pos;
+
         }else {
             //locateCountryResposeList.get(holder.getAbsoluteAdapterPosition());
             //SessionHandler.getInstance().saveInt(context, AppConstants.NEW_FLOOR_POSITION,holder.getAbsoluteAdapterPosition());
+
             holder.ivFloor.setImageDrawable(context.getDrawable(R.drawable.floor_disable));
         }
 
