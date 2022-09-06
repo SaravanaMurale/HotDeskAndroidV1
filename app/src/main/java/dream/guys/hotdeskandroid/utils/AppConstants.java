@@ -76,6 +76,7 @@ public class AppConstants {
     public static final String PERSONAL_LINKS="PERSONAL_LINKS";
 
     public static Boolean FIRSTREFERAL = false;
+    public static Boolean CHECKINPOPUPSTATUS = false;
     public static String REFERALID = "REFERALID";
     public static String REFERALCODEE = "REFERALCODEE";
 

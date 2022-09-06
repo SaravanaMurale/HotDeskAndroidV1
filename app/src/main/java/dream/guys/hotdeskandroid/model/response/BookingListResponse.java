@@ -63,6 +63,13 @@ public class BookingListResponse {
         private CarParkBooking carParkBookingsModel;
         public LocationBuildingFloor locationBuildingFloor;
 
+        public LocationBuildingFloor getLocationBuildingFloor() {
+            return locationBuildingFloor;
+        }
+
+        public void setLocationBuildingFloor(LocationBuildingFloor locationBuildingFloor) {
+            this.locationBuildingFloor = locationBuildingFloor;
+        }
 
         // 1--> desk booking 2--> meeting 3--> parking
         private int calDeskStatus;
