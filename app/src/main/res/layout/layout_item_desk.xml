@@ -16,7 +16,7 @@
         android:id="@+id/ivDesk"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/desk_booked"
+        android:src="@drawable/desk_unavaliable"
         android:padding="@dimen/_7sdp"
         />
 

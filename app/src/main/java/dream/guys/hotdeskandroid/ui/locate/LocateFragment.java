@@ -1119,6 +1119,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                     } else if (teamDeskAvaliability.isBookedByElse() == true) {
                                         System.out.println("BookingBookedOther");
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
                                         deskStatusModel = new DeskStatusModel(key, id, code, 3);
                                     } else if (teamsResponse.getDeskCount() != 0 && teamsResponse.getAutomaticApprovalStatus() == 2) {
                                         System.out.println("BookingAvaliable");
@@ -1637,7 +1638,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 } else if (meetingStatusModelList.get(i).getStatus() == 2) {
                                     getMeetingBookingListToEdit(meetingRoomId);
                                 } else if (meetingStatusModelList.get(i).getStatus() == 3) {
-
+//B
+                                    Toast.makeText(getContext(),"Meeting Room Is Already Booked",Toast.LENGTH_LONG).show();
                                 } else if (meetingStatusModelList.get(i).getStatus() == 4) {
                                     boolean isReqduest = true;
                                     callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest);
