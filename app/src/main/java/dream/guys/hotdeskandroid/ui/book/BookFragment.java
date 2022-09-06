@@ -1,6 +1,7 @@
 package dream.guys.hotdeskandroid.ui.book;
 
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
+import static dream.guys.hotdeskandroid.utils.Utils.toastMessage;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -52,15 +53,19 @@ import dream.guys.hotdeskandroid.adapter.BookingListToEditAdapter;
 import dream.guys.hotdeskandroid.adapter.CarListToEditAdapter;
 import dream.guys.hotdeskandroid.adapter.CarListToEditAdapterBooking;
 import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
+import dream.guys.hotdeskandroid.adapter.FloorAdapter;
 import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
+import dream.guys.hotdeskandroid.adapter.LocateMyTeamAdapter;
 import dream.guys.hotdeskandroid.adapter.MeetingListToEditAdapter;
 import dream.guys.hotdeskandroid.adapter.ParkingSpotListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.ParticipantNameShowAdapter;
 import dream.guys.hotdeskandroid.adapter.RoomListRecyclerAdapter;
+import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
 import dream.guys.hotdeskandroid.databinding.FragmentBookBinding;
 import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
+import dream.guys.hotdeskandroid.model.request.Point;
 import dream.guys.hotdeskandroid.model.response.AmenitiesResponse;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
@@ -69,6 +74,7 @@ import dream.guys.hotdeskandroid.model.response.CarParkListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkLocationsModel;
 import dream.guys.hotdeskandroid.model.response.CarParkingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.DeskRoomCountResponse;
+import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
 import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
@@ -91,7 +97,8 @@ public class BookFragment extends Fragment implements
         CarListToEditAdapterBooking.CarEditClickableBooking,
         ParkingSpotListRecyclerAdapter.OnSelectSelected,
         ParticipantNameShowAdapter.OnParticipantSelectable,
-        RoomListRecyclerAdapter.OnSelectSelected {
+        RoomListRecyclerAdapter.OnSelectSelected,
+        ShowCountryAdapter.OnSelectListener{
     FragmentBookBinding binding;
     @BindView(R.id.desk_layout)
     LinearLayout deskLayout;
@@ -170,6 +177,26 @@ public class BookFragment extends Fragment implements
 
     Context context;
     Activity activityContext;
+
+    //BottomSheetData
+    TextView country, state, street, floor, back, bsApply;
+    RecyclerView rvCountry, rvState, rvStreet, rvFloor;
+    ShowCountryAdapter showCountryAdapter;
+    FloorAdapter floorAdapter;
+//    LinearLayoutManager linearLayoutManager;
+    RelativeLayout countryBlock, statBlock, streetBlock, floorBlock;
+
+    TextView bsLocationSearch;
+
+    RecyclerView rvMyTeam;
+    LocateMyTeamAdapter locateMyTeamAdapter;
+
+    List<Point> pointList = new ArrayList<>();
+
+    int stateId = 0;
+
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -183,6 +210,12 @@ public class BookFragment extends Fragment implements
 
         dialog= new Dialog(getActivity());
         tabToggleViewClicked(selectedicon);
+        binding.searchGlobal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getLocateCountryList();
+            }
+        });
         binding.calendarView.setEventHandler(new CalendarView.EventHandler() {
             @Override
             public void onDayLongPress(Date date, int pos) {
@@ -602,6 +635,7 @@ public class BookFragment extends Fragment implements
                     List<CarParkListToEditResponse> carParkingForEditResponse = response.body();
 //                    List<CarParkListToEditResponse> carParkingForEditResponse = response.body();
 
+                    toastMessage(getActivity(),"hvhvhv");
                     CallCarBookingEditList(carParkingForEditResponse, "5");
 
                      ProgressDialog.dismisProgressBar(getContext(),dialog);
@@ -613,6 +647,8 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onFailure(Call<List<CarParkListToEditResponse>> call, Throwable t) {
                     ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    CallCarBookingEditList(null, "5");
+
 //                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 }
             });
@@ -2527,4 +2563,383 @@ public class BookFragment extends Fragment implements
         selectedDeskId= deskId;
         locationAddress.setText(location);
     }
+
+    //Global Search MOdel
+    private void getLocateCountryList() {
+
+
+        if (Utils.isNetworkAvailable(getContext())) {
+
+            dialog = ProgressDialog.showProgressBar(getContext());
+//            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<LocateCountryRespose>> call = apiService.getLocationCountryList();
+            call.enqueue(new Callback<List<LocateCountryRespose>>() {
+                @Override
+                public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
+
+                    List<LocateCountryRespose> locateCountryResposes = response.body();
+
+                    System.out.println("LocateCountryList" + locateCountryResposes.size());
+
+                    CallFloorBottomSheet(locateCountryResposes);
+
+
+                    ProgressDialog.dismisProgressBar(getContext(), dialog);
+//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+                }
+
+                @Override
+                public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
+
+                    ProgressDialog.dismisProgressBar(getContext(), dialog);
+//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getContext(), "Please Enable Internet");
+        }
+
+
+    }
+    //Select Floor Plan BottomSheeet
+    private void CallFloorBottomSheet(List<LocateCountryRespose> locateCountryResposes) {
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView(getLayoutInflater().
+                inflate(R.layout.bottom_sheet_locate_floor_filter,
+                        new RelativeLayout(getContext())));
+
+
+        bsLocationSearch = bottomSheetDialog.findViewById(R.id.bsLocationSearch);
+
+        String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
+        String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
+
+        if (buildingName == null && floorName == null) {
+            bsLocationSearch.setText("40th Bank Street,30th Floor");
+        } else {
+            bsLocationSearch.setText(buildingName + "," + floorName);
+        }
+
+        countryBlock = bottomSheetDialog.findViewById(R.id.bsCountryBlock);
+        statBlock = bottomSheetDialog.findViewById(R.id.bsStateBlock);
+        streetBlock = bottomSheetDialog.findViewById(R.id.bsStreetBlock);
+        floorBlock = bottomSheetDialog.findViewById(R.id.bsFloorBlock);
+
+        country = bottomSheetDialog.findViewById(R.id.bsCountry);
+        state = bottomSheetDialog.findViewById(R.id.bsState);
+        street = bottomSheetDialog.findViewById(R.id.bsStreet);
+        floor = bottomSheetDialog.findViewById(R.id.bsfloor);
+
+
+        //Get initial data
+        //getCountryStateStreetAndFloorDetails();
+
+        rvCountry = bottomSheetDialog.findViewById(R.id.rvCountry);
+        rvState = bottomSheetDialog.findViewById(R.id.rvState);
+        rvStreet = bottomSheetDialog.findViewById(R.id.rvStreet);
+        rvFloor = bottomSheetDialog.findViewById(R.id.rvFloorList);
+
+
+        country.setText("Global Location");
+        //country.setText(locateCountryResposes.get(0).getName());
+        rvCountry.setVisibility(View.INVISIBLE);
+        statBlock.setVisibility(View.INVISIBLE);
+        rvState.setVisibility(View.INVISIBLE);
+        streetBlock.setVisibility(View.INVISIBLE);
+        rvStreet.setVisibility(View.INVISIBLE);
+        floorBlock.setVisibility(View.INVISIBLE);
+
+        back = bottomSheetDialog.findViewById(R.id.bsBack);
+        bsApply = bottomSheetDialog.findViewById(R.id.bsApply);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+
+
+            }
+        });
+
+        bsApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+//                initLoadFloorDetails(canvasss);
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+
+        country.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                country.setText("Global Location");
+                rvCountry.setVisibility(View.VISIBLE);
+                showCountryListInAdapter(locateCountryResposes);
+
+                statBlock.setVisibility(View.GONE);
+                rvState.setVisibility(View.GONE);
+                streetBlock.setVisibility(View.GONE);
+                rvStreet.setVisibility(View.GONE);
+                floorBlock.setVisibility(View.GONE);
+                rvFloor.setVisibility(View.INVISIBLE);
+
+                //getLocateCountryList();
+            }
+        });
+
+        state.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                state.setText("City");
+                streetBlock.setVisibility(View.INVISIBLE);
+                rvStreet.setVisibility(View.INVISIBLE);
+                rvFloor.setVisibility(View.INVISIBLE);
+                callCountrysChildData(stateId);
+
+
+            }
+        });
+
+        //Building
+        street.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                street.setText("Building");
+                floorBlock.setVisibility(View.INVISIBLE);
+                floor.setVisibility(View.INVISIBLE);
+                rvStreet.setVisibility(View.VISIBLE);
+                rvFloor.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        floor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rvFloor.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+
+         /*linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+         rvCountry.setLayoutManager(linearLayoutManager);
+         rvCountry.setHasFixedSize(true);*/
+
+        bottomSheetDialog.show();
+
+    }
+    private void showCountryListInAdapter(List<LocateCountryRespose> locateCountryResposes) {
+
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvCountry.setLayoutManager(linearLayoutManager);
+        rvCountry.setHasFixedSize(true);
+
+        showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes, this, "COUNTRY");
+        rvCountry.setAdapter(showCountryAdapter);
+
+    }
+
+
+    private void callCountrysChildData(int parentId) {
+        dialog = ProgressDialog.showProgressBar(getContext());
+//        binding.locateProgressBar.setVisibility(View.VISIBLE);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(parentId);
+
+        call.enqueue(new Callback<List<LocateCountryRespose>>() {
+            @Override
+            public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
+
+                List<LocateCountryRespose> locateCountryResposes = response.body();
+
+                for (int i = 0; i < locateCountryResposes.size(); i++) {
+                    System.out.println("CountrychildName" + locateCountryResposes.get(i).getName());
+                }
+
+                rvCountry.setVisibility(View.GONE);
+                statBlock.setVisibility(View.VISIBLE);
+                rvState.setVisibility(View.VISIBLE);
+
+                showCountryChildListInAdapter(locateCountryResposes);
+
+                ProgressDialog.dismisProgressBar(getContext(), dialog);
+//                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
+                ProgressDialog.dismisProgressBar(getContext(), dialog);
+//                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
+    private void showCountryChildListInAdapter(List<LocateCountryRespose> locateCountryResposes) {
+
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvState.setLayoutManager(linearLayoutManager);
+        rvState.setHasFixedSize(true);
+
+        showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes, this, "STATE");
+        rvState.setAdapter(showCountryAdapter);
+    }
+
+    private void getFloorDetails(int floorId, boolean findCoordinateStatus) {
+//        binding.locateProgressBar.setVisibility(View.VISIBLE);
+        dialog = ProgressDialog.showProgressBar(getContext());
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(floorId);
+        call.enqueue(new Callback<List<LocateCountryRespose>>() {
+            @Override
+            public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
+
+                List<LocateCountryRespose> locateCountryResposes = response.body();
+
+                //ProgressDialog.dismisProgressBar(getContext(), dialog);
+
+                if (findCoordinateStatus) {
+                    int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+                    //ProgressDialog.dismisProgressBar(getContext(), dialog);
+                    for (int i = 0; i < locateCountryResposes.size(); i++) {
+                        if (parentId == locateCountryResposes.get(i).getLocateCountryId()) {
+                            if (locateCountryResposes.get(i).getSupportZoneLayoutItemsList() != null) {
+                                // ProgressDialog.dismisProgressBar(getContext(), dialog);
+                                getOtherSubZoneLayoutItems(locateCountryResposes.get(i).getSupportZoneLayoutItemsList());
+                            }
+                        }
+                    }
+                } else {
+                    rvStreet.setVisibility(View.VISIBLE);
+                    showFloorListInAdapter(locateCountryResposes);
+
+                    //ProgressDialog.dismisProgressBar(getContext(), dialog);
+                }
+                ProgressDialog.dismisProgressBar(getContext(), dialog);
+//                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
+                 ProgressDialog.dismisProgressBar(getContext(), dialog);
+//                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+            }
+        });
+
+    }
+    private void showFloorListInAdapter(List<LocateCountryRespose> locateCountryResposes) {
+
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvStreet.setLayoutManager(linearLayoutManager);
+        rvStreet.setHasFixedSize(true);
+
+        showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes, this, "FLOOR");
+        rvStreet.setAdapter(showCountryAdapter);
+
+    }
+
+    private void getOtherSubZoneLayoutItems(List<LocateCountryRespose.SupportZoneLayoutItems> supportZoneLayoutItemsList) {
+
+        //List<Point> pointList=new ArrayList<>();
+
+        pointList.clear();
+
+        for (int i = 0; i < supportZoneLayoutItemsList.size(); i++) {
+
+            System.out.println("supportZoneLayoutItemsSize" + supportZoneLayoutItemsList.size());
+            System.out.println("supportZoneLayoutItemsSize" + supportZoneLayoutItemsList.get(i).getTitle());
+            System.out.println("CorrrdnateSize" + supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().size());
+
+            for (int j = 0; j < supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().size(); j++) {
+
+                System.out.println("DATAATATA" + supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(0) + " " + supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(1));
+
+                Point point = new Point(supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(0),
+                        supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(1));
+                pointList.add(point);
+
+            }
+
+        }
+
+       /* for (int i = 0; i <pointList.size() ; i++) {
+            System.out.println("PointListDate "+pointList.get(i).getX()+" "+pointList.get(i).getY());
+        }*/
+
+        //ProgressDialog.dismisProgressBar(getContext(), dialog);
+        /*  Point point=new Point(coordinateList.get(i).get(0),coordinateList.get(i).get(1));
+
+         */
+
+    }
+
+    @Override
+    public void onSelect(LocateCountryRespose locateCountryRespose, String identifier) {
+
+        switch (identifier) {
+            case "COUNTRY":
+                state.setText("City");
+                stateId = locateCountryRespose.getLocateCountryId();
+                SessionHandler.getInstance().save(getContext(), AppConstants.COUNTRY_NAME, locateCountryRespose.getName());
+                country.setText(locateCountryRespose.getName());
+                callCountrysChildData(locateCountryRespose.getLocateCountryId());
+                break;
+
+            case "STATE":
+                state.setText(locateCountryRespose.getName());
+                SessionHandler.getInstance().save(getContext(), AppConstants.BUILDING, locateCountryRespose.getName());
+                rvState.setVisibility(View.GONE);
+                streetBlock.setVisibility(View.VISIBLE);
+                street.setVisibility(View.VISIBLE);
+                street.setText("Building");
+
+                SessionHandler.getInstance().saveInt(getContext(), AppConstants.SUB_PARENT_ID, locateCountryRespose.getLocateCountryId());
+                getFloorDetails(locateCountryRespose.getLocateCountryId(), false);
+
+
+                System.out.println("SubParentIdAndItsPosition" + locateCountryRespose.getLocateCountryId() + " ");
+
+                break;
+
+            case "FLOOR":
+                floorBlock.setVisibility(View.VISIBLE);
+                floor.setVisibility(View.VISIBLE);
+                floor.setText(locateCountryRespose.getName());
+                SessionHandler.getInstance().save(getContext(), AppConstants.FLOOR, locateCountryRespose.getName());
+                SessionHandler.getInstance().remove(getContext(),AppConstants.FULLPATHLOCATION);
+                rvStreet.setVisibility(View.GONE);
+                rvFloor.setVisibility(View.VISIBLE);
+                SessionHandler.getInstance().saveInt(getContext(), AppConstants.PARENT_ID, locateCountryRespose.getLocateCountryId());
+
+                if (locateCountryRespose.getSupportZoneLayoutItemsList() != null) {
+                    getOtherSubZoneLayoutItems(locateCountryRespose.getSupportZoneLayoutItemsList());
+                }
+
+                //Final
+//                getDeskRoomCarParkingDetails(locateCountryRespose.getLocateCountryId());
+
+
+                break;
+
+
+        }
+
+        if (Utils.isNetworkAvailable(getContext())) {
+
+        } else {
+            Utils.toastMessage(getContext(), "Please Enable Internet");
+        }
+
+    }
+
 }

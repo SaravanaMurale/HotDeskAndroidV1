@@ -253,7 +253,7 @@
 
                 <!--Search-->
                 <TextView
-                    android:id="@+id/searchLocate"
+                    android:id="@+id/searchGlobal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -273,10 +273,11 @@
                     android:id="@+id/locateCalendearView"
                     android:layout_width="@dimen/_100sdp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/searchLocate"
+                    android:layout_below="@+id/searchGlobal"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginLeft="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:visibility="gone"
                     android:background="@drawable/rectangle_bg_with_corner"
                     android:drawableRight="@drawable/locate_calender"
                     android:paddingLeft="@dimen/_8sdp"
@@ -294,7 +295,7 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/searchLocate"
+                    android:layout_below="@+id/searchGlobal"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_10sdp"
