@@ -43,7 +43,6 @@ public class DeepLinkActivity extends AppCompatActivity {
 //            Toast.makeText(this, "Referal id =" + AppConstants.REFERALID + " Referall Code = " + AppConstants.REFERALCODEE, Toast.LENGTH_LONG).show();
         }
 
-
     }
 
 }

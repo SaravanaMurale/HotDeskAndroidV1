@@ -11,10 +11,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
@@ -73,6 +75,7 @@ import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkLocationsModel;
 import dream.guys.hotdeskandroid.model.response.CarParkingForEditResponse;
+import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.DeskRoomCountResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
@@ -194,7 +197,7 @@ public class BookFragment extends Fragment implements
     List<Point> pointList = new ArrayList<>();
 
     int stateId = 0;
-
+    int canvasss = 0;
 
 
     @Override
@@ -500,10 +503,57 @@ public class BookFragment extends Fragment implements
                     call = apiService.getDailyDeskCount(month, ""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
                     break;
                 case 1:
-                    call = apiService.getDailyRoomCount(month, ""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
+                    call = apiService.getDailyRoomCountLocation(month, ""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
                     break;
                 case 2:
                     call = apiService.getDailyParkingCount(month, ""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
+                    break;
+            }
+            call.enqueue(new Callback<List<DeskRoomCountResponse>>() {
+                @Override
+                public void onResponse(Call<List<DeskRoomCountResponse>> call, Response<List<DeskRoomCountResponse>> response) {
+                    dialog.dismiss();
+                    if (response.code()==200){
+                        events.clear();
+                        events.addAll(response.body());
+                        if (events.size()>0){
+                            binding.calendarView.updateCalendar(events, -1);
+                        }
+                    } else if(response.code()==401){
+                        //Handle if token got expired
+//                        ProgressDialog.dismisProgressBar(getContext(),dialog);
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<DeskRoomCountResponse>> call, Throwable t) {
+                    Toast.makeText(getActivity(), "fail "+t.getMessage(), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
+    }
+
+    private void getDeskCountLocation(String month, String locationId) {
+        if (Utils.isNetworkAvailable(getActivity())) {
+            dialog= ProgressDialog.showProgressBar(getContext());
+            System.out.println("check sub parent Id  :  "+locationId);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<DeskRoomCountResponse>> call = null;
+            switch (selectedicon){
+                case 0:
+                    call = apiService.getDailyDeskCountLocation(month, locationId);
+                    break;
+                case 1:
+                    call = apiService.getDailyRoomCountLocation(month, locationId);
+                    break;
+                case 2:
+                    call = apiService.getDailyParkingCountLocation(month, locationId);
                     break;
             }
             call.enqueue(new Callback<List<DeskRoomCountResponse>>() {
@@ -2670,7 +2720,13 @@ public class BookFragment extends Fragment implements
             @Override
             public void onClick(View v) {
 
-//                initLoadFloorDetails(canvasss);
+                canvasss = 1;
+
+                //removes desk in layout
+//                binding.firstLayout.removeAllViews();
+                //removeZoomInLayout();
+
+                initLoadFloorDetails(canvasss);
                 bottomSheetDialog.dismiss();
             }
         });
@@ -2883,6 +2939,193 @@ public class BookFragment extends Fragment implements
 
     }
 
+    private void getDeskRoomCarParkingDetails(int parentId) {
+        dialog = ProgressDialog.showProgressBar(getContext());
+//        binding.locateProgressBar.setVisibility(View.VISIBLE);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(parentId);
+        call.enqueue(new Callback<List<LocateCountryRespose>>() {
+            @Override
+            public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
+
+                List<LocateCountryRespose> locateCountryResposeList = response.body();
+
+                System.out.println("InsideFloorDetails");
+
+                for (int j = 0; j < locateCountryResposeList.size(); j++) {
+                    System.out.println("InsideFloorName" + locateCountryResposeList.get(j).getName());
+                }
+
+                showFloorImageAndNameInAdapter(locateCountryResposeList);
+
+                ProgressDialog.dismisProgressBar(getContext(), dialog);
+//                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
+                ProgressDialog.dismisProgressBar(getContext(), dialog);
+//                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+            }
+        });
+
+
+    }
+
+    //Final Adapter
+    private void showFloorImageAndNameInAdapter(List<LocateCountryRespose> locateCountryResposeList) {
+
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvFloor.setLayoutManager(linearLayoutManager);
+        rvFloor.setHasFixedSize(true);
+
+        floorAdapter = new FloorAdapter(getContext(), locateCountryResposeList, this, "FLOOR_NAME");
+        rvFloor.setAdapter(floorAdapter);
+    }
+
+    public void initLoadFloorDetails(int canvasDrawStatus) {
+
+        int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+
+        if (parentId > 0) {
+            //Disable touch Screen
+            ProgressDialog.touchLock(getContext(),getActivity());
+            ProgressDialog.clearTouchLock(getContext(),getActivity());
+
+            //Set Selected Floor In SearchView
+            String CountryName = SessionHandler.getInstance().get(getContext(), AppConstants.COUNTRY_NAME);
+            String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
+            String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
+            String fullPathLocation = SessionHandler.getInstance().get(getContext(), AppConstants.FULLPATHLOCATION);
+
+            if (CountryName == null && buildingName == null && floorName == null && fullPathLocation==null) {
+                binding.searchGlobal.setHint("Choose Location");
+            } else {
+                if(fullPathLocation==null) {
+                    binding.searchGlobal.setText(CountryName + "," + buildingName + "," + floorName);
+                }else {
+                    binding.searchGlobal.setText(fullPathLocation);
+                }
+            }
+
+            //ForCoordinate
+            int subParentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.SUB_PARENT_ID);
+            boolean findCoordinateStatus = true;
+
+            //Used For Desk Avaliability Checking
+            if (!calSelectedDate.isEmpty() || !calSelectedDate.equalsIgnoreCase(""))
+                getDeskCountLocation(calSelectedMont, ""+SessionHandler.getInstance().getInt(getContext(),AppConstants.LOCATION_ID));
+            else if (!calSelectedMont.isEmpty() || !calSelectedMont.equalsIgnoreCase(""))
+                getDeskCountLocation(calSelectedDate, ""+SessionHandler.getInstance().getInt(getContext(),AppConstants.LOCATION_ID));
+            else
+                getDeskCountLocation(Utils.getCurrentDate(), ""+SessionHandler.getInstance().getInt(getContext(),AppConstants.LOCATION_ID));
+
+            getAvaliableDeskDetails(null, 0);
+
+            //CarChecking
+//            doInitCarAvalibilityHere(parentId);
+
+            //Meeting Checking
+//            doInitMeetingAvalibilityHere(parentId,canvasDrawStatus);
+
+        } else {
+            Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void getAvaliableDeskDetails(List<LocateCountryRespose.LocationItemLayout.Desks> desks, int id) {
+
+
+//        binding.locateProgressBar.setVisibility(View.VISIBLE);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        //"2022-07-05T00:00:00.000Z"
+        //"2000-01-01T15:50:38.000Z"
+        //"2000-01-01T18:00:00.000Z"
+
+
+        //String toDate=Utils.getCurrentDate()+"T00:00:00Z";
+        //System.out.println("ToDateCheckoing"+toDate);
+
+        //Add min and hour
+       /* String startTime=Utils.addMinuteWithCurrentTime(1,2);
+        String fromTime=startTime+".000Z";
+        String endTime=Utils.addMinuteWithCurrentTime(2,9);
+        String toTime=endTime+".000Z";*/
+        String toDate = binding.locateCalendearView.getText().toString() + "T00:00:00Z";
+        String fromTime = binding.locateCalendearView.getText().toString() + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
+        String toTime = binding.locateCalendearView.getText().toString() + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
+
+        //System.out.println("DateAndStatTimeAndEndTime"+toDate+" "+fromTime+" "+toTime);
+
+        int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+        System.out.println("parent Booking cje"+parentId);
+        //Call<DeskAvaliabilityResponse> call = apiService.getAvaliableDeskDetails(parentId, now, now, now);
+        Call<DeskAvaliabilityResponse> call = apiService.getAvaliableDeskDetails(parentId, toDate, fromTime, toTime);
+
+        call.enqueue(new Callback<DeskAvaliabilityResponse>() {
+            @Override
+            public void onResponse(Call<DeskAvaliabilityResponse> call, Response<DeskAvaliabilityResponse> response) {
+
+                DeskAvaliabilityResponse deskAvaliabilityResponseList = response.body();
+
+                //Call GetTeams API
+//                getTeams();
+
+
+                if (deskAvaliabilityResponseList != null) {
+//                    teamDeskAvaliabilityList = deskAvaliabilityResponseList.getTeamDeskAvaliabilityList();
+                }
+
+                //GetTeamDeskIdForBooking
+                if (id > 0) {
+                    for (int i = 0; i < deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size(); i++) {
+
+                        if (id == deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).getDeskId()) {
+//                            teamDeskIdForBooking = deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).getTeamDeskId();
+//                            System.out.println("TeamDeskIdForBooking " + teamDeskIdForBooking);
+                        }
+
+
+                    }
+                }
+
+
+//                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+                /*List<String> deskCodeList = new ArrayList<>();
+                for (int i = 0; i < desks.size(); i++) {
+                    deskCodeList.add(desks.get(i).getDeskCode());
+                }
+
+                if (deskAvaliabilityResponseList.getLocationDesksList() != null) {
+                    for (int i = 0; i < deskAvaliabilityResponseList.getLocationDesksList().size(); i++) {
+
+                        if (deskCodeList.contains(deskAvaliabilityResponseList.getLocationDesksList().get(i).getCode())) {
+                            System.out.println("AvaliableDesks" + deskAvaliabilityResponseList.getLocationDesksList().get(i).getCode());
+                        }
+
+                    }
+                }*/
+
+
+                //ProgressDialog.dismisProgressBar(getContext(), dialog);
+
+
+            }
+
+            @Override
+            public void onFailure(Call<DeskAvaliabilityResponse> call, Throwable t) {
+
+                System.out.println("Failure" + t.getMessage().toString());
+//                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+            }
+        });
+
+    }
+
     @Override
     public void onSelect(LocateCountryRespose locateCountryRespose, String identifier) {
 
@@ -2926,7 +3169,7 @@ public class BookFragment extends Fragment implements
                 }
 
                 //Final
-//                getDeskRoomCarParkingDetails(locateCountryRespose.getLocateCountryId());
+                getDeskRoomCarParkingDetails(locateCountryRespose.getLocateCountryId());
 
 
                 break;

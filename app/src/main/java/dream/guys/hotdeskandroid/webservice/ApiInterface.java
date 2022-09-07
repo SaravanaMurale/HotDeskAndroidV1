@@ -107,6 +107,10 @@ public interface ApiInterface {
     //Book desk count api
     @GET("api/Calendar/DailyTeamDeskCount")
     Call<List<DeskRoomCountResponse>> getDailyDeskCount(@Query("month") String s, @Query("teamId") String teamId);
+    //Book desk count api with location
+    @GET("api/Calendar/DailyLocationDeskCount")
+    Call<List<DeskRoomCountResponse>> getDailyDeskCountLocation(@Query("month") String s ,
+                                                                @Query("locationId") String locationId);
     //parking spot list
     @GET("api/ParkingSlot/parkingslotsbylocation")
     Call<List<ParkingSpotModel>> getParkingSpotModels(@Query("locationId") String s);
@@ -114,10 +118,17 @@ public interface ApiInterface {
     //Book meeting room count api
     @GET("api/MeetingRooms/DailyMeetingRoomCounts")
     Call<List<DeskRoomCountResponse>> getDailyRoomCount(@Query("month") String s, @Query("teamId") String teamId);
+    //Book meeting room count api Location
+    @GET("api/MeetingRooms/DailyMeetingRoomCounts")
+    Call<List<DeskRoomCountResponse>> getDailyRoomCountLocation(@Query("month") String s, @Query("teamId") String teamId);
 
     //Book parking count api
     @GET("api/ParkingSlot/DailyCarParkCounts")
     Call<List<DeskRoomCountResponse>> getDailyParkingCount(@Query("month") String s, @Query("teamId") String teamId);
+
+    //Book parking count api Location
+    @GET("api/ParkingSlot/DailyCarParkCounts")
+    Call<List<DeskRoomCountResponse>> getDailyParkingCountLocation(@Query("month") String s, @Query("locationId") String teamId);
 
     @GET("api/Settings/QRCheckInEnforcementEnabled")
     Call<Boolean> getQrEnabled();

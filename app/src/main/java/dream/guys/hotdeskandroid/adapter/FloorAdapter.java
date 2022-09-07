@@ -17,6 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
+import dream.guys.hotdeskandroid.ui.book.BookFragment;
 import dream.guys.hotdeskandroid.ui.locate.LocateFragment;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -31,11 +32,15 @@ public class FloorAdapter extends RecyclerView.Adapter<FloorAdapter.FloorAdapter
     boolean selectedPosition=false;
 
     public FloorAdapter(Context context, List<LocateCountryRespose> locateCountryResposeList, LocateFragment locateFragment, String identifier) {
-
         this.context=context;
         this.locateCountryResposeList=locateCountryResposeList;
         this.identifier=identifier;
 
+    }
+    public FloorAdapter(Context context, List<LocateCountryRespose> locateCountryResposeList, BookFragment locateFragment, String identifier) {
+        this.context=context;
+        this.locateCountryResposeList=locateCountryResposeList;
+        this.identifier=identifier;
     }
 
     @NonNull
@@ -54,6 +59,7 @@ public class FloorAdapter extends RecyclerView.Adapter<FloorAdapter.FloorAdapter
             @Override
             public void onClick(View v) {
                 SessionHandler.getInstance().saveInt(context, AppConstants.FLOOR_POSITION,holder.getAbsoluteAdapterPosition());
+                SessionHandler.getInstance().saveInt(context, AppConstants.LOCATION_ID,locateCountryResposeList.get(holder.getAbsoluteAdapterPosition()).getLocateCountryId());
                 System.out.println("FloorPositionSaved");
                 pos = holder.getAbsoluteAdapterPosition();
                 notifyDataSetChanged();
@@ -72,6 +78,7 @@ public class FloorAdapter extends RecyclerView.Adapter<FloorAdapter.FloorAdapter
 
                 holder.ivFloor.setImageDrawable(context.getDrawable(R.drawable.floor_enable));
                 SessionHandler.getInstance().saveInt(context, AppConstants.FLOOR_POSITION,holder.getAbsoluteAdapterPosition());
+                SessionHandler.getInstance().saveInt(context, AppConstants.LOCATION_ID,locateCountryResposeList.get(holder.getAbsoluteAdapterPosition()).getLocateCountryId());
                 sPos=pos;
             }
 
@@ -83,7 +90,6 @@ public class FloorAdapter extends RecyclerView.Adapter<FloorAdapter.FloorAdapter
 
             holder.ivFloor.setImageDrawable(context.getDrawable(R.drawable.floor_disable));
         }
-
     }
 
     @Override
