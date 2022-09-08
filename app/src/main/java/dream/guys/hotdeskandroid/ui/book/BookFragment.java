@@ -244,7 +244,13 @@ public class BookFragment extends Fragment implements
             public void onPrevClicked(String month) {
                 Toast.makeText(getActivity(), ""+month, Toast.LENGTH_LONG).show();
                 calSelectedMont=month;
-                getDeskCount(month);
+
+                if (binding.searchGlobal.getText() != null){
+                    getDeskCountLocation(month,""+SessionHandler.getInstance().getInt(getContext(),AppConstants.LOCATION_ID));
+                } else {
+                    getDeskCount(month);
+
+                }
             }
 
         });
@@ -560,7 +566,7 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onResponse(Call<List<DeskRoomCountResponse>> call, Response<List<DeskRoomCountResponse>> response) {
                     dialog.dismiss();
-                    if (response.code()==200){
+                    if (response.code()==200 && response.body().size()>0){
                         events.clear();
                         events.addAll(response.body());
                         if (events.size()>0){
@@ -3022,7 +3028,7 @@ public class BookFragment extends Fragment implements
             else
                 getDeskCountLocation(Utils.getCurrentDate(), ""+SessionHandler.getInstance().getInt(getContext(),AppConstants.LOCATION_ID));
 
-            getAvaliableDeskDetails(null, 0);
+//            getAvaliableDeskDetails(null, 0);
 
             //CarChecking
 //            doInitCarAvalibilityHere(parentId);
