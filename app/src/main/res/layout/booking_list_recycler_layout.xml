@@ -109,7 +109,7 @@
                         android:theme="@style/TextBold" />
 
                     <ImageView
-                        android:id="@+id/bookingIvLocation"
+                        android:id="@+id/bookingIvLocationIcon"
                         android:layout_width="@dimen/_10sdp"
                         android:layout_height="@dimen/_11sdp"
                         android:layout_marginLeft="@dimen/_10sdp"

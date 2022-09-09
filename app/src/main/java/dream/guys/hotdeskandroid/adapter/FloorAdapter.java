@@ -28,19 +28,15 @@ public class FloorAdapter extends RecyclerView.Adapter<FloorAdapter.FloorAdapter
     List<LocateCountryRespose> locateCountryResposeList;
     String identifier;
 
-    int pos = -1;int sPos=-1;
-    boolean selectedPosition=false;
+    int pos = -1;
+    int sPos = -1;
+    boolean selectedPosition = false;
 
     public FloorAdapter(Context context, List<LocateCountryRespose> locateCountryResposeList, LocateFragment locateFragment, String identifier) {
         this.context=context;
         this.locateCountryResposeList=locateCountryResposeList;
         this.identifier=identifier;
 
-    }
-    public FloorAdapter(Context context, List<LocateCountryRespose> locateCountryResposeList, BookFragment locateFragment, String identifier) {
-        this.context=context;
-        this.locateCountryResposeList=locateCountryResposeList;
-        this.identifier=identifier;
     }
 
     @NonNull
@@ -61,33 +57,39 @@ public class FloorAdapter extends RecyclerView.Adapter<FloorAdapter.FloorAdapter
                 SessionHandler.getInstance().saveInt(context, AppConstants.FLOOR_POSITION,holder.getAbsoluteAdapterPosition());
                 SessionHandler.getInstance().saveInt(context, AppConstants.LOCATION_ID,locateCountryResposeList.get(holder.getAbsoluteAdapterPosition()).getLocateCountryId());
                 System.out.println("FloorPositionSaved");
+                SessionHandler.getInstance().saveInt(context, AppConstants.FLOOR_POSITION, holder.getAbsoluteAdapterPosition());
+                SessionHandler.getInstance().saveBoolean(context,AppConstants.FLOOR_SELECTED_STATUS,true);
                 pos = holder.getAbsoluteAdapterPosition();
                 notifyDataSetChanged();
 
             }
         });
 
-        if (pos == position ) {
+        if (pos == position) {
             //locateCountryResposeList.get(holder.getAbsoluteAdapterPosition());
             //SessionHandler.getInstance().saveInt(context, AppConstants.FLOOR_POSITION,holder.getAbsoluteAdapterPosition());
 
-            if(pos>=sPos && sPos==pos){
+            if (pos >= sPos && sPos == pos) {
+                SessionHandler.getInstance().remove(context, AppConstants.FLOOR_POSITION);
+                SessionHandler.getInstance().saveBoolean(context,AppConstants.FLOOR_SELECTED_STATUS,false);
                 holder.ivFloor.setImageDrawable(context.getDrawable(R.drawable.floor_disable));
-                sPos=-1;
-            }else {
+                sPos = -1;
+            } else {
 
                 holder.ivFloor.setImageDrawable(context.getDrawable(R.drawable.floor_enable));
-                SessionHandler.getInstance().saveInt(context, AppConstants.FLOOR_POSITION,holder.getAbsoluteAdapterPosition());
+                SessionHandler.getInstance().saveBoolean(context,AppConstants.FLOOR_SELECTED_STATUS,true);
+                SessionHandler.getInstance().saveInt(context, AppConstants.FLOOR_POSITION, holder.getAbsoluteAdapterPosition());
                 SessionHandler.getInstance().saveInt(context, AppConstants.LOCATION_ID,locateCountryResposeList.get(holder.getAbsoluteAdapterPosition()).getLocateCountryId());
                 sPos=pos;
             }
 
-            sPos=pos;
+            sPos = pos;
 
-        }else {
+        } else {
             //locateCountryResposeList.get(holder.getAbsoluteAdapterPosition());
             //SessionHandler.getInstance().saveInt(context, AppConstants.NEW_FLOOR_POSITION,holder.getAbsoluteAdapterPosition());
-
+            SessionHandler.getInstance().remove(context, AppConstants.FLOOR_POSITION);
+            SessionHandler.getInstance().saveBoolean(context,AppConstants.FLOOR_SELECTED_STATUS,false);
             holder.ivFloor.setImageDrawable(context.getDrawable(R.drawable.floor_disable));
         }
     }

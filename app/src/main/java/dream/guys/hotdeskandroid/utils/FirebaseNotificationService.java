@@ -19,6 +19,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.request.TokenRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingDescriptionResponse;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
@@ -35,11 +36,18 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
 
-        System.out.println("NewTokenReceived"+token);
+        //System.out.println("NewTokenReceived "+token);
 
-        SessionHandler.getInstance().save(getApplicationContext(),AppConstants.SAVETOKEN,token);
+        if(token!=null) {
 
-        saveTokenInserver(token);
+            SessionHandler.getInstance().save(getApplicationContext(), AppConstants.SAVETOKEN, token);
+            String tokenInSharedPreference=SessionHandler.getInstance().get(getApplicationContext(),AppConstants.SAVETOKEN);
+            System.out.println("SharedPreferenceToken "+tokenInSharedPreference);
+
+            saveTokenInserver(token);
+        }
+
+
 
     }
 
@@ -102,12 +110,17 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
     }
 
 
-    private void saveTokenInserver(String token) {
+    public static void saveTokenInserver(String token) {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<BaseResponse> call = apiService.saveFirebaseToken();
+        TokenRequest tokenRequest=new TokenRequest();
+        tokenRequest.setToken(token);
+        //System.out.println("SendingToken "+token);
+        Call<BaseResponse> call = apiService.saveFirebaseToken(tokenRequest);
         call.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                System.out.println("TokenSentServerResponse"+response.body());
 
             }
 

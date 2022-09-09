@@ -12,6 +12,26 @@ public class CovidAnswerRequest {
     List<CovidQuestionsResponse> covidQuestionsResponseList;
     int result;
     int covidCertificationTransportMode;
+    @SerializedName("template")
+    String template;
+    @SerializedName("localDate")
+    String localDate;
+
+    public String getTemplate() {
+        return template;
+    }
+
+    public void setTemplate(String template) {
+        this.template = template;
+    }
+
+    public String getLocalDate() {
+        return localDate;
+    }
+
+    public void setLocalDate(String localDate) {
+        this.localDate = localDate;
+    }
 
     public List<CovidQuestionsResponse> getCovidQuestionsResponseList() {
         return covidQuestionsResponseList;

@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -59,6 +58,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         public void onCheckInDeskClick(BookingListResponse.DayGroup.CalendarEntry calendarEntriesModel, String click, Date date,int position);
         public void onCheckInMeetingRoomClick(BookingListResponse.DayGroup.MeetingBooking meetingEntriesModel, String click, Date date,int position);
         public void onCheckInCarParkingClick(BookingListResponse.DayGroup.CarParkBooking carParkingEntriesModel, String click, Date date,int position);
+
+        public void onLocationIconClick(int parentLocationId, int meetingRoomId, String desk);
     }
 
     @NonNull
@@ -417,6 +418,49 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
             }
         });
+
+        //Click on Location Icon
+        holder.bookingIvLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel()!=null){
+
+                    //Desk
+                    if(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor()!=null){
+                        System.out.println("CalendarParentId "+list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getFloorID());
+
+                        int parentLocationId=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getFloorID();
+                        int deskId=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getDeskId();
+                        onCheckInClickable.onLocationIconClick(parentLocationId, deskId, AppConstants.DESK);
+                    }
+
+                }else if(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel()!=null){
+
+                    //Meeting
+                    if(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel().getLocationBuildingFloor()!=null){
+                        System.out.println("MeetingParentId "+list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel().getLocationBuildingFloor().getFloorID());
+
+                        int parentLocationId=list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel().getLocationBuildingFloor().getFloorID();
+                        int meetingRoomId=list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel().getMeetingRoomId();
+                        onCheckInClickable.onLocationIconClick(parentLocationId,meetingRoomId, AppConstants.MEETING);
+
+                    }
+
+                }else if(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel()!=null){
+                    //Car
+                    if(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel().getLocationBuildingFloor()!=null){
+                        System.out.println("CarParentId "+list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel().getLocationBuildingFloor().getFloorID());
+
+                        int parentLocationId=list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel().getLocationBuildingFloor().getFloorID();
+                        int carParkingId=list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel().getParkingSlotId();
+                        onCheckInClickable.onLocationIconClick(parentLocationId, carParkingId, AppConstants.CAR_PARKING);
+
+                    }
+                }
+
+            }
+        });
     }
 
     @Override
@@ -466,6 +510,9 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
         @BindView(R.id.bookingRefreshIcon)
         ImageView bookingRefreshIcon;
+
+        @BindView(R.id.bookingIvLocationIcon)
+        ImageView bookingIvLocation;
 
 
         public HomeBookingListViewHolder(@NonNull View itemView) {

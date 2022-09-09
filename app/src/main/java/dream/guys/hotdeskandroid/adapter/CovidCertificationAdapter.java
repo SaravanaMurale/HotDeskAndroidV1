@@ -31,9 +31,6 @@ public class CovidCertificationAdapter extends RecyclerView.Adapter<CovidCertifi
 
 
     public List<CovidQuestionsResponse> getList(){
-
-
-
         return covidQuestionsResponseList;
     }
 

@@ -1,7 +1,5 @@
 package dream.guys.hotdeskandroid.ui.home;
 
-import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
-
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
@@ -20,7 +18,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,8 +25,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,7 +36,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,18 +45,13 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.BindView;
 import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
@@ -72,23 +61,20 @@ import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
 import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
-import dream.guys.hotdeskandroid.model.request.LocationMR_Request;
 import dream.guys.hotdeskandroid.model.response.AmenitiesResponse;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.ImageResponse;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
-import dream.guys.hotdeskandroid.model.response.LocationWithMR_Response;
+import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
-import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
 import dream.guys.hotdeskandroid.ui.notify.NotificationCenterActivity;
 import dream.guys.hotdeskandroid.ui.notify.UserNotificationActivity;
 import dream.guys.hotdeskandroid.ui.settings.SettingsActivity;
-import dream.guys.hotdeskandroid.ui.wellbeing.NotificationsListActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -143,6 +129,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
     //New...
     UserDetailsResponse profileData;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -1096,6 +1084,83 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             editDeskBookingDetails.setParkingSlotCode(carParkingEntriesModel.getParkingSlotCode());
             editBookingUsingBottomSheet(editDeskBookingDetails,3,position);
         }
+    }
+
+    @Override
+    public void onLocationIconClick(int parentLocationId, int identifierId, String desk) {
+
+        NavController navController= Navigation.findNavController(view);
+
+        SessionHandler.getInstance().saveInt(getContext(), AppConstants.PARENT_ID, parentLocationId);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<LocateCountryRespose>> call=apiService.getCountrysChild(parentLocationId);
+        call.enqueue(new Callback<List<LocateCountryRespose>>() {
+            @Override
+            public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
+
+                List<LocateCountryRespose> locateCountryResposeList=response.body();
+
+                for (int i = 0; i <locateCountryResposeList.size() ; i++) {
+
+                    if(desk.equals(AppConstants.DESK)){
+
+                        for (int j = 0; j <locateCountryResposeList.get(i).getLocationItemLayout().getDesks().size() ; j++) {
+
+                            if(identifierId==locateCountryResposeList.get(i).getLocationItemLayout().getDesks().get(j).getDesksId()){
+                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION,i);
+
+
+                                System.out.println("SelectedDeskFloorInLocate "+i+" "+desk+" ");
+
+                                navController.navigate(R.id.action_navigation_home_to_navigation_locate);
+
+                            }
+
+                        }
+
+
+
+                    }else if(desk.equals(AppConstants.MEETING)){
+
+                        for (int j = 0; j <locateCountryResposeList.get(i).getLocationItemLayout().getMeetingRoomsList().size() ; j++) {
+
+                            if(identifierId==locateCountryResposeList.get(i).getLocationItemLayout().getMeetingRoomsList().get(j).getMeetingRoomId()){
+                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION,i);
+
+                                System.out.println("SelectedMeetingFloorInLocate "+i+" "+desk+" ");
+
+                                navController.navigate(R.id.navigation_locate);
+                            }
+
+                        }
+
+
+                    }else if(desk.equals(AppConstants.CAR_PARKING)){
+
+                        for (int j = 0; j <locateCountryResposeList.get(i).getLocationItemLayout().getParkingSlotsList().size() ; j++) {
+
+                            if(identifierId==locateCountryResposeList.get(i).getLocationItemLayout().getParkingSlotsList().get(j).getId()){
+                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION,i);
+
+                                System.out.println("SelectedCarFloorInLocate "+i+" "+desk+" ");
+
+                                navController.navigate(R.id.navigation_locate);
+                            }
+                        }
+
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
+
+            }
+        });
+
     }
 
     private void editBookingUsingBottomSheet(EditBookingDetails editDeskBookingDetails,int dskRoomParkStatus,int position) {

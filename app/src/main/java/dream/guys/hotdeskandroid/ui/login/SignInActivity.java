@@ -29,6 +29,7 @@ import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
 import dream.guys.hotdeskandroid.ui.login.pin.LoginPinActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.FirebaseNotificationService;
 import dream.guys.hotdeskandroid.utils.MyApp;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -60,6 +61,14 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signin);
         ButterKnife.bind(this);
         dialog= new Dialog(this);
+
+        //String tokenInSharedPreference=SessionHandler.getInstance().get(getApplicationContext(),AppConstants.SAVETOKEN);
+        //System.out.println("SharedPreferenceToken "+tokenInSharedPreference);
+
+        //FirebaseNotificationService firebaseNotificationService=new FirebaseNotificationService();
+        //firebaseNotificationService.saveTokenInserver(tokenInSharedPreference);
+
+
         if (getIntent().getExtras() != null &&
                 getIntent().getExtras().getBoolean("qr_deep_link")){
             Utils.showCustomAlertDialog(this, "Please Login then scan the Qr Code for booking.");

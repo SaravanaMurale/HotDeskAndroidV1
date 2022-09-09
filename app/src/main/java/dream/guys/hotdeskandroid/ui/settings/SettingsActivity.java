@@ -32,8 +32,10 @@ import dream.guys.hotdeskandroid.model.response.ProfilePicResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import dream.guys.hotdeskandroid.ui.home.EditProfileActivity;
 import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
+import dream.guys.hotdeskandroid.ui.wellbeing.CovidCertificationActivity;
 import dream.guys.hotdeskandroid.ui.wellbeing.NotificationActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
@@ -47,7 +49,7 @@ public class SettingsActivity extends AppCompatActivity {
     ActivitySettingsBinding binding;
     Context context;
     UserDetailsResponse profileData;
-    Dialog dialog;
+    Dialog dialog,proDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +107,9 @@ public class SettingsActivity extends AppCompatActivity {
         binding.passwordResetBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 dialog=new Dialog(SettingsActivity.this);
+                proDialog=new Dialog(SettingsActivity.this);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 int width = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.80);
                 int height = (int) (context.getResources().getDisplayMetrics().heightPixels * 0.20);
@@ -134,6 +138,9 @@ public class SettingsActivity extends AppCompatActivity {
                         String confirmPassword=etConfirmPassword.getText().toString().trim();
                         if(currentPassword!=null && newPassword.equalsIgnoreCase(confirmPassword)){
 
+                            if (Utils.isNetworkAvailable(SettingsActivity.this)) {
+
+                            proDialog= ProgressDialog.showProgressBar(SettingsActivity.this);
                             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
                             ChangePasswordRequest changePasswordRequest=new ChangePasswordRequest(currentPassword,newPassword,confirmPassword);
                             Call<BaseResponse> call=apiService.changePassword(changePasswordRequest);
@@ -143,13 +150,19 @@ public class SettingsActivity extends AppCompatActivity {
                                     BaseResponse baseResponse=response.body();
 
                                     dialog.dismiss();
+                                    proDialog.dismiss();
                                 }
 
                                 @Override
                                 public void onFailure(Call<BaseResponse> call, Throwable t) {
-
+                                    dialog.dismiss();
+                                    proDialog.dismiss();
                                 }
                             });
+
+                            }else {
+                                Utils.toastMessage(SettingsActivity.this, getResources().getString(R.string.enable_internet));
+                            }
 
 
                         }

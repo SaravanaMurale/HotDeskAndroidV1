@@ -51,6 +51,7 @@ import dream.guys.hotdeskandroid.ui.login.sso.B2CConfiguration;
 import dream.guys.hotdeskandroid.ui.login.sso.B2CUser;
 import dream.guys.hotdeskandroid.ui.login.sso.WebViewActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.FirebaseNotificationService;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
@@ -501,6 +502,9 @@ public class LoginActivity extends AppCompatActivity {
                             String password = etPassword.getText().toString();
 
 
+                            sendFCMToken();
+
+
                             userDetailsResponse.getFullName();
 
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.USERNAME,userDetailsResponse.getFullName());
@@ -564,6 +568,13 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    private void sendFCMToken() {
+        String tokenInSharedPreference=SessionHandler.getInstance().get(getApplicationContext(),AppConstants.SAVETOKEN);
+        if(tokenInSharedPreference!=null) {
+            FirebaseNotificationService.saveTokenInserver(tokenInSharedPreference);
+        }
     }
 
 

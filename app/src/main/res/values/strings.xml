@@ -33,6 +33,7 @@
     <string name="close">Close</string>
     <string name="search">Search</string>
     <string name="back">Back</string>
+    <string name="enable_internet">Please Enable Internet</string>
     <string name="my_view_desc">heloo draw canva</string>
     <string name="repeat">Repeat</string>
 
@@ -144,6 +145,13 @@
     <string name="lan">Lan</string>
     <string name="change_password">Change Password</string>
     <string name="avaliable">Avaliable</string>
+
+    <!--Response Handler-->
+    <string name="booking_success">Booking Successfull</string>
+    <string name="booking_request">Booking Request Success</string>
+    <string name="car_park_request_success">CarPark Request Success</string>
+    <string name="desk_book_deleted">Desk Booking Deleted</string>
+    <string name="deleted">Deleted</string>
 
 
 </resources>
