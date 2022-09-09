@@ -28,6 +28,7 @@ import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.request.PersonalHelpRequest;
 import dream.guys.hotdeskandroid.model.request.QuestionListRequest;
 import dream.guys.hotdeskandroid.model.request.ReportIssueRequest;
+import dream.guys.hotdeskandroid.model.request.TokenRequest;
 import dream.guys.hotdeskandroid.model.response.AmenitiesResponse;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
@@ -65,6 +66,7 @@ import dream.guys.hotdeskandroid.model.response.TeamDeskResponse;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
 import dream.guys.hotdeskandroid.model.response.TypeOfLoginResponse;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
+import dream.guys.hotdeskandroid.model.response.UsageTypeResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import dream.guys.hotdeskandroid.model.response.WellbeingConfigResponse;
@@ -392,8 +394,8 @@ public interface ApiInterface {
     Call<BaseResponse> acceptDesk(@Body DAODeskAccept daoDeskAccept);
 
     //To save firebase token
-    @POST("/push/register")
-    Call<BaseResponse> saveFirebaseToken();
+    @POST("api/push/register")
+    Call<BaseResponse> saveFirebaseToken(@Body TokenRequest token);
 
     @POST("api/Account/ChangePassword")
     Call<BaseResponse> changePassword(@Body ChangePasswordRequest changePasswordRequest);
@@ -417,6 +419,10 @@ public interface ApiInterface {
 
     @GET("api/calendar/entries")
     Call<ArrayList<DAOUpcomingBooking>> getMonthBookings(@Query("month") String s, @Query("userId") int userId, @Query("teamId") int teamId);
+
+    @GET("api/Booking/UsageTypes")
+    Call<List<UsageTypeResponse>>  getBookingUsageTypes();
+
 }
 
 

@@ -138,9 +138,7 @@ private void callSearchRecyclerData(String searchText,int selID) {
                         list.clear();
                         if (response.body().getResults()!=null)
                             list.addAll(response.body().getResults());
-                        Toast.makeText(context, "ls "+list.size(), Toast.LENGTH_SHORT).show();
 
-                        Toast.makeText(context, "200"+searchText, Toast.LENGTH_SHORT).show();
 
                         if (list!=null && list.size()>0){
 
@@ -187,6 +185,8 @@ private void callSearchRecyclerData(String searchText,int selID) {
     private void callTeamMemberStatus(String date,int teamID) {
         if (Utils.isNetworkAvailable(context)) {
 
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<List<TeamMembersResponse>> call = apiService.getTeamMembers(date,teamID);
             call.enqueue(new Callback<List<TeamMembersResponse>>() {
@@ -222,12 +222,16 @@ private void callSearchRecyclerData(String searchText,int selID) {
                         Utils.showCustomAlertDialog(ShowProfileActivity.this,"Api Issue Code: "+response.code());
                     }
 
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
                 }
                 @Override
                 public void onFailure(Call<List<TeamMembersResponse>> call, Throwable t) {
 //                    Toast.makeText(context, "on fail", Toast.LENGTH_SHORT).show();
                     Utils.showCustomAlertDialog(ShowProfileActivity.this,"Response Failure: "+t.getMessage());
                     Log.d("Search", "onResponse: fail"+t.getMessage());
+
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 }
             });
 

@@ -34,8 +34,10 @@ import dream.guys.hotdeskandroid.adapter.TeamsContactsAdapter;
 import dream.guys.hotdeskandroid.databinding.FragmentTeamsBinding;
 import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
+import dream.guys.hotdeskandroid.model.response.DAOUpcomingBooking;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
+import dream.guys.hotdeskandroid.model.response.UsageTypeResponse;
 import dream.guys.hotdeskandroid.ui.home.ViewTeamsActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
@@ -149,6 +151,13 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
         getTeamMembers();
 
+
+        //NewNew
+        getBookingUsageTypes();
+        getCalendarEntryTeam();
+
+
+
         //New...
         linearLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
@@ -158,6 +167,69 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         binding.searchRecycler.setAdapter(searchRecyclerAdapter);
 
         return root;
+    }
+
+    private void getBookingUsageTypes() {
+
+        if (Utils.isNetworkAvailable(getActivity())) {
+
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+           Call<List<UsageTypeResponse>> call= apiService.getBookingUsageTypes();
+           call.enqueue(new Callback<List<UsageTypeResponse>>() {
+               @Override
+               public void onResponse(Call<List<UsageTypeResponse>> call, Response<List<UsageTypeResponse>> response) {
+
+               }
+
+               @Override
+               public void onFailure(Call<List<UsageTypeResponse>> call, Throwable t) {
+
+               }
+           });
+
+        }else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
+    }
+
+    private void getCalendarEntryTeam() {
+
+        if (Utils.isNetworkAvailable(getActivity())) {
+
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+            int userID=SessionHandler.getInstance().getInt(getContext(),AppConstants.USER_ID);
+            int teamID=SessionHandler.getInstance().getInt(getContext(),AppConstants.TEAM_ID);
+
+            Call<ArrayList<DAOUpcomingBooking>> call = apiService.getMonthBookings(selectedDate,userID,teamID);
+            call.enqueue(new Callback<ArrayList<DAOUpcomingBooking>>() {
+                @Override
+                public void onResponse(Call<ArrayList<DAOUpcomingBooking>> call, Response<ArrayList<DAOUpcomingBooking>> response) {
+
+                    ArrayList<DAOUpcomingBooking> daoUpcomingBookingArrayList=response.body();
+
+                    for (int i = 0; i <daoUpcomingBookingArrayList.size() ; i++) {
+
+                        System.out.println("CalendarEntryReceivedDataTeamId "+daoUpcomingBookingArrayList.get(i).getTeamId());
+
+                    }
+
+                    binding.locateProgressBar.setVisibility(View.GONE);
+
+
+                }
+
+                @Override
+                public void onFailure(Call<ArrayList<DAOUpcomingBooking>> call, Throwable t) {
+                    binding.locateProgressBar.setVisibility(View.GONE);
+                }
+            });
+
+        }else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
     }
 
 

@@ -213,6 +213,10 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     }
 
     private void getDeskName() {
+
+        if (Utils.isNetworkAvailable(EditProfileActivity.this)) {
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<List<TeamDeskResponse>> call = apiService.getDeskListInEdit();
         call.enqueue(new Callback<List<TeamDeskResponse>>() {
@@ -221,20 +225,29 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
                 List<TeamDeskResponse> teamDeskResponseList =response.body();
 
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
                 callDeskBottomSheetDialogToSelectDeskCode(teamDeskResponseList);
             }
 
             @Override
             public void onFailure(Call<List<TeamDeskResponse>> call, Throwable t) {
-
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
             }
         });
+
+        }else {
+            Utils.toastMessage(EditProfileActivity.this, getResources().getString(R.string.enable_internet));
+        }
 
 
 
     }
 
     private void doRemoveProfilePicture() {
+
+        if (Utils.isNetworkAvailable(EditProfileActivity.this)) {
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<BaseResponse> call = apiService.removeProfilePicture();
@@ -247,18 +260,27 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                 Glide.with(EditProfileActivity.this).load(R.drawable.mygirl)
                         .into(binding.ivEditPrifle);
 
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
             }
 
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
-
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
             }
         });
+
+        }else {
+            Utils.toastMessage(EditProfileActivity.this, getResources().getString(R.string.enable_internet));
+        }
 
     }
 
 
     private void getProfilePicture() {
+
+        if (Utils.isNetworkAvailable(EditProfileActivity.this)) {
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ProfilePicResponse> call = apiService.getProfilePicture();
         call.enqueue(new Callback<ProfilePicResponse>() {
@@ -280,13 +302,19 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                     binding.ivEditPrifle.setImageBitmap(decodedByte);
                 }
 
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
             }
 
             @Override
             public void onFailure(Call<ProfilePicResponse> call, Throwable t) {
-
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
             }
         });
+
+        }else {
+            Utils.toastMessage(EditProfileActivity.this, getResources().getString(R.string.enable_internet));
+        }
     }
 
     private void selectImage() {
@@ -389,6 +417,8 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
     private void updateProfilePicture(String bast64InString) {
 
+        if (Utils.isNetworkAvailable(EditProfileActivity.this)) {
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
         ProfilePicResponse profilePicResponse=new ProfilePicResponse();
@@ -398,16 +428,20 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         call.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 getProfilePicture();
 
             }
 
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
-
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
             }
         });
+
+        }else {
+            Utils.toastMessage(EditProfileActivity.this, getResources().getString(R.string.enable_internet));
+        }
 
 
 
@@ -415,9 +449,8 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
 
     private void callProfileUpdate() {
-
+        if (Utils.isNetworkAvailable(EditProfileActivity.this)) {
         binding.locateProgressBar.setVisibility(View.VISIBLE);
-        //dialog = ProgressDialog.showProgressBar(getContext());
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<BaseResponse> call = apiService.updateSetting(profileData);
         call.enqueue(new Callback<BaseResponse>() {
@@ -436,8 +469,6 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
 
-                //ProgressDialog.dismisProgressBar(getContext(),dialog);
-                //Toast.makeText(EditProfileActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                 updateProfileValue();
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 binding.profileUpdate.setVisibility(View.GONE);
@@ -446,6 +477,10 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
             }
         });
+
+        }else {
+            Utils.toastMessage(EditProfileActivity.this, getResources().getString(R.string.enable_internet));
+        }
 
     }
 
@@ -587,7 +622,8 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     }
 
     private void getCountry() {
-        //binding.locateProgressBar.setVisibility(View.VISIBLE);
+        if (Utils.isNetworkAvailable(EditProfileActivity.this)) {
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<ArrayList<DAOCountryList>> call = apiService.getCountryList();
@@ -625,15 +661,23 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
                 }
 
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+
+
+
             }
 
             @Override
             public void onFailure(Call<ArrayList<DAOCountryList>> call, Throwable t) {
-                //ProgressDialog.dismisProgressBar(getContext(), dialog);
-                //binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
             }
         });
+
+        }else {
+            Utils.toastMessage(EditProfileActivity.this, getResources().getString(R.string.enable_internet));
+        }
 
     }
 

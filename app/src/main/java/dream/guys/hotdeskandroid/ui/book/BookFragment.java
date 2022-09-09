@@ -2988,8 +2988,8 @@ public class BookFragment extends Fragment implements
         rvFloor.setLayoutManager(linearLayoutManager);
         rvFloor.setHasFixedSize(true);
 
-        floorAdapter = new FloorAdapter(getContext(), locateCountryResposeList, this, "FLOOR_NAME");
-        rvFloor.setAdapter(floorAdapter);
+        //floorAdapter = new FloorAdapter(getContext(), locateCountryResposeList, this, "FLOOR_NAME");
+        //rvFloor.setAdapter(floorAdapter);
     }
 
     public void initLoadFloorDetails(int canvasDrawStatus) {
