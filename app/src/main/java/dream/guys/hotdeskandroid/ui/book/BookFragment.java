@@ -1,6 +1,7 @@
 package dream.guys.hotdeskandroid.ui.book;
 
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
+import static dream.guys.hotdeskandroid.utils.Utils.getCurrentTime;
 import static dream.guys.hotdeskandroid.utils.Utils.toastMessage;
 
 import android.annotation.SuppressLint;
@@ -37,6 +38,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -45,6 +47,8 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -199,6 +203,8 @@ public class BookFragment extends Fragment implements
     int stateId = 0;
     int canvasss = 0;
 
+    int endTimeSelectedStats = 0;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -213,12 +219,36 @@ public class BookFragment extends Fragment implements
 
         dialog= new Dialog(getActivity());
         tabToggleViewClicked(selectedicon);
+        if (endTimeSelectedStats == 0) {
+            binding.locateEndTime.setText("23:59");
+        }
+
+        binding.locateStartTime.setText(getCurrentTime());
+        binding.locateStartTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetLocateTimePickerInBooking(getContext(), getActivity(), binding.locateStartTime, "Start", binding.locateCalendearView.getText().toString(), 1);
+            }
+        });
+
+        binding.locateEndTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), binding.locateEndTime, "", "");
+                bottomSheetLocateTimePickerInBooking(getContext(), getActivity(), binding.locateEndTime, "End", binding.locateCalendearView.getText().toString(), 2);
+
+
+            }
+        });
+
         binding.searchGlobal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getLocateCountryList();
             }
         });
+
         binding.calendarView.setEventHandler(new CalendarView.EventHandler() {
             @Override
             public void onDayLongPress(Date date, int pos) {
@@ -3191,5 +3221,104 @@ public class BookFragment extends Fragment implements
         }
 
     }
+
+    //Locate Booking TimerPicker BottomSheet
+    private void bottomSheetLocateTimePickerInBooking(Context mContext, Activity activity, TextView tv, String title, String date, int i) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet,
+                new RelativeLayout(activity)));
+
+        TimePicker simpleTimePicker24Hours = bottomSheetDialog.findViewById(R.id.simpleTimePicker);
+        //simpleTimePicker24Hours.setIs24HourView(false);
+        TextView titleTv = bottomSheetDialog.findViewById(R.id.title);
+        TextView dateTv = bottomSheetDialog.findViewById(R.id.date);
+        TextView continueTv = bottomSheetDialog.findViewById(R.id.continue_tv);
+        TextView backTv = bottomSheetDialog.findViewById(R.id.tv_back);
+
+        //New...
+        if (!(date.equalsIgnoreCase(""))) {
+            String dateTime = Utils.dateWithDayString(date);
+            if (dateTime.equalsIgnoreCase("")) {
+                dateTv.setText(date);
+            } else {
+                dateTv.setText(dateTime);
+            }
+        } else {
+            dateTv.setText(date);
+        }
+
+        titleTv.setText(title);
+
+        backTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        continueTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String hour = null, minute = null;
+                String getHHour = String.valueOf(simpleTimePicker24Hours.getHour());
+                String getMMinute = String.valueOf(simpleTimePicker24Hours.getMinute());
+
+                if (getHHour.length() == 1) {
+                    hour = "0" + getHHour;
+                } else {
+                    hour = getHHour;
+                }
+
+
+                if (getMMinute.length() == 1) {
+                    minute = "0" + getMMinute;
+                } else {
+                    minute = getMMinute;
+                }
+
+                //System.out.println("GETDATATATATA" + hour + " " + minute);
+
+                tv.setText(hour + ":" + minute);
+
+                if (i == 1) {
+                    String eTime = binding.locateEndTime.getText().toString();
+                    checkStartEndtime(hour + ":" + minute, eTime);
+                } else {
+                    String sTime = binding.locateStartTime.getText().toString();
+                    checkStartEndtime(sTime, hour + ":" + minute);
+                }
+
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        bottomSheetDialog.show();
+
+
+    }
+    private void checkStartEndtime(String startTime, String endTime) {
+
+        String pattern = "HH:mm";
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+
+        try {
+            Date date1 = sdf.parse(startTime);
+            Date date2 = sdf.parse(endTime);
+
+            if (date1.before(date2)) {
+//                binding.firstLayout.removeAllViews();
+                endTimeSelectedStats = 1;
+                initLoadFloorDetails(2);
+            } else {
+                Toast.makeText(getContext(), "Invalid Time Range", Toast.LENGTH_LONG).show();
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
 
 }
