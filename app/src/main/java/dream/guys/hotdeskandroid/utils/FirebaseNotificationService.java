@@ -35,7 +35,7 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
 
-        System.out.println("NewTokenReceived"+token);
+        System.out.println("Firebase NewTokenReceived"+token);
 
         SessionHandler.getInstance().save(getApplicationContext(),AppConstants.SAVETOKEN,token);
 

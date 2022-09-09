@@ -1446,6 +1446,7 @@ public class BookFragment extends Fragment implements
                                 jsonChangesObject.addProperty("requestedTeamDeskId",editDeskBookingDetails.getDesktId());
                                 jsonChangesObject.addProperty("requestedTeamId",editDeskBookingDetails.getDeskTeamId());
                                 jsonChangesObject.addProperty("usageTypeId", "7");
+                                jsonChangesObject.addProperty("timeZoneId", "India Standard Time");
 //                                jsonChangesObject.addProperty("typeOfCheckIn", "1");
                             }else{
                                 if (!newEditStatus.equalsIgnoreCase("edit"))
@@ -2141,7 +2142,7 @@ public class BookFragment extends Fragment implements
                             else if (newEditDelete.equalsIgnoreCase("edit"))
                                 openCheckoutDialog("Booking Updated",dskRoomStatus);
                             else if (newEditDelete.equalsIgnoreCase("request"))
-                                openCheckoutDialog("Booking Updated",dskRoomStatus);
+                                openCheckoutDialog("Booking Requested Successfully",dskRoomStatus);
                             else
                                 openCheckoutDeleteDialog("Booking Deleted",dskRoomStatus);
 
