@@ -62,6 +62,7 @@ import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
+import dream.guys.hotdeskandroid.ui.chat.FreshChatActivity;
 import dream.guys.hotdeskandroid.ui.locate.LocateFragment;
 import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
@@ -160,6 +161,16 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
             public void onClick(View v) {
                 binding.serachBar.clearComposingText();
                 binding.searchLayout.setVisibility(View.GONE);
+            }
+        });
+
+        binding.fabChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent=new Intent(MainActivity.this, FreshChatActivity.class);
+                startActivity(intent);
+
             }
         });
 

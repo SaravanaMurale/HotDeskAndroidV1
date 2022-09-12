@@ -25,6 +25,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HotDeskAndroid">
         <activity
+            android:name=".ui.chat.FreshChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.teams.TeamMembersActivity"
             android:exported="false" />
         <activity
@@ -289,7 +292,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
         <service

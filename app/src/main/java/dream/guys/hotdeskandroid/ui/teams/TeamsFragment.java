@@ -14,9 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,21 +24,16 @@ import java.util.List;
 import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.HorizontalCalendarView;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
-import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.SearchRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.TeamsAdapter;
 import dream.guys.hotdeskandroid.adapter.TeamsContactsAdapter;
 import dream.guys.hotdeskandroid.databinding.FragmentTeamsBinding;
-import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.DAOUpcomingBooking;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
-import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
 import dream.guys.hotdeskandroid.model.response.UsageTypeResponse;
-import dream.guys.hotdeskandroid.ui.home.ViewTeamsActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
-import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
@@ -49,7 +42,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberInterface {
+public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberInterface, TeamsContactsAdapter.OnProfileClickable {
 
     FragmentTeamsBinding binding;
     int day, month, year;
@@ -290,7 +283,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
     private void setValueToAdapter(ArrayList<DAOTeamMember> teamMembersList) {
 
-        teamsContactsAdapter = new TeamsContactsAdapter(getActivity(),teamMembersList);
+        teamsContactsAdapter = new TeamsContactsAdapter(getActivity(),teamMembersList,this);
         binding.recyclerView.setAdapter(teamsContactsAdapter);
 
     }
@@ -309,7 +302,13 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         callTeamMemberStatus();*/
     }
 
-
+    @Override
+    public void onProfileClick(DAOTeamMember daoTeamMember) {
+        Intent intent = new Intent(getActivity(),ShowProfileActivity.class);
+        intent.putExtra(AppConstants.USER_CURRENT_STATUS,daoTeamMember);
+        intent.putExtra("DATE",currendate);
+        startActivity(intent);
+    }
 
 
     public class OverlapDecoration extends RecyclerView.ItemDecoration {
@@ -340,7 +339,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         binding.recyclerView.setLayoutManager(contactLinearLayout);
         binding.recyclerView.addItemDecoration(new OverlapDecoration());
         binding.recyclerView.setHasFixedSize(true);
-        teamsContactsAdapter = new TeamsContactsAdapter(getActivity(),teamMembersList);
+        teamsContactsAdapter = new TeamsContactsAdapter(getActivity(),teamMembersList, this);
         binding.recyclerView.setAdapter(teamsContactsAdapter);
 
 

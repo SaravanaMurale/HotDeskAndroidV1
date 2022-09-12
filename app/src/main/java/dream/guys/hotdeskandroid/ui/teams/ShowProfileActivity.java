@@ -22,6 +22,7 @@ import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
+import dream.guys.hotdeskandroid.ui.home.ViewTeamsActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -56,6 +57,15 @@ public class ShowProfileActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         context = ShowProfileActivity.this;
+
+        binding.tvViewTeam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent=new Intent(ShowProfileActivity.this, ViewTeamsActivity.class);
+                startActivity(intent);
+            }
+        });
 
         try {
 
@@ -111,6 +121,9 @@ public class ShowProfileActivity extends AppCompatActivity {
 
 
         });
+
+
+
 
     }
 

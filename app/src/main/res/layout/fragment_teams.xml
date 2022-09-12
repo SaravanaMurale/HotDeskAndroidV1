@@ -173,11 +173,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:layout_marginStart="@dimen/_4sdp"
                 android:text="Expand all"
                 android:textColor="@color/figmaBlue"
                 android:textSize="@dimen/_12sdp"
-                android:theme="@style/TextRegular"
-                android:layout_marginStart="@dimen/_4sdp"/>
+                android:theme="@style/TextRegular" />
 
         </RelativeLayout>
 

@@ -15,15 +15,22 @@ import java.util.ArrayList;
 
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
+import dream.guys.hotdeskandroid.ui.teams.TeamsFragment;
 
 public class TeamsContactsAdapter extends RecyclerView.Adapter<TeamsContactsAdapter.viewHolder> {
 
     Context context;
     ArrayList<DAOTeamMember> teamMembersList;
+    OnProfileClickable  onProfileClickable;
 
-    public TeamsContactsAdapter(Context context,ArrayList<DAOTeamMember> teamMembersList) {
+    public interface OnProfileClickable{
+        public void onProfileClick(DAOTeamMember daoTeamMember);
+    }
+
+    public TeamsContactsAdapter(Context context, ArrayList<DAOTeamMember> teamMembersList, OnProfileClickable  onProfileClickable) {
         this.context = context;
         this.teamMembersList = teamMembersList;
+        this.onProfileClickable=onProfileClickable;
     }
 
     @NonNull
@@ -48,6 +55,13 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<TeamsContactsAdap
         }else {
             holder.relative.setVisibility(View.GONE);
         }
+
+        holder.profile_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onProfileClickable.onProfileClick(teamMembersList.get(holder.getAbsoluteAdapterPosition()));
+            }
+        });
 
     }
 

@@ -90,6 +90,17 @@
 
 
     </LinearLayout>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabChat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/nav_view"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/_3sdp"
+        android:layout_marginBottom="@dimen/_5sdp" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="match_parent"
@@ -98,5 +109,7 @@
         app:menu="@menu/bottom_nav_menu"
         app:itemTextColor="@color/purple_700"
         />
+
+
 
 </RelativeLayout>

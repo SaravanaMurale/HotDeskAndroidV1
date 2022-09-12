@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import dream.guys.hotdeskandroid.LanguageListActivity;
 import dream.guys.hotdeskandroid.R;
@@ -81,6 +82,25 @@ public class SettingsActivity extends AppCompatActivity {
         if (SessionHandler.getInstance().get(context, AppConstants.LANGUAGE)!=null){
             binding.txtLang.setText(SessionHandler.getInstance().get(context, AppConstants.LANGUAGE));
         }
+
+
+        binding.settingSendMailBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("message/rfc822");
+                i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"feedback@hybridhero.com"});
+                i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
+                i.putExtra(Intent.EXTRA_TEXT   , "body of email");
+                try {
+                    startActivity(Intent.createChooser(i, "Send mail..."));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(SettingsActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
 
         binding.btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
