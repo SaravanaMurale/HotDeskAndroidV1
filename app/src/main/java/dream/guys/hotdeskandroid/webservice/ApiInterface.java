@@ -112,7 +112,10 @@ public interface ApiInterface {
     //Book desk count api with location
     @GET("api/Calendar/DailyLocationDeskCount")
     Call<List<DeskRoomCountResponse>> getDailyDeskCountLocation(@Query("month") String s ,
-                                                                @Query("locationId") String locationId);
+                                                                @Query("locationId") String locationId,
+                                                                @Query("startTime") String startTime,
+                                                                @Query("endTime") String endTime
+                                                                );
     //parking spot list
     @GET("api/ParkingSlot/parkingslotsbylocation")
     Call<List<ParkingSpotModel>> getParkingSpotModels(@Query("locationId") String s);
@@ -122,7 +125,11 @@ public interface ApiInterface {
     Call<List<DeskRoomCountResponse>> getDailyRoomCount(@Query("month") String s, @Query("teamId") String teamId);
     //Book meeting room count api Location
     @GET("api/MeetingRooms/DailyMeetingRoomCounts")
-    Call<List<DeskRoomCountResponse>> getDailyRoomCountLocation(@Query("month") String s, @Query("teamId") String teamId);
+    Call<List<DeskRoomCountResponse>> getDailyRoomCountLocation(@Query("month") String s,
+                                                                @Query("teamId") String teamId,
+                                                                @Query("startTime") String startTime,
+                                                                @Query("endTime") String endTime
+    );
 
     //Book parking count api
     @GET("api/ParkingSlot/DailyCarParkCounts")
@@ -130,7 +137,11 @@ public interface ApiInterface {
 
     //Book parking count api Location
     @GET("api/ParkingSlot/DailyCarParkCounts")
-    Call<List<DeskRoomCountResponse>> getDailyParkingCountLocation(@Query("month") String s, @Query("locationId") String teamId);
+    Call<List<DeskRoomCountResponse>> getDailyParkingCountLocation(@Query("month") String s,
+                                                                   @Query("locationId") String teamId,
+                                                                   @Query("startTime") String startTime,
+                                                                   @Query("endTime") String endTime
+    );
 
     @GET("api/Settings/QRCheckInEnforcementEnabled")
     Call<Boolean> getQrEnabled();

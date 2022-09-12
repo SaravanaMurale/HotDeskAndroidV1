@@ -276,7 +276,7 @@ public class BookFragment extends Fragment implements
                 calSelectedMont=month;
 
                 if (binding.searchGlobal.getText() != null){
-                    getDeskCountLocation(month,""+SessionHandler.getInstance().getInt(getContext(),AppConstants.LOCATION_ID));
+                    getDeskCountLocation(month,""+SessionHandler.getInstance().getInt(getContext(),AppConstants.LOCATION_ID),"1");
                 } else {
                     getDeskCount(month);
 
@@ -539,7 +539,7 @@ public class BookFragment extends Fragment implements
                     call = apiService.getDailyDeskCount(month, ""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
                     break;
                 case 1:
-                    call = apiService.getDailyRoomCountLocation(month, ""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
+                    call = apiService.getDailyRoomCount(month, ""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
                     break;
                 case 2:
                     call = apiService.getDailyParkingCount(month, ""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
@@ -575,7 +575,7 @@ public class BookFragment extends Fragment implements
         }
     }
 
-    private void getDeskCountLocation(String month, String locationId) {
+    private void getDeskCountLocation(String month, String locationId,String drawStatus) {
         if (Utils.isNetworkAvailable(getActivity())) {
             dialog= ProgressDialog.showProgressBar(getContext());
             System.out.println("check sub parent Id  :  "+locationId);
@@ -583,13 +583,23 @@ public class BookFragment extends Fragment implements
             Call<List<DeskRoomCountResponse>> call = null;
             switch (selectedicon){
                 case 0:
-                    call = apiService.getDailyDeskCountLocation(month, locationId);
+                    if (drawStatus.equalsIgnoreCase("2"))
+                        call = apiService.getDailyDeskCountLocation(month, locationId,"","");
+                    else
+                        call = apiService.getDailyDeskCountLocation(month, locationId,"","");
                     break;
                 case 1:
-                    call = apiService.getDailyRoomCountLocation(month, locationId);
+                    if (drawStatus.equalsIgnoreCase("2"))
+                        call = apiService.getDailyRoomCountLocation(month, locationId,"","");
+                    else
+                        call = apiService.getDailyRoomCountLocation(month, locationId,"","");
+
                     break;
                 case 2:
-                    call = apiService.getDailyParkingCountLocation(month, locationId);
+                    if (drawStatus.equalsIgnoreCase("2"))
+                        call = apiService.getDailyParkingCountLocation(month, locationId,"","");
+                    else
+                        call = apiService.getDailyParkingCountLocation(month, locationId,"","");
                     break;
             }
             call.enqueue(new Callback<List<DeskRoomCountResponse>>() {
@@ -3053,11 +3063,11 @@ public class BookFragment extends Fragment implements
 
             //Used For Desk Avaliability Checking
             if (!calSelectedDate.isEmpty() || !calSelectedDate.equalsIgnoreCase(""))
-                getDeskCountLocation(calSelectedMont, ""+SessionHandler.getInstance().getInt(getContext(),AppConstants.LOCATION_ID));
+                getDeskCountLocation(calSelectedMont, ""+SessionHandler.getInstance().getInt(getContext(),AppConstants.LOCATION_ID),canvasDrawStatus);
             else if (!calSelectedMont.isEmpty() || !calSelectedMont.equalsIgnoreCase(""))
-                getDeskCountLocation(calSelectedDate, ""+SessionHandler.getInstance().getInt(getContext(),AppConstants.LOCATION_ID));
+                getDeskCountLocation(calSelectedDate, ""+SessionHandler.getInstance().getInt(getContext(),AppConstants.LOCATION_ID),canvasDrawStatus);
             else
-                getDeskCountLocation(Utils.getCurrentDate(), ""+SessionHandler.getInstance().getInt(getContext(),AppConstants.LOCATION_ID));
+                getDeskCountLocation(Utils.getCurrentDate(), ""+SessionHandler.getInstance().getInt(getContext(),AppConstants.LOCATION_ID),canvasDrawStatus);
 
 //            getAvaliableDeskDetails(null, 0);
 
