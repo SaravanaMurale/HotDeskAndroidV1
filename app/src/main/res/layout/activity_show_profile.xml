@@ -271,7 +271,7 @@
                     android:textSize="@dimen/_12sdp" />
 
                 <TextView
-                    android:id="@+id/tv_viewTeam"
+                    android:id="@+id/tvViewTeam"
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
