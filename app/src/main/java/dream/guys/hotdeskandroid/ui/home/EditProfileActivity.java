@@ -27,6 +27,8 @@ import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,6 +79,25 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         }
 
         getCountry();
+        LocalDate today = LocalDate.now();
+        // Go backward to get Monday
+        LocalDate monday = today;
+        while (monday.getDayOfWeek() != DayOfWeek.MONDAY) {
+            monday = monday.minusDays(1);
+        }
+        // Go forward to get Sunday
+        LocalDate sunday = today;
+        while (sunday.getDayOfWeek() != DayOfWeek.SUNDAY) {
+            sunday = sunday.plusDays(1);
+        }
+
+        System.out.println("Today: " + today);
+        System.out.println("Monday of the Week: " + monday);
+        System.out.println("Sunday of the Week: " + sunday);
+
+        binding.weekStartEnd.setText(Utils.showBottomSheetDate(""+monday)+
+                " - "+
+                Utils.showBottomSheetDate(""+sunday));
 
         binding.tvUpdateImage.setOnClickListener(new View.OnClickListener() {
             @Override

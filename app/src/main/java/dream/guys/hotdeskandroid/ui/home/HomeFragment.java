@@ -312,7 +312,6 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
 //            dialog= ProgressDialog.showProgressBar(getContext());
             LocalDate today = LocalDate.now();
-
             // Go backward to get Monday
             LocalDate monday = today;
             while (monday.getDayOfWeek() != DayOfWeek.MONDAY) {
@@ -327,7 +326,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             System.out.println("Today: " + today);
             System.out.println("Monday of the Week: " + monday);
             System.out.println("Sunday of the Week: " + sunday);
-
+//            binding.wee
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<List<MeetingListToEditResponse>> call = apiService.getMeetingListToEdit(monday+"T00:00:00.000Z",sunday+"T00:00:00.000Z");
             call.enqueue(new Callback<List<MeetingListToEditResponse>>() {

@@ -316,6 +316,7 @@
                             android:textColor="@color/figmaBlack"/>
 
                         <TextView
+                            android:id="@+id/weekStartEnd"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="@dimen/_2sdp"
@@ -744,6 +745,18 @@
                     android:textSize="@dimen/_12sdp"
                     style="@style/TextRegular"
                     android:layout_alignParentEnd="true" />
+                <TextView
+                    android:id="@+id/notAvailable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/_40sdp"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:theme="@style/TextBold"
+                    android:textColor="@color/figmaGrey"
+                    android:layout_below="@id/title_upcoming"
+                    android:text="No Upcomming Bookings"
+                    />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/samUpcomingRecycler"

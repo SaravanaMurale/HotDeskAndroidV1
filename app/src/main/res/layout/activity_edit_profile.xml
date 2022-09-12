@@ -232,6 +232,7 @@
                             android:textColor="@color/figmaBlack"/>
 
                         <TextView
+                            android:id="@+id/weekStartEnd"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="@dimen/_2sdp"

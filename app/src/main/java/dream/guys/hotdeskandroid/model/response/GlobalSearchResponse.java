@@ -54,6 +54,7 @@ public class GlobalSearchResponse implements Serializable {
         private int noOfPeople;
         private String phoneNumber;
 
+
         public class CurrentLocation implements Serializable{
             private int id;
             private String name;

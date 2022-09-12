@@ -5,12 +5,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import java.io.Serializable;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +26,7 @@ import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
 import dream.guys.hotdeskandroid.ui.home.ViewTeamsActivity;
+import dream.guys.hotdeskandroid.ui.settings.SettingsActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -58,6 +62,41 @@ public class ShowProfileActivity extends AppCompatActivity {
 
         context = ShowProfileActivity.this;
 
+        binding.ivEditEmailIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (binding.tvEditEmail !=null && !binding.tvEditEmail.getText().toString().equalsIgnoreCase("email")){
+                    Intent intent = new Intent (Intent.ACTION_VIEW , Uri.parse("mailto:" + binding.tvEditEmail.getText().toString()));
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "Team member");
+                    intent.putExtra(Intent.EXTRA_TEXT, "your_text");
+                    startActivity(intent);
+
+                    /*
+                    Intent i = new Intent(Intent.ACTION_SEND);
+                    i.setType("text/plain");
+                    i.putExtra(Intent.EXTRA_EMAIL  , new String[]{""+binding.tvEditEmail.getText().toString()});
+                    i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
+                    i.putExtra(Intent.EXTRA_TEXT   , "body of email");
+                    try {
+                        startActivity(i);
+                    } catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(ShowProfileActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                    }
+                    */
+
+                }
+            }
+        });
+        binding.tvEditPhoneIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (binding.tvEditEmail !=null && !binding.tvEditPhone.getText().toString().equalsIgnoreCase("phone")) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tel:"+binding.tvEditPhone.getText().toString()));
+                    startActivity(intent);
+                }
+            }
+        });
         binding.tvViewTeam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -254,12 +293,41 @@ private void callSearchRecyclerData(String searchText,int selID) {
     }
 
     private void setResults(GlobalSearchResponse.Results results) {
+        LocalDate today = LocalDate.now();
+        // Go backward to get Monday
+        LocalDate monday = today;
+        while (monday.getDayOfWeek() != DayOfWeek.MONDAY) {
+            monday = monday.minusDays(1);
+        }
+        // Go forward to get Sunday
+        LocalDate sunday = today;
+        while (sunday.getDayOfWeek() != DayOfWeek.SUNDAY) {
+            sunday = sunday.plusDays(1);
+        }
+
+        System.out.println("Today: " + today);
+        System.out.println("Monday of the Week: " + monday);
+        System.out.println("Sunday of the Week: " + sunday);
+
+        binding.weekStartEnd.setText(Utils.showBottomSheetDate(""+monday)+
+                " - "+
+                Utils.showBottomSheetDate(""+sunday));
 
         binding.tvViewProfileName.setText(results.getName());
         binding.txtTeam.setText(results.getTeam());
-        binding.tvEditEmail.setText(results.getEmail());
         binding.tvTeamName.setText(results.getTeam());
-        binding.tvEditPhone.setText(results.getPhoneNumber());
+        if (results.getEmail() == null
+                || results.getEmail().equalsIgnoreCase("")
+                || results.getEmail().isEmpty())
+            binding.tvEditEmail.setText("Email");
+        else
+            binding.tvEditEmail.setText(results.getEmail());
+        if (results.getDeskPhoneNumber() == null
+                || results.getDeskPhoneNumber().equalsIgnoreCase("")
+                ||results.getDeskPhoneNumber().isEmpty())
+            binding.tvEditPhone.setText("Phone");
+        else
+            binding.tvEditPhone.setText(results.getDeskPhoneNumber());
 
         binding.txtTname.setText(results.getTeam());
         //binding.tvEditPhone.setText(results.getMobile());
@@ -348,12 +416,17 @@ private void callSearchRecyclerData(String searchText,int selID) {
         }
 
         if (recyclerModelArrayList!=null && recyclerModelArrayList.size()>0){
+            binding.notAvailable.setVisibility(View.GONE);
+            binding.samUpcomingRecycler.setVisibility(View.VISIBLE);
             linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
             binding.samUpcomingRecycler.setLayoutManager(linearLayoutManager);
             binding.samUpcomingRecycler.setHasFixedSize(true);
 
             upComingBookingAdapter=new UpComingBookingAdapter(context,recyclerModelArrayList,"Sample");
             binding.samUpcomingRecycler.setAdapter(upComingBookingAdapter);
+        }else {
+            binding.notAvailable.setVisibility(View.VISIBLE);
+            binding.samUpcomingRecycler.setVisibility(View.GONE);
         }
         
     }

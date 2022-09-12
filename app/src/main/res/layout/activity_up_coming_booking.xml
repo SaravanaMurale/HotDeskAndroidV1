@@ -57,6 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:visibility="gone"
             android:layout_marginTop="@dimen/_8sdp">
 
             <LinearLayout
@@ -376,10 +377,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:text="View Order"
+                android:visibility="gone"
                 android:textColor="@color/figmaBlue"
                 android:textSize="@dimen/_10sdp"
-                android:text="View Order"
-                android:theme="@style/TextBold"/>
+                android:theme="@style/TextBold" />
 
         </RelativeLayout>
 

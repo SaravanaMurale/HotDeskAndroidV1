@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -292,7 +293,6 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     @Override
     public void clickEvent(DAOTeamMember daoTeamMember) {
         selID = daoTeamMember.getUserId();
-
         Intent intent = new Intent(getActivity(),ShowProfileActivity.class);
         intent.putExtra(AppConstants.USER_CURRENT_STATUS,daoTeamMember);
         intent.putExtra("DATE",currendate);
@@ -304,10 +304,20 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
     @Override
     public void onProfileClick(DAOTeamMember daoTeamMember) {
-        Intent intent = new Intent(getActivity(),ShowProfileActivity.class);
-        intent.putExtra(AppConstants.USER_CURRENT_STATUS,daoTeamMember);
-        intent.putExtra("DATE",currendate);
-        startActivity(intent);
+        if (daoTeamMember!=null){
+            Intent intent = new Intent(getActivity(),ShowProfileActivity.class);
+            intent.putExtra(AppConstants.USER_CURRENT_STATUS,daoTeamMember);
+            intent.putExtra("DATE",currendate);
+            startActivity(intent);
+        }else {
+
+            binding.expandRecyclerView.setVisibility(View.VISIBLE);
+            binding.recyclerView.setVisibility(View.GONE);
+            binding.tvTotalAvail.setVisibility(View.VISIBLE);
+            binding.tvExapnd.setVisibility(View.GONE);
+            setDataToExpandAdapter(teamMembersList);
+        }
+
     }
 
 

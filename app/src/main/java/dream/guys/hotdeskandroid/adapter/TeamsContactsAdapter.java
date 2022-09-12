@@ -62,6 +62,12 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<TeamsContactsAdap
                 onProfileClickable.onProfileClick(teamMembersList.get(holder.getAbsoluteAdapterPosition()));
             }
         });
+        holder.tvCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onProfileClickable.onProfileClick(null);
+            }
+        });
 
     }
 

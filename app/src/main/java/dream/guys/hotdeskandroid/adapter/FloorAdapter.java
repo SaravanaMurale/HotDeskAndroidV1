@@ -38,6 +38,12 @@ public class FloorAdapter extends RecyclerView.Adapter<FloorAdapter.FloorAdapter
         this.identifier=identifier;
 
     }
+    public FloorAdapter(Context context, List<LocateCountryRespose> locateCountryResposeList, BookFragment locateFragment, String identifier) {
+        this.context=context;
+        this.locateCountryResposeList=locateCountryResposeList;
+        this.identifier=identifier;
+
+    }
 
     @NonNull
     @Override

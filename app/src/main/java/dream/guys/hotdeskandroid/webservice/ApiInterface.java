@@ -122,18 +122,20 @@ public interface ApiInterface {
 
     //Book meeting room count api
     @GET("api/MeetingRooms/DailyMeetingRoomCounts")
-    Call<List<DeskRoomCountResponse>> getDailyRoomCount(@Query("month") String s, @Query("teamId") String teamId);
+    Call<List<DeskRoomCountResponse>> getDailyRoomCount(@Query("month") String s,
+                                                        @Query("teamId") String teamId);
     //Book meeting room count api Location
     @GET("api/MeetingRooms/DailyMeetingRoomCounts")
     Call<List<DeskRoomCountResponse>> getDailyRoomCountLocation(@Query("month") String s,
-                                                                @Query("teamId") String teamId,
+                                                                @Query("locationId") String locationId,
                                                                 @Query("startTime") String startTime,
                                                                 @Query("endTime") String endTime
     );
 
     //Book parking count api
     @GET("api/ParkingSlot/DailyCarParkCounts")
-    Call<List<DeskRoomCountResponse>> getDailyParkingCount(@Query("month") String s, @Query("teamId") String teamId);
+    Call<List<DeskRoomCountResponse>> getDailyParkingCount(@Query("month") String s,
+                                                           @Query("teamId") String teamId);
 
     //Book parking count api Location
     @GET("api/ParkingSlot/DailyCarParkCounts")
