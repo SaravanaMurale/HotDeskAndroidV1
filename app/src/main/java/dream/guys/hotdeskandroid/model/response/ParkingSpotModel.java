@@ -1,5 +1,7 @@
 package dream.guys.hotdeskandroid.model.response;
 
+import java.util.ArrayList;
+
 public class ParkingSpotModel {
     private int id;
     private String code;
@@ -8,7 +10,16 @@ public class ParkingSpotModel {
     private String dailyAvailableFrom;
     private String dailyAvailableTo;
     private Location location;
+    private ArrayList<Assignees> assignees;
     private int parkingSlotAvailability;
+
+    public ArrayList<Assignees> getAssignees() {
+        return assignees;
+    }
+
+    public void setAssignees(ArrayList<Assignees> assignees) {
+        this.assignees = assignees;
+    }
 
     public int getId() {
         return id;
@@ -74,6 +85,26 @@ public class ParkingSpotModel {
         this.parkingSlotAvailability = parkingSlotAvailability;
     }
 
+    public class Assignees{
+        private int id;
+        private String firstName;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+    }
     public class Location{
         private int id;
         private String name;

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -226,11 +227,11 @@ public class UpComingBookingActivity extends AppCompatActivity {
         horizontalCalendar
                 = new HorizontalCalendar.Builder(this, R.id.calendarView)
                 .range(startDate, endDate)
-                .mode(HorizontalCalendar.Mode.DAYS)
+                .mode(HorizontalCalendar.Mode.MONTHS)
                 .datesNumberOnScreen(4)
                 .configure()
-                .formatBottomText("EEE")
-                .formatMiddleText("dd MMM")
+                .formatBottomText("yyyy")
+                .formatMiddleText("MMM")
                 .showBottomText(true)
                 .showTopText(false)
                 .sizeMiddleText(15.0f)
@@ -245,24 +246,25 @@ public class UpComingBookingActivity extends AppCompatActivity {
         horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
             @Override
             public void onDateSelected(Calendar date, int position) {
-                currendate = date.get(Calendar.YEAR) + "-" +
-                        (date.get(Calendar.MONTH) + 1) + "-" + date.get(Calendar.DATE);
-//2022-08-13T10:51:17.830Z
-                try {
-                    currendate = new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("yyyy-M-d").parse(currendate));
-                    selectedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new SimpleDateFormat("yyyy-M-d").parse(currendate));
-
-                    callTeamMemberStatus(currendate,daoTeamMember.getTeamId());
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
 
             }
 
             @Override
             public void onCalendarScroll(HorizontalCalendarView calendarView,
                                          int dx, int dy) {
+                currendate = horizontalCalendar.getSelectedDate().get(Calendar.YEAR) + "-" +
+                        (horizontalCalendar.getSelectedDate().get(Calendar.MONTH) + 1) + "-" + horizontalCalendar.getSelectedDate().get(Calendar.DATE);
+//                horizontalCalendar.getSelectedDate();
+
+                try {
+                    currendate = new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("yyyy-M-d").parse(currendate));
+                    selectedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new SimpleDateFormat("yyyy-M-d").parse(currendate));
+//                    Toast.makeText(context, " date"+currendate, Toast.LENGTH_SHORT).show();
+                    callTeamMemberStatus(currendate,daoTeamMember.getTeamId());
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
             }
 
@@ -514,17 +516,16 @@ public class UpComingBookingActivity extends AppCompatActivity {
 
     private void createUpcomingRecyclerList(ArrayList<DAOUpcomingBooking.PersonDayViewEntry>
                                                     bookingListResponses) {
-
+        upcomingArrayList.clear();
+        
         for (int i=0; i<bookingListResponses.size(); i++){
 
-            ArrayList<DAOUpcomingBooking.PersonDayViewEntry.CalendarEntry> calendarEntries = null;
-            //ArrayList<DAOUpcomingBooking.PersonDayViewEntry.MeetingBooking> meetingEntries = null;
-            //ArrayList<DAOUpcomingBooking.PersonDayViewEntry.CarParkBooking> carParkEntries = null;
-
             if (bookingListResponses.get(i).getCalendarEntries()!=null &&
-            bookingListResponses.get(i).getCalendarEntries().size()>0){
-
-                upcomingArrayList.addAll(bookingListResponses.get(i).getCalendarEntries());
+            bookingListResponses.get(i).getCalendarEntries().size()>0 ){
+                for (int y=0; y<bookingListResponses.get(i).getCalendarEntries().size(); y++){
+                    if (!(bookingListResponses.get(i).getCalendarEntries().get(y).getId()==0))
+                        upcomingArrayList.add(bookingListResponses.get(i).getCalendarEntries().get(y));
+                }
 
             }
 
@@ -537,6 +538,8 @@ public class UpComingBookingActivity extends AppCompatActivity {
 
             upComingBookingAdapter=new UpComingMonthlyBookingAdapter(context,upcomingArrayList,"");
             binding.upbookingRecyclerview.setAdapter(upComingBookingAdapter);
+        } else {
+            binding.upbookingRecyclerview.getAdapter().notifyDataSetChanged();
         }
 
     }

@@ -852,9 +852,15 @@ public class BookFragment extends Fragment implements
             call.enqueue(new Callback<List<ParkingSpotModel>>() {
                 @Override
                 public void onResponse(Call<List<ParkingSpotModel>> call, Response<List<ParkingSpotModel>> response) {
-                    parkingSpotModelList=response.body();
+                    parkingSpotModelList.clear();
+                    for(int i=0;i<response.body().size();i++){
+                        if(response.body().get(i).getAssignees().size() == 0
+                                && response.body().get(i).isActive()){
+                            parkingSpotModelList.add(response.body().get(i));
+                        }
+                    }
 
-                     ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
                     boolean checkIsRequest=false;
                     if (parkingSpotModelList!=null && parkingSpotModelList.size()>0){
                         loo :
@@ -2177,20 +2183,24 @@ public class BookFragment extends Fragment implements
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_select_desk,
                 new RelativeLayout(getContext()))));
 
-        TextView bsRepeatBack;
+        TextView bsRepeatBack, selectDesk;
         rvDeskRecycler= bottomSheetDialog.findViewById(R.id.desk_list_select_recycler);
+        selectDesk= bottomSheetDialog.findViewById(R.id.select_desk);
         bsRepeatBack=bottomSheetDialog.findViewById(R.id.bsDeskBack);
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvDeskRecycler.setLayoutManager(linearLayoutManager);
         rvDeskRecycler.setHasFixedSize(true);
         if (selectedicon == 2){
+            selectDesk.setText("Select Parking");
             parkingSpotListRecyclerAdapter =new ParkingSpotListRecyclerAdapter(getContext(),this,getActivity(),parkingSpotModelList,getContext(),bottomSheetDialog);
             rvDeskRecycler.setAdapter(parkingSpotListRecyclerAdapter);
         }else if (selectedicon==1){
+            selectDesk.setText("Select Meeting Room");
             roomListRecyclerAdapter =new RoomListRecyclerAdapter(getContext(),this,getActivity(),userAllowedMeetingResponseList,getContext(),bottomSheetDialog);
             rvDeskRecycler.setAdapter(roomListRecyclerAdapter);
         }else {
+            selectDesk.setText("Select Desk");
             deskListRecyclerAdapter =new DeskListRecyclerAdapter(getContext(),this,getActivity(),bookingForEditResponseDesk,getContext(),bottomSheetDialog);
             rvDeskRecycler.setAdapter(deskListRecyclerAdapter);
 

@@ -184,6 +184,10 @@ public interface ApiInterface {
     Call<List<TeamMembersResponse>> getTeamMembers(@Query("date") String date,
                                                    @Query("teamId") int teamId);
 
+    @GET("api/MyWork/CurrentBooking")
+    Call<BookingListResponse.DayGroup.CalendarEntry> getCurrentBookingStatus(@Query("date") String date,
+                                                   @Query("teamId") int teamId);
+
     @GET("api/globalsearch")
     Call<GlobalSearchResponse> getGlobalSearchData(@Query("pageSize") int pageSize,
                                                    @Query("filterText") String text);

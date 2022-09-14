@@ -1142,8 +1142,8 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
             });
         }
 
-
-
-
+    }
+    public void callLocateFragmentFromHomeFragment(){
+        binding.navView.setSelectedItemId(R.id.navigation_locate);
     }
 }

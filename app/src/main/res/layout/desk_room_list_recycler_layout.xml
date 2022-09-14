@@ -20,8 +20,8 @@
             android:id="@+id/tv_desk_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="None"
             android:layout_centerHorizontal="true"
+            android:text="None"
             android:textColor="@color/black"
             android:theme="@style/TextBold" />
 

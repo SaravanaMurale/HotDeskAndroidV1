@@ -988,6 +988,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             editDeskBookingDetails.setDate(date);
             editDeskBookingDetails.setCalId(meetingEntriesModel.getId());
             editDeskBookingDetails.setMeetingRoomtId(meetingEntriesModel.getMeetingRoomId());
+            editDeskBookingDetails.setRoomName(meetingEntriesModel.getMeetingRoomName());
             callAmenitiesListForMeetingRoom(editDeskBookingDetails,
                     editDeskBookingDetails.getEditStartTTime(),
                     editDeskBookingDetails.getEditEndTime(),
@@ -1088,7 +1089,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     @Override
     public void onLocationIconClick(int parentLocationId, int identifierId, String desk) {
 
-        NavController navController= Navigation.findNavController(view);
+//        NavController navController= Navigation.findNavController(view);
 
         SessionHandler.getInstance().saveInt(getContext(), AppConstants.PARENT_ID, parentLocationId);
 
@@ -1112,7 +1113,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
                                 System.out.println("SelectedDeskFloorInLocate "+i+" "+desk+" ");
 
-                                navController.navigate(R.id.action_navigation_home_to_navigation_locate);
+                                ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
+//                                navController.navigate(R.id.action_navigation_home_to_navigation_locate);
 
                             }
 
@@ -1129,7 +1131,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
                                 System.out.println("SelectedMeetingFloorInLocate "+i+" "+desk+" ");
 
-                                navController.navigate(R.id.navigation_locate);
+                                ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
+//                                navController.navigate(R.id.navigation_locate);
                             }
 
                         }
@@ -1143,14 +1146,11 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                                 SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION,i);
 
                                 System.out.println("SelectedCarFloorInLocate "+i+" "+desk+" ");
-
-                                navController.navigate(R.id.navigation_locate);
+                                ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
+//                                navController.navigate(R.id.navigation_locate);
                             }
                         }
-
                     }
-
-
                 }
             }
 
@@ -1181,9 +1181,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         EditText commentRegistration=bottomSheetDialog.findViewById(R.id.ed_registration);
         RelativeLayout repeatBlock=bottomSheetDialog.findViewById(R.id.rl_repeat_block);
         RelativeLayout teamsBlock=bottomSheetDialog.findViewById(R.id.rl_teams_layout);
+        RelativeLayout dateBlock=bottomSheetDialog.findViewById(R.id.bookingDateBlock);
         LinearLayout statusCheckLayout=bottomSheetDialog.findViewById(R.id.status_check_layout);
         LinearLayout llDeskLayout=bottomSheetDialog.findViewById(R.id.ll_desk_layout);
-
+        dateBlock.setVisibility(View.GONE);
         ChipGroup chipGroup = bottomSheetDialog.findViewById(R.id.list_item);
 
         if (editDeskBookingDetails.getDeskStatus() == 1){
@@ -1211,13 +1212,17 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             commentRegistration.setHint("Comments");
             tvComments.setText("Comments");
             chipGroup.setVisibility(View.GONE);
+            deskRoomName.setText(editDeskBookingDetails.getDeskCode());
+
         }else if (dskRoomParkStatus==2) {
-            llDeskLayout.setVisibility(View.GONE);
+            llDeskLayout.setVisibility(View.VISIBLE);
             commentRegistration.setVisibility(View.GONE);
             tvComments.setVisibility(View.GONE);
             repeatBlock.setVisibility(View.GONE);
             teamsBlock.setVisibility(View.GONE);
             chipGroup.setVisibility(View.VISIBLE);
+            deskRoomName.setText(editDeskBookingDetails.getRoomName());
+
         }else {
             llDeskLayout.setVisibility(View.GONE);
             repeatBlock.setVisibility(View.GONE);
@@ -1231,7 +1236,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         startTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()));
         endTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditEndTime()));
         date.setText(""+Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
-        deskRoomName.setText(editDeskBookingDetails.getDeskCode());
+//        deskRoomName.setText(editDeskBookingDetails.getDeskCode());
 
 //        System.out.println("chip check"+editDeskBookingDetails.getAmenities().size());
 //        Log.d(TAG, "editBookingUsingBottomSheet: chip"+editDeskBookingDetails.getAmenities().size());
@@ -1387,7 +1392,6 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
         deskListRecyclerAdapter =new DeskListRecyclerAdapter(getContext(),this,getActivity(),bookingForEditResponse,getContext(),bottomSheetDialog);
         rvDeskRecycler.setAdapter(deskListRecyclerAdapter);
-
 
         bsRepeatBack.setOnClickListener(new View.OnClickListener() {
             @Override
