@@ -114,8 +114,7 @@ public interface ApiInterface {
     Call<List<DeskRoomCountResponse>> getDailyDeskCountLocation(@Query("month") String s ,
                                                                 @Query("locationId") String locationId,
                                                                 @Query("startTime") String startTime,
-                                                                @Query("endTime") String endTime
-                                                                );
+                                                                @Query("endTime") String endTime);
     //parking spot list
     @GET("api/ParkingSlot/parkingslotsbylocation")
     Call<List<ParkingSpotModel>> getParkingSpotModels(@Query("locationId") String s);

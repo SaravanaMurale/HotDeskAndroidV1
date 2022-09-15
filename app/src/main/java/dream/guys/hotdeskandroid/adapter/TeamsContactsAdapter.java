@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,6 +60,7 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<TeamsContactsAdap
         holder.profile_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                Toast.makeText(context, "sds"+teamMembersList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().size(), Toast.LENGTH_SHORT).show();
                 onProfileClickable.onProfileClick(teamMembersList.get(holder.getAbsoluteAdapterPosition()));
             }
         });

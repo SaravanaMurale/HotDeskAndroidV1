@@ -137,11 +137,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/tv_exapnd"
                 android:text="Working from London Office"
                 android:textColor="@color/figmaBlack"
                 android:textSize="@dimen/_14sdp"
-                android:theme="@style/TextRegular"
-                android:layout_toStartOf="@+id/tv_exapnd"/>
+                android:theme="@style/TextRegular" />
 
             <TextView
                 android:id="@+id/tv_adddress"
@@ -185,6 +185,46 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/recyclerView"
+            android:layout_marginTop="@dimen/_8sdp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        <TextView
+            android:id="@+id/tvWorkRemote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/tv_exapnd"
+            android:text="Working Remotely"
+            android:visibility="gone"
+            android:textColor="@color/figmaBlack"
+            android:textSize="@dimen/_14sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:theme="@style/TextRegular" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/recyclerViewRemote"
+            android:layout_marginTop="@dimen/_8sdp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+        <TextView
+            android:id="@+id/tvHoliday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/tv_exapnd"
+            android:text="Holiday"
+            android:visibility="gone"
+            android:textColor="@color/figmaBlack"
+            android:textSize="@dimen/_14sdp"
+            android:theme="@style/TextRegular"
+            android:layout_marginVertical="@dimen/_5sdp"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/recyclerViewHoliday"
             android:layout_marginTop="@dimen/_8sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
