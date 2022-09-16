@@ -115,6 +115,9 @@ public interface ApiInterface {
                                                                 @Query("locationId") String locationId,
                                                                 @Query("startTime") String startTime,
                                                                 @Query("endTime") String endTime);
+
+
+
     //parking spot list
     @GET("api/ParkingSlot/parkingslotsbylocation")
     Call<List<ParkingSpotModel>> getParkingSpotModels(@Query("locationId") String s);

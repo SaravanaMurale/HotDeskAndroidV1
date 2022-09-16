@@ -3209,27 +3209,6 @@ public class BookFragment extends Fragment implements
                 }
 
 
-//                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-
-                /*List<String> deskCodeList = new ArrayList<>();
-                for (int i = 0; i < desks.size(); i++) {
-                    deskCodeList.add(desks.get(i).getDeskCode());
-                }
-
-                if (deskAvaliabilityResponseList.getLocationDesksList() != null) {
-                    for (int i = 0; i < deskAvaliabilityResponseList.getLocationDesksList().size(); i++) {
-
-                        if (deskCodeList.contains(deskAvaliabilityResponseList.getLocationDesksList().get(i).getCode())) {
-                            System.out.println("AvaliableDesks" + deskAvaliabilityResponseList.getLocationDesksList().get(i).getCode());
-                        }
-
-                    }
-                }*/
-
-
-                //ProgressDialog.dismisProgressBar(getContext(), dialog);
-
-
             }
 
             @Override

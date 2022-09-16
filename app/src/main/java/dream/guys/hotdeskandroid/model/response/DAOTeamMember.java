@@ -76,7 +76,7 @@ public class DAOTeamMember implements Serializable {
         this.dayGroups = dayGroups;
     }
 
-    public static class DayGroup{
+    public static class DayGroup implements Serializable{
         private Date date;
         private ArrayList<CalendarEntry> calendarEntries;
         private ArrayList<MeetingBooking> meetingBookings;
@@ -171,7 +171,7 @@ public class DAOTeamMember implements Serializable {
             this.dateStatus = dateStatus;
         }
 
-        public class CalendarEntry {
+        public class CalendarEntry implements Serializable{
             private int id;
             private String usageTypeName;
             private String usageTypeAbbreviation;
@@ -264,7 +264,7 @@ public class DAOTeamMember implements Serializable {
                 this.booking = booking;
             }
 
-            public class Booking{
+            public class Booking implements Serializable{
                 private int id;
                 private int deskId;
                 private int teamDeskId;
@@ -330,7 +330,7 @@ public class DAOTeamMember implements Serializable {
                 }
 
 
-                public class Status{
+                public class Status implements Serializable{
                     private int id;
                     private String name;
                     private String abbreviation;
@@ -381,7 +381,7 @@ public class DAOTeamMember implements Serializable {
 
         }
 
-        public class CarParkBooking{
+        public class CarParkBooking implements Serializable{
             private int id;
             private int parkingSlotId;
             private String from;
@@ -486,7 +486,7 @@ public class DAOTeamMember implements Serializable {
         }
 
 
-        public class MeetingBooking{
+        public class MeetingBooking implements Serializable{
             private int id;
             private int meetingRoomId;
             private String meetingRoomName;
@@ -581,7 +581,7 @@ public class DAOTeamMember implements Serializable {
         }
 
 
-        public class LocationBuildingFloor {
+        public class LocationBuildingFloor implements Serializable{
             public int floorID;
             public String fLoorName;
             public int buildingID;
