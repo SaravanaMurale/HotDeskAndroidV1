@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/design_bottom_sheet"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:padding="@dimen/_10sdp"
     android:background="@drawable/login_background_corner_white"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
@@ -125,14 +125,18 @@
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:background="@color/white"
                     app:layout_constraintBottom_toTopOf="@+id/cl_weekly"
-                    app:layout_constraintTop_toBottomOf="@+id/cl_daily" />
+                    app:layout_constraintTop_toBottomOf="@+id/cl_daily"
+
+                    />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_weekly"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view_daily">
+                    app:layout_constraintTop_toBottomOf="@+id/view_daily"
+                    android:visibility="gone"
+                    >
 
                     <TextView
                         android:id="@+id/tv_weekly"
@@ -172,14 +176,18 @@
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:background="@color/white"
                     app:layout_constraintBottom_toTopOf="@+id/cl_monthly"
-                    app:layout_constraintTop_toBottomOf="@+id/cl_weekly" />
+                    app:layout_constraintTop_toBottomOf="@+id/cl_weekly"
+                    android:visibility="gone"
+                    />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_monthly"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view_weekly">
+                    app:layout_constraintTop_toBottomOf="@+id/view_weekly"
+                    android:visibility="gone"
+                    >
 
                     <TextView
                         android:id="@+id/tv_monthly"
@@ -217,7 +225,9 @@
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:background="@color/white"
                     app:layout_constraintBottom_toTopOf="@+id/cl_yearly"
-                    app:layout_constraintTop_toBottomOf="@+id/cl_monthly" />
+                    app:layout_constraintTop_toBottomOf="@+id/cl_monthly"
+                    android:visibility="gone"
+                    />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_yearly"
@@ -225,7 +235,9 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view_monthly">
+                    app:layout_constraintTop_toBottomOf="@+id/view_monthly"
+                    android:visibility="gone"
+                    >
 
                     <TextView
                         android:id="@+id/tv_yearly"
@@ -290,6 +302,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:text="1 day"
+                    android:saveEnabled="false"
                     android:textColor="@color/figmaBlue"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -304,6 +317,8 @@
                     android:background="@color/white"
                     app:layout_constraintBottom_toTopOf="@+id/tv_until_txt"
                     app:layout_constraintTop_toBottomOf="@+id/tv_interval_txt" />
+
+
 
 
                 <TextView
@@ -328,7 +343,7 @@
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:checked="true"
-                    android:text="Forever"
+                    android:text="Fri 19 Sep(end of Week)"
                     android:textColor="@color/figmaBlue"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

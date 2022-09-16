@@ -26,6 +26,7 @@ public class CarListToEditAdapter extends RecyclerView.Adapter<CarListToEditAdap
     List<CarParkingForEditResponse.CarParkBooking> carParkBookings;
     public CarEditClickable carEditClickable;
     private String code;
+    private String selectedCode;
 
     public  interface CarEditClickable{
         public void onCarEditClick(CarParkingForEditResponse.CarParkBooking carParkBooking);
@@ -33,12 +34,13 @@ public class CarListToEditAdapter extends RecyclerView.Adapter<CarListToEditAdap
     }
 
 
-    public CarListToEditAdapter(Context context, List<CarParkingForEditResponse.CarParkBooking> carParkBookings, CarEditClickable carEditClickable, String code) {
+    public CarListToEditAdapter(Context context, List<CarParkingForEditResponse.CarParkBooking> carParkBookings, CarEditClickable carEditClickable, String code,String selectedCode) {
 
         this.context=context;
         this.carParkBookings=carParkBookings;
         this.carEditClickable=carEditClickable;
         this.code=code;
+        this.selectedCode=selectedCode;
 
     }
 
@@ -56,10 +58,10 @@ public class CarListToEditAdapter extends RecyclerView.Adapter<CarListToEditAdap
     public void onBindViewHolder(@NonNull CarListToEditViewHolder holder, int position) {
 
         if(code.equals("5")){
-            holder.editBookingImage.setImageDrawable(context.getDrawable(R.drawable.car));
+            holder.editBookingImage.setImageDrawable(context.getDrawable(R.drawable.car_edit));
         }
 
-        holder.editCode.setText(carParkBookings.get(position).getVehicleRegNumber());
+        holder.editCode.setText(selectedCode);
         holder.editCheckInTime.setText(Utils.splitTime(carParkBookings.get(position).getFrom()));
         holder.editCheckOutTime.setText(Utils.splitTime(carParkBookings.get(position).getMyto()));
 

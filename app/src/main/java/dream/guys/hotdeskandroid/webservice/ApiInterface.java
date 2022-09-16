@@ -442,6 +442,22 @@ public interface ApiInterface {
     @GET("api/Booking/UsageTypes")
     Call<List<UsageTypeResponse>>  getBookingUsageTypes();
 
+    //RepeatDeskBookingForCurrrentWeek
+    @PUT("api/booking/bookings")
+    Call<BaseResponse> doRepeatBookingForWeek(@Body LocateBookingRequest locateBookingRequest);
+
+    //RepeatDeskBookingRequestForCurrrentWeek
+    @PUT("api/booking/bookings")
+    Call<BaseResponse> doRepeatRequestDeskBooking(@Body LocateDeskBookingRequest locateBookingRequest);
+
+    //RepeatCarBookingForCurrrentWeek
+    @PUT("api/carparkbooking/bookings")
+    Call<BaseResponse> doRepeatCarParkBooking(@Body LocateCarParkBookingRequest locateCarParkBookingRequest);
+
+    //RepeatMeetingRoomBookingForCurrentWeek
+    @PUT("api/MeetingRoomBooking/bookings")
+    Call<BaseResponse> doRepeatMeetingRoomBooking(@Body MeetingRoomRequest meetingRoomRequest);
+
 }
 
 

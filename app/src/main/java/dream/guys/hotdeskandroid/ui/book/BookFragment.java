@@ -308,7 +308,7 @@ public class BookFragment extends Fragment implements
         binding.moreLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedicon=3;
+                selectedicon = 3;
                 tabToggleViewClicked(3);
             }
         });
@@ -1611,7 +1611,7 @@ public class BookFragment extends Fragment implements
                     jsonOuterObject.add("changesets", jsonChangesetArray);
                     jsonOuterObject.add("deletedIds", jsonDeletedIdsArray);
 
-                    System.out.println("json un"+jsonOuterObject.toString());
+                    System.out.println("json un" + jsonOuterObject.toString());
 
                     if (jsonChangesObject.size() > 0){
                         editBookingCall(jsonOuterObject,position,dskRoomParkStatus,newEditStatus);

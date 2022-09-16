@@ -64,10 +64,14 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import dream.guys.hotdeskandroid.MainActivity;
@@ -1518,5 +1522,130 @@ public class Utils {
 
         return date;
     }
+
+
+    public static Date getCurrentWeekEndDate(){
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+        c.add(Calendar.DATE, 1);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date weekendDate=null;
+        try {
+             weekendDate = sdf.parse(sdf.format(c.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return weekendDate;
+    }
+
+    public static String getDateFormatToSetInRepeat(Date date){
+
+        System.out.println("DateInStringFormat "+String.valueOf(date));
+        String strDate = String.valueOf(date);
+        //Received Date Format
+        //Sun Sep 18 00:00:00 GMT+05:30 2022
+        String[] word=strDate.split(" ");
+
+        String dayTxt=word[0];
+        String month=word[1];
+        String day=word[2];
+
+        String dateFormats=dayTxt+" "+day+" "+month;
+
+        return dateFormats;
+
+
+    }
+
+    public static int getDifferenceBetweenTwoDates(String selectedDateInLocate){
+
+        //selected Date In Locate
+        //String[] words=selectedDateInLocate.split("-");
+        Calendar c = Calendar.getInstance();
+        Date date = new Date();
+        SimpleDateFormat formatterMonth = new SimpleDateFormat("MM");
+        String str = formatterMonth.format(date);
+        int currentDate_Month=Integer.parseInt(str);
+
+        SimpleDateFormat formatterDate = new SimpleDateFormat("dd");
+        String strDate = formatterDate.format(date);
+        int currentDate_Date=Integer.parseInt(strDate);
+
+        int selectedYear=c.getWeekYear();
+        int selectedMonth=currentDate_Month;
+        int selectedDay=currentDate_Date;
+
+        //WeekEnd Date
+        c.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+        c.add(Calendar.DATE, 1);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date weekendDate=null;
+        try {
+            weekendDate = sdf.parse(sdf.format(c.getTime()));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        //Coming WeekendDate
+        int Month=weekendDate.getMonth()+1;
+        LocalDate weekEndDate = LocalDate.of( c.getWeekYear(), Month, weekendDate.getDate());
+
+        //Selected Date
+        LocalDate currentSelectedDate = LocalDate.of( selectedYear, selectedMonth, selectedDay);
+
+        //Find Difference between 2 date
+        Period difference = Period.between(currentSelectedDate,weekEndDate);
+
+
+        return difference.getDays();
+
+    }
+
+    public static List<String> getCurrentWeekDateList(String selectedDate, int enableCurrentWeek){
+        List<String> dateList=new ArrayList<>();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        try{
+            cal.setTime(sdf.parse(selectedDate));
+            //Add Current Date
+            String dateAfter1 = sdf.format(cal.getTime());
+            dateList.add(dateAfter1);
+
+            for (int i = 0; i <enableCurrentWeek;i++) {
+                //It will add next day until end of the week
+                cal.add(Calendar.DAY_OF_MONTH, 1);
+                String dateAfter = sdf.format(cal.getTime());
+                dateList.add(dateAfter);
+            }
+        }catch(ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        return dateList;
+
+    }
+
+
+
+
+
+  /*  public static void getCurrentWeekEndDate(){
+        Calendar calendar = Calendar.getInstance();
+        while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
+            calendar.add(Calendar.DATE, 1);
+        }
+        calendar.add(Calendar.DATE, -1);
+        System.out.println("CurrentWeekEndDate " + calendar.get(Calendar.DAY_OF_MONTH)+" "+calendar.get(Calendar.DATE)+" "+calendar.get(Calendar.MONTH)+1);
+    }*/
+
+
+
+
+
+
 
 }

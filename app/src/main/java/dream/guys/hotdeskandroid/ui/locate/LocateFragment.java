@@ -10,6 +10,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.icu.util.LocaleData;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,6 +35,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,11 +51,17 @@ import com.google.android.material.chip.ChipGroup;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import dream.guys.hotdeskandroid.MainActivity;
@@ -224,6 +232,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     //MatchList
     List<LocationWithMR_Response.Matches> matchesList;
 
+    int meetingRoomId = 0;
+    TextView startRoomTime, endTRoomime;
+
     ParticipantDetsilResponse participantDetsilResponse;
     ChipGroup participantChipGroup;
 
@@ -234,18 +245,21 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     //New...
     TextView txtInterval;
-    BottomSheetDialog repeatDataBottomSheetDialog, locateEditBottomSheet, locateCarEditBottomSheet,locateMeetEditBottomSheet;
+    BottomSheetDialog repeatDataBottomSheetDialog, locateEditBottomSheet, locateCarEditBottomSheet, locateMeetEditBottomSheet;
     List<ParticipantDetsilResponse> chipList = new ArrayList<>();
 
     int page = 1;
-    int seatSize = 150;
-    int seatGaping = 50;
+
+
+    //Repeat
+    String type = "none";
+    int enableCurrentWeek=-1;
+    boolean repeatActvieStatus=false;
+    TextView tvRepeat;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //dialog = new Dialog(getContext());
-
 
     }
 
@@ -254,22 +268,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //System.out.println("OnViewCreated");
-
-
         //Initally Load Floor Details
         initLoadFloorDetails(0);
 
     }
-
-   /* private void removeZoomInLayout(){
-        //Removes zoom in layout
-        ScaleAnimation scaleAnimation = new ScaleAnimation(1, 1, 1, 1, 1, 1);
-        scaleAnimation.setDuration(0);
-        scaleAnimation.setFillAfter(true);
-        binding.scrollView.setAnimation(scaleAnimation);
-    }*/
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -373,6 +375,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
     public void initLoadFloorDetails(int canvasDrawStatus) {
+
+        repeatActvieStatus=false;
 
         int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
 
@@ -727,112 +731,112 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     private void getLocateDeskRoomCarDesign(int parentId, int canvasDrawId) {
 
         if (Utils.isNetworkAvailable(getActivity())) {
-        binding.locateProgressBar.setVisibility(View.VISIBLE);
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        int floorPosition = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION);
-        //System.out.println("SelectedFloorPosition"+floorPosition);
-        Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(parentId);
-        call.enqueue(new Callback<List<LocateCountryRespose>>() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            int floorPosition = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION);
+            //System.out.println("SelectedFloorPosition"+floorPosition);
+            Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(parentId);
+            call.enqueue(new Callback<List<LocateCountryRespose>>() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
 
-                ProgressDialog.clearTouchLock(getContext(), getActivity());
+                    ProgressDialog.clearTouchLock(getContext(), getActivity());
 
-                locateCountryResposeList = response.body();
-                if (desksCode != null) {
-                    desksCode.clear();
-                }
-                if (carCode != null) {
-                    carCode.clear();
-                }
-
-                if (meetingCode != null) {
-                    meetingCode.clear();
-                }
-
-                if (locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks().size() > 0) {
-                    desksCode = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks();
-                    //System.out.println("NowDeskCodeAvaliable");
-                } else if (locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList().size() > 0) {
-                    carCode = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList();
-                    //System.out.println("NoeCarCodeAvaliable");
-                } else if (locateCountryResposeList.get(floorPosition).getLocationItemLayout().getMeetingRoomsList().size() > 0) {
-                    meetingCode = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getMeetingRoomsList();
-                    //System.out.println("NoeMeetingCodeAvaliable");
-                }
-
-
-                int totalDeskSize = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks().size();
-                //System.out.println("TotalSize" + totalDeskSize);
-
-
-                //ProgressDialog.dismisProgressBar(getContext(), dialog);
-                //getAvaliableDeskDetails(locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks(),0);
-
-                if (canvasDrawId == 1) {
-                    List<List<Integer>> coordinateList = locateCountryResposeList.get(floorPosition).getCoordinates();
-                    List<Point> pointList = new ArrayList<>();
-                    //System.out.println("CoordinateSize" + coordinateList.size());
-
-                    for (int i = 0; i < coordinateList.size(); i++) {
-
-                        //System.out.println("CoordinateData" + i + "position" + "size " + coordinateList.get(i).size());
-
-                        Point point = new Point(coordinateList.get(i).get(0) + 40, coordinateList.get(i).get(1) + 20);
-                        pointList.add(point);
-
+                    locateCountryResposeList = response.body();
+                    if (desksCode != null) {
+                        desksCode.clear();
+                    }
+                    if (carCode != null) {
+                        carCode.clear();
                     }
 
-                    if (pointList.size() > 0) {
-                        MyCanvasDraw myCanvasDraw = new MyCanvasDraw(getContext(), pointList);
-
-                        binding.secondLayout.addView(myCanvasDraw);
-
-                    }
-                } else {
-                    getFloorCoordinates(locateCountryResposeList.get(floorPosition).getCoordinates());
-                }
-
-
-                //addDottedLine();
-
-
-                List<String> valueList = new ArrayList<>();
-                if (locateCountryResposeList.get(floorPosition).getItems() != null) {
-
-                    int itemTotalSize = locateCountryResposeList.get(floorPosition).getItems().size();
-
-                    for (String key : locateCountryResposeList.get(floorPosition).getItems().keySet()) {
-
-                        valueList
-                                = locateCountryResposeList.get(floorPosition).getItems().get(key);
-
-                        addView(valueList, key, floorPosition, itemTotalSize);
-
+                    if (meetingCode != null) {
+                        meetingCode.clear();
                     }
 
-                } else {
-                    Toast.makeText(getContext(), "No Data", Toast.LENGTH_LONG).show();
+                    if (locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks().size() > 0) {
+                        desksCode = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks();
+                        //System.out.println("NowDeskCodeAvaliable");
+                    } else if (locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList().size() > 0) {
+                        carCode = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList();
+                        //System.out.println("NoeCarCodeAvaliable");
+                    } else if (locateCountryResposeList.get(floorPosition).getLocationItemLayout().getMeetingRoomsList().size() > 0) {
+                        meetingCode = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getMeetingRoomsList();
+                        //System.out.println("NoeMeetingCodeAvaliable");
+                    }
+
+
+                    int totalDeskSize = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks().size();
+                    //System.out.println("TotalSize" + totalDeskSize);
+
+
+                    //ProgressDialog.dismisProgressBar(getContext(), dialog);
+                    //getAvaliableDeskDetails(locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks(),0);
+
+                    if (canvasDrawId == 1) {
+                        List<List<Integer>> coordinateList = locateCountryResposeList.get(floorPosition).getCoordinates();
+                        List<Point> pointList = new ArrayList<>();
+                        //System.out.println("CoordinateSize" + coordinateList.size());
+
+                        for (int i = 0; i < coordinateList.size(); i++) {
+
+                            //System.out.println("CoordinateData" + i + "position" + "size " + coordinateList.get(i).size());
+
+                            Point point = new Point(coordinateList.get(i).get(0) + 40, coordinateList.get(i).get(1) + 20);
+                            pointList.add(point);
+
+                        }
+
+                        if (pointList.size() > 0) {
+                            MyCanvasDraw myCanvasDraw = new MyCanvasDraw(getContext(), pointList);
+
+                            binding.secondLayout.addView(myCanvasDraw);
+
+                        }
+                    } else {
+                        getFloorCoordinates(locateCountryResposeList.get(floorPosition).getCoordinates());
+                    }
+
+
+                    //addDottedLine();
+
+
+                    List<String> valueList = new ArrayList<>();
+                    if (locateCountryResposeList.get(floorPosition).getItems() != null) {
+
+                        int itemTotalSize = locateCountryResposeList.get(floorPosition).getItems().size();
+
+                        for (String key : locateCountryResposeList.get(floorPosition).getItems().keySet()) {
+
+                            valueList
+                                    = locateCountryResposeList.get(floorPosition).getItems().get(key);
+
+                            addView(valueList, key, floorPosition, itemTotalSize);
+
+                        }
+
+                    } else {
+                        Toast.makeText(getContext(), "No Data", Toast.LENGTH_LONG).show();
+                    }
+
+
+                    //ProgressDialog.dismisProgressBar(getContext(), dialog);
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
                 }
 
+                @Override
+                public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
 
-                //ProgressDialog.dismisProgressBar(getContext(), dialog);
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    //ProgressDialog.dismisProgressBar(getContext(), dialog);
 
-            }
+                }
+            });
 
-            @Override
-            public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
-
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                //ProgressDialog.dismisProgressBar(getContext(), dialog);
-
-            }
-        });
-
-        }else {
+        } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
     }
@@ -1344,7 +1348,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 int id = Integer.parseInt(result[0]);
                 String code = result[1];
                 String selctedCode = "";
-                int meetingRoomId = 0;
+                //int meetingRoomId = 0;
                 String meetingRoomName = "";
 
                 //Get code based on id
@@ -1413,7 +1417,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
                                         //Avaliable Booking
-                                        //Booking Bottom Sheet
+                                        //Desk Booking Bottom Sheet
                                         callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId, 1);
 
 
@@ -1443,7 +1447,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                     } else if (deskStatusModelList.get(i).getStatus() == 2) {
                                         //Booking Edit BottomSheet
-                                        getBookingListToEdit(code);
+                                        getBookingListToEdit(selctedCode, key, id, code, requestTeamId, requestTeamDeskId, 4);
 
                                     } else if (deskStatusModelList.get(i).getStatus() == 0) {
                                         //Unavaliable
@@ -1478,11 +1482,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                     getCarDescriptionUsingCardId(id);
 
                                     //CarBooking
-
                                     callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId, 1);
                                 } else if (carParkingStatusModelList.get(i).getStatus() == 2) {
                                     //EditCarParking
-                                    getCarBookingEditList(id, code);
+                                    //getCarBookingEditList(id, code,selctedCode);
+                                    getCarBookingEditList(selctedCode, key, id, code, requestTeamId, requestTeamDeskId, 1);
 
                                 } else if (carParkingStatusModelList.get(i).getStatus() == 3) {
                                     //Booked
@@ -1521,7 +1525,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                     boolean isReqduest = false;
                                     callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest);
                                 } else if (meetingStatusModelList.get(i).getStatus() == 2) {
-                                    getMeetingBookingListToEdit(meetingRoomId);
+                                    boolean isReqduest = false;
+                                    getMeetingBookingListToEdit(meetingRoomId,meetingRoomName,isReqduest);
                                 } else if (meetingStatusModelList.get(i).getStatus() == 3) {
                                     Toast.makeText(getContext(), "Meeting Room Is Already Booked", Toast.LENGTH_LONG).show();
                                 } else if (meetingStatusModelList.get(i).getStatus() == 4) {
@@ -1568,7 +1573,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
 
-    private void getMeetingBookingListToEdit(int meetingRoomId) {
+    private void getMeetingBookingListToEdit(int meetingRoomId, String meetingRoomName, boolean isReqduest) {
 
         //String startDate=binding.locateCalendearView.getText().toString()+"T00:00:00.000Z";
         //String endDate=binding.locateCalendearView.getText().toString()+"T00:00:00.000Z";
@@ -1577,45 +1582,45 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         if (Utils.isNetworkAvailable(getActivity())) {
 
-        String startDate = binding.locateCalendearView.getText().toString() + " " + binding.locateStartTime.getText().toString() + ":00Z";
-        String endDate = binding.locateCalendearView.getText().toString() + " " + binding.locateEndTime.getText().toString() + ":00Z";
+            String startDate = binding.locateCalendearView.getText().toString() + " " + binding.locateStartTime.getText().toString() + ":00Z";
+            String endDate = binding.locateCalendearView.getText().toString() + " " + binding.locateEndTime.getText().toString() + ":00Z";
 
-        int[] roomid = new int[1];
-        roomid[0] = meetingRoomId;
-        String roomId = Arrays.toString(roomid);
+            int[] roomid = new int[1];
+            roomid[0] = meetingRoomId;
+            String roomId = Arrays.toString(roomid);
 
-        binding.locateProgressBar.setVisibility(View.VISIBLE);
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<MeetingListToEditResponse>> call = apiService.getMeetingListToEditInLocate(startDate, endDate, roomId);
-        call.enqueue(new Callback<List<MeetingListToEditResponse>>() {
-            @Override
-            public void onResponse(Call<List<MeetingListToEditResponse>> call, Response<List<MeetingListToEditResponse>> response) {
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<MeetingListToEditResponse>> call = apiService.getMeetingListToEditInLocate(startDate, endDate, roomId);
+            call.enqueue(new Callback<List<MeetingListToEditResponse>>() {
+                @Override
+                public void onResponse(Call<List<MeetingListToEditResponse>> call, Response<List<MeetingListToEditResponse>> response) {
 
-                List<MeetingListToEditResponse> meetingListToEditResponseList = response.body();
+                    List<MeetingListToEditResponse> meetingListToEditResponseList = response.body();
 
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
-                callMeetingRoomEditListAdapterBottomSheet(meetingListToEditResponseList);
+                    callMeetingRoomEditListAdapterBottomSheet(meetingListToEditResponseList,meetingRoomName,isReqduest);
 
 
-            }
+                }
 
-            @Override
-            public void onFailure(Call<List<MeetingListToEditResponse>> call, Throwable t) {
+                @Override
+                public void onFailure(Call<List<MeetingListToEditResponse>> call, Throwable t) {
 
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
-            }
-        });
+                }
+            });
 
-        }else {
+        } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
     }
 
-    private void callMeetingRoomEditListAdapterBottomSheet(List<MeetingListToEditResponse> meetingListToEditResponseList) {
+    private void callMeetingRoomEditListAdapterBottomSheet(List<MeetingListToEditResponse> meetingListToEditResponseList, String meetingRoomName, boolean isReqduest) {
         RecyclerView rvMeeingEditList;
-        TextView editClose, editDate;
+        TextView editClose, editDate,addNew;
         LinearLayoutManager linearLayoutManager;
 
         locateMeetEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -1624,7 +1629,15 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         rvMeeingEditList = locateMeetEditBottomSheet.findViewById(R.id.rvEditList);
         editClose = locateMeetEditBottomSheet.findViewById(R.id.editClose);
+        addNew = locateMeetEditBottomSheet.findViewById(R.id.editBookingContinue);
         editDate = locateMeetEditBottomSheet.findViewById(R.id.editDate);
+
+        addNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest);
+            }
+        });
 
         //New...
         String sDate = binding.locateCalendearView.getText().toString();
@@ -1719,26 +1732,26 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     private void getMeetingRoomDescription(int meetingRoomId) {
 
         if (Utils.isNetworkAvailable(getActivity())) {
-        binding.locateProgressBar.setVisibility(View.VISIBLE);
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<MeetingRoomDescriptionResponse> call = apiService.getMeetingRoomDescription(meetingRoomId);
-        call.enqueue(new Callback<MeetingRoomDescriptionResponse>() {
-            @Override
-            public void onResponse(Call<MeetingRoomDescriptionResponse> call, Response<MeetingRoomDescriptionResponse> response) {
-                MeetingRoomDescriptionResponse meetingRoomDescriptionResponse = response.body();
-                meetingRoomDescription = meetingRoomDescriptionResponse.getDescription();
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<MeetingRoomDescriptionResponse> call = apiService.getMeetingRoomDescription(meetingRoomId);
+            call.enqueue(new Callback<MeetingRoomDescriptionResponse>() {
+                @Override
+                public void onResponse(Call<MeetingRoomDescriptionResponse> call, Response<MeetingRoomDescriptionResponse> response) {
+                    MeetingRoomDescriptionResponse meetingRoomDescriptionResponse = response.body();
+                    meetingRoomDescription = meetingRoomDescriptionResponse.getDescription();
 
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
 
-            @Override
-            public void onFailure(Call<MeetingRoomDescriptionResponse> call, Throwable t) {
+                @Override
+                public void onFailure(Call<MeetingRoomDescriptionResponse> call, Throwable t) {
 
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
 
-        }else {
+        } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
 
@@ -1748,32 +1761,32 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         if (Utils.isNetworkAvailable(getActivity())) {
 
-        binding.locateProgressBar.setVisibility(View.VISIBLE);
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CarParkingDescriptionResponse> call = apiService.getCarParkingDescription(id);
-        call.enqueue(new Callback<CarParkingDescriptionResponse>() {
-            @Override
-            public void onResponse(Call<CarParkingDescriptionResponse> call, Response<CarParkingDescriptionResponse> response) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<CarParkingDescriptionResponse> call = apiService.getCarParkingDescription(id);
+            call.enqueue(new Callback<CarParkingDescriptionResponse>() {
+                @Override
+                public void onResponse(Call<CarParkingDescriptionResponse> call, Response<CarParkingDescriptionResponse> response) {
 
-                CarParkingDescriptionResponse carParkingDescriptionResponse = response.body();
-                if (carParkingDescriptionResponse != null) {
-                    carParkDescription = carParkingDescriptionResponse.getDescription();
+                    CarParkingDescriptionResponse carParkingDescriptionResponse = response.body();
+                    if (carParkingDescriptionResponse != null) {
+                        carParkDescription = carParkingDescriptionResponse.getDescription();
+                    }
+
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
                 }
 
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                @Override
+                public void onFailure(Call<CarParkingDescriptionResponse> call, Throwable t) {
 
-            }
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
-            @Override
-            public void onFailure(Call<CarParkingDescriptionResponse> call, Throwable t) {
+                }
+            });
 
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-
-            }
-        });
-
-        }else {
+        } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
     }
@@ -1781,41 +1794,41 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void getDescriptionUsingDeskId(int id) {
         if (Utils.isNetworkAvailable(getActivity())) {
-        binding.locateProgressBar.setVisibility(View.VISIBLE);
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<DeskDescriptionResponse> call = apiService.getDiskDescription(id);
-        call.enqueue(new Callback<DeskDescriptionResponse>() {
-            @Override
-            public void onResponse(Call<DeskDescriptionResponse> call, Response<DeskDescriptionResponse> response) {
-                DeskDescriptionResponse deskDescriptionResponse = response.body();
-                if (deskDescriptionResponse != null) {
-                    deskDescriotion = deskDescriptionResponse.getDeskDescription();
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<DeskDescriptionResponse> call = apiService.getDiskDescription(id);
+            call.enqueue(new Callback<DeskDescriptionResponse>() {
+                @Override
+                public void onResponse(Call<DeskDescriptionResponse> call, Response<DeskDescriptionResponse> response) {
+                    DeskDescriptionResponse deskDescriptionResponse = response.body();
+                    if (deskDescriptionResponse != null) {
+                        deskDescriotion = deskDescriptionResponse.getDeskDescription();
+                    }
+
+
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 }
 
+                @Override
+                public void onFailure(Call<DeskDescriptionResponse> call, Throwable t) {
 
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
 
-            @Override
-            public void onFailure(Call<DeskDescriptionResponse> call, Throwable t) {
-
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        }else {
+        } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
     }
 
     private void callMeetingRoomBookingBottomSheet(int meetingRoomId, String meetingRoomName, boolean isRequest) {
 
-        TextView startRoomTime, endTRoomime, editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle, showtvRoomStartTime;
+        TextView  editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle, showtvRoomStartTime;
         EditText etParticipants, etSubject, etComments;
         RecyclerView rvParticipant;
         LinearLayoutManager linearLayoutManager;
-        RelativeLayout startTimeLayout, endTimeLayout;
+        RelativeLayout startTimeLayout, endTimeLayout,rl_repeat_block_room;
         //New...
         LinearLayout subCmtLay, child_layout;
         TextView roomDate;
@@ -1826,10 +1839,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 new RelativeLayout(getContext()))));
 
         startRoomTime = bottomSheetDialog.findViewById(R.id.tvRoomStartTime);
-        showtvRoomStartTime = bottomSheetDialog.findViewById(R.id.showtvRoomStartTime);
         endTRoomime = bottomSheetDialog.findViewById(R.id.tvRoomEndTime);
+        showtvRoomStartTime = bottomSheetDialog.findViewById(R.id.showtvRoomStartTime);
+
         etParticipants = bottomSheetDialog.findViewById(R.id.etParticipants);
         etSubject = bottomSheetDialog.findViewById(R.id.etSubject);
+
+        rl_repeat_block_room=bottomSheetDialog.findViewById(R.id.rl_repeat_block_room);
 
         etComments = bottomSheetDialog.findViewById(R.id.etCommentsMeeting);
         editRoomBookingContinue = bottomSheetDialog.findViewById(R.id.editRoomBookingContinue);
@@ -1851,6 +1867,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         roomTitle.setText(meetingRoomName);
+
+        rl_repeat_block_room.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                repeatBottomSheetDialog("4");
+            }
+        });
 
 
         //New...
@@ -2031,32 +2054,32 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         if (Utils.isNetworkAvailable(getActivity())) {
 
-        binding.locateProgressBar.setVisibility(View.VISIBLE);
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<ParticipantDetsilResponse>> call = apiService.getParticipantDetails(participantLetter, 1);
-        call.enqueue(new Callback<List<ParticipantDetsilResponse>>() {
-            @Override
-            public void onResponse(Call<List<ParticipantDetsilResponse>> call, Response<List<ParticipantDetsilResponse>> response) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<ParticipantDetsilResponse>> call = apiService.getParticipantDetails(participantLetter, 1);
+            call.enqueue(new Callback<List<ParticipantDetsilResponse>>() {
+                @Override
+                public void onResponse(Call<List<ParticipantDetsilResponse>> call, Response<List<ParticipantDetsilResponse>> response) {
 
-                List<ParticipantDetsilResponse> participantDetsilResponseList = response.body();
+                    List<ParticipantDetsilResponse> participantDetsilResponseList = response.body();
 
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                if (participantDetsilResponseList != null) {
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    if (participantDetsilResponseList != null) {
 
-                    showParticipantNameInRecyclerView(participantDetsilResponseList, rvParticipant);
+                        showParticipantNameInRecyclerView(participantDetsilResponseList, rvParticipant);
+
+                    }
 
                 }
 
-            }
+                @Override
+                public void onFailure(Call<List<ParticipantDetsilResponse>> call, Throwable t) {
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
 
-            @Override
-            public void onFailure(Call<List<ParticipantDetsilResponse>> call, Throwable t) {
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        }else {
+        } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
     }
@@ -2069,137 +2092,140 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         rvParticipant.setAdapter(participantNameShowAdapter);
     }
 
-    private void doMeetingRoomBooking(int meetingRoomId, String startRoomTime, String endRoomTime, String subject, String comment, boolean isRequest) {
+    private void doMeetingRoomBooking(int meetingRoomId, String startMeetRoomTime, String endMeetRoomTime, String subject, String comment, boolean isRequest) {
 
         if (Utils.isNetworkAvailable(getActivity())) {
 
-        binding.locateProgressBar.setVisibility(View.VISIBLE);
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
 
-        MeetingRoomRequest meetingRoomRequest = new MeetingRoomRequest();
-        meetingRoomRequest.setMeetingRoomId(meetingRoomId);
-        meetingRoomRequest.setMsTeams(false);
-        meetingRoomRequest.setHandleRecurring(false);
-        meetingRoomRequest.setOnlineMeeting(false);
+            MeetingRoomRequest meetingRoomRequest = new MeetingRoomRequest();
+            meetingRoomRequest.setMeetingRoomId(meetingRoomId);
+            meetingRoomRequest.setMsTeams(false);
+            meetingRoomRequest.setHandleRecurring(false);
+            meetingRoomRequest.setOnlineMeeting(false);
 
-        MeetingRoomRequest.Changeset m = meetingRoomRequest.new Changeset();
-        m.setId(0);
-        m.setDate(binding.locateCalendearView.getText().toString() + "T" + "00:00:00.000" + "Z");
+            MeetingRoomRequest.Changeset m = meetingRoomRequest.new Changeset();
+            m.setId(0);
+            m.setDate(binding.locateCalendearView.getText().toString() + "T" + "00:00:00.000" + "Z");
 
-        MeetingRoomRequest.Changeset.Changes changes = m.new Changes();
-        changes.setFrom(getCurrentDate() + "" + "T" + startRoomTime + ":" + "00" + "." + "000" + "Z");
-        changes.setMyto(getCurrentDate() + "" + "T" + endRoomTime + ":" + "00" + "." + "000" + "Z");
-        changes.setComments(comment);
-        changes.setSubject(subject);
-        changes.setRequest(isRequest);
+            MeetingRoomRequest.Changeset.Changes changes = m.new Changes();
+            changes.setFrom(getCurrentDate() + "" + "T" + startMeetRoomTime + ":" + "00" + "." + "000" + "Z");
+            changes.setMyto(getCurrentDate() + "" + "T" + endMeetRoomTime + ":" + "00" + "." + "000" + "Z");
+            changes.setComments(comment);
+            changes.setSubject(subject);
+            changes.setRequest(isRequest);
 
-        m.setChanges(changes);
+            m.setChanges(changes);
 
-        List<MeetingRoomRequest.Changeset> changesetList = new ArrayList<>();
-        changesetList.add(m);
+            List<MeetingRoomRequest.Changeset> changesetList = new ArrayList<>();
+            changesetList.add(m);
 
-        meetingRoomRequest.setChangesets(changesetList);
+            meetingRoomRequest.setChangesets(changesetList);
 
-        List<Integer> attendeesList = new ArrayList<>();
-
-
-        //Newly Participant Added
-        if (chipList != null) {
-            for (int i = 0; i < chipList.size(); i++) {
-                attendeesList.add(chipList.get(i).getId());
-            }
-
-        } //End
-
-        changes.setAttendees(attendeesList);
-
-        List<MeetingRoomRequest.Changeset.Changes.ExternalAttendees> externalAttendeesList = new ArrayList<>();
-        changes.setExternalAttendees(externalAttendeesList);
-
-        List<MeetingRoomRequest.DeleteIds> deleteIdsList = new ArrayList<>();
-        meetingRoomRequest.setDeletedIds(deleteIdsList);
+            List<Integer> attendeesList = new ArrayList<>();
 
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<BaseResponse> call = apiService.doMeetingRoomBook(meetingRoomRequest);
-        call.enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-
-                chipList.clear();
-
-                if (response.code() == 200) {
-                    page = 1;
+            //Newly Participant Added
+            if (chipList != null) {
+                for (int i = 0; i < chipList.size(); i++) {
+                    attendeesList.add(chipList.get(i).getId());
                 }
 
-                locateResponseHandler(response, getResources().getString(R.string.booking_success));
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+            } //End
+
+            changes.setAttendees(attendeesList);
+
+            List<MeetingRoomRequest.Changeset.Changes.ExternalAttendees> externalAttendeesList = new ArrayList<>();
+            changes.setExternalAttendees(externalAttendeesList);
+
+            List<MeetingRoomRequest.DeleteIds> deleteIdsList = new ArrayList<>();
+            meetingRoomRequest.setDeletedIds(deleteIdsList);
 
 
-            }
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call = apiService.doMeetingRoomBook(meetingRoomRequest);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    chipList.clear();
 
-            }
-        });
+                    if (response.code() == 200) {
+                        page = 1;
+                    }
 
-        }else {
+                    locateResponseHandler(response, getResources().getString(R.string.booking_success));
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+                }
+            });
+
+        } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
 
 
     }
 
-    private void getCarBookingEditList(int id, String code) {
+
+    private void getCarBookingEditList(String selectedCode,String key,int id, String code,int requestTeamId,int requestTeamDeskId,int i) {
 
         if (Utils.isNetworkAvailable(getActivity())) {
 
-        //String startDate="2022-07-25T00:00:00.000Z";
-        //String endDate="2022-07-25T00:00:00.000Z";
+            //String startDate="2022-07-25T00:00:00.000Z";
+            //String endDate="2022-07-25T00:00:00.000Z";
 
-        String startDate = binding.locateCalendearView.getText().toString() + " " + binding.locateStartTime.getText().toString() + ":00.000Z";
-        String endDate = binding.locateCalendearView.getText().toString() + " " + binding.locateEndTime.getText().toString() + ":00.000Z";
+            String startDate = binding.locateCalendearView.getText().toString() + " " + binding.locateStartTime.getText().toString() + ":00.000Z";
+            String endDate = binding.locateCalendearView.getText().toString() + " " + binding.locateEndTime.getText().toString() + ":00.000Z";
 
-        //dialog = ProgressDialog.showProgressBar(getContext());
-        binding.locateProgressBar.setVisibility(View.VISIBLE);
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CarParkingForEditResponse> call = apiService.getCarParkingEditList(startDate, endDate, id);
-        call.enqueue(new Callback<CarParkingForEditResponse>() {
-            @Override
-            public void onResponse(Call<CarParkingForEditResponse> call, Response<CarParkingForEditResponse> response) {
+            //dialog = ProgressDialog.showProgressBar(getContext());
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<CarParkingForEditResponse> call = apiService.getCarParkingEditList(startDate, endDate, id);
+            call.enqueue(new Callback<CarParkingForEditResponse>() {
+                @Override
+                public void onResponse(Call<CarParkingForEditResponse> call, Response<CarParkingForEditResponse> response) {
 
-                CarParkingForEditResponse carParkingForEditResponse = response.body();
+                    CarParkingForEditResponse carParkingForEditResponse = response.body();
 
-                CallCarBookingEditList(carParkingForEditResponse, code);
+                    CallCarBookingEditList(carParkingForEditResponse, code,selectedCode,key,id,requestTeamId,requestTeamDeskId,i);
 
                /* for (int i = 0; i <carParkingForEditResponse.getCarParkBookings().size() ; i++) {
                     System.out.println("CarParkingEditListVeHicleNumber"+carParkingForEditResponse.getCarParkBookings().get(i).getVehicleRegNumber());
 
                 }*/
 
-                // ProgressDialog.dismisProgressBar(getContext(),dialog);
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    // ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
-            }
+                }
 
-            @Override
-            public void onFailure(Call<CarParkingForEditResponse> call, Throwable t) {
-                //ProgressDialog.dismisProgressBar(getContext(),dialog);
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
+                @Override
+                public void onFailure(Call<CarParkingForEditResponse> call, Throwable t) {
+                    //ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
 
-        }else {
+        } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
 
     }
 
-    private void CallCarBookingEditList(CarParkingForEditResponse carParkingForEditResponse, String code) {
+
+    private void CallCarBookingEditList(CarParkingForEditResponse carParkingForEditResponse, String code,String selectedCode,String key,int id,int requestTeamId,int requestTeamDeskId,int i ) {
+
 
         RecyclerView rvCarEditList;
-        TextView editClose, editDate, bookingName;
+        TextView editClose, editDate, bookingName,carAddNew;
         LinearLayoutManager linearLayoutManager;
 
         locateCarEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -2209,7 +2235,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         rvCarEditList = locateCarEditBottomSheet.findViewById(R.id.rvEditList);
         editClose = locateCarEditBottomSheet.findViewById(R.id.editClose);
         editDate = locateCarEditBottomSheet.findViewById(R.id.editDate);
+        carAddNew=locateCarEditBottomSheet.findViewById(R.id.editBookingContinue);
         bookingName = locateCarEditBottomSheet.findViewById(R.id.bookingName);
+
+        //editDate.setVisibility(View.GONE);
+        //editBookingContinue.setVisibility(View.GONE);
 
         //New...
         String sDate = binding.locateCalendearView.getText().toString();
@@ -2224,13 +2254,21 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             editDate.setText(binding.locateCalendearView.getText().toString());
         }
 
+        carAddNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                callDeskBookingnBottomSheet(selectedCode, key, id, code, requestTeamId, requestTeamDeskId, i);
+            }
+        });
+
         bookingName.setText("Car Booking");
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvCarEditList.setLayoutManager(linearLayoutManager);
         rvCarEditList.setHasFixedSize(true);
 
-        CarListToEditAdapter carListToEditAdapter = new CarListToEditAdapter(getContext(), carParkingForEditResponse.getCarParkBookings(), this, code);
+        CarListToEditAdapter carListToEditAdapter = new CarListToEditAdapter(getContext(), carParkingForEditResponse.getCarParkBookings(), this, code,selectedCode);
         rvCarEditList.setAdapter(carListToEditAdapter);
 
         editClose.setOnClickListener(new View.OnClickListener() {
@@ -2244,10 +2282,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
     //DeskBookingEditList
-    private void callBottomSheetToEdit(BookingForEditResponse bookingForEditResponse, String code) {
+    private void callBottomSheetToEdit(BookingForEditResponse bookingForEditResponse, String selctedCode, String key, int id, String code, int requestTeamId, int requestTeamDeskId, int i) {
+
+
 
         RecyclerView rvEditList;
-        TextView editClose, editDate, bookingName;
+        TextView editClose, editDate, bookingName,addNew;
         LinearLayoutManager linearLayoutManager;
 
         locateEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -2256,8 +2296,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         rvEditList = locateEditBottomSheet.findViewById(R.id.rvEditList);
         editClose = locateEditBottomSheet.findViewById(R.id.editClose);
+        addNew=locateEditBottomSheet.findViewById(R.id.editBookingContinue);
         editDate = locateEditBottomSheet.findViewById(R.id.editDate);
         bookingName = locateEditBottomSheet.findViewById(R.id.bookingName);
+
+        //editClose.setVisibility(View.INVISIBLE);
+        //addNew.setVisibility(View.VISIBLE);
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvEditList.setLayoutManager(linearLayoutManager);
@@ -2284,6 +2328,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             bookingName.setText("Desk Booking");
         }
 
+        addNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callDeskBookingnBottomSheet(selctedCode,key,id,code,requestTeamId,requestTeamDeskId,i);
+            }
+        });
 
         editClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2296,37 +2346,40 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
-    private void getBookingListToEdit(String code) {
+    private void getBookingListToEdit(String selctedCode, String key, int id, String code, int requestTeamId, int requestTeamDeskId, int i) {
         if (Utils.isNetworkAvailable(getActivity())) {
-        binding.locateProgressBar.setVisibility(View.VISIBLE);
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-        Call<BookingForEditResponse> call = apiService.getBookingsForEdit(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID),
-                SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID),
-                Utils.getCurrentDate(),
-                Utils.getCurrentDate());
+            Call<BookingForEditResponse> call = apiService.getBookingsForEdit(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID),
+                    SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID),
+                    binding.locateCalendearView.getText().toString(),
+                    binding.locateCalendearView.getText().toString());
 
-        call.enqueue(new Callback<BookingForEditResponse>() {
-            @Override
-            public void onResponse(Call<BookingForEditResponse> call, Response<BookingForEditResponse> response) {
+                    //Utils.getCurrentDate(),
+                    //Utils.getCurrentDate()
 
-                BookingForEditResponse bookingForEditResponse = response.body();
+            call.enqueue(new Callback<BookingForEditResponse>() {
+                @Override
+                public void onResponse(Call<BookingForEditResponse> call, Response<BookingForEditResponse> response) {
 
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    BookingForEditResponse bookingForEditResponse = response.body();
 
-                callBottomSheetToEdit(bookingForEditResponse, code);
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+                    callBottomSheetToEdit(bookingForEditResponse,selctedCode,key,id,code,requestTeamId,requestTeamDeskId,i);
 
 
-            }
+                }
 
-            @Override
-            public void onFailure(Call<BookingForEditResponse> call, Throwable t) {
-                //ProgressDialog.dismisProgressBar(getContext(),dialog);
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
+                @Override
+                public void onFailure(Call<BookingForEditResponse> call, Throwable t) {
+                    //ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
 
-        }else {
+        } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
 
@@ -2338,61 +2391,61 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         if (Utils.isNetworkAvailable(getActivity())) {
 
-        binding.locateProgressBar.setVisibility(View.VISIBLE);
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        //"2022-07-05T00:00:00.000Z"
-        //"2000-01-01T15:50:38.000Z"
-        //"2000-01-01T18:00:00.000Z"
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            //"2022-07-05T00:00:00.000Z"
+            //"2000-01-01T15:50:38.000Z"
+            //"2000-01-01T18:00:00.000Z"
 
 
-        //String toDate=Utils.getCurrentDate()+"T00:00:00Z";
-        //System.out.println("ToDateCheckoing"+toDate);
+            //String toDate=Utils.getCurrentDate()+"T00:00:00Z";
+            //System.out.println("ToDateCheckoing"+toDate);
 
-        //Add min and hour
+            //Add min and hour
        /* String startTime=Utils.addMinuteWithCurrentTime(1,2);
         String fromTime=startTime+".000Z";
         String endTime=Utils.addMinuteWithCurrentTime(2,9);
         String toTime=endTime+".000Z";*/
-        String toDate = binding.locateCalendearView.getText().toString() + "T00:00:00Z";
-        String fromTime = binding.locateCalendearView.getText().toString() + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
-        String toTime = binding.locateCalendearView.getText().toString() + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
+            String toDate = binding.locateCalendearView.getText().toString() + "T00:00:00Z";
+            String fromTime = binding.locateCalendearView.getText().toString() + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
+            String toTime = binding.locateCalendearView.getText().toString() + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
 
-        //System.out.println("DateAndStatTimeAndEndTime"+toDate+" "+fromTime+" "+toTime);
+            //System.out.println("DateAndStatTimeAndEndTime"+toDate+" "+fromTime+" "+toTime);
 
-        int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
-        System.out.println("parent Booking cje" + parentId);
-        //Call<DeskAvaliabilityResponse> call = apiService.getAvaliableDeskDetails(parentId, now, now, now);
-        Call<DeskAvaliabilityResponse> call = apiService.getAvaliableDeskDetails(parentId, toDate, fromTime, toTime);
+            int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+            System.out.println("parent Booking cje" + parentId);
+            //Call<DeskAvaliabilityResponse> call = apiService.getAvaliableDeskDetails(parentId, now, now, now);
+            Call<DeskAvaliabilityResponse> call = apiService.getAvaliableDeskDetails(parentId, toDate, fromTime, toTime);
 
-        call.enqueue(new Callback<DeskAvaliabilityResponse>() {
-            @Override
-            public void onResponse(Call<DeskAvaliabilityResponse> call, Response<DeskAvaliabilityResponse> response) {
+            call.enqueue(new Callback<DeskAvaliabilityResponse>() {
+                @Override
+                public void onResponse(Call<DeskAvaliabilityResponse> call, Response<DeskAvaliabilityResponse> response) {
 
-                DeskAvaliabilityResponse deskAvaliabilityResponseList = response.body();
+                    DeskAvaliabilityResponse deskAvaliabilityResponseList = response.body();
 
-                //Call GetTeams API
-                getTeams();
-
-
-                if (deskAvaliabilityResponseList != null) {
-                    teamDeskAvaliabilityList = deskAvaliabilityResponseList.getTeamDeskAvaliabilityList();
-                }
-
-                //GetTeamDeskIdForBooking
-                if (id > 0) {
-                    for (int i = 0; i < deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size(); i++) {
-
-                        if (id == deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).getDeskId()) {
-                            teamDeskIdForBooking = deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).getTeamDeskId();
-                            //System.out.println("TeamDeskIdForBooking " + teamDeskIdForBooking);
-                        }
+                    //Call GetTeams API
+                    getTeams();
 
 
+                    if (deskAvaliabilityResponseList != null) {
+                        teamDeskAvaliabilityList = deskAvaliabilityResponseList.getTeamDeskAvaliabilityList();
                     }
-                }
+
+                    //GetTeamDeskIdForBooking
+                    if (id > 0) {
+                        for (int i = 0; i < deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size(); i++) {
+
+                            if (id == deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).getDeskId()) {
+                                teamDeskIdForBooking = deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).getTeamDeskId();
+                                //System.out.println("TeamDeskIdForBooking " + teamDeskIdForBooking);
+                            }
 
 
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                        }
+                    }
+
+
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
                 /*List<String> deskCodeList = new ArrayList<>();
                 for (int i = 0; i < desks.size(); i++) {
@@ -2410,19 +2463,19 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 }*/
 
 
-                //ProgressDialog.dismisProgressBar(getContext(), dialog);
+                    //ProgressDialog.dismisProgressBar(getContext(), dialog);
 
 
-            }
+                }
 
-            @Override
-            public void onFailure(Call<DeskAvaliabilityResponse> call, Throwable t) {
+                @Override
+                public void onFailure(Call<DeskAvaliabilityResponse> call, Throwable t) {
 
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
 
-        }else {
+        } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
 
@@ -2456,7 +2509,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 }
             });
 
-        }else {
+        } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
 
@@ -2706,40 +2759,40 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void callCountrysChildData(int parentId) {
         if (Utils.isNetworkAvailable(getActivity())) {
-        binding.locateProgressBar.setVisibility(View.VISIBLE);
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-        Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(parentId);
+            Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(parentId);
 
-        call.enqueue(new Callback<List<LocateCountryRespose>>() {
-            @Override
-            public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
+            call.enqueue(new Callback<List<LocateCountryRespose>>() {
+                @Override
+                public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
 
-                List<LocateCountryRespose> locateCountryResposes = response.body();
+                    List<LocateCountryRespose> locateCountryResposes = response.body();
 
                 /*for (int i = 0; i < locateCountryResposes.size(); i++) {
                     System.out.println("CountrychildName" + locateCountryResposes.get(i).getName());
                 }*/
 
-                rvCountry.setVisibility(View.GONE);
-                statBlock.setVisibility(View.VISIBLE);
-                rvState.setVisibility(View.VISIBLE);
+                    rvCountry.setVisibility(View.GONE);
+                    statBlock.setVisibility(View.VISIBLE);
+                    rvState.setVisibility(View.VISIBLE);
 
-                showCountryChildListInAdapter(locateCountryResposes);
+                    showCountryChildListInAdapter(locateCountryResposes);
 
-                //ProgressDialog.dismisProgressBar(getContext(), dialog);
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    //ProgressDialog.dismisProgressBar(getContext(), dialog);
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
 
-            }
+                }
 
-            @Override
-            public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
-                //ProgressDialog.dismisProgressBar(getContext(), dialog);
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
-        }else {
+                @Override
+                public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
+                    //ProgressDialog.dismisProgressBar(getContext(), dialog);
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
+        } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
     }
@@ -2758,51 +2811,49 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         if (Utils.isNetworkAvailable(getActivity())) {
 
-        binding.locateProgressBar.setVisibility(View.VISIBLE);
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(floorId);
-        call.enqueue(new Callback<List<LocateCountryRespose>>() {
-            @Override
-            public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(floorId);
+            call.enqueue(new Callback<List<LocateCountryRespose>>() {
+                @Override
+                public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
 
-                List<LocateCountryRespose> locateCountryResposes = response.body();
+                    List<LocateCountryRespose> locateCountryResposes = response.body();
 
 
-                if (findCoordinateStatus) {
-                    int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
-                    //ProgressDialog.dismisProgressBar(getContext(), dialog);
-                    for (int i = 0; i < locateCountryResposes.size(); i++) {
+                    if (findCoordinateStatus) {
+                        int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+                        //ProgressDialog.dismisProgressBar(getContext(), dialog);
+                        for (int i = 0; i < locateCountryResposes.size(); i++) {
 
-                        if (parentId == locateCountryResposes.get(i).getLocateCountryId()) {
-                            if (locateCountryResposes.get(i).getSupportZoneLayoutItemsList() != null) {
-                                // ProgressDialog.dismisProgressBar(getContext(), dialog);
-                                getOtherSubZoneLayoutItems(locateCountryResposes.get(i).getSupportZoneLayoutItemsList());
+                            if (parentId == locateCountryResposes.get(i).getLocateCountryId()) {
+                                if (locateCountryResposes.get(i).getSupportZoneLayoutItemsList() != null) {
+                                    // ProgressDialog.dismisProgressBar(getContext(), dialog);
+                                    getOtherSubZoneLayoutItems(locateCountryResposes.get(i).getSupportZoneLayoutItemsList());
+                                }
                             }
+
                         }
+                    } else {
+                        rvStreet.setVisibility(View.VISIBLE);
+                        showFloorListInAdapter(locateCountryResposes);
+
 
                     }
-                } else {
-                    rvStreet.setVisibility(View.VISIBLE);
-                    showFloorListInAdapter(locateCountryResposes);
 
 
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
                 }
 
+                @Override
+                public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
+                    // ProgressDialog.dismisProgressBar(getContext(), dialog);
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
 
-
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-
-            }
-
-            @Override
-            public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
-                // ProgressDialog.dismisProgressBar(getContext(), dialog);
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        }else {
+        } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
 
@@ -2822,38 +2873,36 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     //Final
     private void getDeskRoomCarParkingDetails(int parentId) {
         if (Utils.isNetworkAvailable(getActivity())) {
-        binding.locateProgressBar.setVisibility(View.VISIBLE);
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(parentId);
-        call.enqueue(new Callback<List<LocateCountryRespose>>() {
-            @Override
-            public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(parentId);
+            call.enqueue(new Callback<List<LocateCountryRespose>>() {
+                @Override
+                public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
 
-                List<LocateCountryRespose> locateCountryResposeList = response.body();
+                    List<LocateCountryRespose> locateCountryResposeList = response.body();
 
-                //System.out.println("InsideFloorDetails");
+                    //System.out.println("InsideFloorDetails");
 
                 /*for (int j = 0; j < locateCountryResposeList.size(); j++) {
                     System.out.println("InsideFloorName" + locateCountryResposeList.get(j).getName());
                 }*/
 
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
-                showFloorImageAndNameInAdapter(locateCountryResposeList);
-
-
+                    showFloorImageAndNameInAdapter(locateCountryResposeList);
 
 
-            }
+                }
 
-            @Override
-            public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
-                //ProgressDialog.dismisProgressBar(getContext(), dialog);
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
+                @Override
+                public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
+                    //ProgressDialog.dismisProgressBar(getContext(), dialog);
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
 
-        }else {
+        } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
 
@@ -2875,11 +2924,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     //BookBottomSheet
     private void callDeskBookingnBottomSheet(String selctedCode, String key, int id, String code, int requestTeamId, int requestTeamDeskId, int statusCode) {
 
-        RelativeLayout selectDeskBlock;
+        RelativeLayout selectDeskBlock, bsRepeatBlock;
         TextView selectedLocation, tv_select_desk_room, statusText;
         ImageView ivOnline;
 
-        TextView tvDescription, tvLocateDeskBookLocation, tv_repeat;
+        TextView tvDescription, tvLocateDeskBookLocation;
+
 
         //System.out.println("BookingRequestDetail" + selctedCode + " " + key + " " + id + " " + code);
 
@@ -2890,6 +2940,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         bookingStartBlock = locateCheckInBottomSheet.findViewById(R.id.bookingStartBlock);
         bookingEndBlock = locateCheckInBottomSheet.findViewById(R.id.bookingEndBlock);
         selectDeskBlock = locateCheckInBottomSheet.findViewById(R.id.selectDeskBlock);
+        bsRepeatBlock = locateCheckInBottomSheet.findViewById(R.id.bsRepeatBlock);
 
         ivOnline = locateCheckInBottomSheet.findViewById(R.id.ivOnline);
         statusText = locateCheckInBottomSheet.findViewById(R.id.statusText);
@@ -2915,7 +2966,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         tvLocateDeskBookLocation = locateCheckInBottomSheet.findViewById(R.id.tvLocateDeskBookLocation);
         tvDescription = locateCheckInBottomSheet.findViewById(R.id.tvDescription);
-        tv_repeat = locateCheckInBottomSheet.findViewById(R.id.tv_repeat);
+        tvRepeat = locateCheckInBottomSheet.findViewById(R.id.tvRepeat);
 
         //new...
         locateCheckInDate.setText(binding.locateCalendearView.getText());
@@ -2924,10 +2975,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         locateCheckoutTime.setText(binding.locateEndTime.getText().toString());
 
 
-        tv_repeat.setOnClickListener(new View.OnClickListener() {
+        bsRepeatBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                repeateBottomSheet();
+                //repeateBottomSheet();
+
+                repeatBottomSheetDialog(code);
+
             }
         });
 
@@ -3057,17 +3111,37 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     if (code.equals("3")) {
 
                         if (requestTeamId > 0 && requestTeamDeskId > 0) {
-                            //Request Desk Booking
-                            requestDeskBooking(requestTeamId, requestTeamDeskId);
+
+                            if(!repeatActvieStatus) {
+                                //Request Desk Booking
+                                System.out.println("NormalRequestBooking");
+                                requestDeskBooking(requestTeamId, requestTeamDeskId);
+                            }else if(repeatActvieStatus){
+                                System.out.println("RepeatRequestBooking");
+                                doRepeatRequestDeskBooking(requestTeamId, requestTeamDeskId);
+                            }
 
                         } else {
-                            //Desk Booking
-                            deskBooking();
+                            if(!repeatActvieStatus) {
+                                //Desk Booking
+                                deskBooking();
+                                System.out.println("NormalDeskBookingActiviatedHere");
+                            }else if(repeatActvieStatus){
+                                System.out.println("RepeatDeskBookingActiviatedHere");
+                                doRepeatBookingForAWeek();
+                            }
                         }
 
                     } else if (code.equals("5")) {
-                        //Car Booking and Car Request Booking
-                        carParkingRequest();
+
+                        if(!repeatActvieStatus) {
+                            //CarBooking and CarRequestBooking
+                            System.out.println("NormalCarBookingActiviatedHere");
+                            carParkingRequest();
+                        }else if(repeatActvieStatus) {
+                            System.out.println("RepeatCarBookingActiviatedHere");
+                            doRepeatCarBookingForAWeek();
+                        }
                     }
 
                 }
@@ -3085,6 +3159,848 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         locateCheckInBottomSheet.show();
+    }
+
+
+    private void repeatBottomSheetDialog(String code) {
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_repeat_new,
+                new RelativeLayout(getContext()))));
+
+        ConstraintLayout cl_daily_layout = bottomSheetDialog.findViewById(R.id.cl_daily_layout);
+        ConstraintLayout cl_weekly_layout = bottomSheetDialog.findViewById(R.id.cl_weekly_layout);
+        //None Block
+        ConstraintLayout cl_none = bottomSheetDialog.findViewById(R.id.cl_none);
+        //Daily Block
+        ConstraintLayout cl_daily = bottomSheetDialog.findViewById(R.id.cl_daily);
+        ConstraintLayout cl_weekly = bottomSheetDialog.findViewById(R.id.cl_weekly);
+        ConstraintLayout cl_monthly = bottomSheetDialog.findViewById(R.id.cl_monthly);
+        ConstraintLayout cl_yearly = bottomSheetDialog.findViewById(R.id.cl_yearly);
+        ImageView iv_none = bottomSheetDialog.findViewById(R.id.iv_none);
+        ImageView iv_daily = bottomSheetDialog.findViewById(R.id.iv_daily);
+        ImageView iv_weekly = bottomSheetDialog.findViewById(R.id.iv_weekly);
+        ImageView iv_monthly = bottomSheetDialog.findViewById(R.id.iv_monthly);
+        ImageView iv_yearly = bottomSheetDialog.findViewById(R.id.iv_yearly);
+        TextView editBookingBack = bottomSheetDialog.findViewById(R.id.editBookingBack);
+        TextView editBookingContinue = bottomSheetDialog.findViewById(R.id.editBookingContinue);
+        TextView tv_repeat = bottomSheetDialog.findViewById(R.id.tv_repeat);
+
+        TextView tv_interval = bottomSheetDialog.findViewById(R.id.tv_interval);
+        TextView tv_until = bottomSheetDialog.findViewById(R.id.tv_until);
+        TextView tv_interval_weekly = bottomSheetDialog.findViewById(R.id.tv_interval_weekly);
+        TextView tv_day = bottomSheetDialog.findViewById(R.id.tv_day);
+        TextView tv_unit = bottomSheetDialog.findViewById(R.id.tv_unit);
+
+
+
+        //None Block Clicked
+        cl_none.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                repeatActvieStatus=false;
+                tvRepeat.setText("None");
+
+                type = "none";
+                iv_none.setVisibility(View.VISIBLE);
+                iv_daily.setVisibility(View.GONE);
+                iv_weekly.setVisibility(View.GONE);
+                iv_monthly.setVisibility(View.GONE);
+                iv_yearly.setVisibility(View.GONE);
+                cl_daily_layout.setVisibility(View.GONE);
+                cl_weekly_layout.setVisibility(View.GONE);
+                tv_repeat.setVisibility(View.GONE);
+            }
+        });
+
+        //Daily Block Clicked
+        cl_daily.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                tvRepeat.setText("Daily");
+
+                type = "daily";
+                iv_none.setVisibility(View.GONE);
+                iv_daily.setVisibility(View.VISIBLE);
+                iv_weekly.setVisibility(View.GONE);
+                iv_monthly.setVisibility(View.GONE);
+                iv_yearly.setVisibility(View.GONE);
+                //Get Current Week End Date
+                Date date=Utils.getCurrentWeekEndDate();
+                //Set Figma format
+                tv_until.setText(Utils.getDateFormatToSetInRepeat(date)+"(end of Week)");
+
+                cl_daily_layout.setVisibility(View.VISIBLE);
+                tv_repeat.setVisibility(View.VISIBLE);
+                cl_weekly_layout.setVisibility(View.GONE);
+            }
+        });
+
+        //Until Block Clicked
+        tv_until.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openUntil(code);
+            }
+        });
+
+
+        editBookingBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        tv_day.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openWeeks();
+            }
+        });
+
+
+
+        tv_unit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //openUntil();
+            }
+        });
+
+
+        tv_interval.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(requireContext(),"onclick==="+type,Toast.LENGTH_LONG).show();
+                //openIntervalsDialog(type);
+            }
+        });
+
+        tv_interval_weekly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(requireContext(),"onclick==="+type,Toast.LENGTH_LONG).show();
+                openIntervalsDialog(type);
+            }
+        });
+
+
+
+        cl_weekly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                type = "weekly";
+                iv_none.setVisibility(View.GONE);
+                iv_daily.setVisibility(View.GONE);
+                iv_weekly.setVisibility(View.VISIBLE);
+                iv_monthly.setVisibility(View.GONE);
+                iv_yearly.setVisibility(View.GONE);
+                cl_daily_layout.setVisibility(View.GONE);
+                cl_weekly_layout.setVisibility(View.VISIBLE);
+                tv_repeat.setVisibility(View.VISIBLE);
+            }
+        });
+        cl_monthly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                type = "monthly";
+                iv_none.setVisibility(View.GONE);
+                iv_daily.setVisibility(View.GONE);
+                iv_weekly.setVisibility(View.GONE);
+                iv_monthly.setVisibility(View.VISIBLE);
+                iv_yearly.setVisibility(View.GONE);
+                cl_daily_layout.setVisibility(View.GONE);
+                cl_weekly_layout.setVisibility(View.VISIBLE);
+                tv_repeat.setVisibility(View.VISIBLE);
+            }
+        });
+
+        cl_yearly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                type = "yearly";
+                iv_none.setVisibility(View.GONE);
+                iv_daily.setVisibility(View.GONE);
+                iv_weekly.setVisibility(View.GONE);
+                iv_monthly.setVisibility(View.GONE);
+                iv_yearly.setVisibility(View.VISIBLE);
+                cl_daily_layout.setVisibility(View.VISIBLE);
+                tv_repeat.setVisibility(View.VISIBLE);
+                cl_weekly_layout.setVisibility(View.GONE);
+            }
+        });
+
+
+        bottomSheetDialog.show();
+
+
+    }
+
+    private void openIntervalsDialog(String type) {
+
+        Toast.makeText(requireContext(), "openIntervalsDialog===" + type, Toast.LENGTH_LONG).show();
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_interval,
+                new RelativeLayout(getContext()))));
+
+        ConstraintLayout cl_1 = bottomSheetDialog.findViewById(R.id.cl_1);
+        TextView tv_1 = bottomSheetDialog.findViewById(R.id.tv_1);
+        ImageView iv_1 = bottomSheetDialog.findViewById(R.id.iv_1);
+        ConstraintLayout cl_2 = bottomSheetDialog.findViewById(R.id.cl_2);
+        TextView tv_2 = bottomSheetDialog.findViewById(R.id.tv_2);
+        ImageView iv_2 = bottomSheetDialog.findViewById(R.id.iv_2);
+        ConstraintLayout cl_3 = bottomSheetDialog.findViewById(R.id.cl_3);
+        TextView tv_3 = bottomSheetDialog.findViewById(R.id.tv_3);
+        ImageView iv_3 = bottomSheetDialog.findViewById(R.id.iv_3);
+        ConstraintLayout cl_4 = bottomSheetDialog.findViewById(R.id.cl_4);
+        TextView tv_4 = bottomSheetDialog.findViewById(R.id.tv_4);
+        ImageView iv_4 = bottomSheetDialog.findViewById(R.id.iv_4);
+        ConstraintLayout cl_5 = bottomSheetDialog.findViewById(R.id.cl_5);
+        TextView tv_5 = bottomSheetDialog.findViewById(R.id.tv_5);
+        ImageView iv_5 = bottomSheetDialog.findViewById(R.id.iv_5);
+        ConstraintLayout cl_6 = bottomSheetDialog.findViewById(R.id.cl_6);
+        TextView tv_6 = bottomSheetDialog.findViewById(R.id.tv_6);
+        ImageView iv_6 = bottomSheetDialog.findViewById(R.id.iv_6);
+        ConstraintLayout cl_7 = bottomSheetDialog.findViewById(R.id.cl_7);
+        TextView tv_7 = bottomSheetDialog.findViewById(R.id.tv_7);
+        ImageView iv_7 = bottomSheetDialog.findViewById(R.id.iv_7);
+        ConstraintLayout cl_8 = bottomSheetDialog.findViewById(R.id.cl_8);
+        TextView tv_8 = bottomSheetDialog.findViewById(R.id.tv_8);
+        ImageView iv_8 = bottomSheetDialog.findViewById(R.id.iv_8);
+        ConstraintLayout cl_9 = bottomSheetDialog.findViewById(R.id.cl_9);
+        TextView tv_9 = bottomSheetDialog.findViewById(R.id.tv_9);
+        ImageView iv_9 = bottomSheetDialog.findViewById(R.id.iv_9);
+        ConstraintLayout cl_10 = bottomSheetDialog.findViewById(R.id.cl_10);
+        TextView tv_10 = bottomSheetDialog.findViewById(R.id.tv_10);
+        ImageView iv_10 = bottomSheetDialog.findViewById(R.id.iv_10);
+
+        cl_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iv_1.setVisibility(View.VISIBLE);
+                iv_2.setVisibility(View.GONE);
+                iv_3.setVisibility(View.GONE);
+                iv_4.setVisibility(View.GONE);
+                iv_5.setVisibility(View.GONE);
+                iv_6.setVisibility(View.GONE);
+                iv_7.setVisibility(View.GONE);
+                iv_8.setVisibility(View.GONE);
+                iv_9.setVisibility(View.GONE);
+                iv_10.setVisibility(View.GONE);
+
+            }
+        });
+
+        cl_2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iv_1.setVisibility(View.GONE);
+                iv_2.setVisibility(View.VISIBLE);
+                iv_3.setVisibility(View.GONE);
+                iv_4.setVisibility(View.GONE);
+                iv_5.setVisibility(View.GONE);
+                iv_6.setVisibility(View.GONE);
+                iv_7.setVisibility(View.GONE);
+                iv_8.setVisibility(View.GONE);
+                iv_9.setVisibility(View.GONE);
+                iv_10.setVisibility(View.GONE);
+
+            }
+        });
+
+        cl_3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iv_1.setVisibility(View.GONE);
+                iv_2.setVisibility(View.GONE);
+                iv_3.setVisibility(View.VISIBLE);
+                iv_4.setVisibility(View.GONE);
+                iv_5.setVisibility(View.GONE);
+                iv_6.setVisibility(View.GONE);
+                iv_7.setVisibility(View.GONE);
+                iv_8.setVisibility(View.GONE);
+                iv_9.setVisibility(View.GONE);
+                iv_10.setVisibility(View.GONE);
+
+            }
+        });
+
+        cl_4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iv_1.setVisibility(View.GONE);
+                iv_2.setVisibility(View.GONE);
+                iv_3.setVisibility(View.GONE);
+                iv_4.setVisibility(View.VISIBLE);
+                iv_5.setVisibility(View.GONE);
+                iv_6.setVisibility(View.GONE);
+                iv_7.setVisibility(View.GONE);
+                iv_8.setVisibility(View.GONE);
+                iv_9.setVisibility(View.GONE);
+                iv_10.setVisibility(View.GONE);
+
+            }
+        });
+
+        cl_5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iv_1.setVisibility(View.GONE);
+                iv_2.setVisibility(View.GONE);
+                iv_3.setVisibility(View.GONE);
+                iv_4.setVisibility(View.GONE);
+                iv_5.setVisibility(View.VISIBLE);
+                iv_6.setVisibility(View.GONE);
+                iv_7.setVisibility(View.GONE);
+                iv_8.setVisibility(View.GONE);
+                iv_9.setVisibility(View.GONE);
+                iv_10.setVisibility(View.GONE);
+
+            }
+        });
+
+        cl_6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iv_1.setVisibility(View.GONE);
+                iv_2.setVisibility(View.GONE);
+                iv_3.setVisibility(View.GONE);
+                iv_4.setVisibility(View.GONE);
+                iv_5.setVisibility(View.GONE);
+                iv_6.setVisibility(View.VISIBLE);
+                iv_7.setVisibility(View.GONE);
+                iv_8.setVisibility(View.GONE);
+                iv_9.setVisibility(View.GONE);
+                iv_10.setVisibility(View.GONE);
+
+            }
+        });
+
+        cl_7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iv_1.setVisibility(View.GONE);
+                iv_2.setVisibility(View.GONE);
+                iv_3.setVisibility(View.GONE);
+                iv_4.setVisibility(View.GONE);
+                iv_5.setVisibility(View.GONE);
+                iv_6.setVisibility(View.GONE);
+                iv_7.setVisibility(View.VISIBLE);
+                iv_8.setVisibility(View.GONE);
+                iv_9.setVisibility(View.GONE);
+                iv_10.setVisibility(View.GONE);
+
+            }
+        });
+
+        cl_8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iv_1.setVisibility(View.GONE);
+                iv_2.setVisibility(View.GONE);
+                iv_3.setVisibility(View.GONE);
+                iv_4.setVisibility(View.GONE);
+                iv_5.setVisibility(View.GONE);
+                iv_6.setVisibility(View.GONE);
+                iv_7.setVisibility(View.GONE);
+                iv_8.setVisibility(View.VISIBLE);
+                iv_9.setVisibility(View.GONE);
+                iv_10.setVisibility(View.GONE);
+
+            }
+        });
+
+        cl_9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iv_1.setVisibility(View.GONE);
+                iv_2.setVisibility(View.GONE);
+                iv_3.setVisibility(View.GONE);
+                iv_4.setVisibility(View.GONE);
+                iv_5.setVisibility(View.GONE);
+                iv_6.setVisibility(View.GONE);
+                iv_7.setVisibility(View.GONE);
+                iv_8.setVisibility(View.GONE);
+                iv_9.setVisibility(View.VISIBLE);
+                iv_10.setVisibility(View.GONE);
+
+            }
+        });
+
+        cl_10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iv_1.setVisibility(View.GONE);
+                iv_2.setVisibility(View.GONE);
+                iv_3.setVisibility(View.GONE);
+                iv_4.setVisibility(View.GONE);
+                iv_5.setVisibility(View.GONE);
+                iv_6.setVisibility(View.GONE);
+                iv_7.setVisibility(View.GONE);
+                iv_8.setVisibility(View.GONE);
+                iv_9.setVisibility(View.GONE);
+                iv_10.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+        if (type.equalsIgnoreCase("daily")) {
+
+            tv_1.setText("1 day");
+            tv_2.setText("2 day");
+            tv_3.setText("3 day");
+            tv_4.setText("4 day");
+            tv_5.setText("5 day");
+            tv_6.setText("6 day");
+            tv_7.setText("7 day");
+            tv_8.setText("8 day");
+            tv_9.setText("9 day");
+            tv_10.setText("10 day");
+
+
+        } else if (type.equalsIgnoreCase("weekly")) {
+            tv_1.setText("1 week");
+            tv_2.setText("2 week");
+            tv_3.setText("3 week");
+            tv_4.setText("4 week");
+            tv_5.setText("5 week");
+            tv_6.setText("6 week");
+            tv_7.setText("7 week");
+            tv_8.setText("8 week");
+            tv_9.setText("9 week");
+            tv_10.setText("10 week");
+
+        } else if (type.equalsIgnoreCase("monthly")) {
+            tv_1.setText("1 month");
+            tv_2.setText("2 month");
+            tv_3.setText("3 month");
+            tv_4.setText("4 month");
+            tv_5.setText("5 month");
+            tv_6.setText("6 month");
+            tv_7.setText("7 month");
+            tv_8.setText("8 month");
+            tv_9.setText("9 month");
+            tv_10.setText("10 month");
+
+        } else {
+            tv_1.setText("1 year");
+            tv_2.setText("2 year");
+            tv_3.setText("3 year");
+            tv_4.setText("4 year");
+            tv_5.setText("5 year");
+            tv_6.setText("6 year");
+            tv_7.setText("7 year");
+            tv_8.setText("8 year");
+            tv_9.setText("9 year");
+            tv_10.setText("10 year");
+        }
+        bottomSheetDialog.show();
+    }
+
+    private void openWeeks() {
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_week,
+                new RelativeLayout(getContext()))));
+        bottomSheetDialog.show();
+    }
+
+    private void openUntil(String code) {
+
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_until,
+                new RelativeLayout(getContext()))));
+
+        ConstraintLayout cl_forever = bottomSheetDialog.findViewById(R.id.cl_forever);
+        ConstraintLayout cl_specific = bottomSheetDialog.findViewById(R.id.cl_specific);
+        ImageView iv_forever = bottomSheetDialog.findViewById(R.id.iv_forever);
+        ImageView iv_specific = bottomSheetDialog.findViewById(R.id.iv_specific);
+        android.widget.CalendarView calendar_view = bottomSheetDialog.findViewById(R.id.calendar_view);
+        TextView tv_forever=bottomSheetDialog.findViewById(R.id.tv_forever);
+        TextView editBookingBack = bottomSheetDialog.findViewById(R.id.tv_specific);
+        TextView editBookingContinue = bottomSheetDialog.findViewById(R.id.tv_specific);
+        TextView repeatBookContinue=bottomSheetDialog.findViewById(R.id.editBookingContinue);
+
+        calendar_view.setVisibility(View.GONE);
+
+
+        //Get Current Week End Date
+        Date date=Utils.getCurrentWeekEndDate();
+        //Set Figma format
+        tv_forever.setText(Utils.getDateFormatToSetInRepeat(date)+"(end of Week)");
+
+
+        System.out.println("LocateDateHere "+binding.locateCalendearView.getText().toString()+" "+binding.locateStartTime.getText().toString()+" "+ binding.locateEndTime.getText().toString());
+        //2022-09-14 15:46 23:59
+
+        //Get Date Difference Between current date and weekend date
+        String selectedDate=binding.locateCalendearView.getText().toString();
+        enableCurrentWeek=Utils.getDifferenceBetweenTwoDates(selectedDate);
+
+        System.out.println("enableCurrentWeek "+enableCurrentWeek);
+
+        calendar_view.setMinDate(System.currentTimeMillis() - 1000);
+        calendar_view.setMaxDate(System.currentTimeMillis() + enableCurrentWeek * 24 * 60 * 60 * 1000);
+
+        //end of week book
+        cl_forever.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                iv_forever.setVisibility(View.VISIBLE);
+                iv_specific.setVisibility(View.GONE);
+                calendar_view.setVisibility(View.GONE);
+
+                repeatActvieStatus=true;
+
+                if(code.equals("3")){
+
+                    //DeskBookForWholeWeekFromToday
+                    //doRepeatBookingForAWeek();
+                }else if(code.equals("4")){
+                    //Meeting Room Booking For Whole Week From Today
+                    doRepeatMeetingRoomBookingForWeek();
+                }else if(code.equals("5")){
+                    //CarBooking For Whole Week From Today
+                    //doRepeatCarBookingForAWeek();
+                }
+            }
+        });
+
+        //specific date clicked
+        cl_specific.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+
+                iv_forever.setVisibility(View.GONE);
+                iv_specific.setVisibility(View.VISIBLE);
+                calendar_view.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+
+        //Calendar View
+        calendar_view.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+
+                repeatActvieStatus=true;
+
+                //Coming WeekendDate
+                LocalDate weekEndDate = LocalDate.of( year, month+1, dayOfMonth);
+
+                //Selected Date
+                String[] words=selectedDate.split("-");
+                int selectedYear=Integer.parseInt(words[0]);
+                int selectedMonth=Integer.parseInt(words[1]);
+                int selectedDay=Integer.parseInt(words[2]);
+                LocalDate currentSelectedDate = LocalDate.of( selectedYear, selectedMonth, selectedDay);
+
+                //Find Difference between 2 date
+                Period difference = Period.between(currentSelectedDate,weekEndDate);
+                enableCurrentWeek=difference.getDays();
+
+
+                if(code.equals("3")){
+                    //BookForSelectedDaysInAWeek
+                    //doRepeatBookingForAWeek();
+                }else if(code.equals("4")){
+
+                }else if(code.equals("5")){
+                    //BookCarForSelectedDaysInAWeek
+                    //doRepeatCarBookingForAWeek();
+                }
+
+
+
+            }
+        });
+
+
+        bottomSheetDialog.show();
+    }
+
+    private void doRepeatMeetingRoomBookingForWeek() {
+
+        String selectedDate=binding.locateCalendearView.getText().toString();
+        List<String> dateList=Utils.getCurrentWeekDateList(selectedDate,enableCurrentWeek);
+
+        MeetingRoomRequest meetingRoomRequest = new MeetingRoomRequest();
+        meetingRoomRequest.setMeetingRoomId(meetingRoomId);
+        meetingRoomRequest.setMsTeams(false);
+        meetingRoomRequest.setHandleRecurring(false);
+        meetingRoomRequest.setOnlineMeeting(false);
+
+        List<MeetingRoomRequest.Changeset> changesetList = new ArrayList<>();
+
+        for (int i = 0; i <dateList.size() ; i++) {
+
+            MeetingRoomRequest.Changeset m = meetingRoomRequest.new Changeset();
+            m.setId(0);
+            m.setDate(dateList.get(i) + "T" + "00:00:00.000" + "Z");
+
+            MeetingRoomRequest.Changeset.Changes changes = m.new Changes();
+            changes.setFrom(getCurrentDate() + "" + "T" + startRoomTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            changes.setMyto(getCurrentDate() + "" + "T" + endTRoomime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            changes.setComments("Comment");
+            changes.setSubject("subject");
+            boolean isRequest=false;
+            changes.setRequest(isRequest);
+
+            m.setChanges(changes);
+
+            changesetList.add(m);
+
+            List<Integer> attendeesList = new ArrayList<>();
+
+
+            //Newly Participant Added
+            if (chipList != null) {
+                for (int j = 0; j < chipList.size(); i++) {
+                    attendeesList.add(chipList.get(j).getId());
+                }
+
+            } //End
+
+            changes.setAttendees(attendeesList);
+
+            List<MeetingRoomRequest.Changeset.Changes.ExternalAttendees> externalAttendeesList = new ArrayList<>();
+            changes.setExternalAttendees(externalAttendeesList);
+
+        }
+
+        meetingRoomRequest.setChangesets(changesetList);
+
+        List<MeetingRoomRequest.DeleteIds> deleteIdsList = new ArrayList<>();
+        meetingRoomRequest.setDeletedIds(deleteIdsList);
+
+
+        System.out.println("RepeatMeetingRoom "+meetingRoomRequest);
+
+        if (Utils.isNetworkAvailable(getActivity())) {
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call=apiService.doRepeatMeetingRoomBooking(meetingRoomRequest);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                    binding.locateProgressBar.setVisibility(View.GONE);
+                    locateResponseHandler(response,getResources().getString(R.string.booking_success));
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    binding.locateProgressBar.setVisibility(View.GONE);
+                }
+            });
+
+        }else {
+            Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
+        }
+
+
+    }
+
+
+    private void doRepeatRequestDeskBooking(int requestTeamId, int requestTeamDeskId) {
+
+        String selectedDate=binding.locateCalendearView.getText().toString();
+        List<String> dateList=Utils.getCurrentWeekDateList(selectedDate,enableCurrentWeek);
+
+        LocateDeskBookingRequest locateDeskBookingRequest = new LocateDeskBookingRequest();
+        locateDeskBookingRequest.setTeamId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID));
+        locateDeskBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID));
+
+        List<LocateDeskBookingRequest.ChangeSets> changeSetsList = new ArrayList<>();
+
+        for (int i = 0; i <dateList.size() ; i++) {
+
+            LocateDeskBookingRequest.ChangeSets changeSets = locateDeskBookingRequest.new ChangeSets();
+
+            changeSets.setChangeSetId(0);
+            changeSets.setChangeSetDate(dateList.get(i) + "T" + "00:00:00.000" + "Z");
+
+            LocateDeskBookingRequest.ChangeSets.Changes changes = changeSets.new Changes();
+            changes.setUsageTypeId(7);
+
+            changes.setFrom(getCurrentDate() + "" + "T" + locateCheckInTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            changes.setTo(getCurrentDate() + "" + "T" + locateCheckoutTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            changes.setTimeZoneId("India Standard Time");
+            changes.setTeamDeskId(null);
+            changes.setRequestedTeamId(requestTeamId);
+            changes.setRequestedTeamDeskId(requestTeamDeskId);
+            changes.setTypeOfCheckIn(1);
+
+            changeSets.setChanges(changes);
+
+            changeSetsList.add(changeSets);
+
+        }
+
+        locateDeskBookingRequest.setChangeSets(changeSetsList);
+
+        List<LocateDeskBookingRequest.DeleteIds> deleteIdsList = new ArrayList<>();
+        locateDeskBookingRequest.setDeletedIds(deleteIdsList);
+
+        if (Utils.isNetworkAvailable(getActivity())) {
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call=apiService.doRepeatRequestDeskBooking(locateDeskBookingRequest);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                    binding.locateProgressBar.setVisibility(View.GONE);
+                    locateResponseHandler(response,getResources().getString(R.string.booking_success));
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    binding.locateProgressBar.setVisibility(View.GONE);
+                }
+            });
+
+        }else {
+            Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
+        }
+
+
+
+
+
+    }
+
+
+
+    private void doRepeatCarBookingForAWeek() {
+        String selectedDate=binding.locateCalendearView.getText().toString();
+        List<String> dateList=Utils.getCurrentWeekDateList(selectedDate,enableCurrentWeek);
+
+        LocateCarParkBookingRequest locateCarParkBookingRequest = new LocateCarParkBookingRequest();
+        locateCarParkBookingRequest.setParkingSlotId(selectedCarParkingSlotId);
+
+        List<LocateCarParkBookingRequest.CarParkingChangeSets> carParkingChangeSetsList = new ArrayList<>();
+
+        for (int i = 0; i <dateList.size() ; i++) {
+
+            LocateCarParkBookingRequest.CarParkingChangeSets carParkingChangeSets = locateCarParkBookingRequest.new CarParkingChangeSets();
+            carParkingChangeSets.setId(0);
+            carParkingChangeSets.setDate(dateList.get(i) + "T" + "00:00:00.000" + "Z");
+
+            LocateCarParkBookingRequest.CarParkingChangeSets.CarParkingChanges carParkingChanges = carParkingChangeSets.new CarParkingChanges();
+            carParkingChanges.setFrom(getCurrentDate() + "" + "T" + locateCheckInTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            carParkingChanges.setTo(getCurrentDate() + "" + "T" + locateCheckoutTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            carParkingChanges.setComments(etComment.getText().toString());
+            carParkingChanges.setBookedForUser(SessionHandler.getInstance().getInt(getContext(), AppConstants.USER_ID));
+            carParkingChanges.setVehicleRegNumber(etVehicleReg.getText().toString());
+
+            carParkingChangeSets.setCarParkingChanges(carParkingChanges);
+
+            carParkingChangeSetsList.add(carParkingChangeSets);
+
+
+        }
+
+        locateCarParkBookingRequest.setCarParkingChangeSetsList(carParkingChangeSetsList);
+        List<LocateCarParkBookingRequest.CarParkingDeleteIds> deleteIdsList = new ArrayList<>();
+        locateCarParkBookingRequest.setDeleteIdsList(deleteIdsList);
+
+        System.out.println("RepeatModuleCarRequestData "+locateCarParkBookingRequest);
+
+        if (Utils.isNetworkAvailable(getActivity())) {
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call=apiService.doRepeatCarParkBooking(locateCarParkBookingRequest);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                    binding.locateProgressBar.setVisibility(View.GONE);
+                    locateResponseHandler(response,getResources().getString(R.string.booking_success));
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    binding.locateProgressBar.setVisibility(View.GONE);
+                }
+            });
+
+        }else {
+            Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
+        }
+
+
+    }
+
+    private void doRepeatBookingForAWeek() {
+
+        String selectedDate=binding.locateCalendearView.getText().toString();
+        System.out.println("Seelcteddate "+selectedDate+" "+enableCurrentWeek);
+        List<String> dateList=Utils.getCurrentWeekDateList(selectedDate,enableCurrentWeek);
+
+        LocateBookingRequest locateBookingRequest = new LocateBookingRequest();
+        locateBookingRequest.setTeamId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID));
+        locateBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID));
+
+        List<LocateBookingRequest.ChangeSets> changeSetsList= new ArrayList<>();
+
+
+        for (int i = 0; i <dateList.size() ; i++) {
+            //System.out.println("AddedDateList "+dateList.get(i));
+
+            LocateBookingRequest.ChangeSets changeSets = locateBookingRequest.new ChangeSets();
+
+            changeSets.setChangeSetId(0);
+            //changeSets.setChangeSetDate("2022-07-14T00:00:00.000Z");
+            changeSets.setChangeSetDate(dateList.get(i) + "T" + "00:00:00.000" + "Z");
+
+            LocateBookingRequest.ChangeSets.Changes changes = changeSets.new Changes();
+            changes.setUsageTypeId(2);
+
+            changes.setFrom(getCurrentDate() + "" + "T" + locateCheckInTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            changes.setTo(getCurrentDate() + "" + "T" + locateCheckoutTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            changes.setTimeZoneId("India Standard Time");
+            changes.setTeamDeskId(teamDeskIdForBooking);
+            changes.setTypeOfCheckIn(1);
+
+            changeSets.setChanges(changes);
+
+            changeSetsList.add(changeSets);
+
+
+        }
+        locateBookingRequest.setChangeSetsList(changeSetsList);
+        List<LocateBookingRequest.DeleteIds> deleteIdsList = new ArrayList<>();
+        locateBookingRequest.setDeleteIdsList(deleteIdsList);
+
+        System.out.println("RepeatModuleRequestData "+locateBookingRequest);
+
+        if (Utils.isNetworkAvailable(getActivity())) {
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call=apiService.doRepeatBookingForWeek(locateBookingRequest);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                    binding.locateProgressBar.setVisibility(View.GONE);
+                    locateResponseHandler(response,getResources().getString(R.string.booking_success));
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    binding.locateProgressBar.setVisibility(View.GONE);
+                }
+            });
+
+        }else {
+            Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
+        }
+
     }
 
     private void callBottomSheetToSelectDesk(List<SelectCode> code) {
@@ -3122,61 +4038,61 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     private void requestDeskBooking(int requestTeamId, int requestTeamDeskId) {
 
         if (Utils.isNetworkAvailable(getActivity())) {
-        binding.locateProgressBar.setVisibility(View.VISIBLE);
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
 
-        LocateDeskBookingRequest locateDeskBookingRequest = new LocateDeskBookingRequest();
-        locateDeskBookingRequest.setTeamId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID));
-        locateDeskBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID));
+            LocateDeskBookingRequest locateDeskBookingRequest = new LocateDeskBookingRequest();
+            locateDeskBookingRequest.setTeamId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID));
+            locateDeskBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID));
 
-        LocateDeskBookingRequest.ChangeSets changeSets = locateDeskBookingRequest.new ChangeSets();
-        changeSets.setChangeSetId(0);
+            LocateDeskBookingRequest.ChangeSets changeSets = locateDeskBookingRequest.new ChangeSets();
+            changeSets.setChangeSetId(0);
 
-        changeSets.setChangeSetDate(locateCheckInDate.getText().toString() + "T" + "00:00:00.000" + "Z");
+            changeSets.setChangeSetDate(locateCheckInDate.getText().toString() + "T" + "00:00:00.000" + "Z");
 
-        LocateDeskBookingRequest.ChangeSets.Changes changes = changeSets.new Changes();
-        changes.setUsageTypeId(7);
+            LocateDeskBookingRequest.ChangeSets.Changes changes = changeSets.new Changes();
+            changes.setUsageTypeId(7);
 
-        changes.setFrom(getCurrentDate() + "" + "T" + locateCheckInTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
-        changes.setTo(getCurrentDate() + "" + "T" + locateCheckoutTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
-        changes.setTimeZoneId("India Standard Time");
-        changes.setTeamDeskId(null);
-        changes.setRequestedTeamId(requestTeamId);
-        changes.setRequestedTeamDeskId(requestTeamDeskId);
-        changes.setTypeOfCheckIn(1);
+            changes.setFrom(getCurrentDate() + "" + "T" + locateCheckInTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            changes.setTo(getCurrentDate() + "" + "T" + locateCheckoutTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            changes.setTimeZoneId("India Standard Time");
+            changes.setTeamDeskId(null);
+            changes.setRequestedTeamId(requestTeamId);
+            changes.setRequestedTeamDeskId(requestTeamDeskId);
+            changes.setTypeOfCheckIn(1);
 
-        changeSets.setChanges(changes);
+            changeSets.setChanges(changes);
 
-        List<LocateDeskBookingRequest.ChangeSets> changeSetsList = new ArrayList<>();
-        changeSetsList.add(changeSets);
+            List<LocateDeskBookingRequest.ChangeSets> changeSetsList = new ArrayList<>();
+            changeSetsList.add(changeSets);
 
-        locateDeskBookingRequest.setChangeSets(changeSetsList);
+            locateDeskBookingRequest.setChangeSets(changeSetsList);
 
-        List<LocateDeskBookingRequest.DeleteIds> deleteIdsList = new ArrayList<>();
-        //deleteIdsList.add(deleteIds);
+            List<LocateDeskBookingRequest.DeleteIds> deleteIdsList = new ArrayList<>();
+            //deleteIdsList.add(deleteIds);
 
-        locateDeskBookingRequest.setDeletedIds(deleteIdsList);
+            locateDeskBookingRequest.setDeletedIds(deleteIdsList);
 
-        //System.out.println("BookingRequestObject" + locateDeskBookingRequest);
+            //System.out.println("BookingRequestObject" + locateDeskBookingRequest);
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<BaseResponse> call = apiService.doRequestDeskBooking(locateDeskBookingRequest);
-        call.enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call = apiService.doRequestDeskBooking(locateDeskBookingRequest);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
-                locateResponseHandler(response, getResources().getString(R.string.booking_request));
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    locateResponseHandler(response, getResources().getString(R.string.booking_request));
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
 
-            }
+                }
 
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
 
-        }else {
+        } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
 
@@ -3263,68 +4179,68 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     private void deskBooking() {
 
         if (Utils.isNetworkAvailable(getActivity())) {
-        binding.locateProgressBar.setVisibility(View.VISIBLE);
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
 
-        //System.out.println("DeskBookingRequested");
+            //System.out.println("DeskBookingRequested");
 
-        LocateBookingRequest locateBookingRequest = new LocateBookingRequest();
-        locateBookingRequest.setTeamId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID));
-        locateBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID));
+            LocateBookingRequest locateBookingRequest = new LocateBookingRequest();
+            locateBookingRequest.setTeamId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID));
+            locateBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID));
 
-        //locateBookingRequest.setTeamId(9);
-        //locateBookingRequest.setTeamMembershipId(12);
+            //locateBookingRequest.setTeamId(9);
+            //locateBookingRequest.setTeamMembershipId(12);
 
-        LocateBookingRequest.ChangeSets changeSets = locateBookingRequest.new ChangeSets();
-        changeSets.setChangeSetId(0);
-        //changeSets.setChangeSetDate("2022-07-14T00:00:00.000Z");
-        changeSets.setChangeSetDate
-                (locateCheckInDate.getText().toString() + "T" + "00:00:00.000" + "Z");
+            LocateBookingRequest.ChangeSets changeSets = locateBookingRequest.new ChangeSets();
+            changeSets.setChangeSetId(0);
+            //changeSets.setChangeSetDate("2022-07-14T00:00:00.000Z");
+            changeSets.setChangeSetDate
+                    (locateCheckInDate.getText().toString() + "T" + "00:00:00.000" + "Z");
 
-        LocateBookingRequest.ChangeSets.Changes changes = changeSets.new Changes();
-        changes.setUsageTypeId(2);
-        //changes.setFrom("2022-07-21T20:15:00.000Z");
-        //changes.setTo("2022-07-21T21:30:00.000Z");
+            LocateBookingRequest.ChangeSets.Changes changes = changeSets.new Changes();
+            changes.setUsageTypeId(2);
+            //changes.setFrom("2022-07-21T20:15:00.000Z");
+            //changes.setTo("2022-07-21T21:30:00.000Z");
 
-        changes.setFrom(getCurrentDate() + "" + "T" + locateCheckInTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
-        changes.setTo(getCurrentDate() + "" + "T" + locateCheckoutTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
-        changes.setTimeZoneId("India Standard Time");
-        changes.setTeamDeskId(teamDeskIdForBooking);
-        changes.setTypeOfCheckIn(1);
+            changes.setFrom(getCurrentDate() + "" + "T" + locateCheckInTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            changes.setTo(getCurrentDate() + "" + "T" + locateCheckoutTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            changes.setTimeZoneId("India Standard Time");
+            changes.setTeamDeskId(teamDeskIdForBooking);
+            changes.setTypeOfCheckIn(1);
 
-        changeSets.setChanges(changes);
+            changeSets.setChanges(changes);
 
-        List<LocateBookingRequest.ChangeSets> changeSetsList = new ArrayList<>();
-        changeSetsList.add(changeSets);
+            List<LocateBookingRequest.ChangeSets> changeSetsList = new ArrayList<>();
+            changeSetsList.add(changeSets);
 
-        locateBookingRequest.setChangeSetsList(changeSetsList);
+            locateBookingRequest.setChangeSetsList(changeSetsList);
 
-        LocateBookingRequest.DeleteIds deleteIds = locateBookingRequest.new DeleteIds();
-        List<LocateBookingRequest.DeleteIds> deleteIdsList = new ArrayList<>();
-        //deleteIdsList.add(deleteIds);
+            LocateBookingRequest.DeleteIds deleteIds = locateBookingRequest.new DeleteIds();
+            List<LocateBookingRequest.DeleteIds> deleteIdsList = new ArrayList<>();
+            //deleteIdsList.add(deleteIds);
 
-        locateBookingRequest.setDeleteIdsList(deleteIdsList);
+            locateBookingRequest.setDeleteIdsList(deleteIdsList);
 
-        //System.out.println("BookingRequestObject" + locateBookingRequest);
+            //System.out.println("BookingRequestObject" + locateBookingRequest);
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<BaseResponse> call = apiService.doDeskBooking(locateBookingRequest);
-        call.enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call = apiService.doDeskBooking(locateBookingRequest);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
-                locateResponseHandler(response, getResources().getString(R.string.booking_success));
+                    locateResponseHandler(response, getResources().getString(R.string.booking_success));
 
-            }
+                }
 
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
 
-        }else {
+        } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
 
@@ -3333,12 +4249,27 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void locateResponseHandler(Response<BaseResponse> response, String string) {
 
+        String resultString = "";
+
         if (response.code() == 200) {
             if (response.body().getResultCode() != null && response.body().getResultCode().equalsIgnoreCase("ok")) {
                 openCheckoutDialog(string);
                 callInitView();
             } else {
-                Utils.showCustomAlertDialog(getActivity(), "Booking Not Updated " + response.body().getResultCode().toString());
+
+                if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
+                    resultString = "Invalid booking start time";
+                } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
+                    resultString = "Invalid booking end time";
+                } else if (response.body().getResultCode().toString().equals("INVALID_TIMEZONE_ID")) {
+                    resultString = "Invalid timezone";
+                } else if (response.body().getResultCode().toString().equals("INVALID_TIMEPERIOD")) {
+                    resultString = "Invalid timeperiod";
+                }else if(response.body().getResultCode().toString().equals("USER_TIME_OVERLAP")){
+                    resultString = "Time overlaps with another booking";
+                }
+                //Utils.showCustomAlertDialog(getActivity(), "Booking Not Updated " + resultString);
+                Utils.showCustomAlertDialog(getActivity(), resultString);
             }
         } else if (response.code() == 500) {
             Utils.showCustomAlertDialog(getActivity(), "500 Response");
@@ -3355,55 +4286,55 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         if (Utils.isNetworkAvailable(getActivity())) {
 
-        binding.locateProgressBar.setVisibility(View.VISIBLE);
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
 
-        LocateCarParkBookingRequest locateCarParkBookingRequest = new LocateCarParkBookingRequest();
-        locateCarParkBookingRequest.setParkingSlotId(selectedCarParkingSlotId);
+            LocateCarParkBookingRequest locateCarParkBookingRequest = new LocateCarParkBookingRequest();
+            locateCarParkBookingRequest.setParkingSlotId(selectedCarParkingSlotId);
 
-        LocateCarParkBookingRequest.CarParkingChangeSets carParkingChangeSets = locateCarParkBookingRequest.new CarParkingChangeSets();
-        carParkingChangeSets.setId(0);
-        carParkingChangeSets.setDate(locateCheckInDate.getText().toString() + "T" + "00:00:00.000" + "Z");
+            LocateCarParkBookingRequest.CarParkingChangeSets carParkingChangeSets = locateCarParkBookingRequest.new CarParkingChangeSets();
+            carParkingChangeSets.setId(0);
+            carParkingChangeSets.setDate(locateCheckInDate.getText().toString() + "T" + "00:00:00.000" + "Z");
 
-        LocateCarParkBookingRequest.CarParkingChangeSets.CarParkingChanges carParkingChanges = carParkingChangeSets.new CarParkingChanges();
-        carParkingChanges.setFrom(getCurrentDate() + "" + "T" + locateCheckInTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
-        carParkingChanges.setTo(getCurrentDate() + "" + "T" + locateCheckoutTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
-        carParkingChanges.setComments(etComment.getText().toString());
-        carParkingChanges.setBookedForUser(SessionHandler.getInstance().getInt(getContext(), AppConstants.USER_ID));
-        carParkingChanges.setVehicleRegNumber(etVehicleReg.getText().toString());
+            LocateCarParkBookingRequest.CarParkingChangeSets.CarParkingChanges carParkingChanges = carParkingChangeSets.new CarParkingChanges();
+            carParkingChanges.setFrom(getCurrentDate() + "" + "T" + locateCheckInTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            carParkingChanges.setTo(getCurrentDate() + "" + "T" + locateCheckoutTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            carParkingChanges.setComments(etComment.getText().toString());
+            carParkingChanges.setBookedForUser(SessionHandler.getInstance().getInt(getContext(), AppConstants.USER_ID));
+            carParkingChanges.setVehicleRegNumber(etVehicleReg.getText().toString());
 
-        carParkingChangeSets.setCarParkingChanges(carParkingChanges);
+            carParkingChangeSets.setCarParkingChanges(carParkingChanges);
 
-        List<LocateCarParkBookingRequest.CarParkingChangeSets> carParkingChangeSetsList = new ArrayList<>();
-        carParkingChangeSetsList.add(carParkingChangeSets);
+            List<LocateCarParkBookingRequest.CarParkingChangeSets> carParkingChangeSetsList = new ArrayList<>();
+            carParkingChangeSetsList.add(carParkingChangeSets);
 
-        locateCarParkBookingRequest.setCarParkingChangeSetsList(carParkingChangeSetsList);
+            locateCarParkBookingRequest.setCarParkingChangeSetsList(carParkingChangeSetsList);
 
-        LocateCarParkBookingRequest.CarParkingDeleteIds carParkingDeleteIds = locateCarParkBookingRequest.new CarParkingDeleteIds();
-        List<LocateCarParkBookingRequest.CarParkingDeleteIds> deleteIdsList = new ArrayList<>();
-        //deleteIdsList.add(carParkingDeleteIds);
+            LocateCarParkBookingRequest.CarParkingDeleteIds carParkingDeleteIds = locateCarParkBookingRequest.new CarParkingDeleteIds();
+            List<LocateCarParkBookingRequest.CarParkingDeleteIds> deleteIdsList = new ArrayList<>();
+            //deleteIdsList.add(carParkingDeleteIds);
 
-        locateCarParkBookingRequest.setDeleteIdsList(deleteIdsList);
+            locateCarParkBookingRequest.setDeleteIdsList(deleteIdsList);
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<BaseResponse> call = apiService.doCarParkingBooking(locateCarParkBookingRequest);
-        call.enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call = apiService.doCarParkingBooking(locateCarParkBookingRequest);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
-                locateResponseHandler(response, getResources().getString(R.string.booking_success));
+                    locateResponseHandler(response, getResources().getString(R.string.booking_success));
 
-            }
+                }
 
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
 
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
 
-        }else {
+        } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
 
@@ -3548,43 +4479,43 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     public void ondeskDeleteClick(BookingForEditResponse.Bookings bookings, String code, List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities) {
 
         if (Utils.isNetworkAvailable(getActivity())) {
-        binding.locateProgressBar.setVisibility(View.VISIBLE);
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
 
-        //System.out.println("DeleteIdPrint"+bookings.getId()+" "+bookings.getDeskId()+" "+bookings.getTeamDeskId()+" "+bookings.getDeskCode()+" "+ bookings.getTeamMembershipId()+" "+bookings.getRequestedTeamId());
+            //System.out.println("DeleteIdPrint"+bookings.getId()+" "+bookings.getDeskId()+" "+bookings.getTeamDeskId()+" "+bookings.getDeskCode()+" "+ bookings.getTeamMembershipId()+" "+bookings.getRequestedTeamId());
 
-        LocateDeskDeleteRequest locateDeskDeleteRequest = new LocateDeskDeleteRequest();
-        locateDeskDeleteRequest.setTeamId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID));
-        locateDeskDeleteRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID));
-        List<LocateDeskDeleteRequest.ChangeSets> changeSetsList = new ArrayList<>();
-        locateDeskDeleteRequest.setChangesetsList(changeSetsList);
+            LocateDeskDeleteRequest locateDeskDeleteRequest = new LocateDeskDeleteRequest();
+            locateDeskDeleteRequest.setTeamId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID));
+            locateDeskDeleteRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID));
+            List<LocateDeskDeleteRequest.ChangeSets> changeSetsList = new ArrayList<>();
+            locateDeskDeleteRequest.setChangesetsList(changeSetsList);
 
-        List<Integer> integerList = new ArrayList<>();
-        integerList.add(bookings.getId());
+            List<Integer> integerList = new ArrayList<>();
+            integerList.add(bookings.getId());
 
-        locateDeskDeleteRequest.setDeleteIdsList(integerList);
+            locateDeskDeleteRequest.setDeleteIdsList(integerList);
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<BaseResponse> call = apiService.doDeleteDeskBooking(locateDeskDeleteRequest);
-        call.enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call = apiService.doDeleteDeskBooking(locateDeskDeleteRequest);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
-                locateResponseHandler(response, getResources().getString(R.string.desk_book_deleted));
+                    locateResponseHandler(response, getResources().getString(R.string.desk_book_deleted));
 
-                locateEditBottomSheet.dismiss();
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    locateEditBottomSheet.dismiss();
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
 
-            }
+                }
 
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-                locateEditBottomSheet.dismiss();
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    locateEditBottomSheet.dismiss();
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
 
-        }else {
+        } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
 
@@ -3594,67 +4525,67 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     private void doEditDeskBooking(BookingForEditResponse.Bookings bookings, String startTime, String endTime) {
 
         if (Utils.isNetworkAvailable(getActivity())) {
-        binding.locateProgressBar.setVisibility(View.VISIBLE);
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
 
-        LocateBookingRequest locateBookingRequest = new LocateBookingRequest();
-        locateBookingRequest.setTeamId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID));
-        locateBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID));
+            LocateBookingRequest locateBookingRequest = new LocateBookingRequest();
+            locateBookingRequest.setTeamId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID));
+            locateBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID));
 
-        LocateBookingRequest.ChangeSets changeSets = locateBookingRequest.new ChangeSets();
-        changeSets.setChangeSetId(bookings.getId());
+            LocateBookingRequest.ChangeSets changeSets = locateBookingRequest.new ChangeSets();
+            changeSets.setChangeSetId(bookings.getId());
 
-        //changeSets.setChangeSetDate(startTim+ "T" + "00:00:00.000" + "Z");
-        changeSets.setChangeSetDate(Utils.splitDate(bookings.getDate()) + "T" + "00:00:00.000" + "Z");
+            //changeSets.setChangeSetDate(startTim+ "T" + "00:00:00.000" + "Z");
+            changeSets.setChangeSetDate(Utils.splitDate(bookings.getDate()) + "T" + "00:00:00.000" + "Z");
 
-        LocateBookingRequest.ChangeSets.Changes changes = changeSets.new Changes();
-        changes.setUsageTypeId(2);
+            LocateBookingRequest.ChangeSets.Changes changes = changeSets.new Changes();
+            changes.setUsageTypeId(2);
 
-        changes.setFrom(getCurrentDate() + "" + "T" + startTime + ":" + "00" + "." + "000" + "Z");
-        changes.setTo(getCurrentDate() + "" + "T" + endTime + ":" + "00" + "." + "000" + "Z");
-        changes.setTimeZoneId("India Standard Time");
-        if (selectedDeskId > 0) {
-            changes.setTeamDeskId(selectedDeskId);
+            changes.setFrom(getCurrentDate() + "" + "T" + startTime + ":" + "00" + "." + "000" + "Z");
+            changes.setTo(getCurrentDate() + "" + "T" + endTime + ":" + "00" + "." + "000" + "Z");
+            changes.setTimeZoneId("India Standard Time");
+            if (selectedDeskId > 0) {
+                changes.setTeamDeskId(selectedDeskId);
+            } else {
+                changes.setTeamDeskId(bookings.teamDeskId);
+            }
+
+            changes.setTypeOfCheckIn(1);
+
+            changeSets.setChanges(changes);
+
+            List<LocateBookingRequest.ChangeSets> changeSetsList = new ArrayList<>();
+            changeSetsList.add(changeSets);
+            locateBookingRequest.setChangeSetsList(changeSetsList);
+
+            LocateBookingRequest.DeleteIds deleteIds = locateBookingRequest.new DeleteIds();
+            List<LocateBookingRequest.DeleteIds> deleteIdsList = new ArrayList<>();
+            //deleteIdsList.add(deleteIds);
+
+            locateBookingRequest.setDeleteIdsList(deleteIdsList);
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call = apiService.doDeskBooking(locateBookingRequest);
+
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                    locateResponseHandler(response, getResources().getString(R.string.booking_success));
+
+                    locateEditBottomSheet.dismiss();
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+                    locateEditBottomSheet.dismiss();
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
+
         } else {
-            changes.setTeamDeskId(bookings.teamDeskId);
-        }
-
-        changes.setTypeOfCheckIn(1);
-
-        changeSets.setChanges(changes);
-
-        List<LocateBookingRequest.ChangeSets> changeSetsList = new ArrayList<>();
-        changeSetsList.add(changeSets);
-        locateBookingRequest.setChangeSetsList(changeSetsList);
-
-        LocateBookingRequest.DeleteIds deleteIds = locateBookingRequest.new DeleteIds();
-        List<LocateBookingRequest.DeleteIds> deleteIdsList = new ArrayList<>();
-        //deleteIdsList.add(deleteIds);
-
-        locateBookingRequest.setDeleteIdsList(deleteIdsList);
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<BaseResponse> call = apiService.doDeskBooking(locateBookingRequest);
-
-        call.enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-
-                locateResponseHandler(response, getResources().getString(R.string.booking_success));
-
-                locateEditBottomSheet.dismiss();
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-
-            }
-
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-
-                locateEditBottomSheet.dismiss();
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        }else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
 
@@ -3861,60 +4792,60 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     private void doEditCarParkBooking(CarParkingForEditResponse.CarParkBooking carParkBooking, String startTime, String endTime) {
 
         if (Utils.isNetworkAvailable(getActivity())) {
-        binding.locateProgressBar.setVisibility(View.VISIBLE);
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
 
-        //From Calender
-        //String startDate="2022-07-25T11:00:00.000Z";
-        String startDate = binding.locateCalendearView.getText().toString() + " " + binding.locateStartTime.getText().toString() + ":00.000Z";
-        //String endDate=binding.locateCalendearView.getText().toString()+" "+binding.locateEndTime.getText().toString()+":00";
-
-
-        LocateCarParkEditRequest locateCarParkEditRequest = new LocateCarParkEditRequest();
-        locateCarParkEditRequest.setParkingSlotId(carParkBooking.getParkingSlotId());
-
-        List<LocateCarParkEditRequest.CarParkingChangeSets> carParkingChangeSetsList = new ArrayList<>();
-
-        LocateCarParkEditRequest.CarParkingChangeSets carParkingChangeSets = locateCarParkEditRequest.new CarParkingChangeSets();
-        carParkingChangeSets.setId(carParkBooking.getId());
-        carParkingChangeSets.setDate(startDate);
-
-        LocateCarParkEditRequest.CarParkingChangeSets.CarParkingChanges carParkingChanges = carParkingChangeSets.new CarParkingChanges();
-        carParkingChanges.setVehicleRegNumber(carParkBooking.getVehicleRegNumber());
-        carParkingChanges.setFrom("2000-01-01T" + startTime + ":00.000Z");
-        carParkingChanges.setTo("2000-01-01T" + endTime + ":00.000Z");
-        carParkingChangeSets.setCarParkingChanges(carParkingChanges);
-
-        carParkingChangeSetsList.add(carParkingChangeSets);
-
-        locateCarParkEditRequest.setCarParkingChangeSetsList(carParkingChangeSetsList);
-
-        LocateCarParkEditRequest.CarParkingDeleteIds carParkingDeleteIds = locateCarParkEditRequest.new CarParkingDeleteIds();
-        List<LocateCarParkEditRequest.CarParkingDeleteIds> deleteIdsList = new ArrayList<>();
-        //deleteIdsList.add(carParkingDeleteIds);
-
-        locateCarParkEditRequest.setDeleteIdsList(deleteIdsList);
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<BaseResponse> call = apiService.doCarParkingEdit(locateCarParkEditRequest);
-        call.enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                locateCarEditBottomSheet.dismiss();
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-
-                locateResponseHandler(response, getResources().getString(R.string.booking_success));
+            //From Calender
+            //String startDate="2022-07-25T11:00:00.000Z";
+            String startDate = binding.locateCalendearView.getText().toString() + " " + binding.locateStartTime.getText().toString() + ":00.000Z";
+            //String endDate=binding.locateCalendearView.getText().toString()+" "+binding.locateEndTime.getText().toString()+":00";
 
 
-            }
+            LocateCarParkEditRequest locateCarParkEditRequest = new LocateCarParkEditRequest();
+            locateCarParkEditRequest.setParkingSlotId(carParkBooking.getParkingSlotId());
 
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-                locateCarEditBottomSheet.dismiss();
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
+            List<LocateCarParkEditRequest.CarParkingChangeSets> carParkingChangeSetsList = new ArrayList<>();
 
-        }else {
+            LocateCarParkEditRequest.CarParkingChangeSets carParkingChangeSets = locateCarParkEditRequest.new CarParkingChangeSets();
+            carParkingChangeSets.setId(carParkBooking.getId());
+            carParkingChangeSets.setDate(startDate);
+
+            LocateCarParkEditRequest.CarParkingChangeSets.CarParkingChanges carParkingChanges = carParkingChangeSets.new CarParkingChanges();
+            carParkingChanges.setVehicleRegNumber(carParkBooking.getVehicleRegNumber());
+            carParkingChanges.setFrom("2000-01-01T" + startTime + ":00.000Z");
+            carParkingChanges.setTo("2000-01-01T" + endTime + ":00.000Z");
+            carParkingChangeSets.setCarParkingChanges(carParkingChanges);
+
+            carParkingChangeSetsList.add(carParkingChangeSets);
+
+            locateCarParkEditRequest.setCarParkingChangeSetsList(carParkingChangeSetsList);
+
+            LocateCarParkEditRequest.CarParkingDeleteIds carParkingDeleteIds = locateCarParkEditRequest.new CarParkingDeleteIds();
+            List<LocateCarParkEditRequest.CarParkingDeleteIds> deleteIdsList = new ArrayList<>();
+            //deleteIdsList.add(carParkingDeleteIds);
+
+            locateCarParkEditRequest.setDeleteIdsList(deleteIdsList);
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call = apiService.doCarParkingEdit(locateCarParkEditRequest);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                    locateCarEditBottomSheet.dismiss();
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+                    locateResponseHandler(response, getResources().getString(R.string.booking_success));
+
+
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    locateCarEditBottomSheet.dismiss();
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
+
+        } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
 
@@ -4060,6 +4991,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         Calendar c = Calendar.getInstance();
         calendarView.setMinDate(c.getTimeInMillis() - 1000);
+
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -4498,38 +5430,38 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     public void onMeetingDeleteClick(MeetingListToEditResponse meetingListToEditResponse) {
 
         if (Utils.isNetworkAvailable(getActivity())) {
-        binding.locateProgressBar.setVisibility(View.VISIBLE);
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
 
-        DeleteMeetingRoomRequest deleteMeetingRoomRequest = new DeleteMeetingRoomRequest();
-        List<DeleteMeetingRoomRequest.DelChangesets> delChangesetsList = new ArrayList<>();
-
-
-        List<Integer> integerList = new ArrayList<>();
-        integerList.add(meetingListToEditResponse.getId());
-        deleteMeetingRoomRequest.setDeletedIdsList(integerList);
-        deleteMeetingRoomRequest.setChangesetsList(delChangesetsList);
+            DeleteMeetingRoomRequest deleteMeetingRoomRequest = new DeleteMeetingRoomRequest();
+            List<DeleteMeetingRoomRequest.DelChangesets> delChangesetsList = new ArrayList<>();
 
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<BaseResponse> call = apiService.doDeleteMeetingRoom(deleteMeetingRoomRequest);
-        call.enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+            List<Integer> integerList = new ArrayList<>();
+            integerList.add(meetingListToEditResponse.getId());
+            deleteMeetingRoomRequest.setDeletedIdsList(integerList);
+            deleteMeetingRoomRequest.setChangesetsList(delChangesetsList);
 
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                locateMeetEditBottomSheet.dismiss();
 
-                locateResponseHandler(response, getResources().getString(R.string.deleted));
-            }
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call = apiService.doDeleteMeetingRoom(deleteMeetingRoomRequest);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-                locateMeetEditBottomSheet.dismiss();
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    locateMeetEditBottomSheet.dismiss();
 
-        }else {
+                    locateResponseHandler(response, getResources().getString(R.string.deleted));
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    locateMeetEditBottomSheet.dismiss();
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
+
+        } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
 
@@ -4539,78 +5471,78 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     private void doEditMeetingRoomBooking(MeetingListToEditResponse meetingListToEditResponse, String startTime, String endTime, String subject, String comment, BottomSheetDialog bottomSheetDialog) {
 
         if (Utils.isNetworkAvailable(getActivity())) {
-        binding.locateProgressBar.setVisibility(View.VISIBLE);
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
 
-        MeetingRoomEditRequest meetingRoomEditRequest = new MeetingRoomEditRequest();
-        meetingRoomEditRequest.setMeetingRoomId(meetingListToEditResponse.getMeetingRoomId());
-        meetingRoomEditRequest.setMsTeams(false);
-        meetingRoomEditRequest.setHandleRecurring(false);
-        meetingRoomEditRequest.setOnlineMeeting(false);
+            MeetingRoomEditRequest meetingRoomEditRequest = new MeetingRoomEditRequest();
+            meetingRoomEditRequest.setMeetingRoomId(meetingListToEditResponse.getMeetingRoomId());
+            meetingRoomEditRequest.setMsTeams(false);
+            meetingRoomEditRequest.setHandleRecurring(false);
+            meetingRoomEditRequest.setOnlineMeeting(false);
 
-        MeetingRoomEditRequest.Changesets changesets = meetingRoomEditRequest.new Changesets();
+            MeetingRoomEditRequest.Changesets changesets = meetingRoomEditRequest.new Changesets();
 
-        changesets.setDate(binding.locateCalendearView.getText().toString() + "T" + "00:00:00.000" + "Z");
-        changesets.setId(meetingListToEditResponse.getId());
-
-
-        MeetingRoomEditRequest.Changesets.Changes changes = changesets.new Changes();
-
-        List<Integer> attendeesList = new ArrayList<>();
-
-        if (chipList != null) {
-            MeetingRoomEditRequest.Changesets.Changes.Attendees attendees = changes.new Attendees();
-            for (int i = 0; i < chipList.size(); i++) {
-                attendeesList.add(chipList.get(i).getId());
-            }
+            changesets.setDate(binding.locateCalendearView.getText().toString() + "T" + "00:00:00.000" + "Z");
+            changesets.setId(meetingListToEditResponse.getId());
 
 
-        }
-        changes.setAttendeesList(attendeesList);
+            MeetingRoomEditRequest.Changesets.Changes changes = changesets.new Changes();
 
-        changes.setFrom(getCurrentDate() + "" + "T" + startTime + ":" + "00" + "." + "000" + "Z");
-        changes.setSubject(subject);
-        changes.setRequest(false);
-        changes.setTo(getCurrentDate() + "" + "T" + endTime + ":" + "00" + "." + "000" + "Z");
+            List<Integer> attendeesList = new ArrayList<>();
 
-        changesets.setChanges(changes);
+            if (chipList != null) {
+                MeetingRoomEditRequest.Changesets.Changes.Attendees attendees = changes.new Attendees();
+                for (int i = 0; i < chipList.size(); i++) {
+                    attendeesList.add(chipList.get(i).getId());
+                }
 
-        List<MeetingRoomEditRequest.Changesets> changesetList = new ArrayList<>();
-        changesetList.add(changesets);
-
-        meetingRoomEditRequest.setChangesetsList(changesetList);
-
-        List<MeetingRoomEditRequest.Changesets.Changes.ExternalAttendees> externalAttendeesList = new ArrayList<>();
-        changes.setExternalAttendeesList(externalAttendeesList);
-
-
-        List<MeetingRoomEditRequest.DeleteIds> deleteIdsList = new ArrayList<>();
-        meetingRoomEditRequest.setDeletedIds(deleteIdsList);
-
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<BaseResponse> call = apiService.doRoomEdit(meetingRoomEditRequest);
-
-        call.enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-
-                chipList.clear();
-                bottomSheetDialog.dismiss();
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                locateMeetEditBottomSheet.dismiss();
-
-                locateResponseHandler(response, getResources().getString(R.string.booking_success));
 
             }
+            changes.setAttendeesList(attendeesList);
 
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-                locateMeetEditBottomSheet.dismiss();
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
+            changes.setFrom(getCurrentDate() + "" + "T" + startTime + ":" + "00" + "." + "000" + "Z");
+            changes.setSubject(subject);
+            changes.setRequest(false);
+            changes.setTo(getCurrentDate() + "" + "T" + endTime + ":" + "00" + "." + "000" + "Z");
 
-        }else {
+            changesets.setChanges(changes);
+
+            List<MeetingRoomEditRequest.Changesets> changesetList = new ArrayList<>();
+            changesetList.add(changesets);
+
+            meetingRoomEditRequest.setChangesetsList(changesetList);
+
+            List<MeetingRoomEditRequest.Changesets.Changes.ExternalAttendees> externalAttendeesList = new ArrayList<>();
+            changes.setExternalAttendeesList(externalAttendeesList);
+
+
+            List<MeetingRoomEditRequest.DeleteIds> deleteIdsList = new ArrayList<>();
+            meetingRoomEditRequest.setDeletedIds(deleteIdsList);
+
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call = apiService.doRoomEdit(meetingRoomEditRequest);
+
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                    chipList.clear();
+                    bottomSheetDialog.dismiss();
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    locateMeetEditBottomSheet.dismiss();
+
+                    locateResponseHandler(response, getResources().getString(R.string.booking_success));
+
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    locateMeetEditBottomSheet.dismiss();
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
+
+        } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
 

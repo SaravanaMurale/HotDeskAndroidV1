@@ -67,7 +67,9 @@
                         android:buttonTint="@color/figmaBlue"
                         android:src="@drawable/ic_blue_select"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:visibility="gone"
+                        />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -125,7 +127,9 @@
                 android:id="@+id/calendar_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_35sdp"/>
+                android:layout_marginTop="@dimen/_35sdp"
+
+                />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -143,7 +147,9 @@
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="Back"
                     android:textSize="@dimen/_14sdp"
-                    android:theme="@style/TextBold" />
+                    android:theme="@style/TextBold"
+                    android:visibility="gone"
+                    />
 
                 <TextView
                     android:id="@+id/editBookingContinue"
@@ -155,7 +161,9 @@
                     android:text="Continue"
                     android:textColor="@color/figmaBlue"
                     android:textSize="@dimen/_14sdp"
-                    android:theme="@style/TextBold" />
+                    android:theme="@style/TextBold"
+                    android:visibility="gone"
+                    />
             </RelativeLayout>
 
 

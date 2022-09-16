@@ -78,8 +78,7 @@
                 android:textColor="@color/figmaBlue"
                 android:textSize="@dimen/_14sdp"
                 android:theme="@style/TextBold"
-                android:visibility="visible"
-                />
+                android:visibility="visible" />
         </RelativeLayout>
 
 </RelativeLayout>
