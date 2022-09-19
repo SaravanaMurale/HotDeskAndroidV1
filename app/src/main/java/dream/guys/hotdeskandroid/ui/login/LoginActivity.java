@@ -164,7 +164,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String companyName = etCompanyName.getText().toString();
+                String companyName = etCompanyName.getText().toString().trim();
                 String email = etEmail.getText().toString().trim();
                 String password = etPassword.getText().toString().trim();
 
@@ -454,10 +454,10 @@ public class LoginActivity extends AppCompatActivity {
                             ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
                             Utils.toastMessage(LoginActivity.this, "No Token Found");
                         }
-                    }else if(response.code()==401){
+                    } else if(response.code()==401) {
                         ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
-                        Utils.toastMessage(LoginActivity.this, "Wrong userName or password");
-                    }else if(response.code()==403){
+                        Utils.toastMessage(LoginActivity.this, "Token Expired");
+                    } else if(response.code()==403) {
                         Intent intent = new Intent(getApplicationContext(),GDPRActivity.class);
                         intent.putExtra("tenantName",companyName);
                         intent.putExtra("userName",email);

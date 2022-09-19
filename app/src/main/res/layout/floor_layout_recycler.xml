@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Text inflate"
+        android:theme="@style/TextBold"
+        android:textSize="@dimen/_16sdp"
+        android:gravity="center"
+        android:layout_marginVertical="@dimen/_15sdp"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/tv_exapnd"
+        >
+
+        <TextView
+            android:id="@+id/tvFloorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:text="30th Floor"
+            android:textColor="@color/figmaBlack"
+            android:textSize="@dimen/_14sdp"
+            android:theme="@style/TextRegular"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/ivLocation"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/location"
+            android:theme="@style/TextRegular"
+            android:visibility="visible"
+            app:tint="@color/blue" />
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/recyclerView"
+        android:layout_marginTop="@dimen/_8sdp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+    <TextView
+        android:id="@+id/tvAvailableCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/tv_exapnd"
+        android:text="14/15 desk available"
+        android:visibility="visible"
+        android:textColor="@color/figmaBlack"
+        android:textSize="@dimen/_11sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:theme="@style/TextRegular" />
+</LinearLayout>

@@ -6,300 +6,315 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.teams.TeamsFragment"
     android:orientation="vertical">
-
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="@dimen/_12sdp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:text="My Team"
-                android:textColor="@color/figmaBlack"
-                android:textSize="@dimen/_18sdp"
-                android:theme="@style/TextBold"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:text="dgguys"
-                android:textColor="@color/figmaBlack"
-                android:textSize="@dimen/_12sdp"
-                android:theme="@style/TextRegular"
-                android:layout_below="@+id/title"/>
-
-            <TextView
-                android:id="@+id/txt_allteam"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:text="All Team"
-                android:textColor="@color/figmaBlue"
-                android:textSize="@dimen/_11sdp"
-                android:theme="@style/TextBold" />
-
-        </RelativeLayout>
-
-        <devs.mulham.horizontalcalendar.HorizontalCalendarView
-            android:id="@+id/calendarView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:textColorNormal="@color/figmaBlack"
-            app:textColorSelected="@color/white"
-            android:layout_marginTop="@dimen/_8sdp"/>
-
+        android:layout_height="wrap_content"
+        >
         <LinearLayout
-            android:id="@+id/search_block"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_35sdp"
-            android:orientation="vertical"
-            android:visibility="visible"
-            android:background="@drawable/rectangle_greybg_with_corner"
-            android:layout_marginTop="@dimen/_8sdp">
-
-            <!--Notification,Search-->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_35sdp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                >
-
-                <ImageView
-                    android:layout_width="@dimen/_18sdp"
-                    android:layout_height="@dimen/_20sdp"
-                    android:src="@drawable/search_1px"
-                    android:id="@+id/search_ic"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/_5sdp"/>
-
-                <EditText
-                    android:id="@+id/serach_bar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@id/close"
-                    android:layout_toRightOf="@+id/search_ic"
-                    android:backgroundTint="@color/white"
-                    android:hint="Search"
-                    android:inputType="text" />
-
-                <ImageView
-                    android:id="@+id/close"
-                    android:layout_width="@dimen/_18sdp"
-                    android:layout_height="@dimen/_18sdp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:src="@drawable/close_circle" />
-            </RelativeLayout>
-
-
-
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/search_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingHorizontal="@dimen/_10sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@drawable/bg_transparent_round"
-            android:fillViewport="true"
-            android:visibility="gone"
+            android:orientation="vertical"
+            android:layout_margin="@dimen/_12sdp">
 
-            />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="My Team"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="@dimen/_18sdp"
+                    android:theme="@style/TextBold"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="dgguys"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="@dimen/_12sdp"
+                    android:theme="@style/TextRegular"
+                    android:layout_below="@+id/title"/>
+
+                <TextView
+                    android:id="@+id/txt_allteam"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:text="All Team"
+                    android:textColor="@color/figmaBlue"
+                    android:textSize="@dimen/_11sdp"
+                    android:theme="@style/TextBold" />
+
+            </RelativeLayout>
+
+            <devs.mulham.horizontalcalendar.HorizontalCalendarView
+                android:id="@+id/calendarView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:textColorNormal="@color/figmaBlack"
+                app:textColorSelected="@color/white"
+                android:layout_marginTop="@dimen/_8sdp"/>
+
+            <LinearLayout
+                android:id="@+id/search_block"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:orientation="vertical"
+                android:visibility="visible"
+                android:background="@drawable/rectangle_greybg_with_corner"
+                android:layout_marginTop="@dimen/_8sdp">
+
+                <!--Notification,Search-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    >
+
+                    <ImageView
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/search_1px"
+                        android:id="@+id/search_ic"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/_5sdp"/>
+
+                    <EditText
+                        android:id="@+id/serach_bar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/close"
+                        android:layout_toRightOf="@+id/search_ic"
+                        android:backgroundTint="@color/white"
+                        android:hint="Search"
+                        android:inputType="text" />
+
+                    <ImageView
+                        android:id="@+id/close"
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:src="@drawable/close_circle" />
+                </RelativeLayout>
 
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp">
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="@dimen/_10sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="@drawable/bg_transparent_round"
+                android:fillViewport="true"
+                android:visibility="gone"
+
+                />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp">
+
+                <TextView
+                    android:id="@+id/list_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@+id/tv_exapnd"
+                    android:text="Working from Office"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="@dimen/_14sdp"
+                    android:theme="@style/TextRegular" />
+
+                <TextView
+                    android:id="@+id/tv_adddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/list_title"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:text="40 Bank Street (GMT)"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="@dimen/_11sdp"
+                    android:theme="@style/TextRegular" />
+
+                <TextView
+                    android:id="@+id/tv_total_avail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_adddress"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:text="5/15 desks available"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="@dimen/_10sdp"
+                    android:theme="@style/TextRegular"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tv_exapnd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:text="Expand all"
+                    android:textColor="@color/figmaBlue"
+                    android:textSize="@dimen/_12sdp"
+                    android:theme="@style/TextRegular" />
+
+            </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/floorLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/tv_exapnd"
+                    >
+
+                    <TextView
+                        android:id="@+id/tvFloorName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginVertical="@dimen/_5sdp"
+                        android:text="30th Floor"
+                        android:textColor="@color/figmaBlack"
+                        android:textSize="@dimen/_14sdp"
+                        android:theme="@style/TextRegular"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/ivLocation"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/location"
+                        android:theme="@style/TextRegular"
+                        android:visibility="gone"
+                        app:tint="@color/blue" />
+
+                </RelativeLayout>
+<!--
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/recyclerView"
+                    android:visibility="gone"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                    -->
+                <TextView
+                    android:id="@+id/tvAvailableCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@+id/tv_exapnd"
+                    android:text="14/15 desk available"
+                    android:visibility="gone"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="@dimen/_11sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:theme="@style/TextRegular" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/list_title"
+                android:id="@+id/tvWorkRemote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_toStartOf="@+id/tv_exapnd"
-                android:text="Working from Office"
+                android:text="Working Remotely"
+                android:visibility="gone"
                 android:textColor="@color/figmaBlack"
                 android:textSize="@dimen/_14sdp"
-                android:theme="@style/TextRegular" />
-
-            <TextView
-                android:id="@+id/tv_adddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/list_title"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:text="40 Bank Street (GMT)"
-                android:textColor="@color/figmaBlack"
-                android:textSize="@dimen/_11sdp"
-                android:theme="@style/TextRegular" />
-
-            <TextView
-                android:id="@+id/tv_total_avail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_adddress"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:text="5/15 desks available"
-                android:textColor="@color/figmaBlack"
-                android:textSize="@dimen/_10sdp"
-                android:theme="@style/TextRegular"
-                android:visibility="gone"/>
-
-            <TextView
-                android:id="@+id/tv_exapnd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="@dimen/_4sdp"
-                android:text="Expand all"
-                android:textColor="@color/figmaBlue"
-                android:textSize="@dimen/_12sdp"
-                android:theme="@style/TextRegular" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toStartOf="@+id/tv_exapnd"
-            >
-
-            <TextView
-                android:id="@+id/tvFloorName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
                 android:layout_marginVertical="@dimen/_5sdp"
-                android:text="30th Floor"
+                android:theme="@style/TextRegular" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/recyclerViewRemote"
+                android:layout_marginTop="@dimen/_8sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+            <TextView
+                android:id="@+id/tvHoliday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/tv_exapnd"
+                android:text="Holiday"
+                android:visibility="gone"
                 android:textColor="@color/figmaBlack"
                 android:textSize="@dimen/_14sdp"
                 android:theme="@style/TextRegular"
-                android:visibility="visible" />
+                android:layout_marginVertical="@dimen/_5sdp"
+                />
 
-            <ImageView
-                android:id="@+id/ivLocation"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_15sdp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/location"
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/recyclerViewHoliday"
+                android:layout_marginTop="@dimen/_8sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            <TextView
+                android:id="@+id/tvUnknown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/tv_exapnd"
+                android:text="Unknown"
+                android:visibility="gone"
+                android:textColor="@color/figmaBlack"
+                android:textSize="@dimen/_14sdp"
                 android:theme="@style/TextRegular"
-                android:visibility="visible"
-                app:tint="@color/blue" />
+                android:layout_marginVertical="@dimen/_5sdp"
+                />
 
-        </RelativeLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/recyclerViewUnkown"
+                android:layout_marginTop="@dimen/_8sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/recyclerView"
-            android:layout_marginTop="@dimen/_8sdp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-        <TextView
-            android:id="@+id/tvAvailableCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/tv_exapnd"
-            android:text="14/15 desk available"
-            android:visibility="visible"
-            android:textColor="@color/figmaBlack"
-            android:textSize="@dimen/_11sdp"
-            android:layout_marginTop="@dimen/_3sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:theme="@style/TextRegular" />
-        <TextView
-            android:id="@+id/tvWorkRemote"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/tv_exapnd"
-            android:text="Working Remotely"
-            android:visibility="gone"
-            android:textColor="@color/figmaBlack"
-            android:textSize="@dimen/_14sdp"
-            android:layout_marginVertical="@dimen/_5sdp"
-            android:theme="@style/TextRegular" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/expandRecyclerView"
+                android:layout_marginTop="@dimen/_8sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/recyclerViewRemote"
-            android:layout_marginTop="@dimen/_8sdp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvHoliday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/tv_exapnd"
-            android:text="Holiday"
-            android:visibility="gone"
-            android:textColor="@color/figmaBlack"
-            android:textSize="@dimen/_14sdp"
-            android:theme="@style/TextRegular"
-            android:layout_marginVertical="@dimen/_5sdp"
-            />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/recyclerViewHoliday"
-            android:layout_marginTop="@dimen/_8sdp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-        <TextView
-            android:id="@+id/tvUnknown"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/tv_exapnd"
-            android:text="Unknown"
-            android:visibility="gone"
-            android:textColor="@color/figmaBlack"
-            android:textSize="@dimen/_14sdp"
-            android:theme="@style/TextRegular"
-            android:layout_marginVertical="@dimen/_5sdp"
-            />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/recyclerViewUnkown"
-            android:layout_marginTop="@dimen/_8sdp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/expandRecyclerView"
-            android:layout_marginTop="@dimen/_8sdp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <ProgressBar
         android:id="@+id/locateProgressBar"
