@@ -1112,13 +1112,13 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
                 @Override
                 public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
 
-                    List<LocateCountryRespose> locateCountryResposeList=response.body();
+                    List<LocateCountryRespose> locateCountryResposeList = response.body();
 
-                    for (int i = 0; i <locateCountryResposeList.size() ; i++) {
+                    for (int i = 0; i < locateCountryResposeList.size(); i++) {
 
-                        if(results.getCurrentLocation().getId()==locateCountryResposeList.get(i).getLocateCountryId()){
+                        if (results.getCurrentLocation().getId() == locateCountryResposeList.get(i).getLocateCountryId()) {
 
-                            SessionHandler.getInstance().saveInt(MainActivity.this, AppConstants.FLOOR_POSITION,i);
+                            SessionHandler.getInstance().saveInt(MainActivity.this, AppConstants.FLOOR_POSITION, i);
                             binding.searchRecycler.setVisibility(View.GONE);
                             binding.serachBar.setText("");
                             binding.serachBar.clearComposingText();
@@ -1128,7 +1128,6 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
                         }/*else {
                         Utils.toastMessage(MainActivity.this,"Selected Floor Is Not Avaliable");
                     }*/
-
 
 
                     }

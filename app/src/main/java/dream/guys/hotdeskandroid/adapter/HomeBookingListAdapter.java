@@ -431,7 +431,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
                     //Desk
                     if(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor()!=null){
-                        System.out.println("CalendarParentId "+list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getFloorID());
+                        //System.out.println("CalendarParentId "+list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getFloorID());
 
                         int parentLocationId=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getFloorID();
                         int deskId=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getDeskId();
@@ -442,7 +442,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
                     //Meeting
                     if(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel().getLocationBuildingFloor()!=null){
-                        System.out.println("MeetingParentId "+list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel().getLocationBuildingFloor().getFloorID());
+                        //System.out.println("MeetingParentId "+list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel().getLocationBuildingFloor().getFloorID());
 
                         int parentLocationId=list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel().getLocationBuildingFloor().getFloorID();
                         int meetingRoomId=list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel().getMeetingRoomId();
@@ -453,7 +453,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                 }else if(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel()!=null){
                     //Car
                     if(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel().getLocationBuildingFloor()!=null){
-                        System.out.println("CarParentId "+list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel().getLocationBuildingFloor().getFloorID());
+                        //System.out.println("CarParentId "+list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel().getLocationBuildingFloor().getFloorID());
 
                         int parentLocationId=list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel().getLocationBuildingFloor().getFloorID();
                         int carParkingId=list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel().getParkingSlotId();

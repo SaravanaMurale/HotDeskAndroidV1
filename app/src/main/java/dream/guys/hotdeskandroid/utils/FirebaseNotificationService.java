@@ -62,6 +62,8 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
             String title = message.getNotification().getTitle();
             String messageBody = message.getNotification().getBody();
 
+            System.out.println("NotificationMessageReceived "+title+" "+messageBody);
+
             showSmallNotification(title, messageBody);
         }
     }
