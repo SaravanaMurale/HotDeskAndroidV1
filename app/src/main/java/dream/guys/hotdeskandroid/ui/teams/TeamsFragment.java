@@ -37,7 +37,9 @@ import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.SearchRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.TeamsAdapter;
 import dream.guys.hotdeskandroid.adapter.TeamsContactsAdapter;
+import dream.guys.hotdeskandroid.adapter.TeamsFloorListAdapter;
 import dream.guys.hotdeskandroid.databinding.FragmentTeamsBinding;
+import dream.guys.hotdeskandroid.model.FloorListModel;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.DAOUpcomingBooking;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
@@ -53,7 +55,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberInterface, TeamsContactsAdapter.OnProfileClickable {
+public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberInterface,
+        TeamsContactsAdapter.OnProfileClickable,
+        TeamsFloorListAdapter.FloorListener
+        {
 
     FragmentTeamsBinding binding;
     int day, month, year;
@@ -69,6 +74,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     ArrayList<DAOTeamMember> copyTeamMembersList = new ArrayList<>();
     TeamsContactsAdapter teamsContactsAdapter,teamsContactsRemoteAdapter,teamsContactsHolidaysAdapter, teamsContactsUnknownAdapter;
     TeamsAdapter teamsAdapter;
+    TeamsFloorListAdapter teamsFloorListAdapter;
 
     List<GlobalSearchResponse.Results> list = new ArrayList<>();
     SearchRecyclerAdapter searchRecyclerAdapter;
@@ -100,13 +106,13 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                 binding.tvHoliday.setVisibility(View.GONE);
                 binding.tvUnknown.setVisibility(View.GONE);
                 binding.tvWorkRemote.setVisibility(View.GONE);
-                binding.tvFloorName.setVisibility(View.GONE);
+//                binding.tvFloorName.setVisibility(View.GONE);
                 binding.tvAdddress.setVisibility(View.GONE);
                 binding.listTitle.setVisibility(View.GONE);
-                binding.tvAvailableCount.setVisibility(View.GONE);
-                binding.ivLocation.setVisibility(View.GONE);
+//                binding.tvAvailableCount.setVisibility(View.GONE);
+//                binding.ivLocation.setVisibility(View.GONE);
                 binding.tvExapnd.setVisibility(View.GONE);
-//                binding.recyclerView.setVisibility(View.GONE);
+                binding.recyclerView.setVisibility(View.GONE);
                 binding.recyclerViewRemote.setVisibility(View.GONE);
                 binding.recyclerViewHoliday.setVisibility(View.GONE);
                 binding.recyclerViewUnkown.setVisibility(View.GONE);
@@ -116,7 +122,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
             }
         });
-
+/*
         binding.ivLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,7 +132,6 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                     if(teamMembersInOfficeList.get(0).getDayGroups()
                             .get(0).getCalendarEntries()
                             .get(0).getBooking().getLocationBuildingFloor() != null){
-//                        System.out.println("CalendarParentId "+list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getFloorID());
 
                         int parentLocationId=teamMembersInOfficeList.get(0).getDayGroups()
                                 .get(0).getCalendarEntries()
@@ -137,33 +142,10 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                         onLocationIconClick(parentLocationId, deskId, AppConstants.DESK);
                     }
 
-                }else if(teamMembersInOfficeList.get(0).getDayGroups().size()>0
-                        && teamMembersInOfficeList.get(0).getDayGroups().get(0).getMeetingBookings() !=null){
-
-                    //Meeting
-                    if(teamMembersInOfficeList.get(0).getDayGroups().get(0).getMeetingBookings().get(0).getLocationBuildingFloor()!=null){
-                        int parentLocationId = teamMembersInOfficeList.get(0).getDayGroups().get(0).getMeetingBookings().get(0).getLocationBuildingFloor().getFloorID();
-                        int meetingRoomId = teamMembersInOfficeList.get(0).getDayGroups().get(0).getMeetingBookings().get(0).getMeetingRoomId();
-                        onLocationIconClick(parentLocationId,meetingRoomId, AppConstants.MEETING);
-                    }
-
-                }else if(teamMembersInOfficeList.get(0).getDayGroups().size()>0
-                        && teamMembersInOfficeList.get(0).getDayGroups().get(0).getCarParkBookings() !=null){
-                    //Car
-                    if(teamMembersInOfficeList.get(0).getDayGroups().get(0).getCarParkBookings().get(0).getLocationBuildingFloor()!=null){
-
-                        int parentLocationId = teamMembersInOfficeList.get(0).getDayGroups().get(0).getCarParkBookings()
-                                .get(0).getLocationBuildingFloor().getFloorID();
-                        int carParkingId=teamMembersInOfficeList.get(0).getDayGroups().get(0).getCarParkBookings()
-                                .get(0).getParkingSlotId();
-                        onLocationIconClick(parentLocationId, carParkingId, AppConstants.CAR_PARKING);
-
-                    }
                 }
 
-
             }
-        });
+        });*/
 
         binding.txtAllteam.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,6 +219,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
         return root;
     }
+
 
     private void getBookingUsageTypes() {
 
@@ -362,11 +345,12 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                             if (teamMembersList!=null && teamMembersList.size()>0){
                                 setValueToAdapter(teamMembersList);
                                 if (teamMembersInOfficeList.size()>0){
-                                    System.out.println("check cala"+Utils.getYearMonthDateFormat(horizontalCalendar.getSelectedDate().getTime()));
+                                    System.out.println("check cala"+floorList.size());
                                     if (floorList.size() > 1){
                                         createMultipleFloorRecyler();
                                     } else {
-                                        getAvaliableDeskDetails(-1,null);
+                                        createMultipleFloorRecyler();
+//                                        getAvaliableDeskDetails(-1,null);
                                     }
 
                                 }
@@ -403,56 +387,74 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     }
 
     private void createMultipleFloorRecyler() {
+        ArrayList<FloorListModel> floorListModels= new ArrayList<>();
         Iterator entries = floorList.entrySet().iterator();
         while (entries.hasNext()) {
+            FloorListModel floorListModel = new FloorListModel();
             Map.Entry<Integer,String> thisEntry = (Map.Entry) entries.next();
             Integer key = thisEntry.getKey();
-            Object value = thisEntry.getValue();
+            String value = thisEntry.getValue();
+
             // TODO: 16-09-2022
             System.out.println("check hash"+value);
-            View textView = (LinearLayout) View.inflate(getContext(), R.layout.floor_layout_recycler, null);
-            TextView floorName= textView.findViewById(R.id.tvFloorName);
-            ImageView floorLocation= textView.findViewById(R.id.ivLocation);
 
             ArrayList<DAOTeamMember> teamMembersFloorList = new ArrayList<>();
             for (int i=0; i<teamMembersInOfficeList.size(); i++){
-                for (int j=0; j<teamMembersInOfficeList.get(i).getDayGroups().get(0).getCalendarEntries().size();j++){
-                    if (teamMembersInOfficeList.get(i).getDayGroups().get(0).getCalendarEntries()
-                            .get(j).getBooking().getLocationBuildingFloor().getFloorID() == key){
+                loopu:
+                for (int j=0; j<teamMembersInOfficeList.get(i).getDayGroups().get(0)
+                        .getCalendarEntries().size(); j++){
+                    if (key.equals(teamMembersInOfficeList.get(i).getDayGroups().get(0).getCalendarEntries()
+                            .get(j).getBooking().getLocationBuildingFloor()
+                            .getFloorID())) {
+                        System.out.println("team add"+teamMembersInOfficeList.get(i).getDayGroups().get(0).getCalendarEntries().size());
                         teamMembersFloorList.add(teamMembersInOfficeList.get(i));
+                        break loopu;
                     }
                 }
-
             }
 
-            RecyclerView recyclerViewFloor = textView.findViewById(R.id.recyclerView);
-            LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.HORIZONTAL,false);
+            floorListModel.setFloorId(key);
+            floorListModel.setFloorName(value);
+            floorListModel.setDaoTeamMembers(teamMembersFloorList);
+            floorListModels.add(floorListModel);
 
-            recyclerViewFloor.addItemDecoration(new OverlapDecoration());
-            recyclerViewFloor.setHasFixedSize(true);
-
-            recyclerViewFloor.setLayoutManager(linearLayout);
-
-            TeamsContactsAdapter floorAdapter = new TeamsContactsAdapter(getActivity(),teamMembersFloorList,this);
-            recyclerViewFloor.setAdapter(floorAdapter);
+//            getAvaliableDeskDetails(key, tvAvailableCount);
 
 
-
-            floorName.setText(""+value);
-            floorLocation.setOnClickListener(new View.OnClickListener() {
+           /* floorLocation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), ""+floorName.getText(), Toast.LENGTH_SHORT).show();
+                    loopu:
+                    for (int i=0; i<teamMembersInOfficeList.size(); i++){
+                        for (int j=0; j<teamMembersInOfficeList.get(i).getDayGroups().get(0)
+                                .getCalendarEntries().size(); j++){
+                            if (floorName.getText().toString().equalsIgnoreCase(teamMembersInOfficeList.get(i).getDayGroups().get(0).getCalendarEntries()
+                                    .get(j).getBooking().getLocationBuildingFloor()
+                                    .getfLoorName())) {
+                                int parentLocationId= teamMembersInOfficeList.get(i).getDayGroups().get(0).getCalendarEntries()
+                                        .get(j).getBooking().getLocationBuildingFloor()
+                                        .getFloorID();
+                                int deskId = teamMembersInOfficeList.get(i).getDayGroups().get(0).getCalendarEntries()
+                                        .get(j).getBooking().getDeskId();
+                                onLocationIconClick(parentLocationId, deskId, AppConstants.DESK);
+                                break loopu;
+                            }
+                        }
+                    }
+                    Toast.makeText(getActivity(), "I : "+floorName, Toast.LENGTH_SHORT).show();
                 }
             });
+*/
 
-            binding.floorLinearLayout.addView(textView);
+
 
 //            binding.floorLinearLayout.addView();
 //            RelativeLayout relativeLayout = new RelativeLayout();
             // ...
         }
+        getAvaliableDeskDetails(floorListModels);
+
+
     }
 
     private void setValueToAdapter(ArrayList<DAOTeamMember> teamMembersList) {
@@ -470,7 +472,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             binding.tvHoliday.setVisibility(View.GONE);
         if (teamMembersInOfficeList.size()>0){
 //            binding.tvFloorName.setVisibility(View.VISIBLE);
-//            binding.tvAdddress.setVisibility(View.VISIBLE);
+            binding.tvAdddress.setVisibility(View.VISIBLE);
             binding.listTitle.setVisibility(View.VISIBLE);
 //            binding.tvAvailableCount.setVisibility(View.VISIBLE);
 //            binding.ivLocation.setVisibility(View.VISIBLE);
@@ -481,11 +483,11 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                     .get(0).getCalendarEntries()
                     .get(0).getBooking().getLocationBuildingFloor().getBuildingName());
         }else{
-            binding.tvFloorName.setVisibility(View.GONE);
+//            binding.tvFloorName.setVisibility(View.GONE);
             binding.tvAdddress.setVisibility(View.GONE);
             binding.listTitle.setVisibility(View.GONE);
-            binding.tvAvailableCount.setVisibility(View.GONE);
-            binding.ivLocation.setVisibility(View.GONE);
+//            binding.tvAvailableCount.setVisibility(View.GONE);
+//            binding.ivLocation.setVisibility(View.GONE);
         }
 
 //        teamsContactsAdapter = new TeamsContactsAdapter(getActivity(),teamMembersInOfficeList,this);
@@ -522,14 +524,14 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             startActivity(intent);
         }else {
             binding.expandRecyclerView.setVisibility(View.VISIBLE);
-//            binding.recyclerView.setVisibility(View.GONE);
+            binding.recyclerView.setVisibility(View.GONE);
             binding.tvUnknown.setVisibility(View.GONE);
             binding.tvHoliday.setVisibility(View.GONE);
-            binding.tvFloorName.setVisibility(View.GONE);
+//            binding.tvFloorName.setVisibility(View.GONE);
             binding.tvAdddress.setVisibility(View.GONE);
             binding.listTitle.setVisibility(View.GONE);
-            binding.tvAvailableCount.setVisibility(View.GONE);
-            binding.ivLocation.setVisibility(View.GONE);
+//            binding.tvAvailableCount.setVisibility(View.GONE);
+//            binding.ivLocation.setVisibility(View.GONE);
             binding.tvWorkRemote.setVisibility(View.GONE);
             binding.recyclerViewRemote.setVisibility(View.GONE);
             binding.recyclerViewHoliday.setVisibility(View.GONE);
@@ -540,8 +542,12 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
     }
 
+            @Override
+            public void floorListenerClick(int parentLocationId, int identifierId, String desk) {
+                onLocationIconClick(parentLocationId, identifierId, desk);
+            }
 
-    public class OverlapDecoration extends RecyclerView.ItemDecoration {
+            public static class OverlapDecoration extends RecyclerView.ItemDecoration {
 
         private final static int vertOverlap = -20;
 
@@ -565,14 +571,14 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     private void uiInit(View root) {
 
         contactLinearLayout = new LinearLayoutManager(getActivity(),
-                LinearLayoutManager.HORIZONTAL,false);
+                LinearLayoutManager.VERTICAL,false);
         contactUnknownLinearLayout = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.HORIZONTAL,false);
         contactRemoteLinearLayout = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.HORIZONTAL,false);
         contactHolidayLinearLayout = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.HORIZONTAL,false);
-//        binding.recyclerView.setLayoutManager(contactLinearLayout);
+        binding.recyclerView.setLayoutManager(contactLinearLayout);
         binding.recyclerViewRemote.setLayoutManager(contactRemoteLinearLayout);
         binding.recyclerViewHoliday.setLayoutManager(contactHolidayLinearLayout);
         binding.recyclerViewUnkown.setLayoutManager(contactUnknownLinearLayout);
@@ -580,7 +586,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         binding.recyclerViewRemote.addItemDecoration(new OverlapDecoration());
         binding.recyclerViewHoliday.addItemDecoration(new OverlapDecoration());
         binding.recyclerViewUnkown.addItemDecoration(new OverlapDecoration());
-//        binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.setHasFixedSize(true);
         binding.recyclerViewRemote.setHasFixedSize(true);
         binding.recyclerViewHoliday.setHasFixedSize(true);
         binding.recyclerViewUnkown.setHasFixedSize(true);
@@ -868,56 +874,73 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
     }
 
-    private void getAvaliableDeskDetails(int parentId,TextView textView) {
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        System.out.println("check cala"+horizontalCalendar.getSelectedDate().getTime());
+    private void getAvaliableDeskDetails(ArrayList<FloorListModel> floorListModelArrayList) {
+        ArrayList<FloorListModel> list =floorListModelArrayList;
+        for (int i=0; i< floorListModelArrayList.size(); i++){
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+//        System.out.println("check cala"+horizontalCalendar.getSelectedDate().getTime());
 
-        String toDate = Utils.getYearMonthDateFormat(horizontalCalendar.getSelectedDate().getTime())
-                + "T00:00:00Z";
-        String fromTime = Utils.getYearMonthDateFormat(horizontalCalendar.getSelectedDate().getTime())
-                + "T08:00:00Z";
-        String toTime = Utils.getYearMonthDateFormat(horizontalCalendar.getSelectedDate().getTime())
-                + "T21:00:00Z";
+            String toDate = Utils.getYearMonthDateFormat(horizontalCalendar.getSelectedDate().getTime())
+                    + "T00:00:00Z";
+            String fromTime = Utils.getYearMonthDateFormat(horizontalCalendar.getSelectedDate().getTime())
+                    + "T08:00:00Z";
+            String toTime = Utils.getYearMonthDateFormat(horizontalCalendar.getSelectedDate().getTime())
+                    + "T21:00:00Z";
 
-//        int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
-        if (parentId == -1)
-            parentId = teamMembersInOfficeList.get(0).getDayGroups()
-                .get(0).getCalendarEntries()
-                .get(0).getBooking().getLocationBuildingFloor().getFloorID();
+        int parentId = floorListModelArrayList.get(i).getFloorId();
+
 //        System.out.println("parent Booking cje"+parentId);
-        //Call<DeskAvaliabilityResponse> call = apiService.getAvaliableDeskDetails(parentId, now, now, now);
-        Call<DeskAvaliabilityResponse> call = apiService.getAvaliableDeskDetails(parentId,
-                toDate,
-                fromTime,
-                toTime);
+            //Call<DeskAvaliabilityResponse> call = apiService.getAvaliableDeskDetails(parentId, now, now, now);
+            Call<DeskAvaliabilityResponse> call = apiService.getAvaliableDeskDetails(parentId,
+                    toDate,
+                    fromTime,
+                    toTime);
 
-        call.enqueue(new Callback<DeskAvaliabilityResponse>() {
-            @Override
-            public void onResponse(Call<DeskAvaliabilityResponse> call, Response<DeskAvaliabilityResponse> response) {
+            int finalI = i;
+            call.enqueue(new Callback<DeskAvaliabilityResponse>() {
+                @Override
+                public void onResponse(Call<DeskAvaliabilityResponse> call, Response<DeskAvaliabilityResponse> response) {
 
-                DeskAvaliabilityResponse deskAvaliabilityResponseList = response.body();
-                int teamAvailableCount = 0;
-                if (deskAvaliabilityResponseList != null) {
-                    for (int i=0; i<deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size();i++){
-                        if (!deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).isBookedByElse()
-                            && !deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).isBookedByUser()){
-                            teamAvailableCount++;
+                    DeskAvaliabilityResponse deskAvaliabilityResponseList = response.body();
+                    int teamAvailableCount = 0;
+                    if (deskAvaliabilityResponseList != null) {
+                        for (int i=0; i<deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size();i++){
+                            if (!deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).isBookedByElse()
+                                    && !deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).isBookedByUser()){
+                                teamAvailableCount++;
+                            }
+                        }
+                        System.out.println("tets vals"+teamAvailableCount+"/"
+                                +deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size()
+                                +" desks available");
+                        list.get(finalI).setDeskAvailability(teamAvailableCount+"/"
+                                +deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size()
+                                +" desks available");
+                        System.out.println("tets vals : ij"+list.get(finalI).getDeskAvailability()+finalI);
+
+                        if (teamsFloorListAdapter !=null){
+                            System.out.println("tets vals : ad"+list.get(0).getDeskAvailability());
+                            teamsFloorListAdapter.notifyDataSetChanged();
                         }
                     }
-                    binding.tvAvailableCount.setText(teamAvailableCount+"/"
-                            +deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size()
-                            +" desks available");
+
                 }
 
-            }
+                @Override
+                public void onFailure(Call<DeskAvaliabilityResponse> call, Throwable t) {
 
-            @Override
-            public void onFailure(Call<DeskAvaliabilityResponse> call, Throwable t) {
-
-                System.out.println("Failure" + t.getMessage().toString());
+                    floorListModelArrayList.get(finalI).setDeskAvailability(0+"/"
+                            +"0 desks available");
+                    System.out.println("Failure" + t.getMessage().toString());
 //                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
+                }
+            });
+        }
+
+        System.out.println("tets vals : bj"+list.get(0).getDeskAvailability());
+        System.out.println("tets vals : bj"+list.get(1).getDeskAvailability());
+        teamsFloorListAdapter = new TeamsFloorListAdapter(getActivity(),list, this, this);
+        binding.recyclerView.setAdapter(teamsFloorListAdapter);
 
     }
 
