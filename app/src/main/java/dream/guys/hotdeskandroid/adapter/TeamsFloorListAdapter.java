@@ -66,6 +66,9 @@ public class TeamsFloorListAdapter extends RecyclerView.Adapter<TeamsFloorListAd
         holder.floorLocationImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                for(int i=0; i < floorListModels.get(holder.getAbsoluteAdapterPosition()).getDaoTeamMembers().size(); i++){
+
+                }
                 floorListener.floorListenerClick(
                         floorListModels.get(holder.getAbsoluteAdapterPosition()).getFloorId(),
                         floorListModels.get(holder.getAbsoluteAdapterPosition()).getDaoTeamMembers()

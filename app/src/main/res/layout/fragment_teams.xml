@@ -126,9 +126,7 @@
                 android:background="@drawable/bg_transparent_round"
                 android:fillViewport="true"
                 android:visibility="gone"
-
                 />
-
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -183,6 +181,7 @@
                     android:theme="@style/TextRegular" />
 
             </RelativeLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -237,7 +236,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_toStartOf="@+id/tv_exapnd"
-                android:text="Unknown"
+                android:text="No Bookings Available"
                 android:visibility="gone"
                 android:textColor="@color/figmaBlack"
                 android:textSize="@dimen/_14sdp"

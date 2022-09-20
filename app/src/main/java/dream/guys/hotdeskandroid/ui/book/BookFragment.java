@@ -49,6 +49,8 @@ import com.google.gson.JsonObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -205,6 +207,11 @@ public class BookFragment extends Fragment implements
 
     int endTimeSelectedStats = 0;
 
+
+    //Repeat
+    int enableCurrentWeek=-1;
+    boolean repeatActvieStatus=false;
+    TextView tvRepeat;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -1391,7 +1398,7 @@ public class BookFragment extends Fragment implements
         }
 
         if (dskRoomParkStatus == 1) {
-            repeatBlock.setVisibility(View.GONE);
+            repeatBlock.setVisibility(View.VISIBLE);
             teamsBlock.setVisibility(View.GONE);
             commentBlock.setVisibility(View.GONE);
             commentRegistration.setHint("Comments");
@@ -1428,7 +1435,7 @@ public class BookFragment extends Fragment implements
             }
         }else {
             llDeskLayout.setVisibility(View.VISIBLE);
-            repeatBlock.setVisibility(View.GONE);
+            repeatBlock.setVisibility(View.VISIBLE);
             teamsBlock.setVisibility(View.GONE);
             commentBlock.setVisibility(View.GONE);
             commentRegistration.setHint("Registration Number");
@@ -1498,7 +1505,12 @@ public class BookFragment extends Fragment implements
         repeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                repeatBottomSheetDialog();
+                if(dskRoomParkStatus==1)
+                    repeatBottomSheetDialog("3");
+                else if (dskRoomParkStatus==2)
+                    repeatBottomSheetDialog("4");
+                else
+                    repeatBottomSheetDialog("5");
             }
         });
         continueEditBook.setOnClickListener(new View.OnClickListener() {
@@ -1647,7 +1659,7 @@ public class BookFragment extends Fragment implements
 
     }
 
-    private void repeatBottomSheetDialog()
+    /*private void repeatBottomSheetDialog()
     {
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -1700,7 +1712,7 @@ public class BookFragment extends Fragment implements
             @Override
             public void onClick(View view)
             {
-                openUntil();
+                openUntil("");
             }
         });
 
@@ -1709,7 +1721,7 @@ public class BookFragment extends Fragment implements
             @Override
             public void onClick(View view)
             {
-                openUntil();
+//                openUntil();
             }
         });
 
@@ -1719,8 +1731,8 @@ public class BookFragment extends Fragment implements
             @Override
             public void onClick(View view)
             {
-                Toast.makeText(requireContext(),"onclick==="+type,Toast.LENGTH_LONG).show();
-                openIntervalsDialog(type);
+//                Toast.makeText(requireContext(),"onclick==="+type,Toast.LENGTH_LONG).show();
+//                openIntervalsDialog(type);
             }
         });
 
@@ -1824,7 +1836,126 @@ public class BookFragment extends Fragment implements
 
 
     }
+    */
+    private void openUntil(String code) {
 
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_until,
+                new RelativeLayout(getContext()))));
+
+        ConstraintLayout cl_forever = bottomSheetDialog.findViewById(R.id.cl_forever);
+        ConstraintLayout cl_specific = bottomSheetDialog.findViewById(R.id.cl_specific);
+        ImageView iv_forever = bottomSheetDialog.findViewById(R.id.iv_forever);
+        ImageView iv_specific = bottomSheetDialog.findViewById(R.id.iv_specific);
+        android.widget.CalendarView calendar_view = bottomSheetDialog.findViewById(R.id.calendar_view);
+        TextView tv_forever=bottomSheetDialog.findViewById(R.id.tv_forever);
+        TextView editBookingBack = bottomSheetDialog.findViewById(R.id.tv_specific);
+        TextView editBookingContinue = bottomSheetDialog.findViewById(R.id.tv_specific);
+        TextView repeatBookContinue=bottomSheetDialog.findViewById(R.id.editBookingContinue);
+
+        calendar_view.setVisibility(View.GONE);
+
+
+        //Get Current Week End Date
+        Date date=Utils.getCurrentWeekEndDate();
+        //Set Figma format
+        tv_forever.setText(Utils.getDateFormatToSetInRepeat(date)+"(end of Week)");
+
+
+        System.out.println("LocateDateHere "+binding.locateCalendearView.getText().toString()+" "+binding.locateStartTime.getText().toString()+" "+ binding.locateEndTime.getText().toString());
+        //2022-09-14 15:46 23:59
+
+        //Get Date Difference Between current date and weekend date
+        String selectedDate=binding.locateCalendearView.getText().toString();
+        enableCurrentWeek=Utils.getDifferenceBetweenTwoDates(selectedDate);
+
+        System.out.println("enableCurrentWeek "+enableCurrentWeek);
+
+        calendar_view.setMinDate(System.currentTimeMillis() - 1000);
+        calendar_view.setMaxDate(System.currentTimeMillis() + enableCurrentWeek * 24 * 60 * 60 * 1000);
+
+        //end of week book
+        cl_forever.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                iv_forever.setVisibility(View.VISIBLE);
+                iv_specific.setVisibility(View.GONE);
+                calendar_view.setVisibility(View.GONE);
+
+                repeatActvieStatus=true;
+
+                if(code.equals("3")){
+                    //DeskBookForWholeWeekFromToday
+                    //doRepeatBookingForAWeek();
+                }else if(code.equals("4")){
+                    //Meeting Room Booking For Whole Week From Today
+//                    doRepeatMeetingRoomBookingForWeek();
+                }else if(code.equals("5")){
+                    //CarBooking For Whole Week From Today
+                    //doRepeatCarBookingForAWeek();
+                }
+            }
+        });
+
+        //specific date clicked
+        cl_specific.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+
+                iv_forever.setVisibility(View.GONE);
+                iv_specific.setVisibility(View.VISIBLE);
+                calendar_view.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+
+        //Calendar View
+        calendar_view.setOnDateChangeListener(new android.widget.CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull android.widget.CalendarView view, int year, int month, int dayOfMonth) {
+
+                repeatActvieStatus=true;
+
+                //Coming WeekendDate
+                LocalDate weekEndDate = LocalDate.of( year, month+1, dayOfMonth);
+
+                //Selected Date
+                String[] words=selectedDate.split("-");
+                int selectedYear=Integer.parseInt(words[0]);
+                int selectedMonth=Integer.parseInt(words[1]);
+                int selectedDay=Integer.parseInt(words[2]);
+                LocalDate currentSelectedDate = LocalDate.of( selectedYear, selectedMonth, selectedDay);
+
+                //Find Difference between 2 date
+                Period difference = Period.between(currentSelectedDate,weekEndDate);
+                enableCurrentWeek=difference.getDays();
+
+
+                if(code.equals("3")){
+                    //BookForSelectedDaysInAWeek
+                    //doRepeatBookingForAWeek();
+                }else if(code.equals("4")){
+
+                }else if(code.equals("5")){
+                    //BookCarForSelectedDaysInAWeek
+                    //doRepeatCarBookingForAWeek();
+                }
+
+
+
+            }
+        });
+
+
+        bottomSheetDialog.show();
+    }
+
+/*
     private void openUntil()
     {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -1885,6 +2016,7 @@ public class BookFragment extends Fragment implements
 
         bottomSheetDialog.show();
     }
+*/
 
     private void openWeeks()
     {
@@ -3376,7 +3508,296 @@ public class BookFragment extends Fragment implements
         }
 
     }
+// Repeat Module
+    private void repeatBottomSheetDialog(String code) {
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_repeat_new,
+                new RelativeLayout(getContext()))));
+
+        ConstraintLayout cl_daily_layout = bottomSheetDialog.findViewById(R.id.cl_daily_layout);
+        ConstraintLayout cl_weekly_layout = bottomSheetDialog.findViewById(R.id.cl_weekly_layout);
+        //None Block
+        ConstraintLayout cl_none = bottomSheetDialog.findViewById(R.id.cl_none);
+        //Daily Block
+        ConstraintLayout cl_daily = bottomSheetDialog.findViewById(R.id.cl_daily);
+        ConstraintLayout cl_weekly = bottomSheetDialog.findViewById(R.id.cl_weekly);
+        ConstraintLayout cl_monthly = bottomSheetDialog.findViewById(R.id.cl_monthly);
+        ConstraintLayout cl_yearly = bottomSheetDialog.findViewById(R.id.cl_yearly);
+        ImageView iv_none = bottomSheetDialog.findViewById(R.id.iv_none);
+        ImageView iv_daily = bottomSheetDialog.findViewById(R.id.iv_daily);
+        ImageView iv_weekly = bottomSheetDialog.findViewById(R.id.iv_weekly);
+        ImageView iv_monthly = bottomSheetDialog.findViewById(R.id.iv_monthly);
+        ImageView iv_yearly = bottomSheetDialog.findViewById(R.id.iv_yearly);
+        TextView editBookingBack = bottomSheetDialog.findViewById(R.id.editBookingBack);
+        TextView editBookingContinue = bottomSheetDialog.findViewById(R.id.editBookingContinue);
+        TextView tv_repeat = bottomSheetDialog.findViewById(R.id.tv_repeat);
+
+        TextView tv_interval = bottomSheetDialog.findViewById(R.id.tv_interval);
+        TextView tv_until = bottomSheetDialog.findViewById(R.id.tv_until);
+        TextView tv_interval_weekly = bottomSheetDialog.findViewById(R.id.tv_interval_weekly);
+        TextView tv_day = bottomSheetDialog.findViewById(R.id.tv_day);
+        TextView tv_unit = bottomSheetDialog.findViewById(R.id.tv_unit);
 
 
+
+        //None Block Clicked
+        cl_none.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                repeatActvieStatus = false;
+                tvRepeat.setText("None");
+
+                type = "none";
+                iv_none.setVisibility(View.VISIBLE);
+                iv_daily.setVisibility(View.GONE);
+                iv_weekly.setVisibility(View.GONE);
+                iv_monthly.setVisibility(View.GONE);
+                iv_yearly.setVisibility(View.GONE);
+                cl_daily_layout.setVisibility(View.GONE);
+                cl_weekly_layout.setVisibility(View.GONE);
+                tv_repeat.setVisibility(View.GONE);
+            }
+        });
+
+        //Daily Block Clicked
+        cl_daily.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                tvRepeat.setText("Daily");
+
+                type = "daily";
+                iv_none.setVisibility(View.GONE);
+                iv_daily.setVisibility(View.VISIBLE);
+                iv_weekly.setVisibility(View.GONE);
+                iv_monthly.setVisibility(View.GONE);
+                iv_yearly.setVisibility(View.GONE);
+                //Get Current Week End Date
+                Date date=Utils.getCurrentWeekEndDate();
+                //Set Figma format
+                tv_until.setText(Utils.getDateFormatToSetInRepeat(date)+"(end of Week)");
+
+                cl_daily_layout.setVisibility(View.VISIBLE);
+                tv_repeat.setVisibility(View.VISIBLE);
+                cl_weekly_layout.setVisibility(View.GONE);
+            }
+        });
+
+        //Until Block Clicked
+        tv_until.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openUntil(code);
+            }
+        });
+
+
+        editBookingBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        tv_day.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openWeeks();
+            }
+        });
+
+
+
+        tv_unit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //openUntil();
+            }
+        });
+
+
+        tv_interval.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(requireContext(),"onclick==="+type,Toast.LENGTH_LONG).show();
+                //openIntervalsDialog(type);
+            }
+        });
+
+        tv_interval_weekly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(requireContext(),"onclick==="+type,Toast.LENGTH_LONG).show();
+                openIntervalsDialog(type);
+            }
+        });
+
+
+
+        cl_weekly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                type = "weekly";
+                iv_none.setVisibility(View.GONE);
+                iv_daily.setVisibility(View.GONE);
+                iv_weekly.setVisibility(View.VISIBLE);
+                iv_monthly.setVisibility(View.GONE);
+                iv_yearly.setVisibility(View.GONE);
+                cl_daily_layout.setVisibility(View.GONE);
+                cl_weekly_layout.setVisibility(View.VISIBLE);
+                tv_repeat.setVisibility(View.VISIBLE);
+            }
+        });
+        cl_monthly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                type = "monthly";
+                iv_none.setVisibility(View.GONE);
+                iv_daily.setVisibility(View.GONE);
+                iv_weekly.setVisibility(View.GONE);
+                iv_monthly.setVisibility(View.VISIBLE);
+                iv_yearly.setVisibility(View.GONE);
+                cl_daily_layout.setVisibility(View.GONE);
+                cl_weekly_layout.setVisibility(View.VISIBLE);
+                tv_repeat.setVisibility(View.VISIBLE);
+            }
+        });
+
+        cl_yearly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                type = "yearly";
+                iv_none.setVisibility(View.GONE);
+                iv_daily.setVisibility(View.GONE);
+                iv_weekly.setVisibility(View.GONE);
+                iv_monthly.setVisibility(View.GONE);
+                iv_yearly.setVisibility(View.VISIBLE);
+                cl_daily_layout.setVisibility(View.VISIBLE);
+                tv_repeat.setVisibility(View.VISIBLE);
+                cl_weekly_layout.setVisibility(View.GONE);
+            }
+        });
+
+        bottomSheetDialog.show();
+
+    }
+
+    /*private void doRepeatMeetingRoomBookingForWeek() {
+
+        String selectedDate=binding.locateCalendearView.getText().toString();
+        List<String> dateList=Utils.getCurrentWeekDateList(selectedDate,enableCurrentWeek);
+
+        MeetingRoomRequest meetingRoomRequest = new MeetingRoomRequest();
+        meetingRoomRequest.setMeetingRoomId(meetingRoomId);
+        meetingRoomRequest.setMsTeams(false);
+        meetingRoomRequest.setHandleRecurring(false);
+        meetingRoomRequest.setOnlineMeeting(false);
+
+        List<MeetingRoomRequest.Changeset> changesetList = new ArrayList<>();
+
+        for (int i = 0; i <dateList.size() ; i++) {
+
+            MeetingRoomRequest.Changeset m = meetingRoomRequest.new Changeset();
+            m.setId(0);
+            m.setDate(dateList.get(i) + "T" + "00:00:00.000" + "Z");
+
+            MeetingRoomRequest.Changeset.Changes changes = m.new Changes();
+            changes.setFrom(getCurrentDate() + "" + "T" + startRoomTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            changes.setMyto(getCurrentDate() + "" + "T" + endTRoomime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            changes.setComments("Comment");
+            changes.setSubject("subject");
+            boolean isRequest=false;
+            changes.setRequest(isRequest);
+
+            m.setChanges(changes);
+
+            changesetList.add(m);
+
+            List<Integer> attendeesList = new ArrayList<>();
+
+
+            //Newly Participant Added
+            if (chipList != null) {
+                for (int j = 0; j < chipList.size(); i++) {
+                    attendeesList.add(chipList.get(j).getId());
+                }
+
+            } //End
+
+            changes.setAttendees(attendeesList);
+
+            List<MeetingRoomRequest.Changeset.Changes.ExternalAttendees> externalAttendeesList = new ArrayList<>();
+            changes.setExternalAttendees(externalAttendeesList);
+
+        }
+
+        meetingRoomRequest.setChangesets(changesetList);
+
+        List<MeetingRoomRequest.DeleteIds> deleteIdsList = new ArrayList<>();
+        meetingRoomRequest.setDeletedIds(deleteIdsList);
+
+
+        System.out.println("RepeatMeetingRoom "+meetingRoomRequest);
+
+        if (Utils.isNetworkAvailable(getActivity())) {
+//            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call=apiService.doRepeatMeetingRoomBooking(meetingRoomRequest);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+//                    binding.locateProgressBar.setVisibility(View.GONE);
+                    locateResponseHandler(response,getResources().getString(R.string.booking_success));
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+//                    binding.locateProgressBar.setVisibility(View.GONE);
+                }
+            });
+
+        }else {
+            Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
+        }
+
+
+    }
+    */
+    private void locateResponseHandler(Response<BaseResponse> response, String string) {
+
+        String resultString = "";
+
+        if (response.code() == 200) {
+            if (response.body().getResultCode() != null && response.body().getResultCode().equalsIgnoreCase("ok")) {
+                openCheckoutDialog(string,3);
+//                callInitView();
+            } else {
+
+                if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
+                    resultString = "Invalid booking start time";
+                } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
+                    resultString = "Invalid booking end time";
+                } else if (response.body().getResultCode().toString().equals("INVALID_TIMEZONE_ID")) {
+                    resultString = "Invalid timezone";
+                } else if (response.body().getResultCode().toString().equals("INVALID_TIMEPERIOD")) {
+                    resultString = "Invalid timeperiod";
+                }else if(response.body().getResultCode().toString().equals("USER_TIME_OVERLAP")){
+                    resultString = "Time overlaps with another booking";
+                }
+                //Utils.showCustomAlertDialog(getActivity(), "Booking Not Updated " + resultString);
+                Utils.showCustomAlertDialog(getActivity(), resultString);
+            }
+        } else if (response.code() == 500) {
+            Utils.showCustomAlertDialog(getActivity(), "500 Response");
+        } else if (response.code() == 401) {
+            Utils.showCustomTokenExpiredDialog(getActivity(), "401 Error Response");
+        } else {
+            Toast.makeText(getActivity(), "Response Failure", Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
 
 }

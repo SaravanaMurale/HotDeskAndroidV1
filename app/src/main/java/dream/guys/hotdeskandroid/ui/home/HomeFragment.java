@@ -1207,7 +1207,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         }
 
         if (dskRoomParkStatus == 1) {
-            repeatBlock.setVisibility(View.GONE);
+            repeatBlock.setVisibility(View.VISIBLE);
             teamsBlock.setVisibility(View.GONE);
             commentRegistration.setHint("Comments");
             tvComments.setText("Comments");
@@ -1225,7 +1225,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
         }else {
             llDeskLayout.setVisibility(View.GONE);
-            repeatBlock.setVisibility(View.GONE);
+            repeatBlock.setVisibility(View.VISIBLE);
             teamsBlock.setVisibility(View.GONE);
             commentRegistration.setHint("Registration Number");
             tvComments.setText("Regitration Number");

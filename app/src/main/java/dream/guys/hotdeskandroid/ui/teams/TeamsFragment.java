@@ -308,6 +308,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                             teamMembersInOfficeList.clear();
                             teamMembersList = response.body();
                             copyTeamMembersList = response.body();
+                            floorList.clear();
 
                             for (int i=0; i < teamMembersList.size(); i++){
                                 if (teamMembersList.get(i).getDayGroups().size() > 0
@@ -474,6 +475,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 //            binding.tvFloorName.setVisibility(View.VISIBLE);
             binding.tvAdddress.setVisibility(View.VISIBLE);
             binding.listTitle.setVisibility(View.VISIBLE);
+            binding.recyclerView.setVisibility(View.VISIBLE);
 //            binding.tvAvailableCount.setVisibility(View.VISIBLE);
 //            binding.ivLocation.setVisibility(View.VISIBLE);
 //            binding.tvFloorName.setText(""+teamMembersInOfficeList.get(0).getDayGroups()
@@ -486,6 +488,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 //            binding.tvFloorName.setVisibility(View.GONE);
             binding.tvAdddress.setVisibility(View.GONE);
             binding.listTitle.setVisibility(View.GONE);
+            binding.recyclerView.setVisibility(View.GONE);
 //            binding.tvAvailableCount.setVisibility(View.GONE);
 //            binding.ivLocation.setVisibility(View.GONE);
         }
@@ -876,7 +879,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
     private void getAvaliableDeskDetails(ArrayList<FloorListModel> floorListModelArrayList) {
         ArrayList<FloorListModel> list =floorListModelArrayList;
-        for (int i=0; i< floorListModelArrayList.size(); i++){
+        for (int i=0; i< floorListModelArrayList.size(); i++)
+        {
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 //        System.out.println("check cala"+horizontalCalendar.getSelectedDate().getTime());
 
@@ -937,8 +941,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             });
         }
 
-        System.out.println("tets vals : bj"+list.get(0).getDeskAvailability());
-        System.out.println("tets vals : bj"+list.get(1).getDeskAvailability());
+//        System.out.println("tets vals : bj"+list.get(0).getDeskAvailability());
+//        System.out.println("tets vals : bj"+list.get(1).getDeskAvailability());
         teamsFloorListAdapter = new TeamsFloorListAdapter(getActivity(),list, this, this);
         binding.recyclerView.setAdapter(teamsFloorListAdapter);
 
