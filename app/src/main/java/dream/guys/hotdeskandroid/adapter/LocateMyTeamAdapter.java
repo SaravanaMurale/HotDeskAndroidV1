@@ -5,13 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -31,7 +29,7 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
 
 
     public interface ShowMyTeamLocationClickable{
-        public void showMyTeamLocation(ArrayList<DAOTeamMember.DayGroup> dayGroups);
+        public void showMyTeamLocation(DAOTeamMember.DayGroup.CalendarEntry dayGroups);
     }
 
 
@@ -57,7 +55,6 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
 
         holder.locateMyTeamName.setText(daoTeamMemberList.get(position).getFirstName()+" "+daoTeamMemberList.get(position).getLastName());
 
-
         if(daoTeamMemberList.get(position).getDayGroups().isEmpty() || daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().size()==0){
             holder.locateMyTeamDeskName.setText("No Booking Avaliable");
             holder.locateMyTeamCheckInTime.setVisibility(View.INVISIBLE);
@@ -65,22 +62,23 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
             holder.locateMyTeamLocation.setVisibility(View.INVISIBLE);
             holder.locateMyTeamNameCheckInIcon.setVisibility(View.INVISIBLE);
             holder.locateMyTeamCheckOutIcon.setVisibility(View.INVISIBLE);
-        }else if(!daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().isEmpty() &&daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().size()>0 ){
+        }else {
 
+            if(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getBooking()!=null){
+                setVivisbleItems(holder);
 
-            for (int i = 0; i <daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntries().size() ; i++) {
+                holder.locateMyTeamDeskName.setText(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getBooking().getDeskCode());
+                holder.locateMyTeamCheckInTime.setText(Utils.splitTime(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getFrom()));
+                holder.locateMyTeamCheckOutTime.setText(Utils.splitTime(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getMyto()));
 
-                    holder.locateMyTeamNameCheckInIcon.setVisibility(View.VISIBLE);
-                    holder.locateMyTeamCheckOutIcon.setVisibility(View.VISIBLE);
-                    holder.locateMyTeamCheckInTime.setVisibility(View.VISIBLE);
-                    holder.locateMyTeamCheckOutTime.setVisibility(View.VISIBLE);
-
-                    if(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntries().get(i).getBooking()!=null) {
-                        holder.locateMyTeamDeskName.setText(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntries().get(i).getBooking().getDeskCode());
-                        holder.locateMyTeamCheckInTime.setText(Utils.splitTime(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntries().get(i).getFrom()));
-                        holder.locateMyTeamCheckOutTime.setText(Utils.splitTime(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntries().get(i).getMyto()));
-                    }
-                }
+            }else if(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getBooking()==null){
+                holder.locateMyTeamDeskName.setText("No Booking Avaliable");
+                holder.locateMyTeamCheckInTime.setVisibility(View.INVISIBLE);
+                holder.locateMyTeamCheckOutTime.setVisibility(View.INVISIBLE);
+                holder.locateMyTeamLocation.setVisibility(View.INVISIBLE);
+                holder.locateMyTeamNameCheckInIcon.setVisibility(View.INVISIBLE);
+                holder.locateMyTeamCheckOutIcon.setVisibility(View.INVISIBLE);
+            }
 
         }
 
@@ -90,12 +88,19 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
             public void onClick(View v) {
 
                 //showMyTeamLocationClickable.showMyTeamLocation(175,273,bottomSheetDialog,bottomSheetBehavior);
-                showMyTeamLocationClickable.showMyTeamLocation(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups());
+                showMyTeamLocationClickable.showMyTeamLocation(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel());
 
             }
         });
 
 
+    }
+
+    private void setVivisbleItems(LocateMyTeamViewHolder holder) {
+        holder.locateMyTeamNameCheckInIcon.setVisibility(View.VISIBLE);
+        holder.locateMyTeamCheckOutIcon.setVisibility(View.VISIBLE);
+        holder.locateMyTeamCheckInTime.setVisibility(View.VISIBLE);
+        holder.locateMyTeamCheckOutTime.setVisibility(View.VISIBLE);
     }
 
     @Override
