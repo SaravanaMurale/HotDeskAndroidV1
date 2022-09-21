@@ -72,6 +72,7 @@ import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
 import dream.guys.hotdeskandroid.databinding.FragmentBookBinding;
 import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
+import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.request.Point;
 import dream.guys.hotdeskandroid.model.response.AmenitiesResponse;
@@ -1888,7 +1889,7 @@ public class BookFragment extends Fragment implements
 
                 if(code.equals("3")){
                     //DeskBookForWholeWeekFromToday
-                    //doRepeatBookingForAWeek();
+//                    doRepeatDeskBookingForAWeek();
                 }else if(code.equals("4")){
                     //Meeting Room Booking For Whole Week From Today
 //                    doRepeatMeetingRoomBookingForWeek();
@@ -1938,7 +1939,7 @@ public class BookFragment extends Fragment implements
 
                 if(code.equals("3")){
                     //BookForSelectedDaysInAWeek
-                    //doRepeatBookingForAWeek();
+//                    doRepeatDeskBookingForAWeek();
                 }else if(code.equals("4")){
 
                 }else if(code.equals("5")){
@@ -3547,7 +3548,7 @@ public class BookFragment extends Fragment implements
             public void onClick(View view) {
 
                 repeatActvieStatus = false;
-                tvRepeat.setText("None");
+                repeat.setText("None");
 
                 type = "none";
                 iv_none.setVisibility(View.VISIBLE);
@@ -3566,7 +3567,7 @@ public class BookFragment extends Fragment implements
             @Override
             public void onClick(View view) {
 
-                tvRepeat.setText("Daily");
+                repeat.setText("Daily");
 
                 type = "daily";
                 iv_none.setVisibility(View.GONE);
@@ -3797,6 +3798,75 @@ public class BookFragment extends Fragment implements
             Toast.makeText(getActivity(), "Response Failure", Toast.LENGTH_SHORT).show();
         }
 
+
+    }
+    private void doRepeatDeskBookingForAWeek() {
+
+        String selectedDate=binding.locateCalendearView.getText().toString();
+        System.out.println("Seelcteddate "+selectedDate+" "+enableCurrentWeek);
+        List<String> dateList=Utils.getCurrentWeekDateList(selectedDate,enableCurrentWeek);
+
+        LocateBookingRequest locateBookingRequest = new LocateBookingRequest();
+        locateBookingRequest.setTeamId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID));
+        locateBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID));
+
+        List<LocateBookingRequest.ChangeSets> changeSetsList= new ArrayList<>();
+
+
+        for (int i = 0; i <dateList.size() ; i++) {
+            //System.out.println("AddedDateList "+dateList.get(i));
+
+            LocateBookingRequest.ChangeSets changeSets = locateBookingRequest.new ChangeSets();
+
+            changeSets.setChangeSetId(0);
+            //changeSets.setChangeSetDate("2022-07-14T00:00:00.000Z");
+            changeSets.setChangeSetDate(dateList.get(i) + "T" + "00:00:00.000" + "Z");
+
+            LocateBookingRequest.ChangeSets.Changes changes = changeSets.new Changes();
+            changes.setUsageTypeId(2);
+
+            changes.setFrom(getCurrentDate() + "" + "T" + startTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            changes.setTo(getCurrentDate() + "" + "T" + endTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            changes.setTimeZoneId("India Standard Time");
+//            changes.setTeamDeskId(teamDeskIdForBooking);
+            changes.setTeamDeskId(selectedDeskId);
+            changes.setTypeOfCheckIn(1);
+
+            changeSets.setChanges(changes);
+
+            changeSetsList.add(changeSets);
+
+
+        }
+        locateBookingRequest.setChangeSetsList(changeSetsList);
+        List<LocateBookingRequest.DeleteIds> deleteIdsList = new ArrayList<>();
+        locateBookingRequest.setDeleteIdsList(deleteIdsList);
+
+        System.out.println("RepeatModuleRequestData "+locateBookingRequest);
+
+        if (Utils.isNetworkAvailable(getActivity())) {
+//            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            dialog = ProgressDialog.showProgressBar(getContext());
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call=apiService.doRepeatBookingForWeek(locateBookingRequest);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+//                    binding.locateProgressBar.setVisibility(View.GONE);
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    locateResponseHandler(response,getResources().getString(R.string.booking_success));
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+//                    binding.locateProgressBar.setVisibility(View.GONE);
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                }
+            });
+
+        }else {
+            Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
+        }
 
     }
 
