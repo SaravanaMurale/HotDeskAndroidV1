@@ -10,17 +10,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.icu.util.LocaleData;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.ScaleAnimation;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -40,10 +36,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.alexvasilkov.gestures.GestureController;
-import com.alexvasilkov.gestures.GestureControllerForPager;
-import com.alexvasilkov.gestures.GestureControllerForPager;
-import com.alexvasilkov.gestures.views.GestureFrameLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
@@ -51,17 +43,14 @@ import com.google.android.material.chip.ChipGroup;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.temporal.TemporalAdjusters;
-import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import dream.guys.hotdeskandroid.MainActivity;
@@ -103,6 +92,7 @@ import dream.guys.hotdeskandroid.model.response.CarParkAvalibilityResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingslotsResponse;
+import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.DeskDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
@@ -257,6 +247,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     boolean repeatActvieStatus=false;
     TextView tvRepeat;
 
+    //MyTeam
+    BottomSheetBehavior myteamBottomSheetBehavior;
+    RelativeLayout myTeamHeader,myTeamContactBlock;
+    //Contact
+    TextView locateMyTeamUserName,tvLocateMyTeamLocationView,locateMyTeamDeskName,myTeam_tv_start_time,myTeam_tv_end_time,tvMyTeamEmail,tvMyTeamTeams,tvmyTeamPhone,myTeamBookNearBy;
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -333,7 +330,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                callMyTeamBottomSheet();
+                getMyTeamMemberData();
+
+
 
             }
         });
@@ -371,6 +370,35 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         return root;
+    }
+
+    private void getMyTeamMemberData() {
+
+
+        String startTime=binding.locateStartTime.getText().toString()+":00.000Z";
+
+        String dateWithTime=binding.locateCalendearView.getText().toString()+"T"+startTime;
+        System.out.println("StartTimeForamt "+dateWithTime);
+
+        //2022-09-20T10:51:17.830Z
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ArrayList<DAOTeamMember>> call = apiService.getTeamMembers(dateWithTime);
+        call.enqueue(new Callback<ArrayList<DAOTeamMember>>() {
+            @Override
+            public void onResponse(Call<ArrayList<DAOTeamMember>> call, Response<ArrayList<DAOTeamMember>> response) {
+
+                List<DAOTeamMember> daoTeamMemberList=response.body();
+
+                callMyTeamBottomSheet(daoTeamMemberList);
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<DAOTeamMember>> call, Throwable t) {
+
+            }
+        });
+
     }
 
 
@@ -810,8 +838,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                         for (String key : locateCountryResposeList.get(floorPosition).getItems().keySet()) {
 
-                            valueList
-                                    = locateCountryResposeList.get(floorPosition).getItems().get(key);
+                            valueList = locateCountryResposeList.get(floorPosition).getItems().get(key);
 
                             addView(valueList, key, floorPosition, itemTotalSize);
 
@@ -1689,11 +1716,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     private void callDeskUnavaliable(String selctedCode, String key, int id, String code, int requestTeamId, int requestTeamDeskId) {
 
         TextView unAvalibaleDeskName, tvUnavaliableBack, unAvaliableLocate, tvDescriptionUnAvaliable;
-
-
-      /*  BottomSheetDialog locateCheckInBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        locateCheckInBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_unavalible_bottomsheet,
-                new RelativeLayout(getContext())));*/
 
         BottomSheetDialog locateCheckInBottomSheet = new BottomSheetDialog(getContext());
         View view = View.inflate(getContext(), R.layout.dialog_locate_unavalible_bottomsheet, null);
@@ -4854,7 +4876,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
     //MyTeamBottomSheet
-    private void callMyTeamBottomSheet() {
+    private void callMyTeamBottomSheet(List<DAOTeamMember> daoTeamMemberList) {
 
         TextView myTeamClose;
 
@@ -4866,13 +4888,25 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         BottomSheetDialog myTeamBottomSheet = new BottomSheetDialog(getContext());
         View view = View.inflate(getContext(), R.layout.dialog_locate_myteam_bottomsheet, null);
         myTeamBottomSheet.setContentView(view);
-        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        myteamBottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
         //bottomSheetBehavior.setPeekHeight(500);
 
 
         rvMyTeam = myTeamBottomSheet.findViewById(R.id.rvLocateMyTeam);
         myTeamClose = myTeamBottomSheet.findViewById(R.id.myTeamClose);
 
+        myTeamHeader=myTeamBottomSheet.findViewById(R.id.myTeamHeader);
+
+        myTeamContactBlock=myTeamBottomSheet.findViewById(R.id.myTeamContactBlock);
+        locateMyTeamUserName=myTeamBottomSheet.findViewById(R.id.locateMyTeamUserName);
+        tvLocateMyTeamLocationView=myTeamBottomSheet.findViewById(R.id.tvLocateMyTeamLocationView);
+        locateMyTeamDeskName=myTeamBottomSheet.findViewById(R.id.locateMyTeamDeskName);
+        myTeam_tv_start_time=myTeamBottomSheet.findViewById(R.id.myTeam_tv_start_time);
+        myTeam_tv_end_time=myTeamBottomSheet.findViewById(R.id.myTeam_tv_end_time);
+        tvMyTeamEmail=myTeamBottomSheet.findViewById(R.id.tvMyTeamEmail);
+        tvMyTeamTeams=myTeamBottomSheet.findViewById(R.id.tvMyTeamTeams);
+        tvmyTeamPhone=myTeamBottomSheet.findViewById(R.id.tvmyTeamPhone);
+        myTeamBookNearBy=myTeamBottomSheet.findViewById(R.id.myTeamBookNearBy);
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvMyTeam.setLayoutManager(linearLayoutManager);
@@ -4886,13 +4920,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         });
 
-        List<String> stringName = new ArrayList<>();
-        stringName.add("Bessie Cooper");
-        stringName.add("Francene Vandyne");
-        stringName.add("Cody Fisher");
 
-
-        locateMyTeamAdapter = new LocateMyTeamAdapter(getContext(), stringName, this, myTeamBottomSheet, bottomSheetBehavior);
+        locateMyTeamAdapter = new LocateMyTeamAdapter(getContext(), daoTeamMemberList, this);
         rvMyTeam.setAdapter(locateMyTeamAdapter);
 
 
@@ -5645,13 +5674,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
     @Override
-    public void showMyTeamLocation(int i, int i1, BottomSheetDialog bottomSheetDialog, BottomSheetBehavior bottomSheetBehavior) {
-
+    public void showMyTeamLocation(ArrayList<DAOTeamMember.DayGroup> dayGroups) {
         /*relativeLayout.leftMargin = i;
         relativeLayout.topMargin = i1;
         ivDesk.setLayoutParams(relativeLayout);*/
 
-        bottomSheetBehavior.setPeekHeight(500);
+        myTeamHeader.setVisibility(View.GONE);
+        myTeamContactBlock.setVisibility(View.VISIBLE);
+
 
         View perSonView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
         ImageView desk = perSonView.findViewById(R.id.ivDesk);
@@ -5660,16 +5690,172 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         desk.setVisibility(View.GONE);
         ivPerson.setVisibility(View.VISIBLE);
-
-        relativeLayout.leftMargin = i;
-        relativeLayout.topMargin = i1;
         relativeLayout.width = 60;
         relativeLayout.height = 60;
 
         ivPerson.setLayoutParams(relativeLayout);
 
-        binding.firstLayout.addView(perSonView);
+
+        if(dayGroups!=null){
+            for (int i = 0; i <dayGroups.get(0).getCalendarEntries().size() ; i++) {
+                if(dayGroups.get(0).getCalendarEntries().get(i).getBooking()!=null){
+
+                    int selectedFloorId= dayGroups.get(0).getCalendarEntries().get(i).getBooking().getLocationBuildingFloor().getFloorID();
+                    int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+                    if(selectedFloorId==parentId) {
+                        myTeam_tv_start_time.setText(Utils.splitTime(dayGroups.get(0).getCalendarEntries().get(i).getFrom()));
+                        myTeam_tv_end_time.setText(Utils.splitTime(dayGroups.get(0).getCalendarEntries().get(i).getMyto()));
+                        getFloorAndDeskDetailsToPlaceUser(dayGroups.get(0).getCalendarEntries().get(i).getBooking(), relativeLayout, perSonView, ivPerson);
+                    }else {
+                        Toast.makeText(getContext(),"Selected user is not avaliable in this floor",Toast.LENGTH_LONG).show();
+                    }
+
+                }
+            }
+        }
+
+
+    /*    if(dayGroups!=null) {
+
+            if (dayGroups.get(0).getCalendarEntries() != null) {
+                int selectedFloorId=dayGroups.get(0).getCalendarEntries().get(0).getBooking().getLocationBuildingFloor().getFloorID();
+                int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+
+                if(selectedFloorId==parentId) {
+                    myTeam_tv_start_time.setText(Utils.splitTime(dayGroups.get(0).getCalendarEntries().get(0).getFrom()));
+                    myTeam_tv_end_time.setText(Utils.splitTime(dayGroups.get(0).getCalendarEntries().get(0).getMyto()));
+                    getFloorAndDeskDetailsToPlaceUser(dayGroups.get(0).getCalendarEntries().get(0).getBooking(), relativeLayout, perSonView, ivPerson);
+                }else {
+                    Toast.makeText(getContext(),"Selected user is not avaliable in this floor",Toast.LENGTH_LONG).show();
+                }
+
+
+            }
+
+        }*/
+
+        //relativeLayout.leftMargin = i;
+        //relativeLayout.topMargin = i1;
+        //ivPerson.setLayoutParams(relativeLayout);
+        //binding.firstLayout.addView(perSonView);
 
 
     }
+
+    private void getFloorAndDeskDetailsToPlaceUser(DAOTeamMember.DayGroup.CalendarEntry.Booking booking, RelativeLayout.LayoutParams relativeLayout, View perSonView, ImageView ivPerson) {
+
+        int selectedFloorIdInTeam=booking.getLocationBuildingFloor().getFloorID();
+
+        int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+        int floorPosition = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION);
+
+        //if(selectedFloorIdInTeam==parentId) {
+
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(selectedFloorIdInTeam);
+            call.enqueue(new Callback<List<LocateCountryRespose>>() {
+                @Override
+                public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
+
+                    List<LocateCountryRespose> locateCountryResposeList = response.body();
+
+                    if (selectedFloorIdInTeam == parentId) {
+
+                        for (int i = 0; i < locateCountryResposeList.size(); i++) {
+
+                            for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getDesks().size(); j++) {
+                                if (booking.getDeskId() == locateCountryResposeList.get(i).getLocationItemLayout().getDesks().get(j).getDesksId()) {
+                                    int getSelectTeamFloorPosition = i;
+
+                                    if (floorPosition == getSelectTeamFloorPosition) {
+
+                                        for (String key : locateCountryResposeList.get(getSelectTeamFloorPosition).getItems().keySet()) {
+
+                                            String[] words = key.split("_");
+
+                                            int id = Integer.parseInt(words[0]);
+
+                                            if (id == booking.getDeskId()) {
+                                                List<String> coordinateList = new ArrayList<>();
+                                                coordinateList = locateCountryResposeList.get(getSelectTeamFloorPosition).getItems().get(key);
+
+                                                System.out.println("CoordinatesSlected " + coordinateList.get(0) + " " + coordinateList.get(1));
+
+                                                relativeLayout.leftMargin = Integer.parseInt(coordinateList.get(0));
+                                                relativeLayout.topMargin = Integer.parseInt(coordinateList.get(1));
+
+                                                ivPerson.setLayoutParams(relativeLayout);
+                                                binding.firstLayout.addView(perSonView);
+                                                myteamBottomSheetBehavior.setPeekHeight(100);
+
+
+                                                myTeamBookNearBy.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        
+                                                        bookNearByToMyTeam(booking.getDeskId(),locateCountryResposeList.get(0).getItems());
+                                                    }
+                                                });
+
+
+
+                                            }
+
+
+                                        }
+                                    }else {
+                                        Toast.makeText(getContext(),"Selected user is not avaliable in this floor",Toast.LENGTH_LONG).show();
+                                    }
+
+                                }
+                            }
+                        }
+
+                    }
+
+                    //checkSelectedAndLoadedFloor(locateCountryResposeList);
+
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+
+                }
+
+                @Override
+                public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
+
+        /*}else {
+            binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+            Toast.makeText(getContext(),"Selected user is not avaliable in this floor",Toast.LENGTH_LONG).show();
+        }*/
+
+    }
+
+    private void bookNearByToMyTeam(int deskId, HashMap<String, List<String>> desks) {
+
+        for (int i = 0; i <desks.size(); i++) {
+
+
+
+        }
+
+        for (String key : desks.keySet()) {
+
+            String[] words = key.split("_");
+
+            int id = Integer.parseInt(words[0]);
+
+            if (deskId == id) {
+
+                List<String> stringList=desks.get(key);
+            }
+
+        }
+    }
+
+
 }

@@ -20,8 +20,8 @@
                 android:id="@+id/locateMyTeamProfile"
                 android:layout_width="@dimen/_50sdp"
                 android:layout_height="@dimen/_50sdp"
-                android:src="@drawable/mygirl"
                 android:layout_centerVertical="true"
+                android:src="@drawable/mygirl"
                 app:tint="@color/figmaBlack" />
 
             <ImageView
@@ -78,11 +78,10 @@
                 android:id="@+id/locateMyTeamLocation"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
-                android:src="@drawable/blue_location"
                 android:layout_below="@+id/locateMyTeamName"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/_5sdp"
-                />
+                android:src="@drawable/blue_location" />
 
             <ImageView
                 android:id="@+id/locateMyTeamNameCheckInIcon"
