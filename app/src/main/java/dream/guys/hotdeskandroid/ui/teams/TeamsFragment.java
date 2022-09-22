@@ -887,9 +887,9 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             String toDate = Utils.getYearMonthDateFormat(horizontalCalendar.getSelectedDate().getTime())
                     + "T00:00:00Z";
             String fromTime = Utils.getYearMonthDateFormat(horizontalCalendar.getSelectedDate().getTime())
-                    + "T08:00:00Z";
+                    + "T"+Utils.getCurrentTime()+":00Z";
             String toTime = Utils.getYearMonthDateFormat(horizontalCalendar.getSelectedDate().getTime())
-                    + "T21:00:00Z";
+                    + "T23:59:00Z";
 
         int parentId = floorListModelArrayList.get(i).getFloorId();
 
