@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -81,6 +82,7 @@ import dream.guys.hotdeskandroid.model.request.LocateCarParkEditRequest;
 import dream.guys.hotdeskandroid.model.request.LocateDeskBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateDeskDeleteRequest;
 import dream.guys.hotdeskandroid.model.request.LocationMR_Request;
+import dream.guys.hotdeskandroid.model.request.MeetingAmenityStatus;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomEditRequest;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.request.MeetingStatusModel;
@@ -263,6 +265,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     //Contact
     TextView locateMyTeamUserName, tvLocateMyTeamLocationView, locateMyTeamDeskName, myTeam_tv_start_time, myTeam_tv_end_time, tvMyTeamEmail, tvMyTeamTeams, tvmyTeamPhone, myTeamBookNearBy;
 
+    //Filter
+    List<MeetingAmenityStatus> meetingAmenityStatusList=new ArrayList<>();
+    boolean amenitiesApplyStatus=false;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -420,6 +426,15 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         repeatActvieStatus = false;
         deskStatusModelList.clear();
         meetingStatusModelList.clear();
+        if(!amenitiesApplyStatus){
+            meetingAmenityStatusList.clear();
+        }
+
+        for (int i = 0; i <meetingAmenityStatusList.size() ; i++) {
+            System.out.println("InitialInitAmenitiStatus "+meetingAmenityStatusList.get(i).getId()+" "+amenitiesApplyStatus);
+        }
+
+
 
         int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
 
@@ -1332,6 +1347,20 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 }
 
             }
+
+            for (int i = 0; i <meetingAmenityStatusList.size() ; i++) {
+
+                int idValue=meetingAmenityStatusList.get(i).getId();
+                if(id==idValue){
+                    ivDesk.setVisibility(View.GONE);
+                    System.out.println("VisibleGoneAmenitiesIdAndID "+meetingAmenityStatusList.get(i).getId()+" "+id+" "+amenitiesApplyStatus);
+                }else {
+                    ivDesk.setVisibility(View.VISIBLE);
+                }
+            }
+            
+
+
         }
 
         //Head Facing
@@ -5084,11 +5113,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                     List<UserAllowedMeetingResponse.Amenity> amenityList=userAllowedMeetingResponseList.get(i).getAmenities();
 
-                                    for (int k = 0; k <amenityList.size() ; k++) {
+                                    doCheckAppliedAminitiesWithMeetingRoom(amenityList,meetingStatusModelList.get(j));
 
-                                        System.out.println("AmenityListForThisMeetingRoom "+amenityList.get(k).getId());
-
-                                    }
 
 
                                 }
@@ -5102,23 +5128,22 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 }
 
 
-                ItemAdapter itemAadapter=new ItemAdapter();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
 
-                ArrayList<DataModel> list =itemAadapter.getUpdatedList();
+                        for (int i = 0; i <meetingAmenityStatusList.size() ; i++) {
 
-                for (int i = 0; i <list.size() ; i++) {
-                    System.out.println("ItemAdapterList "+list.get(i).getItemText());
+                            System.out.println("BeforeCallingAmenitiesListData "+meetingAmenityStatusList.get(i).getId());
 
-                    for (int j = 0; j <list.get(i).getNestedList().size() ; j++) {
-
-                        if(list.get(i).getNestedList().get(j).isChecked()){
-                            System.out.println("ItemAdapterListNested "+list.get(i).getNestedList().get(j).getValues());
                         }
 
+                        callInitView();
 
                     }
+                },3000);
 
-                }
+
 
 
                /* for (int i = 0; i <meetingStatusModelList.size() ; i++) {
@@ -5184,6 +5209,57 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         locateFilterMainRV.setAdapter(adapter);
 
         bottomSheetDialog.show();
+
+    }
+
+    private void doCheckAppliedAminitiesWithMeetingRoom(List<UserAllowedMeetingResponse.Amenity> amenityList, MeetingStatusModel meetingStatusModel) {
+
+        //amenityList-->This has default meeting room aminities
+        //list-->User selected amenities
+
+
+        ItemAdapter itemAadapter=new ItemAdapter();
+        ArrayList<DataModel> userSelectedAmenities =itemAadapter.getUpdatedList();
+        int amenitiesMatchCount=0;
+
+        //Checking Here Only With Rooms
+        for (int i = 0; i <userSelectedAmenities.get(1).getNestedList().size() ; i++) {
+
+
+            for (int j = 0; j <amenityList.size() ; j++) {
+
+                if(userSelectedAmenities.get(1).getNestedList().get(i).isChecked()) {
+                    if (userSelectedAmenities.get(1).getNestedList().get(i).getId() == amenityList.get(j).getId()) {
+                        amenitiesMatchCount = amenitiesMatchCount + 1;
+                    }
+                }
+
+            }
+        }
+
+
+        int userSelectedTrueCount=0;
+        for (int i = 0; i <userSelectedAmenities.get(1).getNestedList().size() ; i++) {
+
+            if(userSelectedAmenities.get(1).getNestedList().get(i).isChecked()){
+                userSelectedTrueCount=userSelectedTrueCount+1;
+            }
+
+        }
+
+        if(amenitiesMatchCount==userSelectedTrueCount){
+            System.out.println("AllUserSelectedAmenitiesAvaliableHInThisRoom "+meetingStatusModel.getId());
+
+        }else {
+            System.out.println("UserSelectedAmenityIsNotAvaliableHInThisRoom "+meetingStatusModel.getId());
+            MeetingAmenityStatus meetingAmenityStatus=new MeetingAmenityStatus(meetingStatusModel.getId());
+            meetingAmenityStatusList.add(meetingAmenityStatus);
+        }
+
+        amenitiesApplyStatus=true;
+
+
+
 
     }
 
@@ -6086,6 +6162,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     List<AmenitiesResponse> amenitiesResponseList=response.body();
 
+                    meetingAmenityStatusList.clear();
                     callLocateFilterBottomSheet(amenitiesResponseList);
 
                 }
