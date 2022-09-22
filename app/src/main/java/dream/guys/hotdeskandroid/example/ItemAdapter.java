@@ -24,6 +24,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     private ArrayList<ValuesPOJO> list = new ArrayList<>();
     NestedAdapter adapter;
 
+    public ArrayList<DataModel> getUpdatedList(){
+        return mList;
+    }
+
+    public ItemAdapter() {
+    }
+
     public ItemAdapter(ArrayList<DataModel> mList){
         this.mList  = mList;
     }
@@ -44,8 +51,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         holder.expandableLayout.setVisibility(isExpandable ? View.VISIBLE : View.GONE);
 
         if (model.isChecked()){
+            mList.get(position).setChecked(true);
             holder.checkBox.setChecked(true);
         }else {
+            mList.get(position).setChecked(false);
             holder.checkBox.setChecked(false);
         }
 

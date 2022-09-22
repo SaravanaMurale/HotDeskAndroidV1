@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="500dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginLeft="@dimen/_10sdp"
     android:layout_marginRight="@dimen/_10sdp"
@@ -18,6 +18,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_marginRight="@dimen/_5sdp"
         >
 
         <TextView
@@ -26,8 +28,7 @@
             android:layout_height="wrap_content"
             android:text="MyTeam"
             android:textColor="@color/black"
-            android:textSize="@dimen/_15sdp"
-            />
+            android:textSize="@dimen/_15sdp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -50,18 +51,21 @@
     </RelativeLayout>
 
     <!--Search-->
-    <TextView
-        android:id="@+id/locateMyTeamSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/header"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:paddingTop="@dimen/_5sdp"
-        android:paddingBottom="@dimen/_5sdp"
-        android:paddingLeft="@dimen/_10sdp"
-        android:drawableLeft="@drawable/search_1px"
-        android:background="@drawable/rectangle_greybg_with_corner"
-        android:hint="   Search" />
+        <TextView
+            android:id="@+id/locateMyTeamSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/header"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/rectangle_greybg_with_corner"
+            android:drawableLeft="@drawable/search_1px"
+            android:hint="   Search"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            />
 
     <!--RecyclerView-->
     <androidx.recyclerview.widget.RecyclerView
@@ -375,6 +379,7 @@
 
 
         <TextView
+            android:id="@+id/bookNearByBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
