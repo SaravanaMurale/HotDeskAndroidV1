@@ -2,6 +2,7 @@ package dream.guys.hotdeskandroid.example;
 
 public class ValuesPOJO {
 
+    private int id;
     public String values;
     boolean isChecked;
 
@@ -10,6 +11,12 @@ public class ValuesPOJO {
 
     public ValuesPOJO(String values) {
         this.values = values;
+    }
+
+    public ValuesPOJO(int id, String values, boolean isChecked) {
+        this.id = id;
+        this.values = values;
+        this.isChecked = isChecked;
     }
 
     public ValuesPOJO(String values, boolean isChecked) {
@@ -31,5 +38,13 @@ public class ValuesPOJO {
 
     public void setChecked(boolean checked) {
         isChecked = checked;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
