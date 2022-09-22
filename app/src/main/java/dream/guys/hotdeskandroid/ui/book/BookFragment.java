@@ -171,6 +171,7 @@ public class BookFragment extends Fragment implements
     List<BookingForEditResponse.TeamDeskAvailabilities> bookingDeskList=new ArrayList<>();
     List<ParkingSpotModel> parkingSpotModelList=new ArrayList<>();
     List<UserAllowedMeetingResponse> userAllowedMeetingResponseList=new ArrayList<>();
+    List<UserAllowedMeetingResponse> userAllowedMeetingResponseListUpdated=new ArrayList<>();
 
     BookingForEditResponse bookingForEditResponse;
     View view;
@@ -213,7 +214,7 @@ public class BookFragment extends Fragment implements
     int enableCurrentWeek=-1;
     boolean repeatActvieStatus=false;
     TextView tvRepeat;
-
+    int participants = 0;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -244,7 +245,6 @@ public class BookFragment extends Fragment implements
             public void onClick(View v) {
                 bottomSheetLocateTimePickerInBooking(getContext(), getActivity(), binding.locateEndTime, "End", binding.locateCalendearView.getText().toString(), 2);
 
-
             }
         });
 
@@ -252,6 +252,20 @@ public class BookFragment extends Fragment implements
             @Override
             public void onClick(View v) {
                 getLocateCountryList();
+            }
+        });
+
+        binding.tvParticipantsCount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().equalsIgnoreCase(""))
+                    participants = Integer.parseInt(s.toString());
             }
         });
 
@@ -475,7 +489,8 @@ public class BookFragment extends Fragment implements
                 binding.deskLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
                 binding.ivDesk.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
                 binding.tvDesk.setVisibility(View.VISIBLE);
-
+                binding.rlParticipants.setVisibility(View.GONE);
+                binding.rlFilter.setVisibility(View.GONE);
                 LinearLayout.LayoutParams deskParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 deskParams.weight = 1.0f;
@@ -503,6 +518,9 @@ public class BookFragment extends Fragment implements
                 binding.roomLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
                 binding.ivRoom.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
                 binding.tvRoom.setVisibility(View.VISIBLE);
+                binding.rlParticipants.setVisibility(View.VISIBLE);
+                binding.rlFilter.setVisibility(View.VISIBLE);
+
                 LinearLayout.LayoutParams roomParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 roomParams.weight = 1.0f;
@@ -537,6 +555,9 @@ public class BookFragment extends Fragment implements
                 binding.parkingLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
                 binding.ivParking.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
                 binding.tvParking.setVisibility(View.VISIBLE);
+                binding.rlParticipants.setVisibility(View.GONE);
+                binding.rlFilter.setVisibility(View.GONE);
+
 
                 LinearLayout.LayoutParams parkingParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -916,12 +937,19 @@ public class BookFragment extends Fragment implements
             call.enqueue(new Callback<List<UserAllowedMeetingResponse>>() {
                 @Override
                 public void onResponse(Call<List<UserAllowedMeetingResponse>> call, Response<List<UserAllowedMeetingResponse>> response) {
+                    userAllowedMeetingResponseListUpdated.clear();
                     userAllowedMeetingResponseList=response.body();
+
+
 //                    ProgressDialog.dismisProgressBar(getContext(),dialog);
                     boolean checkIsRequest=false;
                     if (userAllowedMeetingResponseList!=null && userAllowedMeetingResponseList.size()>0){
                         loo :
-                        for (int i=0;i<userAllowedMeetingResponseList.size();i++){
+                        for (int i=0; i < userAllowedMeetingResponseList.size(); i++){
+                            if (participants <= userAllowedMeetingResponseList.get(i).getNoOfPeople()){
+                                userAllowedMeetingResponseListUpdated.add(userAllowedMeetingResponseList.get(i));
+                            }
+
                             if (editBookingDetails.getMeetingRoomtId()==userAllowedMeetingResponseList.get(i).getId()){
                                 checkIsRequest=true;
                                 break loo;
@@ -946,12 +974,20 @@ public class BookFragment extends Fragment implements
                                     0,"request");
 
                     }else {
-                        callAmenitiesListForMeetingRoom(editBookingDetails,
-                                editBookingDetails.getEditStartTTime(),
-                                editBookingDetails.getEditEndTime(),
-                                editBookingDetails.getDate(),
-                                userAllowedMeetingResponseList.get(0).getId(),
-                                0,"new");
+                        if (userAllowedMeetingResponseListUpdated.size()>0)
+                            callAmenitiesListForMeetingRoom(editBookingDetails,
+                                    editBookingDetails.getEditStartTTime(),
+                                    editBookingDetails.getEditEndTime(),
+                                    editBookingDetails.getDate(),
+                                    userAllowedMeetingResponseListUpdated.get(0).getId(),
+                                        0,"new");
+                        else if (userAllowedMeetingResponseList.size()>0)
+                            callAmenitiesListForMeetingRoom(editBookingDetails,
+                                    editBookingDetails.getEditStartTTime(),
+                                    editBookingDetails.getEditEndTime(),
+                                    editBookingDetails.getDate(),
+                                    userAllowedMeetingResponseList.get(0).getId(),
+                                        0,"new");
 //                        editBookingUsingBottomSheet(editBookingDetails,2,0,"new");
                     }
 
@@ -1437,11 +1473,11 @@ public class BookFragment extends Fragment implements
                     || newEditStatus.equalsIgnoreCase("request")){
                 title.setText("Book Meeting Room");
             }
-            if (userAllowedMeetingResponseList.size() > 0){
+            if (userAllowedMeetingResponseListUpdated.size() > 0){
 //                System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
-                deskRoomName.setText(""+userAllowedMeetingResponseList.get(0).getName());
-                selectedDeskId = userAllowedMeetingResponseList.get(0).getId();
-                locationAddress.setText(""+userAllowedMeetingResponseList.get(0).getLocationMeeting().getName());
+                deskRoomName.setText(""+userAllowedMeetingResponseListUpdated.get(0).getName());
+                selectedDeskId = userAllowedMeetingResponseListUpdated.get(0).getId();
+                locationAddress.setText(""+userAllowedMeetingResponseListUpdated.get(0).getLocationMeeting().getName());
             }
         }else {
             if (newEditStatus.equalsIgnoreCase("edit")){
@@ -2352,7 +2388,7 @@ public class BookFragment extends Fragment implements
             rvDeskRecycler.setAdapter(parkingSpotListRecyclerAdapter);
         }else if (selectedicon==1){
             selectDesk.setText("Select Meeting Room");
-            roomListRecyclerAdapter =new RoomListRecyclerAdapter(getContext(),this,getActivity(),userAllowedMeetingResponseList,getContext(),bottomSheetDialog);
+            roomListRecyclerAdapter =new RoomListRecyclerAdapter(getContext(),this,getActivity(),userAllowedMeetingResponseListUpdated,getContext(),bottomSheetDialog);
             rvDeskRecycler.setAdapter(roomListRecyclerAdapter);
         }else {
             selectDesk.setText("Select Desk");

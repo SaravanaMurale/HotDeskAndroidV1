@@ -269,36 +269,71 @@
                     android:textSize="@dimen/_10sdp" />
 
                 <!--Calender-->
-                <TextView
-                    android:id="@+id/locateCalendearView"
-                    android:layout_width="@dimen/_100sdp"
+                <RelativeLayout
+                    android:id="@+id/rlParticipants"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/searchGlobal"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginLeft="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:background="@drawable/rectangle_bg_with_corner"
+                    android:paddingLeft="@dimen/_8sdp"
+                    android:paddingRight="@dimen/_8sdp"
+                    tools:ignore="MissingConstraints">
+
+                    <TextView
+                        android:id="@+id/tvParticipants"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Participants"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <EditText
+                        android:id="@+id/tvParticipantsCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/_4sdp"
+                        android:layout_toRightOf="@id/tvParticipants"
+                        android:background="@drawable/edittext_bg"
+                        android:inputType="number"
+                        android:text="0"
+                        android:textColor="@color/figmaBlack"
+                        android:textSize="@dimen/_10sdp" />
+                    
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/locateCalendearView"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:background="@drawable/rectangle_bg_with_corner"
-                    android:drawableRight="@drawable/locate_calender"
-                    android:paddingLeft="@dimen/_8sdp"
                     android:paddingTop="@dimen/_3sdp"
                     android:paddingRight="@dimen/_9sdp"
                     android:paddingBottom="@dimen/_3sdp"
-                    android:text="Wed 4 May"
+                    android:text="Participants"
                     android:textColor="@color/figmaBlack"
                     android:textSize="@dimen/_10sdp"
-                    tools:ignore="MissingConstraints" />
+                    tools:ignore="MissingConstraints"
+                    />
 
                 <!--StartAndEndTime-->
 
                 <!--StartAndEndTime-->
                 <RelativeLayout
+                    android:id="@+id/rlTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/searchGlobal"
-                    android:layout_alignParentRight="true"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_toRightOf="@id/rlParticipants"
                     android:background="@drawable/rectangle_bg_with_corner"
                     android:paddingLeft="@dimen/_8sdp"
                     android:paddingRight="@dimen/_8sdp"
@@ -363,6 +398,23 @@
 
 
                 </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rlFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/searchGlobal"
+                    android:layout_alignParentEnd="true"
+                    android:layout_toRightOf="@id/rlTime"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:background="@drawable/rectangle_bg_with_corner"
+                    tools:ignore="MissingConstraints">
+
+                    <ImageView
+                        android:layout_width="@dimen/_45sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:src="@drawable/locate_filter" />
+            </RelativeLayout>
 
 
             </RelativeLayout>
