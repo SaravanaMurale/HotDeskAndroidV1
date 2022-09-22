@@ -73,6 +73,7 @@ import dream.guys.hotdeskandroid.databinding.FragmentBookBinding;
 import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
 import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
+import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.request.Point;
 import dream.guys.hotdeskandroid.model.response.AmenitiesResponse;
@@ -205,7 +206,6 @@ public class BookFragment extends Fragment implements
 
     int stateId = 0;
     int canvasss = 0;
-
     int endTimeSelectedStats = 0;
 
 
@@ -1399,7 +1399,11 @@ public class BookFragment extends Fragment implements
         }
 
         if (dskRoomParkStatus == 1) {
-            repeatBlock.setVisibility(View.VISIBLE);
+            if (newEditStatus.equalsIgnoreCase("edit")){
+                repeatBlock.setVisibility(View.GONE);
+            }else
+                repeatBlock.setVisibility(View.VISIBLE);
+
             teamsBlock.setVisibility(View.GONE);
             commentBlock.setVisibility(View.GONE);
             commentRegistration.setHint("Comments");
@@ -1417,10 +1421,15 @@ public class BookFragment extends Fragment implements
             }
 
         }else if (dskRoomParkStatus==2) {
+            if (newEditStatus.equalsIgnoreCase("edit")){
+                repeatBlock.setVisibility(View.GONE);
+            }else
+                repeatBlock.setVisibility(View.VISIBLE);
+
             llDeskLayout.setVisibility(View.VISIBLE);
             commentRegistration.setVisibility(View.GONE);
             tvComments.setVisibility(View.GONE);
-            repeatBlock.setVisibility(View.GONE);
+//            repeatBlock.setVisibility(View.GONE);
             teamsBlock.setVisibility(View.GONE);
             chipGroup.setVisibility(View.VISIBLE);
             capacitylayout.setVisibility(View.VISIBLE);
@@ -1435,8 +1444,13 @@ public class BookFragment extends Fragment implements
                 locationAddress.setText(""+userAllowedMeetingResponseList.get(0).getLocationMeeting().getName());
             }
         }else {
+            if (newEditStatus.equalsIgnoreCase("edit")){
+                repeatBlock.setVisibility(View.GONE);
+            }else
+                repeatBlock.setVisibility(View.VISIBLE);
+
             llDeskLayout.setVisibility(View.VISIBLE);
-            repeatBlock.setVisibility(View.VISIBLE);
+//            repeatBlock.setVisibility(View.VISIBLE);
             teamsBlock.setVisibility(View.GONE);
             commentBlock.setVisibility(View.GONE);
             commentRegistration.setHint("Registration Number");
@@ -1532,105 +1546,113 @@ public class BookFragment extends Fragment implements
                                 selectedDeskId, deskRoomName.getText().toString(), false);
                 }
                 else {
-                    JsonObject jsonOuterObject = new JsonObject();
-                    JsonObject jsonInnerObject = new JsonObject();
-                    JsonObject jsonChangesObject = new JsonObject();
-                    JsonArray jsonChangesetArray = new JsonArray();
-                    JsonArray jsonDeletedIdsArray = new JsonArray();
-                    jsonInnerObject.addProperty("id",editDeskBookingDetails.getCalId());
-                    if (newEditStatus.equalsIgnoreCase("new_deep_link")
-                            || newEditStatus.equalsIgnoreCase("request")){
-                        if (checkInDate.getText().toString().equalsIgnoreCase("")){
-                            jsonInnerObject.addProperty("date",""+Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+"T00:00:00Z");
+                    if (repeatActvieStatus) {
+                        if (dskRoomParkStatus==1)
+                            doRepeatDeskBookingForAWeek();
+                        else if (dskRoomParkStatus==3)
+                            doRepeatCarBookingForAWeek(commentRegistration.getText().toString());
+
+                    } else {
+
+                        JsonObject jsonOuterObject = new JsonObject();
+                        JsonObject jsonInnerObject = new JsonObject();
+                        JsonObject jsonChangesObject = new JsonObject();
+                        JsonArray jsonChangesetArray = new JsonArray();
+                        JsonArray jsonDeletedIdsArray = new JsonArray();
+                        jsonInnerObject.addProperty("id",editDeskBookingDetails.getCalId());
+                        if (newEditStatus.equalsIgnoreCase("new_deep_link")
+                                || newEditStatus.equalsIgnoreCase("request")){
+                            if (checkInDate.getText().toString().equalsIgnoreCase("")){
+                                jsonInnerObject.addProperty("date",""+Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+"T00:00:00Z");
+                            }else {
+                                jsonInnerObject.addProperty("date",""+checkInDate.getText().toString()+"T00:00:00Z");
+                            }
                         }else {
-                            jsonInnerObject.addProperty("date",""+checkInDate.getText().toString()+"T00:00:00Z");
+
+                            jsonInnerObject.addProperty("date",""+Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+"T00:00:00Z");
                         }
-                    }else {
+                        switch (dskRoomParkStatus){
+                            case 1:
+                                jsonOuterObject.addProperty("teamId",SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
+                                jsonOuterObject.addProperty("teamMembershipId",SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAMMEMBERSHIP_ID));
+                                if (!commentRegistration.getText().toString().isEmpty() &&
+                                        !commentRegistration.getText().toString().equalsIgnoreCase(""))
+                                    jsonChangesObject.addProperty("comments",commentRegistration.getText().toString());
+                                if (selectedDeskId!=0 && dskRoomParkStatus==1 && selectedDeskId != editDeskBookingDetails.getDesktId()){
+                                    jsonChangesObject.addProperty("teamDeskId",selectedDeskId);
+                                }
 
-                        jsonInnerObject.addProperty("date",""+Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+"T00:00:00Z");
-                    }
-                    switch (dskRoomParkStatus){
-                        case 1:
-                            jsonOuterObject.addProperty("teamId",SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
-                            jsonOuterObject.addProperty("teamMembershipId",SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAMMEMBERSHIP_ID));
-                            if (!commentRegistration.getText().toString().isEmpty() &&
-                                    !commentRegistration.getText().toString().equalsIgnoreCase(""))
-                                jsonChangesObject.addProperty("comments",commentRegistration.getText().toString());
-                            if (selectedDeskId!=0 && dskRoomParkStatus==1 && selectedDeskId != editDeskBookingDetails.getDesktId()){
-                                jsonChangesObject.addProperty("teamDeskId",selectedDeskId);
-                            }
-
-                            if (newEditStatus.equalsIgnoreCase("request")){
-                                jsonChangesObject.addProperty("requestedTeamDeskId",editDeskBookingDetails.getDesktId());
-                                jsonChangesObject.addProperty("requestedTeamId",editDeskBookingDetails.getDeskTeamId());
-                                jsonChangesObject.addProperty("usageTypeId", "7");
-                                jsonChangesObject.addProperty("timeZoneId", "India Standard Time");
+                                if (newEditStatus.equalsIgnoreCase("request")){
+                                    jsonChangesObject.addProperty("requestedTeamDeskId",editDeskBookingDetails.getDesktId());
+                                    jsonChangesObject.addProperty("requestedTeamId",editDeskBookingDetails.getDeskTeamId());
+                                    jsonChangesObject.addProperty("usageTypeId", "7");
+                                    jsonChangesObject.addProperty("timeZoneId", "India Standard Time");
 //                                jsonChangesObject.addProperty("typeOfCheckIn", "1");
-                            }else{
-                                if (!newEditStatus.equalsIgnoreCase("edit"))
-                                    jsonChangesObject.addProperty("teamDeskId",editDeskBookingDetails.getDesktId());
-                            }
-                            break;
-                        case 2:
-                            jsonOuterObject.addProperty("meetingRoomId",editDeskBookingDetails.getMeetingRoomtId());
-                            break;
-                        case 3:
-                            if (selectedDeskId!=0)
-                                jsonOuterObject.addProperty("parkingSlotId",selectedDeskId);
+                                }else{
+                                    if (!newEditStatus.equalsIgnoreCase("edit"))
+                                        jsonChangesObject.addProperty("teamDeskId",editDeskBookingDetails.getDesktId());
+                                }
+                                break;
+                            case 2:
+                                jsonOuterObject.addProperty("meetingRoomId",editDeskBookingDetails.getMeetingRoomtId());
+                                break;
+                            case 3:
+                                if (selectedDeskId!=0)
+                                    jsonOuterObject.addProperty("parkingSlotId",selectedDeskId);
 
-                            if (!commentRegistration.getText().toString().isEmpty() &&
-                                    !commentRegistration.getText().toString().equalsIgnoreCase(""))
-                                jsonChangesObject.addProperty("vehicleRegNumber",commentRegistration.getText().toString());
-                            if (newEditStatus.equalsIgnoreCase("new")){
-                                jsonChangesObject.addProperty("bookedForUser",SessionHandler.getInstance().getInt(getActivity(),AppConstants.USER_ID));
-                            }
+                                if (!commentRegistration.getText().toString().isEmpty() &&
+                                        !commentRegistration.getText().toString().equalsIgnoreCase(""))
+                                    jsonChangesObject.addProperty("vehicleRegNumber",commentRegistration.getText().toString());
+                                if (newEditStatus.equalsIgnoreCase("new")){
+                                    jsonChangesObject.addProperty("bookedForUser",SessionHandler.getInstance().getInt(getActivity(),AppConstants.USER_ID));
+                                }
+                                break;
+                        }
 
-                            break;
-                    }
+                        BookingsRequest bookingsRequest = new BookingsRequest();
+                        ArrayList<BookingsRequest.ChangeSets> list =new ArrayList<>();
+                        ArrayList<Integer> list1 =new ArrayList<>();
 
-                    BookingsRequest bookingsRequest = new BookingsRequest();
-                    ArrayList<BookingsRequest.ChangeSets> list =new ArrayList<>();
-                    ArrayList<Integer> list1 =new ArrayList<>();
-
-                    BookingsRequest.ChangeSets changeSets = new BookingsRequest.ChangeSets();
-                    changeSets.setId(editDeskBookingDetails.getCalId());
-                    changeSets.setDate(""+Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+"T00:00:00.000Z");
-                    JsonObject jsonObject = new JsonObject();
+                        BookingsRequest.ChangeSets changeSets = new BookingsRequest.ChangeSets();
+                        changeSets.setId(editDeskBookingDetails.getCalId());
+                        changeSets.setDate(""+Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+"T00:00:00.000Z");
+                        JsonObject jsonObject = new JsonObject();
 //                    if (selectedDeskId!=0){
 //                        jsonChangesObject.addProperty("teamDeskId",selectedDeskId);
 //                    }
-                    if (newEditStatus.equalsIgnoreCase("new")
-                            || newEditStatus.equalsIgnoreCase("new_deep_link")){
-                        jsonChangesObject.addProperty("usageTypeId", "2");
-                        jsonChangesObject.addProperty("timeZoneId", "India Standard Time");
+                        if (newEditStatus.equalsIgnoreCase("new")
+                                || newEditStatus.equalsIgnoreCase("new_deep_link")){
+                            jsonChangesObject.addProperty("usageTypeId", "2");
+                            jsonChangesObject.addProperty("timeZoneId", "India Standard Time");
+                        }
+                        if (!Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()).equalsIgnoreCase(startTime.getText().toString())
+                                || newEditStatus.equalsIgnoreCase("new")
+                                || newEditStatus.equalsIgnoreCase("new_deep_link")
+                                || newEditStatus.equalsIgnoreCase("request")
+                        ){
+                            jsonChangesObject.addProperty("from", "2000-01-01T"+Utils.convert12HrsTO24Hrs(startTime.getText().toString())+":00.000Z");
+                        }if (!Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditEndTime()).equalsIgnoreCase(endTime.getText().toString())
+                                || newEditStatus.equalsIgnoreCase("new")
+                                || newEditStatus.equalsIgnoreCase("new_deep_link")
+                                || newEditStatus.equalsIgnoreCase("request")
+                        ){
+                            jsonChangesObject.addProperty("to","2000-01-01T"+Utils.convert12HrsTO24Hrs(endTime.getText().toString())+":00.000Z");
+                        }
+
+                        jsonInnerObject.add("changes",jsonChangesObject);
+                        jsonChangesetArray.add(jsonInnerObject);
+
+                        jsonOuterObject.add("changesets", jsonChangesetArray);
+                        jsonOuterObject.add("deletedIds", jsonDeletedIdsArray);
+
+                        System.out.println("json un" + jsonOuterObject.toString());
+
+                        if (jsonChangesObject.size() > 0){
+                            editBookingCall(jsonOuterObject,position,dskRoomParkStatus,newEditStatus);
+                        }
+                        selectedDeskId=0;
+                        roomBottomSheet.dismiss();
                     }
-                    if (!Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()).equalsIgnoreCase(startTime.getText().toString())
-                            || newEditStatus.equalsIgnoreCase("new")
-                            || newEditStatus.equalsIgnoreCase("new_deep_link")
-                            || newEditStatus.equalsIgnoreCase("request")
-                    ){
-                        jsonChangesObject.addProperty("from", "2000-01-01T"+Utils.convert12HrsTO24Hrs(startTime.getText().toString())+":00.000Z");
-                    }if (!Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditEndTime()).equalsIgnoreCase(endTime.getText().toString())
-                            || newEditStatus.equalsIgnoreCase("new")
-                            || newEditStatus.equalsIgnoreCase("new_deep_link")
-                            || newEditStatus.equalsIgnoreCase("request")
-                    ){
-                        jsonChangesObject.addProperty("to","2000-01-01T"+Utils.convert12HrsTO24Hrs(endTime.getText().toString())+":00.000Z");
-                    }
-
-                    jsonInnerObject.add("changes",jsonChangesObject);
-                    jsonChangesetArray.add(jsonInnerObject);
-
-                    jsonOuterObject.add("changesets", jsonChangesetArray);
-                    jsonOuterObject.add("deletedIds", jsonDeletedIdsArray);
-
-                    System.out.println("json un" + jsonOuterObject.toString());
-
-                    if (jsonChangesObject.size() > 0){
-                        editBookingCall(jsonOuterObject,position,dskRoomParkStatus,newEditStatus);
-                    }
-                    selectedDeskId=0;
-                    roomBottomSheet.dismiss();
                 }
 
             }
@@ -3867,6 +3889,67 @@ public class BookFragment extends Fragment implements
         }else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
+
+    }
+    private void doRepeatCarBookingForAWeek(String registrationNumber) {
+        String selectedDate=binding.locateCalendearView.getText().toString();
+        List<String> dateList=Utils.getCurrentWeekDateList(selectedDate,enableCurrentWeek);
+
+        LocateCarParkBookingRequest locateCarParkBookingRequest = new LocateCarParkBookingRequest();
+        locateCarParkBookingRequest.setParkingSlotId(selectedDeskId);
+
+        List<LocateCarParkBookingRequest.CarParkingChangeSets> carParkingChangeSetsList = new ArrayList<>();
+
+        for (int i = 0; i <dateList.size() ; i++) {
+
+            LocateCarParkBookingRequest.CarParkingChangeSets carParkingChangeSets = locateCarParkBookingRequest.new CarParkingChangeSets();
+            carParkingChangeSets.setId(0);
+            carParkingChangeSets.setDate(dateList.get(i) + "T" + "00:00:00.000" + "Z");
+
+            LocateCarParkBookingRequest.CarParkingChangeSets.CarParkingChanges carParkingChanges = carParkingChangeSets.new CarParkingChanges();
+            carParkingChanges.setFrom(getCurrentDate() + "" + "T" + startTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            carParkingChanges.setTo(getCurrentDate() + "" + "T" + endTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+//            carParkingChanges.setComments(etComment.getText().toString());
+            carParkingChanges.setBookedForUser(SessionHandler.getInstance().getInt(getContext(), AppConstants.USER_ID));
+            carParkingChanges.setVehicleRegNumber(registrationNumber);
+
+            carParkingChangeSets.setCarParkingChanges(carParkingChanges);
+
+            carParkingChangeSetsList.add(carParkingChangeSets);
+
+
+        }
+
+        locateCarParkBookingRequest.setCarParkingChangeSetsList(carParkingChangeSetsList);
+        List<LocateCarParkBookingRequest.CarParkingDeleteIds> deleteIdsList = new ArrayList<>();
+        locateCarParkBookingRequest.setDeleteIdsList(deleteIdsList);
+
+        System.out.println("RepeatModuleCarRequestData "+locateCarParkBookingRequest);
+
+        if (Utils.isNetworkAvailable(getActivity())) {
+            dialog = ProgressDialog.showProgressBar(getContext());
+//            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call=apiService.doRepeatCarParkBooking(locateCarParkBookingRequest);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+//                    binding.locateProgressBar.setVisibility(View.GONE);
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    locateResponseHandler(response,getResources().getString(R.string.booking_success));
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+
+                }
+            });
+
+        }else {
+            Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
+        }
+
 
     }
 
