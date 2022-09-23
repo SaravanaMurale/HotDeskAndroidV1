@@ -228,6 +228,16 @@ public interface ApiInterface {
                                                            @Query("toDate") String toDate,
                                                            @Query("fromTime") String fromTime,
                                                            @Query("toTime") String toTime);
+    @GET("api/deskLayouts/LocationDesksWithUser")
+    Call<BookingForEditResponse> getAvaliableDeskDetailsForDeskList(@Query("locationId") int parentId,
+                                                           @Query("toDate") String toDate,
+                                                           @Query("fromTime") String fromTime,
+                                                           @Query("toTime") String toTime);
+    @GET("api/meetingrooms/allwithavailability")
+    Call<BookingForEditResponse> getAvaliableRoomDetailsForRoomList(@Query("locationId") int parentId,
+                                                           @Query("toDate") String toDate,
+                                                           @Query("fromTime") String fromTime,
+                                                           @Query("toTime") String toTime);
 
     @GET("api/booking/bookingsForEdit")
     Call<BookingForEditResponse> getBookingsForEdit(@Query("teamId") int parentId,

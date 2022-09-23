@@ -10,6 +10,7 @@ public class EditBookingDetails {
     String deskCode;
     String roomName;
     String vehicleRegNumber;
+    String locationAddress;
     String bookedForUser;
     String parkingSlotCode;
     int calId=0;
@@ -21,6 +22,14 @@ public class EditBookingDetails {
     Date date;
     String abbrevation;
     List<String> amenities;
+
+    public String getLocationAddress() {
+        return locationAddress;
+    }
+
+    public void setLocationAddress(String locationAddress) {
+        this.locationAddress = locationAddress;
+    }
 
     public int getDeskTeamId() {
         return deskTeamId;

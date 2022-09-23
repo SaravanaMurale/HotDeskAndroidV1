@@ -9,11 +9,23 @@ public class BookingForEditResponse {
     UserPreferences userPreferences;
     @SerializedName("teamDeskAvailabilities")
     List<TeamDeskAvailabilities> teamDeskAvailabilities;
+    @SerializedName("teamDeskAvailability")
+    List<TeamDeskAvailabilities> teamDeskAvailability;
+    @SerializedName("meetingRooms")
+    List<TeamDeskAvailabilities> meetingRooms;
     @SerializedName("bookings")
     List<Bookings> bookings;
 
     public UserPreferences getUserPreferences() {
         return userPreferences;
+    }
+
+    public List<TeamDeskAvailabilities> getTeamDeskAvailability() {
+        return teamDeskAvailability;
+    }
+
+    public void setTeamDeskAvailability(List<TeamDeskAvailabilities> teamDeskAvailability) {
+        this.teamDeskAvailability = teamDeskAvailability;
     }
 
     public void setUserPreferences(UserPreferences userPreferences) {

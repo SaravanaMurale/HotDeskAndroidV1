@@ -5115,8 +5115,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                     doCheckAppliedAminitiesWithMeetingRoom(amenityList,meetingStatusModelList.get(j));
 
-
-
                                 }
 
                             }
@@ -5183,10 +5181,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         for (int i = 0; i <amenitiesResponseList.size() ; i++) {
 
-            if(amenitiesResponseList.get(i).isAvailable()){
+//            if(amenitiesResponseList.get(i).isAvailable()){
                 valuesPOJO = new ValuesPOJO(amenitiesResponseList.get(i).getId(),amenitiesResponseList.get(i).getName(), false);
                 nestedList2.add(valuesPOJO);
-            }
+//            }
 
 
         }

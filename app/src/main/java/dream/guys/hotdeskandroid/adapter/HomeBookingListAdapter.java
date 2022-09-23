@@ -117,8 +117,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             try{
                 holder.bookingAddress.setText(new StringBuilder()
                         .append("")
-                        .append(list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getfLoorName())
-                        .append(" - ").append(list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getBuildingName()).toString()
+                        .append(list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getBuildingName())
+                        .append(" - ").append(list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getfLoorName()).toString()
                 );
             }catch (Exception e){
 

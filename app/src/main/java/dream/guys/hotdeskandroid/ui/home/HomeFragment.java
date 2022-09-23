@@ -959,6 +959,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             editDeskBookingDetails.setCalId(calendarEntriesModel.getId());
             editDeskBookingDetails.setDeskCode(calendarEntriesModel.getBooking().getDeskCode());
             editDeskBookingDetails.setDeskStatus(calendarEntriesModel.getBooking().getStatus().getId());
+            editDeskBookingDetails.setLocationAddress(new StringBuilder().append("")
+                    .append(calendarEntriesModel.getBooking().getLocationBuildingFloor().getBuildingName())
+                    .append(" - ").append(calendarEntriesModel.getBooking().getLocationBuildingFloor().getfLoorName()).toString()
+                );
             editBookingUsingBottomSheet(editDeskBookingDetails,1,position);
 
         }
@@ -1174,6 +1178,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         repeat=bottomSheetDialog.findViewById(R.id.repeat);
         deskRoomName=bottomSheetDialog.findViewById(R.id.tv_desk_room_name);
         date=bottomSheetDialog.findViewById(R.id.date);
+        TextView tvLocationAddress=bottomSheetDialog.findViewById(R.id.tv_location_details);
         TextView back=bottomSheetDialog.findViewById(R.id.editBookingBack);
         TextView select=bottomSheetDialog.findViewById(R.id.select_desk_room);
         TextView continueEditBook=bottomSheetDialog.findViewById(R.id.editBookingContinue);
@@ -1207,12 +1212,14 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         }
 
         if (dskRoomParkStatus == 1) {
-            repeatBlock.setVisibility(View.VISIBLE);
+
+            repeatBlock.setVisibility(View.GONE);
             teamsBlock.setVisibility(View.GONE);
             commentRegistration.setHint("Comments");
             tvComments.setText("Comments");
             chipGroup.setVisibility(View.GONE);
             deskRoomName.setText(editDeskBookingDetails.getDeskCode());
+            tvLocationAddress.setText(editDeskBookingDetails.getLocationAddress());
 
         }else if (dskRoomParkStatus==2) {
             llDeskLayout.setVisibility(View.VISIBLE);
@@ -1225,7 +1232,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
         }else {
             llDeskLayout.setVisibility(View.GONE);
-            repeatBlock.setVisibility(View.VISIBLE);
+            repeatBlock.setVisibility(View.GONE);
             teamsBlock.setVisibility(View.GONE);
             commentRegistration.setHint("Registration Number");
             tvComments.setText("Regitration Number");
