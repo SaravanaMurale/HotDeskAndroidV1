@@ -5307,7 +5307,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 }
 
 
-                new Handler().postDelayed(new Runnable() {
+                /*new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
 
@@ -5317,21 +5317,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                         }
 
-                        callInitView();
+
 
                     }
-                },2000);
+                },2000);*/
 
+                callInitView();
 
-
-
-               /* for (int i = 0; i <meetingStatusModelList.size() ; i++) {
-
-
-                    System.out.println("AvaliableMeetingRoomsInAmenitiesFilter "+meetingStatusModelList.get(i).getId()+" "+meetingStatusModelList.get(i).getStatus());
-
-
-                }*/
 
 
                 bottomSheetDialog.dismiss();
