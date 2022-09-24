@@ -27,6 +27,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -71,11 +72,15 @@ import dream.guys.hotdeskandroid.adapter.RoomListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
 import dream.guys.hotdeskandroid.adapter.TeamsFloorListAdapter;
 import dream.guys.hotdeskandroid.databinding.FragmentBookBinding;
+import dream.guys.hotdeskandroid.example.DataModel;
+import dream.guys.hotdeskandroid.example.ItemAdapter;
+import dream.guys.hotdeskandroid.example.ValuesPOJO;
 import dream.guys.hotdeskandroid.model.FloorListModel;
 import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
 import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
+import dream.guys.hotdeskandroid.model.request.MeetingAmenityStatus;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.request.Point;
 import dream.guys.hotdeskandroid.model.response.AmenitiesResponse;
@@ -220,6 +225,11 @@ public class BookFragment extends Fragment implements
     int participants = 0;
     BottomSheetDialog repeatBottomSheetDialog;
     ChipGroup chipGroup;
+
+    //Filter
+    List<MeetingAmenityStatus> meetingAmenityStatusList=new ArrayList<>();
+    boolean amenitiesApplyStatus=false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -232,11 +242,11 @@ public class BookFragment extends Fragment implements
         View root = binding.getRoot();
 
         dialog= new Dialog(getActivity());
-        tabToggleViewClicked(selectedicon);
         if (endTimeSelectedStats == 0) {
             binding.locateEndTime.setText("23:59");
         }
 
+        tabToggleViewClicked(selectedicon);
         getAmenities();
         binding.locateStartTime.setText(getCurrentTime());
         binding.locateStartTime.setOnClickListener(new View.OnClickListener() {
@@ -253,7 +263,12 @@ public class BookFragment extends Fragment implements
 
             }
         });
-
+        binding.rlFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getLocateAmenitiesFilterData();
+            }
+        });
         binding.searchGlobal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -648,7 +663,7 @@ public class BookFragment extends Fragment implements
             Call<List<DeskRoomCountResponse>> call = null;
             switch (selectedicon){
                 case 0:
-                    call = apiService.getDailyDeskCount(month, ""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
+                    call = apiService.getDailyDeskCount(month, ""+SessionHandler.getInstance().getInt(getActivity(), AppConstants.TEAM_ID));
                     break;
                 case 1:
                     call = apiService.getDailyRoomCount(month, ""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
@@ -4051,5 +4066,129 @@ public class BookFragment extends Fragment implements
 
 
     }
+    //check filter
+    private void getLocateAmenitiesFilterData() {
+        if (Utils.isNetworkAvailable(getContext())) {
+            dialog = ProgressDialog.showProgressBar(getContext());
+//            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<AmenitiesResponse>> call = apiService.getAmenities();
+            call.enqueue(new Callback<List<AmenitiesResponse>>() {
+                @Override
+                public void onResponse(Call<List<AmenitiesResponse>> call, Response<List<AmenitiesResponse>> response) {
+//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+
+                    List<AmenitiesResponse> amenitiesResponseList=response.body();
+
+                    meetingAmenityStatusList.clear();
+                    callLocateFilterBottomSheet(amenitiesResponseList);
+
+                }
+
+                @Override
+                public void onFailure(Call<List<AmenitiesResponse>> call, Throwable t) {
+//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+
+                }
+            });
+
+        }else {
+            Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
+        }
+    }
+    private void callLocateFilterBottomSheet(List<AmenitiesResponse> amenitiesResponseList) {
+
+        RecyclerView locateFilterMainRV;
+        ValuesPOJO valuesPOJO;
+        ArrayList<DataModel> mList;
+        ItemAdapter adapter;
+
+        TextView locateFilterCancel, locateFilterApply;
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((this).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_locate_filter,
+                new RelativeLayout(getContext())));
+
+        locateFilterCancel = bottomSheetDialog.findViewById(R.id.locateFilterCancel);
+        locateFilterApply = bottomSheetDialog.findViewById(R.id.locateFilterApply);
+
+
+        locateFilterMainRV = bottomSheetDialog.findViewById(R.id.locateFilterMainRV);
+        locateFilterMainRV.setHasFixedSize(true);
+        locateFilterMainRV.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+        locateFilterCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        locateFilterApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        mList = new ArrayList<>();
+
+        //list1
+        ArrayList<ValuesPOJO> nestedList1 = new ArrayList<>();
+
+        valuesPOJO = new ValuesPOJO("Monitor", false);
+        nestedList1.add(valuesPOJO);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Adjustable height", false);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Laptop stand", false);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("USB_C Dock", false);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Charge point", false);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Standing desk", false);
+        nestedList1.add(valuesPOJO);
+
+        ArrayList<ValuesPOJO> nestedList2 = new ArrayList<>();
+
+
+        for (int i = 0; i <amenitiesResponseList.size() ; i++) {
+
+//            if(amenitiesResponseList.get(i).isAvailable()){
+            valuesPOJO = new ValuesPOJO(amenitiesResponseList.get(i).getId(),amenitiesResponseList.get(i).getName(), false);
+            nestedList2.add(valuesPOJO);
+//            }
+
+
+        }
+
+
+        /*valuesPOJO = new ValuesPOJO("Single", false);
+        nestedList2.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Double", false);
+        nestedList2.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Ac", false);
+        nestedList2.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Non-AC", false);
+        nestedList2.add(valuesPOJO);*/
+
+
+        mList.add(new DataModel(nestedList1, "Workspaces"));
+        mList.add(new DataModel(nestedList2, "Rooms"));
+
+        adapter = new ItemAdapter(mList);
+        locateFilterMainRV.setAdapter(adapter);
+
+        bottomSheetDialog.show();
+
+    }
+
+
 
 }
