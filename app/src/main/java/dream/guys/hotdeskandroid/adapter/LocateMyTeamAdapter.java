@@ -29,7 +29,8 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
 
 
     public interface ShowMyTeamLocationClickable{
-        public void showMyTeamLocation(DAOTeamMember.DayGroup.CalendarEntry dayGroups);
+        public void showMyTeamLocation(DAOTeamMember.DayGroup.CalendarEntry dayGroups, String name);
+        public void loadMyTeamLocation(int id, int floorID);
     }
 
 
@@ -82,14 +83,33 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
 
         }
 
+        holder.locateMyTeamLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                showMyTeamLocationClickable.loadMyTeamLocation(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getFloorID(),daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel().getBooking().getDeskId());
+
+
+            }
+        });
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                //showMyTeamLocationClickable.showMyTeamLocation(175,273,bottomSheetDialog,bottomSheetBehavior);
-                showMyTeamLocationClickable.showMyTeamLocation(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel());
+                if(!daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().isEmpty()) {
 
+                    if(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel()!=null) {
+                        //showMyTeamLocationClickable.showMyTeamLocation(175,273,bottomSheetDialog,bottomSheetBehavior);
+                        String name=daoTeamMemberList.get(position).getFirstName()+" "+daoTeamMemberList.get(position).getLastName();
+                        showMyTeamLocationClickable.showMyTeamLocation(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel(),name);
+                    }else{
+                        Utils.toastMessage(context,"No Booking Avaliable");
+                    }
+                }else{
+                    Utils.toastMessage(context,"No Booking Avaliable");
+                }
             }
         });
 

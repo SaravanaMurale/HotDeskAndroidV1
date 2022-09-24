@@ -84,6 +84,7 @@ import dream.guys.hotdeskandroid.model.request.LocateDeskDeleteRequest;
 import dream.guys.hotdeskandroid.model.request.LocationMR_Request;
 import dream.guys.hotdeskandroid.model.request.MeetingAmenityStatus;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomEditRequest;
+import dream.guys.hotdeskandroid.model.request.MeetingRoomRecurrence;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.request.MeetingStatusModel;
 import dream.guys.hotdeskandroid.model.request.Point;
@@ -98,6 +99,7 @@ import dream.guys.hotdeskandroid.model.response.CarParkingslotsResponse;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.DeskDescriptionResponse;
+import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.LocationWithMR_Response;
 import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
@@ -169,8 +171,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     @BindView(R.id.firstLayout)
     LinearLayout firstLayout;
 
-   /* @BindView(R.id.secondLayout)
-    LinearLayout secondLayout;*/
+
+
+    @BindView(R.id.locateMyTeamList)
+    RelativeLayout locateMyTeamList;
+
+    @BindView(R.id.secondLayout)
+    LinearLayout secondLayout;
 
     View deskView;
     int canvasss = 0;
@@ -256,18 +263,23 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     BottomSheetDialog repeatBottomSheetDialog;
     String type = "none";
     int enableCurrentWeek = -1;
+    //Used to call repeat and recurrence
     boolean repeatActvieStatus = false;
-    TextView tvRepeat;
+    TextView tvRepeat,repeat_room;;
 
     //MyTeam
+    BottomSheetDialog myTeamBottomSheet;
     BottomSheetBehavior myteamBottomSheetBehavior;
     RelativeLayout myTeamHeader, myTeamContactBlock;
     //Contact
-    TextView locateMyTeamUserName, tvLocateMyTeamLocationView, locateMyTeamDeskName, myTeam_tv_start_time, myTeam_tv_end_time, tvMyTeamEmail, tvMyTeamTeams, tvmyTeamPhone, myTeamBookNearBy;
+    TextView locateMyTeamUserName, tvLocateMyTeamLocationView, locateMyTeamDeskName, myTeam_tv_start_time, myTeam_tv_end_time, tvMyTeamEmail, tvMyTeamTeams, tvmyTeamPhone, myTeamBookNearBy,bookNearByBack;
 
     //Filter
     List<MeetingAmenityStatus> meetingAmenityStatusList=new ArrayList<>();
     boolean amenitiesApplyStatus=false;
+
+    List<AmenitiesResponse> amenitiesListToShowInMeetingRoomList=new ArrayList<>();
+
 
 
     @Override
@@ -346,7 +358,17 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                getMyTeamMemberData();
+                //locateMyTeamList.setVisibility(View.VISIBLE);
+
+                int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+
+                if (parentId > 0) {
+                    getMyTeamMemberData();
+                }else {
+                    Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
+                }
+
+
 
 
             }
@@ -356,7 +378,16 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                getLocateAmenitiesFilterData();
+                int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+
+                if (parentId > 0) {
+
+                    getLocateAmenitiesFilterData(true);
+                }else {
+                    Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
+                }
+
+
 
 
 
@@ -423,16 +454,20 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     public void initLoadFloorDetails(int canvasDrawStatus) {
 
+        //Repeat Check Status
         repeatActvieStatus = false;
+
         deskStatusModelList.clear();
         meetingStatusModelList.clear();
-        if(!amenitiesApplyStatus){
+
+
+      /*  if(!amenitiesApplyStatus){
             meetingAmenityStatusList.clear();
         }
 
         for (int i = 0; i <meetingAmenityStatusList.size() ; i++) {
             System.out.println("InitialInitAmenitiStatus "+meetingAmenityStatusList.get(i).getId()+" "+amenitiesApplyStatus);
-        }
+        }*/
 
 
 
@@ -545,6 +580,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 public void onResponse(Call<List<UserAllowedMeetingResponse>> call, Response<List<UserAllowedMeetingResponse>> response) {
 
                     userAllowedMeetingResponseList = response.body();
+
+                    //ToGetAmenities DataHere
+                    amenitiesListToShowInMeetingRoomList.clear();
+                    getLocateAmenitiesFilterData(false);
 
                     //Final Call To Set Desk,Car and Meeting Room
                     getLocateDeskRoomCarDesign(parentId, canvasDrawStatus);
@@ -1175,6 +1214,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //MeetingChecking
         if (code.equals(AppConstants.MEETING)) {
 
+            //ByDefault Set Meeting Image
+            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
+
             int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
 
             if (locationWithMR_response != null) {
@@ -1348,6 +1390,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             }
 
+
+            //Amenities Filter
             for (int i = 0; i <meetingAmenityStatusList.size() ; i++) {
 
                 int idValue=meetingAmenityStatusList.get(i).getId();
@@ -1890,14 +1934,46 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void callMeetingRoomBookingBottomSheet(int meetingRoomId, String meetingRoomName, boolean isRequest) {
 
+        //Show Amenities in Meeting Booking
+
+        //Amenities Block
+        List<String> amenitiesList=new ArrayList<>();
+        for (int i = 0; i <userAllowedMeetingResponseList.size() ; i++) {
+
+            if(meetingRoomId==userAllowedMeetingResponseList.get(i).getId()){
+
+                for (int j = 0; j <userAllowedMeetingResponseList.get(i).getAmenities().size() ; j++) {
+                    System.out.println("MeetingAmenities "+userAllowedMeetingResponseList.get(i).getAmenities().get(j).getId());
+
+                    for (int k = 0; k <amenitiesListToShowInMeetingRoomList.size() ; k++) {
+
+                        if(userAllowedMeetingResponseList.get(i).getAmenities().get(j).getId()==amenitiesListToShowInMeetingRoomList.get(k).getId()){
+                            amenitiesList.add(amenitiesListToShowInMeetingRoomList.get(k).getName());
+                            System.out.println("TotalAmenitiesForThisRoom "+amenitiesListToShowInMeetingRoomList.get(k).getName());
+
+                        }
+
+                    }
+                }
+
+
+            }
+
+        }
+
+
+
+
         TextView editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle, showtvRoomStartTime;
         EditText etParticipants, etSubject, etComments;
         RecyclerView rvParticipant;
         LinearLayoutManager linearLayoutManager;
-        RelativeLayout startTimeLayout, endTimeLayout, rl_repeat_block_room;
+        RelativeLayout startTimeLayout, endTimeLayout, rl_repeat_block_room,amenitiesBlock;
         //New...
         LinearLayout subCmtLay, child_layout;
         TextView roomDate;
+        ChipGroup chipGroup;
+
 
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -1907,11 +1983,28 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         startRoomTime = bottomSheetDialog.findViewById(R.id.tvRoomStartTime);
         endTRoomime = bottomSheetDialog.findViewById(R.id.tvRoomEndTime);
         showtvRoomStartTime = bottomSheetDialog.findViewById(R.id.showtvRoomStartTime);
+        amenitiesBlock=bottomSheetDialog.findViewById(R.id.amenitiesBlock);
+
+        chipGroup=bottomSheetDialog.findViewById(R.id.meetingAmenitiesChipGroup);
+
+
+        for (int i = 0; i <amenitiesList.size() ; i++) {
+
+            System.out.println("RoomAmenitiesList "+amenitiesList.get(i));
+            Chip chip=new Chip(getContext());
+            chip.setText(amenitiesList.get(i));
+            chip.setCheckable(false);
+            chip.setClickable(false);
+            chipGroup.addView(chip);
+        }
+
+
 
         etParticipants = bottomSheetDialog.findViewById(R.id.etParticipants);
         etSubject = bottomSheetDialog.findViewById(R.id.etSubject);
 
         rl_repeat_block_room = bottomSheetDialog.findViewById(R.id.rl_repeat_block_room);
+        repeat_room=bottomSheetDialog.findViewById(R.id.repeat_room);
 
         etComments = bottomSheetDialog.findViewById(R.id.etCommentsMeeting);
         editRoomBookingContinue = bottomSheetDialog.findViewById(R.id.editRoomBookingContinue);
@@ -2101,7 +2194,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     if (status) {
                         page = 1;
                         bottomSheetDialog.dismiss();
-                        doMeetingRoomBooking(meetingRoomId, startRoomTime.getText().toString(), endTRoomime.getText().toString(), subject, comment, isRequest);
+
+                        if(!repeatActvieStatus){
+                            doMeetingRoomBooking(meetingRoomId, startRoomTime.getText().toString(), endTRoomime.getText().toString(), subject, comment, isRequest);
+                        }else {
+                            doRepeatMeetingRoomBookingForWeek();
+                        }
+
+
 
                     } else {
                         Toast.makeText(getContext(), "Please Enter All Details", Toast.LENGTH_LONG).show();
@@ -2110,6 +2210,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             }
         });
+
+
 
 
         bottomSheetDialog.show();
@@ -3264,7 +3366,15 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             public void onClick(View view) {
 
                 repeatActvieStatus = false;
-                tvRepeat.setText("None");
+
+                if(code.equals("4")){
+                    repeat_room.setText("None");
+                }else {
+                    tvRepeat.setText("None");
+                }
+
+
+
 
                 type = "none";
                 iv_none.setVisibility(View.VISIBLE);
@@ -3283,7 +3393,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View view) {
 
-                tvRepeat.setText("Daily");
+
+
+                if(code.equals("4")){
+                    repeat_room.setText("Daily");
+                }else {
+                    tvRepeat.setText("Daily");
+                }
 
                 type = "daily";
                 iv_none.setVisibility(View.GONE);
@@ -3755,6 +3871,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
 
+
                 repeatActvieStatus = true;
 
                 //Coming WeekendDate
@@ -3798,7 +3915,94 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         String selectedDate = binding.locateCalendearView.getText().toString();
         List<String> dateList = Utils.getCurrentWeekDateList(selectedDate, enableCurrentWeek);
 
-        MeetingRoomRequest meetingRoomRequest = new MeetingRoomRequest();
+
+        MeetingRoomRecurrence meetingRoomRecurrence =new MeetingRoomRecurrence();
+        meetingRoomRecurrence.setMeetingRoomId(meetingRoomId);
+        meetingRoomRecurrence.setOnlineMeeting(false);
+        meetingRoomRecurrence.setMsTeams(false);
+        meetingRoomRecurrence.setHandleRecurring(false);
+
+        List<MeetingRoomRecurrence.Changeset> changesetList=new ArrayList<>();
+
+        for (int i = 0; i <dateList.size() ; i++) {
+
+            MeetingRoomRecurrence.Changeset changeset=meetingRoomRecurrence.new Changeset();
+            changeset.setId(0);
+            changeset.setDate(dateList.get(i) + "T" + "00:00:00.000" + "Z");
+
+            MeetingRoomRecurrence.Changeset.Changes changes=changeset.new Changes();
+            changes.setComments("");
+            changes.setFrom(getCurrentDate() + "" + "T" + startRoomTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            changes.setMyto(getCurrentDate() + "" + "T" + endTRoomime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            changes.setSubject("");
+            changes.setRecurrence("True");
+            changes.setRequest(false);
+
+            changeset.setChanges(changes);
+
+            List<Integer> attendeesList = new ArrayList<>();
+
+            //Newly Participant Added
+            if (chipList != null) {
+                for (int j = 0; j < chipList.size(); j++) {
+                    attendeesList.add(chipList.get(j).getId());
+                }
+
+            } //End
+
+            changes.setAttendees(attendeesList);
+
+            List<MeetingRoomRecurrence.Changeset.Changes.ExternalAttendees> externalAttendees=new ArrayList<>();
+            changes.setExternalAttendees(externalAttendees);
+
+            //List<MeetingRoomRecurrence.Changeset.Changes.RecurrenceDetails> recurrenceDetailsList=new ArrayList<>();
+
+            MeetingRoomRecurrence.Changeset.Changes.RecurrenceDetails recurrenceDetails=changes.new RecurrenceDetails();
+            recurrenceDetails.setInterval(1);
+            recurrenceDetails.setStartDate(dateList.get(0) + "T" + "00:00:00.000" + "Z");
+            recurrenceDetails.setEndDate(dateList.get(dateList.size()-1) + "T" + "00:00:00.000" + "Z");
+            recurrenceDetails.setOnDay(24);
+            recurrenceDetails.setSelectedMonth(8);
+            recurrenceDetails.setPeriod(0);
+
+            changes.setRecurrenceDetailsList(recurrenceDetails);
+
+            changesetList.add(changeset);
+
+        }
+
+        meetingRoomRecurrence.setChangesets(changesetList);
+
+        List<MeetingRoomRecurrence.DeleteIds> deleteIdsList=new ArrayList<>();
+        meetingRoomRecurrence.setDeletedIds(deleteIdsList);
+
+        System.out.println("MeetingRoomRecurrence "+meetingRoomRecurrence);
+
+          if (Utils.isNetworkAvailable(getActivity())) {
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call = apiService.doMeetingRoomRecurrence(meetingRoomRecurrence);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                    binding.locateProgressBar.setVisibility(View.GONE);
+                    locateResponseHandler(response, getResources().getString(R.string.booking_success));
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    binding.locateProgressBar.setVisibility(View.GONE);
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
+        }
+
+
+
+
+        /*MeetingRoomRequest meetingRoomRequest = new MeetingRoomRequest();
         meetingRoomRequest.setMeetingRoomId(meetingRoomId);
         meetingRoomRequest.setMsTeams(false);
         meetingRoomRequest.setHandleRecurring(false);
@@ -3848,28 +4052,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         meetingRoomRequest.setDeletedIds(deleteIdsList);
 
 
-        System.out.println("RepeatMeetingRoom " + meetingRoomRequest);
+        System.out.println("RepeatMeetingRoom " + meetingRoomRequest);*/
 
-        if (Utils.isNetworkAvailable(getActivity())) {
-            binding.locateProgressBar.setVisibility(View.VISIBLE);
-            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<BaseResponse> call = apiService.doRepeatMeetingRoomBooking(meetingRoomRequest);
-            call.enqueue(new Callback<BaseResponse>() {
-                @Override
-                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                    binding.locateProgressBar.setVisibility(View.GONE);
-                    locateResponseHandler(response, getResources().getString(R.string.booking_success));
-                }
 
-                @Override
-                public void onFailure(Call<BaseResponse> call, Throwable t) {
-                    binding.locateProgressBar.setVisibility(View.GONE);
-                }
-            });
-
-        } else {
-            Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
-        }
 
 
     }
@@ -4458,7 +4643,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         if (code.equals("3")) {
-            repeatBlock.setVisibility(View.VISIBLE);
+            //repeatBlock.setVisibility(View.VISIBLE);
             teamsBlock.setVisibility(View.GONE);
             tvComments.setVisibility(View.GONE);
             commentRegistration.setVisibility(View.GONE);
@@ -4918,18 +5103,17 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     //MyTeamBottomSheet
     private void callMyTeamBottomSheet(List<DAOTeamMember> daoTeamMemberList) {
 
-        TextView myTeamClose,bookNearByBack;
+        TextView myTeamClose;
 
         /*BottomSheetDialog myTeamBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         myTeamBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_myteam_bottomsheet,
                 new RelativeLayout(getContext())));*/
 
-
-        BottomSheetDialog myTeamBottomSheet = new BottomSheetDialog(getContext());
+        myTeamBottomSheet = new BottomSheetDialog(getContext());
         View view = View.inflate(getContext(), R.layout.dialog_locate_myteam_bottomsheet, null);
         myTeamBottomSheet.setContentView(view);
         myteamBottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
-        myteamBottomSheetBehavior.setPeekHeight(700);
+        myteamBottomSheetBehavior.setPeekHeight(600);
 
 
         rvMyTeam = myTeamBottomSheet.findViewById(R.id.rvLocateMyTeam);
@@ -4962,10 +5146,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         });
 
-
         myTeamClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 myTeamBottomSheet.dismiss();
             }
         });
@@ -5056,12 +5240,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         }
 
-        //
-
-
         locateMyTeamAdapter = new LocateMyTeamAdapter(getContext(), locateMyTeamMemberStatusList, this);
         rvMyTeam.setAdapter(locateMyTeamAdapter);
-
 
         myTeamBottomSheet.show();
 
@@ -5115,6 +5295,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                     doCheckAppliedAminitiesWithMeetingRoom(amenityList,meetingStatusModelList.get(j));
 
+
                                 }
 
                             }
@@ -5139,7 +5320,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         callInitView();
 
                     }
-                },3000);
+                },2000);
 
 
 
@@ -5181,10 +5362,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         for (int i = 0; i <amenitiesResponseList.size() ; i++) {
 
-//            if(amenitiesResponseList.get(i).isAvailable()){
+            //if(amenitiesResponseList.get(i).isAvailable()){
                 valuesPOJO = new ValuesPOJO(amenitiesResponseList.get(i).getId(),amenitiesResponseList.get(i).getName(), false);
                 nestedList2.add(valuesPOJO);
-//            }
+            //}
 
 
         }
@@ -5518,7 +5699,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         TextView startRoomTime, endTRoomime, editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle, showtvRoomStartTime;
         EditText etParticipants, etSubject, etComments;
-        RelativeLayout startTimeLayout, endTimeLayout;
+        RelativeLayout startTimeLayout, endTimeLayout,rl_repeat_block_room;
         RecyclerView rvParticipant;
         //New...
         LinearLayout subCmtLay, child_layout;
@@ -5534,6 +5715,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         etSubject = bottomSheetDialog.findViewById(R.id.etSubject);
         rvParticipant = bottomSheetDialog.findViewById(R.id.rvParticipant);
         participantChipGroup = bottomSheetDialog.findViewById(R.id.participantChipGroup);
+        rl_repeat_block_room=bottomSheetDialog.findViewById(R.id.rl_repeat_block_room);
+        rl_repeat_block_room.setVisibility(View.GONE);
 
         etComments = bottomSheetDialog.findViewById(R.id.etCommentsMeeting);
         editRoomBookingContinue = bottomSheetDialog.findViewById(R.id.editRoomBookingContinue);
@@ -5928,26 +6111,58 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
     @Override
-    public void showMyTeamLocation(DAOTeamMember.DayGroup.CalendarEntry calendarEntry) {
+    public void showMyTeamLocation(DAOTeamMember.DayGroup.CalendarEntry calendarEntry, String name) {
         /*relativeLayout.leftMargin = i;
         relativeLayout.topMargin = i1;
         ivDesk.setLayoutParams(relativeLayout);*/
 
+        /*String[] words = name.split(",");
+        String firstName=words[0];
+        String lastName=words[1];*/
+
+
+        getUserContactDetails(name);
+
         myTeamHeader.setVisibility(View.GONE);
         myTeamContactBlock.setVisibility(View.VISIBLE);
 
+        myteamBottomSheetBehavior.setPeekHeight(600);
 
-        View perSonView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
-        ImageView desk = perSonView.findViewById(R.id.ivDesk);
 
-        ImageView ivPerson = perSonView.findViewById(R.id.ivUserImage);
+        //View perSonView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
+        View perSonView = getLayoutInflater().inflate(R.layout.layout_item_myteam_sitting, null, false);
+        //ImageView desk = perSonView.findViewById(R.id.ivDesk);
+
+        ImageView ivPerson = perSonView.findViewById(R.id.ivUserImageMyTeam);
         RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        desk.setVisibility(View.GONE);
+        //desk.setVisibility(View.GONE);
         ivPerson.setVisibility(View.VISIBLE);
         relativeLayout.width = 60;
         relativeLayout.height = 60;
 
         ivPerson.setLayoutParams(relativeLayout);
+
+        //binding.myTeamSittingLayout.removeView(perSonView);
+
+
+        bookNearByBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+                binding.firstLayout.removeView(ivPerson);
+                binding.firstLayout.removeView(perSonView);
+
+                myTeamHeader.setVisibility(View.VISIBLE);
+                myTeamContactBlock.setVisibility(View.GONE);
+
+                myteamBottomSheetBehavior.setPeekHeight(300);
+
+
+
+            }
+        });
 
 
         if(calendarEntry.getBooking() == null){
@@ -5959,6 +6174,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     int selectedFloorId = calendarEntry.getBooking().getLocationBuildingFloor().getFloorID();
                     int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
                     if (selectedFloorId == parentId) {
+                        locateMyTeamUserName.setText(name);
+                        tvLocateMyTeamLocationView.setText(calendarEntry.getBooking().getLocationBuildingFloor().getBuildingName()+","+calendarEntry.getBooking().getLocationBuildingFloor().getfLoorName());
+                        locateMyTeamDeskName.setText(calendarEntry.getBooking().getDeskCode());
                         myTeam_tv_start_time.setText(Utils.splitTime(calendarEntry.getFrom()));
                         myTeam_tv_end_time.setText(Utils.splitTime(calendarEntry.getMyto()));
                         getFloorAndDeskDetailsToPlaceUser(calendarEntry.getBooking(), relativeLayout, perSonView, ivPerson);
@@ -5998,7 +6216,131 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
+    private void getUserContactDetails(String name) {
+
+        binding.locateProgressBar.setVisibility(View.VISIBLE);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<GlobalSearchResponse> call = apiService.getGlobalSearchData(40,name);
+        call.enqueue(new Callback<GlobalSearchResponse>() {
+            @Override
+            public void onResponse(Call<GlobalSearchResponse> call, Response<GlobalSearchResponse> response) {
+
+                GlobalSearchResponse globalSearchResponse=response.body();
+
+                if(globalSearchResponse.getResults().size()>0){
+                    tvMyTeamEmail.setText(globalSearchResponse.getResults().get(0).getEmail());
+                    tvMyTeamTeams.setText(globalSearchResponse.getResults().get(0).getTeam());
+                    tvmyTeamPhone.setText(globalSearchResponse.getResults().get(0).getPhoneNumber());
+                }
+
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+/*
+                for (int i = 0; i <globalSearchResponse.getResults().size() ; i++) {
+
+                    System.out.println("TeamContactDetails "+globalSearchResponse.getResults().get(i).getEmail());
+
+                }*/
+
+            }
+
+            @Override
+            public void onFailure(Call<GlobalSearchResponse> call, Throwable t) {
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+            }
+        });
+
+    }
+
+    @Override
+    public void loadMyTeamLocation(int floorID, int deskId) {
+
+        int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+        int floorPosition = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION);
+
+        boolean floorFoundStatus=false;
+
+        if(floorID==parentId){
+
+            for (int i = 0; i <locateCountryResposeList.size() ; i++) {
+
+                for (int j = 0; j <locateCountryResposeList.get(i).getLocationItemLayout().getDesks().size() ; j++) {
+                    if(deskId==locateCountryResposeList.get(i).getLocationItemLayout().getDesks().get(j).getDesksId()){
+                        int getFloorPosition=i;
+                        if(getFloorPosition==floorPosition){
+                            floorFoundStatus=true;
+                            myTeamBottomSheet.dismiss();
+                        }
+                    }
+                }
+
+            }
+
+            if(!floorFoundStatus){
+                //Same building but different Floor
+                doFindAndLoadFloorPosition(floorID,deskId);
+
+            }
+
+
+        }else {
+
+            doFindAndLoadFloorPosition(floorID,deskId);
+
+
+
+        }
+
+    }
+
+    private void doFindAndLoadFloorPosition(int floorID, int deskId) {
+
+        //SessionHandler.getInstance().getInt(getContext(),AppConstants.PARENT_ID);
+        SessionHandler.getInstance().saveInt(getContext(),AppConstants.PARENT_ID,floorID);
+
+        binding.locateProgressBar.setVisibility(View.VISIBLE);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(floorID);
+        call.enqueue(new Callback<List<LocateCountryRespose>>() {
+            @Override
+            public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
+
+                List<LocateCountryRespose> locateCountryResposeList=response.body();
+
+                for (int i = 0; i <locateCountryResposeList.size() ; i++) {
+
+                    for (int j = 0; j <locateCountryResposeList.get(i).getLocationItemLayout().getDesks().size() ; j++) {
+
+                        if(deskId==locateCountryResposeList.get(i).getLocationItemLayout().getDesks().get(j).getDesksId()){
+                            SessionHandler.getInstance().saveInt(getContext(),AppConstants.FLOOR_POSITION,i);
+                            myTeamBottomSheet.dismiss();
+                            callInitView();
+                            break;
+
+                        }
+
+
+                    }
+
+
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+
+
     private void getFloorAndDeskDetailsToPlaceUser(DAOTeamMember.DayGroup.CalendarEntry.Booking booking, RelativeLayout.LayoutParams relativeLayout, View perSonView, ImageView ivPerson) {
+
+
 
         int selectedFloorIdInTeam = booking.getLocationBuildingFloor().getFloorID();
 
@@ -6043,6 +6385,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                             ivPerson.setLayoutParams(relativeLayout);
                                             binding.firstLayout.addView(perSonView);
+
+
                                             myteamBottomSheetBehavior.setPeekHeight(100);
 
 
@@ -6148,7 +6492,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }*/
     }
 
-    private void getLocateAmenitiesFilterData() {
+    private void getLocateAmenitiesFilterData(boolean calledFromFilter) {
         if (Utils.isNetworkAvailable(getContext())) {
             binding.locateProgressBar.setVisibility(View.VISIBLE);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -6156,12 +6500,21 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             call.enqueue(new Callback<List<AmenitiesResponse>>() {
                 @Override
                 public void onResponse(Call<List<AmenitiesResponse>> call, Response<List<AmenitiesResponse>> response) {
+
+
+                    //List<AmenitiesResponse> amenitiesResponseList=response.body();
+                    List<AmenitiesResponse> amenitiesResponseList=response.body();
+                    amenitiesListToShowInMeetingRoomList=amenitiesResponseList;
+
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
-                    List<AmenitiesResponse> amenitiesResponseList=response.body();
+                    //If true which is called from filter so call bottomsheet
+                    if(calledFromFilter){
+                        meetingAmenityStatusList.clear();
+                        callLocateFilterBottomSheet(amenitiesResponseList);
+                    }
 
-                    meetingAmenityStatusList.clear();
-                    callLocateFilterBottomSheet(amenitiesResponseList);
+
 
                 }
 
