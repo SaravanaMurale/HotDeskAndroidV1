@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="500dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginLeft="@dimen/_10sdp"
     android:layout_marginRight="@dimen/_10sdp"
@@ -9,8 +9,8 @@
 
     <RelativeLayout
         android:id="@+id/myTeamHeader"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         >
 
     <RelativeLayout
@@ -98,14 +98,13 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_5sdp"
             android:padding="@dimen/_10sdp"
-        android:visibility="gone"
+            android:visibility="gone"
         >
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/locateMyTeamProfile"
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
-
                 android:src="@drawable/mygirl"
                 app:tint="@color/figmaBlack" />
 
@@ -242,6 +241,7 @@
 
 
         <LinearLayout
+            android:id="@+id/locateTeamContactBlock"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -377,25 +377,25 @@
         </LinearLayout>
 
 
-
         <TextView
             android:id="@+id/bookNearByBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:text="@string/back"
-            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/locateTeamContactBlock"
             android:textColor="@color/black"
-            android:textStyle="bold"
-            />
+            android:layout_marginTop="@dimen/_20sdp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/myTeamBookNearBy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
             android:text="@string/book_near_by"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_below="@+id/locateTeamContactBlock"
             android:textColor="@color/figmaBlue"
             />
 

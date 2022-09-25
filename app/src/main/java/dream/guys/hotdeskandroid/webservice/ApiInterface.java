@@ -24,6 +24,7 @@ import dream.guys.hotdeskandroid.model.request.LocateDeskBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateDeskDeleteRequest;
 import dream.guys.hotdeskandroid.model.request.LocationMR_Request;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomEditRequest;
+import dream.guys.hotdeskandroid.model.request.MeetingRoomRecurrence;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.request.PersonalHelpRequest;
 import dream.guys.hotdeskandroid.model.request.QuestionListRequest;
@@ -465,6 +466,11 @@ public interface ApiInterface {
     //RepeatCarBookingForCurrrentWeek
     @PUT("api/carparkbooking/bookings")
     Call<BaseResponse> doRepeatCarParkBooking(@Body LocateCarParkBookingRequest locateCarParkBookingRequest);
+
+
+    //MeetingRoomRecurrence
+    @PUT("api/MeetingRoomBooking/bookings")
+    Call<BaseResponse> doMeetingRoomRecurrence(@Body MeetingRoomRecurrence meetingRoomRecurrence);
 
     //RepeatMeetingRoomBookingForCurrentWeek
     @PUT("api/MeetingRoomBooking/bookings")

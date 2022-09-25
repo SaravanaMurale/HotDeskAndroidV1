@@ -44,71 +44,77 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
 
-        DataModel model = mList.get(holder.getAdapterPosition());
-        holder.mTextView.setText(model.getItemText());
+        if(position!=0) {
 
-        boolean isExpandable = model.isExpandable();
-        holder.expandableLayout.setVisibility(isExpandable ? View.VISIBLE : View.GONE);
+            DataModel model = mList.get(holder.getAdapterPosition());
+            holder.mTextView.setText(model.getItemText());
 
-        if (model.isChecked()){
-            mList.get(position).setChecked(true);
-            holder.checkBox.setChecked(true);
-        }else {
-            mList.get(position).setChecked(false);
-            holder.checkBox.setChecked(false);
-        }
+            boolean isExpandable = model.isExpandable();
+            holder.expandableLayout.setVisibility(isExpandable ? View.VISIBLE : View.GONE);
 
-        if (isExpandable){
-            holder.mArrowImage.setImageResource(R.drawable.minus_1px);
-        }else{
-            holder.mArrowImage.setImageResource(R.drawable.plus_1px);
-        }
+            if (model.isChecked()) {
+                mList.get(position).setChecked(true);
+                holder.checkBox.setChecked(true);
+            } else {
+                mList.get(position).setChecked(false);
+                holder.checkBox.setChecked(false);
+            }
 
-        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            if (isExpandable) {
+                holder.mArrowImage.setImageResource(R.drawable.minus_1px);
+            } else {
+                holder.mArrowImage.setImageResource(R.drawable.plus_1px);
+            }
 
-                if (b){
-                    mList.get(holder.getAdapterPosition()).setChecked(true);
-                    list = new ArrayList<>();
+            holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                    for (int i=0;i<mList.get(holder.getAdapterPosition()).getNestedList().size();i++){
+                    if (b) {
+                        mList.get(holder.getAdapterPosition()).setChecked(true);
+                        list = new ArrayList<>();
 
-                        mList.get(holder.getAdapterPosition()).getNestedList().get(i).setChecked(true);
-                        //list.set(i,mList.get(holder.getAdapterPosition()).getNestedList().get(i));
+                        for (int i = 0; i < mList.get(holder.getAdapterPosition()).getNestedList().size(); i++) {
 
-                        list = mList.get(holder.getAdapterPosition()).getNestedList();
+                            mList.get(holder.getAdapterPosition()).getNestedList().get(i).setChecked(true);
+                            //list.set(i,mList.get(holder.getAdapterPosition()).getNestedList().get(i));
 
+                            list = mList.get(holder.getAdapterPosition()).getNestedList();
+
+                        }
+                        setValueToadapter(holder, holder.getAbsoluteAdapterPosition());
+                    } else {
+                        mList.get(holder.getAdapterPosition()).setChecked(false);
+                        list = new ArrayList<>();
+
+                        for (int i = 0; i < mList.get(holder.getAdapterPosition()).getNestedList().size(); i++) {
+
+                            mList.get(holder.getAdapterPosition()).getNestedList().get(i).setChecked(false);
+                            //list.set(i,mList.get(holder.getAdapterPosition()).getNestedList().get(i));
+
+                            list = mList.get(holder.getAdapterPosition()).getNestedList();
+
+                        }
+                        setValueToadapter(holder, holder.getAbsoluteAdapterPosition());
                     }
-                    setValueToadapter(holder,holder.getAbsoluteAdapterPosition());
-                }else {
-                    mList.get(holder.getAdapterPosition()).setChecked(false);
-                    list = new ArrayList<>();
-
-                    for (int i=0;i<mList.get(holder.getAdapterPosition()).getNestedList().size();i++){
-
-                        mList.get(holder.getAdapterPosition()).getNestedList().get(i).setChecked(false);
-                        //list.set(i,mList.get(holder.getAdapterPosition()).getNestedList().get(i));
-
-                        list = mList.get(holder.getAdapterPosition()).getNestedList();
-
-                    }
-                    setValueToadapter(holder,holder.getAbsoluteAdapterPosition());
                 }
-            }
-        });
+            });
 
-        setValueToadapter(holder,holder.getAbsoluteAdapterPosition());
+            setValueToadapter(holder, holder.getAbsoluteAdapterPosition());
 
-        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //model.setExpandable(!model.isExpandable());
-                mList.get(holder.getAdapterPosition()).setExpandable(!model.isExpandable());
-                list = mList.get(holder.getAdapterPosition()).getNestedList(); //model.getNestedList();
-                notifyItemChanged(holder.getAdapterPosition());
-            }
-        });
+            holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //model.setExpandable(!model.isExpandable());
+                    mList.get(holder.getAdapterPosition()).setExpandable(!model.isExpandable());
+                    list = mList.get(holder.getAdapterPosition()).getNestedList(); //model.getNestedList();
+                    notifyItemChanged(holder.getAdapterPosition());
+                }
+            });
+
+        }else {
+            holder.linearLayout.setVisibility(View.GONE);
+        }
     }
 
     private void setValueToadapter(ItemViewHolder holder,int pos) {
