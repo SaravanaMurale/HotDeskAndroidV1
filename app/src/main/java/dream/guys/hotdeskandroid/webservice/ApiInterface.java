@@ -118,8 +118,11 @@ public interface ApiInterface {
 
 
     //parking spot list
-    @GET("api/ParkingSlot/parkingslotsbylocation")
+    @GET("api/ParkingSlot/carparkparkingslots")
     Call<List<ParkingSpotModel>> getParkingSpotModels(@Query("locationId") String s);
+//    //parking spot list
+//    @GET("api/ParkingSlot/parkingslotsbylocation")
+//    Call<List<ParkingSpotModel>> getParkingSpotModels(@Query("locationId") String s);
 
     //Book meeting room count api
     @GET("api/MeetingRooms/DailyMeetingRoomCounts")

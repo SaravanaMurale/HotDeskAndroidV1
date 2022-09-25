@@ -933,10 +933,12 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onResponse(Call<List<ParkingSpotModel>> call, Response<List<ParkingSpotModel>> response) {
                     parkingSpotModelList.clear();
-                    for(int i=0;i<response.body().size();i++){
-                        if(response.body().get(i).getAssignees().size() == 0
-                                && response.body().get(i).isActive()){
-                            parkingSpotModelList.add(response.body().get(i));
+                    if(response.body()!=null){
+                        for(int i=0;i<response.body().size();i++){
+                            if(response.body().get(i).getAssignees().size() == 0
+                                    && response.body().get(i).isActive()){
+                                parkingSpotModelList.add(response.body().get(i));
+                            }
                         }
                     }
 
@@ -1429,7 +1431,10 @@ public class BookFragment extends Fragment implements
                     editBookingDetails.setDeskStatus(0);
                 }
 
-                editBookingUsingBottomSheet(editBookingDetails,1,0,"new");
+                if(isGlobalLocationSetUP)
+                    editBookingUsingBottomSheet(editBookingDetails,1,0,"request");
+                else
+                    editBookingUsingBottomSheet(editBookingDetails,1,0,"new");
             }
         });
         editClose.setOnClickListener(new View.OnClickListener() {

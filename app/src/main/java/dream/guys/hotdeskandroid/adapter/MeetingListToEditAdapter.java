@@ -51,7 +51,7 @@ public class MeetingListToEditAdapter extends RecyclerView.Adapter<MeetingListTo
         holder.editCode.setText((meetingListToEditResponseList.get(position).getMeetingRoomName()));
         holder.editCheckInTime.setText(Utils.splitTime(meetingListToEditResponseList.get(position).getFrom()));
         holder.editCheckOutTime.setText(Utils.splitTime(meetingListToEditResponseList.get(position).getTo()));
-
+        holder.editBookingImage.setImageDrawable(context.getDrawable(R.drawable.room));
         holder.editTextEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
