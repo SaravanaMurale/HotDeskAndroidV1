@@ -689,8 +689,13 @@
       "EnterVehicleNum" : "Enter vehicle no...",
       "RepeatUntill" : "Repeat until",
       "AvailableRooms" : "Available Rooms",
-      "HybridHero" : "The name that will be displayed accross Hybrid Hero"
-      
+      "HybridHero" : "The name that will be displayed accross Hybrid Hero",
+      "Filter":"Filter",
+
+
+      "PMO Office":"PMO Office",
+      "Calendar Booking": "Calendar Booking",
+    "Submit": "Submit"
       
 
 

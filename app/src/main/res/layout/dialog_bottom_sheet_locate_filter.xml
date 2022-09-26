@@ -30,8 +30,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Filters"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/_15sdp" />
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"

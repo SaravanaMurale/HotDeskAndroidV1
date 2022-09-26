@@ -113,6 +113,8 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
         public BookingListToEditViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+
         }
     }
 

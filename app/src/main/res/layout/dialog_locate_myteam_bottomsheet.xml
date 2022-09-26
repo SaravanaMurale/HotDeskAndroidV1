@@ -31,6 +31,7 @@
             android:textSize="@dimen/_15sdp" />
 
         <TextView
+            android:id="@+id/tvPMOOffice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvMyTeam"
@@ -39,6 +40,7 @@
             android:textSize="@dimen/_9sdp" />
 
         <TextView
+            android:id="@+id/tvAllTeams"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

@@ -717,7 +717,8 @@
       "EnterVehicleNum" : "Введите номер автомобиля...",
       "RepeatUntill" : "Повторяйте, пока",
       "AvailableRooms" : "Доступные номера",
-      "HybridHero" : "Имя, которое будет отображаться через Hybrid Hero."
+      "HybridHero" : "Имя, которое будет отображаться через Hybrid Hero.",
+    "PMO Office":"PMO Office"
       
 
   }

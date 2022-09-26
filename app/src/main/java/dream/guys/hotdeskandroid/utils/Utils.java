@@ -1377,6 +1377,14 @@ public class Utils {
     }
 
 
+    public static LanguagePOJO.Global getGlobalScreenData(Context mContext) {
+        LanguagePOJO.Global global = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.GLOBAL_PAGE), LanguagePOJO.Global.class);
+        return global;
+    }
+
+
+
+
     public static LanguagePOJO.Login getLoginScreenData(Context mContext) {
         LanguagePOJO.Login loginPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.LOGIN_PAGE), LanguagePOJO.Login.class);
         return loginPage;

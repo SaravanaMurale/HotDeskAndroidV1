@@ -720,7 +720,8 @@
       "EnterVehicleNum" : "أدخل رقم السيارة ...",
       "RepeatUntill" : "كرر حتى",
       "AvailableRooms" : "الغرف المتاحة",
-      "HybridHero" : "الاسم الذي سيتم عرضه عبر Hybrid Hero"
+      "HybridHero" : "الاسم الذي سيتم عرضه عبر Hybrid Hero",
+    "PMO Office":"PMO Office"
 
   }
 }

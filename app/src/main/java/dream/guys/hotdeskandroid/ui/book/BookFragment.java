@@ -1,7 +1,13 @@
 package dream.guys.hotdeskandroid.ui.book;
 
+import static dream.guys.hotdeskandroid.utils.Utils.getActionOverLaysPageScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getBookingPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentTime;
+import static dream.guys.hotdeskandroid.utils.Utils.getGlobalScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getLoginScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getResetPasswordPageScreencreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.toastMessage;
 
 import android.annotation.SuppressLint;
@@ -76,6 +82,7 @@ import dream.guys.hotdeskandroid.example.DataModel;
 import dream.guys.hotdeskandroid.example.ItemAdapter;
 import dream.guys.hotdeskandroid.example.ValuesPOJO;
 import dream.guys.hotdeskandroid.model.FloorListModel;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
 import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
@@ -148,6 +155,23 @@ public class BookFragment extends Fragment implements
     TextView tvParking;
     @BindView(R.id.tv_more)
     TextView tvMore;
+
+    //For Langguage
+    @BindView(R.id.profile_back)
+    TextView profile_back;
+    @BindView(R.id.tvStartLocate)
+    TextView tvStartLocate;
+    @BindView(R.id.tvLocateEndTime)
+    TextView tvLocateEndTime;
+
+    LanguagePOJO.Login logoinPage;
+    LanguagePOJO.AppKeys appKeysPage;
+    LanguagePOJO.ResetPassword resetPage ;
+    LanguagePOJO.ActionOverLays actionOverLays;
+    LanguagePOJO.Booking bookindata ;
+    LanguagePOJO.Global global;
+
+
 
     List<DeskRoomCountResponse> events = new ArrayList<>();
     List<String> dateList = new ArrayList<>();
@@ -243,6 +267,8 @@ public class BookFragment extends Fragment implements
                              Bundle savedInstanceState) {
         binding = FragmentBookBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        setLanguage();
 
         dialog= new Dialog(getActivity());
         if (endTimeSelectedStats == 0) {
@@ -567,6 +593,7 @@ public class BookFragment extends Fragment implements
                 binding.deskLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
                 binding.ivDesk.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
                 binding.tvDesk.setVisibility(View.VISIBLE);
+                binding.tvDesk.setText(appKeysPage.getWorkSpace());
                 binding.rlParticipants.setVisibility(View.GONE);
                 binding.rlFilter.setVisibility(View.GONE);
                 LinearLayout.LayoutParams deskParams = new LinearLayout.LayoutParams(
@@ -595,6 +622,7 @@ public class BookFragment extends Fragment implements
                 binding.roomLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
                 binding.ivRoom.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
                 binding.tvRoom.setVisibility(View.VISIBLE);
+                binding.tvRoom.setText(appKeysPage.getRoom());
                 binding.rlParticipants.setVisibility(View.VISIBLE);
                 binding.rlFilter.setVisibility(View.GONE);
 
@@ -632,6 +660,7 @@ public class BookFragment extends Fragment implements
                 binding.parkingLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
                 binding.ivParking.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
                 binding.tvParking.setVisibility(View.VISIBLE);
+                binding.tvParking.setText(appKeysPage.getParking());
                 binding.rlParticipants.setVisibility(View.GONE);
                 binding.rlFilter.setVisibility(View.GONE);
 
@@ -4314,6 +4343,25 @@ public class BookFragment extends Fragment implements
         locateFilterMainRV.setAdapter(adapter);
 
         bottomSheetDialog.show();
+
+    }
+
+    public void setLanguage(){
+
+        logoinPage = getLoginScreenData(getContext());
+        appKeysPage = getAppKeysPageScreenData(getContext());
+        resetPage = getResetPasswordPageScreencreenData(getContext());
+        actionOverLays = getActionOverLaysPageScreenData(getContext());
+        bookindata = getBookingPageScreenData(getContext());
+        global=getGlobalScreenData(getContext());
+
+
+
+        //binding.tvPMOOffice.setText(appKeysPage);
+        binding.searchGlobal.setText(appKeysPage.getChooseLocation());
+        binding.tvStartLocate.setText(appKeysPage.getStart());
+        binding.tvLocateEndTime.setText(appKeysPage.getEnd());
+
 
     }
 
