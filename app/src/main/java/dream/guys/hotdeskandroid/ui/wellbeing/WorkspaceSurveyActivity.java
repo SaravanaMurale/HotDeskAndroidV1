@@ -1,5 +1,9 @@
 package dream.guys.hotdeskandroid.ui.wellbeing;
 
+import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getGlobalScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getWellBeingScreenData;
+
 import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -22,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.ReportIssueRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.DeskResponseNew;
@@ -47,6 +52,14 @@ public class WorkspaceSurveyActivity extends AppCompatActivity
     ImageView ReportBack, iv_edit_accessibility, iv_edit_air, iv_edit_clean, iv_edit_light, iv_edit_noise, iv_edit_temperature, iv_edit_chair,
             iv_edit_desk, iv_edit_display, iv_edit_keyboard, iv_edit_mouse, iv_edit_phone, iv_edit_mobile, iv_edit_wifi, iv_edit_lan;
     int deskId=0;
+
+    //New...
+    LanguagePOJO.WellBeing wellBeingPage;
+    LanguagePOJO.AppKeys appKeysPage;
+    LanguagePOJO.Global global;
+    TextView mTxtTitle,mTxtLocation,mTxtDate,tvAccessibility,tvAir,tvClean,tvLight,tvPhone,
+            tvNoise,tvTemperature,tvChair,tvDesk,tvDisplay,tvKeyboard,tvMouse,tvMobile,tvWifi,tvLan
+            ,tvComments;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -122,6 +135,27 @@ public class WorkspaceSurveyActivity extends AppCompatActivity
         sb_wifi = findViewById(R.id.sb_wifi);
         sb_lan = findViewById(R.id.sb_lan);
 
+        mTxtTitle = findViewById(R.id.profile_edit);
+        mTxtLocation = findViewById(R.id.txt_location);
+        mTxtDate = findViewById(R.id.txt_date);
+        tvAccessibility = findViewById(R.id.tvAccessibility);
+        tvAir = findViewById(R.id.tvAir);
+        tvClean = findViewById(R.id.tvClean);
+        tvLight = findViewById(R.id.tvLight);
+        tvNoise = findViewById(R.id.tvNoise);
+        tvTemperature = findViewById(R.id.tvTemperature);
+        tvChair = findViewById(R.id.tvChair);
+        tvDesk = findViewById(R.id.tvDesk);
+        tvDisplay = findViewById(R.id.tvDisplay);
+        tvKeyboard = findViewById(R.id.tvKeyboard);
+        tvMouse = findViewById(R.id.tvMouse);
+        tvPhone = findViewById(R.id.tvPhone);
+        tvMobile = findViewById(R.id.tvMobile);
+        tvWifi = findViewById(R.id.tvWifi);
+        tvLan = findViewById(R.id.tvLan);
+        tvComments = findViewById(R.id.tvComments);
+
+        setLanguage();
 
         iv_edit_accessibility.setOnClickListener(new View.OnClickListener()
         {
@@ -600,6 +634,8 @@ public class WorkspaceSurveyActivity extends AppCompatActivity
         getLocationRI();
     }
 
+
+
     private void validateData()
     {
         if(reportPastBooking.getText().toString().isEmpty()){
@@ -746,4 +782,38 @@ public class WorkspaceSurveyActivity extends AppCompatActivity
 
         });
     }
+
+    private void setLanguage() {
+
+        wellBeingPage = getWellBeingScreenData(this);
+        appKeysPage = getAppKeysPageScreenData(this);
+        global = getGlobalScreenData(this);
+
+        mTxtTitle.setText(appKeysPage.getWorkSpaceSurvey());
+        mTxtLocation.setText(appKeysPage.getLocation());
+        mTxtDate.setText(appKeysPage.getDateApplicable());
+        reportFromDate.setText(appKeysPage.getFrom());
+        reportToDate.setText(appKeysPage.getTo());
+        tvAccessibility.setText(appKeysPage.getAccessibility());
+        tvAir.setText(appKeysPage.getAir());
+        tvClean.setText(appKeysPage.getCleanliness());
+        tvLight.setText(appKeysPage.getLight());
+        tvNoise.setText(appKeysPage.getNoise());
+        tvTemperature.setText(appKeysPage.getTemperature());
+        tvChair.setText(appKeysPage.getChair());
+        tvDesk.setText(appKeysPage.getDesk());
+        tvDisplay.setText(appKeysPage.getDisplay());
+        tvKeyboard.setText(appKeysPage.getKeyBoard());
+        tvMouse.setText(appKeysPage.getMouse());
+        tvPhone.setText(appKeysPage.getPhone());
+        tvMobile.setText(appKeysPage.getMobile());
+        tvWifi.setText(appKeysPage.getWifi());
+        tvLan.setText(appKeysPage.getLan());
+        tvComments.setText(appKeysPage.getOtherComments());
+        reportCancel.setText(appKeysPage.getCancel());
+        reportSubmit.setText(appKeysPage.getSubmit());
+        cb_anonymous.setText(global.getAnonymous());
+
+    }
+
 }

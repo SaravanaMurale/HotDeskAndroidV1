@@ -421,7 +421,7 @@
       "Yearly": "Jährlich",
       "Interval": "Intervall",
       "Until": "Bis um",
-      "OnDays": "An Tagen,
+      "OnDays": "An Tagen",
       "Forever": "Bis in alle Ewigkeit",
       "AllDays": "Alle Tage",
       "MYTeam": "Mein Team",
@@ -549,7 +549,7 @@
       "Years": "Jahre",
       "Day": "Tag",
       "WeekDays": "Wochentage",
-      "ConfigureMailAlert": "Sie müssen Mail konfigurieren."
+      "ConfigureMailAlert": "Sie müssen Mail konfigurieren.",
       "Monday": "Montag",
       "Tuesday": "Dienstag",
       "Wednesday": "Mittwoch",
@@ -715,9 +715,11 @@
       "RepeatUntill" : "Wiederhole bis",
       "AvailableRooms" : "Verfügbare Zimmer",
       "HybridHero" : "Der Name, der in Hybrid Hero angezeigt wird",
-    "PMO Office":"PMO Office"
+    "PMO Office":"PMO Office",
       
 
+    "HealthEating": "health Eating",
+    "Send": "Send"
 
 
 

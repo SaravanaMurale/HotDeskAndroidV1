@@ -1,5 +1,6 @@
 package dream.guys.hotdeskandroid.ui.wellbeing;
 
+import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getWellBeingScreenData;
 
 import android.app.Dialog;
@@ -64,6 +65,7 @@ public class WellbeingFragment extends Fragment {
     List<WellbeingConfigResponse.Link> linksArrayRewards = new ArrayList<>();
     List<WellbeingConfigResponse.Link> linksArrayHealthTips = new ArrayList<>();
 
+    LanguagePOJO.AppKeys appKeysPage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,14 +74,14 @@ public class WellbeingFragment extends Fragment {
         binding = FragmentWellbeingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-
         getWellBeingConfigData();
 
         binding.healthTipsBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
-                intent.putExtra(AppConstants.WELLBEING_TYPE, "Health Tips");
+                //intent.putExtra(AppConstants.WELLBEING_TYPE, "Health Tips");
+                intent.putExtra(AppConstants.WELLBEING_TYPE, binding.tvHealthTips.getText());
                 intent.putExtra(AppConstants.PERSONAL_CONTENT, healthtips);
                 Log.d(TAG, "onClick: "+linksArrayHealthTips.size());
                 intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayHealthTips);
@@ -123,7 +125,8 @@ public class WellbeingFragment extends Fragment {
             public void onClick(View v) {
                 /* Intent intent=new Intent(getActivity(),TrainingActivity.class);*/
                 Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
-                intent.putExtra(AppConstants.WELLBEING_TYPE, "Mental Health");
+                //intent.putExtra(AppConstants.WELLBEING_TYPE, "Mental Health");
+                intent.putExtra(AppConstants.WELLBEING_TYPE, binding.mentalHealth.getText());
                 intent.putExtra(AppConstants.PERSONAL_CONTENT, health);
                 Log.d(TAG, "onClick: "+linksArrayPersonal.size());
                 intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayHealth);
@@ -148,7 +151,8 @@ public class WellbeingFragment extends Fragment {
                 /*Intent intent=new Intent(getActivity(),CreateNoticeActivity.class);
                 startActivity(intent);*/
                 Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
-                intent.putExtra(AppConstants.WELLBEING_TYPE, "Notice");
+                //intent.putExtra(AppConstants.WELLBEING_TYPE, "Notice");
+                intent.putExtra(AppConstants.WELLBEING_TYPE, binding.tvNoti.getText());
                 intent.putExtra(AppConstants.PERSONAL_CONTENT, notice);
                 Log.d(TAG, "onClick: "+linksArrayPersonal.size());
                 intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayNotice);
@@ -162,7 +166,8 @@ public class WellbeingFragment extends Fragment {
                 /*Intent intent=new Intent(getActivity(),CreateNoticeActivity.class);
                 startActivity(intent);*/
                 Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
-                intent.putExtra(AppConstants.WELLBEING_TYPE, "Rewards");
+                //intent.putExtra(AppConstants.WELLBEING_TYPE, "Rewards");
+                intent.putExtra(AppConstants.WELLBEING_TYPE, binding.tvRewards.getText());
                 intent.putExtra(AppConstants.PERSONAL_CONTENT, rewards);
                 Log.d(TAG, "onClick: "+linksArrayPersonal.size());
                 intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayRewards);
@@ -202,7 +207,8 @@ public class WellbeingFragment extends Fragment {
             public void onClick(View v) {
                /* Intent intent=new Intent(getActivity(),TrainingActivity.class);*/
                 Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
-                intent.putExtra(AppConstants.WELLBEING_TYPE, "Benefits");
+                //intent.putExtra(AppConstants.WELLBEING_TYPE, "Benefits");
+                intent.putExtra(AppConstants.WELLBEING_TYPE, binding.txtBenefits.getText());
                 intent.putExtra(AppConstants.PERSONAL_CONTENT, benefits);
                 Log.d(TAG, "onClick: "+linksArrayPersonal.size());
                 intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayBenefits);
@@ -215,7 +221,8 @@ public class WellbeingFragment extends Fragment {
             public void onClick(View v) {
                 /* Intent intent=new Intent(getActivity(),TrainingActivity.class);*/
                 Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
-                intent.putExtra(AppConstants.WELLBEING_TYPE, "Events");
+                //intent.putExtra(AppConstants.WELLBEING_TYPE, "Events");
+                intent.putExtra(AppConstants.WELLBEING_TYPE, binding.tvEvents.getText());
                 intent.putExtra(AppConstants.PERSONAL_CONTENT, events);
                 Log.d(TAG, "onClick: "+linksArrayPersonal.size());
                 intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayEvents);
@@ -228,7 +235,8 @@ public class WellbeingFragment extends Fragment {
             public void onClick(View v) {
                 /* Intent intent=new Intent(getActivity(),TrainingActivity.class);*/
                 Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
-                intent.putExtra(AppConstants.WELLBEING_TYPE, "Health Eating");
+                //intent.putExtra(AppConstants.WELLBEING_TYPE, "Health Eating");
+                intent.putExtra(AppConstants.WELLBEING_TYPE, binding.txtHealtheat.getText());
                 intent.putExtra(AppConstants.PERSONAL_CONTENT, health);
                 Log.d(TAG, "onClick: "+linksArrayPersonal.size());
                 intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayHealth);
@@ -374,6 +382,7 @@ public class WellbeingFragment extends Fragment {
     public void setLanguage() {
 
         LanguagePOJO.WellBeing wellBeingPage = getWellBeingScreenData(getActivity());
+        appKeysPage = getAppKeysPageScreenData(getActivity());
         
         if (wellBeingPage!=null) {
             
@@ -393,7 +402,37 @@ public class WellbeingFragment extends Fragment {
             binding.tvReport.setText(wellBeingPage.getReportAnIssue());
             binding.tvHelp.setText(wellBeingPage.getHelp());
             binding.tvLogout.setText(wellBeingPage.getLogOut());
-            
+
+            //New...
+            binding.title.setText(wellBeingPage.getTabTitle());
+            binding.txtHealthsaf.setText(appKeysPage.getHealthAndSafety());
+            binding.tvHealthTips.setText(appKeysPage.getHealthTips());
+            binding.firewar.setText(appKeysPage.getFireWarden());
+            binding.fireaid.setText(appKeysPage.getFirstAid());
+            binding.mentalHealth.setText(appKeysPage.getMentalHealth());
+            binding.txtHr.setText(appKeysPage.getHumanResources());
+            binding.tvLeave.setText(appKeysPage.getLeave());
+            binding.tvReportIssue.setText(appKeysPage.getReportAnIssue());
+            binding.txtPlaces.setText(appKeysPage.getPlaces());
+            binding.txtBenefits.setText(appKeysPage.getBenefits());
+            binding.tvTraining.setText(appKeysPage.getTraining());
+            binding.txtEvents.setText(appKeysPage.getEvents());
+            binding.tvEvents.setText(appKeysPage.getEvents());
+            binding.txtHealtheat.setText(appKeysPage.getHealthEating());
+            binding.tvHealth.setText(appKeysPage.getHealthEating());
+            binding.txtNotices.setText(appKeysPage.getNotices());
+            binding.tvNotification.setText(appKeysPage.getNotices());
+            binding.txtCovid.setText(appKeysPage.getCovid());
+            binding.tvCovid.setText(wellBeingPage.getCovidCertification());
+            binding.txtPHelp.setText(appKeysPage.getPersonalHelp());
+            binding.tvPersonal.setText(appKeysPage.getPersonalHelp());
+            binding.txtRewards.setText(wellBeingPage.getRewards());
+            binding.tvRewards.setText(wellBeingPage.getRewards());
+            binding.txtWork.setText(wellBeingPage.getWorkPlaceAssessment());
+            binding.tvWorkspace.setText(wellBeingPage.getWorkPlaceAssessment());
+            binding.txtWorksur.setText(appKeysPage.getWorkSpaceSurvey());
+            binding.tvWorkspaceSurvey.setText(appKeysPage.getWorkSpaceSurvey());
+
         }
 
     }

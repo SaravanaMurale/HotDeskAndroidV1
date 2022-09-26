@@ -718,9 +718,11 @@
       "RepeatUntill" : "दोहराओ जब तक",
       "AvailableRooms" : "उपलब्ध कमरे",
       "HybridHero" : "वह नाम जो हाइब्रिड हीरो में प्रदर्शित किया जाएगा",
-    "PMO Office":"PMO Office"
+    "PMO Office":"PMO Office",
       
 
+    "HealthEating": "health Eating",
+    "Send": "Send"
       
 
 

@@ -1,5 +1,6 @@
 package dream.guys.hotdeskandroid.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +26,11 @@ public class AssessmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<QuestionListResponse.ChecklistQuestions> questionsList= new ArrayList<>();
     public QuestionListListener listener;
 
+    Context context;
 
-    public AssessmentAdapter(List<QuestionListResponse> questionListResponse) {
+    public AssessmentAdapter(List<QuestionListResponse> questionListResponse,Context context) {
         this.itemsData = questionListResponse;
+        this.context = context;
     }
 
     @Override
@@ -57,7 +60,7 @@ public class AssessmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         mLayoutManager = new LinearLayoutManager(viewHolder.itemView.getContext(), LinearLayoutManager.VERTICAL, false);
         assessmentViewHolder.rvQuestion.setLayoutManager(mLayoutManager);
-        questionListAdapter = new QuestionListAdapter(itemsData.get(position).getChecklistQuestions(),position);
+        questionListAdapter = new QuestionListAdapter(itemsData.get(position).getChecklistQuestions(),position,context);
         questionListAdapter.setQuestionListListener(this);
         assessmentViewHolder.rvQuestion.setAdapter(questionListAdapter);
     }

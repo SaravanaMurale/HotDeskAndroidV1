@@ -1,5 +1,8 @@
 package dream.guys.hotdeskandroid.ui.wellbeing;
 
+import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getWellBeingScreenData;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -15,6 +18,7 @@ import java.util.List;
 import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.adapter.FireWardensAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityFireWardensBinding;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.FirstAidResponse;
 import dream.guys.hotdeskandroid.ui.teams.ShowProfileActivity;
@@ -29,6 +33,9 @@ public class FireWardensActivity extends AppCompatActivity implements FireWarden
 
     ActivityFireWardensBinding binding;
 
+    LanguagePOJO.WellBeing wellBeingPage;
+    LanguagePOJO.AppKeys appKeysPage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +43,7 @@ public class FireWardensActivity extends AppCompatActivity implements FireWarden
         binding=ActivityFireWardensBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setLanguage();
 
 
         Intent intent=getIntent();
@@ -43,29 +51,42 @@ public class FireWardensActivity extends AppCompatActivity implements FireWarden
 
         //Set Title Here
         if(receivedActivity.equals("HEALTH_TIPS")){
-            binding.activityTitle.setText("Health tips");
-            binding.headFire.setText("Health tips");
+            //binding.activityTitle.setText("Health tips");
+            //binding.headFire.setText("Health tips");
+            binding.activityTitle.setText(appKeysPage.getHealthTips());
+            binding.headFire.setText(appKeysPage.getHealthTips());
             binding.tvReportAnHazzard.setVisibility(View.GONE);
             binding.tvEvacuation.setVisibility(View.GONE);
         }
         else if(receivedActivity.equals("FIRE")){
             //binding.activityTitle.setText("Fire wardens");
-            binding.headFire.setText("Fire wardens");
-            binding.titleFire.setText("Fire wardens");
+            /*binding.headFire.setText("Fire wardens");
+            binding.titleFire.setText("Fire wardens");*/
+
+            binding.headFire.setText(appKeysPage.getFireWarden());
+            binding.titleFire.setText(appKeysPage.getFireWarden());
+
             binding.subTitleFire.setText("Persons");
             getFirstAidPersonsDetails("Firewardenss");
         }else if(receivedActivity.equals("FIRST_AID")){
-            binding.activityTitle.setText("First aid");
+            //binding.activityTitle.setText("First aid");
+            binding.activityTitle.setText(appKeysPage.getFirstAid());
             binding.tvEvacuation.setText("First aid guide");
-            binding.headFire.setText("First Aid");
+            //binding.headFire.setText("First Aid");
+            binding.headFire.setText(appKeysPage.getFirstAid());
             binding.titleFire.setText("Adminss");
             binding.subTitleFire.setText("Persons");
             getFirstAidPersonsDetails("Adminss");
             
         }else if(receivedActivity.equals("MENTAL")) {
-            binding.activityTitle.setText("Mental health");
-            binding.headFire.setText("Mental health");
-            binding.tvReportAnHazzard.setText("Report an issue");
+            //binding.activityTitle.setText("Mental health");
+            //binding.headFire.setText("Mental health");
+            //binding.tvReportAnHazzard.setText("Report an issue");
+
+            binding.activityTitle.setText(appKeysPage.getMentalHealth());
+            binding.headFire.setText(appKeysPage.getMentalHealth());
+            binding.tvReportAnHazzard.setText(appKeysPage.getReportAnIssue());
+
             binding.tvEvacuation.setText("Stress relief tips");
         }
 
@@ -82,6 +103,8 @@ public class FireWardensActivity extends AppCompatActivity implements FireWarden
 
 
     }
+
+
 
     private void getFirstAidPersonsDetails(String description) {
 
@@ -162,4 +185,11 @@ public class FireWardensActivity extends AppCompatActivity implements FireWarden
         startActivity(intent);
 
     }
+
+    private void setLanguage() {
+        wellBeingPage = getWellBeingScreenData(this);
+        appKeysPage = getAppKeysPageScreenData(this);
+
+    }
+
 }

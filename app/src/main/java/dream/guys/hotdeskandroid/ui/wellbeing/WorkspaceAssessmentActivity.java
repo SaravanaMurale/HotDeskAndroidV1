@@ -1,5 +1,8 @@
 package dream.guys.hotdeskandroid.ui.wellbeing;
 
+import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getWellBeingScreenData;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +22,7 @@ import dream.guys.hotdeskandroid.listener.QuestionListEditListener;
 import dream.guys.hotdeskandroid.listener.QuestionListListener;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.AssessmentAdapter;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.QuestionListRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.DeskResponseNew;
@@ -46,6 +50,9 @@ public class WorkspaceAssessmentActivity extends AppCompatActivity implements Qu
 
     List<QuestionListResponse> questionListResponse = new ArrayList<>();
 
+    LanguagePOJO.AppKeys appKeysPage;
+    TextView mTitle,tvLocation,tvDescription;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +66,11 @@ public class WorkspaceAssessmentActivity extends AppCompatActivity implements Qu
         ReportBack = findViewById(R.id.ReportBack);
         etDescription = findViewById(R.id.etDescription);
 
+        mTitle = findViewById(R.id.profile_edit);
+        tvLocation = findViewById(R.id.tvLocation);
+        tvDescription = findViewById(R.id.tvDescription);
+
+        setLanguage();
 
         reportSubmit.setOnClickListener(new View.OnClickListener()
         {
@@ -235,7 +247,7 @@ public class WorkspaceAssessmentActivity extends AppCompatActivity implements Qu
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvWorkspaceHeader.setLayoutManager(mLayoutManager);
 
-        assessmentAdapter = new AssessmentAdapter(questionListResponse);
+        assessmentAdapter = new AssessmentAdapter(questionListResponse,WorkspaceAssessmentActivity.this);
         assessmentAdapter.setQuestionListListener(this);
         rvWorkspaceHeader.setAdapter(assessmentAdapter);
     }
@@ -269,4 +281,25 @@ public class WorkspaceAssessmentActivity extends AppCompatActivity implements Qu
         });
 
     }
+
+    public void setLanguage() {
+
+        LanguagePOJO.WellBeing wellBeingPage = getWellBeingScreenData(this);
+        appKeysPage = getAppKeysPageScreenData(this);
+
+        if (wellBeingPage!=null) {
+
+            //New...
+
+            mTitle.setText(wellBeingPage.getWorkPlaceAssessment());
+            tvLocation.setText(appKeysPage.getLocation());
+            etDate.setText(appKeysPage.getSelectDate());
+            reportCancel.setText(appKeysPage.getCancel());
+            reportSubmit.setText(appKeysPage.getSubmit());
+            tvDescription.setText(appKeysPage.getDescription());
+
+        }
+
+    }
+
 }

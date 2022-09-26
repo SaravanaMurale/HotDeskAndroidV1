@@ -692,9 +692,9 @@
       "RepeatUntill" : "Repeat until",
       "AvailableRooms" : "Available Rooms",
       "HybridHero" : "The name that will be displayed accross Hybrid Hero",
-    "PMO Office":"PMO Office"
-      
-      
+    "PMO Office":"PMO Office",
+    "HealthEating": "health Eating",
+    "Send": "Send"
 
   }
 }

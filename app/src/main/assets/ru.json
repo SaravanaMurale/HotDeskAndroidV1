@@ -718,8 +718,10 @@
       "RepeatUntill" : "Повторяйте, пока",
       "AvailableRooms" : "Доступные номера",
       "HybridHero" : "Имя, которое будет отображаться через Hybrid Hero.",
-    "PMO Office":"PMO Office"
-      
+    "PMO Office":"PMO Office",
+    "HealthEating": "health Eating",
+    "Send": "Send"
+
 
   }
 }

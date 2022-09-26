@@ -1,6 +1,7 @@
 package dream.guys.hotdeskandroid.ui.settings;
 
 import static dream.guys.hotdeskandroid.utils.Utils.dateWithDayString;
+import static dream.guys.hotdeskandroid.utils.Utils.getSettingsPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getWellBeingScreenData;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -269,14 +270,14 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void setLanguage() {
 
-        LanguagePOJO.WellBeing wellBeingPage = getWellBeingScreenData(this);
+        LanguagePOJO.Settings wellBeingPage = getSettingsPageScreenData(this);
 
         if (wellBeingPage!=null) {
 
             //binding.tvContact.setText(wellBeingPage.getDefault());
-            binding.tvOrganization.setText(wellBeingPage.getChangeOrganization());
+            binding.tvOrganization.setText(wellBeingPage.getChangeOrganisation());
             binding.tvDarkMode.setText(wellBeingPage.getDarkMode());
-            binding.tvPhone.setText(wellBeingPage.getWhatsNew());
+            binding.tvPhone.setText(wellBeingPage.getWhatsnew());
             binding.tvDesk.setText(wellBeingPage.getFeedback());
             binding.tvPreference.setText(wellBeingPage.getPreference());
             binding.tvLang.setText(wellBeingPage.getLanguage());
@@ -285,7 +286,7 @@ public class SettingsActivity extends AppCompatActivity {
             binding.tvPin.setText(wellBeingPage.getSetUpPin());
             binding.tvBio.setText(wellBeingPage.getSetUpBiometric());
             binding.tvReset.setText(wellBeingPage.getResetPassword());
-            binding.tvReport.setText(wellBeingPage.getHelpTroubleShoot());
+            binding.tvReport.setText(wellBeingPage.getHelp());
             binding.tvHelp.setText(wellBeingPage.getAbout());
             binding.tvLogout.setText(wellBeingPage.getLogOut());
             binding.tvSecurity.setText(wellBeingPage.getSecurity());

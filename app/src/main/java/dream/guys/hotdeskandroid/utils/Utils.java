@@ -1383,8 +1383,6 @@ public class Utils {
     }
 
 
-
-
     public static LanguagePOJO.Login getLoginScreenData(Context mContext) {
         LanguagePOJO.Login loginPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.LOGIN_PAGE), LanguagePOJO.Login.class);
         return loginPage;

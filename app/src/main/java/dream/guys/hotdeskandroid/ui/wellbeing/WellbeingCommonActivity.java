@@ -1,5 +1,7 @@
 package dream.guys.hotdeskandroid.ui.wellbeing;
 
+import static dream.guys.hotdeskandroid.utils.Utils.getWellBeingScreenData;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +19,7 @@ import java.util.List;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.PersonalHelpAdapter;
 import dream.guys.hotdeskandroid.adapter.WellbeingCommonAdapter;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.response.WellbeingConfigResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 
@@ -70,5 +73,14 @@ public class WellbeingCommonActivity extends AppCompatActivity
         wellbeingCommonAdapter = new WellbeingCommonAdapter(this, linksArray);
         rvCommon.setAdapter(wellbeingCommonAdapter);
 
+
+        //setLanguage();
+
+    }
+
+    private void setLanguage() {
+        LanguagePOJO.WellBeing wellBeingPage = getWellBeingScreenData(this);
+        profile_edit.setText(wellBeingPage.getTabTitle());
+        tvContent.setText(wellBeingPage.getTabTitle());
     }
 }

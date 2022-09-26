@@ -1,5 +1,7 @@
 package dream.guys.hotdeskandroid.adapter;
 
+import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import java.util.List;
 
 import dream.guys.hotdeskandroid.listener.QuestionListListener;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.response.QuestionListResponse;
 
 public class QuestionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
@@ -26,11 +29,13 @@ public class QuestionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private List<QuestionListResponse.ChecklistQuestions> itemsData = new ArrayList<>();
     private int categoryPosition=0;
     private QuestionListListener questionListListener;
-    private Context context;
+    Context context;
 
-    public QuestionListAdapter(List<QuestionListResponse.ChecklistQuestions> questionListResponse,int categoryPosition) {
+    public QuestionListAdapter(List<QuestionListResponse.ChecklistQuestions> questionListResponse,int categoryPosition,
+                               Context context) {
         this.itemsData = questionListResponse;
         this.categoryPosition=categoryPosition;
+        this.context = context;
     }
 
     @Override
@@ -99,6 +104,10 @@ public class QuestionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             , itemsData.get(position).getThingsToConsider());
             }
         });
+
+        questionViewHolder.rb_yes.setText(getAppKeysPageScreenData(context).getYes());
+        questionViewHolder.rb_no.setText(getAppKeysPageScreenData(context).getNo());
+
     }
 
     @Override
@@ -122,6 +131,7 @@ public class QuestionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             rb_no = itemView.findViewById(R.id.rb_no);
             iv_edit = itemView.findViewById(R.id.iv_edit);
             rgAnswer = itemView.findViewById(R.id.rgAnswer);
+
         }
     }
 }

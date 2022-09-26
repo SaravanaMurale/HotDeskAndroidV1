@@ -717,9 +717,11 @@
         "RepeatUntill" : "qədər təkrarlayın",
         "AvailableRooms" : "Mövcud Otaqlar",
         "HybridHero" : "Hibrid Qəhrəmanda göstəriləcək ad",
-        "PMO Office":"PMO Office"
+        "PMO Office":"PMO Office",
         
 
+        "HealthEating": "health Eating",
+        "Send": "Send"
 
 
     }

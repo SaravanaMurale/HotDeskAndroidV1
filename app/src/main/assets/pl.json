@@ -613,7 +613,7 @@
         "PasswordNotEmptyAlert": "Hasło nie powinno być puste",
         "IncorrectPassword": "niepoprawne hasło",
         "InvalidLogInDetails": "Nieprawidłowe dane logowania",
-        "PleaseAcceptGDPR": "Proszę zaakceptować RODO"
+        "PleaseAcceptGDPR": "Proszę zaakceptować RODO",
         "TenantNameNotEmptyAlert": "Nazwa najemcy nie powinna być pusta",
         "EmailOrCompanyInvalid": "Adres e-mail lub firma jest nieprawidłowa.",
         "ResetPasswordAlert": "Wkrótce otrzymasz e-mail z instrukcjami, jak zresetować hasło.",
@@ -663,7 +663,7 @@
         "FromTimeNotEmptyAlert": "Od czasu nie powinno być pusto",
         "ToTimeNotEmptyAlert": "Aby czas nie był pusty",
         "VehicleNoNotEmptyAlert": "Numer rejestracyjny pojazdu nie powinien być pusty",
-        "DateNotEemptyAlert": "Data nie powinna być pusta"
+        "DateNotEemptyAlert": "Data nie powinna być pusta",
         "SubjectNotEmptyAlert": "Temat nie powinien być pusty",
         "ProfileUpdated": "Profil zaktualizowany",
         "IssueReported": "Zgłoszono problem",
@@ -711,8 +711,8 @@
         "Recipients" : "Odbiorcy",
         "AvailableFrom" : "Dostępne od",
         "AvailableTo" : "Dostępne",
-        "EditNotice" : "Edytuj powiadomienie”,
-        "CreateNotice" : "Utwórz powiadomienie”,
+        "EditNotice" : "Edytuj powiadomienie",
+        "CreateNotice" : "Utwórz powiadomienie",
         "Videos" : "Filmy",
         "Guides" : "Przewodniki",
         "RequestTraining": "Poproś o szkolenie",
@@ -722,17 +722,19 @@
         "PendingRequests": "Żądania oczekujące",
         "PendingApproval": "Oczekuje na zatwierdzenie",
         "WorkFromOffice": "Praca z biura",
-        "WorkingRemotedly" : "Praca zdalna”,
+        "WorkingRemotedly" : "Praca zdalna",
         "NoBookingsAvailable" : "Brak dostępnych rezerwacji",
         "AvailableParkings" :  "Dostępny parking",
         "EnterVehicleNum" : "Wpisz nr pojazdu...",
         "RepeatUntill" : "Powtarzaj, aż",
         "AvailableRooms" : "Dostępne pokoje",
         "HybridHero" : "Nazwa, która będzie wyświetlana w Hybrid Hero",
-      "PMO Office":"PMO Office"
+      "PMO Office":"PMO Office",
         
 
 
+      "HealthEating": "health Eating",
+      "Send": "Send"
 
 
 

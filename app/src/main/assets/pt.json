@@ -716,9 +716,11 @@
       "RepeatUntill" : "Repetir até",
       "AvailableRooms" : "Quartos disponíveis",
       "HybridHero" : "O nome que será exibido no Hybrid Hero",
-    "PMO Office":"PMO Office"
+    "PMO Office":"PMO Office",
       
 
+    "HealthEating": "health Eating",
+    "Send": "Send"
 
 
 

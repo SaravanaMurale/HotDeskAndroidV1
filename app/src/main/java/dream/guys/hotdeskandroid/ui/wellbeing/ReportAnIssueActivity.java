@@ -1,5 +1,9 @@
 package dream.guys.hotdeskandroid.ui.wellbeing;
 
+import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getGlobalScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getWellBeingScreenData;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Service;
@@ -24,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.ReportIssueRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.DeskResponse;
@@ -54,6 +59,14 @@ public class ReportAnIssueActivity extends AppCompatActivity {
     String fromDate, toDate;
     long from, to;
 
+    LanguagePOJO.WellBeing wellBeingPage;
+    LanguagePOJO.AppKeys appKeysPage;
+    LanguagePOJO.Global global;
+
+    TextView mTxtTitle,issue_content,txt_locate,txt_pastBooking,txt_date,txt_report,tvLight,tvPhone,
+            tvNoise,tvTemperature,tvChair,tvDesk,tvDisplay,tvKeyboard,tvMouse,tvMobile,tvWifi,tvLan
+            ,tvComments;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +82,14 @@ public class ReportAnIssueActivity extends AppCompatActivity {
         cb_anonymous = findViewById(R.id.cb_anonymous);
         calendar_view = (CalendarView) findViewById(R.id.calendar_view);
         calendar_view.setVisibility(View.GONE);
+
+        mTxtTitle = findViewById(R.id.profile_edit);
+        issue_content = findViewById(R.id.issue_content);
+        txt_locate = findViewById(R.id.txt_locate);
+        txt_pastBooking = findViewById(R.id.txt_pastBooking);
+        txt_date = findViewById(R.id.txt_date);
+        txt_report = findViewById(R.id.txt_report);
+
 
         ReportBack.setOnClickListener(new View.OnClickListener()
         {
@@ -148,6 +169,7 @@ public class ReportAnIssueActivity extends AppCompatActivity {
         });
 
         getLocationRI();
+        setLanguage();
     }
 
     private void submitReport()
@@ -231,4 +253,27 @@ public class ReportAnIssueActivity extends AppCompatActivity {
 
         });
     }
+
+
+    private void setLanguage() {
+
+        wellBeingPage = getWellBeingScreenData(this);
+        appKeysPage = getAppKeysPageScreenData(this);
+        global = getGlobalScreenData(this);
+
+        mTxtTitle.setText(appKeysPage.getWorkSpaceSurvey());
+        txt_locate.setText(appKeysPage.getLocation());
+        txt_pastBooking.setText(appKeysPage.getPastBooking());
+        issue_content.setText(appKeysPage.getReportIssueTitle());
+        txt_date.setText(appKeysPage.getDateApplicable());
+
+        reportCancel.setText(appKeysPage.getCancel());
+        reportSubmit.setText(appKeysPage.getSubmit());
+        cb_anonymous.setText(global.getAnonymous());
+        reportFromDate.setText(appKeysPage.getFrom());
+        reportToDate.setText(appKeysPage.getTo());
+        txt_report.setText(appKeysPage.getDescription());
+
+    }
+
 }

@@ -1,5 +1,10 @@
 package dream.guys.hotdeskandroid.ui.wellbeing;
 
+import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getGlobalScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getPersonalPagesScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getWellBeingScreenData;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +25,7 @@ import java.util.List;
 
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.PersonalHelpAdapter;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.PersonalHelpRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.WellbeingConfigResponse;
@@ -45,6 +51,11 @@ public class PersonalHelpActivity extends AppCompatActivity {
 
     List<WellbeingConfigResponse.Link> linksArray = new ArrayList<>();
 
+    LanguagePOJO.AppKeys appKeysPage;
+    LanguagePOJO.PersonalHelp personalHelp;
+    LanguagePOJO.Global global;
+    TextView mTitle,tvHeader;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +70,11 @@ public class PersonalHelpActivity extends AppCompatActivity {
         ReportBack = findViewById(R.id.ReportBack);
         tvDescription = findViewById(R.id.tvDescription);
         cb_anonymous = findViewById(R.id.cb_anonymous);
+
+        mTitle = findViewById(R.id.profile_edit);
+        tvHeader = findViewById(R.id.tvHeader);
+
+        setLanguage();
 
         linksArray= (List<WellbeingConfigResponse.Link>) intent.getSerializableExtra(AppConstants.PERSONAL_LINKS);
 
@@ -134,5 +150,17 @@ public class PersonalHelpActivity extends AppCompatActivity {
 
     }
 
+    private void setLanguage() {
+        appKeysPage = getAppKeysPageScreenData(this);
+        personalHelp = getPersonalPagesScreenData(this);
+        global = getGlobalScreenData(this);
+
+        mTitle.setText(personalHelp.getTitle());
+        tvHeader.setText(personalHelp.getDescribeInfo());
+        cb_anonymous.setText(global.getAnonymous());
+        btn_send.setText(appKeysPage.getSend());
+        btn_cancel.setText(appKeysPage.getCancel());
+
+    }
 
 }

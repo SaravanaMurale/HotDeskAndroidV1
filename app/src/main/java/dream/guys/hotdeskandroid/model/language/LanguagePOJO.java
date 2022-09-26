@@ -5120,6 +5120,30 @@ public class LanguagePOJO {
         @Expose
         private String hybridHero;
 
+        //New...
+        @SerializedName("HealthEating")
+        @Expose
+        private String HealthEating;
+        @SerializedName("Send")
+        @Expose
+        private String Send;
+
+        public String getSend() {
+            return Send;
+        }
+
+        public void setSend(String send) {
+            Send = send;
+        }
+
+        public String getHealthEating() {
+            return HealthEating;
+        }
+
+        public void setHealthEating(String healthEating) {
+            HealthEating = healthEating;
+        }
+
         public String getSpecificDate() {
             return specificDate;
         }
