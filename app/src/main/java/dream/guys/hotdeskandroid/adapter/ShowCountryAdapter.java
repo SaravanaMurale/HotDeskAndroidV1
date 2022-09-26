@@ -24,13 +24,11 @@ public class ShowCountryAdapter extends RecyclerView.Adapter<ShowCountryAdapter.
     OnSelectListener onSelectListener;
     String identifier="";
 
-
     public interface  OnSelectListener{
         public void onSelect(LocateCountryRespose locateCountryRespose, String identifier);
     }
 
     public ShowCountryAdapter(Context context, List<LocateCountryRespose> countryList, OnSelectListener onSelectListener, String identifier) {
-
         this.context=context;
         this.countryList=countryList;
         this.onSelectListener=onSelectListener;

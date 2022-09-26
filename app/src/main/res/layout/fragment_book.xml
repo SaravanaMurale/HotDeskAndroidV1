@@ -29,11 +29,11 @@
                     android:id="@+id/profile_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:text="Calendar Booking"
                     android:textSize="@dimen/_16sdp"
                     android:theme="@style/TextBold"
-                    android:layout_centerVertical="true"
                     app:tint="@color/figmaBlue" />
 
 

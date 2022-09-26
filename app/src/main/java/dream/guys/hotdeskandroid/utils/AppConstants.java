@@ -91,4 +91,24 @@ public class AppConstants {
     public static final String SELECTED_COUNTRY = "SELECTED_COUNTRY";
     public static final String SELECTED_COUNTRY_ID = "SELECTED_COUNTRY_ID";
 
+    //Multilanguage
+    public static final String ME_PAGE = "ME_PAGE";
+    public static final String BOOKING_PAGE = "BOOKING_PAGE";
+    public static final String LOGIN_PAGE = "LOGIN_PAGE";
+    public static final String COVIDSELFCERTIFICATION_PAGE = "COVIDSELFCERTIFICATION_PAGE";
+    public static final String PERSONAL_HELP_PAGE = "PERSONAL_HELP_PAGE";
+    public static final String APPROVALS_PAGE = "APPROVALS_PAGE";
+    public static final String REQUESTS_PAGE = "REQUESTS_PAGE";
+    public static final String CARPARK_PAGE = "CARPARK_PAGE";
+    public static final String RESET_PASSWORD_PAGE = "RESET_PASSWORD_PAGE";
+    public static final String ACCOUNTSETTINGS_PAGE = "ACCOUNTSETTINGS_PAGE";
+    public static final String COMMON_TITLES_PAGE = "COMMON_TITLES_PAGE";
+    public static final String SEARCH_PAGE = "SEARCH_PAGE";
+    public static final String APP_FEEDBACK_PAGE = "APP_FEEDBACK_PAGE";
+    public static final String ACTIONOVERLAYS_PAGE = "ACTIONOVERLAYS_PAGE";
+    public static final String SETTINGS_PAGE = "SETTINGS_PAGE";
+    public static final String ACTION_OVERLAYS_PAGE = "ACTION_OVERLAYS_PAGE";
+    public static final String MEETING_ROOM_PAGE = "MEETING_ROOM_PAGE";
+    public static final String APPKEYS_PAGE = "APPKEYS_PAGE";
+
 }

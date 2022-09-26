@@ -1,8 +1,14 @@
 package dream.guys.hotdeskandroid.ui.locate;
 
+import static dream.guys.hotdeskandroid.utils.Utils.getActionOverLaysPageScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getBookingPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDateWithDay;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentTime;
+import static dream.guys.hotdeskandroid.utils.Utils.getGlobalScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getLoginScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getResetPasswordPageScreencreenData;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -72,6 +78,7 @@ import dream.guys.hotdeskandroid.example.DataModel;
 import dream.guys.hotdeskandroid.example.ItemAdapter;
 import dream.guys.hotdeskandroid.example.MyCanvasDraw;
 import dream.guys.hotdeskandroid.example.ValuesPOJO;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.CarParkingDeleteRequest;
 import dream.guys.hotdeskandroid.model.request.CarParkingStatusModel;
 import dream.guys.hotdeskandroid.model.request.DeleteMeetingRoomRequest;
@@ -126,6 +133,29 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     @BindView(R.id.scrollView)
     ScrollView scrollView;
+
+    @BindView(R.id.statusUnAvaliable)
+    TextView statusUnAvaliable;
+    @BindView(R.id.statusBookedByMe)
+    TextView statusBookedByMe;
+    @BindView(R.id.statusBooked)
+    TextView statusBooked;
+    @BindView(R.id.statusByRequest)
+    TextView statusByRequest;
+    @BindView(R.id.statusAvaliable)
+    TextView statusAvaliable;
+
+
+    LanguagePOJO.Login logoinPage;
+    LanguagePOJO.AppKeys appKeysPage;
+    LanguagePOJO.ResetPassword resetPage ;
+    LanguagePOJO.ActionOverLays actionOverLays;
+    LanguagePOJO.Booking bookindata ;
+    LanguagePOJO.Global global;
+
+    //For Language
+    TextView tvFilterAmenities;
+
 
 
     //BottomSheetData
@@ -304,6 +334,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         // Inflate the layout for this fragment
         binding = dream.guys.hotdeskandroid.databinding.FragmentLocateBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        setLanguage();
 
 
         binding.locateStartTime.setText(getCurrentTime());
@@ -2467,6 +2499,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         editDate = locateEditBottomSheet.findViewById(R.id.editDate);
         bookingName = locateEditBottomSheet.findViewById(R.id.bookingName);
 
+        addNew.setText(global.getAddNew());
+        editClose.setText(global.getBack());
+        //bookingName.setText();
+
+
+
         //editClose.setVisibility(View.INVISIBLE);
         //addNew.setVisibility(View.VISIBLE);
 
@@ -3097,6 +3135,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         TextView tvDescription, tvLocateDeskBookLocation;
 
+        TextView tvLocateCheckInDateLang,tvLocateCheckInStartLang,tvLocateCheckoutLang,tv_repeatLang;
+
 
         System.out.println("BookingRequestDetail" + selctedCode + " " + key + " " + id + " " + code);
 
@@ -3111,6 +3151,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         ivOnline = locateCheckInBottomSheet.findViewById(R.id.ivOnline);
         statusText = locateCheckInBottomSheet.findViewById(R.id.statusText);
+
+
 
         if (statusCode == 4) {
             ivOnline.setImageDrawable(getResources().getDrawable(R.drawable.byrequest));
@@ -3140,6 +3182,19 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         showlocateCheckInDate.setText(Utils.showBottomSheetDate(binding.locateCalendearView.getText().toString()));
         locateCheckInTime.setText(binding.locateStartTime.getText().toString());
         locateCheckoutTime.setText(binding.locateEndTime.getText().toString());
+
+        //Language
+        tvLocateCheckInDateLang = locateCheckInBottomSheet.findViewById(R.id.tvLocateCheckInDate);
+        tvLocateCheckInStartLang = locateCheckInBottomSheet.findViewById(R.id.tvLocateCheckInStart);
+        tvLocateCheckoutLang=locateCheckInBottomSheet.findViewById(R.id.tvLocateCheckout);
+        tv_repeatLang = locateCheckInBottomSheet.findViewById(R.id.tv_repeat);
+
+        tvLocateCheckInStartLang.setText(appKeysPage.getStart());
+        tvLocateCheckoutLang.setText(appKeysPage.getEnd());
+        tv_repeatLang.setText(appKeysPage.getRepeat());
+        editBookingBack.setText(appKeysPage.getBack());
+        editBookingContinue.setText(appKeysPage.getContinue());
+
 
 
         bsRepeatBlock.setOnClickListener(new View.OnClickListener() {
@@ -5103,7 +5158,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     //MyTeamBottomSheet
     private void callMyTeamBottomSheet(List<DAOTeamMember> daoTeamMemberList) {
 
-        TextView myTeamClose;
+        TextView myTeamClose,tvMyTeamLocate,tvPMOOffice,tvAllTeams;;
+
 
         /*BottomSheetDialog myTeamBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         myTeamBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_myteam_bottomsheet,
@@ -5114,6 +5170,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         myTeamBottomSheet.setContentView(view);
         myteamBottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
         myteamBottomSheetBehavior.setPeekHeight(600);
+
+        tvMyTeamLocate=myTeamBottomSheet.findViewById(R.id.tvMyTeam);
+        tvPMOOffice=myTeamBottomSheet.findViewById(R.id.tvPMOOffice);
+        tvAllTeams=myTeamBottomSheet.findViewById(R.id.tvAllTeams);
+
+        tvAllTeams.setText(appKeysPage.getAllTeams());
+        tvMyTeamLocate.setText(appKeysPage.getMYTeam());
+
 
 
         rvMyTeam = myTeamBottomSheet.findViewById(R.id.rvLocateMyTeam);
@@ -5255,7 +5319,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         ArrayList<DataModel> mList;
         ItemAdapter adapter;
 
-        TextView locateFilterCancel, locateFilterApply;
+
+        TextView locateFilterCancel, locateFilterApply,tvFilterAmenities;
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((this).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_locate_filter,
@@ -5263,6 +5328,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         locateFilterCancel = bottomSheetDialog.findViewById(R.id.locateFilterCancel);
         locateFilterApply = bottomSheetDialog.findViewById(R.id.locateFilterApply);
+        tvFilterAmenities=bottomSheetDialog.findViewById(R.id.tvFilter);
+        tvFilterAmenities.setText(appKeysPage.getFilters());
 
 
         locateFilterMainRV = bottomSheetDialog.findViewById(R.id.locateFilterMainRV);
@@ -5374,7 +5441,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         mList.add(new DataModel(nestedList1, "Workspaces"));
-        mList.add(new DataModel(nestedList2, "Rooms"));
+        mList.add(new DataModel(nestedList2, appKeysPage.getRooms()));
 
         adapter = new ItemAdapter(mList);
         locateFilterMainRV.setAdapter(adapter);
@@ -6520,6 +6587,30 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
             }
 
+
+
+    }
+
+    public void setLanguage(){
+
+        logoinPage = getLoginScreenData(getContext());
+        appKeysPage = getAppKeysPageScreenData(getContext());
+        resetPage = getResetPasswordPageScreencreenData(getContext());
+        actionOverLays = getActionOverLaysPageScreenData(getContext());
+        bookindata = getBookingPageScreenData(getContext());
+        global=getGlobalScreenData(getContext());
+
+        binding.searchLocate.setText(appKeysPage.getChooseLocation());
+        binding.tvStartLocate.setText(appKeysPage.getStart());
+        binding.tvLocateEndTime.setText(appKeysPage.getEnd());
+        binding.statusAvaliable.setText(global.getAvailable());
+        binding.statusUnAvaliable.setText(global.getUnavailable());
+        binding.statusBookedByMe.setText(global.getBookedByMe());
+        binding.statusBooked.setText(appKeysPage.getBooked());
+        binding.statusByRequest.setText(appKeysPage.getByRequest());
+
+
+        //tvPMOOffice.setText(appKeysPage);
 
 
     }

@@ -1,5 +1,11 @@
 package dream.guys.hotdeskandroid.ui.home;
 
+import static dream.guys.hotdeskandroid.utils.Utils.getActionOverLaysPageScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getBookingPageScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getLoginScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getResetPasswordPageScreencreenData;
+
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
@@ -58,6 +64,7 @@ import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
 
 import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
 import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
@@ -96,6 +103,12 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     Toolbar toolbar;
     LinearLayout headBlock,homeLayout,searchLayout;
     FrameLayout qrLayout;
+
+    LanguagePOJO.AppKeys appKeysPage;
+    LanguagePOJO.Login logoinPage;
+    LanguagePOJO.ActionOverLays actionOverLays;
+    LanguagePOJO.ResetPassword resetPage;
+    LanguagePOJO.Booking bookindata;
 
     //Header
     ImageView notiIcon,closeSearch,homeNotificationIcon;
@@ -143,6 +156,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         setHasOptionsMenu(true);
 
         dialog = new Dialog(getContext());
+
+        setLanguage();
 
         System.out.println("Seesin userId"+SessionHandler.getInstance().getInt(getActivity(),AppConstants.USER_ID));
         userProfile = root.findViewById(R.id.user_profile_pic);
@@ -1578,5 +1593,14 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             binding.homeUserName.setText(profileData.getFullName());
         }
 
+    }
+
+    public void setLanguage(){
+        logoinPage = getLoginScreenData(getActivity());
+        appKeysPage = getAppKeysPageScreenData(getActivity());
+        resetPage = getResetPasswordPageScreencreenData(getActivity());
+        actionOverLays = getActionOverLaysPageScreenData(getActivity());
+
+        bookindata = getBookingPageScreenData(getActivity());
     }
 }
