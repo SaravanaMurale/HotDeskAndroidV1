@@ -6600,7 +6600,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         bookindata = getBookingPageScreenData(getContext());
         global=getGlobalScreenData(getContext());
 
-        binding.searchLocate.setText(appKeysPage.getChooseLocation());
+//        binding.searchLocate.setText(appKeysPage.getChooseLocation());
         binding.tvStartLocate.setText(appKeysPage.getStart());
         binding.tvLocateEndTime.setText(appKeysPage.getEnd());
         binding.statusAvaliable.setText(global.getAvailable());

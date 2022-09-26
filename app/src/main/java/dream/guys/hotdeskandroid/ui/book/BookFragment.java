@@ -90,6 +90,7 @@ import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
 import dream.guys.hotdeskandroid.model.request.MeetingAmenityStatus;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRecurrence;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
+import dream.guys.hotdeskandroid.model.request.MeetingStatusModel;
 import dream.guys.hotdeskandroid.model.request.Point;
 import dream.guys.hotdeskandroid.model.response.AmenitiesResponse;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
@@ -256,6 +257,9 @@ public class BookFragment extends Fragment implements
 
     //Filter
     List<MeetingAmenityStatus> meetingAmenityStatusList=new ArrayList<>();
+    List<AmenitiesResponse> amenitiesListToShowInMeetingRoomList=new ArrayList<>();
+    List<Integer> filterAmenitiesList=new ArrayList<>();
+
     boolean amenitiesApplyStatus=false;
 
     @Override
@@ -269,7 +273,6 @@ public class BookFragment extends Fragment implements
         binding = FragmentBookBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        setLanguage();
 
         dialog= new Dialog(getActivity());
         if (endTimeSelectedStats == 0) {
@@ -296,7 +299,7 @@ public class BookFragment extends Fragment implements
         binding.rlFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getLocateAmenitiesFilterData();
+                getLocateAmenitiesFilterData(true);
             }
         });
         binding.searchGlobal.setOnClickListener(new View.OnClickListener() {
@@ -317,6 +320,8 @@ public class BookFragment extends Fragment implements
             public void afterTextChanged(Editable s) {
                 if (!s.toString().equalsIgnoreCase(""))
                     participants = Integer.parseInt(s.toString());
+                else
+                    participants = 0;
             }
         });
 
@@ -412,6 +417,7 @@ public class BookFragment extends Fragment implements
 
         return root;
     }
+
     private void getAmenities() {
         if (Utils.isNetworkAvailable(getActivity())) {
 //            dialog= ProgressDialog.showProgressBar(getContext());
@@ -580,6 +586,8 @@ public class BookFragment extends Fragment implements
         this.activityContext=getActivity();
         getAddEditDesk("-1",Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate())));
 
+        setLanguage();
+
     }
 
     @SuppressLint("ResourceAsColor")
@@ -590,7 +598,7 @@ public class BookFragment extends Fragment implements
                 binding.deskLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
                 binding.ivDesk.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
                 binding.tvDesk.setVisibility(View.VISIBLE);
-                binding.tvDesk.setText(appKeysPage.getWorkSpace());
+//                binding.tvDesk.setText(appKeysPage.getWorkSpace());
                 binding.rlParticipants.setVisibility(View.GONE);
                 binding.rlFilter.setVisibility(View.GONE);
                 LinearLayout.LayoutParams deskParams = new LinearLayout.LayoutParams(
@@ -619,9 +627,9 @@ public class BookFragment extends Fragment implements
                 binding.roomLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
                 binding.ivRoom.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
                 binding.tvRoom.setVisibility(View.VISIBLE);
-                binding.tvRoom.setText(appKeysPage.getRoom());
+//                binding.tvRoom.setText(appKeysPage.getRoom());
                 binding.rlParticipants.setVisibility(View.VISIBLE);
-                binding.rlFilter.setVisibility(View.GONE);
+                binding.rlFilter.setVisibility(View.VISIBLE);
 
                 LinearLayout.LayoutParams roomParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -1045,14 +1053,32 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onResponse(Call<List<UserAllowedMeetingResponse>> call, Response<List<UserAllowedMeetingResponse>> response) {
                     userAllowedMeetingResponseListUpdated.clear();
+                    userAllowedMeetingResponseList.clear();
                     userAllowedMeetingResponseList=response.body();
-
 
 //                    ProgressDialog.dismisProgressBar(getContext(),dialog);
                     boolean checkIsRequest=false;
                     if (userAllowedMeetingResponseList!=null && userAllowedMeetingResponseList.size()>0){
-                        loo :
+
                         for (int i=0; i < userAllowedMeetingResponseList.size(); i++){
+                            boolean amenityCheck=false;
+                            soo:
+                            for (int j=0;j<filterAmenitiesList.size();j++){
+                                for(int x=0;x<userAllowedMeetingResponseList.get(i).getAmenities().size();x++){
+                                    if (filterAmenitiesList.get(j) == userAllowedMeetingResponseList.get(i)
+                                            .getAmenities().get(x).getId()){
+                                        amenityCheck=true;
+                                    }
+                                }
+                                if (!amenityCheck) {
+                                    userAllowedMeetingResponseList.remove(i);
+                                    break soo;
+                                }
+                            }
+
+                        }
+                        loo:
+                        for (int i=0; i< userAllowedMeetingResponseList.size();i++){
                             if (participants <= userAllowedMeetingResponseList.get(i).getNoOfPeople()){
                                 userAllowedMeetingResponseListUpdated.add(userAllowedMeetingResponseList.get(i));
                             }
@@ -1096,6 +1122,8 @@ public class BookFragment extends Fragment implements
                                     editBookingDetails.getDate(),
                                     userAllowedMeetingResponseList.get(0).getId(),
                                         0,"new");
+                        else
+                            Toast.makeText(getContext(), "No Room avaialble clear Filter conditions", Toast.LENGTH_SHORT).show();
 //                        editBookingUsingBottomSheet(editBookingDetails,2,0,"new");
                     }
 
@@ -3582,10 +3610,28 @@ public class BookFragment extends Fragment implements
 //                    ProgressDialog.dismisProgressBar(getContext(),dialog);
                     boolean checkIsRequest=false;
                     if (userAllowedMeetingResponseList!=null && userAllowedMeetingResponseList.size()>0){
-                        loo :
+
                         for (int i=0; i < userAllowedMeetingResponseList.size(); i++){
-                            System.out.println("chek dat"+participants);
-                            System.out.println("chek dat no of people"+userAllowedMeetingResponseList.get(i).getNoOfPeople());
+                            boolean amenityCheck=false;
+                            soo:
+                            for (int j=0;j<filterAmenitiesList.size();j++){
+                                for(int x=0;x<userAllowedMeetingResponseList.get(i).getAmenities().size();x++){
+                                    if (filterAmenitiesList.get(j) == userAllowedMeetingResponseList.get(i)
+                                            .getAmenities().get(x).getId()){
+                                        amenityCheck=true;
+                                    }
+                                }
+                                if (!amenityCheck) {
+                                    userAllowedMeetingResponseList.remove(i);
+                                    break soo;
+                                }
+                            }
+
+//                            System.out.println("chek dat no of people"+userAllowedMeetingResponseList.get(i).getNoOfPeople());
+
+                        }
+                        loo:
+                        for (int i=0; i<userAllowedMeetingResponseList.size();i++){
                             if (participants <= userAllowedMeetingResponseList.get(i).getNoOfPeople()){
                                 System.out.println("chek dat in loop"+userAllowedMeetingResponseList.get(i).getName());
 
@@ -3616,7 +3662,7 @@ public class BookFragment extends Fragment implements
                                     0,"request");
 
                     }else {
-                        System.out.println("ame list vala else");
+                        System.out.println("ame list vala else size"+userAllowedMeetingResponseListUpdated.size());
                         if (userAllowedMeetingResponseListUpdated.size()>0 && checkIsRequest)
                             callAmenitiesListForMeetingRoom(editBookingDetails,
                                     editBookingDetails.getEditStartTTime(),
@@ -4228,7 +4274,151 @@ public class BookFragment extends Fragment implements
 
     }
     //check filter
-    private void getLocateAmenitiesFilterData() {
+    private void getLocateAmenitiesFilterData(boolean calledFromFilter) {
+        if (Utils.isNetworkAvailable(getContext())) {
+//            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            dialog = ProgressDialog.showProgressBar(getContext());
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<AmenitiesResponse>> call = apiService.getAmenities();
+            call.enqueue(new Callback<List<AmenitiesResponse>>() {
+                @Override
+                public void onResponse(Call<List<AmenitiesResponse>> call, Response<List<AmenitiesResponse>> response) {
+
+
+                    //List<AmenitiesResponse> amenitiesResponseList=response.body();
+                    List<AmenitiesResponse> amenitiesResponseList=response.body();
+                    amenitiesListToShowInMeetingRoomList=amenitiesResponseList;
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+                    //If true which is called from filter so call bottomsheet
+                    if(calledFromFilter){
+                        meetingAmenityStatusList.clear();
+                        callLocateFilterBottomSheet(amenitiesResponseList);
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<List<AmenitiesResponse>> call, Throwable t) {
+//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                }
+            });
+
+        }else {
+            Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
+        }
+
+    }
+    private void callLocateFilterBottomSheet(List<AmenitiesResponse> amenitiesResponseList) {
+
+        RecyclerView locateFilterMainRV;
+        ValuesPOJO valuesPOJO;
+        ArrayList<DataModel> mList;
+        ItemAdapter adapter;
+
+
+        TextView locateFilterCancel, locateFilterApply,tvFilterAmenities;
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((this).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_locate_filter,
+                new RelativeLayout(getContext())));
+
+        locateFilterCancel = bottomSheetDialog.findViewById(R.id.locateFilterCancel);
+        locateFilterApply = bottomSheetDialog.findViewById(R.id.locateFilterApply);
+        tvFilterAmenities=bottomSheetDialog.findViewById(R.id.tvFilter);
+//        tvFilterAmenities.setText(appKeysPage.getFilters());
+
+
+        locateFilterMainRV = bottomSheetDialog.findViewById(R.id.locateFilterMainRV);
+        locateFilterMainRV.setHasFixedSize(true);
+        locateFilterMainRV.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+        locateFilterCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        locateFilterApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                filterAmenitiesList.clear();
+                ItemAdapter itemAadapter=new ItemAdapter();
+                ArrayList<DataModel> userSelectedAmenities =itemAadapter.getUpdatedList();
+                int amenitiesMatchCount=0;
+
+                //Checking Here Only With Rooms
+                for (int i = 0; i <userSelectedAmenities.get(1).getNestedList().size() ; i++) {
+                    if(userSelectedAmenities.get(1).getNestedList().get(i).isChecked()) {
+                        filterAmenitiesList.add(userSelectedAmenities.get(1).getNestedList().get(i).getId());
+                    }
+                }
+
+
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        mList = new ArrayList<>();
+
+        //list1
+        ArrayList<ValuesPOJO> nestedList1 = new ArrayList<>();
+
+        valuesPOJO = new ValuesPOJO("Monitor", false);
+        nestedList1.add(valuesPOJO);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Adjustable height", false);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Laptop stand", false);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("USB_C Dock", false);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Charge point", false);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Standing desk", false);
+        nestedList1.add(valuesPOJO);
+
+        ArrayList<ValuesPOJO> nestedList2 = new ArrayList<>();
+
+
+        for (int i = 0; i <amenitiesResponseList.size() ; i++) {
+
+            //if(amenitiesResponseList.get(i).isAvailable()){
+            valuesPOJO = new ValuesPOJO(amenitiesResponseList.get(i).getId(),amenitiesResponseList.get(i).getName(), false);
+            nestedList2.add(valuesPOJO);
+            //}
+
+
+        }
+
+
+        /*valuesPOJO = new ValuesPOJO("Single", false);
+        nestedList2.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Double", false);
+        nestedList2.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Ac", false);
+        nestedList2.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Non-AC", false);
+        nestedList2.add(valuesPOJO);*/
+
+
+        mList.add(new DataModel(nestedList1, "Workspaces"));
+        mList.add(new DataModel(nestedList2, "Rooms"));
+//        mList.add(new DataModel(nestedList2, appKeysPage.getRooms()));
+
+        adapter = new ItemAdapter(mList);
+        locateFilterMainRV.setAdapter(adapter);
+
+        bottomSheetDialog.show();
+
+    }
+
+
+/*    private void getLocateAmenitiesFilterData() {
         if (Utils.isNetworkAvailable(getContext())) {
             dialog = ProgressDialog.showProgressBar(getContext());
 //            binding.locateProgressBar.setVisibility(View.VISIBLE);
@@ -4258,7 +4448,8 @@ public class BookFragment extends Fragment implements
         }else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
-    }
+    }*/
+    /*
     private void callLocateFilterBottomSheet(List<AmenitiesResponse> amenitiesResponseList) {
 
         RecyclerView locateFilterMainRV;
@@ -4330,14 +4521,14 @@ public class BookFragment extends Fragment implements
         }
 
 
-        /*valuesPOJO = new ValuesPOJO("Single", false);
+        *//*valuesPOJO = new ValuesPOJO("Single", false);
         nestedList2.add(valuesPOJO);
         valuesPOJO = new ValuesPOJO("Double", false);
         nestedList2.add(valuesPOJO);
         valuesPOJO = new ValuesPOJO("Ac", false);
         nestedList2.add(valuesPOJO);
         valuesPOJO = new ValuesPOJO("Non-AC", false);
-        nestedList2.add(valuesPOJO);*/
+        nestedList2.add(valuesPOJO);*//*
 
 
         mList.add(new DataModel(nestedList1, "Workspaces"));
@@ -4348,23 +4539,23 @@ public class BookFragment extends Fragment implements
 
         bottomSheetDialog.show();
 
-    }
+    }*/
 
     public void setLanguage(){
 
-        logoinPage = getLoginScreenData(getContext());
-        appKeysPage = getAppKeysPageScreenData(getContext());
-        resetPage = getResetPasswordPageScreencreenData(getContext());
-        actionOverLays = getActionOverLaysPageScreenData(getContext());
-        bookindata = getBookingPageScreenData(getContext());
-        global=getGlobalScreenData(getContext());
+        logoinPage = getLoginScreenData(context);
+        appKeysPage = getAppKeysPageScreenData(context);
+        resetPage = getResetPasswordPageScreencreenData(context);
+        actionOverLays = getActionOverLaysPageScreenData(context);
+        bookindata = getBookingPageScreenData(context);
+        global=getGlobalScreenData(context);
 
 
 
         //binding.tvPMOOffice.setText(appKeysPage);
-        binding.searchGlobal.setText(appKeysPage.getChooseLocation());
-        binding.tvStartLocate.setText(appKeysPage.getStart());
-        binding.tvLocateEndTime.setText(appKeysPage.getEnd());
+//        binding.searchGlobal.setText(appKeysPage.getChooseLocation());
+//        binding.tvStartLocate.setText(appKeysPage.getStart());
+//        binding.tvLocateEndTime.setText(appKeysPage.getEnd());
 
 
     }
@@ -4521,6 +4712,53 @@ public class BookFragment extends Fragment implements
 
 
     }
+    private void doCheckAppliedAminitiesWithMeetingRoom(List<UserAllowedMeetingResponse.Amenity> amenityList, MeetingStatusModel meetingStatusModel) {
 
+        //amenityList-->This has default meeting room aminities
+        //list-->User selected amenities
+
+
+        ItemAdapter itemAadapter=new ItemAdapter();
+        ArrayList<DataModel> userSelectedAmenities =itemAadapter.getUpdatedList();
+        int amenitiesMatchCount=0;
+
+        //Checking Here Only With Rooms
+        for (int i = 0; i <userSelectedAmenities.get(1).getNestedList().size() ; i++) {
+            for (int j = 0; j <amenityList.size() ; j++) {
+
+                if(userSelectedAmenities.get(1).getNestedList().get(i).isChecked()) {
+                    if (userSelectedAmenities.get(1).getNestedList().get(i).getId() == amenityList.get(j).getId()) {
+                        amenitiesMatchCount = amenitiesMatchCount + 1;
+                    }
+                }
+
+            }
+        }
+
+
+        int userSelectedTrueCount=0;
+        for (int i = 0; i <userSelectedAmenities.get(1).getNestedList().size() ; i++) {
+
+            if(userSelectedAmenities.get(1).getNestedList().get(i).isChecked()){
+                userSelectedTrueCount=userSelectedTrueCount+1;
+            }
+
+        }
+
+        if(amenitiesMatchCount==userSelectedTrueCount){
+            System.out.println("AllUserSelectedAmenitiesAvaliableHInThisRoom "+meetingStatusModel.getId());
+
+        }else {
+            System.out.println("UserSelectedAmenityIsNotAvaliableHInThisRoom "+meetingStatusModel.getId());
+            MeetingAmenityStatus meetingAmenityStatus=new MeetingAmenityStatus(meetingStatusModel.getId());
+            meetingAmenityStatusList.add(meetingAmenityStatus);
+        }
+
+        amenitiesApplyStatus=true;
+
+
+
+
+    }
 
 }
