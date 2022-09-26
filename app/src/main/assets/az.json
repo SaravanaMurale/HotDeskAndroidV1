@@ -694,9 +694,30 @@
         "CurrentPassword": "Hazırkı şifrə",
         "NewPassword": "yeni şifrə",
         "ConfirmPassword": "Şifrəni təsdiqləyin",
-        "ChangePassword": "Parolun dəyişdirilməsi"
-
-
+        "ChangePassword": "Parolun dəyişdirilməsi",
+        "SpecificDate" : "Xüsusi Tarix",
+        "Recipients" : "Qəbul edənlər",
+        "AvailableFrom" : "dan mümkündür",
+        "AvailableTo" : "üçün mövcuddur",
+        "EditNotice" : "Bildirişi redaktə edin",
+        "CreateNotice" : "Bildiriş yaradın",
+        "Videos" : "Videolar",
+        "Guides" : "Bələdçilər",
+        "RequestTraining": "Təlim tələb edin",
+        "ActiveNotices" : "Aktiv bildirişlər",
+        "IssueDate" : "verilmə tarixi"
+        "Expired": "İstifadə müddəti bitdi",
+        "PendingRequests": "Gözləyən Sorğular",
+        "PendingApproval": "Təsdiq Gözlənir",
+        "WorkFromOffice": "Ofisdən işləyir",
+        "WorkingRemotedly" : "Uzaqdan işləmək",
+        "NoBookingsAvailable" : "Rezervasyonlar Mövcud deyil",
+        "AvailableParkings" :  "Mövcud parkinq",
+        "EnterVehicleNum" : "Avtomobil nömrəsini daxil edin...",
+        "RepeatUntill" : "qədər təkrarlayın",
+        "AvailableRooms" : "Mövcud Otaqlar",
+        "HybridHero" : "Hibrid Qəhrəmanda göstəriləcək ad"
+        
 
 
 

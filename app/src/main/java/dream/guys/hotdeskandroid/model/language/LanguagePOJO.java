@@ -5053,6 +5053,249 @@ public class LanguagePOJO {
         @Expose
         private String changePassword;
 
+        @SerializedName("SpecificDate")
+        @Expose
+        private String specificDate;
+        @SerializedName("Recipients")
+        @Expose
+        private String recipients;
+        @SerializedName("AvailableFrom")
+        @Expose
+        private String availableFrom;
+        @SerializedName("AvailableTo")
+        @Expose
+        private String availableTo;
+        @SerializedName("EditNotice")
+        @Expose
+        private String editNotice;
+        @SerializedName("CreateNotice")
+        @Expose
+        private String createNotice;
+        @SerializedName("Videos")
+        @Expose
+        private String videos;
+        @SerializedName("Guides")
+        @Expose
+        private String guides;
+        @SerializedName("RequestTraining")
+        @Expose
+        private String requestTraining;
+        @SerializedName("ActiveNotices")
+        @Expose
+        private String activeNotices;
+        @SerializedName("IssueDate")
+        @Expose
+        private String issueDate;
+        @SerializedName("Expired")
+        @Expose
+        private String expired;
+        @SerializedName("PendingRequests")
+        @Expose
+        private String pendingRequests;
+        @SerializedName("PendingApproval")
+        @Expose
+        private String pendingApproval;
+        @SerializedName("WorkFromOffice")
+        @Expose
+        private String workFromOffice;
+        @SerializedName("WorkingRemotedly")
+        @Expose
+        private String workingRemotedly;
+        @SerializedName("NoBookingsAvailable")
+        @Expose
+        private String noBookingsAvailable;
+        @SerializedName("AvailableParkings")
+        @Expose
+        private String availableParkings;
+        @SerializedName("EnterVehicleNum")
+        @Expose
+        private String enterVehicleNum;
+        @SerializedName("RepeatUntill")
+        @Expose
+        private String repeatUntill;
+        @SerializedName("AvailableRooms")
+        @Expose
+        private String availableRooms;
+        @SerializedName("HybridHero")
+        @Expose
+        private String hybridHero;
+
+        public String getSpecificDate() {
+            return specificDate;
+        }
+
+        public void setSpecificDate(String specificDate) {
+            this.specificDate = specificDate;
+        }
+
+        public String getRecipients() {
+            return recipients;
+        }
+
+        public void setRecipients(String recipients) {
+            this.recipients = recipients;
+        }
+
+        public String getAvailableFrom() {
+            return availableFrom;
+        }
+
+        public void setAvailableFrom(String availableFrom) {
+            this.availableFrom = availableFrom;
+        }
+
+        public String getAvailableTo() {
+            return availableTo;
+        }
+
+        public void setAvailableTo(String availableTo) {
+            this.availableTo = availableTo;
+        }
+
+        public String getEditNotice() {
+            return editNotice;
+        }
+
+        public void setEditNotice(String editNotice) {
+            this.editNotice = editNotice;
+        }
+
+        public String getCreateNotice() {
+            return createNotice;
+        }
+
+        public void setCreateNotice(String createNotice) {
+            this.createNotice = createNotice;
+        }
+
+        public String getVideos() {
+            return videos;
+        }
+
+        public void setVideos(String videos) {
+            this.videos = videos;
+        }
+
+        public String getGuides() {
+            return guides;
+        }
+
+        public void setGuides(String guides) {
+            this.guides = guides;
+        }
+
+        public String getRequestTraining() {
+            return requestTraining;
+        }
+
+        public void setRequestTraining(String requestTraining) {
+            this.requestTraining = requestTraining;
+        }
+
+        public String getActiveNotices() {
+            return activeNotices;
+        }
+
+        public void setActiveNotices(String activeNotices) {
+            this.activeNotices = activeNotices;
+        }
+
+        public String getIssueDate() {
+            return issueDate;
+        }
+
+        public void setIssueDate(String issueDate) {
+            this.issueDate = issueDate;
+        }
+
+        public String getExpired() {
+            return expired;
+        }
+
+        public void setExpired(String expired) {
+            this.expired = expired;
+        }
+
+        public String getPendingRequests() {
+            return pendingRequests;
+        }
+
+        public void setPendingRequests(String pendingRequests) {
+            this.pendingRequests = pendingRequests;
+        }
+
+        public String getPendingApproval() {
+            return pendingApproval;
+        }
+
+        public void setPendingApproval(String pendingApproval) {
+            this.pendingApproval = pendingApproval;
+        }
+
+        public String getWorkFromOffice() {
+            return workFromOffice;
+        }
+
+        public void setWorkFromOffice(String workFromOffice) {
+            this.workFromOffice = workFromOffice;
+        }
+
+        public String getWorkingRemotedly() {
+            return workingRemotedly;
+        }
+
+        public void setWorkingRemotedly(String workingRemotedly) {
+            this.workingRemotedly = workingRemotedly;
+        }
+
+        public String getNoBookingsAvailable() {
+            return noBookingsAvailable;
+        }
+
+        public void setNoBookingsAvailable(String noBookingsAvailable) {
+            this.noBookingsAvailable = noBookingsAvailable;
+        }
+
+        public String getAvailableParkings() {
+            return availableParkings;
+        }
+
+        public void setAvailableParkings(String availableParkings) {
+            this.availableParkings = availableParkings;
+        }
+
+        public String getEnterVehicleNum() {
+            return enterVehicleNum;
+        }
+
+        public void setEnterVehicleNum(String enterVehicleNum) {
+            this.enterVehicleNum = enterVehicleNum;
+        }
+
+        public String getRepeatUntill() {
+            return repeatUntill;
+        }
+
+        public void setRepeatUntill(String repeatUntill) {
+            this.repeatUntill = repeatUntill;
+        }
+
+        public String getAvailableRooms() {
+            return availableRooms;
+        }
+
+        public void setAvailableRooms(String availableRooms) {
+            this.availableRooms = availableRooms;
+        }
+
+        public String getHybridHero() {
+            return hybridHero;
+        }
+
+        public void setHybridHero(String hybridHero) {
+            this.hybridHero = hybridHero;
+        }
+
         public String getSignIn() {
             return signIn;
         }

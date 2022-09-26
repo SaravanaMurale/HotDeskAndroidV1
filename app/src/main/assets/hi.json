@@ -695,7 +695,32 @@
       "CurrentPassword": "वर्तमान पासवर्ड",
       "NewPassword": "नया पासवर्ड",
       "ConfirmPassword": "पासवर्ड की पुष्टि कीजिये",
-      "ChangePassword": "पासवर्ड बदलें"
+      "ChangePassword": "पासवर्ड बदलें",
+      "SpecificDate" : "विशिष्ट तारीख",
+      "Recipients" : "प्राप्तकर्ताओं",
+      "AvailableFrom" : "से उपलब्ध",
+      "AvailableTo" : "को उपलब्ध",
+      "EditNotice" : "एक नोटिस संपादित करें",
+      "CreateNotice" : "एक नोटिस बनाएं",
+      "Videos" : "वीडियो",
+      "Guides" : "गाइड",
+      "RequestTraining": "प्रशिक्षण का अनुरोध करें",
+      "ActiveNotices" : "सक्रिय नोटिस",
+      "IssueDate" : "जारी करने की तिथि",
+      "Expired": "खत्म हो चुका",
+      "PendingRequests": "अनुरोध लंबित",
+      "PendingApproval": "लंबित अनुमोदन",
+      "WorkFromOffice": "कार्यालय से काम करना",
+      "WorkingRemotedly" : "दूर से काम करना",
+      "NoBookingsAvailable" : "कोई बुकिंग उपलब्ध नहीं है",
+      "AvailableParkings" :  "उपलब्ध पार्किंग",
+      "EnterVehicleNum" : "वाहन नंबर दर्ज करें...",
+      "RepeatUntill" : "दोहराओ जब तक",
+      "AvailableRooms" : "उपलब्ध कमरे",
+      "HybridHero" : "वह नाम जो हाइब्रिड हीरो में प्रदर्शित किया जाएगा"
+      
+
+      
 
 
 

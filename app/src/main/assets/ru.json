@@ -695,6 +695,30 @@
       "CurrentPassword": "текущий пароль",
       "NewPassword": "Новый пароль",
       "ConfirmPassword": "Подтвердить Пароль",
-      "ChangePassword": "Изменить пароль"
+      "ChangePassword": "Изменить пароль",
+      "SpecificDate" : "Конкретная дата",
+      "Recipients" : "Получатели",
+      "AvailableFrom" : "Доступна с",
+      "AvailableTo" : "Доступен",
+      "EditNotice" : "Изменить уведомление",
+      "CreateNotice" : "Создать уведомление",
+      "Videos" : "Видео",
+      "Guides" : "Гиды",
+      "RequestTraining": "Запросить обучение",
+      "ActiveNotices" : "Активные уведомления",
+      "IssueDate" : "Дата выпуска",
+      "Expired": "Истекший",
+      "PendingRequests": "Ожидающие запросы",
+      "PendingApproval": "В ожидании утверждения",
+      "WorkFromOffice": "Работа из офиса",
+      "WorkingRemotedly" : "Работа удаленно",
+      "NoBookingsAvailable" : "Нет доступных бронирований",
+      "AvailableParkings" :  "Доступная парковка",
+      "EnterVehicleNum" : "Введите номер автомобиля...",
+      "RepeatUntill" : "Повторяйте, пока",
+      "AvailableRooms" : "Доступные номера",
+      "HybridHero" : "Имя, которое будет отображаться через Hybrid Hero."
+      
+
   }
 }

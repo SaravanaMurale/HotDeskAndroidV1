@@ -688,7 +688,31 @@
         "CurrentPassword": "Password attuale",
         "NewPassword": "nuova password",
         "ConfirmPassword": "Conferma password",
-        "ChangePassword": "Cambia la password"
+        "ChangePassword": "Cambia la password",
+        "SpecificDate" : "Data specifica",
+        "Recipients" : "Destinatarie",
+        "AvailableFrom" : "Disponibile dal",
+        "AvailableTo" : "Disponibile a",
+        "EditNotice" : "Modifica un avviso",
+        "CreateNotice" : "Crea un avviso",
+        "Videos" : "Video",
+        "Guides" : "Guide",
+        "RequestTraining": "Richiedi formazione",
+        "ActiveNotices" : "Avvisi attivi",
+        "IssueDate" : "Data di rilascio",
+        "Expired": "È scaduto",
+        "PendingRequests": "Richieste in sospeso",
+        "PendingApproval": "In attesa di approvazione",
+        "WorkFromOffice": "Lavorare dall'ufficio",
+        "WorkingRemotedly" : "Lavorare a distanza",
+        "NoBookingsAvailable" : "Nessuna prenotazione disponibile",
+        "AvailableParkings" :  "Parcheggio disponibile",
+        "EnterVehicleNum" : "Inserisci n. veicolo...",
+        "RepeatUntill" : "Ripeti fino a",
+        "AvailableRooms" : "Camere disponibili",
+        "HybridHero" : "Il nome che verrà visualizzato su Hybrid Hero"
+        
+
 
 
 

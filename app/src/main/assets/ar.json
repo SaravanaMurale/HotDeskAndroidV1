@@ -698,9 +698,29 @@
       "CurrentPassword": "كلمة المرور الحالية",
       "NewPassword": "كلمة السر الجديدة",
       "ConfirmPassword": "تأكيد كلمة المرور",
-      "ChangePassword": "غير كلمة السر"
-
-
+      "ChangePassword": "غير كلمة السر",
+      "SpecificDate" : "تاريخ معين",
+      "Recipients" : "المستلمون",
+      "AvailableFrom" : "متاح من",
+      "AvailableTo" : "متاحة لل",
+      "EditNotice" : "تحرير إشعار",
+      "CreateNotice" : "قم بإنشاء إشعار",
+      "Videos" : "أشرطة فيديو",
+      "Guides" : "خطوط إرشاد",
+      "RequestTraining": "طلب تدريب",
+      "ActiveNotices" : "إشعارات نشطة",
+      "IssueDate" : "تاريخ الإصدار",
+      "Expired": "منتهي الصلاحية",
+      "PendingRequests": "الطلبات المعلقة",
+      "PendingApproval": "ما زال يحتاج بتصدير",
+      "WorkFromOffice": "العمل من المكتب",
+      "WorkingRemotedly" : "العمل عن بعد",
+      "NoBookingsAvailable" : "لا حجوزات متاحة",
+      "AvailableParkings" :  "وقوف السيارات المتاحة",
+      "EnterVehicleNum" : "أدخل رقم السيارة ...",
+      "RepeatUntill" : "كرر حتى",
+      "AvailableRooms" : "الغرف المتاحة",
+      "HybridHero" : "الاسم الذي سيتم عرضه عبر Hybrid Hero"
 
   }
 }

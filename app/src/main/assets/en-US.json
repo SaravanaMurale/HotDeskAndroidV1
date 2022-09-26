@@ -669,7 +669,31 @@
       "CurrentPassword": "Current Password",
       "NewPassword": "New Password",
       "ConfirmPassword": "Confirm Password",
-      "ChangePassword": "Change Password"
+      "ChangePassword": "Change Password",
+      "SpecificDate" : "SpecificDate",
+      "Recipients" : "Recipients",
+      "AvailableFrom" : "AvailableFrom",
+      "AvailableTo" : "AvailableTo",
+      "EditNotice" : "Edit a notice",
+      "CreateNotice" : "Create a notice",
+      "Videos" : "Videos",
+      "Guides" : "Guides",
+      "RequestTraining": "Request training",
+      "ActiveNotices" : "Active Notices",
+      "IssueDate" : "Issue date",
+      "Expired": "Expired",
+      "PendingRequests": "Pending Requests",
+      "PendingApproval": "Pending Approval",
+      "WorkFromOffice": "Working from Office",
+      "WorkingRemotedly" : "Working remotely",
+      "NoBookingsAvailable" : "No Bookings Available",
+      "AvailableParkings" :  "Available parkings",
+      "EnterVehicleNum" : "Enter vehicle no...",
+      "RepeatUntill" : "Repeat until",
+      "AvailableRooms" : "Available Rooms",
+      "HybridHero" : "The name that will be displayed accross Hybrid Hero"
+      
+      
 
   }
 }
