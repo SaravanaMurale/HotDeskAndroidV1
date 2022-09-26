@@ -517,7 +517,7 @@
         "Team": "Squadra",
         "Car": "Macchina",
         "Transport": "(autobus, treno, tram, traghetto, metro, ecc.)",
-        "TaxiUber": "Taxi/Uber,
+        "TaxiUber": "Taxi/Uber",
         "Bike": "Bicicletta",
         "Walk": "Camminare",
         "WorkFromHome": "Lavoro da casa",
@@ -598,7 +598,7 @@
         "PleaseAcceptGDPR": "Si prega di accettare il GDPR",
         "TenantNameNotEmptyAlert": " Il nome del tenant non deve essere vuoto",
         "EmailOrCompanyInvalid": "L'e-mail o l'azienda non sono valide.",
-        "ResetPasswordAlert": "Riceverai a breve un'e-mail con le istruzioni su come reimpostare la tua password."
+        "ResetPasswordAlert": "Riceverai a breve un'e-mail con le istruzioni su come reimpostare la tua password.",
         "IncompletePinEntry": "Inserimento pin incompleto",
         "InvalidPIN": "PIN non valido",
         "EnterYourOldPin": "Inserisci il tuo vecchio pin",
@@ -638,7 +638,7 @@
         "CertificateUpdated": "Certificato aggiornato",
         "CertificateNotUpdated": "Certificato non aggiornato",
         "BookingNotUpdated": "Prenotazione non aggiornata.",
-        "RegistraionNumberNotEmptyAlert": "Il numero di registrazione non deve essere vuoto","
+        "RegistraionNumberNotEmptyAlert": "Il numero di registrazione non deve essere vuoto",
         "SelectDeskAlert": "Si prega di selezionare scrivania",
         "WrongDeskAlert": "Hai scansionato la scrivania sbagliata",
         "BookingNotDeleted": "Prenotazione non cancellata.",
@@ -711,9 +711,11 @@
         "RepeatUntill" : "Ripeti fino a",
         "AvailableRooms" : "Camere disponibili",
         "HybridHero" : "Il nome che verrà visualizzato su Hybrid Hero",
-      "PMO Office":"PMO Office"
+      "PMO Office":"PMO Office",
         
 
+      "HealthEating": "health Eating",
+      "Send": "Send"
 
 
 

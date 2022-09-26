@@ -16,6 +16,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/title"
             android:layout_width="118dp"
             android:layout_height="36dp"
             android:text="@string/wellbeing"
@@ -37,6 +38,7 @@
        >
 
         <TextView
+            android:id="@+id/txt_healthsaf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/health_safety"
@@ -69,7 +71,6 @@
                     android:layout_toLeftOf="@+id/tvHealthTips"
                     android:layout_marginRight="@dimen/_20sdp"
                     />
-            android:src="@drawable/healthtips" />
 
                 <TextView
                     android:id="@+id/tvHealthTips"
@@ -127,6 +128,7 @@
                         />
 
                     <TextView
+                        android:id="@+id/firewar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/fire_wardens"
@@ -175,6 +177,7 @@
                         />
 
                     <TextView
+                        android:id="@+id/fireaid"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/first_aid"
@@ -223,6 +226,7 @@
                         />
 
                     <TextView
+                        android:id="@+id/mental_health"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/mental_health"
@@ -257,6 +261,7 @@
         <!--Human resources-->
 
         <TextView
+            android:id="@+id/txt_hr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/human_resources"
@@ -313,6 +318,7 @@
 
         <!--Places-->
         <TextView
+            android:id="@+id/txt_places"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/places"
@@ -367,6 +373,7 @@
 
         <!--Benefits-->
         <TextView
+            android:id="@+id/txt_benefits"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/benefits"
@@ -421,6 +428,7 @@
 
         <!--Events-->
         <TextView
+            android:id="@+id/txt_events"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/events"
@@ -475,6 +483,7 @@
 
         <!--Health-->
         <TextView
+            android:id="@+id/txt_healtheat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/health_eating"
@@ -529,6 +538,7 @@
 
         <!--Notices-->
         <TextView
+            android:id="@+id/txt_notices"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/notices"
@@ -584,6 +594,7 @@
 
        <!--Covid-->
        <TextView
+           android:id="@+id/txt_covid"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:text="@string/covid_txt"
@@ -635,6 +646,7 @@
        </androidx.cardview.widget.CardView>
         <!--Personal Help-->
         <TextView
+            android:id="@+id/txt_pHelp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/personal_help"
@@ -692,6 +704,7 @@
 
        <!--Rewards-->
        <TextView
+           android:id="@+id/txtRewards"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:text="@string/rewards"
@@ -741,6 +754,7 @@
 
        <!--Workspace Assessment-->
        <TextView
+           android:id="@+id/txt_work"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:text="@string/workspace_assessment"
@@ -790,6 +804,7 @@
 
         <!--Workspace Survey-->
         <TextView
+            android:id="@+id/txt_worksur"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/workspace_survey"

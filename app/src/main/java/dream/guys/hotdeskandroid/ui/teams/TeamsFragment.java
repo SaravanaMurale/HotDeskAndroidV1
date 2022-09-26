@@ -1,5 +1,12 @@
 package dream.guys.hotdeskandroid.ui.teams;
 
+import static dream.guys.hotdeskandroid.utils.Utils.getActionOverLaysPageScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getBookingPageScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getLoginScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getMeScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getResetPasswordPageScreencreenData;
+
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -40,6 +47,7 @@ import dream.guys.hotdeskandroid.adapter.TeamsContactsAdapter;
 import dream.guys.hotdeskandroid.adapter.TeamsFloorListAdapter;
 import dream.guys.hotdeskandroid.databinding.FragmentTeamsBinding;
 import dream.guys.hotdeskandroid.model.FloorListModel;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.DAOUpcomingBooking;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
@@ -82,6 +90,13 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
     int selID = 0;
 
+    //New...
+    LanguagePOJO.AppKeys appKeysPage;
+    LanguagePOJO.Me mePage;
+    LanguagePOJO.ActionOverLays actionOverLays;
+    LanguagePOJO.ResetPassword resetPage;
+    LanguagePOJO.Booking bookindata;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +110,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         View root = binding.getRoot();
 
         uiInit(root);
+
+        setLanguage();
 
         binding.tvExapnd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -945,6 +962,25 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 //        System.out.println("tets vals : bj"+list.get(1).getDeskAvailability());
         teamsFloorListAdapter = new TeamsFloorListAdapter(getActivity(),list, this, this);
         binding.recyclerView.setAdapter(teamsFloorListAdapter);
+
+    }
+
+
+    public void setLanguage(){
+        mePage = getMeScreenData(getActivity());
+        appKeysPage = getAppKeysPageScreenData(getActivity());
+        resetPage = getResetPasswordPageScreencreenData(getActivity());
+        actionOverLays = getActionOverLaysPageScreenData(getActivity());
+
+        bookindata = getBookingPageScreenData(getActivity());
+
+        binding.title.setText(mePage.getMyTeam());
+        binding.txtAllteam.setText(appKeysPage.getAllTeams());
+        binding.serachBar.setHint(appKeysPage.getSearch());
+        binding.tvExapnd.setText(appKeysPage.getExpandAll());
+        binding.listTitle.setText(appKeysPage.getWorkFromOffice());
+        binding.tvUnknown.setText(appKeysPage.getNoBookingsAvailable());
+        binding.tvTotalAvail.setText(appKeysPage.getDesksAvailable());
 
     }
 

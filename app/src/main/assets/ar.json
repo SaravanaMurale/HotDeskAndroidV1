@@ -721,7 +721,9 @@
       "RepeatUntill" : "كرر حتى",
       "AvailableRooms" : "الغرف المتاحة",
       "HybridHero" : "الاسم الذي سيتم عرضه عبر Hybrid Hero",
-    "PMO Office":"PMO Office"
+    "PMO Office":"PMO Office",
+    "HealthEating": "health Eating",
+    "Send": "Send"
 
   }
 }
