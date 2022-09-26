@@ -1,8 +1,13 @@
 package dream.guys.hotdeskandroid.ui.locate;
 
+import static dream.guys.hotdeskandroid.utils.Utils.getActionOverLaysPageScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getBookingPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDateWithDay;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentTime;
+import static dream.guys.hotdeskandroid.utils.Utils.getLoginScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getResetPasswordPageScreencreenData;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -72,6 +77,7 @@ import dream.guys.hotdeskandroid.example.DataModel;
 import dream.guys.hotdeskandroid.example.ItemAdapter;
 import dream.guys.hotdeskandroid.example.MyCanvasDraw;
 import dream.guys.hotdeskandroid.example.ValuesPOJO;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.CarParkingDeleteRequest;
 import dream.guys.hotdeskandroid.model.request.CarParkingStatusModel;
 import dream.guys.hotdeskandroid.model.request.DeleteMeetingRoomRequest;
@@ -126,6 +132,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     @BindView(R.id.scrollView)
     ScrollView scrollView;
+
+    LanguagePOJO.Login logoinPage;
+    LanguagePOJO.AppKeys appKeysPage;
+    LanguagePOJO.ResetPassword resetPage ;
+    LanguagePOJO.ActionOverLays actionOverLays;
+    LanguagePOJO.Booking bookindata ;
+
 
 
     //BottomSheetData
@@ -304,6 +317,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         // Inflate the layout for this fragment
         binding = dream.guys.hotdeskandroid.databinding.FragmentLocateBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        setLanguage();
 
 
         binding.locateStartTime.setText(getCurrentTime());
@@ -6521,6 +6536,18 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
 
 
+
+    }
+
+    public void setLanguage(){
+
+        logoinPage = getLoginScreenData(getContext());
+        appKeysPage = getAppKeysPageScreenData(getContext());
+        resetPage = getResetPasswordPageScreencreenData(getContext());
+        actionOverLays = getActionOverLaysPageScreenData(getContext());
+        bookindata = getBookingPageScreenData(getContext());
+
+        binding.searchLocate.setText(appKeysPage.getChooseLocation());
 
     }
 

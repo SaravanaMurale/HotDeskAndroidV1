@@ -1205,146 +1205,169 @@ public class Utils {
                 }
             } catch (Exception e) {
             }
-            /*try {
-                if (langData.getData().getLanguageKeywords().getLanguage().getRegisterpage() != null) {
-                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getRegisterpage());
-                    SessionHandler.getInstance().save(mContext, AppConstants.REGISTERPAGE, localeData);
+
+            try {
+                if (langData.getLogin() != null) {
+                    String localeData = new Gson().toJson(langData.getLogin());
+                    SessionHandler.getInstance().save(mContext, AppConstants.LOGIN_PAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+
+            try {
+                if (langData.getMe() != null) {
+                    String localeData = new Gson().toJson(langData.getMe());
+                    SessionHandler.getInstance().save(mContext, AppConstants.ME_PAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+
+            try {
+                if (langData.getBooking() != null) {
+                    String localeData = new Gson().toJson(langData.getBooking());
+                    SessionHandler.getInstance().save(mContext, AppConstants.BOOKING_PAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+
+            try {
+                if (langData.getCovidSelfCertification() != null) {
+                    String localeData = new Gson().toJson(langData.getCovidSelfCertification());
+                    SessionHandler.getInstance().save(mContext, AppConstants.COVIDSELFCERTIFICATION_PAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+
+            try {
+                if (langData.getPersonalHelp() != null) {
+                    String localeData = new Gson().toJson(langData.getPersonalHelp());
+                    SessionHandler.getInstance().save(mContext, AppConstants.PERSONAL_HELP_PAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+
+            try {
+                if (langData.getApprovals() != null) {
+                    String localeData = new Gson().toJson(langData.getApprovals());
+                    SessionHandler.getInstance().save(mContext, AppConstants.APPROVALS_PAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+
+            try {
+                if (langData.getRequests() != null) {
+                    String localeData = new Gson().toJson(langData.getRequests());
+                    SessionHandler.getInstance().save(mContext, AppConstants.REQUESTS_PAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+
+            try {
+                if (langData.getMeetingRooms() != null) {
+                    String localeData = new Gson().toJson(langData.getMeetingRooms());
+                    SessionHandler.getInstance().save(mContext, AppConstants.MEETING_ROOM_PAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+
+            try {
+                if (langData.getCarPark() != null) {
+                    String localeData = new Gson().toJson(langData.getCarPark());
+                    SessionHandler.getInstance().save(mContext, AppConstants.CARPARK_PAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+
+            try {
+                if (langData.getResetPassword() != null) {
+                    String localeData = new Gson().toJson(langData.getResetPassword());
+                    SessionHandler.getInstance().save(mContext, AppConstants.RESET_PASSWORD_PAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+
+            try {
+                if (langData.getAccountSettings() != null) {
+                    String localeData = new Gson().toJson(langData.getAccountSettings());
+                    SessionHandler.getInstance().save(mContext, AppConstants.ACCOUNTSETTINGS_PAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+
+            try {
+                if (langData.getCommonTitles() != null) {
+                    String localeData = new Gson().toJson(langData.getCommonTitles());
+                    SessionHandler.getInstance().save(mContext, AppConstants.COMMON_TITLES_PAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+
+            try {
+                if (langData.getSearch() != null) {
+                    String localeData = new Gson().toJson(langData.getSearch());
+                    SessionHandler.getInstance().save(mContext, AppConstants.SEARCH_PAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+
+            try {
+                if (langData.getAppFeedback() != null) {
+                    String localeData = new Gson().toJson(langData.getAppFeedback());
+                    SessionHandler.getInstance().save(mContext, AppConstants.APP_FEEDBACK_PAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+
+            try {
+                if (langData.getActionOverLays() != null) {
+                    String localeData = new Gson().toJson(langData.getActionOverLays());
+                    SessionHandler.getInstance().save(mContext, AppConstants.ACTIONOVERLAYS_PAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+
+            try {
+                if (langData.getSettings() != null) {
+                    String localeData = new Gson().toJson(langData.getSettings());
+                    SessionHandler.getInstance().save(mContext, AppConstants.SETTINGS_PAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+
+            try {
+                if (langData.getWellBeing() != null) {
+                    String localeData = new Gson().toJson(langData.getWellBeing());
+                    SessionHandler.getInstance().save(mContext, AppConstants.ACTION_OVERLAYS_PAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+
+            try {
+                if (langData.getAppKeys() != null) {
+                    String localeData = new Gson().toJson(langData.getAppKeys());
+                    SessionHandler.getInstance().save(mContext, AppConstants.APPKEYS_PAGE, localeData);
+                }
+            } catch (Exception e) {
+            }
+
+
+            try {
+                if (langData.getLogin() != null) {
+                    String localeData = new Gson().toJson(langData.getLogin());
+                    SessionHandler.getInstance().save(mContext, AppConstants.LOGIN_PAGE, localeData);
                 }
             } catch (Exception e) {
             }
             try {
-                if (langData.getData().getLanguageKeywords().getLanguage().getForgotpasswordpage() != null) {
-                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getForgotpasswordpage());
-                    SessionHandler.getInstance().save(mContext, AppConstants.FORGOTPASSWORDPAGE, localeData);
+                if (langData.getBooking() != null) {
+                    String localeData = new Gson().toJson(langData.getBooking());
+                    SessionHandler.getInstance().save(mContext, AppConstants.BOOKING_PAGE, localeData);
                 }
             } catch (Exception e) {
             }
-            try {
-                if (langData.getData().getLanguageKeywords().getLanguage().getNavigationpagedoctor() != null) {
-                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getNavigationpagedoctor());
-                    SessionHandler.getInstance().save(mContext, AppConstants.NAVPAGEDOCTOR, localeData);
-                }
-            } catch (Exception e) {
-            }
-            try {
-                if (langData.getData().getLanguageKeywords().getLanguage().getNavigationpagepatient() != null) {
-                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getNavigationpagepatient());
-                    SessionHandler.getInstance().save(mContext, AppConstants.NAVPAGEPATIENT, localeData);
-                }
-            } catch (Exception e) {
-            }
-            try {
-                if (langData.getData().getLanguageKeywords().getLanguage().getHomepage() != null) {
-                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getHomepage());
-                    SessionHandler.getInstance().save(mContext, AppConstants.HOMEPAGE, localeData);
-                }
-            } catch (Exception e) {
-            }
-            try {
-                if (langData.getData().getLanguageKeywords().getLanguage().getSearchdoctorpage() != null) {
-                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getSearchdoctorpage());
-                    SessionHandler.getInstance().save(mContext, AppConstants.SEARCHDOCTORSPAGE, localeData);
-                }
-            } catch (Exception e) {
-            }
-            try {
-                if (langData.getData().getLanguageKeywords().getLanguage().getDoctorprofilepage() != null) {
-                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getDoctorprofilepage());
-                    SessionHandler.getInstance().save(mContext, AppConstants.DOCTORPROFILEPAGE, localeData);
-                }
-            } catch (Exception e) {
-            }
-            try {
-                if (langData.getData().getLanguageKeywords().getLanguage().getDoctordashboardpage() != null) {
-                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getDoctordashboardpage());
-                    SessionHandler.getInstance().save(mContext, AppConstants.DOCTORDASHBOARD, localeData);
-                }
-            } catch (Exception e) {
-            }
-            try {
-                if (langData.getData().getLanguageKeywords().getLanguage().getAppointmentspage() != null) {
-                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getAppointmentspage());
-                    SessionHandler.getInstance().save(mContext, AppConstants.APPOINTMENTSPAGE, localeData);
-                }
-            } catch (Exception e) {
-            }
-            try {
-                if (langData.getData().getLanguageKeywords().getLanguage().getProfilesettingspage() != null) {
-                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getProfilesettingspage());
-                    SessionHandler.getInstance().save(mContext, AppConstants.PROFILESETTINGSPAGE, localeData);
-                }
-            } catch (Exception e) {
-            }
-            try {
-                if (langData.getData().getLanguageKeywords().getLanguage().getChangepasswordpage() != null) {
-                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getChangepasswordpage());
-                    SessionHandler.getInstance().save(mContext, AppConstants.CHANGEPASSWORDPAGE, localeData);
-                }
-            } catch (Exception e) {
-            }
-            try {
-                if (langData.getData().getLanguageKeywords().getLanguage().getScheduletimingspage() != null) {
-                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getScheduletimingspage());
-                    SessionHandler.getInstance().save(mContext, AppConstants.SCHEDULETIMINGSPAGE, localeData);
-                }
-            } catch (Exception e) {
-            }
-            try {
-                if (langData.getData().getLanguageKeywords().getLanguage().getCheckoutpage() != null) {
-                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getCheckoutpage());
-                    SessionHandler.getInstance().save(mContext, AppConstants.CHECKOUTPAGE, localeData);
-                }
-            } catch (Exception e) {
-            }
-            try {
-                if (langData.getData().getLanguageKeywords().getLanguage().getPatientdashboard() != null) {
-                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getPatientdashboard());
-                    SessionHandler.getInstance().save(mContext, AppConstants.PATIENTDASHBOARDPAGE, localeData);
-                }
-            } catch (Exception e) {
-            }
-            try {
-                if (langData.getData().getLanguageKeywords().getLanguage().getChatpage() != null) {
-                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getChatpage());
-                    SessionHandler.getInstance().save(mContext, AppConstants.CHATPAGE, localeData);
-                }
-            } catch (Exception e) {
-            }
-            try {
-                if (langData.getData().getLanguageKeywords().getLanguage().getCallpage() != null) {
-                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getCallpage());
-                    SessionHandler.getInstance().save(mContext, AppConstants.CALLPAGE, localeData);
-                }
-            } catch (Exception e) {
-            }
-            try {
-                if (langData.getData().getLanguageKeywords().getLanguage().getRateAndReviewPage() != null) {
-                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getRateAndReviewPage());
-                    SessionHandler.getInstance().save(mContext, AppConstants.REVIEWPAGE, localeData);
-                }
-            } catch (Exception e) {
-            }
-            try {
-                if (langData.getData().getLanguageKeywords().getLanguage().getPrescriptionpage() != null) {
-                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getPrescriptionpage());
-                    SessionHandler.getInstance().save(mContext, AppConstants.PRESCRIPTIONPAGE, localeData);
-                }
-            } catch (Exception e) {
-            }
-            try {
-                if (langData.getData().getLanguageKeywords().getLanguage().getPharmacypage() != null) {
-                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getPharmacypage());
-                    SessionHandler.getInstance().save(mContext, AppConstants.PHARMACYPAGE, localeData);
-                }
-            } catch (Exception e) {
-            }
-            try {
-                if (langData.getData().getLanguageKeywords().getLanguage().getPharmacyorderspage() != null) {
-                    String localeData = new Gson().toJson(langData.getData().getLanguageKeywords().getLanguage().getPharmacyorderspage());
-                    SessionHandler.getInstance().save(mContext, AppConstants.PHARMACYORDERSPAGE, localeData);
-                }
-            } catch (Exception e) {
-            }*/
+
+
+
         }
     }
 
@@ -1352,6 +1375,85 @@ public class Utils {
         LanguagePOJO.WellBeing wellBeingPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.WELLBEING_PAGE), LanguagePOJO.WellBeing.class);
         return wellBeingPage;
     }
+
+
+    public static LanguagePOJO.Login getLoginScreenData(Context mContext) {
+        LanguagePOJO.Login loginPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.LOGIN_PAGE), LanguagePOJO.Login.class);
+        return loginPage;
+    }
+
+    public static LanguagePOJO.Me getMeScreenData(Context mContext) {
+        LanguagePOJO.Me mePage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.ME_PAGE), LanguagePOJO.Me.class);
+        return mePage;
+    }
+
+    public static LanguagePOJO.Booking getBookingPageScreenData(Context mContext) {
+        LanguagePOJO.Booking bookingPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.BOOKING_PAGE), LanguagePOJO.Booking.class);
+        return bookingPage;
+    }
+
+    public static LanguagePOJO.CovidSelfCertification getCovidSelfCertificationPageScreenData(Context mContext) {
+        LanguagePOJO.CovidSelfCertification covidWellbeingPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.COVIDSELFCERTIFICATION_PAGE), LanguagePOJO.CovidSelfCertification.class);
+        return covidWellbeingPage;
+    }
+
+    public static LanguagePOJO.PersonalHelp getPersonalPagesScreenData(Context mContext) {
+        LanguagePOJO.PersonalHelp personalHelpPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.PERSONAL_HELP_PAGE), LanguagePOJO.PersonalHelp.class);
+        return personalHelpPage;
+    }
+
+    public static LanguagePOJO.Approvals getApprovalsPageScreenData(Context mContext) {
+        LanguagePOJO.Approvals approvalsPagedata = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.APPROVALS_PAGE), LanguagePOJO.Approvals.class);
+        return approvalsPagedata;
+    }
+
+    public static LanguagePOJO.Requests getrequestsPageScreenData(Context mContext) {
+        LanguagePOJO.Requests requestsPagedata = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.REQUESTS_PAGE), LanguagePOJO.Requests.class);
+        return requestsPagedata;
+    }
+
+    public static LanguagePOJO.MeetingRooms getMeetingRoomsPageScreenData(Context mContext) {
+        LanguagePOJO.MeetingRooms MeetingRoomsPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.MEETING_ROOM_PAGE), LanguagePOJO.MeetingRooms.class);
+        return MeetingRoomsPage;
+    }
+
+    public static LanguagePOJO.CarPark getCarParkPageScreenData(Context mContext) {
+        LanguagePOJO.CarPark CarParkPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.CARPARK_PAGE), LanguagePOJO.CarPark.class);
+        return CarParkPage;
+    }
+
+    public static LanguagePOJO.ResetPassword getResetPasswordPageScreencreenData(Context mContext) {
+        LanguagePOJO.ResetPassword ResetPasswocrdPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.RESET_PASSWORD_PAGE), LanguagePOJO.ResetPassword.class);
+        return ResetPasswocrdPage;
+    }
+
+    public static LanguagePOJO.AccountSettings getAccountSettingsPageScreenData(Context mContext) {
+        LanguagePOJO.AccountSettings AccountSettingsPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.ACCOUNTSETTINGS_PAGE), LanguagePOJO.AccountSettings.class);
+        return AccountSettingsPage;
+    }
+    public static LanguagePOJO.Search getSearchPageScreenData(Context mContext) {
+        LanguagePOJO.Search SearchPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.SEARCH_PAGE), LanguagePOJO.Search.class);
+        return SearchPage;
+    }
+    public static LanguagePOJO.AppFeedback getAppFeedbackPageScreenData(Context mContext) {
+        LanguagePOJO.AppFeedback wellBeingPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.APP_FEEDBACK_PAGE), LanguagePOJO.AppFeedback.class);
+        return wellBeingPage;
+    }
+    public static LanguagePOJO.ActionOverLays getActionOverLaysPageScreenData(Context mContext) {
+        LanguagePOJO.ActionOverLays wellBeingPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.ACTION_OVERLAYS_PAGE), LanguagePOJO.ActionOverLays.class);
+        return wellBeingPage;
+    }
+
+    public static LanguagePOJO.Settings getSettingsPageScreenData(Context mContext) {
+        LanguagePOJO.Settings SettingsPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.SETTINGS_PAGE), LanguagePOJO.Settings.class);
+        return SettingsPage;
+    }
+
+    public static LanguagePOJO.AppKeys getAppKeysPageScreenData(Context mContext) {
+        LanguagePOJO.AppKeys AppKeysPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.APPKEYS_PAGE), LanguagePOJO.AppKeys.class);
+        return AppKeysPage;
+    }
+
 
     public static UserDetailsResponse getLoginData(Context context) {
         UserDetailsResponse profileData = null; //= new UserDetailsResponse();

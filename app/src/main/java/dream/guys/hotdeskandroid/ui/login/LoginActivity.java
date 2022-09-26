@@ -1,5 +1,9 @@
 package dream.guys.hotdeskandroid.ui.login;
 
+import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getLoginScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getResetPasswordPageScreencreenData;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -42,6 +46,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.model.response.TypeOfLoginResponse;
@@ -106,6 +111,8 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         dialog = new Dialog(LoginActivity.this);
+
+        setLanguage();
 
 
         // Creates a PublicClientApplication object with res/raw/auth_config_single_account.json
@@ -619,5 +626,27 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
 
     }
+
+    public void setLanguage() {
+
+        LanguagePOJO.Login logoinPage = getLoginScreenData(this);
+        LanguagePOJO.AppKeys appKeysPage = getAppKeysPageScreenData(this);
+        LanguagePOJO.ResetPassword resetPage = getResetPasswordPageScreencreenData(this);
+
+        if (logoinPage!=null) {
+
+            etTenantName.setHint(appKeysPage.getTenantName());
+            etCompanyName.setHint(resetPage.getCompany());
+            etEmail.setHint(appKeysPage.getEmail());
+            etPassword.setHint(appKeysPage.getPassword());
+            tvForgotPassword.setText(appKeysPage.getForgotPassword());
+            tvBackToLogin.setText(appKeysPage.getGoBackToSignIn());
+            signInSso.setText(appKeysPage.getSignInWithPin( ));
+            //tvSignInWith.setText(appKeysPage.getOrSignInWith());
+        }
+
+    }
+
+
 
 }
