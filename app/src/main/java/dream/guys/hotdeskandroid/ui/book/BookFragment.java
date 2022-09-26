@@ -597,7 +597,7 @@ public class BookFragment extends Fragment implements
                 binding.ivRoom.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
                 binding.tvRoom.setVisibility(View.VISIBLE);
                 binding.rlParticipants.setVisibility(View.VISIBLE);
-                binding.rlFilter.setVisibility(View.VISIBLE);
+                binding.rlFilter.setVisibility(View.GONE);
 
                 LinearLayout.LayoutParams roomParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
