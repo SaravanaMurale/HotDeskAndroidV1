@@ -63,6 +63,7 @@ import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
 import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
 import dream.guys.hotdeskandroid.model.response.ProfilePicResponse;
 import dream.guys.hotdeskandroid.model.response.QuestionListResponse;
+import dream.guys.hotdeskandroid.model.response.RoomListResponse;
 import dream.guys.hotdeskandroid.model.response.TeamDeskResponse;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
 import dream.guys.hotdeskandroid.model.response.TypeOfLoginResponse;
@@ -237,10 +238,10 @@ public interface ApiInterface {
                                                            @Query("fromTime") String fromTime,
                                                            @Query("toTime") String toTime);
     @GET("api/meetingrooms/allwithavailability")
-    Call<BookingForEditResponse> getAvaliableRoomDetailsForRoomList(@Query("locationId") int parentId,
-                                                           @Query("toDate") String toDate,
-                                                           @Query("fromTime") String fromTime,
-                                                           @Query("toTime") String toTime);
+    Call<RoomListResponse> getAvaliableRoomDetailsForRoomList(@Query("locationId") int parentId,
+                                                              @Query("bookingDate") String toDate,
+                                                              @Query("from") String fromTime,
+                                                              @Query("to") String toTime);
 
     @GET("api/booking/bookingsForEdit")
     Call<BookingForEditResponse> getBookingsForEdit(@Query("teamId") int parentId,

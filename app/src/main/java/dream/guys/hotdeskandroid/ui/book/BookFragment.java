@@ -96,6 +96,7 @@ import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
 import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
+import dream.guys.hotdeskandroid.model.response.RoomListResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.CalendarView;
@@ -178,7 +179,9 @@ public class BookFragment extends Fragment implements
     List<BookingForEditResponse.TeamDeskAvailabilities> bookingDeskList = new ArrayList<>();
     List<ParkingSpotModel> parkingSpotModelList=new ArrayList<>();
     List<UserAllowedMeetingResponse> userAllowedMeetingResponseList=new ArrayList<>();
+    List<UserAllowedMeetingResponse> userAllowedMeetingResponseFilterList=new ArrayList<>();
     List<UserAllowedMeetingResponse> userAllowedMeetingResponseListUpdated=new ArrayList<>();
+    List<UserAllowedMeetingResponse> userAllowedMeetingResponseListUpdatedFilterList=new ArrayList<>();
 
     BookingForEditResponse bookingForEditResponse;
     View view;
@@ -293,24 +296,49 @@ public class BookFragment extends Fragment implements
         binding.calendarView.setEventHandler(new CalendarView.EventHandler() {
             @Override
             public void onDayLongPress(Date date, int pos) {
-//                Toast.makeText(getActivity(), ""+Utils.getISO8601format(date), Toast.LENGTH_SHORT).show();
-                if (!(Utils.compareTwoDate(date,Utils.getCurrentDate()) == 1)){
-                    if (selectedicon==0){
-                        if (isGlobalLocationSetUP)
-                            getAvaliableDeskDetails("3",Utils.getISO8601format(date));
-                        else
-                            getAddEditDesk("3",Utils.getISO8601format(date));
-                        calSelectedDate=Utils.getISO8601format(date);
-                    } else if (selectedicon==1) {
-                        getMeetingBookingListToEdit("" + Utils.getYearMonthDateFormat(date)+"T00:00:00.000Z", "new");
-                        calSelectedDate=Utils.getISO8601format(date);
-                    } else if(selectedicon==2){
-                        getCarParListToEdit(""+Utils.getISO8601format(date),""+Utils.getISO8601format(date));
-                        calSelectedDate=Utils.getISO8601format(date);
-                    }else {
+                boolean countCheck = false;
+                loo:
+                for (int i=0; i<events.size();i++){
+//                    System.out.println("avail assigned COunt"+Utils.getYearMonthDateFormat(date) +" : "+events.get(i).getDate());
+                    if (events.get(i).getDate().equalsIgnoreCase(Utils.getYearMonthDateFormat(date)+"T00:00:00Z")){
+                        System.out.println("avail count" + events.get(i).getAvailableCount() +events.get(pos).getDate());
+                        System.out.println("avail assigned COunt" + (events.get(i).getAssignedCount()-events.get(pos).getUsedCount()));
+                        System.out.println("avail assigned COunt assign" + events.get(i).getAssignedCount());
+                        System.out.println("avail assigned COunt used" + events.get(i).getUsedCount());
+                        if (events.get(i).getAvailableCount()>0
+                                || (events.get(i).getAssignedCount() - events.get(i).getUsedCount())>0) {
+                            countCheck=true;
+                            break loo;
+                        }
 
                     }
                 }
+//                Toast.makeText(getActivity(), ""+events.get(pos).getAvailableCount(), Toast.LENGTH_SHORT).show();
+//                System.out.println("avail count" + events.get(pos).getAvailableCount() +events.get(pos).getDate());
+//                System.out.println("avail assigned COunt" + (events.get(pos).getAssignedCount()-events.get(pos).getUsedCount()));
+//                System.out.println("avail assigned COunt assign" + events.get(pos).getAssignedCount());
+//                System.out.println("avail assigned COunt used" + events.get(pos).getUsedCount());
+                if (countCheck) {
+                    if (!(Utils.compareTwoDate(date,Utils.getCurrentDate()) == 1)){
+                        if (selectedicon==0){
+                            if (isGlobalLocationSetUP)
+                                getAvaliableDeskDetails("3",Utils.getISO8601format(date));
+                            else
+                                getAddEditDesk("3",Utils.getISO8601format(date));
+                            calSelectedDate=Utils.getISO8601format(date);
+                        } else if (selectedicon==1) {
+                            getMeetingBookingListToEdit("" + Utils.getYearMonthDateFormat(date)+"T00:00:00.000Z", "new");
+                            calSelectedDate=Utils.getISO8601format(date);
+                        } else if(selectedicon==2){
+                            getCarParListToEdit(""+Utils.getISO8601format(date),""+Utils.getISO8601format(date));
+                            calSelectedDate=Utils.getISO8601format(date);
+                        }else {
+
+                        }
+                    }else
+                        Toast.makeText(getContext(), "Please Select current Date", Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(getContext(), "No booking available", Toast.LENGTH_SHORT).show();
 
             }
 
@@ -983,7 +1011,6 @@ public class BookFragment extends Fragment implements
     }
     private void getRoomlist(EditBookingDetails editBookingDetails, String newEditStatus) {
         if (Utils.isNetworkAvailable(getActivity())) {
-//            dialog= ProgressDialog.showProgressBar(getContext());
 
             System.out.println("ame list vala getroom list enter");
 
@@ -1178,7 +1205,10 @@ public class BookFragment extends Fragment implements
 
                 }
                 editBookingDetails.setDate(Utils.convertStringToDateFormet(calSelectedDate));
-                getRoomlist(editBookingDetails,"new");
+                if (isGlobalLocationSetUP)
+                    getAvaliableRoomDetails("4",calSelectedDate,editBookingDetails,"new");
+                else
+                    getRoomlist(editBookingDetails,"new");
 
             }
         });
@@ -1542,15 +1572,15 @@ public class BookFragment extends Fragment implements
             teamsBlock.setVisibility(View.GONE);
             chipGroup.setVisibility(View.VISIBLE);
             capacitylayout.setVisibility(View.VISIBLE);
-            if(newEditStatus.equalsIgnoreCase("new") || newEditStatus.equalsIgnoreCase("new_deep_link")
-                    || newEditStatus.equalsIgnoreCase("request")){
-                title.setText("Book Meeting Room");
-            }
             if (userAllowedMeetingResponseListUpdated.size() > 0){
 //                System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
                 deskRoomName.setText(""+userAllowedMeetingResponseListUpdated.get(0).getName());
                 selectedDeskId = userAllowedMeetingResponseListUpdated.get(0).getId();
                 locationAddress.setText(""+userAllowedMeetingResponseListUpdated.get(0).getLocationMeeting().getName());
+            }
+            if(newEditStatus.equalsIgnoreCase("new") || newEditStatus.equalsIgnoreCase("new_deep_link")
+                    || newEditStatus.equalsIgnoreCase("request")){
+                title.setText("Book Meeting Room");
             }
         }else {
             if (newEditStatus.equalsIgnoreCase("edit")){
@@ -3462,7 +3492,8 @@ public class BookFragment extends Fragment implements
             String fromTime = "2022-09-23T00:00:00Z";
             String toTime = "2022-09-23T23:59:00Z";
 
-            int parentId = 12;
+//            int parentId = 12;
+            int parentId = SessionHandler.getInstance().getInt(getContext(),AppConstants.PARENT_ID);
 
             Call<BookingForEditResponse> call = apiService.getAvaliableDeskDetailsForDeskList(parentId,
                     toDate,
@@ -3484,6 +3515,99 @@ public class BookFragment extends Fragment implements
 
                 @Override
                 public void onFailure(Call<BookingForEditResponse> call, Throwable t) {
+                    Toast.makeText(getContext(), "fa"+bookingDeskList.size(), Toast.LENGTH_SHORT).show();
+//                    getAddEditDesk("3",Utils.getISO8601format(date));
+
+                    System.out.println("Failure" + t.getMessage().toString());
+//                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
+
+
+    }
+    private void getAvaliableRoomDetails(String code, String date, EditBookingDetails editBookingDetails,String newEditStatus) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+//        System.out.println("check cala"+horizontalCalendar.getSelectedDate().getTime());
+
+            String toDate = date;
+            String fromTime = "2022-09-23T00:00:00Z";
+            String toTime = "2022-09-23T23:59:00Z";
+
+            int parentId = SessionHandler.getInstance().getInt(getContext(),AppConstants.PARENT_ID);
+
+            Call<RoomListResponse> call = apiService.getAvaliableRoomDetailsForRoomList(parentId,
+                    toDate,
+                    fromTime,
+                    toTime);
+
+            call.enqueue(new Callback<RoomListResponse>() {
+                @Override
+                public void onResponse(Call<RoomListResponse> call, Response<RoomListResponse> response) {
+                    userAllowedMeetingResponseListUpdated.clear();
+                    userAllowedMeetingResponseList = response.body().getMeetingResponses();
+
+
+//                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    boolean checkIsRequest=false;
+                    if (userAllowedMeetingResponseList!=null && userAllowedMeetingResponseList.size()>0){
+                        loo :
+                        for (int i=0; i < userAllowedMeetingResponseList.size(); i++){
+                            System.out.println("chek dat"+participants);
+                            System.out.println("chek dat no of people"+userAllowedMeetingResponseList.get(i).getNoOfPeople());
+                            if (participants <= userAllowedMeetingResponseList.get(i).getNoOfPeople()){
+                                System.out.println("chek dat in loop"+userAllowedMeetingResponseList.get(i).getName());
+
+                                userAllowedMeetingResponseListUpdated.add(userAllowedMeetingResponseList.get(i));
+                            }
+
+                            if (editBookingDetails.getMeetingRoomtId()==userAllowedMeetingResponseList.get(i).getId()){
+                                checkIsRequest=true;
+                                break loo;
+                            }
+                        }
+                    }
+                    if (newEditStatus.equalsIgnoreCase("new_deep_link")){
+                        if (checkIsRequest)
+                            callAmenitiesListForMeetingRoom(editBookingDetails,
+                                    editBookingDetails.getEditStartTTime(),
+                                    editBookingDetails.getEditEndTime(),
+                                    editBookingDetails.getDate(),
+                                    editBookingDetails.getMeetingRoomtId(),
+                                    0,"new_deep_link");
+
+                        else
+                            callAmenitiesListForMeetingRoom(editBookingDetails,
+                                    editBookingDetails.getEditStartTTime(),
+                                    editBookingDetails.getEditEndTime(),
+                                    editBookingDetails.getDate(),
+                                    editBookingDetails.getMeetingRoomtId(),
+                                    0,"request");
+
+                    }else {
+                        System.out.println("ame list vala else");
+                        if (userAllowedMeetingResponseListUpdated.size()>0 && checkIsRequest)
+                            callAmenitiesListForMeetingRoom(editBookingDetails,
+                                    editBookingDetails.getEditStartTTime(),
+                                    editBookingDetails.getEditEndTime(),
+                                    editBookingDetails.getDate(),
+                                    userAllowedMeetingResponseListUpdated.get(0).getId(),
+                                    0,"request");
+                        else if (userAllowedMeetingResponseListUpdated.size()>0 && !checkIsRequest)
+                            callAmenitiesListForMeetingRoom(editBookingDetails,
+                                    editBookingDetails.getEditStartTTime(),
+                                    editBookingDetails.getEditEndTime(),
+                                    editBookingDetails.getDate(),
+                                    userAllowedMeetingResponseListUpdated.get(0).getId(),
+                                    0,"request");
+                        else
+                            Toast.makeText(getContext(), "Please Clear Fiter", Toast.LENGTH_SHORT).show();
+//                        editBookingUsingBottomSheet(editBookingDetails,2,0,"new");
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<RoomListResponse> call, Throwable t) {
                     Toast.makeText(getContext(), "fa"+bookingDeskList.size(), Toast.LENGTH_SHORT).show();
 //                    getAddEditDesk("3",Utils.getISO8601format(date));
 
