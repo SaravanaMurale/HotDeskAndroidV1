@@ -81,6 +81,7 @@ import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
 import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
 import dream.guys.hotdeskandroid.model.request.MeetingAmenityStatus;
+import dream.guys.hotdeskandroid.model.request.MeetingRoomRecurrence;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.request.Point;
 import dream.guys.hotdeskandroid.model.response.AmenitiesResponse;
@@ -306,18 +307,14 @@ public class BookFragment extends Fragment implements
                         System.out.println("avail assigned COunt assign" + events.get(i).getAssignedCount());
                         System.out.println("avail assigned COunt used" + events.get(i).getUsedCount());
                         if (events.get(i).getAvailableCount()>0
-                                || (events.get(i).getAssignedCount() - events.get(i).getUsedCount())>0) {
+                                || (events.get(i).getAssignedCount()
+                                        - events.get(i).getUsedCount())>0) {
                             countCheck=true;
                             break loo;
                         }
-
                     }
                 }
-//                Toast.makeText(getActivity(), ""+events.get(pos).getAvailableCount(), Toast.LENGTH_SHORT).show();
-//                System.out.println("avail count" + events.get(pos).getAvailableCount() +events.get(pos).getDate());
-//                System.out.println("avail assigned COunt" + (events.get(pos).getAssignedCount()-events.get(pos).getUsedCount()));
-//                System.out.println("avail assigned COunt assign" + events.get(pos).getAssignedCount());
-//                System.out.println("avail assigned COunt used" + events.get(pos).getUsedCount());
+
                 if (countCheck) {
                     if (!(Utils.compareTwoDate(date,Utils.getCurrentDate()) == 1)){
                         if (selectedicon==0){
@@ -1055,7 +1052,7 @@ public class BookFragment extends Fragment implements
                                     0,"request");
 
                     }else {
-                        System.out.println("ame list vala else");
+                        System.out.println("ame list vala else"+userAllowedMeetingResponseListUpdated.size());
                         if (userAllowedMeetingResponseListUpdated.size()>0)
                             callAmenitiesListForMeetingRoom(editBookingDetails,
                                     editBookingDetails.getEditStartTTime(),
@@ -1282,14 +1279,15 @@ public class BookFragment extends Fragment implements
                         List<String> amenitiesStringList =new ArrayList<>();
                         goo:
                         for (int i=0; i < response.body().size(); i++) {
-                            if (response.body().get(i).getId() == calId && response.body().get(i).getAmenities()!=null) {
+                            if (response.body().get(i).getId() == calId
+                                    && response.body().get(i).getAmenities()!=null) {
                                 for (int j=0;j<response.body().get(i).getAmenities().size();j++){
                                     amenitiesIntList.add(response.body().get(i).getAmenities().get(j).getId());
                                 }
                                 break goo;
                             }
                         }
-                        System.out.println("ame list vala respos"+amenitiesList.size());
+                        System.out.println("ame list vala respos"+amenitiesIntList.size());
                         for (int i=0; i<amenitiesIntList.size();i++) {
                             for (int j=0;j<amenitiesList.size();j++) {
                                 if (amenitiesIntList.get(i) == amenitiesList.get(j).getId()){
@@ -1535,6 +1533,9 @@ public class BookFragment extends Fragment implements
             dateBlock.setVisibility(View.GONE);
             select.setVisibility(View.VISIBLE);
         }
+
+        if (isGlobalLocationSetUP)
+            select.setVisibility(View.VISIBLE);
 
         if (dskRoomParkStatus == 1) {
             if (newEditStatus.equalsIgnoreCase("edit")){
@@ -2093,7 +2094,7 @@ public class BookFragment extends Fragment implements
                 LocalDate weekEndDate = LocalDate.of( year, month+1, dayOfMonth);
 
                 //Selected Date
-                String[] words=selectedDate.split("-");
+                String[] words = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)).split("-");
                 int selectedYear=Integer.parseInt(words[0]);
                 int selectedMonth=Integer.parseInt(words[1]);
                 int selectedDay=Integer.parseInt(words[2]);
@@ -2841,7 +2842,10 @@ public class BookFragment extends Fragment implements
                 if (status) {
                     bottomSheetDialog.dismiss();
                     bottomSheetDialog.dismiss();
-                    doMeetingRoomBooking(meetingRoomId, startTime.getText().toString(), endTime.getText().toString(), subject, comment, isRequest);
+                    if (!repeatActvieStatus)
+                        doMeetingRoomBooking(meetingRoomId, startTime.getText().toString(), endTime.getText().toString(), subject, comment, isRequest);
+                    else
+                        doRepeatMeetingRoomBookingForWeek();
 
                 } else {
                     Toast.makeText(getContext(), "Please Enter All Details", Toast.LENGTH_LONG).show();
@@ -4317,6 +4321,158 @@ public class BookFragment extends Fragment implements
 
     }
 
+    private void doRepeatMeetingRoomBookingForWeek() {
+
+        String selectedDate = binding.locateCalendearView.getText().toString();
+        List<String> dateList = Utils.getCurrentWeekDateList(selectedDate, enableCurrentWeek);
+
+
+        MeetingRoomRecurrence meetingRoomRecurrence =new MeetingRoomRecurrence();
+        meetingRoomRecurrence.setMeetingRoomId(selectedDeskId);
+        meetingRoomRecurrence.setOnlineMeeting(false);
+        meetingRoomRecurrence.setMsTeams(false);
+        meetingRoomRecurrence.setHandleRecurring(false);
+
+        List<MeetingRoomRecurrence.Changeset> changesetList=new ArrayList<>();
+
+        for (int i = 0; i <dateList.size() ; i++) {
+
+            MeetingRoomRecurrence.Changeset changeset=meetingRoomRecurrence.new Changeset();
+            changeset.setId(0);
+            changeset.setDate(dateList.get(i) + "T" + "00:00:00.000" + "Z");
+
+            MeetingRoomRecurrence.Changeset.Changes changes=changeset.new Changes();
+            changes.setComments("");
+            changes.setFrom(getCurrentDate() + "" + "T" + startTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            changes.setMyto(getCurrentDate() + "" + "T" + endTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            changes.setSubject("");
+            changes.setRecurrence("True");
+            changes.setRequest(false);
+
+            changeset.setChanges(changes);
+
+            List<Integer> attendeesList = new ArrayList<>();
+
+            //Newly Participant Added
+            if (chipList != null) {
+                for (int j = 0; j < chipList.size(); j++) {
+                    attendeesList.add(chipList.get(j).getId());
+                }
+
+            } //End
+
+            changes.setAttendees(attendeesList);
+
+            List<MeetingRoomRecurrence.Changeset.Changes.ExternalAttendees> externalAttendees=new ArrayList<>();
+            changes.setExternalAttendees(externalAttendees);
+
+            //List<MeetingRoomRecurrence.Changeset.Changes.RecurrenceDetails> recurrenceDetailsList=new ArrayList<>();
+
+            MeetingRoomRecurrence.Changeset.Changes.RecurrenceDetails recurrenceDetails=changes.new RecurrenceDetails();
+            recurrenceDetails.setInterval(1);
+            recurrenceDetails.setStartDate(dateList.get(0) + "T" + "00:00:00.000" + "Z");
+            recurrenceDetails.setEndDate(dateList.get(dateList.size()-1) + "T" + "00:00:00.000" + "Z");
+            recurrenceDetails.setOnDay(24);
+            recurrenceDetails.setSelectedMonth(8);
+            recurrenceDetails.setPeriod(0);
+
+            changes.setRecurrenceDetailsList(recurrenceDetails);
+
+            changesetList.add(changeset);
+
+        }
+
+        meetingRoomRecurrence.setChangesets(changesetList);
+
+        List<MeetingRoomRecurrence.DeleteIds> deleteIdsList=new ArrayList<>();
+        meetingRoomRecurrence.setDeletedIds(deleteIdsList);
+
+        System.out.println("MeetingRoomRecurrence "+meetingRoomRecurrence);
+
+        if (Utils.isNetworkAvailable(getActivity())) {
+//            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            dialog = ProgressDialog.showProgressBar(getContext());
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call = apiService.doMeetingRoomRecurrence(meetingRoomRecurrence);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+//                    binding.locateProgressBar.setVisibility(View.GONE);
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    locateResponseHandler(response, getResources().getString(R.string.booking_success));
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+//                    binding.locateProgressBar.setVisibility(View.GONE);
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
+        }
+
+
+
+
+        /*MeetingRoomRequest meetingRoomRequest = new MeetingRoomRequest();
+        meetingRoomRequest.setMeetingRoomId(meetingRoomId);
+        meetingRoomRequest.setMsTeams(false);
+        meetingRoomRequest.setHandleRecurring(false);
+        meetingRoomRequest.setOnlineMeeting(false);
+
+        List<MeetingRoomRequest.Changeset> changesetList = new ArrayList<>();
+
+        for (int i = 0; i < dateList.size(); i++) {
+
+            MeetingRoomRequest.Changeset m = meetingRoomRequest.new Changeset();
+            m.setId(0);
+            m.setDate(dateList.get(i) + "T" + "00:00:00.000" + "Z");
+
+            MeetingRoomRequest.Changeset.Changes changes = m.new Changes();
+            changes.setFrom(getCurrentDate() + "" + "T" + startRoomTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            changes.setMyto(getCurrentDate() + "" + "T" + endTRoomime.getText().toString() + ":" + "00" + "." + "000" + "Z");
+            changes.setComments("Comment");
+            changes.setSubject("subject");
+            boolean isRequest = false;
+            changes.setRequest(isRequest);
+
+            m.setChanges(changes);
+
+            changesetList.add(m);
+
+            List<Integer> attendeesList = new ArrayList<>();
+
+
+            //Newly Participant Added
+            if (chipList != null) {
+                for (int j = 0; j < chipList.size(); i++) {
+                    attendeesList.add(chipList.get(j).getId());
+                }
+
+            } //End
+
+            changes.setAttendees(attendeesList);
+
+            List<MeetingRoomRequest.Changeset.Changes.ExternalAttendees> externalAttendeesList = new ArrayList<>();
+            changes.setExternalAttendees(externalAttendeesList);
+
+        }
+
+        meetingRoomRequest.setChangesets(changesetList);
+
+        List<MeetingRoomRequest.DeleteIds> deleteIdsList = new ArrayList<>();
+        meetingRoomRequest.setDeletedIds(deleteIdsList);
+
+
+        System.out.println("RepeatMeetingRoom " + meetingRoomRequest);*/
+
+
+
+
+    }
 
 
 }

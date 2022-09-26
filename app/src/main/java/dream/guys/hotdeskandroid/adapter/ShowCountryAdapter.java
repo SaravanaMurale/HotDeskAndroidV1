@@ -26,7 +26,6 @@ public class ShowCountryAdapter extends RecyclerView.Adapter<ShowCountryAdapter.
 
 
     public interface  OnSelectListener{
-
         public void onSelect(LocateCountryRespose locateCountryRespose, String identifier);
     }
 
