@@ -301,8 +301,8 @@ public class BookFragment extends Fragment implements
                 for (int i=0; i<events.size();i++){
 //                    System.out.println("avail assigned COunt"+Utils.getYearMonthDateFormat(date) +" : "+events.get(i).getDate());
                     if (events.get(i).getDate().equalsIgnoreCase(Utils.getYearMonthDateFormat(date)+"T00:00:00Z")){
-                        System.out.println("avail count" + events.get(i).getAvailableCount() +events.get(pos).getDate());
-                        System.out.println("avail assigned COunt" + (events.get(i).getAssignedCount()-events.get(pos).getUsedCount()));
+                        System.out.println("avail count" + events.get(i).getAvailableCount() +events.get(i).getDate());
+                        System.out.println("avail assigned COunt" + (events.get(i).getAssignedCount()-events.get(i).getUsedCount()));
                         System.out.println("avail assigned COunt assign" + events.get(i).getAssignedCount());
                         System.out.println("avail assigned COunt used" + events.get(i).getUsedCount());
                         if (events.get(i).getAvailableCount()>0
@@ -590,7 +590,6 @@ public class BookFragment extends Fragment implements
                     else
                         getDeskCount(Utils.getCurrentDate());
                 }
-
                 break;
             case 1:
                 binding.roomLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
