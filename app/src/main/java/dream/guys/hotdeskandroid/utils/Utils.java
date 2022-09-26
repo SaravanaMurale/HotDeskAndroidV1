@@ -352,6 +352,9 @@ public class Utils {
         TextView calBack = bottomSheetDatePicker.findViewById(R.id.calenderBack);
         CalendarView calendarView=bottomSheetDatePicker.findViewById(R.id.datePicker);
 
+        Calendar c = Calendar.getInstance();
+        calendarView.setMinDate(c.getTimeInMillis() - 1000);
+
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
