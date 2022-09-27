@@ -40,7 +40,8 @@
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
                         android:layout_marginHorizontal="@dimen/_15sdp"
-                        android:src="@drawable/notification_icon" />
+                        android:src="@drawable/notification_icon"
+                        app:tint="@color/black" />
 
                     <ImageView
                         android:id="@+id/noti_icon"
@@ -63,6 +64,7 @@
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:src="@drawable/search_icon"
+                    app:tint="@color/black"
                     />
                 <ImageView
                     android:id="@+id/profile"
@@ -70,6 +72,7 @@
                     android:layout_height="@dimen/_25sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
                     android:src="@drawable/ic_outline_settings_24"
+                    app:tint="@color/black"
                     />
             </LinearLayout>
 

@@ -1,25 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <color name="purple_200">#FFFFFFFF</color>
+    <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#0f62ab</color>
-    <color name="purple_700">#FFFFFFFF</color>
+    <color name="purple_700">#B3E9994A</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#1b1b1b</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FFFFFF</color>
+    <color name="white">#FF000000</color>
 
-    <color name="colorGrey300">#E0E0E0</color>
     <color name="colorAppTheme" tools:ignore="MissingDefaultResource">#009dff</color>
-    <color name="blue">#0f62ab</color>
+    <color name="colorGrey300">#66777777</color>
 
+    <color name="blue">#0f62ab</color>
+    <color name="grey">#b1b1b1</color>
 
     //Figma
     <color name="figmaGrey">#777777</color>
-    <color name="figmaBgGrey">#F2F2F2</color>
+    <color name="figmaGrey80">#cc777777</color>
+    <color name="figmaGrey05">#1b1b1b</color>
+    <color name="figmaBgGrey">#1b1b1b</color>
     <color name="figmaBlack">#F2F2F2</color>
+    <color name="figmaBlackGrey">#323232</color>
+    <color name="figmaGreenFade">#C6F4E1</color>
     <color name="figmaBlue">#0F62AB</color>
-    <color name="bg_grey">#fafafa</color>
-    <color name="line_gray">#dcdcdc</color>
+    <color name="figmaBackground">#cc777777</color>
 
-    <color name="biometric_bg">#bcbcbc</color>
+    <color name="bg_grey">#66777777</color>
+    <color name="line_gray">#66777777</color>
+    <color name="biometric_bg">#66777777</color>
+    <color name="figma_orange">#e9994a</color>
+    <color name="figma_dark_black">#fafafa</color>
+    <color name="figma_byrequest">#F8D49B</color>
+    <color name="figma_dark_green">#1B9D67</color>
+    <color name="figma_unavaliable">#D99797</color>
+    <color name="figma_red">#BA0101</color>
+
+    <color name="figmaLiteGreen">#8DEAC3</color>
+
 </resources>

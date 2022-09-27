@@ -39,7 +39,7 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
         this.bottomSheetDialog=bottomSheetDialog;
     }
     public interface OnSelectSelected{
-        public void onSelectRoom(int deskId,String deskName, String location);
+        public void onSelectRoom(int deskId, String deskName, String location, List<UserAllowedMeetingResponse.Amenity> amenityList);
 
     }
 
@@ -59,7 +59,8 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
             public void onClick(View v) {
                 bottomSheetDialog.dismiss();
                 onSelectSelected.onSelectRoom(rooms.get(holder.getAbsoluteAdapterPosition()).getId(),
-                        rooms.get(holder.getAbsoluteAdapterPosition()).getName(),rooms.get(holder.getAbsoluteAdapterPosition()).getLocationMeeting().getName());
+                        rooms.get(holder.getAbsoluteAdapterPosition()).getName(),rooms.get(holder.getAbsoluteAdapterPosition()).getLocationMeeting().getName(),
+                        rooms.get(holder.getAbsoluteAdapterPosition()).getAmenities());
             }
         });
     }

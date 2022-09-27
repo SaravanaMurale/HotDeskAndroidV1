@@ -1061,10 +1061,11 @@ public class BookFragment extends Fragment implements
                     if (userAllowedMeetingResponseList!=null && userAllowedMeetingResponseList.size()>0){
 
                         for (int i=0; i < userAllowedMeetingResponseList.size(); i++){
-                            boolean amenityCheck=false;
                             soo:
                             for (int j=0;j<filterAmenitiesList.size();j++){
-                                for(int x=0;x<userAllowedMeetingResponseList.get(i).getAmenities().size();x++){
+                                boolean amenityCheck=false;
+                                System.out.println("ame list"+filterAmenitiesList.get(j));
+                                for(int x=0; x<userAllowedMeetingResponseList.get(i).getAmenities().size(); x++){
                                     if (filterAmenitiesList.get(j) == userAllowedMeetingResponseList.get(i)
                                             .getAmenities().get(x).getId()){
                                         amenityCheck=true;
@@ -3081,10 +3082,34 @@ public class BookFragment extends Fragment implements
     }
 
     @Override
-    public void onSelectRoom(int deskId, String deskName, String location) {
+    public void onSelectRoom(int deskId, String deskName, String location, List<UserAllowedMeetingResponse.Amenity> amenityLIst) {
         deskRoomName.setText(""+deskName);
         selectedDeskId= deskId;
         locationAddress.setText(location);
+        List<String> amenityStringList= new ArrayList<>();
+        if(amenityLIst !=null){
+            for (int i=0; i<amenityLIst.size(); i++){
+                for (int j=0; j<amenitiesList.size();j++){
+                    if (amenityLIst.get(i).getId() == amenitiesList.get(j).getId()){
+                        amenityStringList.add(amenitiesList.get(j).getName());
+                        break;
+                    }
+                }
+            }
+        }
+        if (amenityStringList.size()>0){
+            chipGroup.removeAllViews();
+            for (int i=0; i<amenityStringList.size(); i++){
+                Chip chip = new Chip(getContext());
+                chip.setId(i);
+                chip.setText(""+amenityStringList.get(i));
+                chip.setChipBackgroundColorResource(R.color.figmaGrey);
+                chip.setCloseIconVisible(false);
+                chip.setTextColor(getContext().getResources().getColor(R.color.white));
+                chipGroup.addView(chip);
+            }
+        }
+
     }
 
     //Global Search MOdel

@@ -974,6 +974,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
         bookindata = getBookingPageScreenData(getActivity());
 
+        System.out.println("null pointer"+mePage);
+        System.out.println("null pointer"+mePage.getMyTeam());
         binding.title.setText(mePage.getMyTeam());
         binding.txtAllteam.setText(appKeysPage.getAllTeams());
         binding.serachBar.setHint(appKeysPage.getSearch());
