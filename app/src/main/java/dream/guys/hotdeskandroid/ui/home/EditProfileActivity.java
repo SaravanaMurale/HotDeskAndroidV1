@@ -36,6 +36,7 @@ import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.EditDefaultAssetAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityEditProfileBinding;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.DAOCountryList;
 import dream.guys.hotdeskandroid.model.response.DefaultAssetResponse;
@@ -43,6 +44,7 @@ import dream.guys.hotdeskandroid.model.response.ProfilePicResponse;
 import dream.guys.hotdeskandroid.model.response.TeamDeskResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import dream.guys.hotdeskandroid.ui.settings.CountryListActivity;
+import dream.guys.hotdeskandroid.ui.teams.ShowProfileActivity;
 import dream.guys.hotdeskandroid.ui.wellbeing.NotificationActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -63,12 +65,22 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     String encodedImage;
     ArrayList<DAOCountryList> countryList = new ArrayList<>();
 
+    //ForLanguage
+    LanguagePOJO.Login logoinPage;
+    LanguagePOJO.AppKeys appKeysPage;
+    LanguagePOJO.ResetPassword resetPage ;
+    LanguagePOJO.ActionOverLays actionOverLays;
+    LanguagePOJO.Booking bookindata ;
+    LanguagePOJO.Global global;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_edit_profile);
         binding = ActivityEditProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        setLanguage();
 
         getProfilePicture();
 
@@ -699,6 +711,39 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         }else {
             Utils.toastMessage(EditProfileActivity.this, getResources().getString(R.string.enable_internet));
         }
+
+    }
+
+    public void setLanguage(){
+
+        logoinPage = Utils.getLoginScreenData(EditProfileActivity.this);
+        appKeysPage = Utils.getAppKeysPageScreenData(EditProfileActivity.this);
+        resetPage = Utils.getResetPasswordPageScreencreenData(EditProfileActivity.this);
+        actionOverLays = Utils.getActionOverLaysPageScreenData(EditProfileActivity.this);
+        bookindata = Utils.getBookingPageScreenData(EditProfileActivity.this);
+        global=Utils.getGlobalScreenData(EditProfileActivity.this);
+
+        binding.tvTitle.setText(appKeysPage.getProfile());
+        binding.tvUpdateImage.setText(appKeysPage.getUploadPhoto());
+        binding.editProfileNameTv.setText(appKeysPage.getName());
+        binding.EditProfileTvDisplayName.setText(appKeysPage.getDisplayName());
+        binding.editProfileScheduleTv.setText(appKeysPage.getSchedule());
+        binding.editProfileDefaultWorkingHoursTv.setText(appKeysPage.getDefaultWorkingHours());
+        binding.tvEditStartTime.setText(appKeysPage.getStart());
+        binding.tvEditEndTime.setText(appKeysPage.getEnd());
+        binding.editProfileDefaultLocationTv.setText(appKeysPage.getDefaultLocation());
+        binding.editProfileDefaultAssetTv.setText(appKeysPage.getDefaultAssets());
+        binding.editProfileWorkSpaceTv.setText(appKeysPage.getWorkSpace());
+        binding.editProfileParkingTv.setText(appKeysPage.getParking());
+        binding.editProfileRoomTv.setText(appKeysPage.getRoom());
+        binding.editProfileCountryTv.setText(appKeysPage.getCountry());
+        binding.editProfileVehicleNumberTv.setText(appKeysPage.getVehicleNumber());
+        binding.editDeskChange.setText(appKeysPage.getChange());
+        binding.editParkChange.setText(appKeysPage.getChange());
+        binding.editRoomChange.setText(appKeysPage.getChange());
+        binding.tvEditContact.setText(appKeysPage.getContact());
+        binding.editProfileHybridHereTv.setText(appKeysPage.getHybridHero());
+
 
     }
 

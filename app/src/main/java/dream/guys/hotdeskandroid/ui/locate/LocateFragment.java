@@ -1779,6 +1779,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         addNew = locateMeetEditBottomSheet.findViewById(R.id.editBookingContinue);
         editDate = locateMeetEditBottomSheet.findViewById(R.id.editDate);
 
+        addNew.setText(global.getAddNew());
+        editClose.setText(global.getBack());
+
         addNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

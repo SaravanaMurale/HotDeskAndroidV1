@@ -34,12 +34,12 @@
                     android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_toEndOf="@id/profile_back"
                     android:text="@string/notifications"
                     android:textColor="@color/figmaBlack"
                     android:textSize="@dimen/_14sdp"
-                    android:theme="@style/TextBold"
-                    android:layout_centerVertical="true" />
+                    android:theme="@style/TextBold" />
 
 
             </RelativeLayout>
@@ -51,7 +51,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tvTitle"
+                    android:id="@+id/tvTitleCheckIn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/_5sdp"
@@ -80,11 +80,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
                         android:layout_marginVertical="@dimen/_5sdp"
                         android:text="@string/push"
                         android:textSize="@dimen/_12sdp"
-                        android:theme="@style/TextBold"
-                        android:layout_centerVertical="true"/>
+                        android:theme="@style/TextBold" />
 
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/checkPushSwitch"
@@ -106,14 +106,15 @@
                     android:paddingVertical="@dimen/_4sdp">
 
                     <TextView
+                        android:id="@+id/checkInEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
                         android:layout_marginVertical="@dimen/_5sdp"
                         android:text="@string/email"
                         android:textSize="@dimen/_12sdp"
-                        android:theme="@style/TextBold"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"/>
+                        android:theme="@style/TextBold" />
 
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/checkEmailSwitch"
@@ -160,14 +161,15 @@
                     android:paddingVertical="@dimen/_4sdp">
 
                     <TextView
+android:id="@+id/bookingPushTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
                         android:layout_marginVertical="@dimen/_5sdp"
                         android:text="@string/push"
                         android:textSize="@dimen/_12sdp"
-                        android:theme="@style/TextBold"
-                        android:layout_centerVertical="true"/>
+                        android:theme="@style/TextBold" />
 
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/bookingPushSwitch"
@@ -188,6 +190,7 @@
                     android:paddingVertical="@dimen/_4sdp">
 
                     <TextView
+                        android:id="@+id/bookingEmailTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="@dimen/_5sdp"
@@ -244,14 +247,15 @@
                     android:paddingVertical="@dimen/_4sdp">
 
                     <TextView
+                        android:id="@+id/covidPush"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
                         android:layout_marginVertical="@dimen/_5sdp"
                         android:text="@string/push"
                         android:textSize="@dimen/_12sdp"
-                        android:theme="@style/TextBold"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"/>
+                        android:theme="@style/TextBold" />
 
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/covidPushSwitch"
@@ -273,14 +277,15 @@
                     android:paddingVertical="@dimen/_4sdp">
 
                     <TextView
+                        android:id="@+id/covidEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
                         android:layout_marginVertical="@dimen/_5sdp"
                         android:text="@string/email"
                         android:textSize="@dimen/_12sdp"
-                        android:theme="@style/TextBold"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"/>
+                        android:theme="@style/TextBold" />
 
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/covidMailSwitch"
