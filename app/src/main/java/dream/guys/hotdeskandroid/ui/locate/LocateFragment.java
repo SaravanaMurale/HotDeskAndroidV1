@@ -6602,12 +6602,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 //        binding.searchLocate.setText(appKeysPage.getChooseLocation());
 //        binding.tvStartLocate.setText(appKeysPage.getStart());
-        binding.tvLocateEndTime.setText(appKeysPage.getEnd());
-        binding.statusAvaliable.setText(global.getAvailable());
-        binding.statusUnAvaliable.setText(global.getUnavailable());
-        binding.statusBookedByMe.setText(global.getBookedByMe());
-        binding.statusBooked.setText(appKeysPage.getBooked());
-        binding.statusByRequest.setText(appKeysPage.getByRequest());
+//        binding.tvLocateEndTime.setText(appKeysPage.getEnd());
+//        binding.statusAvaliable.setText(global.getAvailable());
+//        binding.statusUnAvaliable.setText(global.getUnavailable());
+//        binding.statusBookedByMe.setText(global.getBookedByMe());
+//        binding.statusBooked.setText(appKeysPage.getBooked());
+//        binding.statusByRequest.setText(appKeysPage.getByRequest());
 
 
         //tvPMOOffice.setText(appKeysPage);

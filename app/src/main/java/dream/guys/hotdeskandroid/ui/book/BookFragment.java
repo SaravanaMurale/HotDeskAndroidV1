@@ -1075,7 +1075,6 @@ public class BookFragment extends Fragment implements
                                     break soo;
                                 }
                             }
-
                         }
                         loo:
                         for (int i=0; i< userAllowedMeetingResponseList.size();i++){
