@@ -6601,7 +6601,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         global=getGlobalScreenData(getContext());
 
 //        binding.searchLocate.setText(appKeysPage.getChooseLocation());
-        binding.tvStartLocate.setText(appKeysPage.getStart());
+//        binding.tvStartLocate.setText(appKeysPage.getStart());
         binding.tvLocateEndTime.setText(appKeysPage.getEnd());
         binding.statusAvaliable.setText(global.getAvailable());
         binding.statusUnAvaliable.setText(global.getUnavailable());
