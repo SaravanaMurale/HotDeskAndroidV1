@@ -279,17 +279,11 @@ public class BookFragment extends Fragment implements
         binding = FragmentBookBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-
-        setLanguage();
-
-
-
         dialog= new Dialog(getActivity());
         if (endTimeSelectedStats == 0) {
             binding.locateEndTime.setText("23:59");
         }
 
-        tabToggleViewClicked(selectedicon);
         getAmenities();
         binding.locateStartTime.setText(getCurrentTime());
         binding.locateStartTime.setOnClickListener(new View.OnClickListener() {
@@ -594,6 +588,11 @@ public class BookFragment extends Fragment implements
         this.view=view;
         this.context = getContext();
         this.activityContext=getActivity();
+
+//        setLanguage();
+
+        tabToggleViewClicked(selectedicon);
+
         getAddEditDesk("-1",Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate())));
 
 
@@ -607,7 +606,7 @@ public class BookFragment extends Fragment implements
                 binding.deskLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
                 binding.ivDesk.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
                 binding.tvDesk.setVisibility(View.VISIBLE);
-                binding.tvDesk.setText(appKeysPage.getWorkSpace());
+//                binding.tvDesk.setText(appKeysPage.getWorkSpace());
                 binding.rlParticipants.setVisibility(View.GONE);
                 binding.rlFilter.setVisibility(View.GONE);
                 LinearLayout.LayoutParams deskParams = new LinearLayout.LayoutParams(
@@ -4576,17 +4575,22 @@ public class BookFragment extends Fragment implements
 
     public void setLanguage(){
 
-        logoinPage = Utils.getLoginScreenData(getContext());
-        appKeysPage = Utils.getAppKeysPageScreenData(getContext());
-        resetPage = Utils.getResetPasswordPageScreencreenData(getContext());
-        actionOverLays = Utils.getActionOverLaysPageScreenData(getContext());
-        bookindata = Utils.getBookingPageScreenData(getContext());
-        global=Utils.getGlobalScreenData(getContext());
+        logoinPage = Utils.getLoginScreenData(context);
+        appKeysPage = Utils.getAppKeysPageScreenData(context);
+        resetPage = Utils.getResetPasswordPageScreencreenData(context);
+        actionOverLays = Utils.getActionOverLaysPageScreenData(context);
+        bookindata = Utils.getBookingPageScreenData(context);
+        global=Utils.getGlobalScreenData(context);
 
 
 
         //binding.tvPMOOffice.setText(appKeysPage);
         //binding.searchGlobal.setText(appKeysPage.getChooseLocation());
+        System.out.println("lang check global" + global);
+        System.out.println("lang check bookindata" + bookindata);
+        System.out.println("lang check" + appKeysPage);
+        System.out.println("lang check" + appKeysPage.getStart());
+        System.out.println("lang check" + binding.tvStartLocate);
         binding.tvStartLocate.setText(appKeysPage.getStart());
         binding.tvLocateEndTime.setText(appKeysPage.getEnd());
 

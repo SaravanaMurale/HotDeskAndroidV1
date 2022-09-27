@@ -9,12 +9,15 @@ import static dream.guys.hotdeskandroid.utils.Utils.getResetPasswordPageScreencr
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.UiModeManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -158,7 +161,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         setHasOptionsMenu(true);
 
         dialog = new Dialog(getContext());
-
+        setNightMode(getContext(),true);
         setLanguage();
 
         System.out.println("Seesin userId"+SessionHandler.getInstance().getInt(getActivity(),AppConstants.USER_ID));
@@ -1625,5 +1628,21 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         actionOverLays = getActionOverLaysPageScreenData(getActivity());
         bookindata = getBookingPageScreenData(getActivity());
         global=getGlobalScreenData(getContext());
+    }
+
+    public static void setNightMode(Context target , boolean state){
+
+        UiModeManager uiManager = (UiModeManager) target.getSystemService(Context.UI_MODE_SERVICE);
+
+        if (Build.VERSION.SDK_INT <= 22) {
+            uiManager.enableCarMode(0);
+        }
+
+        if (state) {
+            Toast.makeText(target, "Dark", Toast.LENGTH_SHORT).show();
+            uiManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
+        } else {
+            uiManager.setNightMode(UiModeManager.MODE_NIGHT_NO);
+        }
     }
 }

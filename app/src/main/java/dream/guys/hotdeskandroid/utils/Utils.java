@@ -1348,6 +1348,7 @@ public class Utils {
                     SessionHandler.getInstance().save(mContext, AppConstants.APPKEYS_PAGE, localeData);
                 }
             } catch (Exception e) {
+                System.out.println("lang check util"+e.getMessage());
             }
 
 
@@ -1457,6 +1458,7 @@ public class Utils {
 
     public static LanguagePOJO.AppKeys getAppKeysPageScreenData(Context mContext) {
         LanguagePOJO.AppKeys AppKeysPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.APPKEYS_PAGE), LanguagePOJO.AppKeys.class);
+        System.out.println("lang check util"+AppKeysPage);
         return AppKeysPage;
     }
 

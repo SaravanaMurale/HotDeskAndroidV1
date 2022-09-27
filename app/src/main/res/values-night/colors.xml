@@ -22,11 +22,11 @@
     <color name="figmaBlack">#F2F2F2</color>
     <color name="figmaBlackGrey">#323232</color>
     <color name="figmaGreenFade">#C6F4E1</color>
-    <color name="figmaBlue">#0F62AB</color>
+    <color name="figmaBlue">#F2F2F2</color>
     <color name="figmaBackground">#cc777777</color>
 
     <color name="bg_grey">#66777777</color>
-    <color name="line_gray">#66777777</color>
+    <color name="line_gray">#fafafa</color>
     <color name="biometric_bg">#66777777</color>
     <color name="figma_orange">#e9994a</color>
     <color name="figma_dark_black">#fafafa</color>

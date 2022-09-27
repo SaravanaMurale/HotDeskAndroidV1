@@ -4,6 +4,7 @@ import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
 
 import android.app.Dialog;
+import android.app.UiModeManager;
 import android.content.Intent;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -108,14 +109,14 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
     String calSelectedDate="";
     String calSelectedMont="";
     List<ParkingSpotModel> parkingSpotModelList=new ArrayList<>();
-
+    UiModeManager uiModeManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_main);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        uiModeManager = (UiModeManager) getSystemService(UI_MODE_SERVICE);
         dialog = new Dialog(this);
         if (SessionHandler.getInstance().getBoolean(MainActivity.this,AppConstants.LOGIN_CHECK) ){
 //            Toast.makeText(this, "toast daaaa", Toast.LENGTH_SHORT).show();
@@ -210,6 +211,13 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
             }
         });
 
+    }
+    public void NightModeON(View view){
+        uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
+    }
+
+    public void NightModeOFF(View view){
+        uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_NO);
     }
 
     private void deepLinking() {
