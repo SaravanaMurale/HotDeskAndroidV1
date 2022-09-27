@@ -15,6 +15,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
 import dream.guys.hotdeskandroid.utils.Utils;
 
@@ -23,6 +24,15 @@ public class MeetingListToEditAdapter extends RecyclerView.Adapter<MeetingListTo
     Context context;
     List<MeetingListToEditResponse> meetingListToEditResponseList;
     OnMeetingEditClickable onMeetingEditClickable;
+
+    //For Language
+    LanguagePOJO.Login logoinPage;
+    LanguagePOJO.AppKeys appKeysPage;
+    LanguagePOJO.ResetPassword resetPage ;
+    LanguagePOJO.ActionOverLays actionOverLays;
+    LanguagePOJO.Booking bookindata ;
+    LanguagePOJO.Global global;
+
     public interface OnMeetingEditClickable{
         public void onMeetingEditClick(MeetingListToEditResponse meetingListToEditResponse);
         public void onMeetingDeleteClick(MeetingListToEditResponse meetingListToEditResponse);
@@ -96,6 +106,19 @@ public class MeetingListToEditAdapter extends RecyclerView.Adapter<MeetingListTo
             super(itemView);
 
             ButterKnife.bind(this, itemView);
+
+                logoinPage = Utils.getLoginScreenData(context);
+                appKeysPage = Utils.getAppKeysPageScreenData(context);
+                resetPage = Utils.getResetPasswordPageScreencreenData(context);
+                actionOverLays = Utils.getActionOverLaysPageScreenData(context);
+                bookindata = Utils.getBookingPageScreenData(context);
+                global=Utils.getGlobalScreenData(context);
+
+            editDelete.setText(global.getDelete());
+            editTextEdit.setText(global.getEdit());
+
+
+
         }
     }
 }

@@ -21,6 +21,7 @@ import java.util.List;
 import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
 import dream.guys.hotdeskandroid.adapter.UpComingBookingAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityShowProfileBinding;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
@@ -39,6 +40,8 @@ import retrofit2.Response;
 
 public class ShowProfileActivity extends AppCompatActivity {
 
+
+
     ActivityShowProfileBinding binding;
     List<GlobalSearchResponse.Results> resultsList = new ArrayList<>();
     List<GlobalSearchResponse.Results> list = new ArrayList<>();
@@ -52,6 +55,14 @@ public class ShowProfileActivity extends AppCompatActivity {
     UpComingBookingAdapter upComingBookingAdapter;
     ArrayList<TeamMembersResponse.DayGroup> recyclerModelArrayList = new ArrayList();
 
+    //ForLanguage
+    LanguagePOJO.Login logoinPage;
+    LanguagePOJO.AppKeys appKeysPage;
+    LanguagePOJO.ResetPassword resetPage ;
+    LanguagePOJO.ActionOverLays actionOverLays;
+    LanguagePOJO.Booking bookindata ;
+    LanguagePOJO.Global global;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +72,10 @@ public class ShowProfileActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         context = ShowProfileActivity.this;
+
+        setLanguage();
+
+
 
         binding.ivEditEmailIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -429,6 +444,19 @@ private void callSearchRecyclerData(String searchText,int selID) {
             binding.samUpcomingRecycler.setVisibility(View.GONE);
         }
         
+    }
+
+    public void setLanguage(){
+
+        logoinPage = Utils.getLoginScreenData(ShowProfileActivity.this);
+        appKeysPage = Utils.getAppKeysPageScreenData(ShowProfileActivity.this);
+        resetPage = Utils.getResetPasswordPageScreencreenData(ShowProfileActivity.this);
+        actionOverLays = Utils.getActionOverLaysPageScreenData(ShowProfileActivity.this);
+        bookindata = Utils.getBookingPageScreenData(ShowProfileActivity.this);
+        global=Utils.getGlobalScreenData(ShowProfileActivity.this);
+
+        binding.tvTitle.setText(appKeysPage.getProfile());
+
     }
 
 }

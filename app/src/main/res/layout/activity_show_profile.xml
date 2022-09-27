@@ -7,11 +7,11 @@
     tools:context=".ui.home.EditProfileActivity">
 
     <LinearLayout
+        android:id="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:id="@+id/tool_bar">
+        android:orientation="horizontal">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -29,37 +29,38 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/profile_back"
                 android:text="Profile"
                 android:textColor="@color/figmaBlack"
                 android:textSize="@dimen/_14sdp"
-                android:theme="@style/TextBold"
-                android:layout_centerVertical="true" />
+                android:theme="@style/TextBold" />
 
         </RelativeLayout>
+
         <view
+            class="android.widget.ImageView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            class="android.widget.ImageView"
-            android:layout_weight="1"
-            />
+            android:layout_weight="1" />
+
         <ImageView
+            android:id="@+id/profile_update"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
             android:layout_marginHorizontal="@dimen/_15sdp"
             android:src="@drawable/tick"
-            android:id="@+id/profile_update"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/profile_edit"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
-            android:src="@drawable/edit"
             android:layout_marginHorizontal="@dimen/_2sdp"
-            app:tint="@color/figmaBlack"
             android:layout_marginEnd="@dimen/_8sdp"
-            android:visibility="gone"/>
+            android:src="@drawable/edit"
+            android:visibility="gone"
+            app:tint="@color/figmaBlack" />
 
     </LinearLayout>
 

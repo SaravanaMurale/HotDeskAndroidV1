@@ -29,12 +29,12 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/profile_back"
                 android:text="Profile"
                 android:textColor="@color/figmaBlack"
                 android:textSize="@dimen/_14sdp"
-                android:theme="@style/TextBold"
-                android:layout_centerVertical="true" />
+                android:theme="@style/TextBold" />
 
         </RelativeLayout>
         <view
@@ -110,7 +110,7 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_toRightOf="@+id/ivEditPrifle"
                         android:text="upload photo"
-                        android:textColor="@color/figmaBlue"/>
+                        android:textColor="@color/figmaBlue" />
 
                     <TextView
                         android:id="@+id/tvImageSize"
@@ -148,6 +148,7 @@
                 >
 
             <TextView
+                android:id="@+id/editProfileNameTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name"
@@ -175,6 +176,7 @@
                 >
 
             <TextView
+                android:id="@+id/EditProfileTvDisplayName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Display Name"
@@ -184,6 +186,7 @@
                 android:textSize="@dimen/_12sdp"/>
 
             <TextView
+                android:id="@+id/editProfileHybridHereTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="The Name that will be displayed across  Hybrid Hero" />
@@ -224,6 +227,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/editProfileScheduleTv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Schedule"
@@ -405,6 +409,7 @@
                 >
 
                 <TextView
+                    android:id="@+id/editProfileDefaultWorkingHoursTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Default working hours"
@@ -496,6 +501,7 @@
                 >
 
                 <TextView
+                    android:id="@+id/editProfileDefaultLocationTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Default Location"
@@ -525,6 +531,7 @@
                 >
 
                 <TextView
+                    android:id="@+id/editProfileDefaultAssetTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Default Assets"
@@ -534,6 +541,7 @@
                     android:textSize="@dimen/_12sdp"/>
 
                 <TextView
+                    android:id="@+id/editProfileWorkSpaceTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Workspaces"
@@ -561,12 +569,12 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:enabled="false"
-                        android:text="Change"
-                        />
+                        android:text="Change" />
 
                 </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/editProfileParkingTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Parking"
@@ -600,6 +608,7 @@
 
 
                 <TextView
+                    android:id="@+id/editProfileRoomTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Room"
@@ -632,6 +641,7 @@
                 </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/editProfileCountryTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Country"
@@ -665,6 +675,7 @@
                 </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/editProfileVehicleNumberTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Vehicle Number"

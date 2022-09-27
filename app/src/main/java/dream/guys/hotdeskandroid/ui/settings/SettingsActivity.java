@@ -53,6 +53,15 @@ public class SettingsActivity extends AppCompatActivity {
     UserDetailsResponse profileData;
     Dialog dialog,proDialog;
 
+    //For Language
+    LanguagePOJO.Login logoinPage;
+    LanguagePOJO.AppKeys appKeysPage;
+    LanguagePOJO.ResetPassword resetPage ;
+    LanguagePOJO.ActionOverLays actionOverLays;
+    LanguagePOJO.Booking bookindata ;
+    LanguagePOJO.Global global;
+    LanguagePOJO.Settings settings;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,9 +150,23 @@ public class SettingsActivity extends AppCompatActivity {
                 EditText etCurrentPassword=dialog.findViewById(R.id.etCurrentPassword);
                 EditText etNewPassword=dialog.findViewById(R.id.etNewPassword);
                 EditText etConfirmPassword=dialog.findViewById(R.id.etConfirmPassword);
+                TextView tv_titleChangePassword=dialog.findViewById(R.id.tv_titleChangePassword);
+
+
 
                 Button buttonChangePassword=dialog.findViewById(R.id.btnChangePasswordSubmit);
                 Button buttonChangePasswordCancel=dialog.findViewById(R.id.btnChangePasswordCancel);
+
+                //tv_titleChangePassword.setText(appKeysPage.getChangePassword());
+                buttonChangePasswordCancel.setText(appKeysPage.getCancel());
+                buttonChangePassword.setText(appKeysPage.getSubmit());
+                etCurrentPassword.setHint(appKeysPage.getCurrentPassword());
+                etNewPassword.setHint(appKeysPage.getNewPassword());
+                etConfirmPassword.setHint(appKeysPage.getConfirmPassword());
+
+
+
+
                 buttonChangePasswordCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -271,6 +294,15 @@ public class SettingsActivity extends AppCompatActivity {
     public void setLanguage() {
 
         LanguagePOJO.Settings wellBeingPage = getSettingsPageScreenData(this);
+        logoinPage = Utils.getLoginScreenData(this);
+        appKeysPage = Utils.getAppKeysPageScreenData(this);
+        resetPage = Utils.getResetPasswordPageScreencreenData(this);
+        actionOverLays = Utils.getActionOverLaysPageScreenData(this);
+        bookindata = Utils.getBookingPageScreenData(this);
+        global=Utils.getGlobalScreenData(this);
+        settings=Utils.getSettingsPageScreenData(this);
+
+        binding.settingViewProfile.setText(settings.getViewProfile());
 
         if (wellBeingPage!=null) {
 

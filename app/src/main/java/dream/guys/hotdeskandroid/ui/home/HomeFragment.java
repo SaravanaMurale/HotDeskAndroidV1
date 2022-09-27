@@ -3,6 +3,7 @@ package dream.guys.hotdeskandroid.ui.home;
 import static dream.guys.hotdeskandroid.utils.Utils.getActionOverLaysPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getBookingPageScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getGlobalScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getLoginScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getResetPasswordPageScreencreenData;
 
@@ -109,6 +110,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     LanguagePOJO.ActionOverLays actionOverLays;
     LanguagePOJO.ResetPassword resetPage;
     LanguagePOJO.Booking bookindata;
+    LanguagePOJO.Global global;
 
     //Header
     ImageView notiIcon,closeSearch,homeNotificationIcon;
@@ -1193,11 +1195,15 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         repeat=bottomSheetDialog.findViewById(R.id.repeat);
         deskRoomName=bottomSheetDialog.findViewById(R.id.tv_desk_room_name);
         date=bottomSheetDialog.findViewById(R.id.date);
+
+
+
         TextView tvLocationAddress=bottomSheetDialog.findViewById(R.id.tv_location_details);
         TextView back=bottomSheetDialog.findViewById(R.id.editBookingBack);
         TextView select=bottomSheetDialog.findViewById(R.id.select_desk_room);
         TextView continueEditBook=bottomSheetDialog.findViewById(R.id.editBookingContinue);
         TextView tvComments=bottomSheetDialog.findViewById(R.id.tv_comments);
+        TextView tvComment=bottomSheetDialog.findViewById(R.id.tv_comment);
         EditText commentRegistration=bottomSheetDialog.findViewById(R.id.ed_registration);
         RelativeLayout repeatBlock=bottomSheetDialog.findViewById(R.id.rl_repeat_block);
         RelativeLayout teamsBlock=bottomSheetDialog.findViewById(R.id.rl_teams_layout);
@@ -1206,6 +1212,20 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         LinearLayout llDeskLayout=bottomSheetDialog.findViewById(R.id.ll_desk_layout);
         dateBlock.setVisibility(View.GONE);
         ChipGroup chipGroup = bottomSheetDialog.findViewById(R.id.list_item);
+
+        //For Language
+        TextView tv_start=bottomSheetDialog.findViewById(R.id.tv_start);
+        TextView tv_end=bottomSheetDialog.findViewById(R.id.tv_end);
+
+        tv_start.setText(appKeysPage.getStart());
+        tv_end.setText(appKeysPage.getEnd());
+        tvComments.setText(appKeysPage.getComments());
+        tvComment.setText(appKeysPage.getComments());
+        repeat.setText(appKeysPage.getRepeat());
+        continueEditBook.setText(appKeysPage.getContinue());
+        back.setText(appKeysPage.getBack());
+        select.setText(appKeysPage.getSelect());
+
 
         if (editDeskBookingDetails.getDeskStatus() == 1){
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
@@ -1230,7 +1250,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
             repeatBlock.setVisibility(View.GONE);
             teamsBlock.setVisibility(View.GONE);
-            commentRegistration.setHint("Comments");
+            //commentRegistration.setHint("Comments");
+            commentRegistration.setHint(appKeysPage.getComments());
             tvComments.setText("Comments");
             chipGroup.setVisibility(View.GONE);
             deskRoomName.setText(editDeskBookingDetails.getDeskCode());
@@ -1249,8 +1270,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             llDeskLayout.setVisibility(View.GONE);
             repeatBlock.setVisibility(View.GONE);
             teamsBlock.setVisibility(View.GONE);
-            commentRegistration.setHint("Registration Number");
-            tvComments.setText("Regitration Number");
+            //commentRegistration.setHint("Registration Number");
+            commentRegistration.setHint(appKeysPage.getRegistration());
+            //tvComments.setText("Regitration Number");
+            tvComments.setText(appKeysPage.getRegistration());
             commentRegistration.setText(editDeskBookingDetails.getVehicleRegNumber());
             chipGroup.setVisibility(View.GONE);
         }
@@ -1600,7 +1623,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         appKeysPage = getAppKeysPageScreenData(getActivity());
         resetPage = getResetPasswordPageScreencreenData(getActivity());
         actionOverLays = getActionOverLaysPageScreenData(getActivity());
-
         bookindata = getBookingPageScreenData(getActivity());
+        global=getGlobalScreenData(getContext());
     }
 }

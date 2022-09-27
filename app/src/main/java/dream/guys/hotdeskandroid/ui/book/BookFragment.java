@@ -127,6 +127,15 @@ public class BookFragment extends Fragment implements
         ParticipantNameShowAdapter.OnParticipantSelectable,
         RoomListRecyclerAdapter.OnSelectSelected,
         ShowCountryAdapter.OnSelectListener{
+
+    LanguagePOJO.Login logoinPage;
+    LanguagePOJO.AppKeys appKeysPage;
+    LanguagePOJO.ResetPassword resetPage ;
+    LanguagePOJO.ActionOverLays actionOverLays;
+    LanguagePOJO.Booking bookindata ;
+    LanguagePOJO.Global global;
+
+
     FragmentBookBinding binding;
     @BindView(R.id.desk_layout)
     LinearLayout deskLayout;
@@ -165,13 +174,8 @@ public class BookFragment extends Fragment implements
     TextView tvStartLocate;
     @BindView(R.id.tvLocateEndTime)
     TextView tvLocateEndTime;
-
-    LanguagePOJO.Login logoinPage;
-    LanguagePOJO.AppKeys appKeysPage;
-    LanguagePOJO.ResetPassword resetPage ;
-    LanguagePOJO.ActionOverLays actionOverLays;
-    LanguagePOJO.Booking bookindata ;
-    LanguagePOJO.Global global;
+    @BindView(R.id.searchGlobal)
+    TextView searchGlobal;
 
 
 
@@ -265,6 +269,8 @@ public class BookFragment extends Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     @Override
@@ -272,6 +278,10 @@ public class BookFragment extends Fragment implements
                              Bundle savedInstanceState) {
         binding = FragmentBookBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+
+        setLanguage();
+
 
 
         dialog= new Dialog(getActivity());
@@ -586,7 +596,6 @@ public class BookFragment extends Fragment implements
         this.activityContext=getActivity();
         getAddEditDesk("-1",Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate())));
 
-        setLanguage();
 
     }
 
@@ -598,7 +607,7 @@ public class BookFragment extends Fragment implements
                 binding.deskLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
                 binding.ivDesk.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
                 binding.tvDesk.setVisibility(View.VISIBLE);
-//                binding.tvDesk.setText(appKeysPage.getWorkSpace());
+                binding.tvDesk.setText(appKeysPage.getWorkSpace());
                 binding.rlParticipants.setVisibility(View.GONE);
                 binding.rlFilter.setVisibility(View.GONE);
                 LinearLayout.LayoutParams deskParams = new LinearLayout.LayoutParams(
@@ -627,7 +636,7 @@ public class BookFragment extends Fragment implements
                 binding.roomLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
                 binding.ivRoom.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
                 binding.tvRoom.setVisibility(View.VISIBLE);
-//                binding.tvRoom.setText(appKeysPage.getRoom());
+               binding.tvRoom.setText(appKeysPage.getRoom());
                 binding.rlParticipants.setVisibility(View.VISIBLE);
                 binding.rlFilter.setVisibility(View.VISIBLE);
 
@@ -4542,19 +4551,19 @@ public class BookFragment extends Fragment implements
 
     public void setLanguage(){
 
-        logoinPage = getLoginScreenData(context);
-        appKeysPage = getAppKeysPageScreenData(context);
-        resetPage = getResetPasswordPageScreencreenData(context);
-        actionOverLays = getActionOverLaysPageScreenData(context);
-        bookindata = getBookingPageScreenData(context);
-        global=getGlobalScreenData(context);
+        logoinPage = Utils.getLoginScreenData(getContext());
+        appKeysPage = Utils.getAppKeysPageScreenData(getContext());
+        resetPage = Utils.getResetPasswordPageScreencreenData(getContext());
+        actionOverLays = Utils.getActionOverLaysPageScreenData(getContext());
+        bookindata = Utils.getBookingPageScreenData(getContext());
+        global=Utils.getGlobalScreenData(getContext());
 
 
 
         //binding.tvPMOOffice.setText(appKeysPage);
-//        binding.searchGlobal.setText(appKeysPage.getChooseLocation());
-//        binding.tvStartLocate.setText(appKeysPage.getStart());
-//        binding.tvLocateEndTime.setText(appKeysPage.getEnd());
+        //binding.searchGlobal.setText(appKeysPage.getChooseLocation());
+        binding.tvStartLocate.setText(appKeysPage.getStart());
+        binding.tvLocateEndTime.setText(appKeysPage.getEnd());
 
 
     }
