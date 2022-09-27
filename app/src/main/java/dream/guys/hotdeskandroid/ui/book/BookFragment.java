@@ -1432,7 +1432,7 @@ public class BookFragment extends Fragment implements
             for (int i=0; i < bookingDeskList.size(); i++){
                 if(!bookingDeskList.get(i).isBookedByElse()){
                     bookingForEditResponseDesk.add(bookingDeskList.get(i));
-                    System.out.println("check data bala"+bookingForEditResponseDesk.get(i).getDeskCode());
+                    //System.out.println("check data bala"+bookingForEditResponseDesk.get(i).getDeskCode());
                 }
             }
         } else {
