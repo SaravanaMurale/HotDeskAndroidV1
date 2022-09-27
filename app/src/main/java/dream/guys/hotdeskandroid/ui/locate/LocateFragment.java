@@ -2761,7 +2761,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         rvFloor = bottomSheetDialog.findViewById(R.id.rvFloorList);
 
 
-        country.setText("Global Location");
+        country.setText(appKeysPage.getGlobalLocation());
         //country.setText(locateCountryResposes.get(0).getName());
         rvCountry.setVisibility(View.INVISIBLE);
         statBlock.setVisibility(View.INVISIBLE);
@@ -2772,6 +2772,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         back = bottomSheetDialog.findViewById(R.id.bsBack);
         bsApply = bottomSheetDialog.findViewById(R.id.bsApply);
+
+        back.setText(appKeysPage.getBack());
+        bsApply.setText(appKeysPage.getApply());
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2804,7 +2807,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                country.setText("Global Location");
+                //country.setText("Global Location");
+                country.setText(appKeysPage.getGlobalLocation());
                 rvCountry.setVisibility(View.VISIBLE);
                 showCountryListInAdapter(locateCountryResposes);
 
@@ -2822,7 +2826,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         state.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                state.setText("City");
+                //state.setText("City");
+                state.setText(appKeysPage.getCity());
                 streetBlock.setVisibility(View.INVISIBLE);
                 rvStreet.setVisibility(View.INVISIBLE);
                 rvFloor.setVisibility(View.INVISIBLE);
@@ -2836,7 +2841,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         street.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                street.setText("Building");
+                //street.setText("Building");
+                street.setText(appKeysPage.getBuilding());
                 floorBlock.setVisibility(View.INVISIBLE);
                 floor.setVisibility(View.INVISIBLE);
                 rvStreet.setVisibility(View.VISIBLE);
@@ -3189,6 +3195,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         tvLocateCheckoutLang=locateCheckInBottomSheet.findViewById(R.id.tvLocateCheckout);
         tv_repeatLang = locateCheckInBottomSheet.findViewById(R.id.tv_repeat);
 
+        tvLocateCheckInDateLang.setText(appKeysPage.getDate());
         tvLocateCheckInStartLang.setText(appKeysPage.getStart());
         tvLocateCheckoutLang.setText(appKeysPage.getEnd());
         tv_repeatLang.setText(appKeysPage.getRepeat());

@@ -15,6 +15,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.utils.Utils;
 
@@ -25,6 +26,14 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
     List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities;
     OnEditClickable onEditClickable;
     String code;
+
+    //For Language
+    LanguagePOJO.Login logoinPage;
+    LanguagePOJO.AppKeys appKeysPage;
+    LanguagePOJO.ResetPassword resetPage ;
+    LanguagePOJO.ActionOverLays actionOverLays;
+    LanguagePOJO.Booking bookindata ;
+    LanguagePOJO.Global global;
 
 
     public interface OnEditClickable{
@@ -113,6 +122,19 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
         public BookingListToEditViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+
+                logoinPage = Utils.getLoginScreenData(context);
+                appKeysPage = Utils.getAppKeysPageScreenData(context);
+                resetPage = Utils.getResetPasswordPageScreencreenData(context);
+                actionOverLays = Utils.getActionOverLaysPageScreenData(context);
+                bookindata = Utils.getBookingPageScreenData(context);
+                global=Utils.getGlobalScreenData(context);
+
+            editTextEdit.setText(global.getEdit());
+            editDelete.setText(global.getDelete());
+
+
 
 
         }
