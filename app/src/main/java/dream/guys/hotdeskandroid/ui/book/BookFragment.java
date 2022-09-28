@@ -280,6 +280,8 @@ public class BookFragment extends Fragment implements
         binding = FragmentBookBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        setLanguage();
+
         dialog= new Dialog(getActivity());
         if (endTimeSelectedStats == 0) {
             binding.locateEndTime.setText("23:59");
@@ -590,7 +592,7 @@ public class BookFragment extends Fragment implements
         this.context = getContext();
         this.activityContext=getActivity();
 
-//        setLanguage();
+
 
         tabToggleViewClicked(selectedicon);
 
@@ -607,7 +609,7 @@ public class BookFragment extends Fragment implements
                 binding.deskLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
                 binding.ivDesk.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
                 binding.tvDesk.setVisibility(View.VISIBLE);
-//                binding.tvDesk.setText(appKeysPage.getWorkSpace());
+                binding.tvDesk.setText(appKeysPage.getWorkSpace());
                 binding.rlParticipants.setVisibility(View.GONE);
                 binding.rlFilter.setVisibility(View.GONE);
                 LinearLayout.LayoutParams deskParams = new LinearLayout.LayoutParams(
