@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -14,9 +15,11 @@ import java.util.List;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.CovidCertificationAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityCovidCertificationBinding;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.CovidAnswerRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.CovidQuestionsResponse;
+import dream.guys.hotdeskandroid.ui.teams.ShowProfileActivity;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
@@ -35,6 +38,15 @@ public class CovidCertificationActivity extends AppCompatActivity {
     Dialog dialog;
 
 
+    //ForLanguage
+    LanguagePOJO.Login logoinPage;
+    LanguagePOJO.AppKeys appKeysPage;
+    LanguagePOJO.ResetPassword resetPage ;
+    LanguagePOJO.ActionOverLays actionOverLays;
+    LanguagePOJO.Booking bookindata ;
+    LanguagePOJO.Global global;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +59,8 @@ public class CovidCertificationActivity extends AppCompatActivity {
         binding=ActivityCovidCertificationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setLanguage();
+
 
         getCovidRelatedQuestions();
 
@@ -58,6 +72,7 @@ public class CovidCertificationActivity extends AppCompatActivity {
         });
 
         covidRadioGroup=(RadioGroup)findViewById(R.id.covidRadioGroup);
+
 
         binding.covidSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,6 +189,24 @@ public class CovidCertificationActivity extends AppCompatActivity {
         }else {
             Utils.toastMessage(CovidCertificationActivity.this, getResources().getString(R.string.enable_internet));
         }
+
+    }
+
+    public void setLanguage(){
+
+        logoinPage = Utils.getLoginScreenData(CovidCertificationActivity.this);
+        appKeysPage = Utils.getAppKeysPageScreenData(CovidCertificationActivity.this);
+        resetPage = Utils.getResetPasswordPageScreencreenData(CovidCertificationActivity.this);
+        actionOverLays = Utils.getActionOverLaysPageScreenData(CovidCertificationActivity.this);
+        bookindata = Utils.getBookingPageScreenData(CovidCertificationActivity.this);
+        global=Utils.getGlobalScreenData(CovidCertificationActivity.this);
+
+        binding.covidSubmit.setText(appKeysPage.getSubmit());
+        binding.covidCancel.setText(appKeysPage.getCancel());
+        binding.indicateMode.setText(appKeysPage.getCovidTransportMode());
+
+
+
 
     }
 }

@@ -456,6 +456,14 @@ private void callSearchRecyclerData(String searchText,int selID) {
         global=Utils.getGlobalScreenData(ShowProfileActivity.this);
 
         binding.tvTitle.setText(appKeysPage.getProfile());
+        binding.titleTeam.setText(appKeysPage.getTeam());
+        binding.scheduleProfile.setText(appKeysPage.getSchedule());
+        binding.titleUpcoming.setText(appKeysPage.getUpcomingBookings());
+        binding.tvViewTeam.setText(appKeysPage.getViewTeam());
+        binding.txtViewAll.setText(appKeysPage.getViewAll());
+        binding.tvEditContact.setText(appKeysPage.getContact());
+
+
 
     }
 

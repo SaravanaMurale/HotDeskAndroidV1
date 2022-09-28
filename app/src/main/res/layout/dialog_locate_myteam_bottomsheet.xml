@@ -58,16 +58,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/header"
+            android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_5sdp"
             android:background="@drawable/rectangle_greybg_with_corner"
             android:drawableLeft="@drawable/search_1px"
             android:hint="   Search"
             android:paddingLeft="@dimen/_10sdp"
             android:paddingTop="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_5sdp"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:layout_marginRight="@dimen/_5sdp"
-            />
+            android:paddingBottom="@dimen/_5sdp" />
 
     <!--RecyclerView-->
     <androidx.recyclerview.widget.RecyclerView

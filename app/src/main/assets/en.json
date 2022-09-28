@@ -694,10 +694,12 @@
 
       "PMO Office":"PMO Office",
       "Calendar Booking": "Calendar Booking",
-      "Desk Booking": "Desk Booking"
-      
+      "Desk Booking": "Desk Booking",
       "HealthEating": "health Eating",
-      "Send": "Send"
+      "Send": "Send",
+      "Repeatsdaily": "Repeats daily",
+      "endOfWeek": "End of Week",
+      "participants(optional)":"Participants(optional)"
 
       
       

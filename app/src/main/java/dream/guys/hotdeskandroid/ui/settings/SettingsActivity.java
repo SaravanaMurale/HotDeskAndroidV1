@@ -62,6 +62,7 @@ public class SettingsActivity extends AppCompatActivity {
     LanguagePOJO.Global global;
     LanguagePOJO.Settings settings;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -301,6 +302,7 @@ public class SettingsActivity extends AppCompatActivity {
         bookindata = Utils.getBookingPageScreenData(this);
         global=Utils.getGlobalScreenData(this);
         settings=Utils.getSettingsPageScreenData(this);
+
 
         binding.settingViewProfile.setText(settings.getViewProfile());
 

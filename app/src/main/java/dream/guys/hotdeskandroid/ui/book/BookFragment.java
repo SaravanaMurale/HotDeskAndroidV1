@@ -134,6 +134,7 @@ public class BookFragment extends Fragment implements
     LanguagePOJO.ActionOverLays actionOverLays;
     LanguagePOJO.Booking bookindata ;
     LanguagePOJO.Global global;
+    LanguagePOJO.MeetingRooms meetingRoomsLanguage;
 
 
     FragmentBookBinding binding;
@@ -1171,6 +1172,9 @@ public class BookFragment extends Fragment implements
         bookingName = bookEditBottomSheet.findViewById(R.id.bookingName);
         addNew = bookEditBottomSheet.findViewById(R.id.editBookingContinue);
 
+        addNew.setText(appKeysPage.getAddNew());
+        editClose.setText(appKeysPage.getBack());
+
         //New...
         editDate.setText(Utils.dateWithDayString(calSelectedDate));
 
@@ -1242,6 +1246,9 @@ public class BookFragment extends Fragment implements
 
         MeetingListToEditAdapter meetingListToEditAdapter=new MeetingListToEditAdapter(getContext(),meetingListToEditResponseList,this);
         rvMeeingEditList.setAdapter(meetingListToEditAdapter);
+
+        addNew.setText(appKeysPage.getAddNew());
+        editClose.setText(appKeysPage.getBack());
 
         editClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1462,6 +1469,10 @@ public class BookFragment extends Fragment implements
         bookingName = bookEditBottomSheet.findViewById(R.id.bookingName);
         addNew = bookEditBottomSheet.findViewById(R.id.editBookingContinue);
 
+        addNew.setText(appKeysPage.getAddNew());
+        editClose.setText(appKeysPage.getBack());
+
+
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvEditList.setLayoutManager(linearLayoutManager);
         rvEditList.setHasFixedSize(true);
@@ -1546,18 +1557,38 @@ public class BookFragment extends Fragment implements
         roomBottomSheet.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_booking,
                 new RelativeLayout(getContext()))));
 
+        //Language
+        TextView tv_start=roomBottomSheet.findViewById(R.id.tv_start);
+        TextView tv_end=roomBottomSheet.findViewById(R.id.tv_end);
+        TextView tv_comment=roomBottomSheet.findViewById(R.id.tv_comment);
+        TextView tv_repeat=roomBottomSheet.findViewById(R.id.tv_repeat);
+        repeat = roomBottomSheet.findViewById(R.id.repeat);
+        TextView continueEditBook=roomBottomSheet.findViewById(R.id.editBookingContinue);
+        TextView back=roomBottomSheet.findViewById(R.id.editBookingBack);
+
+        tv_start.setText(appKeysPage.getStart());
+        tv_end.setText(appKeysPage.getEnd());
+        tv_comment.setText(appKeysPage.getComments());
+        tv_repeat.setText(appKeysPage.getRepeat());
+        continueEditBook.setText(appKeysPage.getContinue());
+        back.setText(appKeysPage.getBack());
+
+
+
+
+
         startTime = roomBottomSheet.findViewById(R.id.start_time);
         endTime = roomBottomSheet.findViewById(R.id.end_time);
-        repeat = roomBottomSheet.findViewById(R.id.repeat);
+
         deskRoomName=roomBottomSheet.findViewById(R.id.tv_desk_room_name);
         locationAddress=roomBottomSheet.findViewById(R.id.tv_location_details);
         date=roomBottomSheet.findViewById(R.id.date);
         TextView title=roomBottomSheet.findViewById(R.id.title);
         TextView checkInDate=roomBottomSheet.findViewById(R.id.checkInDate);
         TextView showcheckInDate=roomBottomSheet.findViewById(R.id.showCheckInDate);
-        TextView back=roomBottomSheet.findViewById(R.id.editBookingBack);
+
         TextView select=roomBottomSheet.findViewById(R.id.select_desk_room);
-        TextView continueEditBook=roomBottomSheet.findViewById(R.id.editBookingContinue);
+
         TextView tvComments=roomBottomSheet.findViewById(R.id.tv_comments);
         EditText commentRegistration=roomBottomSheet.findViewById(R.id.ed_registration);
         RelativeLayout repeatBlock=roomBottomSheet.findViewById(R.id.rl_repeat_block);
@@ -2075,15 +2106,20 @@ public class BookFragment extends Fragment implements
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_until,
                 new RelativeLayout(getContext()))));
 
+        TextView titleUntil=bottomSheetDialog.findViewById(R.id.titleUntil);
+
         ConstraintLayout cl_forever = bottomSheetDialog.findViewById(R.id.cl_forever);
         ConstraintLayout cl_specific = bottomSheetDialog.findViewById(R.id.cl_specific);
         ImageView iv_forever = bottomSheetDialog.findViewById(R.id.iv_forever);
         ImageView iv_specific = bottomSheetDialog.findViewById(R.id.iv_specific);
         android.widget.CalendarView calendar_view = bottomSheetDialog.findViewById(R.id.calendar_view);
         TextView tv_forever=bottomSheetDialog.findViewById(R.id.tv_forever);
-        TextView editBookingBack = bottomSheetDialog.findViewById(R.id.tv_specific);
+        TextView tv_specific = bottomSheetDialog.findViewById(R.id.tv_specific);
         TextView editBookingContinue = bottomSheetDialog.findViewById(R.id.tv_specific);
         TextView repeatBookContinue=bottomSheetDialog.findViewById(R.id.editBookingContinue);
+
+        titleUntil.setText(appKeysPage.getRepeatUntill());
+        tv_specific.setText(appKeysPage.getSpecificDate());
 
         calendar_view.setVisibility(View.GONE);
 
@@ -2094,14 +2130,14 @@ public class BookFragment extends Fragment implements
         tv_forever.setText(Utils.getDateFormatToSetInRepeat(date)+"(end of Week)");
 
 
-        System.out.println("LocateDateHere "+binding.locateCalendearView.getText().toString()+" "+binding.locateStartTime.getText().toString()+" "+ binding.locateEndTime.getText().toString());
+        //System.out.println("LocateDateHere "+binding.locateCalendearView.getText().toString()+" "+binding.locateStartTime.getText().toString()+" "+ binding.locateEndTime.getText().toString());
         //2022-09-14 15:46 23:59
 
         //Get Date Difference Between current date and weekend date
         String selectedDate=binding.locateCalendearView.getText().toString();
         enableCurrentWeek=Utils.getDifferenceBetweenTwoDates(selectedDate);
 
-        System.out.println("enableCurrentWeek "+enableCurrentWeek);
+        //System.out.println("enableCurrentWeek "+enableCurrentWeek);
 
         calendar_view.setMinDate(System.currentTimeMillis() - 1000);
         calendar_view.setMaxDate(System.currentTimeMillis() + enableCurrentWeek * 24 * 60 * 60 * 1000);
@@ -2846,6 +2882,12 @@ public class BookFragment extends Fragment implements
         roomTitle = bottomSheetDialog.findViewById(R.id.roomTitle);
         rvParticipant = bottomSheetDialog.findViewById(R.id.rvParticipant);
         participantChipGroup = bottomSheetDialog.findViewById(R.id.participantChipGroup);
+
+        //Language
+        editRoomBookingContinue.setText(appKeysPage.getContinue());
+        editRoomBookingBack.setText(appKeysPage.getBack());
+        etComments.setHint(appKeysPage.getComments());
+        etSubject.setHint(meetingRoomsLanguage.getSubject());
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvParticipant.setLayoutManager(linearLayoutManager);
@@ -3891,6 +3933,17 @@ public class BookFragment extends Fragment implements
         repeatBottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_repeat_new,
                 new RelativeLayout(getContext()))));
 
+        //Language
+        TextView titleRepeat=repeatBottomSheetDialog.findViewById(R.id.titleRepeat);
+        TextView tv_none=repeatBottomSheetDialog.findViewById(R.id.tv_none);
+        TextView tv_daily=repeatBottomSheetDialog.findViewById(R.id.tv_daily);
+        TextView editBookingBack = repeatBottomSheetDialog.findViewById(R.id.editBookingBack);
+
+        titleRepeat.setText(appKeysPage.getRepeat());
+        tv_none.setText(appKeysPage.getNone());
+        tv_daily.setText(appKeysPage.getDaily());
+        editBookingBack.setText(appKeysPage.getBack());
+
         ConstraintLayout cl_daily_layout = repeatBottomSheetDialog.findViewById(R.id.cl_daily_layout);
         ConstraintLayout cl_weekly_layout = repeatBottomSheetDialog.findViewById(R.id.cl_weekly_layout);
         //None Block
@@ -3905,7 +3958,7 @@ public class BookFragment extends Fragment implements
         ImageView iv_weekly = repeatBottomSheetDialog.findViewById(R.id.iv_weekly);
         ImageView iv_monthly = repeatBottomSheetDialog.findViewById(R.id.iv_monthly);
         ImageView iv_yearly = repeatBottomSheetDialog.findViewById(R.id.iv_yearly);
-        TextView editBookingBack = repeatBottomSheetDialog.findViewById(R.id.editBookingBack);
+
         TextView editBookingContinue = repeatBottomSheetDialog.findViewById(R.id.editBookingContinue);
         TextView tv_repeat = repeatBottomSheetDialog.findViewById(R.id.tv_repeat);
 
@@ -3915,6 +3968,9 @@ public class BookFragment extends Fragment implements
         TextView tv_day = repeatBottomSheetDialog.findViewById(R.id.tv_day);
         TextView tv_unit = repeatBottomSheetDialog.findViewById(R.id.tv_unit);
 
+        TextView tv_until_txt=repeatBottomSheetDialog.findViewById(R.id.tv_until_txt);
+        TextView tv_interval_txt=repeatBottomSheetDialog.findViewById(R.id.tv_interval_txt);
+
 
 
         //None Block Clicked
@@ -3923,7 +3979,9 @@ public class BookFragment extends Fragment implements
             public void onClick(View view) {
 
                 repeatActvieStatus = false;
-                repeat.setText("None");
+                //repeat.setText("None");
+
+                repeat.setText(appKeysPage.getNone());
 
                 type = "none";
                 iv_none.setVisibility(View.VISIBLE);
@@ -3942,7 +4000,9 @@ public class BookFragment extends Fragment implements
             @Override
             public void onClick(View view) {
 
-                repeat.setText("Daily");
+                //repeat.setText("Daily");
+
+                repeat.setText(appKeysPage.getDaily());
 
                 type = "daily";
                 iv_none.setVisibility(View.GONE);
@@ -3958,6 +4018,9 @@ public class BookFragment extends Fragment implements
                 cl_daily_layout.setVisibility(View.VISIBLE);
                 tv_repeat.setVisibility(View.VISIBLE);
                 cl_weekly_layout.setVisibility(View.GONE);
+
+                tv_interval_txt.setText(appKeysPage.getInterval());
+                tv_until_txt.setText(appKeysPage.getUntil());
             }
         });
 
@@ -4575,12 +4638,13 @@ public class BookFragment extends Fragment implements
 
     public void setLanguage(){
 
-        logoinPage = Utils.getLoginScreenData(context);
-        appKeysPage = Utils.getAppKeysPageScreenData(context);
-        resetPage = Utils.getResetPasswordPageScreencreenData(context);
-        actionOverLays = Utils.getActionOverLaysPageScreenData(context);
-        bookindata = Utils.getBookingPageScreenData(context);
-        global=Utils.getGlobalScreenData(context);
+        logoinPage = Utils.getLoginScreenData(getContext());
+        appKeysPage = Utils.getAppKeysPageScreenData(getContext());
+        resetPage = Utils.getResetPasswordPageScreencreenData(getContext());
+        actionOverLays = Utils.getActionOverLaysPageScreenData(getContext());
+        bookindata = Utils.getBookingPageScreenData(getContext());
+        global=Utils.getGlobalScreenData(getContext());
+        meetingRoomsLanguage=Utils.getMeetingRoomsPageScreenData(getContext());
 
 
 

@@ -69,6 +69,7 @@
             tools:listitem="@layout/layout_covid_certification_adapter" />
 
         <TextView
+            android:id="@+id/indicateMode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/transport_method"

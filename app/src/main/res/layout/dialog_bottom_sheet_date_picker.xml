@@ -7,13 +7,14 @@
     >
 
     <TextView
+        android:id="@+id/tvSelectDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_15sdp"
         android:text="@string/select_date"
         android:textColor="@color/black"
         android:textSize="@dimen/_15sdp"
-        android:layout_marginLeft="@dimen/_10sdp"
         android:textStyle="bold" />
 
         <CalendarView
