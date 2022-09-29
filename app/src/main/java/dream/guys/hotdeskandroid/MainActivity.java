@@ -1035,6 +1035,10 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
 
     }
 
+    public BottomNavigationView getNav() {
+        return  navView;
+    }
+
 
     public class GestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override

@@ -15,12 +15,20 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.util.concurrent.Executor;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.CreatePinRequest;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
@@ -61,6 +69,8 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signin);
         ButterKnife.bind(this);
         dialog= new Dialog(this);
+
+        setLang();
 
         //String tokenInSharedPreference=SessionHandler.getInstance().get(getApplicationContext(),AppConstants.SAVETOKEN);
         //System.out.println("SharedPreferenceToken "+tokenInSharedPreference);
@@ -316,5 +326,40 @@ public class SignInActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    public void setLang(){
+        String key = SessionHandler.getInstance().get(SignInActivity.this, AppConstants.LANGUAGE_KEY); //= key+".json";
+
+        if (key == null){
+            SessionHandler.getInstance().save(SignInActivity.this, AppConstants.LANGUAGE_KEY,"en");
+            SessionHandler.getInstance().save(SignInActivity.this, AppConstants.LANGUAGE,"English");
+
+            String json = LoadJsonFromAsset("en"+".json");
+            Gson gson = new Gson();
+            Type listUserType = new TypeToken<LanguagePOJO>() { }.getType();
+            LanguagePOJO langPOJO = gson.fromJson(json, listUserType);
+            Utils.setLangInPref(langPOJO,SignInActivity.this);
+        }else {
+
+        }
+
+    }
+
+    private String LoadJsonFromAsset(String fileName) {
+
+        String json = null;
+        try {
+            InputStream is = this.getAssets().open(fileName);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
     }
 }

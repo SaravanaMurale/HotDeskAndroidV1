@@ -34,14 +34,14 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/filterTotalSize"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:text="(11)"
-                    android:textColor="@color/figma_orange"
-                    />
+                    android:textColor="@color/figma_orange" />
 
-                <TextView
+                <EditText
                     android:id="@+id/filterSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

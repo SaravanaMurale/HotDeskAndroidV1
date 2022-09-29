@@ -7,6 +7,7 @@ import static dream.guys.hotdeskandroid.utils.Utils.getWellBeingScreenData;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.app.UiModeManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -14,15 +15,19 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Set;
 
 import dream.guys.hotdeskandroid.LanguageListActivity;
 import dream.guys.hotdeskandroid.R;
@@ -94,6 +99,20 @@ public class SettingsActivity extends AppCompatActivity {
             binding.txtLang.setText(SessionHandler.getInstance().get(context, AppConstants.LANGUAGE));
         }
 
+
+        binding.switchDarkMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+
+
+                if(isChecked){
+
+                    setNightModeHere(SettingsActivity.this,true);
+                }
+
+            }
+        });
 
         binding.settingSendMailBlock.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -257,6 +276,23 @@ public class SettingsActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+    }
+
+    private void setNightModeHere(SettingsActivity settingsActivity, boolean state) {
+
+        UiModeManager uiManager = (UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
+
+        if (Build.VERSION.SDK_INT <= 22) {
+            uiManager.enableCarMode(0);
+        }
+
+        if (state) {
+            //Toast.makeText(target, "Dark", Toast.LENGTH_SHORT).show();
+            uiManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
+        } else {
+            uiManager.setNightMode(UiModeManager.MODE_NIGHT_NO);
+        }
 
     }
 

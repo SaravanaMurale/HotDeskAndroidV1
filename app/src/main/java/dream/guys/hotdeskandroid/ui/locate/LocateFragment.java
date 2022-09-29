@@ -44,6 +44,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
@@ -170,8 +171,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     TextView bsLocationSearch;
 
-    RecyclerView rvMyTeam;
-    LocateMyTeamAdapter locateMyTeamAdapter;
+
 
 
     TextView locateText, title;
@@ -207,6 +207,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     @BindView(R.id.locateMyTeamList)
     RelativeLayout locateMyTeamList;
+    //@BindView(R.id.rvLocateMyTeam)
+  //  RecyclerView rvMyTeam;
+    LocateMyTeamAdapter locateMyTeamAdapter;
+
 
     @BindView(R.id.secondLayout)
     LinearLayout secondLayout;
@@ -298,10 +302,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     //Used to call repeat and recurrence
     boolean repeatActvieStatus = false;
     TextView tvRepeat,repeat_room;;
+    String repeatSelectedDate="";
 
     //MyTeam
-    BottomSheetDialog myTeamBottomSheet;
-    BottomSheetBehavior myteamBottomSheetBehavior;
+    //BottomSheetDialog myTeamBottomSheet;
+    //BottomSheetBehavior myteamBottomSheetBehavior;
     RelativeLayout myTeamHeader, myTeamContactBlock;
     //Contact
     TextView locateMyTeamUserName, tvLocateMyTeamLocationView, locateMyTeamDeskName, myTeam_tv_start_time, myTeam_tv_end_time, tvMyTeamEmail, tvMyTeamTeams, tvmyTeamPhone, myTeamBookNearBy,bookNearByBack;
@@ -309,6 +314,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     //Filter
     List<MeetingAmenityStatus> meetingAmenityStatusList=new ArrayList<>();
     boolean amenitiesApplyStatus=false;
+    ArrayList<DataModel> mList = new ArrayList<>();;
+    int filterClickedStatus=0;
 
     List<AmenitiesResponse> amenitiesListToShowInMeetingRoomList=new ArrayList<>();
 
@@ -416,7 +423,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 if (parentId > 0) {
 
-                    getLocateAmenitiesFilterData(true);
+
+                    if(filterClickedStatus==0){
+                        getLocateAmenitiesFilterData(true);
+                    }else {
+                        //amenitiesResponseList
+                        callLocateFilterBottomSheet(null);
+                    }
+
                 }else {
                     Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
                 }
@@ -473,7 +487,15 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 List<DAOTeamMember> daoTeamMemberList = response.body();
 
-                callMyTeamBottomSheet(daoTeamMemberList);
+                //callMyTeamBottomSheet(daoTeamMemberList);
+
+                binding.locateMyTeamList.setVisibility(View.VISIBLE);
+                binding.bookNearByBlock.setVisibility(View.GONE);
+
+                //Hide BottomNavigation Bar
+                ((MainActivity)getActivity()).getNav().setVisibility(View.GONE);
+
+                callMyTeamLayout(daoTeamMemberList);
 
             }
 
@@ -486,10 +508,298 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
 
+
+    private void callMyTeamLayout(List<DAOTeamMember> daoTeamMemberList) {
+
+        //rvMyTeam = myTeamBottomSheet.findViewById(R.id.rvLocateMyTeam);
+
+        /*LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        binding.rvLocateMyTeam.setLayoutManager(linearLayoutManager);
+        binding.rvLocateMyTeam.setHasFixedSize(true);*/
+
+
+        List<DAOTeamMember> locateMyTeamMemberStatusList = new ArrayList<>();
+        for (int i = 0; i < daoTeamMemberList.size(); i++) {
+
+            if (daoTeamMemberList.get(i).getDayGroups().isEmpty()) {
+                locateMyTeamMemberStatusList.add(daoTeamMemberList.get(i));
+            } else {
+
+                for (int j = 0; j < daoTeamMemberList.get(i).getDayGroups().size(); i++) {
+
+                    ArrayList<DAOTeamMember.DayGroup.CalendarEntry> calendarEntries = null;
+                    ArrayList<DAOTeamMember.DayGroup.MeetingBooking> meetingEntries = null;
+                    ArrayList<DAOTeamMember.DayGroup.CarParkBooking> carParkEntries = null;
+
+                    if (daoTeamMemberList.get(i).getDayGroups().get(0).getCalendarEntries() != null) {
+                        calendarEntries = daoTeamMemberList.get(i).getDayGroups().get(0).getCalendarEntries();
+                    }
+                    /*if (bookingListResponses.getDayGroups().get(i).getMeetingBookings()!=null){
+                        meetingEntries =
+                                bookingListResponses.getDayGroups().get(i).getMeetingBookings();
+                    }
+                    if (bookingListResponses.getDayGroups().get(i).getCarParkBookings()!=null){
+                        carParkEntries =
+                                bookingListResponses.getDayGroups().get(i).getCarParkBookings();
+                    }*/
+
+                    if (calendarEntries != null) {
+                        for (int k = 0; k < calendarEntries.size(); k++) {
+                            DAOTeamMember.DayGroup momdel = new DAOTeamMember.DayGroup();
+                            DAOTeamMember daoTeamMember = new DAOTeamMember();
+                            //daoTeamMember=daoTeamMemberList.get(i);
+                            daoTeamMember.setFirstName(daoTeamMemberList.get(i).getFirstName());
+                            daoTeamMember.setLastName(daoTeamMemberList.get(i).getLastName());
+                            ArrayList<DAOTeamMember.DayGroup> dayGroupList = new ArrayList<>();
+
+                            momdel.setCalendarEntriesModel(calendarEntries.get(k));
+
+                            dayGroupList.add(momdel);
+                            daoTeamMember.setDayGroups(dayGroupList);
+                            locateMyTeamMemberStatusList.add(daoTeamMember);
+
+                        }
+
+                    }
+                }
+                  /*  if (meetingEntries!=null){
+                        for (int j=0; j < meetingEntries.size(); j++){
+                            TeamMembersResponse.DayGroup momdel = new TeamMembersResponse.DayGroup();
+                            if (dateCheck){
+                                momdel.setDateStatus(true);
+                                momdel.setCalDeskStatus(2);
+                                momdel.setDate(date);
+                                momdel.setMeetingBookingsModel(meetingEntries.get(j));
+                                dateCheck=false;
+                            }else {
+                                momdel.setDateStatus(false);
+                                momdel.setCalDeskStatus(2);
+                                momdel.setDate(date);
+                                momdel.setMeetingBookingsModel(meetingEntries.get(j));
+                            }
+                            recyclerModelArrayList.add(momdel);
+                        }
+                    }
+                    if (carParkEntries!=null){
+                        for (int j=0; j < carParkEntries.size(); j++){
+                            TeamMembersResponse.DayGroup momdel = new TeamMembersResponse.DayGroup();
+                            if (dateCheck){
+                                momdel.setDateStatus(true);
+                                momdel.setCalDeskStatus(3);
+                                momdel.setDate(date);
+                                momdel.setCarParkBookingsModel(carParkEntries.get(j));
+                                dateCheck=false;
+                            }else {
+                                momdel.setDateStatus(false);
+                                momdel.setCalDeskStatus(3);
+                                momdel.setDate(date);
+                                momdel.setCarParkBookingsModel(carParkEntries.get(j));
+                            }
+                            recyclerModelArrayList.add(momdel);
+                        }
+                    }*/
+
+            }
+
+        }
+
+        locateMyTeamAdapter = new LocateMyTeamAdapter(getContext(), locateMyTeamMemberStatusList, this);
+        binding.rvLocateMyTeam.setAdapter(locateMyTeamAdapter);
+
+        binding.myTeamClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //visible BottomNavigation Bar
+                ((MainActivity)getActivity()).getNav().setVisibility(View.VISIBLE);
+
+               binding.locateMyTeamList.setVisibility(View.GONE);
+
+
+            }
+        });
+
+      /*  binding.bookNearByBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.myTeamClose.setVisibility(View.VISIBLE);
+                //binding.locateMyTeamList.setVisibility(View.VISIBLE);
+                binding.bookNearByBlock.setVisibility(View.GONE);
+                binding.bookNearByBack.setVisibility(View.GONE);
+                binding.myTeamBookNearBy.setVisibility(View.GONE);
+
+            }
+        });*/
+
+
+    }
+
+    //MyTeamBottomSheet
+   /* private void callMyTeamBottomSheet(List<DAOTeamMember> daoTeamMemberList) {
+
+        TextView myTeamClose,tvMyTeamLocate,tvPMOOffice,tvAllTeams;;
+        TextView locateMyTeamSearch;
+
+
+        *//*BottomSheetDialog myTeamBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        myTeamBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_myteam_bottomsheet,
+                new RelativeLayout(getContext())));*//*
+
+        myTeamBottomSheet = new BottomSheetDialog(getContext());
+        View view = View.inflate(getContext(), R.layout.dialog_locate_myteam_bottomsheet, null);
+        myTeamBottomSheet.setContentView(view);
+        myteamBottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        myteamBottomSheetBehavior.setPeekHeight(600);
+
+        tvMyTeamLocate=myTeamBottomSheet.findViewById(R.id.tvMyTeam);
+        tvPMOOffice=myTeamBottomSheet.findViewById(R.id.tvPMOOffice);
+        tvAllTeams=myTeamBottomSheet.findViewById(R.id.tvAllTeams);
+        locateMyTeamSearch=myTeamBottomSheet.findViewById(R.id.locateMyTeamSearch);
+
+        tvAllTeams.setText(appKeysPage.getAllTeams());
+        tvMyTeamLocate.setText(appKeysPage.getMYTeam());
+        locateMyTeamSearch.setHint(appKeysPage.getSearch());
+
+
+
+        rvMyTeam = myTeamBottomSheet.findViewById(R.id.rvLocateMyTeam);
+        myTeamClose = myTeamBottomSheet.findViewById(R.id.myTeamClose);
+        bookNearByBack=myTeamBottomSheet.findViewById(R.id.bookNearByBack);
+
+        myTeamHeader = myTeamBottomSheet.findViewById(R.id.myTeamHeader);
+
+        myTeamContactBlock = myTeamBottomSheet.findViewById(R.id.myTeamContactBlock);
+        locateMyTeamUserName = myTeamBottomSheet.findViewById(R.id.locateMyTeamUserName);
+        tvLocateMyTeamLocationView = myTeamBottomSheet.findViewById(R.id.tvLocateMyTeamLocationView);
+        locateMyTeamDeskName = myTeamBottomSheet.findViewById(R.id.locateMyTeamDeskName);
+        myTeam_tv_start_time = myTeamBottomSheet.findViewById(R.id.myTeam_tv_start_time);
+        myTeam_tv_end_time = myTeamBottomSheet.findViewById(R.id.myTeam_tv_end_time);
+        tvMyTeamEmail = myTeamBottomSheet.findViewById(R.id.tvMyTeamEmail);
+        tvMyTeamTeams = myTeamBottomSheet.findViewById(R.id.tvMyTeamTeams);
+        tvmyTeamPhone = myTeamBottomSheet.findViewById(R.id.tvmyTeamPhone);
+        myTeamBookNearBy = myTeamBottomSheet.findViewById(R.id.myTeamBookNearBy);
+
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvMyTeam.setLayoutManager(linearLayoutManager);
+        rvMyTeam.setHasFixedSize(true);
+
+        bookNearByBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                myTeamBottomSheet.dismiss();
+
+            }
+        });
+
+        myTeamClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                myTeamBottomSheet.dismiss();
+            }
+        });
+
+
+        List<DAOTeamMember> locateMyTeamMemberStatusList = new ArrayList<>();
+        for (int i = 0; i < daoTeamMemberList.size(); i++) {
+
+            if (daoTeamMemberList.get(i).getDayGroups().isEmpty()) {
+                locateMyTeamMemberStatusList.add(daoTeamMemberList.get(i));
+            } else {
+
+                for (int j = 0; j < daoTeamMemberList.get(i).getDayGroups().size(); i++) {
+
+                    ArrayList<DAOTeamMember.DayGroup.CalendarEntry> calendarEntries = null;
+                    ArrayList<DAOTeamMember.DayGroup.MeetingBooking> meetingEntries = null;
+                    ArrayList<DAOTeamMember.DayGroup.CarParkBooking> carParkEntries = null;
+
+                    if (daoTeamMemberList.get(i).getDayGroups().get(0).getCalendarEntries() != null) {
+                        calendarEntries = daoTeamMemberList.get(i).getDayGroups().get(0).getCalendarEntries();
+                    }
+                    *//*if (bookingListResponses.getDayGroups().get(i).getMeetingBookings()!=null){
+                        meetingEntries =
+                                bookingListResponses.getDayGroups().get(i).getMeetingBookings();
+                    }
+                    if (bookingListResponses.getDayGroups().get(i).getCarParkBookings()!=null){
+                        carParkEntries =
+                                bookingListResponses.getDayGroups().get(i).getCarParkBookings();
+                    }*//*
+
+                    if (calendarEntries != null) {
+                        for (int k = 0; k < calendarEntries.size(); k++) {
+                            DAOTeamMember.DayGroup momdel = new DAOTeamMember.DayGroup();
+                            DAOTeamMember daoTeamMember = new DAOTeamMember();
+                            //daoTeamMember=daoTeamMemberList.get(i);
+                            daoTeamMember.setFirstName(daoTeamMemberList.get(i).getFirstName());
+                            daoTeamMember.setLastName(daoTeamMemberList.get(i).getLastName());
+                            ArrayList<DAOTeamMember.DayGroup> dayGroupList = new ArrayList<>();
+
+                            momdel.setCalendarEntriesModel(calendarEntries.get(k));
+
+                            dayGroupList.add(momdel);
+                            daoTeamMember.setDayGroups(dayGroupList);
+                            locateMyTeamMemberStatusList.add(daoTeamMember);
+
+                        }
+
+                    }
+                }
+                  *//*  if (meetingEntries!=null){
+                        for (int j=0; j < meetingEntries.size(); j++){
+                            TeamMembersResponse.DayGroup momdel = new TeamMembersResponse.DayGroup();
+                            if (dateCheck){
+                                momdel.setDateStatus(true);
+                                momdel.setCalDeskStatus(2);
+                                momdel.setDate(date);
+                                momdel.setMeetingBookingsModel(meetingEntries.get(j));
+                                dateCheck=false;
+                            }else {
+                                momdel.setDateStatus(false);
+                                momdel.setCalDeskStatus(2);
+                                momdel.setDate(date);
+                                momdel.setMeetingBookingsModel(meetingEntries.get(j));
+                            }
+                            recyclerModelArrayList.add(momdel);
+                        }
+                    }
+                    if (carParkEntries!=null){
+                        for (int j=0; j < carParkEntries.size(); j++){
+                            TeamMembersResponse.DayGroup momdel = new TeamMembersResponse.DayGroup();
+                            if (dateCheck){
+                                momdel.setDateStatus(true);
+                                momdel.setCalDeskStatus(3);
+                                momdel.setDate(date);
+                                momdel.setCarParkBookingsModel(carParkEntries.get(j));
+                                dateCheck=false;
+                            }else {
+                                momdel.setDateStatus(false);
+                                momdel.setCalDeskStatus(3);
+                                momdel.setDate(date);
+                                momdel.setCarParkBookingsModel(carParkEntries.get(j));
+                            }
+                            recyclerModelArrayList.add(momdel);
+                        }
+                    }*//*
+
+            }
+
+        }
+
+        locateMyTeamAdapter = new LocateMyTeamAdapter(getContext(), locateMyTeamMemberStatusList, this);
+        rvMyTeam.setAdapter(locateMyTeamAdapter);
+
+        myTeamBottomSheet.show();
+
+
+    }*/
+
+
     public void initLoadFloorDetails(int canvasDrawStatus) {
 
-        //Repeat Check Status
-        repeatActvieStatus = false;
+
+
+        afterBookingDisableRepeat();
 
         deskStatusModelList.clear();
         meetingStatusModelList.clear();
@@ -546,6 +856,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         } else {
             Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void afterBookingDisableRepeat() {
+        //After booking disable repeat book here
+        repeatActvieStatus = false;
+        repeatSelectedDate="";
     }
 
     private void doInitMeetingAvalibilityHere(int parentId, int canvasDrawStatus) {
@@ -3221,7 +3537,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         tvLocateCheckoutLang=locateCheckInBottomSheet.findViewById(R.id.tvLocateCheckout);
         tv_repeatLang = locateCheckInBottomSheet.findViewById(R.id.tv_repeat);
 
-        tvRepeat.setText(appKeysPage.getRepeat());
+        tv_repeatLang.setText(appKeysPage.getRepeat());
         tvLocateCheckInDateLang.setText(appKeysPage.getDate());
         tvLocateCheckInStartLang.setText(appKeysPage.getStart());
         tvLocateCheckoutLang.setText(appKeysPage.getEnd());
@@ -3230,8 +3546,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         editBookingContinue.setText(appKeysPage.getContinue());
         tvDescription.setText(appKeysPage.getDescription());
         statusText.setText(appKeysPage.getAvailable());
-
-
 
 
         bsRepeatBlock.setOnClickListener(new View.OnClickListener() {
@@ -3467,6 +3781,35 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         TextView tv_until_txt=repeatBottomSheetDialog.findViewById(R.id.tv_until_txt);
         TextView tv_interval_txt=repeatBottomSheetDialog.findViewById(R.id.tv_interval_txt);
 
+        Date date = Utils.getCurrentWeekEndDate();
+
+        if(repeatActvieStatus){
+
+            iv_none.setVisibility(View.GONE);
+            if(code.equals("4")){
+                //repeat_room.setText("Daily");
+                repeat_room.setText(appKeysPage.getDaily());
+            }else {
+                //tvRepeat.setText("Daily");
+                tvRepeat.setText(appKeysPage.getDaily());
+            }
+
+            //Tick
+            iv_daily.setVisibility(View.VISIBLE);
+
+            if(repeatSelectedDate.isEmpty()){
+                //Show end of week
+                tv_until.setText(Utils.getDateFormatToSetInRepeat(date) + "(end of Week)");
+            }else {
+                //Show selected date
+                tv_until.setText(repeatSelectedDate);
+            }
+
+            cl_daily_layout.setVisibility(View.VISIBLE);
+            tv_repeat.setVisibility(View.VISIBLE);
+
+        }
+
 
         //None Block Clicked
         cl_none.setOnClickListener(new View.OnClickListener() {
@@ -3503,8 +3846,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View view) {
 
-
-
                 if(code.equals("4")){
                     //repeat_room.setText("Daily");
                     repeat_room.setText(appKeysPage.getDaily());
@@ -3520,9 +3861,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 iv_monthly.setVisibility(View.GONE);
                 iv_yearly.setVisibility(View.GONE);
                 //Get Current Week End Date
-                Date date = Utils.getCurrentWeekEndDate();
+                //Date date = Utils.getCurrentWeekEndDate();
                 //Set Figma format
-                tv_until.setText(Utils.getDateFormatToSetInRepeat(date) + "(end of Week)");
+
+                if(repeatSelectedDate.isEmpty()){
+                    tv_until.setText(Utils.getDateFormatToSetInRepeat(date) + "(end of Week)");
+                }else {
+                    tv_until.setText(repeatSelectedDate);
+                }
 
                 cl_daily_layout.setVisibility(View.VISIBLE);
                 tv_repeat.setVisibility(View.VISIBLE);
@@ -3957,6 +4303,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 calendar_view.setVisibility(View.GONE);
 
                 repeatActvieStatus = true;
+                repeatSelectedDate="";
 
                 if (code.equals("3")) {
 
@@ -3997,8 +4344,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 repeatActvieStatus = true;
 
+                int currentMonth=month+1;
+
+                repeatSelectedDate=dayOfMonth+"-"+currentMonth+"-"+year;
+
                 //Coming WeekendDate
-                LocalDate weekEndDate = LocalDate.of(year, month + 1, dayOfMonth);
+                LocalDate weekEndDate = LocalDate.of(year, currentMonth, dayOfMonth);
 
                 //Selected Date
                 String[] words = selectedDate.split("-");
@@ -4109,6 +4460,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     binding.locateProgressBar.setVisibility(View.GONE);
+                    afterBookingDisableRepeat();
                     locateResponseHandler(response, getResources().getString(R.string.booking_success));
                 }
 
@@ -4231,6 +4583,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     binding.locateProgressBar.setVisibility(View.GONE);
+                    afterBookingDisableRepeat();
                     locateResponseHandler(response, getResources().getString(R.string.booking_success));
                 }
 
@@ -4291,6 +4644,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     binding.locateProgressBar.setVisibility(View.GONE);
+                    afterBookingDisableRepeat();
                     locateResponseHandler(response, getResources().getString(R.string.booking_success));
                 }
 
@@ -4358,6 +4712,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     binding.locateProgressBar.setVisibility(View.GONE);
+                    afterBookingDisableRepeat();
                     locateResponseHandler(response, getResources().getString(R.string.booking_success));
                 }
 
@@ -5223,176 +5578,18 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
 
-    //MyTeamBottomSheet
-    private void callMyTeamBottomSheet(List<DAOTeamMember> daoTeamMemberList) {
 
-        TextView myTeamClose,tvMyTeamLocate,tvPMOOffice,tvAllTeams;;
-        TextView locateMyTeamSearch;
-
-
-        /*BottomSheetDialog myTeamBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        myTeamBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_myteam_bottomsheet,
-                new RelativeLayout(getContext())));*/
-
-        myTeamBottomSheet = new BottomSheetDialog(getContext());
-        View view = View.inflate(getContext(), R.layout.dialog_locate_myteam_bottomsheet, null);
-        myTeamBottomSheet.setContentView(view);
-        myteamBottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
-        myteamBottomSheetBehavior.setPeekHeight(600);
-
-        tvMyTeamLocate=myTeamBottomSheet.findViewById(R.id.tvMyTeam);
-        tvPMOOffice=myTeamBottomSheet.findViewById(R.id.tvPMOOffice);
-        tvAllTeams=myTeamBottomSheet.findViewById(R.id.tvAllTeams);
-        locateMyTeamSearch=myTeamBottomSheet.findViewById(R.id.locateMyTeamSearch);
-
-        tvAllTeams.setText(appKeysPage.getAllTeams());
-        tvMyTeamLocate.setText(appKeysPage.getMYTeam());
-        locateMyTeamSearch.setHint(appKeysPage.getSearch());
-
-
-
-        rvMyTeam = myTeamBottomSheet.findViewById(R.id.rvLocateMyTeam);
-        myTeamClose = myTeamBottomSheet.findViewById(R.id.myTeamClose);
-        bookNearByBack=myTeamBottomSheet.findViewById(R.id.bookNearByBack);
-
-        myTeamHeader = myTeamBottomSheet.findViewById(R.id.myTeamHeader);
-
-        myTeamContactBlock = myTeamBottomSheet.findViewById(R.id.myTeamContactBlock);
-        locateMyTeamUserName = myTeamBottomSheet.findViewById(R.id.locateMyTeamUserName);
-        tvLocateMyTeamLocationView = myTeamBottomSheet.findViewById(R.id.tvLocateMyTeamLocationView);
-        locateMyTeamDeskName = myTeamBottomSheet.findViewById(R.id.locateMyTeamDeskName);
-        myTeam_tv_start_time = myTeamBottomSheet.findViewById(R.id.myTeam_tv_start_time);
-        myTeam_tv_end_time = myTeamBottomSheet.findViewById(R.id.myTeam_tv_end_time);
-        tvMyTeamEmail = myTeamBottomSheet.findViewById(R.id.tvMyTeamEmail);
-        tvMyTeamTeams = myTeamBottomSheet.findViewById(R.id.tvMyTeamTeams);
-        tvmyTeamPhone = myTeamBottomSheet.findViewById(R.id.tvmyTeamPhone);
-        myTeamBookNearBy = myTeamBottomSheet.findViewById(R.id.myTeamBookNearBy);
-
-        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvMyTeam.setLayoutManager(linearLayoutManager);
-        rvMyTeam.setHasFixedSize(true);
-
-        bookNearByBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                myTeamBottomSheet.dismiss();
-
-            }
-        });
-
-        myTeamClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                myTeamBottomSheet.dismiss();
-            }
-        });
-
-
-        List<DAOTeamMember> locateMyTeamMemberStatusList = new ArrayList<>();
-        for (int i = 0; i < daoTeamMemberList.size(); i++) {
-
-            if (daoTeamMemberList.get(i).getDayGroups().isEmpty()) {
-                locateMyTeamMemberStatusList.add(daoTeamMemberList.get(i));
-            } else {
-
-                for (int j = 0; j < daoTeamMemberList.get(i).getDayGroups().size(); i++) {
-
-                    ArrayList<DAOTeamMember.DayGroup.CalendarEntry> calendarEntries = null;
-                    ArrayList<DAOTeamMember.DayGroup.MeetingBooking> meetingEntries = null;
-                    ArrayList<DAOTeamMember.DayGroup.CarParkBooking> carParkEntries = null;
-
-                    if (daoTeamMemberList.get(i).getDayGroups().get(0).getCalendarEntries() != null) {
-                        calendarEntries = daoTeamMemberList.get(i).getDayGroups().get(0).getCalendarEntries();
-                    }
-                    /*if (bookingListResponses.getDayGroups().get(i).getMeetingBookings()!=null){
-                        meetingEntries =
-                                bookingListResponses.getDayGroups().get(i).getMeetingBookings();
-                    }
-                    if (bookingListResponses.getDayGroups().get(i).getCarParkBookings()!=null){
-                        carParkEntries =
-                                bookingListResponses.getDayGroups().get(i).getCarParkBookings();
-                    }*/
-
-                    if (calendarEntries != null) {
-                        for (int k = 0; k < calendarEntries.size(); k++) {
-                            DAOTeamMember.DayGroup momdel = new DAOTeamMember.DayGroup();
-                            DAOTeamMember daoTeamMember = new DAOTeamMember();
-                            //daoTeamMember=daoTeamMemberList.get(i);
-                            daoTeamMember.setFirstName(daoTeamMemberList.get(i).getFirstName());
-                            daoTeamMember.setLastName(daoTeamMemberList.get(i).getLastName());
-                            ArrayList<DAOTeamMember.DayGroup> dayGroupList = new ArrayList<>();
-
-                            momdel.setCalendarEntriesModel(calendarEntries.get(k));
-
-                            dayGroupList.add(momdel);
-                            daoTeamMember.setDayGroups(dayGroupList);
-                            locateMyTeamMemberStatusList.add(daoTeamMember);
-
-                        }
-
-                    }
-                }
-                  /*  if (meetingEntries!=null){
-                        for (int j=0; j < meetingEntries.size(); j++){
-                            TeamMembersResponse.DayGroup momdel = new TeamMembersResponse.DayGroup();
-                            if (dateCheck){
-                                momdel.setDateStatus(true);
-                                momdel.setCalDeskStatus(2);
-                                momdel.setDate(date);
-                                momdel.setMeetingBookingsModel(meetingEntries.get(j));
-                                dateCheck=false;
-                            }else {
-                                momdel.setDateStatus(false);
-                                momdel.setCalDeskStatus(2);
-                                momdel.setDate(date);
-                                momdel.setMeetingBookingsModel(meetingEntries.get(j));
-                            }
-                            recyclerModelArrayList.add(momdel);
-                        }
-                    }
-                    if (carParkEntries!=null){
-                        for (int j=0; j < carParkEntries.size(); j++){
-                            TeamMembersResponse.DayGroup momdel = new TeamMembersResponse.DayGroup();
-                            if (dateCheck){
-                                momdel.setDateStatus(true);
-                                momdel.setCalDeskStatus(3);
-                                momdel.setDate(date);
-                                momdel.setCarParkBookingsModel(carParkEntries.get(j));
-                                dateCheck=false;
-                            }else {
-                                momdel.setDateStatus(false);
-                                momdel.setCalDeskStatus(3);
-                                momdel.setDate(date);
-                                momdel.setCarParkBookingsModel(carParkEntries.get(j));
-                            }
-                            recyclerModelArrayList.add(momdel);
-                        }
-                    }*/
-
-            }
-
-        }
-
-        locateMyTeamAdapter = new LocateMyTeamAdapter(getContext(), locateMyTeamMemberStatusList, this);
-        rvMyTeam.setAdapter(locateMyTeamAdapter);
-
-        myTeamBottomSheet.show();
-
-
-    }
 
     private void callLocateFilterBottomSheet(List<AmenitiesResponse> amenitiesResponseList) {
 
         RecyclerView locateFilterMainRV;
         ValuesPOJO valuesPOJO;
-        ArrayList<DataModel> mList;
+        //ArrayList<DataModel> mList;
         ItemAdapter adapter;
-        TextView filterSearch;
+        EditText filterSearch;
 
 
-        TextView locateFilterCancel, locateFilterApply,tvFilterAmenities;
+        TextView locateFilterCancel, locateFilterApply,tvFilterAmenities,filterTotalSize;
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((this).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_locate_filter,
@@ -5402,9 +5599,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         locateFilterApply = bottomSheetDialog.findViewById(R.id.locateFilterApply);
         tvFilterAmenities=bottomSheetDialog.findViewById(R.id.tvFilter);
         filterSearch=bottomSheetDialog.findViewById(R.id.filterSearch);
+        filterTotalSize=bottomSheetDialog.findViewById(R.id.filterTotalSize);
+
+        //filterTotalSize.setText("("+amenitiesResponseList.size()+")");
 
         //Language
-        filterSearch.setText(appKeysPage.getSearch());
+        filterSearch.setHint(appKeysPage.getSearch());
         tvFilterAmenities.setText(appKeysPage.getFilters());
 
 
@@ -5419,6 +5619,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 bottomSheetDialog.dismiss();
             }
         });
+
+
 
         locateFilterApply.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -5449,22 +5651,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 }
 
-
-                /*new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        for (int i = 0; i <meetingAmenityStatusList.size() ; i++) {
-
-                            System.out.println("BeforeCallingAmenitiesListData "+meetingAmenityStatusList.get(i).getId());
-
-                        }
-
-
-
-                    }
-                },2000);*/
-
                 callInitView();
 
 
@@ -5473,7 +5659,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         });
 
-        mList = new ArrayList<>();
+        //mList = new ArrayList<>();
 
         //list1
         ArrayList<ValuesPOJO> nestedList1 = new ArrayList<>();
@@ -5492,35 +5678,61 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         valuesPOJO = new ValuesPOJO("Standing desk", false);
         nestedList1.add(valuesPOJO);
 
-        ArrayList<ValuesPOJO> nestedList2 = new ArrayList<>();
+        if(filterClickedStatus==0) {
+            filterClickedStatus=1;
+            ArrayList<ValuesPOJO> nestedList2 = new ArrayList<>();
 
+            for (int i = 0; i < amenitiesResponseList.size(); i++) {
 
-        for (int i = 0; i <amenitiesResponseList.size() ; i++) {
-
-            //if(amenitiesResponseList.get(i).isAvailable()){
-                valuesPOJO = new ValuesPOJO(amenitiesResponseList.get(i).getId(),amenitiesResponseList.get(i).getName(), false);
+                //if(amenitiesResponseList.get(i).isAvailable()){
+                valuesPOJO = new ValuesPOJO(amenitiesResponseList.get(i).getId(), amenitiesResponseList.get(i).getName(), false);
                 nestedList2.add(valuesPOJO);
-            //}
+                //}
 
 
-        }
+            }
 
-
-        /*valuesPOJO = new ValuesPOJO("Single", false);
-        nestedList2.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Double", false);
-        nestedList2.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Ac", false);
-        nestedList2.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Non-AC", false);
-        nestedList2.add(valuesPOJO);*/
 
 
         mList.add(new DataModel(nestedList1, "Workspaces"));
         mList.add(new DataModel(nestedList2, appKeysPage.getRooms()));
 
+        }
+
         adapter = new ItemAdapter(mList);
         locateFilterMainRV.setAdapter(adapter);
+
+
+     /*   filterSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                if(s.toString().length()>=2){
+
+
+                    for (int i = 0; i <nestedList2.size() ; i++) {
+                       if( nestedList2.get(i).getValues().contains(s.toString())){
+
+                       }
+
+                    }
+
+
+
+                }
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });*/
 
         bottomSheetDialog.show();
 
@@ -6298,10 +6510,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         getUserContactDetails(name);
 
-        myTeamHeader.setVisibility(View.GONE);
-        myTeamContactBlock.setVisibility(View.VISIBLE);
+        //binding.locateMyTeamList.set
+        binding.myTeamHeader.setVisibility(View.GONE);
+        binding.myTeamContactBlock.setVisibility(View.VISIBLE);
+        binding.bookNearByBlock.setVisibility(View.VISIBLE);
 
-        myteamBottomSheetBehavior.setPeekHeight(600);
+        //myteamBottomSheetBehavior.setPeekHeight(600);
 
 
         //View perSonView = getLayoutInflater().inflate(R.layout.layout_item_desk, null, false);
@@ -6320,19 +6534,20 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //binding.myTeamSittingLayout.removeView(perSonView);
 
 
-        bookNearByBack.setOnClickListener(new View.OnClickListener() {
+        binding.bookNearByBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
+                binding.bookNearByBlock.setVisibility(View.GONE);
 
                 binding.firstLayout.removeView(ivPerson);
                 binding.firstLayout.removeView(perSonView);
 
-                myTeamHeader.setVisibility(View.VISIBLE);
-                myTeamContactBlock.setVisibility(View.GONE);
+                binding.myTeamHeader.setVisibility(View.VISIBLE);
+                binding.myTeamContactBlock.setVisibility(View.GONE);
 
-                myteamBottomSheetBehavior.setPeekHeight(300);
+                //myteamBottomSheetBehavior.setPeekHeight(300);
 
 
 
@@ -6349,11 +6564,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     int selectedFloorId = calendarEntry.getBooking().getLocationBuildingFloor().getFloorID();
                     int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
                     if (selectedFloorId == parentId) {
-                        locateMyTeamUserName.setText(name);
-                        tvLocateMyTeamLocationView.setText(calendarEntry.getBooking().getLocationBuildingFloor().getBuildingName()+","+calendarEntry.getBooking().getLocationBuildingFloor().getfLoorName());
-                        locateMyTeamDeskName.setText(calendarEntry.getBooking().getDeskCode());
-                        myTeam_tv_start_time.setText(Utils.splitTime(calendarEntry.getFrom()));
-                        myTeam_tv_end_time.setText(Utils.splitTime(calendarEntry.getMyto()));
+                        binding.locateMyTeamUserName.setText(name);
+                        binding.tvLocateMyTeamLocationView.setText(calendarEntry.getBooking().getLocationBuildingFloor().getBuildingName()+","+calendarEntry.getBooking().getLocationBuildingFloor().getfLoorName());
+                        binding.locateMyTeamDeskName.setText(calendarEntry.getBooking().getDeskCode());
+                        binding.myTeamTvStartTime.setText(Utils.splitTime(calendarEntry.getFrom()));
+                        binding.myTeamTvEndTime.setText(Utils.splitTime(calendarEntry.getMyto()));
                         getFloorAndDeskDetailsToPlaceUser(calendarEntry.getBooking(), relativeLayout, perSonView, ivPerson);
                     } else {
                         Toast.makeText(getContext(), "Selected user is not avaliable in this floor", Toast.LENGTH_LONG).show();
@@ -6404,9 +6619,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 GlobalSearchResponse globalSearchResponse=response.body();
 
                 if(globalSearchResponse.getResults().size()>0){
-                    tvMyTeamEmail.setText(globalSearchResponse.getResults().get(0).getEmail());
-                    tvMyTeamTeams.setText(globalSearchResponse.getResults().get(0).getTeam());
-                    tvmyTeamPhone.setText(globalSearchResponse.getResults().get(0).getPhoneNumber());
+                    binding.tvMyTeamEmail.setText(globalSearchResponse.getResults().get(0).getEmail());
+                    binding.tvMyTeamTeams.setText(globalSearchResponse.getResults().get(0).getTeam());
+                    binding.tvmyTeamPhone.setText(globalSearchResponse.getResults().get(0).getPhoneNumber());
                 }
 
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
@@ -6444,7 +6659,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         int getFloorPosition=i;
                         if(getFloorPosition==floorPosition){
                             floorFoundStatus=true;
-                            myTeamBottomSheet.dismiss();
+                            //myTeamBottomSheet.dismiss();
                         }
                     }
                 }
@@ -6488,7 +6703,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                         if(deskId==locateCountryResposeList.get(i).getLocationItemLayout().getDesks().get(j).getDesksId()){
                             SessionHandler.getInstance().saveInt(getContext(),AppConstants.FLOOR_POSITION,i);
-                            myTeamBottomSheet.dismiss();
+                            //myTeamBottomSheet.dismiss();
                             callInitView();
                             break;
 
@@ -6562,10 +6777,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                             binding.firstLayout.addView(perSonView);
 
 
-                                            myteamBottomSheetBehavior.setPeekHeight(100);
+                                            //myteamBottomSheetBehavior.setPeekHeight(100);
 
 
-                                            myTeamBookNearBy.setOnClickListener(new View.OnClickListener() {
+                                            binding.myTeamBookNearBy.setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
 
@@ -6676,7 +6891,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 @Override
                 public void onResponse(Call<List<AmenitiesResponse>> call, Response<List<AmenitiesResponse>> response) {
 
-
+                    //Used to show Amenities in Meeting Booking BottomSheet
                     //List<AmenitiesResponse> amenitiesResponseList=response.body();
                     List<AmenitiesResponse> amenitiesResponseList=response.body();
                     amenitiesListToShowInMeetingRoomList=amenitiesResponseList;
@@ -6685,6 +6900,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     //If true which is called from filter so call bottomsheet
                     if(calledFromFilter){
+
                         meetingAmenityStatusList.clear();
                         callLocateFilterBottomSheet(amenitiesResponseList);
                     }

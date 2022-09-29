@@ -74,20 +74,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/locateMyTeamSearch"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_marginTop="@dimen/_10sdp" />
 
-    <TextView
-        android:id="@+id/myTeamClose"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/rvLocateMyTeam"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:text="@string/close"
-        android:textColor="@color/figmaBlack"
-        android:textSize="@dimen/_15sdp"
-        android:textStyle="bold"
-        />
+        <TextView
+            android:id="@+id/myTeamClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rvLocateMyTeam"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/close"
+            android:textColor="@color/figmaBlack"
+            android:textSize="@dimen/_15sdp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
