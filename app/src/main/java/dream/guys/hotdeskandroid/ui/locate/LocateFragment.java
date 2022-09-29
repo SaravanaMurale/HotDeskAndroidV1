@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -319,7 +320,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     List<AmenitiesResponse> amenitiesListToShowInMeetingRoomList=new ArrayList<>();
 
-
+    //New...
+    String orgSTime = "";
+    String orgETime = "";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -341,7 +344,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = dream.guys.hotdeskandroid.databinding.FragmentLocateBinding.inflate(inflater, container, false);
+        binding = FragmentLocateBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         setLanguage();
@@ -5106,10 +5109,15 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }
         //date.setText(binding.locateCalendearView.getText().toString());
 
+
         if (bookings.getStatus() != null) {
             if (bookings.getStatus().getBookingType().equalsIgnoreCase("REQGRN")) {
-                startTime.setEnabled(false);
-                endTime.setEnabled(false);
+                //startTime.setEnabled(false);
+                //endTime.setEnabled(false);
+
+                orgSTime = Utils.splitTime(bookings.getFrom());
+                orgETime = Utils.splitTime(bookings.getMyto());
+
             } else {
                 startTime.setEnabled(true);
                 endTime.setEnabled(true);
@@ -5133,6 +5141,79 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         } else {
 
         }
+
+        //New...
+        startTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (bookings.getStatus() != null) {
+                    if (bookings.getStatus().getBookingType().equalsIgnoreCase("REQGRN")) {
+                        if(orgSTime.equalsIgnoreCase(startTime.getText().toString())) {
+
+                        }else {
+
+                            if (!(orgSTime.equals("")) && !(orgETime.equals(""))){
+
+                                boolean b = Utils.checkEditTime(orgSTime,orgETime,startTime.getText().toString());
+
+                                if(!b){
+                                    Toast.makeText(getActivity(), "You can't exceed approved booking time period", Toast.LENGTH_SHORT).show();
+                                    startTime.setText(orgSTime);
+                                }
+
+                            }
+
+                        }
+                    }
+                }
+            }
+        });
+
+        endTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (bookings.getStatus() != null) {
+                    if (bookings.getStatus().getBookingType().equalsIgnoreCase("REQGRN")) {
+                        if(orgETime.equalsIgnoreCase(endTime.getText().toString())) {
+
+                        }else {
+
+                            if (!(orgSTime.equals("")) && !(orgETime.equals(""))){
+
+                                boolean b = Utils.checkEditTime(orgSTime,orgETime,endTime.getText().toString());
+
+                                if(!b){
+                                    Toast.makeText(getActivity(), "You can't exceed approved booking time period", Toast.LENGTH_SHORT).show();
+                                    endTime.setText(orgETime);
+                                }
+
+                            }
+
+                        }
+                    }
+                }
+            }
+        });
 
 
         startTime.setOnClickListener(new View.OnClickListener() {

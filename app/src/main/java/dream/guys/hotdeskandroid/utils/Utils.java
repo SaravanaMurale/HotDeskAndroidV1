@@ -1756,6 +1756,40 @@ public class Utils {
     }*/
 
 
+    public static boolean checkEditTime(String originalStartTime,String originalEndTime,String selectedTime) {
+
+        String[] orgSTime = originalStartTime.split(":");
+        String[] orgEndTime = originalEndTime.split(":");
+        String[] sTime = selectedTime.split(":");
+
+        if (orgSTime.length>0 && orgEndTime.length>0 && sTime.length>0){
+
+            int oStartHr = Integer.parseInt(orgSTime[0]);
+            int oStartMin = Integer.parseInt(orgSTime[1]);
+
+            int oEndHr = Integer.parseInt(orgEndTime[0]);
+            int oEndMin = Integer.parseInt(orgEndTime[1]);
+
+            int sHr = Integer.parseInt(sTime[0]);
+            int sMin = Integer.parseInt(sTime[1]);
+
+            if (oStartHr == sHr || oEndHr == sHr) {
+
+                if (oStartMin>=sMin || oEndMin>=sMin){
+                    return true;
+                }else {
+                    return false;
+                }
+
+            }else {
+                return false;
+            }
+
+        }else {
+            return false;
+        }
+
+    }
 
 
 
