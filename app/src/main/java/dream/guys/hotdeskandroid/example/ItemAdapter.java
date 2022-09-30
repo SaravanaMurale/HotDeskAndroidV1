@@ -33,6 +33,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     public ItemAdapter(ArrayList<DataModel> mList){
         this.mList  = mList;
+        notifyDataSetChanged();
     }
     @NonNull
     @Override

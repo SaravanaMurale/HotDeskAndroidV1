@@ -32,6 +32,7 @@
 
 
             <com.alexvasilkov.gestures.views.GestureFrameLayout
+                android:id="@+id/zoomView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/figmaBgGrey"
@@ -406,7 +407,7 @@
             </RelativeLayout>
 
             <!--Search-->
-            <TextView
+            <EditText
                 android:id="@+id/locateMyTeamSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

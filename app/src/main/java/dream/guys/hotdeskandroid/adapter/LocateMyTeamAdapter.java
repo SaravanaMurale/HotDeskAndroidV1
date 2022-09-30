@@ -4,12 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -19,11 +22,14 @@ import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.utils.Utils;
 
-public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapter.LocateMyTeamViewHolder> {
+public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapter.LocateMyTeamViewHolder> implements Filterable {
 
     Context context;
     List<DAOTeamMember> daoTeamMemberList;
     ShowMyTeamLocationClickable showMyTeamLocationClickable;
+
+    //ForFilter
+    List<DAOTeamMember> daoTeamMemberListAll;
 
 
 
@@ -39,6 +45,8 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
         this.context=context;
         this.daoTeamMemberList=stringName;
         this.showMyTeamLocationClickable=showMyTeamLocationClickable;
+
+        this.daoTeamMemberListAll=new ArrayList<>(daoTeamMemberList);
 
 
     }
@@ -128,6 +136,48 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
         return daoTeamMemberList.size();
     }
 
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+    Filter filter=new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            List<DAOTeamMember> filteredList=new ArrayList<>();
+
+            if(constraint==null || constraint.toString().isEmpty() || constraint.length()==0){
+                filteredList.addAll(daoTeamMemberListAll);
+            }else {
+                String filterPattern=constraint.toString().toLowerCase().trim();
+
+                for (DAOTeamMember daoTeamMember:daoTeamMemberListAll){
+
+                    if(daoTeamMember.getFirstName().toLowerCase().contains(filterPattern)){
+
+                        filteredList.add(daoTeamMember);
+
+                    }
+
+                }
+
+            }
+
+            FilterResults results=new FilterResults();
+            results.values=filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+            daoTeamMemberList.clear();
+            daoTeamMemberList.addAll((List)results.values);
+            notifyDataSetChanged();
+
+        }
+    };
     class LocateMyTeamViewHolder extends RecyclerView.ViewHolder{
 
         @BindView(R.id.locateMyTeamProfile)
