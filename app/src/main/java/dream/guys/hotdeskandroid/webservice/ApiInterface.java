@@ -92,6 +92,10 @@ public interface ApiInterface {
     @POST("api/settings/PrivacyPolicyURL")
     Call<String> privacyPolicy(@Body JsonObject jsonObject);
 
+    @GET("api/settings/setting")
+    Call<String> getSettingData(@Query("name") String name);
+
+
     @POST("api/account/TypeOfLogin")
     Call<TypeOfLoginResponse> typeOfLogin(@Body JsonObject jsonObject);
 
@@ -178,7 +182,7 @@ public interface ApiInterface {
     Call<ImageResponse> getTenantImage();
 
     @POST("api/Account/RequestPasswordReset")
-    Call<Void> requestPasswordReset(@Body ForgotPasswordRequest forgotPasswordRequest);
+    Call<Boolean> requestPasswordReset(@Body ForgotPasswordRequest forgotPasswordRequest);
 
     @GET("api/requests/incoming")
     Call<IncomingRequestResponse> getIncomingRequest(@Query("includePastRequests") boolean includePastRequests);
@@ -368,7 +372,8 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("api/push/setting")
-    Call<BaseResponse> updateNotifications(@Field("notification") int notification);
+    Call<BaseResponse> updateNotifications(
+            @Field("notification") int notification);
 
     //Remove Profile Pic
     @DELETE("api/image/user")

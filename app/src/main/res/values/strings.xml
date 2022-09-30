@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HotDeskAndroid</string>
+    <string name="app_name">Hybrid Hero</string>
     <string name="title_activity_main2">MainActivity2</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
@@ -13,6 +13,7 @@
 
 
     <string name="signin">Sign in</string>
+    <string name="signinsso">Signin with SSO</string>
     <string name="company_name">Company Name</string>
     <string name="email">Email</string>
     <string name="password">Password</string>

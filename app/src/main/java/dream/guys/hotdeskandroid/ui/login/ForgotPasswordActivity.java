@@ -72,32 +72,27 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 ForgotPasswordRequest forgotPasswordRequest = new ForgotPasswordRequest();
                 forgotPasswordRequest.setTenantName(etCompanyName.getText().toString().trim());
                 forgotPasswordRequest.setUserName(etEmail.getText().toString().trim());
-                Call<Void> call = apiService.requestPasswordReset(forgotPasswordRequest);
-                call.enqueue(new Callback<Void>() {
+                Call<Boolean> call = apiService.requestPasswordReset(forgotPasswordRequest);
+                call.enqueue(new Callback<Boolean>() {
                     @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        if(response.code()==200){
+                    public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                        if(response.code()==200 && response.body()){
                             ProgressDialog.dismisProgressBar(ForgotPasswordActivity.this,dialog);
                             Utils.toastMessage(
                                     ForgotPasswordActivity.this, "You will receive an email shortly with the instructions on how to reset your password.");
                             finish();
-                        }else if(response.code()==401){
-                            ProgressDialog.dismisProgressBar(ForgotPasswordActivity.this,dialog);
-                            Utils.toastMessage(ForgotPasswordActivity.this, "Wrong userName or password");
-                            SessionHandler.getInstance().saveBoolean(ForgotPasswordActivity.this, AppConstants.LOGIN_CHECK,false);
-                            Utils.finishAllActivity(ForgotPasswordActivity.this);
                         }
                         else {
                             ProgressDialog.dismisProgressBar(ForgotPasswordActivity.this,dialog);
-                            Utils.toastMessage(ForgotPasswordActivity.this, "Failure");
+                            Utils.toastMessage(ForgotPasswordActivity.this, "Email or company is invalid");
 
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
+                    public void onFailure(Call<Boolean> call, Throwable t) {
                         ProgressDialog.dismisProgressBar(ForgotPasswordActivity.this,dialog);
-                        Utils.toastMessage(ForgotPasswordActivity.this, "You have entered wrong username or password");
+                        Utils.toastMessage(ForgotPasswordActivity.this, "Email or company is invalid");
 
                     }
                 });

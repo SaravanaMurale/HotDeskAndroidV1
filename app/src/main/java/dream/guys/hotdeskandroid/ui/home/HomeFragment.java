@@ -397,7 +397,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                     if(response.code()==200){
                         qrEnabled = response.body();
-                        qrEnabled = true;
+//                        qrEnabled = true;
                     }else if(response.code()==401){
                         Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);

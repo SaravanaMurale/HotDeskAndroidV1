@@ -332,6 +332,14 @@ public class WellbeingFragment extends Fragment {
                 healthtips =response.body().get(2).getDescription();
                 personalData = response.body().get(8).getDescription();
 
+                System.out.println("active check bala"+response.body().get(0).isActive());
+                System.out.println("active check bala"+response.body().get(1).isActive());
+                System.out.println("active check bala"+response.body().get(5).isActive());
+                System.out.println("active check bala"+response.body().get(7).isActive());
+                System.out.println("active check bala"+response.body().get(10).isActive());
+                System.out.println("active check bala"+response.body().get(2).isActive());
+                System.out.println("active check bala"+response.body().get(8).isActive());
+
 //                Toast.makeText(getActivity(), ""+response.body().size(), Toast.LENGTH_SHORT).show();
                 for(int i=0;i<response.body().get(0).getLinks().size();i++){
                     Log.d(TAG, "onResponse: "+response.body().get(0).getLinks().size());

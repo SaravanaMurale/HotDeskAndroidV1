@@ -22,6 +22,15 @@ public class EditBookingDetails {
     Date date;
     String abbrevation;
     List<String> amenities;
+    boolean isTeamsChecked;
+
+    public boolean isTeamsChecked() {
+        return isTeamsChecked;
+    }
+
+    public void setTeamsChecked(boolean teamsChecked) {
+        isTeamsChecked = teamsChecked;
+    }
 
     public String getLocationAddress() {
         return locationAddress;

@@ -94,6 +94,10 @@ public class LoginActivity extends AppCompatActivity {
     Button signInSso;
     @BindView(R.id.ivWindows)
     ImageView ivWindows;
+
+    @BindView(R.id.btnSsoLogin)
+    Button btnLoginWithSso;
+
     @BindView(R.id.tenant_layout)
     RelativeLayout tenantLayout;
     @BindView(R.id.login_layout)
@@ -140,7 +144,8 @@ public class LoginActivity extends AppCompatActivity {
                 loginLayout.setVisibility(View.VISIBLE);
             }
         });
-        ivWindows.setOnClickListener(new View.OnClickListener() {
+
+        btnLoginWithSso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             /*    Intent intent = new Intent(getApplicationContext(), WebViewActivity.class);

@@ -40,6 +40,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -107,6 +109,7 @@ import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
 import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
 import dream.guys.hotdeskandroid.model.response.RoomListResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
+import dream.guys.hotdeskandroid.ui.login.GDPRActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.CalendarView;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
@@ -266,6 +269,7 @@ public class BookFragment extends Fragment implements
     List<Integer> filterAmenitiesList=new ArrayList<>();
 
     boolean amenitiesApplyStatus=false;
+    boolean teamsCheckBoxStatus=false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -288,6 +292,7 @@ public class BookFragment extends Fragment implements
         }
 
         getAmenities();
+        checkTeamsCheckBox();
         binding.locateStartTime.setText(getCurrentTime());
         binding.locateStartTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1596,6 +1601,7 @@ public class BookFragment extends Fragment implements
         RelativeLayout repeatBlock=roomBottomSheet.findViewById(R.id.rl_repeat_block);
         RelativeLayout commentBlock=roomBottomSheet.findViewById(R.id.rl_comment_block);
         RelativeLayout teamsBlock=roomBottomSheet.findViewById(R.id.rl_teams_layout);
+        CheckBox teamsCheckBox = roomBottomSheet.findViewById(R.id.teams_check_box);
         RelativeLayout dateBlock=roomBottomSheet.findViewById(R.id.bookingDateBlock);
         LinearLayout statusCheckLayout=roomBottomSheet.findViewById(R.id.status_check_layout);
         LinearLayout llDeskLayout=roomBottomSheet.findViewById(R.id.ll_desk_layout);
@@ -1667,7 +1673,11 @@ public class BookFragment extends Fragment implements
             commentRegistration.setVisibility(View.GONE);
             tvComments.setVisibility(View.GONE);
 //            repeatBlock.setVisibility(View.GONE);
-            teamsBlock.setVisibility(View.GONE);
+            if(teamsCheckBoxStatus)
+                teamsBlock.setVisibility(View.VISIBLE);
+            else
+                teamsBlock.setVisibility(View.GONE);
+
             chipGroup.setVisibility(View.VISIBLE);
             capacitylayout.setVisibility(View.VISIBLE);
             if (userAllowedMeetingResponseListUpdated.size() > 0){
@@ -1765,11 +1775,22 @@ public class BookFragment extends Fragment implements
                     repeatBottomSheetDialog("5");
             }
         });
+        teamsCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    editDeskBookingDetails.setTeamsChecked(true);
+                }else
+                    editDeskBookingDetails.setTeamsChecked(false);
+            }
+        });
         continueEditBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (selectedicon==1 && newEditStatus.equalsIgnoreCase("new"))
-                    callMeetingRoomBookingBottomSheet(editDeskBookingDetails, startTime, endTime, selectedDeskId, deskRoomName.getText().toString(), false);
+                    callMeetingRoomBookingBottomSheet(editDeskBookingDetails,
+                            startTime, endTime, selectedDeskId,
+                            deskRoomName.getText().toString(), false);
                 else if (selectedicon==1) {
                     if (newEditStatus.equalsIgnoreCase("request"))
                         callMeetingRoomBookingBottomSheet(editDeskBookingDetails,
@@ -2952,9 +2973,11 @@ public class BookFragment extends Fragment implements
                     bottomSheetDialog.dismiss();
                     bottomSheetDialog.dismiss();
                     if (!repeatActvieStatus)
-                        doMeetingRoomBooking(meetingRoomId, startTime.getText().toString(), endTime.getText().toString(), subject, comment, isRequest);
+                        doMeetingRoomBooking(meetingRoomId,
+                                startTime.getText().toString(),
+                                endTime.getText().toString(), subject, comment, isRequest, editDeskBookingDetails.isTeamsChecked());
                     else
-                        doRepeatMeetingRoomBookingForWeek();
+                        doRepeatMeetingRoomBookingForWeek(editDeskBookingDetails.isTeamsChecked());
 
                 } else {
                     Toast.makeText(getContext(), "Please Enter All Details", Toast.LENGTH_LONG).show();
@@ -3015,13 +3038,17 @@ public class BookFragment extends Fragment implements
                                       String endRoomTime,
                                       String subject,
                                       String comment,
-                                      boolean isRequest) {
+                                      boolean isRequest,
+                                      boolean isTeamsChecked) {
 
 //        binding.locateProgressBar.setVisibility(View.VISIBLE);
         dialog= ProgressDialog.showProgressBar(getContext());
         MeetingRoomRequest meetingRoomRequest = new MeetingRoomRequest();
         meetingRoomRequest.setMeetingRoomId(meetingRoomId);
-        meetingRoomRequest.setMsTeams(false);
+        if(teamsCheckBoxStatus && isTeamsChecked)
+            meetingRoomRequest.setMsTeams(true);
+        else
+            meetingRoomRequest.setMsTeams(false);
         meetingRoomRequest.setHandleRecurring(false);
         meetingRoomRequest.setOnlineMeeting(false);
 
@@ -3063,7 +3090,6 @@ public class BookFragment extends Fragment implements
         meetingRoomRequest.setDeletedIds(deleteIdsList);
 
         System.out.println("BookingMeetingRoom" + meetingRoomRequest);
-
 
         //dialog = ProgressDialog.showProgressBar(getContext());
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -4663,7 +4689,7 @@ public class BookFragment extends Fragment implements
 
     }
 
-    private void doRepeatMeetingRoomBookingForWeek() {
+    private void doRepeatMeetingRoomBookingForWeek(boolean isTeamsChecked) {
 
         String selectedDate = binding.locateCalendearView.getText().toString();
         List<String> dateList = Utils.getCurrentWeekDateList(selectedDate, enableCurrentWeek);
@@ -4672,7 +4698,10 @@ public class BookFragment extends Fragment implements
         MeetingRoomRecurrence meetingRoomRecurrence =new MeetingRoomRecurrence();
         meetingRoomRecurrence.setMeetingRoomId(selectedDeskId);
         meetingRoomRecurrence.setOnlineMeeting(false);
-        meetingRoomRecurrence.setMsTeams(false);
+        if(teamsCheckBoxStatus && isTeamsChecked)
+            meetingRoomRecurrence.setMsTeams(true);
+        else
+            meetingRoomRecurrence.setMsTeams(false);
         meetingRoomRecurrence.setHandleRecurring(false);
 
         List<MeetingRoomRecurrence.Changeset> changesetList=new ArrayList<>();
@@ -4816,10 +4845,8 @@ public class BookFragment extends Fragment implements
 
     }
     private void doCheckAppliedAminitiesWithMeetingRoom(List<UserAllowedMeetingResponse.Amenity> amenityList, MeetingStatusModel meetingStatusModel) {
-
         //amenityList-->This has default meeting room aminities
         //list-->User selected amenities
-
 
         ItemAdapter itemAadapter=new ItemAdapter();
         ArrayList<DataModel> userSelectedAmenities =itemAadapter.getUpdatedList();
@@ -4834,18 +4861,14 @@ public class BookFragment extends Fragment implements
                         amenitiesMatchCount = amenitiesMatchCount + 1;
                     }
                 }
-
             }
         }
 
-
         int userSelectedTrueCount=0;
         for (int i = 0; i <userSelectedAmenities.get(1).getNestedList().size() ; i++) {
-
             if(userSelectedAmenities.get(1).getNestedList().get(i).isChecked()){
                 userSelectedTrueCount=userSelectedTrueCount+1;
             }
-
         }
 
         if(amenitiesMatchCount==userSelectedTrueCount){
@@ -4856,12 +4879,43 @@ public class BookFragment extends Fragment implements
             MeetingAmenityStatus meetingAmenityStatus=new MeetingAmenityStatus(meetingStatusModel.getId());
             meetingAmenityStatusList.add(meetingAmenityStatus);
         }
-
         amenitiesApplyStatus=true;
+    }
+    public void checkTeamsCheckBox(){
+        if (Utils.isNetworkAvailable(getContext())) {
+            dialog=ProgressDialog.showProgressBar(getContext());
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<String> call = apiService.getSettingData("GraphAPIEnabled");
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if (response.code()==200){
+                        ProgressDialog.dismisProgressBar(getContext(),dialog);
+                        if (response.body().equalsIgnoreCase("true")){
+                            teamsCheckBoxStatus = true;
+                        } else {
+                            teamsCheckBoxStatus = false;
+                        }
+//                        System.out.println("check url string: "+url);
+//                        openCustomTab(GDPRActivity.this,customIntent.build(), Uri.parse(url));
 
+                    }else if (response.code() == 403){
+                        teamsCheckBoxStatus = false;
+                        ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    }else {
+                        teamsCheckBoxStatus = false;
+                        ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    }
+                }
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
 
+                }
+            });
 
-
+        } else {
+            Utils.toastMessage(getContext(), "Please Enable Internet");
+        }
     }
 
 }
