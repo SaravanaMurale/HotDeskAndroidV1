@@ -23,6 +23,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -618,6 +619,27 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                binding.locateMyTeamList.setVisibility(View.GONE);
 
+
+            }
+        });
+
+        binding.locateMyTeamSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(s.toString().length()>=2){
+                    locateMyTeamAdapter.getFilter().filter(s.toString());
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
 
             }
         });
@@ -1540,10 +1562,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     if (carParkingStatusModelList.get(i).getStatus() == 0) {
                         System.out.println("Unavaliable");
-                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.car_unavaliable));
                     } else if (carParkingStatusModelList.get(i).getStatus() == 1) {
                         System.out.println("Avaliable");
-                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_avaliable));
+                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.car_available));
                     } else if (carParkingStatusModelList.get(i).getStatus() == 2) {
                         System.out.println("BookedByMe");
                         ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
@@ -5682,7 +5704,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         filterSearch=bottomSheetDialog.findViewById(R.id.filterSearch);
         filterTotalSize=bottomSheetDialog.findViewById(R.id.filterTotalSize);
 
-        //filterTotalSize.setText("("+amenitiesResponseList.size()+")");
 
         //Language
         filterSearch.setHint(appKeysPage.getSearch());
@@ -5780,6 +5801,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         }
 
+        for (int i = 0; i <mList.size() ; i++) {
+
+            mList.get(i).setExpandable(false);
+
+        }
+        filterTotalSize.setText("("+mList.get(1).getNestedList().size()+")");
         adapter = new ItemAdapter(mList);
         locateFilterMainRV.setAdapter(adapter);
 
@@ -6854,11 +6881,20 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                             relativeLayout.leftMargin = Integer.parseInt(coordinateList.get(0));
                                             relativeLayout.topMargin = Integer.parseInt(coordinateList.get(1));
 
+
                                             ivPerson.setLayoutParams(relativeLayout);
+
+                                            //https://github.com/alexvasilkov/GestureViews/wiki/Usage#viewpager
+
+                                            binding.zoomView.getController().getSettings()
+                                                    .setZoomEnabled(true)
+                                                    .setMaxZoom(120f);
+                                                    //.setGravity(Gravity.CENTER);
+
+
+                                            binding.firstLayout.setGravity(Gravity.CENTER);
+
                                             binding.firstLayout.addView(perSonView);
-
-
-                                            //myteamBottomSheetBehavior.setPeekHeight(100);
 
 
                                             binding.myTeamBookNearBy.setOnClickListener(new View.OnClickListener() {
