@@ -15,7 +15,6 @@ public class MyApp extends Application {
     public static Context getContext() {
         //Singleton instance
         return instance;
-
     }
 
     @Override
@@ -37,8 +36,7 @@ public class MyApp extends Application {
                     .setDefaultNightMode(
                             AppCompatDelegate
                                     .MODE_NIGHT_YES);
-        }
-        else {
+        } else {
             AppCompatDelegate
                     .setDefaultNightMode(
                             AppCompatDelegate

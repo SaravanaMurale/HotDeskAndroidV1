@@ -148,7 +148,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     //New...
     UserDetailsResponse profileData;
 
-
+    public static int earlyCheckInTime=0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -163,6 +163,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         dialog = new Dialog(getContext());
         setNightMode(getContext(),true);
         setLanguage();
+        earlyCheckInTime();
 
         System.out.println("Seesin userId"+SessionHandler.getInstance().getInt(getActivity(),AppConstants.USER_ID));
         userProfile = root.findViewById(R.id.user_profile_pic);
@@ -185,7 +186,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
 
-        if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null && SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked in")){
+        if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null
+                && SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked in")){
             userCurrentStatus.setText("Checked In");
             userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.teal_200), android.graphics.PorterDuff.Mode.MULTIPLY);
         }else if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null && SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked out")){
@@ -193,13 +195,16 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
 //            holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
         }else {
-            if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null){
+            userStatus.setVisibility(View.GONE);
+            userCurrentStatus.setVisibility(View.GONE);
+
+            /*if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null){
                 userCurrentStatus.setText(SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS));
                 userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
             }else {
                 userCurrentStatus.setText("In Office");
                 userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaBlue), android.graphics.PorterDuff.Mode.MULTIPLY);
-            }
+            }*/
         }
 
        binding.searchIcon.setOnClickListener(new View.OnClickListener() {
@@ -1042,6 +1047,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         goo:
                         for (int i=0; i < response.body().size(); i++) {
                             if (response.body().get(i).getId() == calId && response.body().get(i).getAmenities()!=null) {
+                                editDeskBookingDetails.setNoOfPeople(response.body().get(i).getNoOfPeople());
                                 for (int j=0;j<response.body().get(i).getAmenities().size();j++){
                                     amenitiesIntList.add(response.body().get(i).getAmenities().get(j).getId());
                                 }
@@ -1057,6 +1063,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                             }
                         }
 //                        Utils.toastMessage(getActivity(),"welcom bala "+amenitiesStringList.size());
+                        editDeskBookingDetails.setAmenities(amenitiesStringList);
                         editDeskBookingDetails.setAmenities(amenitiesStringList);
                         Log.d(TAG, "onResponse: amenitySize"+editDeskBookingDetails.getAmenities().size());
                         editBookingUsingBottomSheet(editDeskBookingDetails,2,position);
@@ -1206,13 +1213,14 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         TextView select=bottomSheetDialog.findViewById(R.id.select_desk_room);
         TextView continueEditBook=bottomSheetDialog.findViewById(R.id.editBookingContinue);
         TextView tvComments=bottomSheetDialog.findViewById(R.id.tv_comments);
-        TextView tvComment=bottomSheetDialog.findViewById(R.id.tv_comment);
+        TextView tvCapacityNo=bottomSheetDialog.findViewById(R.id.tv_capacity_no);
         EditText commentRegistration=bottomSheetDialog.findViewById(R.id.ed_registration);
         RelativeLayout repeatBlock=bottomSheetDialog.findViewById(R.id.rl_repeat_block);
         RelativeLayout teamsBlock=bottomSheetDialog.findViewById(R.id.rl_teams_layout);
         RelativeLayout dateBlock=bottomSheetDialog.findViewById(R.id.bookingDateBlock);
         LinearLayout statusCheckLayout=bottomSheetDialog.findViewById(R.id.status_check_layout);
         LinearLayout llDeskLayout=bottomSheetDialog.findViewById(R.id.ll_desk_layout);
+        LinearLayout llCapacityLayout=bottomSheetDialog.findViewById(R.id.capacity_layout);
         dateBlock.setVisibility(View.GONE);
         ChipGroup chipGroup = bottomSheetDialog.findViewById(R.id.list_item);
 
@@ -1223,7 +1231,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         tv_start.setText(appKeysPage.getStart());
         tv_end.setText(appKeysPage.getEnd());
         tvComments.setText(appKeysPage.getComments());
-        tvComment.setText(appKeysPage.getComments());
+//        tvComment.setText(appKeysPage.getComments());
         repeat.setText(appKeysPage.getRepeat());
         continueEditBook.setText(appKeysPage.getContinue());
         back.setText(appKeysPage.getBack());
@@ -1235,17 +1243,20 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             statusCheckLayout.setVisibility(View.GONE);
+            llCapacityLayout.setVisibility(View.GONE);
 //            chipGroup.setVisibility(View.GONE);
         }else if (editDeskBookingDetails.getDeskStatus() == 2){
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlue));
             select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             statusCheckLayout.setVisibility(View.VISIBLE);
+            llCapacityLayout.setVisibility(View.VISIBLE);
 //            chipGroup.setVisibility(View.VISIBLE);
         } else {
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlue));
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlue));
             statusCheckLayout.setVisibility(View.GONE);
+            llCapacityLayout.setVisibility(View.GONE);
 //            chipGroup.setVisibility(View.GONE);
         }
 
@@ -1268,7 +1279,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             teamsBlock.setVisibility(View.GONE);
             chipGroup.setVisibility(View.VISIBLE);
             deskRoomName.setText(editDeskBookingDetails.getRoomName());
-
+            if (editDeskBookingDetails.getNoOfPeople()>0)
+                tvCapacityNo.setText(""+editDeskBookingDetails.getNoOfPeople());
+            else
+                llCapacityLayout.setVisibility(View.GONE);
         }else {
             llDeskLayout.setVisibility(View.GONE);
             repeatBlock.setVisibility(View.GONE);
@@ -1645,4 +1659,34 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             uiManager.setNightMode(UiModeManager.MODE_NIGHT_NO);
         }
     }
+
+    public void earlyCheckInTime(){
+        if (Utils.isNetworkAvailable(getContext())) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<String> call = apiService.getSettingData("EarlyCheckInGraceTimeInMinutes");
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if (response.code()==200){
+                        try {
+                            earlyCheckInTime = Integer.parseInt(response.body());
+                        } catch (Exception e){
+                            System.out.println("exception bal"+e.getMessage());
+                        }
+                    }else if (response.code() == 403){
+//                        teamsCheckBoxStatus = false;
+                    }else {
+//                        teamsCheckBoxStatus = false;
+                    }
+                }
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getContext(), "Please Enable Internet");
+        }
+    }
+
 }

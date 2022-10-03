@@ -64,6 +64,10 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
 
     @Override
     public void onBindViewHolder(@NonNull BookingListToEditViewHolder holder, int position) {
+        holder.editCheckInIcon.setVisibility(View.GONE);
+        holder.editCheckOutIcon.setVisibility(View.GONE);
+        holder.editCheckInTime.setVisibility(View.GONE);
+        holder.editCheckOutTime.setVisibility(View.GONE);
 
         if(code.equals("3")){
             holder.editBookingImage.setImageDrawable(context.getDrawable(R.drawable.chair));
@@ -73,9 +77,45 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
             holder.editBookingImage.setImageDrawable(context.getDrawable(R.drawable.car));
         }
 
-        holder.editCode.setText(bookingsListToEdit.get(position).getDeskCode());
-        holder.editCheckInTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getFrom()));
-        holder.editCheckOutTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getMyto()));
+        switch (bookingsListToEdit.get(position).getUsageTypeId()){
+            case 7:
+                holder.editCode.setText("Request for Desk");
+                break;
+            case 9:
+                holder.editCode.setText("Working from home");
+                break;
+            case 1:
+                holder.editCode.setText("Working in alternative office");
+                break;
+            case 5:
+                holder.editCode.setText("Not assigned to team");
+                break;
+            case 8:
+                holder.editCode.setText("Training");
+                break;
+            case 6:
+                holder.editCode.setText("Out of office");
+                break;
+            case 18:
+                holder.editCode.setText("Sick Leave");
+                break;
+            default:
+                holder.editCheckInIcon.setVisibility(View.VISIBLE);
+                holder.editCheckOutIcon.setVisibility(View.VISIBLE);
+                holder.editCheckInTime.setVisibility(View.VISIBLE);
+                holder.editCheckOutTime.setVisibility(View.VISIBLE);
+
+                holder.editCode.setText(bookingsListToEdit.get(position).getDeskCode());
+                holder.editCheckInTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getFrom()));
+                holder.editCheckOutTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getMyto()));
+                break;
+
+        }
+
+
+//        holder.editCode.setText(bookingsListToEdit.get(position).getDeskCode());
+//        holder.editCheckInTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getFrom()));
+//        holder.editCheckOutTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getMyto()));
 
         holder.editTextEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,6 +147,10 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
 
         @BindView(R.id.editBookingImage)
         ImageView editBookingImage;
+        @BindView(R.id.editCheckInIcon)
+        ImageView editCheckInIcon;
+        @BindView(R.id.editCheckOutIcon)
+        ImageView editCheckOutIcon;
         @BindView(R.id.editCode)
         TextView editCode;
         @BindView(R.id.editCheckOutTime)

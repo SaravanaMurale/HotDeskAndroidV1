@@ -1,245 +1,245 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.login.LoginActivity">
-
-    <ImageView
-        android:id="@+id/loginLogo"
-        android:layout_width="@dimen/_110sdp"
-        android:layout_height="@dimen/_110sdp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/_30sdp"
-        android:maxHeight="@dimen/_130sdp"
-        android:minHeight="@dimen/_60sdp"
-        android:src="@drawable/logo_splash" />
-
+    >
     <RelativeLayout
-        android:id="@+id/login_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/loginLogo"
-        android:visibility="visible">
-        <!--Email and Password-->
+        android:layout_height="match_parent"
+        tools:context=".ui.login.LoginActivity">
+
+        <ImageView
+            android:id="@+id/loginLogo"
+            android:layout_width="@dimen/_110sdp"
+            android:layout_height="@dimen/_110sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:maxHeight="@dimen/_130sdp"
+            android:minHeight="@dimen/_60sdp"
+            android:src="@drawable/logo_splash" />
+
         <RelativeLayout
-            android:id="@+id/userLoginDetailsBlock"
+            android:id="@+id/login_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_10sdp">
-
-            <EditText
-                android:id="@+id/etCompanyName"
+            android:layout_below="@id/loginLogo"
+            android:visibility="visible">
+            <!--Email and Password-->
+            <RelativeLayout
+                android:id="@+id/userLoginDetailsBlock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/company_name"
-                android:inputType="text"
-                android:text="" />
-
-            <EditText
-                android:id="@+id/etEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/etCompanyName"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
-                android:text="" />
-
-            <EditText
-                android:id="@+id/etPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/etEmail"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:hint="@string/password"
-                android:inputType="textPassword"
-                android:text="" />
-
-            <Button
-                android:id="@+id/btnSignInLogin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/etPassword"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:background="@drawable/button_blue_bg"
-                android:paddingLeft="@dimen/_20sdp"
-                android:paddingRight="@dimen/_20sdp"
-                android:text="@string/signin"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:theme="@style/TextBoldButton" />
-
-            <TextView
-                android:id="@+id/tvForgetPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/btnSignInLogin"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:text="@string/forget_password"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/_14sdp" />
-
-        </RelativeLayout>
-
-        <!--Line-->
-        <RelativeLayout
-            android:id="@+id/tvBlock"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_30sdp"
-            android:layout_below="@+id/userLoginDetailsBlock"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_10sdp">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginRight="@dimen/_15sdp"
-                android:layout_toLeftOf="@id/tvSignInWith"
-                android:background="@color/grey" />
-
-
-            <TextView
-                android:id="@+id/tvSignInWith"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:text="@string/signinwith"
-
-                />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_toRightOf="@id/tvSignInWith"
-                android:background="@color/grey" />
-
-        </RelativeLayout>
-
-        <Button
-            android:id="@+id/btnSsoLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvBlock"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:background="@drawable/button_blue_bg"
-            android:paddingLeft="@dimen/_20sdp"
-            android:paddingRight="@dimen/_20sdp"
-            android:text="@string/signinsso"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:theme="@style/TextBoldButton" />
-
-        <!--Social icon-->
-        <RelativeLayout
-            android:id="@+id/socialLoginBlock"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvBlock"
-            android:visibility="gone"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginRight="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_15sdp">
-
-            <ImageView
-                android:id="@+id/ivWindows"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_alignParentLeft="true"
                 android:layout_marginLeft="@dimen/_10sdp"
-                android:src="@drawable/microsoft" />
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_10sdp">
 
-            <ImageView
-                android:id="@+id/ivOkta"
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/okta" />
+                <EditText
+                    android:id="@+id/etCompanyName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/company_name"
+                    android:inputType="text"
+                    android:text="" />
 
-            <ImageView
-                android:id="@+id/ivGmail"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/_10sdp"
-                android:src="@drawable/google" />
+                <EditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/etCompanyName"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"
+                    android:text="" />
 
-        </RelativeLayout>
+                <EditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/etEmail"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:text="" />
 
+                <Button
+                    android:id="@+id/btnSignInLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/etPassword"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:background="@drawable/button_blue_bg"
+                    android:paddingLeft="@dimen/_20sdp"
+                    android:paddingRight="@dimen/_20sdp"
+                    android:text="@string/signin"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:theme="@style/TextBoldButton" />
 
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/tenant_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/loginLogo"
-        android:visibility="gone"
-        >
-        <!--Email and Password-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_10sdp"
-            android:orientation="vertical"
-            >
+                <TextView
+                    android:id="@+id/tvForgetPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btnSignInLogin"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="@string/forget_password"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/_14sdp" />
 
-            <EditText
-                android:id="@+id/etTenantName"
+            </RelativeLayout>
+
+            <!--Line-->
+            <RelativeLayout
+                android:id="@+id/tvBlock"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/etEmail"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:hint="Enter Tenant Name"
-                android:inputType="text" />
+                android:layout_height="@dimen/_30sdp"
+                android:layout_below="@+id/userLoginDetailsBlock"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_10sdp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
+                    android:layout_toLeftOf="@id/tvSignInWith"
+                    android:background="@color/grey" />
+
+
+                <TextView
+                    android:id="@+id/tvSignInWith"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/signinwith"
+
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_toRightOf="@id/tvSignInWith"
+                    android:background="@color/grey" />
+
+            </RelativeLayout>
 
             <Button
-                android:id="@+id/btnLoginSso"
+                android:id="@+id/btnSsoLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/etPassword"
+                android:layout_below="@id/tvBlock"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:background="@drawable/button_blue_bg"
                 android:paddingLeft="@dimen/_20sdp"
                 android:paddingRight="@dimen/_20sdp"
-                android:text="Login with SSO"
+                android:text="@string/signinsso"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:theme="@style/TextBoldButton" />
 
-            <TextView
-                android:id="@+id/backToLogin"
+            <!--Social icon-->
+            <RelativeLayout
+                android:id="@+id/socialLoginBlock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/btnSignInLogin"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:text="back to login"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/_14sdp" />
+                android:layout_below="@+id/tvBlock"
+                android:visibility="gone"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_15sdp">
+
+                <ImageView
+                    android:id="@+id/ivWindows"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:src="@drawable/microsoft" />
+
+                <ImageView
+                    android:id="@+id/ivOkta"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/okta" />
+
+                <ImageView
+                    android:id="@+id/ivGmail"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:src="@drawable/google" />
+
+            </RelativeLayout>
 
 
-        </LinearLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/tenant_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/loginLogo"
+            android:visibility="gone"
+            >
+            <!--Email and Password-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:orientation="vertical"
+                >
 
+                <EditText
+                    android:id="@+id/etTenantName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/etEmail"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:hint="Enter Tenant Name"
+                    android:inputType="text" />
 
+                <Button
+                    android:id="@+id/btnLoginSso"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/etPassword"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:background="@drawable/button_blue_bg"
+                    android:paddingLeft="@dimen/_20sdp"
+                    android:paddingRight="@dimen/_20sdp"
+                    android:text="Login with SSO"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:theme="@style/TextBoldButton" />
+
+                <TextView
+                    android:id="@+id/backToLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btnSignInLogin"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="back to login"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/_14sdp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
     </RelativeLayout>
-
-
-
-
-</RelativeLayout>
+</androidx.core.widget.NestedScrollView>

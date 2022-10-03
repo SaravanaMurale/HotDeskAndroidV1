@@ -19,10 +19,19 @@ public class EditBookingDetails {
     int parkingSlotId=0;
     int meetingRoomtId=0;
     int deskStatus=0;
+    int noOfPeople=0;
     Date date;
     String abbrevation;
     List<String> amenities;
     boolean isTeamsChecked;
+
+    public int getNoOfPeople() {
+        return noOfPeople;
+    }
+
+    public void setNoOfPeople(int noOfPeople) {
+        this.noOfPeople = noOfPeople;
+    }
 
     public boolean isTeamsChecked() {
         return isTeamsChecked;

@@ -198,7 +198,7 @@ public class BookFragment extends Fragment implements
     String type="none";
 
     TextView startTime,endTime,repeat,date,deskRoomName,locationAddress;
-    String repeatValue="None";
+    String repeatValue="Nonfe";
 
     int teamId=0,teamMembershipId=0,selectedDeskId=0;
 
@@ -1850,7 +1850,9 @@ public class BookFragment extends Fragment implements
                                     jsonChangesObject.addProperty("usageTypeId", "7");
                                     jsonChangesObject.addProperty("timeZoneId", "India Standard Time");
                                 }else{
-                                    if (!newEditStatus.equalsIgnoreCase("edit"))
+                                    if (!newEditStatus.equalsIgnoreCase("edit") && selectedDeskId!=0)
+                                        jsonChangesObject.addProperty("teamDeskId",selectedDeskId);
+                                    else
                                         jsonChangesObject.addProperty("teamDeskId",editDeskBookingDetails.getDesktId());
                                 }
                                 break;

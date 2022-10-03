@@ -147,7 +147,10 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     Date dNow = new Date( ); // Instantiate a Date object
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(dNow);
-                    cal.add(Calendar.MINUTE, 5);
+                    if (fragment.earlyCheckInTime>0)
+                        cal.add(Calendar.MINUTE, fragment.earlyCheckInTime);
+                    else
+                        cal.add(Calendar.MINUTE, 2);
                     dNow = cal.getTime();
                     SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
 
@@ -199,18 +202,20 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         }
         else if (list.get(position).getCalDeskStatus() ==1 &&
                 !list.get(position).getCalendarEntriesModel()
-                .getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
+                .getUsageTypeAbbreviation().equalsIgnoreCase("IO")) {
             holder.rlBookingRemoteBlock.setVisibility(View.VISIBLE);
             holder.rlInOffice.setVisibility(View.GONE);
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
 
-     /*       if (list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor()!=null)
-            holder.bookingAddress.setText(new StringBuilder()
+     /*
+            if (list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor()!=null)
+                holder.bookingAddress.setText(new StringBuilder()
                     .append("")
                     .append(" "+list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getBuildingName())
                     .append(" - ").append(list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getfLoorName()).toString()
             );*/
+
             switch (list.get(position).getCalendarEntriesModel().getUsageTypeAbbreviation()){
                 case "RQ":
                     holder.tvBookingWorkingRemote.setText("Request for Desk In Progress");
