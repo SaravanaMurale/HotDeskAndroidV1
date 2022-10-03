@@ -8,6 +8,7 @@ public class AppConstants {
     //SharedPreference Constant
     public static final String USERTOKEN = "USERTOKEN";
     public static final String LOGIN_CHECK = "LOGIN_CHECK";
+    public static final String DARK_MODE_CHECK = "DARK_MODE_CHECK";
     public static final String USER_CURRENT_STATUS = "USER_CURRENT_STATUS";
     public static final String WELCOME_VIEWED_STATUS = "WELCOME_VIEWED_STATUS";
     public static final String USER_ID = "USER_ID";

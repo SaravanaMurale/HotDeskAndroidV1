@@ -24,6 +24,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
@@ -112,6 +113,7 @@ import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.ui.login.GDPRActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.CalendarView;
+import dream.guys.hotdeskandroid.utils.MyApp;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
@@ -275,9 +277,7 @@ public class BookFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -285,7 +285,6 @@ public class BookFragment extends Fragment implements
         View root = binding.getRoot();
 
         setLanguage();
-
         dialog= new Dialog(getActivity());
         if (endTimeSelectedStats == 0) {
             binding.locateEndTime.setText("23:59");
@@ -849,10 +848,10 @@ public class BookFragment extends Fragment implements
     }
 
     private void resetLayout() {
-        binding.deskLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBgGrey));
-        binding.roomLayout.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.figmaBgGrey));
-        binding.parkingLayout.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.figmaBgGrey));
-        binding.moreLayout.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.figmaBgGrey));
+        binding.deskLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBackground));
+        binding.roomLayout.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.figmaBackground));
+        binding.parkingLayout.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.figmaBackground));
+        binding.moreLayout.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.figmaBackground));
 
         binding.ivDesk.setImageTintList(getContext().getResources().getColorStateList(R.color.figmaBlack));
         binding.ivRoom.setImageTintList(getContext().getResources().getColorStateList(R.color.figmaBlack));
@@ -4883,33 +4882,25 @@ public class BookFragment extends Fragment implements
     }
     public void checkTeamsCheckBox(){
         if (Utils.isNetworkAvailable(getContext())) {
-            dialog=ProgressDialog.showProgressBar(getContext());
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<String> call = apiService.getSettingData("GraphAPIEnabled");
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     if (response.code()==200){
-                        ProgressDialog.dismisProgressBar(getContext(),dialog);
                         if (response.body().equalsIgnoreCase("true")){
                             teamsCheckBoxStatus = true;
                         } else {
                             teamsCheckBoxStatus = false;
                         }
-//                        System.out.println("check url string: "+url);
-//                        openCustomTab(GDPRActivity.this,customIntent.build(), Uri.parse(url));
-
                     }else if (response.code() == 403){
                         teamsCheckBoxStatus = false;
-                        ProgressDialog.dismisProgressBar(getContext(),dialog);
                     }else {
                         teamsCheckBoxStatus = false;
-                        ProgressDialog.dismisProgressBar(getContext(),dialog);
                     }
                 }
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
-
                 }
             });
 

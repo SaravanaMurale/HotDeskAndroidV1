@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@color/figmaBackground">
 
     <!-- date toolbar -->
     <RelativeLayout
@@ -21,7 +22,8 @@
             android:layout_height="30dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_baseline_arrow_back_ios_24" />
+            android:src="@drawable/ic_baseline_arrow_back_ios_24"
+            app:tint="@color/figmaBlack" />
 
         <!-- date title -->
         <TextView
@@ -34,7 +36,7 @@
             android:gravity="center"
             android:text="current date"
             android:textAppearance="@android:style/TextAppearance.Medium"
-            android:textColor="#222222" />
+            android:textColor="@color/figmaBlack" />
 
         <!-- next button -->
         <ImageView
@@ -43,7 +45,9 @@
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
+            android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+            app:tint="@color/figmaBlack"
+            />
     </RelativeLayout>
 
     <!-- days header -->

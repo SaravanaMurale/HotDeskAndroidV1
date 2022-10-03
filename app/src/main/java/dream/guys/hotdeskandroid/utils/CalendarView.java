@@ -279,7 +279,7 @@ public class CalendarView extends LinearLayout
             }
 
             ((TextView) dateBox).setTypeface(null, Typeface.NORMAL);
-            ((TextView) dateBox).setTextColor(Color.BLACK);
+            ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
 
 //            if (month !=  currentDate.get(Calendar.MONTH) || year !=  currentDate.get(Calendar.YEAR)) {
 //                ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGrey));
@@ -289,7 +289,7 @@ public class CalendarView extends LinearLayout
                 ((TextView) dateBox).setTypeface(null, Typeface.BOLD);
                 ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.figmaBlack));
             } else {
-                ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.white));
+                ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.figmaBackground));
             }
 
             ((TextView) dateBox).setText(String.valueOf(date.getDate()));
@@ -309,7 +309,7 @@ public class CalendarView extends LinearLayout
                     int value = this.previousMonthMaxDays - Integer.parseInt(currentDay) + position + 1;
 //                date.setText(String.valueOf(value));
                     dateBox.setTextColor(Color.rgb(166, 166, 166));
-                    ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.white));
+                    ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.figmaBackground));
                     count.setVisibility(GONE);
                 }
 
@@ -320,7 +320,7 @@ public class CalendarView extends LinearLayout
                     int value = this.previousMonthMaxDays - firstDayOfMonth + position + 1;
 //                date.setText(String.valueOf(value));
                     dateBox.setTextColor(Color.rgb(166, 166, 166));
-                    ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.white));
+                    ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.figmaBackground));
                     count.setVisibility(GONE);
                 }
             }
@@ -344,7 +344,7 @@ public class CalendarView extends LinearLayout
             if (position >= maxNumberOfDays + firstDayOfMonth) {
                 int value = position - (maxNumberOfDays + firstDayOfMonth - 1);
                 dateBox.setTextColor(Color.rgb(166, 166, 166));
-                ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.white));
+                ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.figmaBackground));
                 dateBox.setVisibility(GONE);
                 count.setVisibility(GONE);
             }

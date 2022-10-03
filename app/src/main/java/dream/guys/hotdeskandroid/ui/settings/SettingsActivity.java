@@ -1,10 +1,12 @@
 package dream.guys.hotdeskandroid.ui.settings;
 
+import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
 import static dream.guys.hotdeskandroid.utils.Utils.dateWithDayString;
 import static dream.guys.hotdeskandroid.utils.Utils.getSettingsPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getWellBeingScreenData;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.app.Dialog;
 import android.app.UiModeManager;
@@ -12,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
@@ -79,6 +82,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         //New...
         setLanguage();
+        if (SessionHandler.getInstance().getBoolean(SettingsActivity.this,AppConstants.DARK_MODE_CHECK))
+            binding.switchDarkMode.setChecked(true);
+        else
+            binding.switchDarkMode.setChecked(false);
         //getProfilePicture();
         profileData = Utils.getLoginData(context);
 
@@ -103,13 +110,8 @@ public class SettingsActivity extends AppCompatActivity {
         binding.switchDarkMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    setNightModeHere(SettingsActivity.this,isChecked);
 
-
-
-                if(isChecked){
-
-                    setNightModeHere(SettingsActivity.this,true);
-                }
 
             }
         });
@@ -280,18 +282,23 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void setNightModeHere(SettingsActivity settingsActivity, boolean state) {
-
-        UiModeManager uiManager = (UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
-
-        if (Build.VERSION.SDK_INT <= 22) {
-            uiManager.enableCarMode(0);
-        }
-
         if (state) {
+            SessionHandler.getInstance().saveBoolean(SettingsActivity.this,
+                    AppConstants.DARK_MODE_CHECK,true);
+            AppCompatDelegate
+                    .setDefaultNightMode(
+                            AppCompatDelegate
+                                    .MODE_NIGHT_YES);
+
             //Toast.makeText(target, "Dark", Toast.LENGTH_SHORT).show();
-            uiManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
         } else {
-            uiManager.setNightMode(UiModeManager.MODE_NIGHT_NO);
+            SessionHandler.getInstance().saveBoolean(SettingsActivity.this,
+                    AppConstants.DARK_MODE_CHECK,false);
+            AppCompatDelegate
+                    .setDefaultNightMode(
+                            AppCompatDelegate
+                                    .MODE_NIGHT_NO);
+
         }
 
     }

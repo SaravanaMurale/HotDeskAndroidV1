@@ -1,12 +1,20 @@
 package dream.guys.hotdeskandroid.ui.login;
 
+import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
+import static dream.guys.hotdeskandroid.utils.MyApp.setNightMode;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.UiModeManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -64,6 +72,8 @@ public class SignInActivity extends AppCompatActivity {
     @BindView(R.id.btnPinSignIn)
     Button btnPinSignIn;
     Dialog dialog;
+
+    MyApp myApp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +83,11 @@ public class SignInActivity extends AppCompatActivity {
 
         setLang();
 
+/*
+        setNightMode(this,
+                SessionHandler.getInstance()
+                        .getBoolean(SignInActivity.this, AppConstants.DARK_MODE_CHECK));
+                        */
         //String tokenInSharedPreference=SessionHandler.getInstance().get(getApplicationContext(),AppConstants.SAVETOKEN);
         //System.out.println("SharedPreferenceToken "+tokenInSharedPreference);
 
@@ -86,7 +101,7 @@ public class SignInActivity extends AppCompatActivity {
         }
         boolean tokenStatus =
                 SessionHandler.getInstance().getBoolean(
-                        MyApp.getContext(),
+                        getContext(),
                         AppConstants.TOKEN_EXPIRY_STATUS);
 
         try {

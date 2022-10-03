@@ -23,7 +23,7 @@
     <color name="figmaBlackGrey">#323232</color>
     <color name="figmaGreenFade">#C6F4E1</color>
     <color name="figmaBlue">#F2F2F2</color>
-    <color name="figmaBackground">#cc777777</color>
+    <color name="figmaBackground">#777777</color>
 
     <color name="bg_grey">#66777777</color>
     <color name="line_gray">#fafafa</color>

@@ -201,7 +201,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:thumb="@drawable/thumb_selector"
-                        app:track="@drawable/track_selector"/>
+                        app:track="@drawable/track_selector" />
                 </RelativeLayout>
 
                 <RelativeLayout
