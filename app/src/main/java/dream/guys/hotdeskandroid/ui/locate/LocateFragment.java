@@ -15,6 +15,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -1568,14 +1569,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.car_available));
                     } else if (carParkingStatusModelList.get(i).getStatus() == 2) {
                         System.out.println("BookedByMe");
-                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
+                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.car_bookedbyme));
 
                     } else if (carParkingStatusModelList.get(i).getStatus() == 3) {
                         System.out.println("BookingBookedOther");
-                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
+                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.locate_car_booked));
                     } else if (carParkingStatusModelList.get(i).getStatus() == 4) {
                         System.out.println("Request");
-                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_request));
+                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.car_request));
                     }
 
                 }
@@ -2057,6 +2058,20 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         });
 
         //binding.firstLayout.setPadding(0,0,50,0);
+
+        int floorIconBlick=SessionHandler.getInstance().getInt(getContext(),AppConstants.FLOOR_ICON_BLINK);
+        if(floorIconBlick>0){
+            if(id==floorIconBlick){
+                ivDesk.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+                //ivDesk.setPadding(9,7,7,9);
+                ivDesk.setBackground(getResources().getDrawable(R.drawable.image_border));
+                System.out.println("PaddingAddSuccesfully ");
+
+                //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_bookedbyme));
+            }
+        }
+
+
         binding.firstLayout.addView(deskView);
 
 
@@ -7065,5 +7080,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
 
+        SessionHandler.getInstance().saveInt(getContext(),AppConstants.FLOOR_ICON_BLINK,0);
+
+    }
 }

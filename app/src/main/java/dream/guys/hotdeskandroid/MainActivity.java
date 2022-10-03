@@ -1130,6 +1130,10 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
 
                         if (results.getCurrentLocation().getId() == locateCountryResposeList.get(i).getLocateCountryId()) {
 
+                            SessionHandler.getInstance().saveInt(getContext(),AppConstants.FLOOR_ICON_BLINK,results.getId());
+
+                            System.out.println("LoadedFloorDeskName "+ results.getId()+" "+results.getCurrentLocation().getId()+" "+results.getCurrentLocation().getName());
+
                             SessionHandler.getInstance().saveInt(MainActivity.this, AppConstants.FLOOR_POSITION, i);
                             binding.searchRecycler.setVisibility(View.GONE);
                             binding.serachBar.setText("");
