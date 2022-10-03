@@ -362,7 +362,7 @@ public class Utils {
                 String yearInString=String.valueOf(year);
 
                 int actualMonth=month+1;
-                String monthInStringFormat;
+                String monthInStringFormat,dateInStringFormat;
 
                 if(actualMonth>=10){
                     monthInStringFormat=String.valueOf(actualMonth);
@@ -371,8 +371,16 @@ public class Utils {
                     monthInStringFormat="0"+monthInString;
                 }
 
+                //New...
+                if(dayOfMonth>=10){
+                    dateInStringFormat=String.valueOf(dayOfMonth);
+                }else {
+                    String monthInString=String.valueOf(dayOfMonth);
+                    dateInStringFormat="0"+dayOfMonth;
+                }
+
                 String dayInString=String.valueOf(dayOfMonth);
-                String dateInString= yearInString+"-"+monthInStringFormat+"-"+dayInString;
+                String dateInString= yearInString+"-"+monthInStringFormat+"-"+dateInStringFormat;
                 System.out.println("PickedDate"+dateInString);
                 //locateCheckInDate.setText(dateInString+"T"+getCurrentTimeIn24HourFormat()+".000"+"Z");
                 //locateCheckInDate.setText(dateInString+"T"+"00:00:00.000"+"Z");
@@ -406,6 +414,8 @@ public class Utils {
         bottomSheetDatePicker.show();
 
     }
+
+
     public long addHoursToTime(String time,int hours) throws ParseException {
         SimpleDateFormat parser = new SimpleDateFormat("HH:mm");
         Date myDate = parser.parse(time);
@@ -1758,9 +1768,78 @@ public class Utils {
 
     public static boolean checkEditTime(String originalStartTime,String originalEndTime,String selectedTime) {
 
-        String[] orgSTime = originalStartTime.split(":");
-        String[] orgEndTime = originalEndTime.split(":");
-        String[] sTime = selectedTime.split(":");
+        //New...
+        boolean valid;
+
+        //Start Time
+        //all times are from java.util.Date
+        Date inTime = null;
+        Calendar calendar1 = Calendar.getInstance();
+        try {
+            inTime = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(originalStartTime);
+            if (inTime!=null){
+                calendar1.setTime(inTime);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        //Current Time
+        Date checkTime = null;
+        Calendar calendar3 = Calendar.getInstance();
+        try {
+            checkTime = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(selectedTime);
+            if (checkTime!=null){
+                calendar3.setTime(checkTime);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        //End Time
+        Date finTime = null;
+        Calendar calendar2 = Calendar.getInstance();
+        try {
+            finTime = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(originalEndTime);
+            if (finTime!=null){
+                calendar2.setTime(finTime);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (originalEndTime.compareTo(originalStartTime) < 0)
+        {
+            calendar2.add(Calendar.DATE, 1);
+            calendar3.add(Calendar.DATE, 1);
+        }
+
+        try{
+
+            Date actualTime = calendar3.getTime();
+
+            if ((actualTime.after(calendar1.getTime()) ||
+                    actualTime.compareTo(calendar1.getTime()) == 0) &&
+                    actualTime.before(calendar2.getTime())) {
+
+                valid = true;
+                return valid;
+            } else {
+                valid = false;
+                return valid;
+            }
+        }catch (Exception e){
+            valid = false;
+            return valid;
+        }
+
+
+
+        /*
+         String[] orgSTime = originalStartTime.split(":");
+         String[] orgEndTime = originalEndTime.split(":");
+         String[] sTime = selectedTime.split(":");
 
         if (orgSTime.length>0 && orgEndTime.length>0 && sTime.length>0){
 
@@ -1787,12 +1866,247 @@ public class Utils {
 
         }else {
             return false;
+        }*/
+
+    }
+
+    public static boolean compareStartEndTime(String originalStartTime,String originalEndTime) {
+
+        //New...
+        boolean valid;
+
+        Date inTime = null;
+        Calendar calendar1 = Calendar.getInstance();
+        try {
+            inTime = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(originalStartTime);
+            if (inTime!=null){
+                calendar1.setTime(inTime);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Date checkTime = null;
+        Calendar calendar3 = Calendar.getInstance();
+        try {
+            checkTime = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(originalEndTime);
+            if (checkTime!=null){
+                calendar3.setTime(checkTime);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        /*if (originalEndTime.compareTo(originalStartTime) < 0)
+        {
+            //calendar2.add(Calendar.DATE, 1);
+            calendar3.add(Calendar.DATE, 1);
+        }*/
+
+        try{
+
+            Date endTime = calendar3.getTime();
+
+            if ((endTime.after(calendar1.getTime()))) {
+
+                valid = true;
+                return valid;
+            } else {
+                valid = false;
+                return valid;
+            }
+        }catch (Exception e){
+            valid = false;
+            return valid;
         }
 
     }
 
+    public static boolean checkSelTimeWithCurrentTime(boolean isCurrentDate, String selTime) {
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
+        SimpleDateFormat cTimeFormat = new SimpleDateFormat("HH:mm",Locale.getDefault());
+        Date c = Calendar.getInstance().getTime();
+        Date date = Calendar.getInstance().getTime();
 
+        String formattedDate = sdf.format(c);
+        String cTime = cTimeFormat.format(date); //like end time...
 
+        if (isCurrentDate) {
+
+            //return compareStartEndTime(cTime,selTime);
+
+            Date inTime = null;
+            Calendar calendar1 = Calendar.getInstance();
+            try {
+                inTime = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(cTime);
+                if (inTime!=null){
+                    calendar1.setTime(inTime);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            Date outTime = null;
+            Calendar calendar2 = Calendar.getInstance();
+            try {
+                outTime = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(selTime);
+                if (outTime!=null){
+                    calendar2.setTime(outTime);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            try{
+                if ((calendar2.getTime().after(calendar1.getTime()) ||
+                        calendar2.getTime().compareTo(calendar1.getTime()) == 0)) {
+                    return true;
+                }else {
+                    return false;
+                }
+            }catch (Exception e){
+                return false;
+            }
+
+        }else {
+            return true;
+        }
+
+    }
+
+    public static boolean checkIsCurrentDate(String sDate) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
+        Date c = Calendar.getInstance().getTime();
+        String formattedDate = sdf.format(c);
+
+        if (sDate.equals(formattedDate)) {
+            return true;
+        }else {
+            return false;
+        }
+
+    }
+
+    public static String currentTimeWithExtraMins(int minutes) {
+
+        SimpleDateFormat tFormat = new SimpleDateFormat("HH:mm",Locale.getDefault());
+        Date currentTime = Calendar.getInstance().getTime();
+        String time = tFormat.format(currentTime);
+
+        Date d = null;String newTime = "";
+
+        try {
+            d = tFormat.parse(time);
+            Calendar cal = Calendar.getInstance();
+            if (d != null) {
+
+                cal.setTime(d);
+                cal.add(Calendar.MINUTE, minutes);
+
+                newTime = tFormat.format(cal.getTime());
+
+                return newTime;
+
+            }else {
+                return newTime;
+            }
+        } catch (ParseException e) {
+            return newTime;
+        }
+
+    }
+
+    public static String setNearestThirtyMinToMeeting(String cTime) {
+
+        String fTime = "";
+        String[] orgSTime = cTime.split(":");
+
+        if (orgSTime.length>0){
+
+            int min = Integer.parseInt(orgSTime[1]);
+
+            if (min>=0 && min<20){
+
+                fTime = cTime.replace(orgSTime[1],"30");
+
+            }else if (min>=20 && min<35){
+
+                fTime = cTime.replace(orgSTime[1],"45");
+
+            }else if (min>=35 && min<45){
+
+                fTime =  roundOffHour(cTime.replace(orgSTime[1],"00"));
+
+            }else {
+
+                fTime = roundOffHour(cTime.replace(orgSTime[1],"15"));
+
+            }
+
+        }else {
+            fTime = cTime;
+        }
+
+        return fTime;
+    }
+
+    public static String roundOffHour(String selectedTime) {
+
+        SimpleDateFormat tFormat = new SimpleDateFormat("HH:mm",Locale.getDefault());
+        //Date currentTime = Calendar.getInstance().getTime();
+        String time = selectedTime; //tFormat.format(currentTime);
+
+        Date d = null;String newTime = "";
+
+        try {
+            d = tFormat.parse(time);
+            Calendar cal = Calendar.getInstance();
+            if (d != null) {
+
+                cal.setTime(d);
+                cal.add(Calendar.HOUR, 1);
+
+                newTime = tFormat.format(cal.getTime());
+
+                return newTime;
+
+            }else {
+                return newTime;
+            }
+        } catch (ParseException e) {
+            return newTime;
+        }
+
+    }
+
+    public static String selectedTimeWithExtraMins(String selTime,int minutes) {
+
+        SimpleDateFormat tFormat = new SimpleDateFormat("HH:mm",Locale.getDefault());
+        //Date currentTime = Calendar.getInstance().getTime();
+        String time = selTime; //tFormat.format(currentTime);
+
+        Date d = null;String newTime = "";
+
+        try {
+            d = tFormat.parse(time);
+            Calendar cal = Calendar.getInstance();
+            if (d != null) {
+
+                cal.setTime(d);
+                cal.add(Calendar.MINUTE, minutes);
+
+                newTime = tFormat.format(cal.getTime());
+
+                return newTime;
+
+            }else {
+                return newTime;
+            }
+        } catch (ParseException e) {
+            return newTime;
+        }
+
+    }
 
 }

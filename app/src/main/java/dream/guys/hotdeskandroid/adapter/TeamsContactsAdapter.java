@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.ui.teams.TeamsFragment;
@@ -83,6 +84,7 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<TeamsContactsAdap
         TextView tvCount;
         RelativeLayout relative;
         ImageView profile_image;
+        CircleImageView circleImageView;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
@@ -90,6 +92,7 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<TeamsContactsAdap
             tvCount = itemView.findViewById(R.id.tvCount);
             relative = itemView.findViewById(R.id.relative);
             profile_image = itemView.findViewById(R.id.profile_image);
+
 
         }
     }

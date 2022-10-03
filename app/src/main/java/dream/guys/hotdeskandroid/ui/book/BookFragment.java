@@ -273,6 +273,8 @@ public class BookFragment extends Fragment implements
     boolean amenitiesApplyStatus=false;
     boolean teamsCheckBoxStatus=false;
 
+    boolean isVehicleReg = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -285,6 +287,9 @@ public class BookFragment extends Fragment implements
         View root = binding.getRoot();
 
         setLanguage();
+
+        checkVeichleReg();
+
         dialog= new Dialog(getActivity());
         if (endTimeSelectedStats == 0) {
             binding.locateEndTime.setText("23:59");
@@ -1581,8 +1586,6 @@ public class BookFragment extends Fragment implements
 
 
 
-
-
         startTime = roomBottomSheet.findViewById(R.id.start_time);
         endTime = roomBottomSheet.findViewById(R.id.end_time);
 
@@ -1786,6 +1789,16 @@ public class BookFragment extends Fragment implements
         continueEditBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //New...
+                if (isVehicleReg) {
+                    if (commentRegistration.getText().toString().isEmpty()){
+                        Toast.makeText(getActivity(), "Enter Registration Number", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+
+
                 if (selectedicon==1 && newEditStatus.equalsIgnoreCase("new"))
                     callMeetingRoomBookingBottomSheet(editDeskBookingDetails,
                             startTime, endTime, selectedDeskId,
@@ -3670,7 +3683,7 @@ public class BookFragment extends Fragment implements
                     bookingDeskList = response.body().getTeamDeskAvailability();
                     getAddEditDesk("3", date);
 
-                    System.out.println("check data bala"+bookingDeskList.get(0).getDeskCode());
+                    //System.out.println("check data bala"+bookingDeskList.get(0).getDeskCode());
                     Toast.makeText(getContext(), "sda"+bookingDeskList.size(), Toast.LENGTH_SHORT).show();
 //                    bookingDeskList = new ArrayList<>();
                     Toast.makeText(getContext(), ""+response.body().getTeamDeskAvailability().size(), Toast.LENGTH_SHORT).show();
@@ -4909,6 +4922,35 @@ public class BookFragment extends Fragment implements
         } else {
             Utils.toastMessage(getContext(), "Please Enable Internet");
         }
+    }
+
+    //New...
+    public void checkVeichleReg() {
+
+        if (Utils.isNetworkAvailable(getActivity())) {
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<Boolean> call = apiService.getIsVehicleReg();
+            call.enqueue(new Callback<Boolean>() {
+                @Override
+                public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+
+                    if(response.body()!=null && response.code() == 200) {
+                        isVehicleReg = response.body();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<Boolean> call, Throwable t) {
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
+
     }
 
 }

@@ -484,6 +484,9 @@ public interface ApiInterface {
     @PUT("api/MeetingRoomBooking/bookings")
     Call<BaseResponse> doRepeatMeetingRoomBooking(@Body MeetingRoomRequest meetingRoomRequest);
 
+    //Settings/VehicleRegistrationRequired
+    @GET("api/Settings/VehicleRegistrationRequired")
+    Call<Boolean> getIsVehicleReg();
 }
 
 
