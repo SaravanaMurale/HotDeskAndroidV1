@@ -426,7 +426,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_4sdp">
+                    android:layout_marginStart="@dimen/_4sdp"
+                    android:visibility="gone">
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnRemove"

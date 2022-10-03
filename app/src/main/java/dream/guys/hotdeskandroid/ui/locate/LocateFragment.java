@@ -1,5 +1,6 @@
 package dream.guys.hotdeskandroid.ui.locate;
 
+import static dream.guys.hotdeskandroid.utils.Utils.currentTimeWithExtraMins;
 import static dream.guys.hotdeskandroid.utils.Utils.getActionOverLaysPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getBookingPageScreenData;
@@ -119,6 +120,8 @@ import dream.guys.hotdeskandroid.model.response.MeetingRoomDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
+import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
+import dream.guys.hotdeskandroid.ui.home.EditProfileActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -325,6 +328,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     //New...
     String orgSTime = "";
     String orgETime = "";
+    UserDetailsResponse profileData;
+    boolean isOnTextChanged = false;
+
+    boolean isVehicleReg = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -350,15 +357,26 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         View root = binding.getRoot();
 
         setLanguage();
+        //New...
+        checkVeichleReg();
 
+        //New...
+        profileData = Utils.getLoginData(getActivity());
 
         binding.locateStartTime.setText(getCurrentTime());
         binding.locateStartTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                bottomSheetLocateTimePickerInBooking(getContext(), getActivity(), binding.locateStartTime, "Start", binding.locateCalendearView.getText().toString(), 1);
+                int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
 
+                if (parentId > 0){
+
+                    bottomSheetLocateTimePickerInBooking(getContext(), getActivity(), binding.locateStartTime, "Start", binding.locateCalendearView.getText().toString(), 1);
+
+                }else{
+                    Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -371,8 +389,17 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
+                int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+
+                if (parentId > 0){
+
+                    bottomSheetLocateTimePickerInBooking(getContext(), getActivity(), binding.locateEndTime, "End", binding.locateCalendearView.getText().toString(), 2);
+
+                }else{
+                    Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
+                }
+
                 // Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), binding.locateEndTime, "", "");
-                bottomSheetLocateTimePickerInBooking(getContext(), getActivity(), binding.locateEndTime, "End", binding.locateCalendearView.getText().toString(), 2);
 
 
             }
@@ -386,7 +413,16 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                bottomSheetLocateDatePickerInBooking(getContext(), getActivity(), "", "", binding.locateCalendearView);
+                int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+
+                if (parentId > 0){
+
+                    bottomSheetLocateDatePickerInBooking(getContext(), getActivity(), "", "", binding.locateCalendearView);
+
+                }else{
+                    Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
+                }
+
 
             }
         });
@@ -2512,8 +2548,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         //New...
         showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " " + binding.locateStartTime.getText().toString());
-        startRoomTime.setText(binding.locateStartTime.getText().toString());
-        endTRoomime.setText(binding.locateEndTime.getText().toString());
+        //startRoomTime.setText(binding.locateStartTime.getText().toString());
+        //endTRoomime.setText(binding.locateEndTime.getText().toString());
         startRoomTime.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -2528,6 +2564,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void afterTextChanged(Editable editable) {
                 showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " " + startRoomTime.getText().toString());
+
+                endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(),30));
+
             }
         });
 
@@ -2571,6 +2610,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         return;
                     }
 
+                    if (Utils.compareStartEndTime(startRoomTime.getText().toString(),endTRoomime.getText().toString())) {
+
+                    }else {
+                        Toast.makeText(getContext(), "End time must be after the start time", Toast.LENGTH_LONG).show();
+                        status = false;
+                        return;
+                    }
+
                     subCmtLay.setVisibility(View.VISIBLE);
                     child_layout.setVisibility(View.GONE);
                     roomDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()) +
@@ -2591,6 +2638,16 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         status = false;
                         return;
                     }
+
+                    if (Utils.compareStartEndTime(startRoomTime.getText().toString(),endTRoomime.getText().toString())) {
+
+
+                    }else {
+                        Toast.makeText(getContext(), "End time must be after the start time", Toast.LENGTH_LONG).show();
+                        status = false;
+                        return;
+                    }
+
                     String subject = etSubject.getText().toString();
                     String comment = etComments.getText().toString();
                     if (subject.isEmpty() || subject.equals("") || subject == null) {
@@ -2626,7 +2683,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         });
 
 
-
+        //New...
+        startRoomTime.setText(Utils.setNearestThirtyMinToMeeting(getCurrentTime()));
 
         bottomSheetDialog.show();
 
@@ -3568,8 +3626,19 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //new...
         locateCheckInDate.setText(binding.locateCalendearView.getText());
         showlocateCheckInDate.setText(Utils.showBottomSheetDate(binding.locateCalendearView.getText().toString()));
-        locateCheckInTime.setText(binding.locateStartTime.getText().toString());
+        //locateCheckInTime.setText(binding.locateStartTime.getText().toString());
         locateCheckoutTime.setText(binding.locateEndTime.getText().toString());
+
+        boolean b = Utils.checkIsCurrentDate(locateCheckInDate.getText().toString());
+
+        if (b){
+            locateCheckInTime.setText(currentTimeWithExtraMins(2));
+        }else {
+            if (profileData!=null) {
+                locateCheckInTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
+            }
+        }
+
 
         //Language
         tvLocateCheckInDateLang = locateCheckInBottomSheet.findViewById(R.id.tvLocateCheckInDate);
@@ -3717,11 +3786,22 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     status = false;
                 }
 
+                if (Utils.compareStartEndTime(locateCheckInTime.getText().toString(),locateCheckoutTime.getText().toString())) {
+
+
+                }else {
+                    Toast.makeText(getContext(), "End time must be after the start time", Toast.LENGTH_LONG).show();
+                    status = false;
+                    return;
+                }
+
                 if (status) {
 
-                    locateCheckInBottomSheet.dismiss();
+
 
                     if (code.equals("3")) {
+
+                        locateCheckInBottomSheet.dismiss();
 
                         if (requestTeamId > 0 && requestTeamDeskId > 0) {
 
@@ -3747,14 +3827,35 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     } else if (code.equals("5")) {
 
-                        if (!repeatActvieStatus) {
-                            //CarBooking and CarRequestBooking
-                            System.out.println("NormalCarBookingActiviatedHere");
-                            carParkingRequest();
-                        } else if (repeatActvieStatus) {
-                            System.out.println("RepeatCarBookingActiviatedHere");
-                            doRepeatCarBookingForAWeek();
+                        if (isVehicleReg){
+
+                            if (etVehicleReg.getText().toString().isEmpty()){
+                                Toast.makeText(getActivity(), "Enter Registration Number", Toast.LENGTH_SHORT).show();
+                            }else{
+                                locateCheckInBottomSheet.dismiss();
+                                if (!repeatActvieStatus) {
+                                    //CarBooking and CarRequestBooking
+                                    System.out.println("NormalCarBookingActiviatedHere");
+                                    carParkingRequest();
+                                } else if (repeatActvieStatus) {
+                                    System.out.println("RepeatCarBookingActiviatedHere");
+                                    doRepeatCarBookingForAWeek();
+                                }
+                            }
+
+                        }else {
+                            locateCheckInBottomSheet.dismiss();
+                            if (!repeatActvieStatus) {
+                                //CarBooking and CarRequestBooking
+                                System.out.println("NormalCarBookingActiviatedHere");
+                                carParkingRequest();
+                            } else if (repeatActvieStatus) {
+                                System.out.println("RepeatCarBookingActiviatedHere");
+                                doRepeatCarBookingForAWeek();
+                            }
                         }
+
+
                     }
 
                 }
@@ -3770,6 +3871,74 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         });
 
+        locateCheckInTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                isOnTextChanged = true;
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                if (isOnTextChanged) {
+                    isOnTextChanged = false;
+
+                    //boolean b = Utils.checkSelTimeWithCurrentTime(locateCheckInDate.getText().toString(),locateCheckInTime.getText().toString());
+                    boolean b = Utils.checkIsCurrentDate(locateCheckInDate.getText().toString());
+
+                    if (b) {
+
+                        boolean isTimeCheck = Utils.checkSelTimeWithCurrentTime(b,locateCheckInTime.getText().toString());
+
+                        if (isTimeCheck){
+                            //Leave it the selected time...
+                        }else {
+                            Toast.makeText(getActivity(), "Start time not less than current time", Toast.LENGTH_SHORT).show();
+                            locateCheckInTime.setText(Utils.currentTimeWithExtraMins(2));
+                        }
+
+                    }/*else {
+                        if (profileData!=null) {
+                            locateCheckInTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
+                        }
+                    }*/
+
+                }
+
+            }
+        });
+
+        locateCheckInDate.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                boolean b = Utils.checkIsCurrentDate(locateCheckInDate.getText().toString());
+
+                if (b){
+                    locateCheckInTime.setText(currentTimeWithExtraMins(2));
+                }else {
+                    if (profileData!=null) {
+                        locateCheckInTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
+                    }
+                }
+
+            }
+        });
 
         locateCheckInBottomSheet.show();
     }
@@ -5146,6 +5315,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }
         //date.setText(binding.locateCalendearView.getText().toString());
 
+        orgSTime = "";orgETime = "";
 
         if (bookings.getStatus() != null) {
             if (bookings.getStatus().getBookingType().equalsIgnoreCase("REQGRN")) {
@@ -5299,6 +5469,15 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 }
                 if (endTime.getText().toString().equals("")) {
                     Toast.makeText(getContext(), "Please Select End Time", Toast.LENGTH_LONG).show();
+                    status = false;
+                    return;
+                }
+
+                if (Utils.compareStartEndTime(startTime.getText().toString(),endTime.getText().toString())) {
+
+
+                }else {
+                    Toast.makeText(getContext(), "End time must be after the start time", Toast.LENGTH_LONG).show();
                     status = false;
                     return;
                 }
@@ -5514,6 +5693,85 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             date.setText(binding.locateCalendearView.getText().toString());
         }
 
+        orgSTime = "";orgETime = "";
+        orgSTime = Utils.splitTime(carParkBooking.getFrom());
+        orgETime = Utils.splitTime(carParkBooking.getMyto());
+
+        //New...
+        startTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (carParkBooking.getStatus() != null) {
+                    if (carParkBooking.getStatus().getBookingType().equalsIgnoreCase("REQGRN")) {
+                        if(orgSTime.equalsIgnoreCase(startTime.getText().toString())) {
+
+                        }else {
+
+                            if (!(orgSTime.equals("")) && !(orgETime.equals(""))){
+
+                                boolean b = Utils.checkEditTime(orgSTime,orgETime,startTime.getText().toString());
+
+                                if(!b){
+                                    Toast.makeText(getActivity(), "You can't exceed approved booking time period", Toast.LENGTH_SHORT).show();
+                                    startTime.setText(orgSTime);
+                                }
+
+                            }
+
+                        }
+                    }
+                }
+            }
+        });
+
+        endTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (carParkBooking.getStatus() != null) {
+                    if (carParkBooking.getStatus().getBookingType().equalsIgnoreCase("REQGRN")) {
+                        if(orgETime.equalsIgnoreCase(endTime.getText().toString())) {
+
+                        }else {
+
+                            if (!(orgSTime.equals("")) && !(orgETime.equals(""))){
+
+                                boolean b = Utils.checkEditTime(orgSTime,orgETime,endTime.getText().toString());
+
+                                if(!b){
+                                    Toast.makeText(getActivity(), "You can't exceed approved booking time period", Toast.LENGTH_SHORT).show();
+                                    endTime.setText(orgETime);
+                                }
+
+                            }
+
+                        }
+                    }
+                }
+            }
+        });
+
+
+
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -5556,6 +5814,24 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     return;
                 }
 
+                if (Utils.compareStartEndTime(startTime.getText().toString(),endTime.getText().toString())) {
+
+
+                }else {
+                    Toast.makeText(getContext(), "End time must be after the start time", Toast.LENGTH_LONG).show();
+                    status = false;
+                    return;
+                }
+
+                if (isVehicleReg){
+
+                    if (commentRegistration.getText().toString().isEmpty()){
+                        Toast.makeText(getActivity(), "Enter Registration Number", Toast.LENGTH_SHORT).show();
+                        status = false;
+                        return;
+                    }
+
+                }
 
                 if (status) {
                     //Edit CarParkBooking
@@ -6051,12 +6327,39 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         } else if (currrentDate.getDate() < d2.getDate()) {
             //System.out.println("SelecctedDateIsHigh");
-            binding.locateStartTime.setText("08:30");
-            binding.locateEndTime.setText("23:59");
+            /*binding.locateStartTime.setText("08:30");
+            binding.locateEndTime.setText("23:59");*/
+
+            if (profileData!=null){
+                if (profileData.getWorkHoursFrom()!=null && profileData.getWorkHoursTo()!=null){
+                    binding.locateStartTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
+                    binding.locateEndTime.setText(Utils.splitTime(profileData.getWorkHoursTo()));
+                }else {
+                    binding.locateStartTime.setText("08:30");
+                    binding.locateEndTime.setText("23:59");
+                }
+            }else {
+                binding.locateStartTime.setText("08:30");
+                binding.locateEndTime.setText("23:59");
+            }
+
         } else if (currrentDate.getDate() > d2.getDate()) {
             //System.out.println("SelecctedDateIsLow");
-            binding.locateStartTime.setText("08:00");
-            binding.locateEndTime.setText("23:59");
+            /*binding.locateStartTime.setText("08:00");
+            binding.locateEndTime.setText("23:59");*/
+
+            if (profileData!=null){
+                if (profileData.getWorkHoursFrom()!=null && profileData.getWorkHoursTo()!=null){
+                    binding.locateStartTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
+                    binding.locateEndTime.setText(Utils.splitTime(profileData.getWorkHoursTo()));
+                }else {
+                    binding.locateStartTime.setText("08:30");
+                    binding.locateEndTime.setText("23:59");
+                }
+            }else {
+                binding.locateStartTime.setText("08:30");
+                binding.locateEndTime.setText("23:59");
+            }
 
         }
 
@@ -6301,6 +6604,86 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         });
 
 
+        //New...
+
+        orgSTime = "";orgETime = "";
+        orgSTime = Utils.splitTime(meetingListToEditResponse.getFrom());
+        orgETime = Utils.splitTime(meetingListToEditResponse.getTo());
+
+        /*startRoomTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (meetingListToEditResponse.getStatus() != null) {
+                    if (meetingListToEditResponse.getStatus().getBookingType().equalsIgnoreCase("REQGRN")) {
+                        if(orgSTime.equalsIgnoreCase(startRoomTime.getText().toString())) {
+
+                        }else {
+
+                            if (!(orgSTime.equals("")) && !(orgETime.equals(""))){
+
+                                boolean b = Utils.checkEditTime(orgSTime,orgETime,startRoomTime.getText().toString());
+
+                                if(!b){
+                                    Toast.makeText(getActivity(), "You can't exceed approved booking time period", Toast.LENGTH_SHORT).show();
+                                    startRoomTime.setText(orgSTime);
+                                }
+
+                            }
+
+                        }
+                    }
+                }
+            }
+        });
+
+        endTRoomime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (meetingListToEditResponse.getStatus() != null) {
+                    if (meetingListToEditResponse.getStatus().getBookingType().equalsIgnoreCase("REQGRN")) {
+                        if(orgETime.equalsIgnoreCase(endTRoomime.getText().toString())) {
+
+                        }else {
+
+                            if (!(orgSTime.equals("")) && !(orgETime.equals(""))){
+
+                                boolean b = Utils.checkEditTime(orgSTime,orgETime,endTRoomime.getText().toString());
+
+                                if(!b){
+                                    Toast.makeText(getActivity(), "You can't exceed approved booking time period", Toast.LENGTH_SHORT).show();
+                                    endTRoomime.setText(orgETime);
+                                }
+
+                            }
+
+                        }
+                    }
+                }
+            }
+        });*/
+
+
+
         startTimeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -6347,6 +6730,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     }
                     if (endTRoomime.getText().toString().equals("")) {
                         Toast.makeText(getContext(), "Please Select End Time", Toast.LENGTH_LONG).show();
+                        status = false;
+                        return;
+                    }
+
+                    if (Utils.compareStartEndTime(startRoomTime.getText().toString(),endTRoomime.getText().toString())) {
+
+                    }else {
+                        Toast.makeText(getContext(), "End time must be after the start time", Toast.LENGTH_LONG).show();
                         status = false;
                         return;
                     }
@@ -6850,6 +7241,34 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
+    //New...
+    public void checkVeichleReg() {
+
+        if (Utils.isNetworkAvailable(getActivity())) {
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<Boolean> call = apiService.getIsVehicleReg();
+            call.enqueue(new Callback<Boolean>() {
+                @Override
+                public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+
+                    if(response.body()!=null && response.code() == 200) {
+                        isVehicleReg = response.body();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<Boolean> call, Throwable t) {
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
+
+    }
 
     private void getFloorAndDeskDetailsToPlaceUser(DAOTeamMember.DayGroup.CalendarEntry.Booking booking, RelativeLayout.LayoutParams relativeLayout, View perSonView, ImageView ivPerson) {
 
