@@ -89,8 +89,6 @@ public class FloorAdapter extends RecyclerView.Adapter<FloorAdapter.FloorAdapter
                 sPos=pos;
             }
 
-            sPos = pos;
-
         } else {
             //locateCountryResposeList.get(holder.getAbsoluteAdapterPosition());
             //SessionHandler.getInstance().saveInt(context, AppConstants.NEW_FLOOR_POSITION,holder.getAbsoluteAdapterPosition());
