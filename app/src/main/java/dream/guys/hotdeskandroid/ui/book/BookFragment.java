@@ -1790,6 +1790,7 @@ public class BookFragment extends Fragment implements
             @Override
             public void onClick(View v) {
 
+                /*
                 //New...
                 if (isVehicleReg) {
                     if (commentRegistration.getText().toString().isEmpty()){
@@ -1797,6 +1798,7 @@ public class BookFragment extends Fragment implements
                         return;
                     }
                 }
+                */
 
 
                 if (selectedicon==1 && newEditStatus.equalsIgnoreCase("new"))
@@ -1923,8 +1925,14 @@ public class BookFragment extends Fragment implements
 
                         System.out.println("json un" + jsonOuterObject.toString());
 
-                        if (jsonChangesObject.size() > 0){
-                            editBookingCall(jsonOuterObject,position,dskRoomParkStatus,newEditStatus);
+                        if (dskRoomParkStatus==3 && isVehicleReg
+                                && (commentRegistration.getText().toString().isEmpty()
+                                || commentRegistration.getText().toString().equalsIgnoreCase(""))){
+                            Toast.makeText(getActivity(), "Enter Registration Number", Toast.LENGTH_SHORT).show();
+                        }else {
+                            if (jsonChangesObject.size() > 0){
+                                editBookingCall(jsonOuterObject,position,dskRoomParkStatus,newEditStatus);
+                            }
                         }
                         selectedDeskId=0;
                         roomBottomSheet.dismiss();

@@ -149,6 +149,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     UserDetailsResponse profileData;
 
     public static int earlyCheckInTime=0;
+    public boolean showPastStatus=false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -271,7 +272,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
             @Override
             public void run() {
-
+                System.out.println("refresh called");
                 mSwipeRefreshLayout.setRefreshing(true);
                 loadHomeList();
                 // Fetching data from server
@@ -741,12 +742,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         popDialog.show();
     }
     private void loadHomeList(){
-
         if (Utils.isNetworkAvailable(getActivity())) {
-
             mSwipeRefreshLayout.setRefreshing(true);
 //            dialog= ProgressDialog.showProgressBar(getContext());
-
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<BookingListResponse> call = apiService.getUserMyWorkDetails(Utils.getCurrentDate(),true);
 //            Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-07-18",true);
@@ -754,7 +752,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             call.enqueue(new Callback<BookingListResponse>() {
                 @Override
                 public void onResponse(Call<BookingListResponse> call, Response<BookingListResponse> response) {
-                    if(response.code()==200){
+                    if(response.code()==200) {
                         BookingListResponse bookingListResponse  =response.body();
                         teamId = bookingListResponse.getTeamId();
                         teamMembershipId = bookingListResponse.getTeamMembershipId();
@@ -865,60 +863,62 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 carParkEntries =
                         bookingListResponses.getDayGroups().get(i).getCarParkBookings();
             }
+            if (Utils.compareTwoDate(bookingListResponses.getDayGroups().get(i).getDate(),Utils.getCurrentDate()) != 1 || showPastStatus){
+                if (calendarEntries!=null){
+                    for (int j=0; j < calendarEntries.size(); j++){
+                        BookingListResponse.DayGroup momdel = new BookingListResponse.DayGroup();
+                        if (dateCheck){
+                            momdel.setDateStatus(true);
+                            momdel.setCalDeskStatus(1);
+                            momdel.setDate(date);
+                            momdel.setCalendarEntriesModel(calendarEntries.get(j));
+                            dateCheck=false;
+                        }else {
+                            momdel.setDateStatus(false);
+                            momdel.setCalDeskStatus(1);
+                            momdel.setDate(date);
+                            momdel.setCalendarEntriesModel(calendarEntries.get(j));
+                        }
+                        recyclerModelArrayList.add(momdel);
+                    }
+                }
+                if (meetingEntries!=null){
+                    for (int j=0; j < meetingEntries.size(); j++){
+                        BookingListResponse.DayGroup momdel = new BookingListResponse.DayGroup();
+                        if (dateCheck){
+                            momdel.setDateStatus(true);
+                            momdel.setCalDeskStatus(2);
+                            momdel.setDate(date);
+                            momdel.setMeetingBookingsModel(meetingEntries.get(j));
+                            dateCheck=false;
+                        }else {
+                            momdel.setDateStatus(false);
+                            momdel.setCalDeskStatus(2);
+                            momdel.setDate(date);
+                            momdel.setMeetingBookingsModel(meetingEntries.get(j));
+                        }
+                        recyclerModelArrayList.add(momdel);
+                    }
+                }
+                if (carParkEntries!=null){
+                    for (int j=0; j < carParkEntries.size(); j++){
+                        BookingListResponse.DayGroup momdel = new BookingListResponse.DayGroup();
+                        if (dateCheck){
+                            momdel.setDateStatus(true);
+                            momdel.setCalDeskStatus(3);
+                            momdel.setDate(date);
+                            momdel.setCarParkBookingsModel(carParkEntries.get(j));
+                            dateCheck=false;
+                        }else {
+                            momdel.setDateStatus(false);
+                            momdel.setCalDeskStatus(3);
+                            momdel.setDate(date);
+                            momdel.setCarParkBookingsModel(carParkEntries.get(j));
+                        }
+                        recyclerModelArrayList.add(momdel);
+                    }
+                }
 
-            if (calendarEntries!=null){
-                for (int j=0; j < calendarEntries.size(); j++){
-                    BookingListResponse.DayGroup momdel = new BookingListResponse.DayGroup();
-                    if (dateCheck){
-                        momdel.setDateStatus(true);
-                        momdel.setCalDeskStatus(1);
-                        momdel.setDate(date);
-                        momdel.setCalendarEntriesModel(calendarEntries.get(j));
-                        dateCheck=false;
-                    }else {
-                        momdel.setDateStatus(false);
-                        momdel.setCalDeskStatus(1);
-                        momdel.setDate(date);
-                        momdel.setCalendarEntriesModel(calendarEntries.get(j));
-                    }
-                    recyclerModelArrayList.add(momdel);
-                }
-            }
-            if (meetingEntries!=null){
-                for (int j=0; j < meetingEntries.size(); j++){
-                    BookingListResponse.DayGroup momdel = new BookingListResponse.DayGroup();
-                    if (dateCheck){
-                        momdel.setDateStatus(true);
-                        momdel.setCalDeskStatus(2);
-                        momdel.setDate(date);
-                        momdel.setMeetingBookingsModel(meetingEntries.get(j));
-                        dateCheck=false;
-                    }else {
-                        momdel.setDateStatus(false);
-                        momdel.setCalDeskStatus(2);
-                        momdel.setDate(date);
-                        momdel.setMeetingBookingsModel(meetingEntries.get(j));
-                    }
-                    recyclerModelArrayList.add(momdel);
-                }
-            }
-            if (carParkEntries!=null){
-                for (int j=0; j < carParkEntries.size(); j++){
-                    BookingListResponse.DayGroup momdel = new BookingListResponse.DayGroup();
-                    if (dateCheck){
-                        momdel.setDateStatus(true);
-                        momdel.setCalDeskStatus(3);
-                        momdel.setDate(date);
-                        momdel.setCarParkBookingsModel(carParkEntries.get(j));
-                        dateCheck=false;
-                    }else {
-                        momdel.setDateStatus(false);
-                        momdel.setCalDeskStatus(3);
-                        momdel.setDate(date);
-                        momdel.setCarParkBookingsModel(carParkEntries.get(j));
-                    }
-                    recyclerModelArrayList.add(momdel);
-                }
             }
 
         }
@@ -1619,6 +1619,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
     @Override
     public void onRefresh() {
+        System.out.println("pull refresh");
+        showPastStatus=true;
         loadHomeList();
     }
 
