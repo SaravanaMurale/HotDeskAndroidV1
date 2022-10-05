@@ -45,6 +45,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
     public OnCheckInClickable onCheckInClickable;
     HashMap<Integer,String> map;
 
+    boolean pastCheck = false;
     public HomeBookingListAdapter(Context context, OnCheckInClickable onCheckInClickable, ArrayList<BookingListResponse.DayGroup> recyclerModelArrayList, FragmentActivity activity, HomeFragment homeFragment, HashMap<Integer,String> map) {
         this.context = context;
         this.onCheckInClickable =  onCheckInClickable;
@@ -109,6 +110,12 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         } else if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
             System.out.println("check date of today present "+list.get(position).getDate());
 
+            if (!fragment.showPastStatus && !pastCheck)
+                holder.tv_past_event.setVisibility(View.VISIBLE);
+            else
+                holder.tv_past_event.setVisibility(View.GONE);
+
+            pastCheck = true;
             holder.today_date.setText("Today");
             holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
             holder.bookingIvEdit.setVisibility(View.VISIBLE);
@@ -513,6 +520,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         @BindView(R.id.rlDateLayout)
         RelativeLayout dateLayout;
 
+        @BindView(R.id.tv_past_event)
+        TextView tv_past_event;
         @BindView(R.id.today_date)
         TextView today_date;
         @BindView(R.id.tvBookingWorkingRemote)

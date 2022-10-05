@@ -6,10 +6,24 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <TextView
+        android:id="@+id/tv_past_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Past Events"
+        android:drawableEnd="@drawable/past_events_arrow"
+        android:drawableTint="@color/figmaBlue"
+        android:drawablePadding="@dimen/_2sdp"
+        android:layout_centerHorizontal="true"
+        android:paddingVertical="@dimen/_2sdp"
+        android:textColor="@color/figmaBlue"
+        android:visibility="gone"
+        />
     <LinearLayout
         android:id="@+id/all_ll_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_past_event"
         android:orientation="horizontal">
 
         <!--DateWithLine-->
@@ -329,6 +343,5 @@
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>
-
 
 </RelativeLayout>
