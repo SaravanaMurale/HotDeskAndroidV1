@@ -114,4 +114,6 @@ dependencies {
     //FreshDeskChat
     implementation 'com.github.freshworks:freshchat-android:5.1.0'
 
+    implementation 'com.reginald.swiperefresh:library:1.1.2'
+
 }

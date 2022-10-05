@@ -222,6 +222,7 @@ public class CalendarView extends LinearLayout
             Date now =Calendar.getInstance().getTime();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Calendar tempCalendar = (Calendar) currentDate.clone();
+            System.out.println("current temp date "+tempCalendar.getTime());
             tempCalendar.set(Calendar.DAY_OF_MONTH, 1);
             currentDay = (String) DateFormat.format("dd",   now);
             currentMonth = (String) DateFormat.format("MM",   now);
@@ -294,16 +295,17 @@ public class CalendarView extends LinearLayout
 
             ((TextView) dateBox).setText(String.valueOf(date.getDate()));
 
+            /*
             if (selectedPosition != -1 && position == selectedPosition) {
                 dateBox.setBackgroundResource(R.drawable.btn_bg_app_theme);
                 ((TextView) dateBox).setTextColor(getResources().getColor(R.color.white));
             }
+            */
 
-
-
+            //below if condition greys out previous dates of past month
             if(month!=Integer.parseInt(currentMonth)){
-
                 if (position < Integer.parseInt(currentDay)){
+                    Log.d(TAG, "getView: date"+currentDay+"==="+month);
                     Log.d(TAG, "getView: "+firstDayOfMonth+"==="+currentDay);
                     Log.d("CardView : ", "getView: "+position);
                     int value = this.previousMonthMaxDays - Integer.parseInt(currentDay) + position + 1;
@@ -312,9 +314,10 @@ public class CalendarView extends LinearLayout
                     ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.figmaBackground));
                     count.setVisibility(GONE);
                 }
-
             } else {
                 if (position < firstDayOfMonth){
+                    Log.d(TAG, "getView: date else"+currentDay+"==="+month);
+
                     Log.d(TAG, "getView: "+firstDayOfMonth+"==="+currentDay);
                     Log.d("CardView : ", "getView: "+position);
                     int value = this.previousMonthMaxDays - firstDayOfMonth + position + 1;

@@ -197,14 +197,18 @@ public class BookingDetailFragment extends Fragment {
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                    Toast.makeText(getActivity(), ""+response.body().getResultCode(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(), ""+response.body().getResultCode(), Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                     if (response.code()==200 && response.body().getResultCode().equalsIgnoreCase("ok")){
                         SessionHandler.getInstance().save(getActivity(),AppConstants.USER_CURRENT_STATUS,"Checked IN");
                         openCheckoutDialog();
                     } else
                     {
-                        Toast.makeText(getActivity(), ""+response.body().getResultCode(), Toast.LENGTH_SHORT).show();
+                        if (response.code() == 200)
+                            Toast.makeText(getActivity(), ""+response.body().getResultCode(), Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(getActivity(), "Error Check In", Toast.LENGTH_SHORT).show();
+
                     }
                 }
 

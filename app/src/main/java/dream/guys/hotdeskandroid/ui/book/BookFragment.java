@@ -890,9 +890,22 @@ public class BookFragment extends Fragment implements
                 public void onResponse(Call<List<MeetingListToEditResponse>> call, Response<List<MeetingListToEditResponse>> response) {
 
                     List<MeetingListToEditResponse> meetingListToEditResponseList  =response.body();
+                    List<MeetingListToEditResponse> meetingListToEditList  =new ArrayList<>();
+
+                    for(int i=0; i<meetingListToEditResponseList.size(); i++){
+                        System.out.println("meting userId"+meetingListToEditResponseList.get(i).getBookedByUserId()
+                                +" : " +SessionHandler.getInstance().getInt(getActivity(),AppConstants.USER_ID));
+                        if (meetingListToEditResponseList.get(i).getBookedByUserId()
+                                == SessionHandler.getInstance().getInt(getActivity(),AppConstants.USER_ID)){
+                            meetingListToEditList.add(meetingListToEditResponseList.get(i));
+                        }
+
+                        System.out.println("recycler bala for"+meetingListToEditResponseList.size());
+                    }
                     ProgressDialog.dismisProgressBar(context,dialog);
 //                    dialog.dismiss();
 //                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
                     if (newEditStatus.equalsIgnoreCase("new_deep_link")){
                         String roomId = appLinkData.getQueryParameter("meetingRoomId");
                         String roomName = appLinkData.getQueryParameter("meetingRoomName");
@@ -919,7 +932,7 @@ public class BookFragment extends Fragment implements
 
 
                     } else {
-                        callMeetingRoomEditListAdapterBottomSheet(meetingListToEditResponseList,"new");
+                        callMeetingRoomEditListAdapterBottomSheet(meetingListToEditList,"new");
                     }
 
                 }
@@ -1257,6 +1270,8 @@ public class BookFragment extends Fragment implements
 
         MeetingListToEditAdapter meetingListToEditAdapter=new MeetingListToEditAdapter(getContext(),meetingListToEditResponseList,this);
         rvMeeingEditList.setAdapter(meetingListToEditAdapter);
+        meetingListToEditAdapter.notifyDataSetChanged();
+        System.out.println("recycler bala"+meetingListToEditResponseList.size());
 
         addNew.setText(appKeysPage.getAddNew());
         editClose.setText(appKeysPage.getBack());
@@ -1421,9 +1436,13 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onResponse(Call<BookingForEditResponse> call, Response<BookingForEditResponse> response) {
                     bookingForEditResponse = response.body();
-                    if (!isGlobalLocationSetUP){
+                    if(bookingDeskList==null)
+                        bookingDeskList= new ArrayList<>();
+
+                    if (!isGlobalLocationSetUP) {
                         bookingDeskList.clear();
-                        bookingDeskList = response.body().getTeamDeskAvailabilities();
+                        if(response.body().getTeamDeskAvailabilities()!=null)
+                            bookingDeskList = response.body().getTeamDeskAvailabilities();
                     }
 //                    ProgressDialog.dismisProgressBar(getContext(),dialog);
                     if (code.equalsIgnoreCase("3"))
@@ -3692,9 +3711,9 @@ public class BookFragment extends Fragment implements
                     getAddEditDesk("3", date);
 
                     //System.out.println("check data bala"+bookingDeskList.get(0).getDeskCode());
-                    Toast.makeText(getContext(), "sda"+bookingDeskList.size(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), "sda"+bookingDeskList.size(), Toast.LENGTH_SHORT).show();
 //                    bookingDeskList = new ArrayList<>();
-                    Toast.makeText(getContext(), ""+response.body().getTeamDeskAvailability().size(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), ""+response.body().getTeamDeskAvailability().size(), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override

@@ -304,6 +304,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:background="@drawable/setting_item_bg"
+                    android:visibility="gone"
                     android:paddingVertical="@dimen/_10sdp"
                     android:paddingHorizontal="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_8sdp">

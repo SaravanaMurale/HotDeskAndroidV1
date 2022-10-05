@@ -8,6 +8,8 @@ public class MeetingListToEditResponse {
 
         @SerializedName("id")
         int id;
+        @SerializedName("bookedByUserId")
+        int bookedByUserId;
         @SerializedName("meetingRoomId")
         int meetingRoomId;
         @SerializedName("meetingRoomName")
@@ -27,6 +29,14 @@ public class MeetingListToEditResponse {
 
         @SerializedName("status")
         Status status;
+
+    public int getBookedByUserId() {
+        return bookedByUserId;
+    }
+
+    public void setBookedByUserId(int bookedByUserId) {
+        this.bookedByUserId = bookedByUserId;
+    }
 
     public Status getStatus() {
         return status;

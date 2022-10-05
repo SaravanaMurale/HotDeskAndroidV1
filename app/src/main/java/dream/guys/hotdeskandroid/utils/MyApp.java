@@ -29,7 +29,7 @@ public class MyApp extends Application {
     public static void setNightMode(Context target , boolean state){
         int currentNightMode = getContext().getResources().getConfiguration().uiMode &
                 Configuration.UI_MODE_NIGHT_MASK;
-        System.out.println("nigt bala"+currentNightMode+" "+Configuration.UI_MODE_NIGHT_YES);
+        System.out.println("nigt bala"+currentNightMode+" "+Configuration.UI_MODE_NIGHT_YES+" state = "+state);
         if (state || currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
             SessionHandler.getInstance().saveBoolean(target, AppConstants.DARK_MODE_CHECK,true);
             AppCompatDelegate
