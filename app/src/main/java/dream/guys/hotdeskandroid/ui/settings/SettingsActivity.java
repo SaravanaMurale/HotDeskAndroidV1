@@ -300,12 +300,24 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (checkPermission()) {
-                    getHelpAndPDFHandler();
+                String locationOfPdfFile=Environment.getExternalStorageDirectory() + "/" + "hotdesk"+"/Help.pdf";
+                File file=new File(locationOfPdfFile);
 
-                } else {
-                    requestPermission();
+                //If File already presest
+                if(file.exists() && !file.isDirectory()) {
+                    Intent intent=new Intent(SettingsActivity.this,HelpPdfViewActivity.class);
+                    startActivity(intent);
+                }else {
+                    //Or Get the file
+                    if (checkPermission()) {
+                        getHelpAndPDFHandler();
+
+                    } else {
+                        requestPermission();
+                    }
                 }
+
+
 
 
             }
@@ -314,6 +326,7 @@ public class SettingsActivity extends AppCompatActivity {
         binding.whatNewBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
 
                 Intent intent=new Intent(SettingsActivity.this,WhatsNewActiviy.class);
                 startActivity(intent);
@@ -339,79 +352,84 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void getHelpAndPDFHandler() {
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ResponseBody> call=apiService.downloadPdf();
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+        if (Utils.isNetworkAvailable(this)) {
 
-                File apkStorage = null;
-                File outputFile = null;
-                if(response!=null) {
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
 
-                    ResponseBody responseBody = response.body();
-                    InputStream is = responseBody.byteStream();
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<ResponseBody> call = apiService.downloadPdf();
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
+                    File apkStorage = null;
+                    File outputFile = null;
+                    if (response != null) {
 
-                    try {
-                        //Get File if SD card is present
-                        if (isSDCardPresent()) {
-                            apkStorage = new File(Environment.getExternalStorageDirectory() + "/" + "hotdesk");
-                            System.out.println("FileCreated");
-                        } else
-                            Toast.makeText(context, "Oops!! There is no SD Card.", Toast.LENGTH_SHORT).show();
+                        ResponseBody responseBody = response.body();
+                        InputStream is = responseBody.byteStream();
 
-                        //If File is not present create directory
-                        if (!apkStorage.exists()) {
-                            apkStorage.mkdir();
-                            System.out.println("DirectorFileCreated");
-                            //Log.e(TAG, "Directory Created.");
-                        }
+                        try {
+                            //Get File if SD card is present
+                            if (isSDCardPresent()) {
+                                apkStorage = new File(Environment.getExternalStorageDirectory() + "/" + "hotdesk");
+                                System.out.println("FileCreated");
+                            } else
+                                Toast.makeText(context, "Oops!! There is no SD Card.", Toast.LENGTH_SHORT).show();
 
-                        outputFile = new File(apkStorage, "Help.pdf");//Create Output file in Main File
-
-                        //Create New File if not present
-                        if (!outputFile.exists()) {
-                            outputFile.createNewFile();
-                            //Log.e(TAG, "File Created");
-
-
-                            FileOutputStream fos = new FileOutputStream(outputFile);//Get OutputStream for NewFile Location
-
-                            //InputStream is = c.getInputStream();//Get InputStream for connection
-
-                            byte[] buffer = new byte[1024];//Set buffer type
-                            int len1 = 0;//init length
-                            while ((len1 = is.read(buffer)) != -1) {
-                                fos.write(buffer, 0, len1);//Write new file
+                            //If File is not present create directory
+                            if (!apkStorage.exists()) {
+                                apkStorage.mkdir();
+                                System.out.println("DirectorFileCreated");
+                                //Log.e(TAG, "Directory Created.");
                             }
 
-                            //Close all connection after doing task
-                            fos.close();
-                            is.close();
+                            outputFile = new File(apkStorage, "Help.pdf");//Create Output file in Main File
+
+                            //Create New File if not present
+                            if (!outputFile.exists()) {
+                                outputFile.createNewFile();
+                                //Log.e(TAG, "File Created");
+
+
+                                FileOutputStream fos = new FileOutputStream(outputFile);//Get OutputStream for NewFile Location
+
+                                byte[] buffer = new byte[1024];//Set buffer type
+                                int len1 = 0;//init length
+                                while ((len1 = is.read(buffer)) != -1) {
+                                    fos.write(buffer, 0, len1);//Write new file
+                                }
+
+                                //Close all connection after doing task
+                                fos.close();
+                                is.close();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            outputFile = null;
+
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        outputFile = null;
 
                     }
 
 
+                    binding.locateProgressBar.setVisibility(View.GONE);
+
+                    Intent intent = new Intent(SettingsActivity.this, HelpPdfViewActivity.class);
+                    startActivity(intent);
+
 
                 }
 
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    binding.locateProgressBar.setVisibility(View.GONE);
+                }
+            });
 
-                Intent intent=new Intent(SettingsActivity.this,HelpPdfViewActivity.class);
-                startActivity(intent);
-
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-            }
-        });
+        }else {
+            Utils.toastMessage(this, "Please Enable Internet");
+        }
 
 
     }
