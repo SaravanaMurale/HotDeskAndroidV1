@@ -2112,4 +2112,33 @@ public class Utils {
 
     }
 
+    public static String addHoursToSelectedTime(String selTime,int hr) {
+
+        SimpleDateFormat tFormat = new SimpleDateFormat("HH:mm",Locale.getDefault());
+        //Date currentTime = Calendar.getInstance().getTime();
+        String time = selTime; //tFormat.format(currentTime);
+
+        Date d = null;String newTime = selTime;
+
+        try {
+            d = tFormat.parse(time);
+            Calendar cal = Calendar.getInstance();
+            if (d != null) {
+
+                cal.setTime(d);
+                cal.add(Calendar.HOUR, hr);
+
+                newTime = tFormat.format(cal.getTime());
+
+                return newTime;
+
+            }else {
+                return newTime;
+            }
+        } catch (ParseException e) {
+            return newTime;
+        }
+
+    }
+
 }
