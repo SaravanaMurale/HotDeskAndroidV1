@@ -30,6 +30,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -164,6 +166,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     //For Language
     TextView tvFilterAmenities;
 
+    //Teams
+    boolean teamsCheckBoxStatus=false;
+    boolean isMeetingCheckBoxCheckedStatus=false;
 
 
     //BottomSheetData
@@ -358,6 +363,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         setLanguage();
         //New...
         checkVeichleReg();
+
+        //TeamsCheck
+        checkTeamsCheckBox();
 
         //New...
         profileData = Utils.getLoginData(getActivity());
@@ -2094,6 +2102,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //binding.firstLayout.setPadding(0,0,50,0);
 
         int floorIconBlick=SessionHandler.getInstance().getInt(getContext(),AppConstants.FLOOR_ICON_BLINK);
+        System.out.println("FloorIconBlinkStatus "+floorIconBlick);
         if(floorIconBlick>0){
             if(id==floorIconBlick){
                 ivDesk.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
@@ -2102,6 +2111,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 System.out.println("PaddingAddSuccesfully ");
 
                 //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_bookedbyme));
+            }else {
+                //Utils.toastShortMessage(getContext(),"The item you searched for is not available in the floorplan / layout view.");
             }
         }
 
@@ -2392,13 +2403,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }
 
 
-
-
         TextView editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle, showtvRoomStartTime;
         EditText etParticipants, etSubject, etComments;
         RecyclerView rvParticipant;
         LinearLayoutManager linearLayoutManager;
-        RelativeLayout startTimeLayout, endTimeLayout, rl_repeat_block_room,amenitiesBlock;
+        RelativeLayout startTimeLayout, endTimeLayout, rl_repeat_block_room,amenitiesBlock,rl_teams_layout_room;
         //New...
         LinearLayout subCmtLay, child_layout;
         TextView roomDate;
@@ -2406,6 +2415,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         //Language
         TextView tvRoomStart,tvRoomEnd,tv_teams_room,tv_repeat_room;
+
+        CheckBox teams_check_box_room;
+
 
 
 
@@ -2418,7 +2430,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         showtvRoomStartTime = bottomSheetDialog.findViewById(R.id.showtvRoomStartTime);
         amenitiesBlock=bottomSheetDialog.findViewById(R.id.amenitiesBlock);
 
+        //Teams
+        rl_teams_layout_room=bottomSheetDialog.findViewById(R.id.rl_teams_layout_room);
+        teams_check_box_room=bottomSheetDialog.findViewById(R.id.teams_check_box_room);
+
         chipGroup=bottomSheetDialog.findViewById(R.id.meetingAmenitiesChipGroup);
+
 
         for (int i = 0; i <amenitiesList.size() ; i++) {
 
@@ -2429,6 +2446,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             chip.setClickable(false);
             chipGroup.addView(chip);
         }
+
 
 
 
@@ -2478,12 +2496,34 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         roomTitle.setText(meetingRoomName);
 
+
+
+        teams_check_box_room.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(isChecked){
+                    isMeetingCheckBoxCheckedStatus=true;
+                }else {
+                    isMeetingCheckBoxCheckedStatus=false;
+                }
+
+            }
+        });
+
         rl_repeat_block_room.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 repeatBottomSheetDialog("4");
             }
         });
+
+
+        if(teamsCheckBoxStatus){
+            rl_teams_layout_room.setVisibility(View.VISIBLE);
+        }else {
+            rl_teams_layout_room.setVisibility(View.GONE);
+        }
 
 
         //New...
@@ -2741,7 +2781,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             MeetingRoomRequest meetingRoomRequest = new MeetingRoomRequest();
             meetingRoomRequest.setMeetingRoomId(meetingRoomId);
-            meetingRoomRequest.setMsTeams(false);
+
+            if(teamsCheckBoxStatus && isMeetingCheckBoxCheckedStatus){
+                meetingRoomRequest.setMsTeams(true);
+            }else {
+                meetingRoomRequest.setMsTeams(false);
+            }
+
             meetingRoomRequest.setHandleRecurring(false);
             meetingRoomRequest.setOnlineMeeting(false);
 
@@ -4603,7 +4649,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         MeetingRoomRecurrence meetingRoomRecurrence =new MeetingRoomRecurrence();
         meetingRoomRecurrence.setMeetingRoomId(meetingRoomId);
         meetingRoomRecurrence.setOnlineMeeting(false);
-        meetingRoomRecurrence.setMsTeams(false);
+
+        if(teamsCheckBoxStatus && isMeetingCheckBoxCheckedStatus){
+            meetingRoomRecurrence.setMsTeams(true);
+        }else {
+            meetingRoomRecurrence.setMsTeams(false);
+        }
         meetingRoomRecurrence.setHandleRecurring(false);
 
         List<MeetingRoomRecurrence.Changeset> changesetList=new ArrayList<>();
@@ -7507,4 +7558,35 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         SessionHandler.getInstance().saveInt(getContext(),AppConstants.FLOOR_ICON_BLINK,0);
 
     }
+
+
+    public void checkTeamsCheckBox(){
+        if (Utils.isNetworkAvailable(getContext())) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<String> call = apiService.getSettingData("GraphAPIEnabled");
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if (response.code()==200){
+                        if (response.body().equalsIgnoreCase("true")){
+                            teamsCheckBoxStatus = true;
+                        } else {
+                            teamsCheckBoxStatus = false;
+                        }
+                    }else if (response.code() == 403){
+                        teamsCheckBoxStatus = false;
+                    }else {
+                        teamsCheckBoxStatus = false;
+                    }
+                }
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getContext(), "Please Enable Internet");
+        }
+    }
+
 }

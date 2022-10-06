@@ -11,6 +11,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -59,7 +60,7 @@ public class WellbeingFragment extends Fragment {
     @BindView(R.id.btnLogout)
     RelativeLayout btnLogout;
 
-    String type="",personalData= "", benefits="", events="", health="", notice="", rewards="",healthtips="";
+    String type="",personalData= "", benefits="", events="", health="", notice="", rewards="",healthtips="",menu="";
     List<WellbeingConfigResponse.Link> linksArrayPersonal = new ArrayList<>();
     List<WellbeingConfigResponse.Link> linksArrayBenefits = new ArrayList<>();
     List<WellbeingConfigResponse.Link> linksArrayEvents = new ArrayList<>();
@@ -67,6 +68,8 @@ public class WellbeingFragment extends Fragment {
     List<WellbeingConfigResponse.Link> linksArrayNotice = new ArrayList<>();
     List<WellbeingConfigResponse.Link> linksArrayRewards = new ArrayList<>();
     List<WellbeingConfigResponse.Link> linksArrayHealthTips = new ArrayList<>();
+
+    List<WellbeingConfigResponse.Link> linksArrayMenu = new ArrayList<>();
 
     LanguagePOJO.AppKeys appKeysPage;
 
@@ -321,6 +324,18 @@ public class WellbeingFragment extends Fragment {
             }
         });
 
+        binding.menuBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
+                intent.putExtra(AppConstants.WELLBEING_TYPE, binding.txtMenu.getText());
+                intent.putExtra(AppConstants.PERSONAL_CONTENT, menu);
+                Log.d(TAG, "onClick: "+linksArrayMenu.size());
+                intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayMenu);
+                startActivity(intent);
+            }
+        });
+
 
         return root;
     }
@@ -331,58 +346,79 @@ public class WellbeingFragment extends Fragment {
         Call<List<WellbeingConfigResponse>> call = apiService.getWellbeingSectionConfig();
         call.enqueue(new Callback<List<WellbeingConfigResponse>>() {
             @Override
-            public void onResponse(Call<List<WellbeingConfigResponse>> call, Response<List<WellbeingConfigResponse>> response)
-            {
+            public void onResponse(Call<List<WellbeingConfigResponse>> call, Response<List<WellbeingConfigResponse>> response) {
+
+                if (response.body() != null) {
+
+                    /*Training - type 1
+                    Events = type 2
+                    Health tips = type 3
+                    firewarden - 4
+                    firstaid - 5
+                    mental health - 6
+                    Menu - 7
+                    Notices - 8
+                    Personnel help - 9
+                    Repot issue - 10
+                    Rewards - 11
+                    Workspace survey - 12
+                    Workspace assessment - 13*/
+
+                    setEnableDisable(response.body());
+
                 benefits = response.body().get(0).getDescription();
                 events = response.body().get(1).getDescription();
+                healthtips = response.body().get(2).getDescription();
                 health = response.body().get(5).getDescription();
                 notice = response.body().get(7).getDescription();
                 rewards = response.body().get(10).getDescription();
-                healthtips =response.body().get(2).getDescription();
-                personalData = response.body().get(8).getDescription();
 
-                System.out.println("active check bala"+response.body().get(0).isActive());
-                System.out.println("active check bala"+response.body().get(1).isActive());
-                System.out.println("active check bala"+response.body().get(5).isActive());
-                System.out.println("active check bala"+response.body().get(7).isActive());
-                System.out.println("active check bala"+response.body().get(10).isActive());
-                System.out.println("active check bala"+response.body().get(2).isActive());
-                System.out.println("active check bala"+response.body().get(8).isActive());
+                personalData = response.body().get(8).getDescription();
+                menu = response.body().get(6).getDescription();
 
 //                Toast.makeText(getActivity(), ""+response.body().size(), Toast.LENGTH_SHORT).show();
-                for(int i=0;i<response.body().get(0).getLinks().size();i++){
-                    Log.d(TAG, "onResponse: "+response.body().get(0).getLinks().size());
+                for (int i = 0; i < response.body().get(0).getLinks().size(); i++) {
+                    Log.d(TAG, "onResponse: " + response.body().get(0).getLinks().size());
                     linksArrayBenefits.add(response.body().get(0).getLinks().get(i));
                 }
 
-                for(int i=0;i<response.body().get(2).getLinks().size();i++){
-                    Log.d(TAG, "onResponse: "+response.body().get(2).getLinks().size());
-                    linksArrayHealthTips.add(response.body().get(2).getLinks().get(i));
-                }
-
-                for(int i=0;i<response.body().get(1).getLinks().size();i++){
-                    Log.d(TAG, "onResponse: "+response.body().get(1).getLinks().size());
+                for (int i = 0; i < response.body().get(1).getLinks().size(); i++) {
+                    Log.d(TAG, "onResponse: " + response.body().get(1).getLinks().size());
                     linksArrayEvents.add(response.body().get(1).getLinks().get(i));
                 }
 
-                for(int i=0;i<response.body().get(5).getLinks().size();i++){
-                    Log.d(TAG, "onResponse: "+response.body().get(5).getLinks().size());
+                for (int i = 0; i < response.body().get(2).getLinks().size(); i++) {
+                    Log.d(TAG, "onResponse: " + response.body().get(2).getLinks().size());
+                    linksArrayHealthTips.add(response.body().get(2).getLinks().get(i));
+                }
+
+
+                for (int i = 0; i < response.body().get(5).getLinks().size(); i++) {
+                    Log.d(TAG, "onResponse: " + response.body().get(5).getLinks().size());
                     linksArrayHealth.add(response.body().get(5).getLinks().get(i));
                 }
 
-                for(int i=0;i<response.body().get(7).getLinks().size();i++){
-                    Log.d(TAG, "onResponse: "+response.body().get(7).getLinks().size());
+                for (int i = 0; i < response.body().get(6).getLinks().size(); i++) {
+                    Log.d(TAG, "onResponse: " + response.body().get(6).getLinks().size());
+                    linksArrayMenu.add(response.body().get(6).getLinks().get(i));
+                }
+
+                for (int i = 0; i < response.body().get(7).getLinks().size(); i++) {
+                    Log.d(TAG, "onResponse: " + response.body().get(7).getLinks().size());
                     linksArrayNotice.add(response.body().get(7).getLinks().get(i));
                 }
 
-                for(int i=0;i<response.body().get(10).getLinks().size();i++){
-                    Log.d(TAG, "onResponse: "+response.body().get(10).getLinks().size());
+                for (int i = 0; i < response.body().get(10).getLinks().size(); i++) {
+                    Log.d(TAG, "onResponse: " + response.body().get(10).getLinks().size());
                     linksArrayRewards.add(response.body().get(10).getLinks().get(i));
                 }
 
-                for(int i=0;i<response.body().get(8).getLinks().size();i++){
-                    Log.d(TAG, "onResponse: "+response.body().get(8).getLinks().size());
+                for (int i = 0; i < response.body().get(8).getLinks().size(); i++) {
+                    Log.d(TAG, "onResponse: " + response.body().get(8).getLinks().size());
                     linksArrayPersonal.add(response.body().get(8).getLinks().get(i));
+                }
+
+
                 }
 
             }
@@ -394,6 +430,76 @@ public class WellbeingFragment extends Fragment {
 //                Toast.makeText(getActivity(), "onFailure", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void setEnableDisable(List<WellbeingConfigResponse> body) {
+
+        if (!(body.get(0).isActive())){
+            binding.traininBlock.setEnabled(false);
+            binding.tvTraining.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
+            binding.imgTraining.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
+        }
+        if (!(body.get(1).isActive())){
+            binding.eventBlock.setEnabled(false);
+            binding.tvEvents.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
+            binding.imgEvents.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
+        }
+        if (!(body.get(2).isActive())){
+            binding.healthTipsBlock.setEnabled(false);
+            binding.tvHealthTips.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
+            binding.imgHealth.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
+        }
+        if (!(body.get(3).isActive())){
+            binding.fireWardensBlock.setEnabled(false);
+            binding.firewar.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
+            binding.imgFWar.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
+        }
+        if (!(body.get(4).isActive())){
+            binding.firstAidBlock.setEnabled(false);
+            binding.fireaid.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
+            binding.imgFAid.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
+        }
+        if (!(body.get(5).isActive())){
+            binding.mentalHealthBlock.setEnabled(false);
+            binding.mentalHealth.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
+            binding.imgMHealth.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
+        }
+        if (!(body.get(6).isActive())){
+            binding.menuBlock.setEnabled(false);
+            binding.tvMenu.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
+            binding.imgMenu.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
+        }
+        if (!(body.get(7).isActive())){
+            binding.noticesBlock.setEnabled(false);
+            binding.tvNotification.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
+            binding.imgNotice.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
+        }
+        if (!(body.get(8).isActive())){
+            binding.personalBlock.setEnabled(false);
+            binding.tvPersonal.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
+            binding.imgPersonal.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
+        }
+        if (!(body.get(9).isActive())){
+            binding.reportAnIssueBlock.setEnabled(false);
+            binding.tvReportIssue.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
+            binding.imgReportIssue.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
+        }
+        if (!(body.get(10).isActive())){
+            binding.rewardsBlock.setEnabled(false);
+            binding.tvRewards.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
+            binding.imgRewards.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
+        }
+        if (!(body.get(11).isActive())){
+            binding.workspaceSurveyBlock.setEnabled(false);
+            binding.tvWorkspaceSurvey.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
+            binding.imgWorkspaceSurvey.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
+        }
+        if (!(body.get(12).isActive())){
+            binding.workspaceBlock.setEnabled(false);
+            binding.tvWorkspace.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
+            binding.imgWorkAss.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
+        }
+
     }
 
     public void setLanguage() {

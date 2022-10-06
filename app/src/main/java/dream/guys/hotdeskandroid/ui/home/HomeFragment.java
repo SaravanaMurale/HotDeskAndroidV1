@@ -1,5 +1,6 @@
 package dream.guys.hotdeskandroid.ui.home;
 
+import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
 import static dream.guys.hotdeskandroid.utils.Utils.getActionOverLaysPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getBookingPageScreenData;
@@ -1142,7 +1143,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                                 SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION,i);
 
 
-                                System.out.println("SelectedDeskFloorInLocate "+i+" "+desk+" ");
+                                System.out.println("SelectedDeskFloorInLocate "+i+" "+desk+" "+identifierId);
+
+                                //For Desk Blink and Highlighting
+                                SessionHandler.getInstance().saveInt(getContext(),AppConstants.FLOOR_ICON_BLINK,identifierId);
 
                                 ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
 //                                navController.navigate(R.id.action_navigation_home_to_navigation_locate);
@@ -1160,7 +1164,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                             if(identifierId==locateCountryResposeList.get(i).getLocationItemLayout().getMeetingRoomsList().get(j).getMeetingRoomId()){
                                 SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION,i);
 
-                                System.out.println("SelectedMeetingFloorInLocate "+i+" "+desk+" ");
+                                System.out.println("SelectedMeetingFloorInLocate "+i+" "+desk+" "+identifierId);
+
+                                //For Meeting Blink and Highlighting
+                                SessionHandler.getInstance().saveInt(getContext(),AppConstants.FLOOR_ICON_BLINK,identifierId);
 
                                 ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
 //                                navController.navigate(R.id.navigation_locate);
@@ -1176,7 +1183,11 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                             if(identifierId==locateCountryResposeList.get(i).getLocationItemLayout().getParkingSlotsList().get(j).getId()){
                                 SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION,i);
 
-                                System.out.println("SelectedCarFloorInLocate "+i+" "+desk+" ");
+                                System.out.println("SelectedCarFloorInLocate "+i+" "+desk+" "+identifierId);
+
+                                //For Car Blink and Highlighting
+                                SessionHandler.getInstance().saveInt(getContext(),AppConstants.FLOOR_ICON_BLINK,identifierId);
+
                                 ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
 //                                navController.navigate(R.id.navigation_locate);
                             }

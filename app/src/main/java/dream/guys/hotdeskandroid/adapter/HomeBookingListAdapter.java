@@ -1,5 +1,7 @@
 package dream.guys.hotdeskandroid.adapter;
 
+import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -493,6 +495,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     if(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor()!=null){
                         //System.out.println("CalendarParentId "+list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getFloorID());
 
+                        SessionHandler.getInstance().save(getContext(),AppConstants.FULLPATHLOCATION,list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getBuildingName()+","+list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getfLoorName());
+
                         int parentLocationId=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getFloorID();
                         int deskId=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getDeskId();
                         onCheckInClickable.onLocationIconClick(parentLocationId, deskId, AppConstants.DESK);
@@ -504,6 +508,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     if(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel().getLocationBuildingFloor()!=null){
                         //System.out.println("MeetingParentId "+list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel().getLocationBuildingFloor().getFloorID());
 
+                        SessionHandler.getInstance().save(getContext(),AppConstants.FULLPATHLOCATION,list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel().getLocationBuildingFloor().getBuildingName()+","+list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel().getLocationBuildingFloor().getfLoorName());
+
                         int parentLocationId=list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel().getLocationBuildingFloor().getFloorID();
                         int meetingRoomId=list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel().getMeetingRoomId();
                         onCheckInClickable.onLocationIconClick(parentLocationId,meetingRoomId, AppConstants.MEETING);
@@ -514,6 +520,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     //Car
                     if(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel().getLocationBuildingFloor()!=null){
                         //System.out.println("CarParentId "+list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel().getLocationBuildingFloor().getFloorID());
+
+                        SessionHandler.getInstance().save(getContext(),AppConstants.FULLPATHLOCATION,list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel().getLocationBuildingFloor().getBuildingName()+","+list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel().getLocationBuildingFloor().getfLoorName());
 
                         int parentLocationId=list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel().getLocationBuildingFloor().getFloorID();
                         int carParkingId=list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel().getParkingSlotId();

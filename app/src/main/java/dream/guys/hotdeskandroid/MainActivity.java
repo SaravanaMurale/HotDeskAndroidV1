@@ -1086,7 +1086,6 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
     @Override
     public void onClickGlobalSearch(GlobalSearchResponse.Results results, View v) {
 
-
         if(results.getEntityType()==1){
             //Show Person Details
 
@@ -1130,6 +1129,7 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
 
                         if (results.getCurrentLocation().getId() == locateCountryResposeList.get(i).getLocateCountryId()) {
 
+                            //For Desk Blink and Highlighting
                             SessionHandler.getInstance().saveInt(getContext(),AppConstants.FLOOR_ICON_BLINK,results.getId());
 
                             System.out.println("LoadedFloorDeskName "+ results.getId()+" "+results.getCurrentLocation().getId()+" "+results.getCurrentLocation().getName());
