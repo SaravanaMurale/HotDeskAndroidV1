@@ -336,6 +336,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     boolean isOnTextChanged = false;
 
     boolean isVehicleReg = false;
+    String editLastEndTime = "";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -3034,6 +3035,18 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         });
 
+
+        //New...
+        if (bookingForEditResponse.getBookings()!=null &&
+        bookingForEditResponse.getBookings().size()>0){
+
+            int c = bookingForEditResponse.getBookings().size();
+            editLastEndTime = Utils.splitTime(bookingForEditResponse.getBookings().get(c-1).getMyto());
+
+        }else {
+            editLastEndTime = "";
+        }
+
         locateEditBottomSheet.show();
 
     }
@@ -3059,8 +3072,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
-                    callBottomSheetToEdit(bookingForEditResponse, selctedCode, key, id, code, requestTeamId, requestTeamDeskId, i);
-
+                    if (bookingForEditResponse!=null){
+                        callBottomSheetToEdit(bookingForEditResponse, selctedCode, key, id, code, requestTeamId, requestTeamDeskId, i);
+                    }
 
                 }
 
@@ -3676,15 +3690,33 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //locateCheckInTime.setText(binding.locateStartTime.getText().toString());
         locateCheckoutTime.setText(binding.locateEndTime.getText().toString());
 
-        boolean b = Utils.checkIsCurrentDate(locateCheckInDate.getText().toString());
+        //New...
+        if (editLastEndTime.equals("")) {
 
-        if (b){
-            locateCheckInTime.setText(currentTimeWithExtraMins(2));
-        }else {
-            if (profileData!=null) {
-                locateCheckInTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
+            boolean b = Utils.checkIsCurrentDate(locateCheckInDate.getText().toString());
+
+            if (b){
+                locateCheckInTime.setText(currentTimeWithExtraMins(2));
+            }else {
+                if (profileData!=null) {
+                    locateCheckInTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
+                }
+            }
+
+        }else{
+            locateCheckInTime.setText(editLastEndTime);
+            //Add 4Hour...
+            String[] time = locateCheckInTime.getText().toString().split(":");
+            int t1 = Integer.parseInt(time[0]);
+
+            if (t1>=20){
+                locateCheckoutTime.setText("23:59");
+            }else {
+                locateCheckoutTime.setText(Utils.addHoursToSelectedTime(
+                        locateCheckInTime.getText().toString(),4));
             }
         }
+
 
 
         //Language
@@ -3935,25 +3967,42 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 if (isOnTextChanged) {
                     isOnTextChanged = false;
 
-                    //boolean b = Utils.checkSelTimeWithCurrentTime(locateCheckInDate.getText().toString(),locateCheckInTime.getText().toString());
-                    boolean b = Utils.checkIsCurrentDate(locateCheckInDate.getText().toString());
+                    if (editLastEndTime.equals("")) {
 
-                    if (b) {
+                        //boolean b = Utils.checkSelTimeWithCurrentTime(locateCheckInDate.getText().toString(),locateCheckInTime.getText().toString());
+                        boolean b = Utils.checkIsCurrentDate(locateCheckInDate.getText().toString());
 
-                        boolean isTimeCheck = Utils.checkSelTimeWithCurrentTime(b,locateCheckInTime.getText().toString());
+                        if (b) {
 
-                        if (isTimeCheck){
-                            //Leave it the selected time...
-                        }else {
-                            Toast.makeText(getActivity(), "Start time not less than current time", Toast.LENGTH_SHORT).show();
-                            locateCheckInTime.setText(Utils.currentTimeWithExtraMins(2));
-                        }
+                            boolean isTimeCheck = Utils.checkSelTimeWithCurrentTime(b,locateCheckInTime.getText().toString());
 
-                    }/*else {
+                            if (isTimeCheck){
+                                //Leave it the selected time...
+                            }else {
+                                Toast.makeText(getActivity(), "Start time not less than current time", Toast.LENGTH_SHORT).show();
+                                locateCheckInTime.setText(Utils.currentTimeWithExtraMins(2));
+                            }
+
+                        }/*else {
                         if (profileData!=null) {
                             locateCheckInTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
                         }
                     }*/
+
+                    }else {
+
+                        //Add 4Hour...
+                        /*String[] time = locateCheckInTime.getText().toString().split(":");
+                        int t1 = Integer.parseInt(time[0]);
+
+                        if (t1>=20){
+                            locateCheckoutTime.setText("23:59");
+                        }else {
+                            locateCheckoutTime.setText(Utils.addHoursToSelectedTime(
+                                    locateCheckoutTime.getText().toString(),4));
+                        }*/
+
+                    }
 
                 }
 
