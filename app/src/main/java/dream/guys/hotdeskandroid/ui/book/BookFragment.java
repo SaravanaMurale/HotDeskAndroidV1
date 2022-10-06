@@ -275,6 +275,9 @@ public class BookFragment extends Fragment implements
 
     boolean isVehicleReg = false;
 
+    ArrayList<DataModel> mList = new ArrayList<>();;
+    int filterClickedStatus=0;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -315,7 +318,13 @@ public class BookFragment extends Fragment implements
         binding.rlFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getLocateAmenitiesFilterData(true);
+                if(filterClickedStatus==0){
+                    getLocateAmenitiesFilterData(true);
+                }else {
+                    //amenitiesResponseList
+                    callLocateFilterBottomSheet(null);
+                }
+//                getLocateAmenitiesFilterData(true);
             }
         });
         binding.searchGlobal.setOnClickListener(new View.OnClickListener() {
@@ -1097,14 +1106,22 @@ public class BookFragment extends Fragment implements
                             soo:
                             for (int j=0;j<filterAmenitiesList.size();j++){
                                 boolean amenityCheck=false;
-                                System.out.println("ame list"+filterAmenitiesList.get(j));
+                                System.out.println("ame list check of"+i+" : "+filterAmenitiesList.get(j));
                                 for(int x=0; x<userAllowedMeetingResponseList.get(i).getAmenities().size(); x++){
                                     if (filterAmenitiesList.get(j) == userAllowedMeetingResponseList.get(i)
                                             .getAmenities().get(x).getId()){
+
+                                        System.out.println("ame list check of true"+
+                                                userAllowedMeetingResponseList.get(i).getName());
+                                        userAllowedMeetingResponseList.remove(i);
+                                        System.out.println("ame list check of"+i+" : "+filterAmenitiesList.get(j));
+
                                         amenityCheck=true;
                                     }
                                 }
                                 if (!amenityCheck) {
+                                    System.out.println("ame list check of remove"+
+                                            userAllowedMeetingResponseList.get(i).getName());
                                     userAllowedMeetingResponseList.remove(i);
                                     break soo;
                                 }
@@ -1113,6 +1130,7 @@ public class BookFragment extends Fragment implements
                         loo:
                         for (int i=0; i< userAllowedMeetingResponseList.size();i++){
                             if (participants <= userAllowedMeetingResponseList.get(i).getNoOfPeople()){
+                                userAllowedMeetingResponseListUpdated.add(userAllowedMeetingResponseList.get(i));
                                 userAllowedMeetingResponseListUpdated.add(userAllowedMeetingResponseList.get(i));
                             }
 
@@ -4475,7 +4493,7 @@ public class BookFragment extends Fragment implements
         }
 
     }
-    private void callLocateFilterBottomSheet(List<AmenitiesResponse> amenitiesResponseList) {
+    /*private void callLocateFilterBottomSheet(List<AmenitiesResponse> amenitiesResponseList) {
 
         RecyclerView locateFilterMainRV;
         ValuesPOJO valuesPOJO;
@@ -4560,14 +4578,14 @@ public class BookFragment extends Fragment implements
         }
 
 
-        /*valuesPOJO = new ValuesPOJO("Single", false);
+        *//*valuesPOJO = new ValuesPOJO("Single", false);
         nestedList2.add(valuesPOJO);
         valuesPOJO = new ValuesPOJO("Double", false);
         nestedList2.add(valuesPOJO);
         valuesPOJO = new ValuesPOJO("Ac", false);
         nestedList2.add(valuesPOJO);
         valuesPOJO = new ValuesPOJO("Non-AC", false);
-        nestedList2.add(valuesPOJO);*/
+        nestedList2.add(valuesPOJO);*//*
 
 
         mList.add(new DataModel(nestedList1, "Workspaces"));
@@ -4576,6 +4594,147 @@ public class BookFragment extends Fragment implements
 
         adapter = new ItemAdapter(mList);
         locateFilterMainRV.setAdapter(adapter);
+
+        bottomSheetDialog.show();
+
+    }
+*/
+    private void callLocateFilterBottomSheet(List<AmenitiesResponse> amenitiesResponseList) {
+
+        RecyclerView locateFilterMainRV;
+        ValuesPOJO valuesPOJO;
+        //ArrayList<DataModel> mList;
+        ItemAdapter adapter;
+        EditText filterSearch;
+
+
+        TextView locateFilterCancel, locateFilterApply,tvFilterAmenities,filterTotalSize;
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((this).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_locate_filter,
+                new RelativeLayout(getContext())));
+
+        locateFilterCancel = bottomSheetDialog.findViewById(R.id.locateFilterCancel);
+        locateFilterApply = bottomSheetDialog.findViewById(R.id.locateFilterApply);
+        tvFilterAmenities=bottomSheetDialog.findViewById(R.id.tvFilter);
+        filterSearch=bottomSheetDialog.findViewById(R.id.filterSearch);
+        filterTotalSize=bottomSheetDialog.findViewById(R.id.filterTotalSize);
+
+
+        //Language
+        filterSearch.setHint(appKeysPage.getSearch());
+        tvFilterAmenities.setText(appKeysPage.getFilters());
+
+
+        locateFilterMainRV = bottomSheetDialog.findViewById(R.id.locateFilterMainRV);
+        locateFilterMainRV.setHasFixedSize(true);
+        locateFilterMainRV.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+        locateFilterCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+
+
+        locateFilterApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                filterAmenitiesList.clear();
+                ItemAdapter itemAadapter=new ItemAdapter();
+                ArrayList<DataModel> userSelectedAmenities =itemAadapter.getUpdatedList();
+                int amenitiesMatchCount=0;
+
+                //Checking Here Only With Rooms
+                for (int i = 0; i <userSelectedAmenities.get(1).getNestedList().size() ; i++) {
+                    if(userSelectedAmenities.get(1).getNestedList().get(i).isChecked()) {
+                        filterAmenitiesList.add(userSelectedAmenities.get(1).getNestedList().get(i).getId());
+                    }
+                }
+
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        //mList = new ArrayList<>();
+
+        //list1
+        ArrayList<ValuesPOJO> nestedList1 = new ArrayList<>();
+
+        valuesPOJO = new ValuesPOJO("Monitor", false);
+        nestedList1.add(valuesPOJO);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Adjustable height", false);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Laptop stand", false);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("USB_C Dock", false);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Charge point", false);
+        nestedList1.add(valuesPOJO);
+        valuesPOJO = new ValuesPOJO("Standing desk", false);
+        nestedList1.add(valuesPOJO);
+
+        if(filterClickedStatus==0) {
+            filterClickedStatus=1;
+            ArrayList<ValuesPOJO> nestedList2 = new ArrayList<>();
+
+            for (int i = 0; i < amenitiesResponseList.size(); i++) {
+
+                //if(amenitiesResponseList.get(i).isAvailable()){
+                valuesPOJO = new ValuesPOJO(amenitiesResponseList.get(i).getId(), amenitiesResponseList.get(i).getName(), false);
+                nestedList2.add(valuesPOJO);
+                //}
+            }
+
+            mList.add(new DataModel(nestedList1, "Workspaces"));
+            mList.add(new DataModel(nestedList2, appKeysPage.getRooms()));
+
+        }
+
+        for (int i = 0; i <mList.size() ; i++) {
+
+            mList.get(i).setExpandable(false);
+
+        }
+        filterTotalSize.setText("("+mList.get(1).getNestedList().size()+")");
+        adapter = new ItemAdapter(mList);
+        locateFilterMainRV.setAdapter(adapter);
+
+
+     /*   filterSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                if(s.toString().length()>=2){
+
+
+                    for (int i = 0; i <nestedList2.size() ; i++) {
+                       if( nestedList2.get(i).getValues().contains(s.toString())){
+
+                       }
+
+                    }
+
+
+
+                }
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });*/
 
         bottomSheetDialog.show();
 

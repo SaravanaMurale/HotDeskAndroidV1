@@ -74,12 +74,12 @@
             android:text="Unavaliable" />
 
         <TextView
+            android:id="@+id/un_available_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="This desk is unavliable"
             android:layout_below="@+id/tvUnaValibale"
             android:layout_marginTop="@dimen/_10sdp"
-            />
+            android:text="This desk is unavliable" />
 
     </RelativeLayout>
 

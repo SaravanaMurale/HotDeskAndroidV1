@@ -68,7 +68,7 @@ public class CarListToEditAdapterBooking extends RecyclerView.Adapter<CarListToE
             holder.editBookingImage.setImageDrawable(context.getDrawable(R.drawable.car));
         }
 
-        holder.editCode.setText(carParkBookings.get(position).getVehicleRegNumber());
+        holder.editCode.setText(carParkBookings.get(position).getParkingSlotName());
         holder.editCheckInTime.setText(Utils.splitTime(carParkBookings.get(position).getFrom()));
         holder.editCheckOutTime.setText(Utils.splitTime(carParkBookings.get(position).getMyto()));
 

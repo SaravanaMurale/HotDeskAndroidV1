@@ -257,7 +257,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_3sdp"
                 android:layout_marginTop="@dimen/_3sdp"
-                android:visibility="gone"
+                android:visibility="visible"
                 >
 
                 <ImageView

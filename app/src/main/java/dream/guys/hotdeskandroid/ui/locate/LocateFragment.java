@@ -463,7 +463,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 if (parentId > 0) {
 
-
                     if(filterClickedStatus==0){
                         getLocateAmenitiesFilterData(true);
                     }else {
@@ -2231,7 +2230,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void callDeskUnavaliable(String selctedCode, String key, int id, String code, int requestTeamId, int requestTeamDeskId) {
 
-        TextView unAvalibaleDeskName, tvUnavaliableBack, unAvaliableLocate, tvDescriptionUnAvaliable;
+        TextView unAvalibaleDeskName, tvUnavaliableBack, unAvaliableLocate, tvDescriptionUnAvaliable,unAvailableDesc;
 
         BottomSheetDialog locateCheckInBottomSheet = new BottomSheetDialog(getContext());
         View view = View.inflate(getContext(), R.layout.dialog_locate_unavalible_bottomsheet, null);
@@ -2244,13 +2243,16 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         tvUnavaliableBack = locateCheckInBottomSheet.findViewById(R.id.tvUnavaliableBack);
         unAvaliableLocate = locateCheckInBottomSheet.findViewById(R.id.unAvaliableLocate);
         tvDescriptionUnAvaliable = locateCheckInBottomSheet.findViewById(R.id.tvDescriptionUnAvaliable);
+        unAvailableDesc = locateCheckInBottomSheet.findViewById(R.id.un_available_desc);
 
         unAvalibaleDeskName.setText(selctedCode);
         if (binding.searchLocate.getText().toString() != null) {
             //System.out.println("UnavaliableSearchHere"+binding.searchLocate.getText().toString());
             unAvaliableLocate.setText(binding.searchLocate.getText().toString());
         }
-
+        if(code.equalsIgnoreCase("5")){
+            unAvailableDesc.setText("This car par is unavailable");
+        }
         if (deskDescriotion != null) {
             tvDescriptionUnAvaliable.setText(deskDescriotion);
         }

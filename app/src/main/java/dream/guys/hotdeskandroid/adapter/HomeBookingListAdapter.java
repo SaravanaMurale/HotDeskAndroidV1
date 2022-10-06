@@ -241,6 +241,17 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
             switch (list.get(position).getCalendarEntriesModel().getUsageTypeAbbreviation()){
                 case "RQ":
+
+                    holder.tvSubBookingWorkingRemote.setText(""
+                            +Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom())
+                            +" - "
+                            +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
+
+                    Glide.with(context)
+                            .load(R.drawable.chair)
+                            .placeholder(R.drawable.chair)
+                            .into(holder.bookingRemoteHome);
+
                     holder.tvBookingWorkingRemote.setText("Request for Desk In Progress");
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("Request for Desk In Progress");
                     if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
@@ -342,7 +353,10 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getMeetingBookingsModel().getMyto()));
 
         }
-        else if (list.get(position).getCalDeskStatus() == 3){
+        else if (list.get(position).getCalDeskStatus() == 3
+                && !list.get(position)
+                .getCarParkBookingsModel().getRequestStatus()
+                .equalsIgnoreCase("pending")){
             //Car Parking
             holder.rlBookingRemoteBlock.setVisibility(View.GONE);
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
@@ -377,6 +391,24 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingDeskName.setText(""+list.get(position).getCarParkBookingsModel().getParkingSlotCode());
             holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getCarParkBookingsModel().getFrom()));
             holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getCarParkBookingsModel().getMyto()));
+        } else if(list.get(position).getCalDeskStatus() == 3) {
+            holder.rlBookingRemoteBlock.setVisibility(View.VISIBLE);
+            holder.rlInOffice.setVisibility(View.GONE);
+            holder.bookingBtnCheckIn.setVisibility(View.GONE);
+            holder.bookingBtnCheckOut.setVisibility(View.GONE);
+
+            holder.tvBookingWorkingRemote.setText("Car Parking Requested");
+            holder.tvSubBookingWorkingRemote.setText(""
+                    +Utils.splitTime(list.get(position).getCarParkBookingsModel().getFrom())
+                    +" - "
+                    +Utils.splitTime(list.get(position).getCarParkBookingsModel().getMyto()));
+
+            Glide.with(context)
+                    .load(R.drawable.car)
+                    .placeholder(R.drawable.car)
+                    .into(holder.bookingRemoteHome);
+
+
         }
 
         //CheckOut Button Click
@@ -517,6 +549,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         Button bookingBtnCheckOut;
         @BindView(R.id.bookingIvIcon)
         ImageView bookingImage;
+        @BindView(R.id.bookingRemoteHome)
+        ImageView bookingRemoteHome;
         @BindView(R.id.rlDateLayout)
         RelativeLayout dateLayout;
 
