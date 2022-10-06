@@ -302,8 +302,8 @@ public class BookingForEditResponse {
         public String fromUtc;
         public String toUtc;
         public String comments;
-        public int requestedTeamId;
-        public int requestedTeamDeskId;
+        public Integer requestedTeamId;
+        public Integer requestedTeamDeskId;
         public int deskId;
         public String deskCode;
         public String deskTeamName;
@@ -392,19 +392,19 @@ public class BookingForEditResponse {
             this.comments = comments;
         }
 
-        public int getRequestedTeamId() {
+        public Integer getRequestedTeamId() {
             return requestedTeamId;
         }
 
-        public void setRequestedTeamId(int requestedTeamId) {
+        public void setRequestedTeamId(Integer requestedTeamId) {
             this.requestedTeamId = requestedTeamId;
         }
 
-        public int getRequestedTeamDeskId() {
+        public Integer getRequestedTeamDeskId() {
             return requestedTeamDeskId;
         }
 
-        public void setRequestedTeamDeskId(int requestedTeamDeskId) {
+        public void setRequestedTeamDeskId(Integer requestedTeamDeskId) {
             this.requestedTeamDeskId = requestedTeamDeskId;
         }
 

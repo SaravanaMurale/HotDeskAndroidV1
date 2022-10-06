@@ -389,7 +389,7 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
             @Override
             public void onClick(View v) {
                 if (editDeskBookingDetails.getDeskStatus() != 1 && editDeskBookingDetails.getDeskStatus() != 2)
-                    Utils.bottomSheetTimePicker(MainActivity.this,MainActivity.this,startTime,"Start Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
+                    Utils.bottomSheetTimePicker(MainActivity.this,MainActivity.this,startTime,"Start Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
 //                    Utils.popUpTimePicker(getActivity(),startTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
             }
         });
@@ -398,7 +398,7 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
             @Override
             public void onClick(View v) {
                 if (editDeskBookingDetails.getDeskStatus() != 1)
-                    Utils.bottomSheetTimePicker(MainActivity.this,MainActivity.this,endTime,"End Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
+                    Utils.bottomSheetTimePicker(MainActivity.this,MainActivity.this,endTime,"End Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
 //                    Utils.popUpTimePicker(getActivity(),endTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
             }
         });

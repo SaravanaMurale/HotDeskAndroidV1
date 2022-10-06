@@ -1790,7 +1790,7 @@ public class BookFragment extends Fragment implements
             @Override
             public void onClick(View v) {
                 if (editDeskBookingDetails.getDeskStatus() != 1 && editDeskBookingDetails.getDeskStatus() != 2)
-                    Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
+                    Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
 //                    Utils.popUpTimePicker(getActivity(),startTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
             }
         });
@@ -1799,7 +1799,7 @@ public class BookFragment extends Fragment implements
             @Override
             public void onClick(View v) {
                 if (editDeskBookingDetails.getDeskStatus() != 1)
-                    Utils.bottomSheetTimePicker(getContext(),getActivity(),endTime,"End Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
+                    Utils.bottomSheetTimePicker(getContext(),getActivity(),endTime,"End Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
 //                    Utils.popUpTimePicker(getActivity(),endTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
             }
         });

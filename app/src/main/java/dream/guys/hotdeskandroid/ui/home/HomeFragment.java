@@ -146,6 +146,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     SwipeRefreshLayout mSwipeRefreshLayout;
     List<AmenitiesResponse> amenitiesList = new ArrayList<>();
 
+    boolean isRequestedDesk = false;
     //New...
     UserDetailsResponse profileData;
 
@@ -790,12 +791,55 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         }
     }
 
+    private void loadDeskListCheckRequest(int id, String date,
+                                          EditBookingDetails editDeskBookingDetails,
+                                          int dskRoomStatus, int position) {
+        if (Utils.isNetworkAvailable(getActivity())) {
+            isRequestedDesk=false;
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BookingForEditResponse> call = apiService.getBookingsForEdit(teamId,teamMembershipId,
+                    date,date);
+            call.enqueue(new Callback<BookingForEditResponse>() {
+                @Override
+                public void onResponse(Call<BookingForEditResponse> call, Response<BookingForEditResponse> response) {
+                    if (response.code()==200){
+                        for (int i=0; i<response.body().getBookings().size(); i++){
+                            if (response.body().getBookings().get(i).getId() ==id
+                                    && response.body().getBookings().get(i).getRequestedTeamDeskId() != null){
+                                isRequestedDesk =true;
+                            }
+                        }
+
+                    }else if(response.code()==401){
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+//                        Utils.finishAllActivity(getContext());
+                    }
+                    editBookingUsingBottomSheet(editDeskBookingDetails,1,position);
+
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+//                    createRecyclerDeskList(response.body().getTeamDeskAvailabilities());
+                }
+
+                @Override
+                public void onFailure(Call<BookingForEditResponse> call, Throwable t) {
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    editBookingUsingBottomSheet(editDeskBookingDetails,1,position);
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
+    }
     private void loadDeskList() {
         System.out.println("desk Code enter");
         if (Utils.isNetworkAvailable(getActivity())) {
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<BookingForEditResponse> call = apiService.getBookingsForEdit(teamId,teamMembershipId,Utils.getCurrentDate(),Utils.getCurrentDate());
+            Call<BookingForEditResponse> call = apiService.getBookingsForEdit(teamId,teamMembershipId,
+                    Utils.getCurrentDate(),Utils.getCurrentDate());
             call.enqueue(new Callback<BookingForEditResponse>() {
                 @Override
                 public void onResponse(Call<BookingForEditResponse> call, Response<BookingForEditResponse> response) {
@@ -989,7 +1033,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     .append(calendarEntriesModel.getBooking().getLocationBuildingFloor().getBuildingName())
                     .append(" - ").append(calendarEntriesModel.getBooking().getLocationBuildingFloor().getfLoorName()).toString()
                 );
-            editBookingUsingBottomSheet(editDeskBookingDetails,1,position);
+            loadDeskListCheckRequest(calendarEntriesModel.getId(), Utils.getYearMonthDateFormat(date), editDeskBookingDetails, 1,position);
+//            editBookingUsingBottomSheet(editDeskBookingDetails,1,position);
 
         }
     }
@@ -1330,7 +1375,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             @Override
             public void onClick(View v) {
                 if (editDeskBookingDetails.getDeskStatus() != 1 && editDeskBookingDetails.getDeskStatus() != 2)
-                    Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
+                    Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",
+                            Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
 //                    Utils.popUpTimePicker(getActivity(),startTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
             }
         });
@@ -1339,7 +1385,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             @Override
             public void onClick(View v) {
                 if (editDeskBookingDetails.getDeskStatus() != 1)
-                    Utils.bottomSheetTimePicker(getContext(),getActivity(),endTime,"End Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
+                    Utils.bottomSheetTimePicker(getContext(),getActivity(),
+                            endTime,"End Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()), isRequestedDesk);
 //                    Utils.popUpTimePicker(getActivity(),endTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
             }
         });

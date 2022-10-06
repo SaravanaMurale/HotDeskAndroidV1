@@ -274,7 +274,7 @@ public class Utils {
 
 
     //Bottom Sheet TimePicker
-    public static void bottomSheetTimePicker(Context mContext, Activity activity,TextView tv, String title, String date) {
+    public static void bottomSheetTimePicker(Context mContext, Activity activity,TextView tv, String title, String date, Boolean isrequested) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet,
                 new RelativeLayout(activity)));
@@ -301,6 +301,8 @@ public class Utils {
         simpleTimePicker.setHour(Integer.parseInt(parts[0]));
         simpleTimePicker.setMinute(Integer.parseInt(parts[1]));
 
+        int oldHour = Integer.parseInt(parts[0]);
+        int oldMinutes = Integer.parseInt(parts[1]);
         String part1 = parts[0]; // 004
         String part2 = parts[1]; // 034556
         simpleTimePicker.setHour(Integer.parseInt(part1));
@@ -321,6 +323,12 @@ public class Utils {
             public void onClick(View v) {
                 hour=simpleTimePicker.getHour();
                 minutes=simpleTimePicker.getMinute();
+                if (hour > oldHour || (hour==oldHour && minutes >oldMinutes)){
+                    Toast.makeText(mContext, "For Request end time cant be more that approved hours", Toast.LENGTH_SHORT).show();
+                    hour= oldHour;
+                    minutes = oldMinutes;
+                }
+
                 String time=hour+":"+minutes;
 
                 SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
