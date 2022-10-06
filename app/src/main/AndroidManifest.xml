@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature
@@ -20,10 +21,17 @@
         android:name=".utils.MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_new"
+        android:requestLegacyExternalStorage="true"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_new_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HotDeskAndroid">
+        <activity
+            android:name=".ui.settings.WhatsNewActiviy"
+            android:exported="false" />
+        <activity
+            android:name=".ui.settings.HelpPdfViewActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.chat.FreshChatActivity"
             android:exported="false" />

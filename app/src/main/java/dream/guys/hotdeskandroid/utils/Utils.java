@@ -139,6 +139,9 @@ public class Utils {
     public static void toastMessage(Context mContext, String message) {
         Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
     }
+    public static void toastShortMessage(Context mContext, String message) {
+        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+    }
 
     public static boolean isNetworkAvailable(final Context context) {
         return ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo() != null;

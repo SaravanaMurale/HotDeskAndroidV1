@@ -413,6 +413,7 @@
 
             </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/helpAndTroubleShootBlock"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -445,6 +446,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/whatNewBlock"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"

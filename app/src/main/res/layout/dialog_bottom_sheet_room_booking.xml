@@ -199,7 +199,7 @@
             android:padding="@dimen/_1sdp"
             android:background="@drawable/rectangle_greybg_with_corner"
             android:orientation="horizontal"
-            android:visibility="gone"
+            android:visibility="visible"
             >
 
             <TextView
@@ -220,7 +220,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:buttonTint="@color/figmaBlue"
-                android:checked="true" />
+                android:checked="false" />
         </RelativeLayout>
 
 

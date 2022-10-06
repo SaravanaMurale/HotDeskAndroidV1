@@ -7,7 +7,10 @@ import static dream.guys.hotdeskandroid.utils.Utils.getWellBeingScreenData;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.UiModeManager;
 import android.content.Context;
@@ -20,7 +23,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -30,6 +35,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nimbusds.jose.util.IOUtils;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
 import dream.guys.hotdeskandroid.LanguageListActivity;
@@ -50,6 +66,7 @@ import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -279,6 +296,128 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        binding.helpAndTroubleShootBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (checkPermission()) {
+                    getHelpAndPDFHandler();
+
+                } else {
+                    requestPermission();
+                }
+
+
+            }
+        });
+
+        binding.whatNewBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent=new Intent(SettingsActivity.this,WhatsNewActiviy.class);
+                startActivity(intent);
+
+            }
+        });
+
+    }
+
+    private void requestPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            Toast.makeText(this, "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 1003);
+        }
+    }
+
+    private boolean checkPermission() {
+        int result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        int result2 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        return result1 == PackageManager.PERMISSION_GRANTED && result2 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void getHelpAndPDFHandler() {
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ResponseBody> call=apiService.downloadPdf();
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                File apkStorage = null;
+                File outputFile = null;
+                if(response!=null) {
+
+                    ResponseBody responseBody = response.body();
+                    InputStream is = responseBody.byteStream();
+
+
+                    try {
+                        //Get File if SD card is present
+                        if (isSDCardPresent()) {
+                            apkStorage = new File(Environment.getExternalStorageDirectory() + "/" + "hotdesk");
+                            System.out.println("FileCreated");
+                        } else
+                            Toast.makeText(context, "Oops!! There is no SD Card.", Toast.LENGTH_SHORT).show();
+
+                        //If File is not present create directory
+                        if (!apkStorage.exists()) {
+                            apkStorage.mkdir();
+                            System.out.println("DirectorFileCreated");
+                            //Log.e(TAG, "Directory Created.");
+                        }
+
+                        outputFile = new File(apkStorage, "Help.pdf");//Create Output file in Main File
+
+                        //Create New File if not present
+                        if (!outputFile.exists()) {
+                            outputFile.createNewFile();
+                            //Log.e(TAG, "File Created");
+
+
+                            FileOutputStream fos = new FileOutputStream(outputFile);//Get OutputStream for NewFile Location
+
+                            //InputStream is = c.getInputStream();//Get InputStream for connection
+
+                            byte[] buffer = new byte[1024];//Set buffer type
+                            int len1 = 0;//init length
+                            while ((len1 = is.read(buffer)) != -1) {
+                                fos.write(buffer, 0, len1);//Write new file
+                            }
+
+                            //Close all connection after doing task
+                            fos.close();
+                            is.close();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        outputFile = null;
+
+                    }
+
+
+
+                }
+
+
+                Intent intent=new Intent(SettingsActivity.this,HelpPdfViewActivity.class);
+                startActivity(intent);
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+
+    public boolean isSDCardPresent() {
+        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
     }
 
     private void setNightModeHere(SettingsActivity settingsActivity, boolean state) {
