@@ -1376,7 +1376,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             public void onClick(View v) {
                 if (editDeskBookingDetails.getDeskStatus() != 1 && editDeskBookingDetails.getDeskStatus() != 2)
                     Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",
-                            Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
+                            Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),isRequestedDesk);
 //                    Utils.popUpTimePicker(getActivity(),startTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
             }
         });

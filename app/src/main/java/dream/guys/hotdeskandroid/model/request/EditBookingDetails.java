@@ -24,6 +24,24 @@ public class EditBookingDetails {
     String abbrevation;
     List<String> amenities;
     boolean isTeamsChecked;
+    public int requestedTeamId;
+    public int requestedTeamDeskId;
+
+    public int getRequestedTeamId() {
+        return requestedTeamId;
+    }
+
+    public void setRequestedTeamId(int requestedTeamId) {
+        this.requestedTeamId = requestedTeamId;
+    }
+
+    public int getRequestedTeamDeskId() {
+        return requestedTeamDeskId;
+    }
+
+    public void setRequestedTeamDeskId(int requestedTeamDeskId) {
+        this.requestedTeamDeskId = requestedTeamDeskId;
+    }
 
     public int getNoOfPeople() {
         return noOfPeople;

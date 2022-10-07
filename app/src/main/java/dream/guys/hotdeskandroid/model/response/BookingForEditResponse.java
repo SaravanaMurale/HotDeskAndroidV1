@@ -295,6 +295,7 @@ public class BookingForEditResponse {
         public String date;
         public int usageTypeId;
         public int teamDeskId;
+        public int parkingSlotId;
         public String timeZoneId;
         public String from;
         @SerializedName("to")
@@ -311,6 +312,13 @@ public class BookingForEditResponse {
         public String bookedByUserName;
         public Status status;
 
+        public int getParkingSlotId() {
+            return parkingSlotId;
+        }
+
+        public void setParkingSlotId(int parkingSlotId) {
+            this.parkingSlotId = parkingSlotId;
+        }
 
         public int getId() {
             return id;

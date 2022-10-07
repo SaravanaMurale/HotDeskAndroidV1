@@ -120,7 +120,7 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
         holder.editTextEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onEditClickable.onEditClick(bookingsListToEdit.get(holder.getAbsoluteAdapterPosition()),code,teamDeskAvailabilities);
+                onEditClickable.onEditClick(bookingsListToEdit.get(holder.getAbsoluteAdapterPosition()) ,code,teamDeskAvailabilities);
 
             }
         });

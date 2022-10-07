@@ -1051,6 +1051,7 @@ public class BookFragment extends Fragment implements
                         loo :
                         for (int i=0;i<parkingSpotModelList.size();i++){
                             if (editBookingDetails.getParkingSlotId()==parkingSpotModelList.get(i).getId()){
+                                editBookingDetails.setLocationAddress(parkingSpotModelList.get(i).getLocation().getName());
                                 checkIsRequest=true;
                                 break loo;
                             }
@@ -1682,6 +1683,8 @@ public class BookFragment extends Fragment implements
 
         if (dskRoomParkStatus == 1) {
             if (newEditStatus.equalsIgnoreCase("edit")){
+                if (editDeskBookingDetails.getRequestedTeamId()!=0)
+                    select.setVisibility(View.GONE);
                 repeatBlock.setVisibility(View.GONE);
             }else
                 repeatBlock.setVisibility(View.VISIBLE);
@@ -1749,11 +1752,17 @@ public class BookFragment extends Fragment implements
                 title.setText("Book Parking Slot");
             }
 //            System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
-            if (parkingSpotModelList.size() > 0){
+            if (parkingSpotModelList.size() > 0 && !newEditStatus.equalsIgnoreCase("edit")){
 //                System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
                 deskRoomName.setText(""+parkingSpotModelList.get(0).getCode());
                 selectedDeskId = parkingSpotModelList.get(0).getId();
                 locationAddress.setText(""+parkingSpotModelList.get(0).getLocation().getName());
+            } else {
+                select.setVisibility(View.GONE);
+                title.setText("Edit Parking Details");
+                deskRoomName.setText(""+editDeskBookingDetails.getParkingSlotCode());
+                selectedDeskId = editDeskBookingDetails.getParkingSlotId();
+                locationAddress.setText(""+editDeskBookingDetails.getLocationAddress());
             }
 
         }
@@ -1789,7 +1798,14 @@ public class BookFragment extends Fragment implements
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (editDeskBookingDetails.getDeskStatus() != 1 && editDeskBookingDetails.getDeskStatus() != 2)
+
+                Toast.makeText(context, "fsf"+editDeskBookingDetails.getRequestedTeamDeskId(), Toast.LENGTH_SHORT).show();
+                if (editDeskBookingDetails.getDeskStatus() != 1
+                        && editDeskBookingDetails.getDeskStatus() != 2
+                        && editDeskBookingDetails.getRequestedTeamId() > 0)
+                    Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
+                else if (editDeskBookingDetails.getDeskStatus() != 1
+                        && editDeskBookingDetails.getDeskStatus() != 2)
                     Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
 //                    Utils.popUpTimePicker(getActivity(),startTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
             }
@@ -1798,7 +1814,10 @@ public class BookFragment extends Fragment implements
         endTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (editDeskBookingDetails.getDeskStatus() != 1)
+                if (editDeskBookingDetails.getDeskStatus() != 1
+                        && editDeskBookingDetails.getRequestedTeamId() > 0)
+                    Utils.bottomSheetTimePicker(getContext(),getActivity(),endTime,"End Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
+                else if(editDeskBookingDetails.getDeskStatus() != 1)
                     Utils.bottomSheetTimePicker(getContext(),getActivity(),endTime,"End Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
 //                    Utils.popUpTimePicker(getActivity(),endTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
             }
@@ -1886,7 +1905,9 @@ public class BookFragment extends Fragment implements
                                 if (!commentRegistration.getText().toString().isEmpty() &&
                                         !commentRegistration.getText().toString().equalsIgnoreCase(""))
                                     jsonChangesObject.addProperty("comments",commentRegistration.getText().toString());
-                                if (selectedDeskId!=0 && dskRoomParkStatus==1 && selectedDeskId != editDeskBookingDetails.getDesktId()){
+                                if (selectedDeskId!=0 && dskRoomParkStatus==1
+                                        && selectedDeskId != editDeskBookingDetails.getDesktId()){
+                                    Toast.makeText(context, "ds"+selectedDeskId, Toast.LENGTH_SHORT).show();
                                     jsonChangesObject.addProperty("teamDeskId",selectedDeskId);
                                 }
 
@@ -1904,7 +1925,7 @@ public class BookFragment extends Fragment implements
                                 }else{
                                     if (!newEditStatus.equalsIgnoreCase("edit") && selectedDeskId!=0)
                                         jsonChangesObject.addProperty("teamDeskId",selectedDeskId);
-                                    else
+                                    else if (selectedDeskId != editDeskBookingDetails.getDesktId())
                                         jsonChangesObject.addProperty("teamDeskId",editDeskBookingDetails.getDesktId());
                                 }
                                 break;
@@ -1914,6 +1935,8 @@ public class BookFragment extends Fragment implements
                             case 3:
                                 if (selectedDeskId!=0)
                                     jsonOuterObject.addProperty("parkingSlotId",selectedDeskId);
+                                else
+                                    jsonOuterObject.addProperty("parkingSlotId",editDeskBookingDetails.getParkingSlotId());
 
                                 if (!commentRegistration.getText().toString().isEmpty() &&
                                         !commentRegistration.getText().toString().equalsIgnoreCase(""))
@@ -2852,6 +2875,16 @@ public class BookFragment extends Fragment implements
         editDeskBookingDetails.setDeskCode(bookings.getDeskCode());
         editDeskBookingDetails.setDeskStatus(0);
         editDeskBookingDetails.setDesktId(bookings.getTeamDeskId());
+
+        if (bookings.getRequestedTeamDeskId()!=null)
+            editDeskBookingDetails.setRequestedTeamDeskId(bookings.getRequestedTeamDeskId());
+        else
+            editDeskBookingDetails.setRequestedTeamDeskId(0);
+        if (bookings.getRequestedTeamId()!=null)
+            editDeskBookingDetails.setRequestedTeamId(bookings.getRequestedTeamId());
+        else
+            editDeskBookingDetails.setRequestedTeamId(0);
+
         editBookingUsingBottomSheet(editDeskBookingDetails,1,0,"edit");
 
     }

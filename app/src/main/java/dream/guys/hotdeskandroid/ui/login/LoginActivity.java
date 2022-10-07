@@ -441,8 +441,8 @@ public class LoginActivity extends AppCompatActivity {
     private void doLogin(String companyName, String email, String password) {
 
         if (Utils.isNetworkAvailable(this)) {
-
             dialog=ProgressDialog.showProgressBar(LoginActivity.this);
+            SessionHandler.getInstance().remove(LoginActivity.this,AppConstants.USERTOKEN);
             GetTokenRequest getTokenRequest = new GetTokenRequest(companyName, email, password);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<GetTokenResponse> call = apiService.getLoginToken(getTokenRequest);

@@ -238,37 +238,6 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
         }
 
     }
-    private void getRoomlist(EditBookingDetails editBookingDetails) {
-        if (Utils.isNetworkAvailable(this)) {
-            dialog= ProgressDialog.showProgressBar(this);
-
-            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<List<UserAllowedMeetingResponse>> call = apiService.userAllowedMeetings();
-            call.enqueue(new Callback<List<UserAllowedMeetingResponse>>() {
-                @Override
-                public void onResponse(Call<List<UserAllowedMeetingResponse>> call, Response<List<UserAllowedMeetingResponse>> response) {
-                    userAllowedMeetingResponseList=response.body();
-
-                    ProgressDialog.dismisProgressBar(getContext(),dialog);
-
-                    editBookingUsingBottomSheet(editBookingDetails,2,0,"new");
-//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
-
-                }
-
-                @Override
-                public void onFailure(Call<List<UserAllowedMeetingResponse>> call, Throwable t) {
-                    ProgressDialog.dismisProgressBar(MainActivity.this,dialog);
-                    editBookingUsingBottomSheet(editBookingDetails,2,0,"new");
-//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                }
-            });
-
-        } else {
-            Utils.toastMessage(this, "Please Enable Internet");
-        }
-
-    }
 
     private void editBookingUsingBottomSheet(EditBookingDetails editDeskBookingDetails, int dskRoomParkStatus, int position,String newEditStatus) {
 
@@ -887,35 +856,6 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
         popDialog.show();
     }
 
-    private void getParkingSpotList(String id, EditBookingDetails editBookingDetails,String newEdit) {
-        if (Utils.isNetworkAvailable(this)) {
-            dialog= ProgressDialog.showProgressBar(this);
-
-            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<List<ParkingSpotModel>> call = apiService.getParkingSpotModels(id);
-            call.enqueue(new Callback<List<ParkingSpotModel>>() {
-                @Override
-                public void onResponse(Call<List<ParkingSpotModel>> call, Response<List<ParkingSpotModel>> response) {
-                    parkingSpotModelList=response.body();
-
-                    ProgressDialog.dismisProgressBar(MainActivity.this,dialog);
-                        editBookingUsingBottomSheet(editBookingDetails,3,0,"new");
-
-                }
-
-                @Override
-                public void onFailure(Call<List<ParkingSpotModel>> call, Throwable t) {
-                    ProgressDialog.dismisProgressBar(MainActivity.this,dialog);
-                    editBookingUsingBottomSheet(editBookingDetails,3,0,"new");
-//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                }
-            });
-
-        } else {
-            Utils.toastMessage(this, "Please Enable Internet");
-        }
-
-    }
 
     private void callSearchRecyclerData(String searchText) {
         if (Utils.isNetworkAvailable(this)) {

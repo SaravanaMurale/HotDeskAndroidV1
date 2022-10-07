@@ -36,12 +36,9 @@ public class MeetingListToEditAdapter extends RecyclerView.Adapter<MeetingListTo
     public interface OnMeetingEditClickable{
         public void onMeetingEditClick(MeetingListToEditResponse meetingListToEditResponse);
         public void onMeetingDeleteClick(MeetingListToEditResponse meetingListToEditResponse);
-
     }
 
     public MeetingListToEditAdapter(Context context, List<MeetingListToEditResponse> meetingListToEditResponseList,OnMeetingEditClickable onMeetingEditClickable) {
-
-
         this.context=context;
         this.meetingListToEditResponseList=meetingListToEditResponseList;
         this.onMeetingEditClickable=onMeetingEditClickable;
