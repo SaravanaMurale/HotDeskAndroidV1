@@ -300,7 +300,10 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String locationOfPdfFile=Environment.getExternalStorageDirectory() + "/" + "hotdesk"+"/Help.pdf";
+                Intent intent=new Intent(SettingsActivity.this,HelpPdfViewActivity.class);
+                startActivity(intent);
+
+                /*String locationOfPdfFile=Environment.getExternalStorageDirectory() + "/" + "hotdesk"+"/Help.pdf";
                 File file=new File(locationOfPdfFile);
 
                 //If File already presest
@@ -315,7 +318,7 @@ public class SettingsActivity extends AppCompatActivity {
                     } else {
                         requestPermission();
                     }
-                }
+                }*/
 
 
 
