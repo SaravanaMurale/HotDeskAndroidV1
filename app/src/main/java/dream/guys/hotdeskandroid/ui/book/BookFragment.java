@@ -1799,7 +1799,7 @@ public class BookFragment extends Fragment implements
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(context, "fsf"+editDeskBookingDetails.getRequestedTeamDeskId(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "fsf"+editDeskBookingDetails.getRequestedTeamDeskId(), Toast.LENGTH_SHORT).show();
                 if (editDeskBookingDetails.getDeskStatus() != 1
                         && editDeskBookingDetails.getDeskStatus() != 2
                         && editDeskBookingDetails.getRequestedTeamId() > 0)
@@ -1907,7 +1907,7 @@ public class BookFragment extends Fragment implements
                                     jsonChangesObject.addProperty("comments",commentRegistration.getText().toString());
                                 if (selectedDeskId!=0 && dskRoomParkStatus==1
                                         && selectedDeskId != editDeskBookingDetails.getDesktId()){
-                                    Toast.makeText(context, "ds"+selectedDeskId, Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(context, "ds"+selectedDeskId, Toast.LENGTH_SHORT).show();
                                     jsonChangesObject.addProperty("teamDeskId",selectedDeskId);
                                 }
 
