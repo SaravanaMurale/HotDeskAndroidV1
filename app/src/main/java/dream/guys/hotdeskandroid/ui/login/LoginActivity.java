@@ -594,7 +594,7 @@ public class LoginActivity extends AppCompatActivity {
 
         boolean userDetailStatus = false;
 
-        if (Utils.isValiedCompanyName(companyName)) {
+        //if (Utils.isValiedCompanyName(companyName)) {
             if (Utils.isValidEmail(email)) {
                 if (Utils.isValiedText(password)) {
                     userDetailStatus=true;
@@ -604,9 +604,9 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 Utils.toastMessage(LoginActivity.this, "Pls Enter Valid Email");
             }
-        } else {
+       /* } else {
             Utils.toastMessage(LoginActivity.this, "Pls Enter Valid CompanyName");
-        }
+        }*/
 
 
         return userDetailStatus;

@@ -80,6 +80,7 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
         switch (bookingsListToEdit.get(position).getUsageTypeId()){
             case 7:
                 holder.editCode.setText("Request for Desk");
+                makeVisible(holder,position);
                 break;
             case 9:
                 holder.editCode.setText("Working from home");
@@ -100,14 +101,21 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
                 holder.editCode.setText("Sick Leave");
                 break;
             default:
-                holder.editCheckInIcon.setVisibility(View.VISIBLE);
+
+
+
+                /*holder.editCheckInIcon.setVisibility(View.VISIBLE);
                 holder.editCheckOutIcon.setVisibility(View.VISIBLE);
                 holder.editCheckInTime.setVisibility(View.VISIBLE);
                 holder.editCheckOutTime.setVisibility(View.VISIBLE);
 
                 holder.editCode.setText(bookingsListToEdit.get(position).getDeskCode());
                 holder.editCheckInTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getFrom()));
-                holder.editCheckOutTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getMyto()));
+                holder.editCheckOutTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getMyto()));*/
+
+                holder.editCode.setText(bookingsListToEdit.get(position).getDeskCode());
+                makeVisible(holder,position);
+
                 break;
 
         }
@@ -135,6 +143,19 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
         });
 
 
+
+    }
+
+    private void makeVisible(BookingListToEditViewHolder holder, int position) {
+
+        holder.editCheckInIcon.setVisibility(View.VISIBLE);
+        holder.editCheckOutIcon.setVisibility(View.VISIBLE);
+        holder.editCheckInTime.setVisibility(View.VISIBLE);
+        holder.editCheckOutTime.setVisibility(View.VISIBLE);
+
+        //holder.editCode.setText(bookingsListToEdit.get(position).getDeskCode());
+        holder.editCheckInTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getFrom()));
+        holder.editCheckOutTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getMyto()));
 
     }
 

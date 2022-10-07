@@ -1952,6 +1952,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                         //Avaliable Booking
                                         //Desk Booking Bottom Sheet
+                                        editLastEndTime="";
                                         callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId, 1);
 
 
@@ -1975,7 +1976,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                         getDescriptionUsingDeskId(id);
 
                                         //Booking Request Bottom Sheet
-
+                                        editLastEndTime="";
                                         callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId, 4);
 
 
@@ -2016,6 +2017,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                     getCarDescriptionUsingCardId(id);
 
                                     //CarBooking
+                                    editLastEndTime="";
                                     callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId, 1);
                                 } else if (carParkingStatusModelList.get(i).getStatus() == 2) {
                                     //EditCarParking
@@ -2029,7 +2031,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                     getCarDescriptionUsingCardId(id);
                                     //CarRequestBooking
-
+                                    editLastEndTime="";
                                     callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId, 4);
                                 } else if (carParkingStatusModelList.get(i).getStatus() == 0) {
                                     callDeskUnavaliable(selctedCode, key, id, code, requestTeamId, requestTeamDeskId);
@@ -3037,8 +3039,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         //New...
-        if (bookingForEditResponse.getBookings()!=null &&
-        bookingForEditResponse.getBookings().size()>0){
+        if (bookingForEditResponse.getBookings()!=null && bookingForEditResponse.getBookings().size()>0){
 
             int c = bookingForEditResponse.getBookings().size();
             editLastEndTime = Utils.splitTime(bookingForEditResponse.getBookings().get(c-1).getMyto());
@@ -3691,6 +3692,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         locateCheckoutTime.setText(binding.locateEndTime.getText().toString());
 
         //New...
+
         if (editLastEndTime.equals("")) {
 
             boolean b = Utils.checkIsCurrentDate(locateCheckInDate.getText().toString());
@@ -7508,6 +7510,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                             //77_3 77 1 3
 
                             //callDeskBookingnBottomSheet(selctedCode, key, id, code, 0, 0, 1);
+                            editLastEndTime="";
                             callDeskBookingnBottomSheet(selctedCode, deskStatusModelList.get(j).getKey(), deskStatusModelList.get(j).getId(), deskStatusModelList.get(j).getCode(), 0, 0, 1);
                             //maddy-10 79_3 79 3
                         }
