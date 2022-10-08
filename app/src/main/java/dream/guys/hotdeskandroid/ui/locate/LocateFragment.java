@@ -1990,6 +1990,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                         }
 
                                         if(getAutoAproveStatus==2){
+                                            editLastEndTime="";
                                             System.out.println("AutoApprivedStausFlowGoesHere "+getAutoAproveStatus);
                                             callDeskBookingnBottomSheet(selctedCode, key, id, code, requestTeamId, requestTeamDeskId, 1,getAutoAproveStatus);
                                         }else if(getAutoAproveStatus==0){
