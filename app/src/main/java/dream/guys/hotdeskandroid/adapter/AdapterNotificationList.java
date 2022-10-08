@@ -136,7 +136,7 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
                 }else {
                     holder.txt_title.setText("Incoming ");
                 }
-
+                holder.btn_layout.setVisibility(View.VISIBLE);
                 holder.txt_title_count.setText("(" + String.valueOf(cIncoming) + ")");
             }else {
                 //holder.txt_title.setVisibility(View.GONE);
@@ -182,7 +182,7 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
             holder.btn_layout.setVisibility(View.GONE);
         }else {
             holder.checkBox.setVisibility(View.GONE);
-            holder.btnRemove.setVisibility(View.VISIBLE);
+            holder.btnRemove.setVisibility(View.GONE);
             //holder.btn_layout.setVisibility(View.VISIBLE);
         }
 
@@ -292,7 +292,10 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
 
 
         if (SessionHandler.getInstance().get(context,AppConstants.ROLE)!=null &&
-                SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase("Administrator")){
+                SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.Administrator)
+                ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.FacilityManager)
+                ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.TeamManager)
+                ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.MeetingManager)){
 
         }else {
             holder.profile_layout.setVisibility(View.GONE);

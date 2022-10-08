@@ -259,7 +259,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         loadHomeList();
 
         if (SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE)!=null &&
-                SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE).equalsIgnoreCase("Administrator")){
+                SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE).equalsIgnoreCase(AppConstants.Administrator)
+                ||SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE).equalsIgnoreCase(AppConstants.FacilityManager)
+                ||SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE).equalsIgnoreCase(AppConstants.TeamManager)
+                ||SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE).equalsIgnoreCase(AppConstants.MeetingManager)){
             loadNotification();
         }else {
             callOutGoingNotification();
@@ -289,10 +292,17 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             public void onClick(View view) {
                 if (notiList!=null && notiList.size()>0){
 
-                    if (SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE)!=null &&
-                            SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE).equalsIgnoreCase("Administrator")){
+                    if (profileData!=null) {
 
-                        Intent intent = new Intent(getActivity(), NotificationCenterActivity.class);
+                        Intent intent;
+                        if (profileData.getHighestRole().equalsIgnoreCase(AppConstants.Administrator)
+                        || profileData.getHighestRole().equalsIgnoreCase(AppConstants.FacilityManager)
+                                ||profileData.getHighestRole().equalsIgnoreCase(AppConstants.TeamManager)
+                                ||profileData.getHighestRole().equalsIgnoreCase(AppConstants.MeetingManager)) {
+                            intent = new Intent(getActivity(), NotificationCenterActivity.class);
+                        }else {
+                            intent = new Intent(getActivity(), UserNotificationActivity.class);
+                        }
                         intent.putExtra(AppConstants.SHOWNOTIFICATION,notiList);
                         startActivity(intent);
 

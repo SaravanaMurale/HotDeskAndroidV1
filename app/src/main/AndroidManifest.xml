@@ -23,6 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HotDeskAndroid">
         <activity
+            android:name=".ui.home.DefaultLocationActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.settings.WhatsNewActiviy"
             android:exported="false" />
         <activity

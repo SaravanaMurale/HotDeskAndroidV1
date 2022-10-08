@@ -218,8 +218,8 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.editDefaultLocaton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent intent = new Intent(EditProfileActivity.this,EditProfileActivity.class);
-                startActivity(intent);*/
+                Intent intent = new Intent(EditProfileActivity.this,DefaultLocationActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -543,10 +543,20 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.tvEditTel.setEnabled(true);
         binding.changeCountry.setEnabled(true);
 
-        if (profileData!=null && profileData.getHighestRole()!=null &&
-                profileData.getHighestRole().equalsIgnoreCase("Administrator")){
-            binding.editDisplayName.setEnabled(true);
-            binding.editName.setEnabled(false);
+        if (profileData!=null && profileData.getHighestRole()!=null){
+
+            if (profileData.getHighestRole().equalsIgnoreCase(AppConstants.Administrator)
+                    ||profileData.getHighestRole().equalsIgnoreCase(AppConstants.FacilityManager)
+                    ||profileData.getHighestRole().equalsIgnoreCase(AppConstants.TeamManager)
+                    ||profileData.getHighestRole().equalsIgnoreCase(AppConstants.MeetingManager)) {
+
+                binding.editDisplayName.setEnabled(true);
+                binding.editName.setEnabled(false);
+            }else {
+                binding.editDisplayName.setEnabled(false);
+                binding.editName.setEnabled(false);
+            }
+
         }else {
             binding.editDisplayName.setEnabled(false);
             binding.editName.setEnabled(false);

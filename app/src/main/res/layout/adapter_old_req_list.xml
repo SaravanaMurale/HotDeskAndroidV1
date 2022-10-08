@@ -426,8 +426,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_4sdp"
-                    android:visibility="gone">
+                    android:layout_marginStart="@dimen/_4sdp">
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnRemove"
@@ -438,13 +437,14 @@
                         android:text="Remove"
                         android:textAllCaps="false"
                         android:textColor="@color/figmaBlack"
-                        android:textSize="@dimen/_8sdp" />
+                        android:textSize="@dimen/_8sdp"
+                        android:visibility="gone"/>
 
                     <CheckBox
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/checkBox"
-                        android:visibility="gone"/>
+                        android:visibility="visible"/>
 
                 </RelativeLayout>
 

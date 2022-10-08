@@ -516,7 +516,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="4oth Bank Street"
-                    android:enabled="false"
+                    android:focusable="false"
                     android:background="@drawable/edittext_bg"
                     android:padding="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_4sdp"/>

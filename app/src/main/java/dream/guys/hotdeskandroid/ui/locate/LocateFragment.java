@@ -63,6 +63,8 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 import java.util.List;
@@ -2058,6 +2060,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 if (meetingStatusModelList.get(i).getStatus() == 0) {
                                     callDeskUnavaliable(meetingRoomName, key, id, code, requestTeamId, requestTeamDeskId);
                                 } else if (meetingStatusModelList.get(i).getStatus() == 1) {
+                                    editLastEndTime = "";
                                     boolean isReqduest = false;
                                     callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest);
                                 } else if (meetingStatusModelList.get(i).getStatus() == 2) {
@@ -2066,6 +2069,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 } else if (meetingStatusModelList.get(i).getStatus() == 3) {
                                     Toast.makeText(getContext(), "Meeting Room Is Already Booked", Toast.LENGTH_LONG).show();
                                 } else if (meetingStatusModelList.get(i).getStatus() == 4) {
+                                    editLastEndTime = "";
                                     boolean isReqduest = true;
                                     callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest);
                                 }
@@ -2149,12 +2153,15 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 @Override
                 public void onResponse(Call<List<MeetingListToEditResponse>> call, Response<List<MeetingListToEditResponse>> response) {
 
-                    List<MeetingListToEditResponse> meetingListToEditResponseList = response.body();
+                    if (response.body()!=null && response.body().size()>0){
 
-                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                        List<MeetingListToEditResponse> meetingListToEditResponseList = response.body();
 
-                    callMeetingRoomEditListAdapterBottomSheet(meetingListToEditResponseList, meetingRoomName, isReqduest);
+                        binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
+                        callMeetingRoomEditListAdapterBottomSheet(meetingListToEditResponseList, meetingRoomName, isReqduest);
+
+                    }
 
                 }
 
@@ -2238,6 +2245,15 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         //getMeetingListToEdit
 
+        //New...
+        if (meetingListToEditResponseList.size()>0){
+
+            int c = meetingListToEditResponseList.size();
+            editLastEndTime = Utils.splitTime(meetingListToEditResponseList.get(c-1).getTo());
+
+        }else {
+            editLastEndTime = "";
+        }
 
         locateMeetEditBottomSheet.show();
     }
@@ -2885,8 +2901,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     CarParkingForEditResponse carParkingForEditResponse = response.body();
 
-                    CallCarBookingEditList(carParkingForEditResponse, code, selectedCode, key, id, requestTeamId, requestTeamDeskId, i);
-
+                    if (carParkingForEditResponse!=null) {
+                        CallCarBookingEditList(carParkingForEditResponse, code, selectedCode, key, id, requestTeamId, requestTeamDeskId, i);
+                    }
                /* for (int i = 0; i <carParkingForEditResponse.getCarParkBookings().size() ; i++) {
                     System.out.println("CarParkingEditListVeHicleNumber"+carParkingForEditResponse.getCarParkBookings().get(i).getVehicleRegNumber());
 
@@ -2967,6 +2984,16 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 locateCarEditBottomSheet.dismiss();
             }
         });
+
+        //New...
+        if (carParkingForEditResponse.getCarParkBookings()!=null && carParkingForEditResponse.getCarParkBookings().size()>0){
+
+            int c = carParkingForEditResponse.getCarParkBookings().size();
+            editLastEndTime = Utils.splitTime(carParkingForEditResponse.getCarParkBookings().get(c-1).getMyto());
+
+        }else {
+            editLastEndTime = "";
+        }
 
         locateCarEditBottomSheet.show();
     }
@@ -3375,6 +3402,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         rvCountry.setLayoutManager(linearLayoutManager);
         rvCountry.setHasFixedSize(true);
 
+        locateCountryResposes.sort(Comparator.comparing(LocateCountryRespose::getName,String::compareToIgnoreCase));
+
         showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes, this, "COUNTRY");
         rvCountry.setAdapter(showCountryAdapter);
 
@@ -3516,6 +3545,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         rvState.setLayoutManager(linearLayoutManager);
         rvState.setHasFixedSize(true);
 
+        locateCountryResposes.sort(Comparator.comparing(LocateCountryRespose::getName,String::compareToIgnoreCase));
+
         showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes, this, "STATE");
         rvState.setAdapter(showCountryAdapter);
     }
@@ -3577,6 +3608,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvStreet.setLayoutManager(linearLayoutManager);
         rvStreet.setHasFixedSize(true);
+
+        locateCountryResposes.sort(Comparator.comparing(LocateCountryRespose::getName,String::compareToIgnoreCase));
 
         showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes, this, "FLOOR");
         rvStreet.setAdapter(showCountryAdapter);
