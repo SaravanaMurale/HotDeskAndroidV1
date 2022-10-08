@@ -260,6 +260,12 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
                 List<TeamDeskResponse> teamDeskResponseList =response.body();
 
+                /*for (int i = 0; i <teamDeskResponseList.size() ; i++) {
+
+                    System.out.println("DeskDetails "+teamDeskResponseList.get(i).getDesk()+" "+teamDeskResponseList.get(i).getDeskId()+" "+teamDeskResponseList.get(i).getTeamId()+" "+teamDeskResponseList.get(i).getId());
+
+                }*/
+
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
                 callDeskBottomSheetDialogToSelectDeskCode(teamDeskResponseList);

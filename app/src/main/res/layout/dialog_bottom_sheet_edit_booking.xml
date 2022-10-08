@@ -294,8 +294,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Room - 001"
-                            android:theme="@style/TextBold"
-                            android:textColor="@color/figmaBlack"/>
+                            android:textColor="@color/figmaBlack"
+                            android:theme="@style/TextBold" />
 
                         <TextView
                             android:id="@+id/tv_location_details"

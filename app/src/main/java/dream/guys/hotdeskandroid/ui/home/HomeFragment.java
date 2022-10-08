@@ -1,6 +1,5 @@
 package dream.guys.hotdeskandroid.ui.home;
 
-import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
 import static dream.guys.hotdeskandroid.utils.Utils.getActionOverLaysPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getBookingPageScreenData;

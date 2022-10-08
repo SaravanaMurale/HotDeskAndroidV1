@@ -15,9 +15,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
-import dream.guys.hotdeskandroid.model.response.CarParkListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingForEditResponse;
-import dream.guys.hotdeskandroid.ui.locate.LocateFragment;
 import dream.guys.hotdeskandroid.utils.Utils;
 
 public class CarListToEditAdapter extends RecyclerView.Adapter<CarListToEditAdapter.CarListToEditViewHolder> {
@@ -29,7 +27,7 @@ public class CarListToEditAdapter extends RecyclerView.Adapter<CarListToEditAdap
     private String selectedCode;
 
     public  interface CarEditClickable{
-        public void onCarEditClick(CarParkingForEditResponse.CarParkBooking carParkBooking);
+        public void onCarEditClick(CarParkingForEditResponse.CarParkBooking carParkBooking, String selectedCode);
         public void onCarDeleteClick(CarParkingForEditResponse.CarParkBooking carParkBooking);
     }
 
@@ -68,7 +66,7 @@ public class CarListToEditAdapter extends RecyclerView.Adapter<CarListToEditAdap
         holder.editTextEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                carEditClickable.onCarEditClick(carParkBookings.get(holder.getAbsoluteAdapterPosition()));
+                carEditClickable.onCarEditClick(carParkBookings.get(holder.getAbsoluteAdapterPosition()),selectedCode);
             }
         });
         holder.editDelete.setOnClickListener(new View.OnClickListener() {
