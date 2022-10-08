@@ -19,7 +19,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
-import dream.guys.hotdeskandroid.ui.home.HomeFragment;
 
 public class DeskListRecyclerAdapter extends RecyclerView.Adapter<DeskListRecyclerAdapter.Viewholder> {
    // HomeFragment homeFragment;
@@ -32,6 +31,7 @@ public class DeskListRecyclerAdapter extends RecyclerView.Adapter<DeskListRecycl
 
 
 
+
     public DeskListRecyclerAdapter(Context context, OnSelectSelected onSelectSelected, FragmentActivity activity, List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse, Context context1, BottomSheetDialog bottomSheetDialog) {
        // this.homeFragment=homeFragment;
         this.context = context;
@@ -39,6 +39,7 @@ public class DeskListRecyclerAdapter extends RecyclerView.Adapter<DeskListRecycl
         this.activity = activity;
         this.bookingForEditResponse=bookingForEditResponse;
         this.bottomSheetDialog=bottomSheetDialog;
+
     }
 
     @NonNull

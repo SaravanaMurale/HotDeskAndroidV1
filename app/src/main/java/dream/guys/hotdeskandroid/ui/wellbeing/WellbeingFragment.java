@@ -91,35 +91,53 @@ public class WellbeingFragment extends Fragment {
         binding.healthTipsBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
-                //intent.putExtra(AppConstants.WELLBEING_TYPE, "Health Tips");
-                intent.putExtra(AppConstants.WELLBEING_TYPE, binding.tvHealthTips.getText());
-                intent.putExtra(AppConstants.PERSONAL_CONTENT, healthtips);
-                Log.d(TAG, "onClick: "+linksArrayHealthTips.size());
-                intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayHealthTips);
-                startActivity(intent);
+
+                if (binding.tvHealthTips.isEnabled()) {
+                    Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
+                    //intent.putExtra(AppConstants.WELLBEING_TYPE, "Health Tips");
+                    intent.putExtra(AppConstants.WELLBEING_TYPE, binding.tvHealthTips.getText());
+                    intent.putExtra(AppConstants.PERSONAL_CONTENT, healthtips);
+                    Log.d(TAG, "onClick: "+linksArrayHealthTips.size());
+                    intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayHealthTips);
+                    startActivity(intent);
                 /*
                 Intent intent=new Intent(getActivity(),FireWardensActivity.class);
                 intent.putExtra("WELL_BEING_KEY","HEALTH_TIPS");
                 startActivity(intent);*/
+                }else {
+                    disableToast();
+                }
+
             }
         });
 
         binding.fireWardensBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getActivity(),FireWardensActivity.class);
-                intent.putExtra("WELL_BEING_KEY","FIRE");
-                startActivity(intent);
+
+                if (binding.firewar.isEnabled()) {
+                    Intent intent=new Intent(getActivity(),FireWardensActivity.class);
+                    intent.putExtra("WELL_BEING_KEY","FIRE");
+                    startActivity(intent);
+                }else {
+                    disableToast();
+                }
+
             }
         });
 
         binding.firstAidBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getActivity(),FireWardensActivity.class);
-                intent.putExtra("WELL_BEING_KEY","FIRST_AID");
-                startActivity(intent);
+
+                if (binding.fireaid.isEnabled()) {
+                    Intent intent=new Intent(getActivity(),FireWardensActivity.class);
+                    intent.putExtra("WELL_BEING_KEY","FIRST_AID");
+                    startActivity(intent);
+                }else {
+                    disableToast();
+                }
+
             }
         });
 
@@ -128,21 +146,32 @@ public class WellbeingFragment extends Fragment {
             @Override
             public void onClick(View view)
             {
-                Intent intent=new Intent(getActivity(),WorkspaceSurveyActivity.class);
-                startActivity(intent);
+                if (binding.tvWorkspaceSurvey.isEnabled()) {
+                    Intent intent=new Intent(getActivity(),WorkspaceSurveyActivity.class);
+                    startActivity(intent);
+                }else {
+                    disableToast();
+                }
+
             }
         });
         binding.mentalHealthBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /* Intent intent=new Intent(getActivity(),TrainingActivity.class);*/
-                Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
-                //intent.putExtra(AppConstants.WELLBEING_TYPE, "Mental Health");
-                intent.putExtra(AppConstants.WELLBEING_TYPE, binding.mentalHealth.getText());
-                intent.putExtra(AppConstants.PERSONAL_CONTENT, health);
-                Log.d(TAG, "onClick: "+linksArrayPersonal.size());
-                intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayHealth);
-                startActivity(intent);
+
+                if (binding.mentalHealth.isEnabled()) {
+                    /* Intent intent=new Intent(getActivity(),TrainingActivity.class);*/
+                    Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
+                    //intent.putExtra(AppConstants.WELLBEING_TYPE, "Mental Health");
+                    intent.putExtra(AppConstants.WELLBEING_TYPE, binding.mentalHealth.getText());
+                    intent.putExtra(AppConstants.PERSONAL_CONTENT, health);
+                    Log.d(TAG, "onClick: "+linksArrayPersonal.size());
+                    intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayHealth);
+                    startActivity(intent);
+                }else {
+                    disableToast();
+                }
+
             }
         });
 
@@ -160,91 +189,134 @@ public class WellbeingFragment extends Fragment {
         binding.noticesBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent intent=new Intent(getActivity(),CreateNoticeActivity.class);
-                startActivity(intent);*/
-                Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
-                //intent.putExtra(AppConstants.WELLBEING_TYPE, "Notice");
-                intent.putExtra(AppConstants.WELLBEING_TYPE, binding.tvNoti.getText());
-                intent.putExtra(AppConstants.PERSONAL_CONTENT, notice);
-                Log.d(TAG, "onClick: "+linksArrayPersonal.size());
-                intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayNotice);
-                startActivity(intent);
+
+                if (binding.tvNotification.isEnabled()) {
+                    /*Intent intent=new Intent(getActivity(),CreateNoticeActivity.class);
+                    startActivity(intent);*/
+                    Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
+                    //intent.putExtra(AppConstants.WELLBEING_TYPE, "Notice");
+                    intent.putExtra(AppConstants.WELLBEING_TYPE, binding.tvNoti.getText());
+                    intent.putExtra(AppConstants.PERSONAL_CONTENT, notice);
+                    Log.d(TAG, "onClick: "+linksArrayPersonal.size());
+                    intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayNotice);
+                    startActivity(intent);
+                }else {
+                    disableToast();
+                }
+
             }
         });
 
         binding.rewardsBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent intent=new Intent(getActivity(),CreateNoticeActivity.class);
-                startActivity(intent);*/
-                Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
-                //intent.putExtra(AppConstants.WELLBEING_TYPE, "Rewards");
-                intent.putExtra(AppConstants.WELLBEING_TYPE, binding.tvRewards.getText());
-                intent.putExtra(AppConstants.PERSONAL_CONTENT, rewards);
-                Log.d(TAG, "onClick: "+linksArrayPersonal.size());
-                intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayRewards);
-                startActivity(intent);
+
+                if (binding.tvRewards.isEnabled()) {
+                    /*Intent intent=new Intent(getActivity(),CreateNoticeActivity.class);
+                    startActivity(intent);*/
+                    Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
+                    //intent.putExtra(AppConstants.WELLBEING_TYPE, "Rewards");
+                    intent.putExtra(AppConstants.WELLBEING_TYPE, binding.tvRewards.getText());
+                    intent.putExtra(AppConstants.PERSONAL_CONTENT, rewards);
+                    Log.d(TAG, "onClick: "+linksArrayPersonal.size());
+                    intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayRewards);
+                    startActivity(intent);
+                }else {
+                    disableToast();
+                }
+
             }
         });
 
         binding.personalBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getActivity(),PersonalHelpActivity.class);
-                intent.putExtra(AppConstants.PERSONAL_CONTENT, personalData);
-                Log.d(TAG, "onClick: "+linksArrayPersonal.size());
-                intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayPersonal);
-                startActivity(intent);
+
+                if (binding.tvPersonal.isEnabled()) {
+                    Intent intent=new Intent(getActivity(),PersonalHelpActivity.class);
+                    intent.putExtra(AppConstants.PERSONAL_CONTENT, personalData);
+                    Log.d(TAG, "onClick: "+linksArrayPersonal.size());
+                    intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayPersonal);
+                    startActivity(intent);
+                }else {
+                    disableToast();
+                }
+
             }
         });
 
         binding.workspaceBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getActivity(), WorkspaceAssessmentActivity.class);
-                startActivity(intent);
+
+                if (binding.tvWorkspace.isEnabled()) {
+                    Intent intent=new Intent(getActivity(), WorkspaceAssessmentActivity.class);
+                    startActivity(intent);
+                }else {
+                    disableToast();
+                }
+
             }
         });
 
         binding.reportAnIssueBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getActivity(),ReportAnIssueActivity.class);
-                startActivity(intent);
+
+                if (binding.tvReportIssue.isEnabled()) {
+                    Intent intent=new Intent(getActivity(),ReportAnIssueActivity.class);
+                    startActivity(intent);
+                }else {
+                    disableToast();
+                }
+
             }
         });
 
         binding.traininBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* Intent intent=new Intent(getActivity(),TrainingActivity.class);*/
-                Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
-                //intent.putExtra(AppConstants.WELLBEING_TYPE, "Benefits");
-                intent.putExtra(AppConstants.WELLBEING_TYPE, binding.txtBenefits.getText());
-                intent.putExtra(AppConstants.PERSONAL_CONTENT, benefits);
-                Log.d(TAG, "onClick: "+linksArrayPersonal.size());
-                intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayBenefits);
-                startActivity(intent);
+
+                if (binding.tvTraining.isEnabled()) {
+                    /* Intent intent=new Intent(getActivity(),TrainingActivity.class);*/
+                    Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
+                    //intent.putExtra(AppConstants.WELLBEING_TYPE, "Benefits");
+                    intent.putExtra(AppConstants.WELLBEING_TYPE, binding.txtBenefits.getText());
+                    intent.putExtra(AppConstants.PERSONAL_CONTENT, benefits);
+                    Log.d(TAG, "onClick: "+linksArrayPersonal.size());
+                    intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayBenefits);
+                    startActivity(intent);
+                }else {
+                    disableToast();
+                }
+
             }
         });
 
         binding.eventBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /* Intent intent=new Intent(getActivity(),TrainingActivity.class);*/
-                Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
-                //intent.putExtra(AppConstants.WELLBEING_TYPE, "Events");
-                intent.putExtra(AppConstants.WELLBEING_TYPE, binding.tvEvents.getText());
-                intent.putExtra(AppConstants.PERSONAL_CONTENT, events);
-                Log.d(TAG, "onClick: "+linksArrayPersonal.size());
-                intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayEvents);
-                startActivity(intent);
+
+                if (binding.tvEvents.isEnabled()) {
+                    /* Intent intent=new Intent(getActivity(),TrainingActivity.class);*/
+                    Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
+                    //intent.putExtra(AppConstants.WELLBEING_TYPE, "Events");
+                    intent.putExtra(AppConstants.WELLBEING_TYPE, binding.tvEvents.getText());
+                    intent.putExtra(AppConstants.PERSONAL_CONTENT, events);
+                    Log.d(TAG, "onClick: "+linksArrayPersonal.size());
+                    intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayEvents);
+                    startActivity(intent);
+                }else {
+                    disableToast();
+                }
+
             }
         });
 
         binding.healthBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 /* Intent intent=new Intent(getActivity(),TrainingActivity.class);*/
                 Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
                 //intent.putExtra(AppConstants.WELLBEING_TYPE, "Health Eating");
@@ -253,6 +325,7 @@ public class WellbeingFragment extends Fragment {
                 Log.d(TAG, "onClick: "+linksArrayPersonal.size());
                 intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayHealth);
                 startActivity(intent);
+
             }
         });
 
@@ -327,12 +400,18 @@ public class WellbeingFragment extends Fragment {
         binding.menuBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
-                intent.putExtra(AppConstants.WELLBEING_TYPE, binding.txtMenu.getText());
-                intent.putExtra(AppConstants.PERSONAL_CONTENT, menu);
-                Log.d(TAG, "onClick: "+linksArrayMenu.size());
-                intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayMenu);
-                startActivity(intent);
+
+                if (binding.tvMenu.isEnabled()) {
+                    Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
+                    intent.putExtra(AppConstants.WELLBEING_TYPE, binding.txtMenu.getText());
+                    intent.putExtra(AppConstants.PERSONAL_CONTENT, menu);
+                    Log.d(TAG, "onClick: "+linksArrayMenu.size());
+                    intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayMenu);
+                    startActivity(intent);
+                }else {
+                    disableToast();
+                }
+
             }
         });
 
@@ -435,67 +514,67 @@ public class WellbeingFragment extends Fragment {
     private void setEnableDisable(List<WellbeingConfigResponse> body) {
 
         if (!(body.get(0).isActive())){
-            binding.traininBlock.setEnabled(false);
+            binding.tvTraining.setEnabled(false);
             binding.tvTraining.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
             binding.imgTraining.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
         }
         if (!(body.get(1).isActive())){
-            binding.eventBlock.setEnabled(false);
+            binding.tvEvents.setEnabled(false);
             binding.tvEvents.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
             binding.imgEvents.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
         }
         if (!(body.get(2).isActive())){
-            binding.healthTipsBlock.setEnabled(false);
+            binding.tvHealthTips.setEnabled(false);
             binding.tvHealthTips.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
             binding.imgHealth.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
         }
         if (!(body.get(3).isActive())){
-            binding.fireWardensBlock.setEnabled(false);
+            binding.firewar.setEnabled(false);
             binding.firewar.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
             binding.imgFWar.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
         }
         if (!(body.get(4).isActive())){
-            binding.firstAidBlock.setEnabled(false);
+            binding.fireaid.setEnabled(false);
             binding.fireaid.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
             binding.imgFAid.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
         }
         if (!(body.get(5).isActive())){
-            binding.mentalHealthBlock.setEnabled(false);
+            binding.mentalHealth.setEnabled(false);
             binding.mentalHealth.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
             binding.imgMHealth.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
         }
         if (!(body.get(6).isActive())){
-            binding.menuBlock.setEnabled(false);
+            binding.tvMenu.setEnabled(false);
             binding.tvMenu.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
             binding.imgMenu.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
         }
         if (!(body.get(7).isActive())){
-            binding.noticesBlock.setEnabled(false);
+            binding.tvNotification.setEnabled(false);
             binding.tvNotification.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
             binding.imgNotice.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
         }
         if (!(body.get(8).isActive())){
-            binding.personalBlock.setEnabled(false);
+            binding.tvPersonal.setEnabled(false);
             binding.tvPersonal.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
             binding.imgPersonal.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
         }
         if (!(body.get(9).isActive())){
-            binding.reportAnIssueBlock.setEnabled(false);
+            binding.tvReportIssue.setEnabled(false);
             binding.tvReportIssue.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
             binding.imgReportIssue.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
         }
         if (!(body.get(10).isActive())){
-            binding.rewardsBlock.setEnabled(false);
+            binding.tvRewards.setEnabled(false);
             binding.tvRewards.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
             binding.imgRewards.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
         }
         if (!(body.get(11).isActive())){
-            binding.workspaceSurveyBlock.setEnabled(false);
+            binding.tvWorkspaceSurvey.setEnabled(false);
             binding.tvWorkspaceSurvey.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
             binding.imgWorkspaceSurvey.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
         }
         if (!(body.get(12).isActive())){
-            binding.workspaceBlock.setEnabled(false);
+            binding.tvWorkspace.setEnabled(false);
             binding.tvWorkspace.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
             binding.imgWorkAss.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey),android.graphics.PorterDuff.Mode.SRC_IN);
         }
@@ -589,6 +668,10 @@ public class WellbeingFragment extends Fragment {
         dialog.show();
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
+    }
+
+    public void disableToast(){
+        Toast.makeText(getActivity(), "This setting disabled in admin", Toast.LENGTH_SHORT).show();
     }
 
 }

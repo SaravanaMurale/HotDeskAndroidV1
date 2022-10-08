@@ -24,17 +24,19 @@ public class DeskSelectListAdapter  extends RecyclerView.Adapter<DeskSelectListA
     List<SelectCode> stringList;
     OnDeskSelectClickable onDeskSelectClickable;
     BottomSheetDialog bottomSheetDialog;;
+    String desk;
 
 
     public interface  OnDeskSelectClickable{
-        public void onDeskSelect(int id, String code);
+        public void onDeskSelect(int id, String code,String desk);
     }
 
-    public DeskSelectListAdapter(Context context, List<SelectCode> stringList, OnDeskSelectClickable onDeskSelectClickable, BottomSheetDialog bottomSheetDialog) {
+    public DeskSelectListAdapter(Context context, List<SelectCode> stringList, OnDeskSelectClickable onDeskSelectClickable, BottomSheetDialog bottomSheetDialog, String desk) {
         this.context = context;
         this.stringList = stringList;
         this.onDeskSelectClickable = onDeskSelectClickable;
         this.bottomSheetDialog=bottomSheetDialog;
+        this.desk=desk;
     }
 
     @NonNull
@@ -53,7 +55,7 @@ public class DeskSelectListAdapter  extends RecyclerView.Adapter<DeskSelectListA
             public void onClick(View v) {
                 bottomSheetDialog.dismiss();
                 onDeskSelectClickable.onDeskSelect(stringList.get(holder.getAbsoluteAdapterPosition()).getId(),
-                        stringList.get(holder.getAbsoluteAdapterPosition()).getCode());
+                        stringList.get(holder.getAbsoluteAdapterPosition()).getCode(),desk);
             }
         });
     }

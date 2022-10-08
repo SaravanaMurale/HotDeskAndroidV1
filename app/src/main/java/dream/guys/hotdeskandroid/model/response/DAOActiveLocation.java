@@ -30,7 +30,7 @@ public class DAOActiveLocation {
     @Expose
     private Boolean isActive;
 
-    private int level = 0;
+    private int level = 1;
 
     public int getLevel() {
         return level;

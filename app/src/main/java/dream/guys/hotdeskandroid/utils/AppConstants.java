@@ -115,4 +115,9 @@ public class AppConstants {
     public static final String MEETING_ROOM_PAGE = "MEETING_ROOM_PAGE";
     public static final String APPKEYS_PAGE = "APPKEYS_PAGE";
 
+    public static final String Administrator = "Administrator";
+    public static final String FacilityManager = "Facility Manager";
+    public static final String MeetingManager = "Meeting Room Manager";
+    public static final String TeamManager = "Team Manager";
+
 }

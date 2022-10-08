@@ -82,7 +82,10 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
         context = NotificationsListActivity.this;
 
         if (SessionHandler.getInstance().get(context,AppConstants.ROLE)!=null &&
-                SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase("Administrator")){
+                SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.Administrator)
+                ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.FacilityManager)
+                ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.TeamManager)
+                ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.MeetingManager)){
             tv_manage.setVisibility(View.VISIBLE);
         }else {
             tv_manage.setVisibility(View.GONE);
@@ -461,7 +464,10 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
         super.onResume();
 
         if (SessionHandler.getInstance().get(context,AppConstants.ROLE)!=null &&
-                SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase("Administrator")){
+                SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.Administrator)
+                ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.FacilityManager)
+                ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.TeamManager)
+                ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.MeetingManager)){
             //Call both API's...
             callIncomingNotification();
         }else {
@@ -588,7 +594,10 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
 
 
         if (SessionHandler.getInstance().get(context,AppConstants.ROLE)!=null &&
-                SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase("Administrator")){
+                SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.Administrator)
+                ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.FacilityManager)
+                ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.TeamManager)
+                ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.MeetingManager)){
 
             notiList = new ArrayList<>();
 
