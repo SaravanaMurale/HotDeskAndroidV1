@@ -48,8 +48,17 @@ public class MeetingListToEditResponse {
 
     public class Status{
             String timeStatus;
+            String bookingType;
 
-            public String getTimeStatus() {
+        public String getBookingType() {
+            return bookingType;
+        }
+
+        public void setBookingType(String bookingType) {
+            this.bookingType = bookingType;
+        }
+
+        public String getTimeStatus() {
                 return timeStatus;
             }
 

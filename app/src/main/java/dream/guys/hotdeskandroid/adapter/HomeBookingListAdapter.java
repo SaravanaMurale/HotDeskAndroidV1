@@ -105,6 +105,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                 holder.allLinearLayout.setVisibility(View.VISIBLE);
             }
 */
+            holder.tv_past_event.setVisibility(View.GONE);
             holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
             holder.bookingIvEdit.setVisibility(View.GONE);
             holder.bookingIvLocation.setVisibility(View.GONE);
@@ -124,7 +125,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingIvLocation.setVisibility(View.VISIBLE);
         }else {
             System.out.println("check date of today future "+list.get(position).getDate());
-
+            holder.tv_past_event.setVisibility(View.GONE);
             holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
             holder.bookingIvEdit.setVisibility(View.VISIBLE);
             holder.bookingIvLocation.setVisibility(View.VISIBLE);

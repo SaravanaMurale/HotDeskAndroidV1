@@ -905,7 +905,8 @@ public class BookFragment extends Fragment implements
                         System.out.println("meting userId"+meetingListToEditResponseList.get(i).getBookedByUserId()
                                 +" : " +SessionHandler.getInstance().getInt(getActivity(),AppConstants.USER_ID));
                         if (meetingListToEditResponseList.get(i).getBookedByUserId()
-                                == SessionHandler.getInstance().getInt(getActivity(),AppConstants.USER_ID)){
+                                == SessionHandler.getInstance().getInt(getActivity(),AppConstants.USER_ID)
+                                && !meetingListToEditResponseList.get(i).getStatus().getBookingType().equalsIgnoreCase("req")){
                             meetingListToEditList.add(meetingListToEditResponseList.get(i));
                         }
 
@@ -1087,7 +1088,6 @@ public class BookFragment extends Fragment implements
     }
     private void getRoomlist(EditBookingDetails editBookingDetails, String newEditStatus) {
         if (Utils.isNetworkAvailable(getActivity())) {
-
             System.out.println("ame list vala getroom list enter");
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -1098,41 +1098,52 @@ public class BookFragment extends Fragment implements
                     userAllowedMeetingResponseListUpdated.clear();
                     userAllowedMeetingResponseList.clear();
                     userAllowedMeetingResponseList=response.body();
-
+                    userAllowedMeetingResponseFilterList.clear();
 //                    ProgressDialog.dismisProgressBar(getContext(),dialog);
                     boolean checkIsRequest=false;
                     if (userAllowedMeetingResponseList!=null && userAllowedMeetingResponseList.size()>0){
 
                         for (int i=0; i < userAllowedMeetingResponseList.size(); i++){
+                            boolean check=false;
+                            if (filterAmenitiesList.size()>0)
+                                check = false;
+                            else
+                                check = true;
+
                             soo:
                             for (int j=0;j<filterAmenitiesList.size();j++){
                                 boolean amenityCheck=false;
                                 System.out.println("ame list check of"+i+" : "+filterAmenitiesList.get(j));
+                                ooo:
                                 for(int x=0; x<userAllowedMeetingResponseList.get(i).getAmenities().size(); x++){
                                     if (filterAmenitiesList.get(j) == userAllowedMeetingResponseList.get(i)
                                             .getAmenities().get(x).getId()){
-
                                         System.out.println("ame list check of true"+
                                                 userAllowedMeetingResponseList.get(i).getName());
-                                        userAllowedMeetingResponseList.remove(i);
+//                                        userAllowedMeetingResponseList.remove(i);
                                         System.out.println("ame list check of"+i+" : "+filterAmenitiesList.get(j));
-
                                         amenityCheck=true;
                                     }
                                 }
                                 if (!amenityCheck) {
                                     System.out.println("ame list check of remove"+
                                             userAllowedMeetingResponseList.get(i).getName());
-                                    userAllowedMeetingResponseList.remove(i);
+//                                    userAllowedMeetingResponseFilterList.remove(i);
+                                    check=false;
                                     break soo;
+                                } else {
+                                    check=true;
                                 }
+                            }
+                            if (check){
+                                userAllowedMeetingResponseFilterList.add(userAllowedMeetingResponseList.get(i));
                             }
                         }
                         loo:
-                        for (int i=0; i< userAllowedMeetingResponseList.size();i++){
-                            if (participants <= userAllowedMeetingResponseList.get(i).getNoOfPeople()){
-                                userAllowedMeetingResponseListUpdated.add(userAllowedMeetingResponseList.get(i));
-                                userAllowedMeetingResponseListUpdated.add(userAllowedMeetingResponseList.get(i));
+                        for (int i=0; i< userAllowedMeetingResponseFilterList.size();i++){
+                            if (participants <= userAllowedMeetingResponseFilterList.get(i).getNoOfPeople()){
+                                userAllowedMeetingResponseListUpdated.add(userAllowedMeetingResponseFilterList.get(i));
+                                userAllowedMeetingResponseListUpdated.add(userAllowedMeetingResponseFilterList.get(i));
                             }
 
                             if (editBookingDetails.getMeetingRoomtId()==userAllowedMeetingResponseList.get(i).getId()){
@@ -1167,12 +1178,12 @@ public class BookFragment extends Fragment implements
                                     editBookingDetails.getDate(),
                                     userAllowedMeetingResponseListUpdated.get(0).getId(),
                                         0,"new");
-                        else if (userAllowedMeetingResponseList.size()>0)
+                        else if (userAllowedMeetingResponseFilterList.size()>0)
                             callAmenitiesListForMeetingRoom(editBookingDetails,
                                     editBookingDetails.getEditStartTTime(),
                                     editBookingDetails.getEditEndTime(),
                                     editBookingDetails.getDate(),
-                                    userAllowedMeetingResponseList.get(0).getId(),
+                                    userAllowedMeetingResponseFilterList.get(0).getId(),
                                         0,"new");
                         else
                             Toast.makeText(getContext(), "No Room avaialble clear Filter conditions", Toast.LENGTH_SHORT).show();

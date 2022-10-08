@@ -93,6 +93,7 @@ public class QrFragment extends Fragment {
                     @Override
                     public void run() {
                         if (deskId == Integer.parseInt(result.getText())){
+                            System.out.println("daidjas"+result.getText());
                             changeCheckIn();
                         }
                         else{
