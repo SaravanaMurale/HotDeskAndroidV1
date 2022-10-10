@@ -769,8 +769,18 @@ public class WorkspaceSurveyActivity extends AppCompatActivity
             @Override
             public void onResponse(Call<DeskResponseNew> call, Response<DeskResponseNew> response)
             {
-                deskId = response.body().getDesk().get(0).getId();
-                reportPastBooking.setText(SessionHandler.getInstance().get(WorkspaceSurveyActivity.this, AppConstants.DEFAULT_LOCATION_NAME)+" Room-"+response.body().getDesk().get(0).getCode());
+
+                if (response.body()!=null && response.code() == 200) {
+
+                    if (response.body().getDesk()!= null && response.body().getDesk().size() > 0) {
+
+                        deskId = response.body().getDesk().get(0).getId();
+                        reportPastBooking.setText(SessionHandler.getInstance().get(WorkspaceSurveyActivity.this, AppConstants.DEFAULT_LOCATION_NAME)+" Room-"+response.body().getDesk().get(0).getCode());
+
+                    }
+                }
+
+
             }
 
             @Override

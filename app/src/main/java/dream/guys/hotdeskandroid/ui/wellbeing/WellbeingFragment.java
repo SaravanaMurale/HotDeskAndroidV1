@@ -195,7 +195,7 @@ public class WellbeingFragment extends Fragment {
                     startActivity(intent);*/
                     Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
                     //intent.putExtra(AppConstants.WELLBEING_TYPE, "Notice");
-                    intent.putExtra(AppConstants.WELLBEING_TYPE, binding.tvNoti.getText());
+                    intent.putExtra(AppConstants.WELLBEING_TYPE, binding.tvNotification.getText());
                     intent.putExtra(AppConstants.PERSONAL_CONTENT, notice);
                     Log.d(TAG, "onClick: "+linksArrayPersonal.size());
                     intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayNotice);
@@ -443,58 +443,62 @@ public class WellbeingFragment extends Fragment {
                     Workspace survey - 12
                     Workspace assessment - 13*/
 
+                    if (response.body().size() > 0) {
+
                     setEnableDisable(response.body());
 
-                benefits = response.body().get(0).getDescription();
-                events = response.body().get(1).getDescription();
-                healthtips = response.body().get(2).getDescription();
-                health = response.body().get(5).getDescription();
-                notice = response.body().get(7).getDescription();
-                rewards = response.body().get(10).getDescription();
+                    benefits = response.body().get(0).getDescription();
+                    events = response.body().get(1).getDescription();
+                    healthtips = response.body().get(2).getDescription();
+                    health = response.body().get(5).getDescription();
+                    notice = response.body().get(7).getDescription();
+                    rewards = response.body().get(10).getDescription();
 
-                personalData = response.body().get(8).getDescription();
-                menu = response.body().get(6).getDescription();
+                    personalData = response.body().get(8).getDescription();
+                    menu = response.body().get(6).getDescription();
 
 //                Toast.makeText(getActivity(), ""+response.body().size(), Toast.LENGTH_SHORT).show();
-                for (int i = 0; i < response.body().get(0).getLinks().size(); i++) {
-                    Log.d(TAG, "onResponse: " + response.body().get(0).getLinks().size());
-                    linksArrayBenefits.add(response.body().get(0).getLinks().get(i));
-                }
+                    for (int i = 0; i < response.body().get(0).getLinks().size(); i++) {
+                        Log.d(TAG, "onResponse: " + response.body().get(0).getLinks().size());
+                        linksArrayBenefits.add(response.body().get(0).getLinks().get(i));
+                    }
 
-                for (int i = 0; i < response.body().get(1).getLinks().size(); i++) {
-                    Log.d(TAG, "onResponse: " + response.body().get(1).getLinks().size());
-                    linksArrayEvents.add(response.body().get(1).getLinks().get(i));
-                }
+                    for (int i = 0; i < response.body().get(1).getLinks().size(); i++) {
+                        Log.d(TAG, "onResponse: " + response.body().get(1).getLinks().size());
+                        linksArrayEvents.add(response.body().get(1).getLinks().get(i));
+                    }
 
-                for (int i = 0; i < response.body().get(2).getLinks().size(); i++) {
-                    Log.d(TAG, "onResponse: " + response.body().get(2).getLinks().size());
-                    linksArrayHealthTips.add(response.body().get(2).getLinks().get(i));
-                }
+                    for (int i = 0; i < response.body().get(2).getLinks().size(); i++) {
+                        Log.d(TAG, "onResponse: " + response.body().get(2).getLinks().size());
+                        linksArrayHealthTips.add(response.body().get(2).getLinks().get(i));
+                    }
 
 
-                for (int i = 0; i < response.body().get(5).getLinks().size(); i++) {
-                    Log.d(TAG, "onResponse: " + response.body().get(5).getLinks().size());
-                    linksArrayHealth.add(response.body().get(5).getLinks().get(i));
-                }
+                    for (int i = 0; i < response.body().get(5).getLinks().size(); i++) {
+                        Log.d(TAG, "onResponse: " + response.body().get(5).getLinks().size());
+                        linksArrayHealth.add(response.body().get(5).getLinks().get(i));
+                    }
 
-                for (int i = 0; i < response.body().get(6).getLinks().size(); i++) {
-                    Log.d(TAG, "onResponse: " + response.body().get(6).getLinks().size());
-                    linksArrayMenu.add(response.body().get(6).getLinks().get(i));
-                }
+                    for (int i = 0; i < response.body().get(6).getLinks().size(); i++) {
+                        Log.d(TAG, "onResponse: " + response.body().get(6).getLinks().size());
+                        linksArrayMenu.add(response.body().get(6).getLinks().get(i));
+                    }
 
-                for (int i = 0; i < response.body().get(7).getLinks().size(); i++) {
-                    Log.d(TAG, "onResponse: " + response.body().get(7).getLinks().size());
-                    linksArrayNotice.add(response.body().get(7).getLinks().get(i));
-                }
+                    for (int i = 0; i < response.body().get(7).getLinks().size(); i++) {
+                        Log.d(TAG, "onResponse: " + response.body().get(7).getLinks().size());
+                        linksArrayNotice.add(response.body().get(7).getLinks().get(i));
+                    }
 
-                for (int i = 0; i < response.body().get(10).getLinks().size(); i++) {
-                    Log.d(TAG, "onResponse: " + response.body().get(10).getLinks().size());
-                    linksArrayRewards.add(response.body().get(10).getLinks().get(i));
-                }
+                    for (int i = 0; i < response.body().get(10).getLinks().size(); i++) {
+                        Log.d(TAG, "onResponse: " + response.body().get(10).getLinks().size());
+                        linksArrayRewards.add(response.body().get(10).getLinks().get(i));
+                    }
 
-                for (int i = 0; i < response.body().get(8).getLinks().size(); i++) {
-                    Log.d(TAG, "onResponse: " + response.body().get(8).getLinks().size());
-                    linksArrayPersonal.add(response.body().get(8).getLinks().get(i));
+                    for (int i = 0; i < response.body().get(8).getLinks().size(); i++) {
+                        Log.d(TAG, "onResponse: " + response.body().get(8).getLinks().size());
+                        linksArrayPersonal.add(response.body().get(8).getLinks().get(i));
+                    }
+
                 }
 
 

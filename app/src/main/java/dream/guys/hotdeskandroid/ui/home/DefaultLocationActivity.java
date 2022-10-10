@@ -180,7 +180,8 @@ public class DefaultLocationActivity extends AppCompatActivity {
                             int id = cityPlaceArrayList.get(c).getId();
 
                             finalLocationArrayList.addAll((ArrayList<DAOActiveLocation>) cityPlaceFloorArrayList.stream().filter(val -> val.getParentLocationId() == id).collect(Collectors.toList()));
-
+                            b++;
+                            break loopc;
                             /*for (int d=0;d<cityPlaceFloorArrayList.size();d++){
 
                                 if (cityPlaceArrayList.get(c).getId().equals(cityPlaceFloorArrayList.get(d).getParentLocationId())) {

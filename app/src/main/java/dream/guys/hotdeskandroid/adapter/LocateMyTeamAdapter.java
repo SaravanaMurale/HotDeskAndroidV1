@@ -140,6 +140,8 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
     public Filter getFilter() {
         return filter;
     }
+
+
     Filter filter=new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -178,6 +180,8 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
 
         }
     };
+
+
     class LocateMyTeamViewHolder extends RecyclerView.ViewHolder{
 
         @BindView(R.id.locateMyTeamProfile)

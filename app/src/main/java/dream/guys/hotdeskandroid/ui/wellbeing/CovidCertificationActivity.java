@@ -59,6 +59,13 @@ public class CovidCertificationActivity extends AppCompatActivity {
         binding=ActivityCovidCertificationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        binding.ReportBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         setLanguage();
 
 

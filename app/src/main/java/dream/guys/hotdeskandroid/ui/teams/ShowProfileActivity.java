@@ -134,27 +134,35 @@ public class ShowProfileActivity extends AppCompatActivity {
 
                     if (daoTeamMember.getLastName() != null) {
                         fName = daoTeamMember.getFirstName() + " " + daoTeamMember.getLastName();
+                        lName = daoTeamMember.getLastName();
                     } else {
                         fName = daoTeamMember.getFirstName();// + " " +daoTeamMember.getLastName();
+                        lName = "";
                     }
 
-
-                    lName = daoTeamMember.getLastName();
                     userID = daoTeamMember.getUserId();
-                    teamId = daoTeamMember.getTeamId();
+                    //teamId = daoTeamMember.getTeamId();
+
+
 
                     //Show Person Profile Only
                     callSearchRecyclerData(fName, userID);
                     //Shows upcoming data
 
-                    callTeamMemberStatus(date, daoTeamMember.getTeamId());
+                    if (daoTeamMember.getTeamId()!=null){
+                        binding.upcomingBookingRel.setVisibility(View.VISIBLE);
+                        teamId = daoTeamMember.getTeamId();
+                        callTeamMemberStatus(date, daoTeamMember.getTeamId());
+                    }else {
+                        binding.upcomingBookingRel.setVisibility(View.GONE);
+                    }
 
                 }
 
             }
 
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
 
         binding.profileBack.setOnClickListener(new View.OnClickListener() {
@@ -180,11 +188,6 @@ public class ShowProfileActivity extends AppCompatActivity {
 
 
     }
-
-
-
-
-
 
 
 private void callSearchRecyclerData(String searchText,int selID) {

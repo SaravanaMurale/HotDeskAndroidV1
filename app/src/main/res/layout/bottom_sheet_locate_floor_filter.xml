@@ -23,23 +23,22 @@
         android:textColor="@color/figmaBlack"
         android:textColorHint="@color/figmaBlack" />
 
-    <TextView
+    <EditText
         android:id="@+id/bsGeneralSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bsLocationSearch"
         android:layout_marginLeft="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:gravity="center_vertical"
         android:layout_marginRight="@dimen/_9sdp"
         android:background="@drawable/rectangle_greybg_with_corner"
         android:drawableLeft="@drawable/search_1px"
+        android:gravity="center_vertical"
         android:hint="  Search"
-        android:textSize="@dimen/_10sdp"
         android:paddingLeft="@dimen/_8sdp"
         android:paddingTop="@dimen/_5sdp"
         android:paddingBottom="@dimen/_7sdp"
-        />
+        android:textSize="@dimen/_10sdp" />
 
     <LinearLayout
         android:id="@+id/floorFilterBlock"
