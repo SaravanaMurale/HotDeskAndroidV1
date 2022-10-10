@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.adapter.AdapterAdminNotificationReq;
 import dream.guys.hotdeskandroid.adapter.AdapterNotificationCenter;
 import dream.guys.hotdeskandroid.adapter.AdapterNotificationList;
 import dream.guys.hotdeskandroid.model.request.DAODeskAccept;
@@ -49,7 +50,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NotificationsListActivity extends AppCompatActivity implements AdapterNotificationList.AccRejInterface{
+public class NotificationsListActivity extends AppCompatActivity implements AdapterNotificationList.AccRejInterface,
+AdapterAdminNotificationReq.AccRejReqInterface{
 
     ViewPager mainViewpager;
     TabLayout tabLayout;
@@ -72,6 +74,9 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
 
     List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponseDesk=new ArrayList<>();
     public List<BookingForEditResponse.TeamDeskAvailabilities> bookingDeskList=new ArrayList<>();
+
+    AdapterAdminNotificationReq adminNotificationReq;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -603,24 +608,68 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
 
             if (OutGoingList!=null && OutGoingList.size()>0){
                 OutGoingList.get(0).setTitle(true);
-                notiList.addAll(OutGoingList);
+
+                ArrayList<IncomingRequestResponse.Result> statusZerOutGoingList = new ArrayList<>();
+
+                statusZerOutGoingList = (ArrayList<IncomingRequestResponse.Result>) OutGoingList.stream().filter(val -> val.getStatus() == 0).collect(Collectors.toList());
+                //IncomingRequestResponse.Result result = new IncomingRequestResponse.Result(0);
+
+                //notiList.addAll(OutGoingList);
+                notiList.addAll(statusZerOutGoingList);
 
                 IncomingRequestResponse.Result result = new IncomingRequestResponse.Result(0);
-                cOutGoing = Collections.frequency(OutGoingList, result); //outgoing.size();
+                cOutGoing = Collections.frequency(statusZerOutGoingList, result); //outgoing.size();
             }
 
             if (IncomingList!=null && IncomingList.size()>0){
                 IncomingList.get(0).setTitle(true);
-                notiList.addAll(IncomingList);
+
+                ArrayList<IncomingRequestResponse.Result> statusZerIncomingList = new ArrayList<>();
+                ArrayList<IncomingRequestResponse.Result> statusNonZerIncomingList = new ArrayList<>();
+
+                statusZerIncomingList = (ArrayList<IncomingRequestResponse.Result>) IncomingList.stream().filter(val -> val.getStatus() == 0).collect(Collectors.toList());
+                statusNonZerIncomingList = (ArrayList<IncomingRequestResponse.Result>) IncomingList.stream().filter(val -> val.getStatus() != 0).collect(Collectors.toList());
+
+                if (statusNonZerIncomingList.size()>0) {
+
+                    statusNonZerIncomingList.replaceAll(val ->{
+                        val.setIncoming("old");
+                        return val;
+                    });
+
+                }
+
+                //notiList.addAll(IncomingList);
+                notiList.addAll(statusZerIncomingList);
+                notiList.addAll(statusNonZerIncomingList);
+
+                if (statusZerIncomingList.size()>0){
+
+                    if (statusNonZerIncomingList.size()>0){
+                        notiList.get(statusZerIncomingList.size()).setTitle(true);
+                    }else {
+                        notiList.get(statusZerIncomingList.size()-1).setTitle(true);
+                    }
+
+                }else {
+                    notiList.get(0).setTitle(true);
+                }
+
+
 
                 IncomingRequestResponse.Result result = new IncomingRequestResponse.Result(0);
 
-                cIncoming = Collections.frequency(IncomingList, result); //incoming.size();
+                cIncoming = Collections.frequency(statusZerIncomingList, result); //incoming.size();
             }
 
             if (notiList.size()>0){
-                adapterNotificationList = new AdapterNotificationList(NotificationsListActivity.this,notiList,"",cIncoming,cOutGoing,this);
-                recyclerView.setAdapter(adapterNotificationList);
+
+                //New...
+                adminNotificationReq = new AdapterAdminNotificationReq(NotificationsListActivity.this,notiList,"",cIncoming,cOutGoing,this);
+                recyclerView.setAdapter(adminNotificationReq);
+
+                //adapterNotificationList = new AdapterNotificationList(NotificationsListActivity.this,notiList,"",cIncoming,cOutGoing,this);
+                //recyclerView.setAdapter(adapterNotificationList);
             }
 
         }else {
@@ -644,6 +693,31 @@ public class NotificationsListActivity extends AppCompatActivity implements Adap
         }
 
     }
-    
-    
+
+
+    @Override
+    public void reqClickEvents(int id, int reqTeamID, int entity, String Action) {
+        switch (Action){
+            case AppConstants.ACCEPT:
+
+                if (entity == 3){
+                    //Desk...
+                    DAODeskAccept daoDeskAccept = new DAODeskAccept();
+                    daoDeskAccept.setId(id);
+                    daoDeskAccept.setRequestedTeamDeskId(reqTeamID);
+                    callDeskAccept(daoDeskAccept);
+                }else if(entity == 4){
+                    callMeetingApprove(id);
+                }else if (entity == 5) {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("", String.valueOf(id));
+                    callParkingAccept(String.valueOf(id));
+                }
+                break;
+
+            case AppConstants.REJECT:
+                rejectPopUp(id,entity);
+                break;
+        }
+    }
 }

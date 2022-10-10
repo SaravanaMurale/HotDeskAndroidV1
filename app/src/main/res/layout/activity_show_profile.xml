@@ -721,6 +721,7 @@
             </LinearLayout>
 
             <RelativeLayout
+                android:id="@+id/upcoming_booking_rel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"

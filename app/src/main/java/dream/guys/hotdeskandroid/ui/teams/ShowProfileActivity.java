@@ -134,12 +134,12 @@ public class ShowProfileActivity extends AppCompatActivity {
 
                     if (daoTeamMember.getLastName() != null) {
                         fName = daoTeamMember.getFirstName() + " " + daoTeamMember.getLastName();
+                        lName = daoTeamMember.getLastName();
                     } else {
                         fName = daoTeamMember.getFirstName();// + " " +daoTeamMember.getLastName();
+                        lName = "";
                     }
 
-
-                    lName = daoTeamMember.getLastName();
                     userID = daoTeamMember.getUserId();
                     //teamId = daoTeamMember.getTeamId();
 
@@ -149,14 +149,20 @@ public class ShowProfileActivity extends AppCompatActivity {
                     callSearchRecyclerData(fName, userID);
                     //Shows upcoming data
 
-                    callTeamMemberStatus(date, daoTeamMember.getTeamId());
+                    if (daoTeamMember.getTeamId()!=null){
+                        binding.upcomingBookingRel.setVisibility(View.VISIBLE);
+                        teamId = daoTeamMember.getTeamId();
+                        callTeamMemberStatus(date, daoTeamMember.getTeamId());
+                    }else {
+                        binding.upcomingBookingRel.setVisibility(View.GONE);
+                    }
 
                 }
 
             }
 
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
 
         binding.profileBack.setOnClickListener(new View.OnClickListener() {

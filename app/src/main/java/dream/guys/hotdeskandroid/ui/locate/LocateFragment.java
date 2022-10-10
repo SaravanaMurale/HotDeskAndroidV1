@@ -346,6 +346,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     //FloorSearch
   boolean floorSearchStatus=false;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -542,17 +543,19 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onResponse(Call<ArrayList<DAOTeamMember>> call, Response<ArrayList<DAOTeamMember>> response) {
 
-                List<DAOTeamMember> daoTeamMemberList = response.body();
+                if (response.body()!=null && response.body().size()>0) {
+                    List<DAOTeamMember> daoTeamMemberList = response.body();
 
-                //callMyTeamBottomSheet(daoTeamMemberList);
+                    //callMyTeamBottomSheet(daoTeamMemberList);
 
-                binding.locateMyTeamList.setVisibility(View.VISIBLE);
-                binding.bookNearByBlock.setVisibility(View.GONE);
+                    binding.locateMyTeamList.setVisibility(View.VISIBLE);
+                    binding.bookNearByBlock.setVisibility(View.GONE);
+
+                    callMyTeamLayout(daoTeamMemberList);
+                }
 
                 //Hide BottomNavigation Bar
                 ((MainActivity)getActivity()).getNav().setVisibility(View.GONE);
-
-                callMyTeamLayout(daoTeamMemberList);
 
             }
 
@@ -980,8 +983,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 @Override
                 public void onResponse(Call<List<LocationWithMR_Response>> call, Response<List<LocationWithMR_Response>> response) {
 
-                    locationWithMR_response = response.body();
+                    if (response.body()!=null && response.body().size()>0){
+                        locationWithMR_response = response.body();
 
+                    }
                     getUserAllowedMeeting(parentId, canvasDrawStatus);
 
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
@@ -1141,9 +1146,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 @Override
                 public void onResponse(Call<List<CarParkAvalibilityResponse>> call, Response<List<CarParkAvalibilityResponse>> response) {
 
-                    carParkAvalibilityResponseList = response.body();
+                    if (response.body()!=null && response.code() == 200 && response.body().size()>0) {
+                        carParkAvalibilityResponseList = response.body();
 
-                    checkCarParkAvalibilityAndUnAvalibility();
+                        checkCarParkAvalibilityAndUnAvalibility();
+                    }
 
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
@@ -1204,11 +1211,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             call.enqueue(new Callback<List<CarParkingslotsResponse>>() {
                 @Override
                 public void onResponse(Call<List<CarParkingslotsResponse>> call, Response<List<CarParkingslotsResponse>> response) {
-                    carParkingslots = response.body();
+                    if (response.body()!=null && response.body().size()>0){
+                        carParkingslots = response.body();
 
-                    //CallCarParkAvalibilitySlotsAPI
-                    getCarParkingAvalibilitySlots();
-
+                        //CallCarParkAvalibilitySlotsAPI
+                        getCarParkingAvalibilitySlots();
+                    }
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
                 }
@@ -1273,41 +1281,43 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     ProgressDialog.clearTouchLock(getContext(), getActivity());
 
-                    locateCountryResposeList = response.body();
-                    if (desksCode != null) {
-                        desksCode.clear();
-                    }
-                    if (carCode != null) {
-                        carCode.clear();
-                    }
+                    if (response.body()!=null && response.body().size()>0) {
 
-                    if (meetingCode != null) {
-                        meetingCode.clear();
-                    }
+                        locateCountryResposeList = response.body();
+                        if (desksCode != null) {
+                            desksCode.clear();
+                        }
+                        if (carCode != null) {
+                            carCode.clear();
+                        }
 
-                    if (locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks().size() > 0) {
-                        desksCode = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks();
-                        //System.out.println("NowDeskCodeAvaliable");
-                    } else if (locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList().size() > 0) {
-                        carCode = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList();
-                        //System.out.println("NoeCarCodeAvaliable");
-                    } else if (locateCountryResposeList.get(floorPosition).getLocationItemLayout().getMeetingRoomsList().size() > 0) {
-                        meetingCode = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getMeetingRoomsList();
-                        //System.out.println("NoeMeetingCodeAvaliable");
-                    }
+                        if (meetingCode != null) {
+                            meetingCode.clear();
+                        }
 
-
-                    int totalDeskSize = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks().size();
-                    //System.out.println("TotalSize" + totalDeskSize);
+                        if (locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks().size() > 0) {
+                            desksCode = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks();
+                            //System.out.println("NowDeskCodeAvaliable");
+                        } else if (locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList().size() > 0) {
+                            carCode = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList();
+                            //System.out.println("NoeCarCodeAvaliable");
+                        } else if (locateCountryResposeList.get(floorPosition).getLocationItemLayout().getMeetingRoomsList().size() > 0) {
+                            meetingCode = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getMeetingRoomsList();
+                            //System.out.println("NoeMeetingCodeAvaliable");
+                        }
 
 
-                    //ProgressDialog.dismisProgressBar(getContext(), dialog);
-                    //getAvaliableDeskDetails(locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks(),0);
+                        int totalDeskSize = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks().size();
+                        //System.out.println("TotalSize" + totalDeskSize);
 
-                    if (canvasDrawId == 1) {
-                        List<List<Integer>> coordinateList = locateCountryResposeList.get(floorPosition).getCoordinates();
-                        List<Point> pointList = new ArrayList<>();
-                        //System.out.println("CoordinateSize" + coordinateList.size());
+
+                        //ProgressDialog.dismisProgressBar(getContext(), dialog);
+                        //getAvaliableDeskDetails(locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks(),0);
+
+                        if (canvasDrawId == 1) {
+                            List<List<Integer>> coordinateList = locateCountryResposeList.get(floorPosition).getCoordinates();
+                            List<Point> pointList = new ArrayList<>();
+                            //System.out.println("CoordinateSize" + coordinateList.size());
 
                         if(coordinateList!=null && coordinateList.size()>0) {
 
@@ -1320,39 +1330,40 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                             }
 
+                            }
+
+                            if (pointList.size() > 0) {
+                                MyCanvasDraw myCanvasDraw = new MyCanvasDraw(getContext(), pointList);
+
+                                binding.secondLayout.addView(myCanvasDraw);
+
+                            }
+                        } else {
+                            getFloorCoordinates(locateCountryResposeList.get(floorPosition).getCoordinates());
                         }
 
-                        if (pointList.size() > 0) {
-                            MyCanvasDraw myCanvasDraw = new MyCanvasDraw(getContext(), pointList);
 
-                            binding.secondLayout.addView(myCanvasDraw);
+                        //addDottedLine();
 
+
+                        List<String> valueList = new ArrayList<>();
+                        if (locateCountryResposeList.get(floorPosition).getItems() != null) {
+
+                            int itemTotalSize = locateCountryResposeList.get(floorPosition).getItems().size();
+
+                            for (String key : locateCountryResposeList.get(floorPosition).getItems().keySet()) {
+
+                                valueList = locateCountryResposeList.get(floorPosition).getItems().get(key);
+
+                                addView(valueList, key, floorPosition, itemTotalSize);
+
+                            }
+
+                        } else {
+                            Toast.makeText(getContext(), "No Data", Toast.LENGTH_LONG).show();
                         }
-                    } else {
-                        getFloorCoordinates(locateCountryResposeList.get(floorPosition).getCoordinates());
+
                     }
-
-
-                    //addDottedLine();
-
-
-                    List<String> valueList = new ArrayList<>();
-                    if (locateCountryResposeList.get(floorPosition).getItems() != null) {
-
-                        int itemTotalSize = locateCountryResposeList.get(floorPosition).getItems().size();
-
-                        for (String key : locateCountryResposeList.get(floorPosition).getItems().keySet()) {
-
-                            valueList = locateCountryResposeList.get(floorPosition).getItems().get(key);
-
-                            addView(valueList, key, floorPosition, itemTotalSize);
-
-                        }
-
-                    } else {
-                        Toast.makeText(getContext(), "No Data", Toast.LENGTH_LONG).show();
-                    }
-
 
                     //ProgressDialog.dismisProgressBar(getContext(), dialog);
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
@@ -5438,7 +5449,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         String resultString = "";
 
         if (response.code() == 200) {
-            if (response.body().getResultCode() != null && response.body().getResultCode().equalsIgnoreCase("ok")) {
+            if (response.body()!=null && response.body().getResultCode() != null && response.body().getResultCode().equalsIgnoreCase("ok")) {
                 openCheckoutDialog(string);
                 callInitView();
             } else {

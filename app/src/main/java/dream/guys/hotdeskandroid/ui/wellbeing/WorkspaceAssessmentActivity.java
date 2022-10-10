@@ -202,13 +202,23 @@ public class WorkspaceAssessmentActivity extends AppCompatActivity implements Qu
             @Override
             public void onResponse(Call<DeskResponseNew> call, Response<DeskResponseNew> response)
             {
-                deskId = response.body().getDesk().get(0).getId();
-                etLocation.setText(SessionHandler.getInstance().get(WorkspaceAssessmentActivity.this, AppConstants.DEFAULT_LOCATION_NAME)+" Desk-"+response.body().getDesk().get(0).getCode());
+                if (response.body()!=null && response.code() == 200) {
+
+                    if (response.body().getDesk()!=null && response.body().getDesk().size()>0) {
+
+                        deskId = response.body().getDesk().get(0).getId();
+                        etLocation.setText(SessionHandler.getInstance().get(WorkspaceAssessmentActivity.this, AppConstants.DEFAULT_LOCATION_NAME)+" Desk-"+response.body().getDesk().get(0).getCode());
+
+                    }else {
+
+                    }
+
+                }
+
             }
 
             @Override
-            public void onFailure(Call<DeskResponseNew> call, Throwable t)
-            {
+            public void onFailure(Call<DeskResponseNew> call, Throwable t) {
 
             }
 
