@@ -178,6 +178,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     TextView bsLocationSearch;
 
+    //FloorSearch
+    EditText bsGeneralSearch;
+
 
 
 
@@ -338,6 +341,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     boolean isVehicleReg = false;
     String editLastEndTime = "";
+
+
+    //FloorSearch
+  boolean floorSearchStatus=false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -868,6 +875,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     public void initLoadFloorDetails(int canvasDrawStatus) {
 
+        int initFloorPosition=SessionHandler.getInstance().getInt(getContext(),AppConstants.FLOOR_POSITION);
+
+        System.out.println("InitFlooorPositiojn "+initFloorPosition);
+
 
 
         afterBookingDisableRepeat();
@@ -1253,7 +1264,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             int floorPosition = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION);
-            //System.out.println("SelectedFloorPosition"+floorPosition);
+            System.out.println("SelectedFloorPositionInLocate "+floorPosition);
             Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(parentId);
             call.enqueue(new Callback<List<LocateCountryRespose>>() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -1298,12 +1309,16 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         List<Point> pointList = new ArrayList<>();
                         //System.out.println("CoordinateSize" + coordinateList.size());
 
-                        for (int i = 0; i < coordinateList.size(); i++) {
+                        if(coordinateList!=null && coordinateList.size()>0) {
 
-                            //System.out.println("CoordinateData" + i + "position" + "size " + coordinateList.get(i).size());
+                            for (int i = 0; i < coordinateList.size(); i++) {
 
-                            Point point = new Point(coordinateList.get(i).get(0) + 40, coordinateList.get(i).get(1) + 20);
-                            pointList.add(point);
+                                //System.out.println("CoordinateData" + i + "position" + "size " + coordinateList.get(i).size());
+
+                                Point point = new Point(coordinateList.get(i).get(0) + 40, coordinateList.get(i).get(1) + 20);
+                                pointList.add(point);
+
+                            }
 
                         }
 
@@ -1365,7 +1380,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     private void getFloorCoordinates(List<List<Integer>> coordinateList) {
 
 
-        ((MainActivity) getActivity()).getFloorCoordinatesInMain(coordinateList, binding.secondLayout);
+        //((MainActivity) getActivity()).getFloorCoordinatesInMain(coordinateList, binding.secondLayout);
 
         /*System.out.println("CoordinateSize" + coordinateList.size());
         //List<Point> pointList=new ArrayList<>();
@@ -3306,6 +3321,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         bsLocationSearch = bottomSheetDialog.findViewById(R.id.bsLocationSearch);
+        bsGeneralSearch=bottomSheetDialog.findViewById(R.id.bsGeneralSearch);
 
         String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
         String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
@@ -3351,6 +3367,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         back.setText(appKeysPage.getBack());
         bsApply.setText(appKeysPage.getApply());
 
+
+
+
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -3362,22 +3382,31 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-
+                if(floorAdapter.getSelectedPositionCheck()>=0){
+                    floorSearchStatus=false;
                 int floorPosition = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION);
                 boolean floorSelectedStatus = SessionHandler.getInstance().getBoolean(getContext(), AppConstants.FLOOR_SELECTED_STATUS);
 
                 //System.out.println("SelectedFloorPosition "+floorPosition+" "+floorSelectedStatus);
 
-                canvasss = 1;
-                //removes desk in layout
-                binding.firstLayout.removeAllViews();
+                //if(floorSelectedStatus){
+                    canvasss = 1;
+                    //removes desk in layout
+                    binding.firstLayout.removeAllViews();
 
-                initLoadFloorDetails(canvasss);
-                bottomSheetDialog.dismiss();
+                    initLoadFloorDetails(canvasss);
+                    bottomSheetDialog.dismiss();
+                }else {
+                    Utils.toastMessage(getContext(),"Please Select Floor");
+                }
+
+
             }
         });
 
 
+
+        //Global Location
         country.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -3398,6 +3427,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         });
 
+        //City
         state.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -3433,6 +3463,31 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         });
 
 
+        bsGeneralSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(!floorSearchStatus) {
+                    showCountryAdapter.getFilter().filter(s.toString());
+                }else {
+                    floorAdapter.getFilter().filter(s.toString());
+                }
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
 
          /*linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
          rvCountry.setLayoutManager(linearLayoutManager);
@@ -3453,6 +3508,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes, this, "COUNTRY");
         rvCountry.setAdapter(showCountryAdapter);
 
+
+
     }
 
     //Interface To select
@@ -3462,6 +3519,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         switch (identifier) {
             case "COUNTRY":
+
+                floorSearchStatus=false;
+
                 state.setText("City");
                 stateId = locateCountryRespose.getLocateCountryId();
                 SessionHandler.getInstance().save(getContext(), AppConstants.COUNTRY_NAME, locateCountryRespose.getName());
@@ -3470,6 +3530,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 break;
 
             case "STATE":
+
+                floorSearchStatus=false;
+
                 state.setText(locateCountryRespose.getName());
                 SessionHandler.getInstance().save(getContext(), AppConstants.BUILDING, locateCountryRespose.getName());
                 rvState.setVisibility(View.GONE);
@@ -3486,6 +3549,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 break;
 
             case "FLOOR":
+
+                floorSearchStatus=true;
+
                 floorBlock.setVisibility(View.VISIBLE);
                 floor.setVisibility(View.VISIBLE);
                 floor.setText(locateCountryRespose.getName());
@@ -7443,7 +7509,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                         if(deskId==locateCountryResposeList.get(i).getLocationItemLayout().getDesks().get(j).getDesksId()){
                             SessionHandler.getInstance().saveInt(getContext(),AppConstants.FLOOR_POSITION,i);
-                            //myTeamBottomSheet.dismiss();
+                            System.out.println("SelectedFloorPositionInLocate "+i);
                             callInitView();
                             break;
 

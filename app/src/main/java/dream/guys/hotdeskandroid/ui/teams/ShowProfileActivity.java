@@ -141,7 +141,9 @@ public class ShowProfileActivity extends AppCompatActivity {
 
                     lName = daoTeamMember.getLastName();
                     userID = daoTeamMember.getUserId();
-                    teamId = daoTeamMember.getTeamId();
+                    //teamId = daoTeamMember.getTeamId();
+
+
 
                     //Show Person Profile Only
                     callSearchRecyclerData(fName, userID);
@@ -180,11 +182,6 @@ public class ShowProfileActivity extends AppCompatActivity {
 
 
     }
-
-
-
-
-
 
 
 private void callSearchRecyclerData(String searchText,int selID) {

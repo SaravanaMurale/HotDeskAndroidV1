@@ -1005,12 +1005,16 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
         List<Point> pointList=new ArrayList<>();
         System.out.println("CoordinateSize" + coordinateList.size());
 
-        for (int i = 0; i < coordinateList.size(); i++) {
+        if(coordinateList!=null && coordinateList.size()>0) {
 
-            System.out.println("CoordinateData" + i + "position" + "size " + coordinateList.get(i).size());
+            for (int i = 0; i < coordinateList.size(); i++) {
 
-            Point point = new Point(coordinateList.get(i).get(0) + 40, coordinateList.get(i).get(1) + 20);
-            pointList.add(point);
+                System.out.println("CoordinateData" + i + "position" + "size " + coordinateList.get(i).size());
+
+                Point point = new Point(coordinateList.get(i).get(0) + 40, coordinateList.get(i).get(1) + 20);
+                pointList.add(point);
+
+            }
 
         }
 
@@ -1045,6 +1049,7 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
             DAOTeamMember daoTeamMember=new DAOTeamMember();
             daoTeamMember.setFirstName(results.getName());
             daoTeamMember.setUserId(results.getId());
+
 
 
             Intent intent = new Intent(MainActivity.this, ShowProfileActivity.class);
