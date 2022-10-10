@@ -49,7 +49,17 @@
         android:id="@+id/bookingDetailFragment"
         android:name="dream.guys.hotdeskandroid.ui.book.BookingDetailFragment"
         android:label="fragment_booking_detail"
-        tools:layout="@layout/fragment_booking_detail" />
+        tools:layout="@layout/fragment_booking_detail" >
+        <action
+            android:id="@+id/action_change_schedule"
+            app:destination="@id/changeScheduleFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/changeScheduleFragment"
+        android:name="dream.guys.hotdeskandroid.ui.home.ChangeScheduleFragment"
+        android:label="fragment_change_schedule"
+        tools:layout="@layout/fragment_change_schedule" />
     <fragment
         android:id="@+id/qrFragment"
         android:name="dream.guys.hotdeskandroid.ui.home.QrFragment"
@@ -58,6 +68,10 @@
         <action
             android:id="@+id/action_qrFragment_self"
             app:destination="@id/qrFragment" />
+        <action
+            android:id="@+id/action_change_schedule"
+            app:destination="@id/changeScheduleFragment" />
+
     </fragment>
 
 </navigation>

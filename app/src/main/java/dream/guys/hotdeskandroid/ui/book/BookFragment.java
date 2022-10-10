@@ -1124,7 +1124,7 @@ public class BookFragment extends Fragment implements
                         loo:
                         for (int i=0; i< userAllowedMeetingResponseFilterList.size();i++){
                             if (participants <= userAllowedMeetingResponseFilterList.get(i).getNoOfPeople()){
-                                userAllowedMeetingResponseListUpdated.add(userAllowedMeetingResponseFilterList.get(i));
+//                                userAllowedMeetingResponseListUpdated.add(userAllowedMeetingResponseFilterList.get(i));
                                 userAllowedMeetingResponseListUpdated.add(userAllowedMeetingResponseFilterList.get(i));
                             }
 

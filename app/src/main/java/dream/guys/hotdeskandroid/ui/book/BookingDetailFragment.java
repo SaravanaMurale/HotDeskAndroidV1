@@ -125,6 +125,13 @@ public class BookingDetailFragment extends Fragment {
                 navController.navigate(R.id.navigation_home);
             }
         });
+        fragmentBookingDetailBinding.tvChangeSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController= Navigation.findNavController(view);
+                navController.navigate(R.id.action_change_schedule);
+            }
+        });
         Bundle bundle = getArguments();
         if (bundle != null) {
             action = bundle.getString("ACTION", null);

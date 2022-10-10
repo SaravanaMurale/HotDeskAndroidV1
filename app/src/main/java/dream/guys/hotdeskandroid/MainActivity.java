@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
 
     }
     public void NightModeON(View view){
-        uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
+//        uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
     }
 
     public void NightModeOFF(View view){

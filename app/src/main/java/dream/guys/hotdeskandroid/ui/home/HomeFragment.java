@@ -163,7 +163,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         setHasOptionsMenu(true);
 
         dialog = new Dialog(getContext());
-        setNightMode(getContext(),true);
+        setNightMode(getContext(),false);
         setLanguage();
         earlyCheckInTime();
 

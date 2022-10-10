@@ -143,6 +143,13 @@ public class QrFragment extends Fragment {
             }
         });
 
+        fragmentQrBinding.tvChangeSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController= Navigation.findNavController(view);
+                navController.navigate(R.id.action_change_schedule);
+            }
+        });
         return root;
     }
 

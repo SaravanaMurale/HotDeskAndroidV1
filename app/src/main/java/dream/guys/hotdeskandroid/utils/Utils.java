@@ -630,6 +630,10 @@ public class Utils {
 
     }
 
+    public static String getDayAndDate(Date date){
+        DateFormat df = new SimpleDateFormat("EEE,d");
+        return df.format(date);
+    }
     public static String dayDateMonthFormat(Date date){
         DateFormat df = new SimpleDateFormat("EEE,d MMM yyyy");
         return df.format(date);
