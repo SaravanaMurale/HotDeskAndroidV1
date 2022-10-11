@@ -260,6 +260,12 @@ public class BookFragment extends Fragment implements
     ArrayList<DataModel> mList = new ArrayList<>();;
     int filterClickedStatus=0;
 
+    //FloorSearch
+    EditText bsGeneralSearch;
+
+    //FloorSearch
+    boolean floorSearchStatus=false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -275,6 +281,7 @@ public class BookFragment extends Fragment implements
 
         checkVeichleReg();
 
+        System.out.println("selct time"+Utils.selectedTimeWithExtraMins(Utils.getCurrentTime(),30));
         dialog= new Dialog(getActivity());
         if (endTimeSelectedStats == 0) {
             binding.locateEndTime.setText("23:59");
@@ -1079,9 +1086,15 @@ public class BookFragment extends Fragment implements
                 public void onResponse(Call<List<UserAllowedMeetingResponse>> call, Response<List<UserAllowedMeetingResponse>> response) {
                     userAllowedMeetingResponseListUpdated.clear();
                     userAllowedMeetingResponseList.clear();
-                    userAllowedMeetingResponseList=response.body();
+//                    userAllowedMeetingResponseList=response.body();
                     userAllowedMeetingResponseFilterList.clear();
 //                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    for(int i=0; i<response.body().size(); i++){
+                        if(response.body().get(i).isActive()){
+                            userAllowedMeetingResponseList.add(response.body().get(i));
+                        }
+                    }
+
                     boolean checkIsRequest=false;
                     if (userAllowedMeetingResponseList!=null && userAllowedMeetingResponseList.size()>0){
 
@@ -3326,6 +3339,7 @@ public class BookFragment extends Fragment implements
 
 
         bsLocationSearch = bottomSheetDialog.findViewById(R.id.bsLocationSearch);
+        bsGeneralSearch = bottomSheetDialog.findViewById(R.id.bsGeneralSearch);
 
         String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
         String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
@@ -3380,15 +3394,20 @@ public class BookFragment extends Fragment implements
         bsApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(floorAdapter.getSelectedPositionCheck()>=0){
+                    floorSearchStatus=false;
+                    int floorPosition = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION);
+                    boolean floorSelectedStatus = SessionHandler.getInstance().getBoolean(getContext(), AppConstants.FLOOR_SELECTED_STATUS);
+                    canvasss = 1;
+                    //removes desk in layout
+//                    binding.firstLayout.removeAllViews();
 
-                canvasss = 1;
+                    initLoadFloorDetails(canvasss);
+                    bottomSheetDialog.dismiss();
+                }else {
+                    Utils.toastMessage(getContext(),"Please Select Floor");
+                }
 
-                //removes desk in layout
-//                binding.firstLayout.removeAllViews();
-                //removeZoomInLayout();
-
-                initLoadFloorDetails(canvasss);
-                bottomSheetDialog.dismiss();
             }
         });
 
@@ -3443,6 +3462,30 @@ public class BookFragment extends Fragment implements
                 rvFloor.setVisibility(View.VISIBLE);
             }
         });
+
+        bsGeneralSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(!floorSearchStatus) {
+                    showCountryAdapter.getFilter().filter(s.toString());
+                } else {
+                    floorAdapter.getFilter().filter(s.toString());
+                }
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
 
 
 
@@ -3611,7 +3654,7 @@ public class BookFragment extends Fragment implements
 
                 List<LocateCountryRespose> locateCountryResposeList = response.body();
 
-                System.out.println("InsideFloorDetails");
+                System.out.println("InsideFloorDetails bala"+locateCountryResposeList.size());
 
                 for (int j = 0; j < locateCountryResposeList.size(); j++) {
                     System.out.println("InsideFloorName" + locateCountryResposeList.get(j).getName());
@@ -3641,6 +3684,8 @@ public class BookFragment extends Fragment implements
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvFloor.setLayoutManager(linearLayoutManager);
         rvFloor.setHasFixedSize(true);
+
+        System.out.println("locate data check"+locateCountryResposeList.size());
 
         floorAdapter = new FloorAdapter(getContext(), locateCountryResposeList, this, "FLOOR_NAME");
         rvFloor.setAdapter(floorAdapter);
@@ -3793,6 +3838,11 @@ public class BookFragment extends Fragment implements
                     userAllowedMeetingResponseListUpdated.clear();
                     userAllowedMeetingResponseList = response.body().getMeetingResponses();
 
+                    for (int i=0; i < response.body().getMeetingResponses().size(); i++){
+                        if (response.body().getMeetingResponses().get(i).isActive()){
+                            userAllowedMeetingResponseList.add(response.body().getMeetingResponses().get(i));
+                        }
+                    }
 
 //                    ProgressDialog.dismisProgressBar(getContext(),dialog);
                     boolean checkIsRequest=false;
@@ -3889,6 +3939,8 @@ public class BookFragment extends Fragment implements
 
         switch (identifier) {
             case "COUNTRY":
+                floorSearchStatus=false;
+
                 state.setText("City");
                 stateId = locateCountryRespose.getLocateCountryId();
                 SessionHandler.getInstance().save(getContext(), AppConstants.COUNTRY_NAME, locateCountryRespose.getName());
@@ -3897,6 +3949,8 @@ public class BookFragment extends Fragment implements
                 break;
 
             case "STATE":
+                floorSearchStatus=false;
+
                 state.setText(locateCountryRespose.getName());
                 SessionHandler.getInstance().save(getContext(), AppConstants.BUILDING, locateCountryRespose.getName());
                 rvState.setVisibility(View.GONE);
@@ -3913,6 +3967,8 @@ public class BookFragment extends Fragment implements
                 break;
 
             case "FLOOR":
+                floorSearchStatus=true;
+
                 floorBlock.setVisibility(View.VISIBLE);
                 floor.setVisibility(View.VISIBLE);
                 floor.setText(locateCountryRespose.getName());

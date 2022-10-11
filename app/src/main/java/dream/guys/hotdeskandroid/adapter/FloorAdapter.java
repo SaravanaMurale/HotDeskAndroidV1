@@ -55,6 +55,10 @@ public class FloorAdapter extends RecyclerView.Adapter<FloorAdapter.FloorAdapter
         this.locateCountryResposeList=locateCountryResposeList;
         this.identifier=identifier;
 
+        this.locateCountryResposeListAll=new ArrayList<>(locateCountryResposeList);
+
+        copyList=new ArrayList<>(locateCountryResposeList);
+
     }
 
     public int getSelectedPositionCheck(){

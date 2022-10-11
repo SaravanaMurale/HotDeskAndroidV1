@@ -150,6 +150,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     UserDetailsResponse profileData;
 
     public static int earlyCheckInTime=0;
+    public static int expiryCheckInTime=0;
     public boolean showPastStatus=false;
 
     @Override
@@ -166,6 +167,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         setNightMode(getContext(),false);
         setLanguage();
         earlyCheckInTime();
+        bookingExpiryGraceTimeInMinutes();
 
         System.out.println("Seesin userId"+SessionHandler.getInstance().getInt(getActivity(),AppConstants.USER_ID));
         userProfile = root.findViewById(R.id.user_profile_pic);
@@ -1739,6 +1741,34 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     if (response.code()==200){
                         try {
                             earlyCheckInTime = Integer.parseInt(response.body());
+                        } catch (Exception e){
+                            System.out.println("exception bal"+e.getMessage());
+                        }
+                    }else if (response.code() == 403){
+//                        teamsCheckBoxStatus = false;
+                    }else {
+//                        teamsCheckBoxStatus = false;
+                    }
+                }
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getContext(), "Please Enable Internet");
+        }
+    }
+    public void bookingExpiryGraceTimeInMinutes(){
+        if (Utils.isNetworkAvailable(getContext())) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<String> call = apiService.getSettingData("bookingExpiryGraceTimeInMinutes");
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if (response.code()==200){
+                        try {
+                            expiryCheckInTime = Integer.parseInt(response.body());
                         } catch (Exception e){
                             System.out.println("exception bal"+e.getMessage());
                         }

@@ -180,6 +180,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     dNow = cal.getTime();
                     SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
 
+
                     if (Utils.getCurrentDate()
                             .equalsIgnoreCase(Utils.getYearMonthDateFormat(list.get(position).getDate()))
                             &&
@@ -197,6 +198,23 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     else
                         holder.bookingBtnCheckIn.setVisibility(View.GONE);
 
+
+                    if (fragment.expiryCheckInTime>0){
+                        if (Utils.getCurrentDate()
+                                .equalsIgnoreCase(Utils.getYearMonthDateFormat(list.get(position).getDate()))
+                                &&
+                                Utils.compareTimeIfCheckInEnable(
+                                        Utils.getCurrentTime(),
+                                        Utils.selectedTimeWithExtraMins(
+                                                Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom()),
+                                                fragment.expiryCheckInTime)
+                                )){
+                            holder.bookingBtnCheckIn.setVisibility(View.GONE);
+                        }else {
+                            holder.bookingBtnCheckIn.setVisibility(View.VISIBLE);
+                        }
+
+                    }
                     holder.bookingBtnCheckOut.setVisibility(View.GONE);
                     break;
                 case 2:
