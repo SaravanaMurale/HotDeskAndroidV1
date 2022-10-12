@@ -248,6 +248,7 @@ public class DefaultLocationActivity extends AppCompatActivity implements Defaul
 
         Intent intent = new Intent();
         intent.putExtra("List",finalLocationArrayList);
+        intent.putExtra("FloorList",cityPlaceFloorArrayList);
         intent.putExtra("Position",position);
         intent.putExtra("floorName",floorName);
         setResult(RESULT_OK,intent);

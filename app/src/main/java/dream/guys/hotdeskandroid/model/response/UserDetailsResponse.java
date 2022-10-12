@@ -413,7 +413,7 @@ public class UserDetailsResponse {
         }
     }
 
-    public class DefaultLocation{
+    public static class DefaultLocation{
 
         @SerializedName("id")
         private int id;
