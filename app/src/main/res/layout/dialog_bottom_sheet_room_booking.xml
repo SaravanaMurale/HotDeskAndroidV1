@@ -260,12 +260,13 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/selectMeetingRoomLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
             android:background="@drawable/rectangle_greybg_with_corner"
             android:orientation="horizontal"
-            android:visibility="gone"
+            android:visibility="visible"
             >
 
             <LinearLayout
@@ -304,6 +305,7 @@
                         android:theme="@style/TextBold" />
 
                     <TextView
+                        android:id="@+id/meetingRoomLocation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="@dimen/_3sdp"
@@ -311,6 +313,7 @@
                         android:theme="@style/TextRegular" />
 
                     <LinearLayout
+                        android:id="@+id/capacityBlock"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -320,7 +323,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Capacity"
-                            android:theme="@style/TextRegular" />
+                            android:theme="@style/TextRegular"
+                            />
 
                         <TextView
                             android:layout_width="@dimen/_6sdp"
@@ -378,7 +382,6 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/user_status_room"
                     android:layout_width="@dimen/_10sdp"
                     android:layout_height="@dimen/_10sdp"
                     android:background="@drawable/bg_circle_vector"
@@ -386,6 +389,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/user_status_room"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Checked In"
@@ -425,8 +429,26 @@
                 android:id="@+id/rvParticipant"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/externalAttendeesChipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:visibility="gone"
                 />
+
+
+            <EditText
+                    android:id="@+id/externalAttendees"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rectangle_greybg_with_corner"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:paddingHorizontal="@dimen/_15sdp"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:hint="externalattendees"
+                    />
 
 
 

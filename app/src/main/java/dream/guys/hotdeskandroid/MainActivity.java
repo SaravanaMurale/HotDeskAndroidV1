@@ -684,7 +684,7 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
         changes.setAttendees(attendeesList);
 
         List<MeetingRoomRequest.Changeset.Changes.ExternalAttendees> externalAttendeesList = new ArrayList<>();
-        changes.setExternalAttendees(externalAttendeesList);
+        //changes.setExternalAttendees(externalAttendeesList);
 
         List<MeetingRoomRequest.DeleteIds> deleteIdsList = new ArrayList<>();
         meetingRoomRequest.setDeletedIds(deleteIdsList);
