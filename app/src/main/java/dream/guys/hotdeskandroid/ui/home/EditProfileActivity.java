@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.PatternMatcher;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -81,7 +82,8 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     LanguagePOJO.Booking bookindata ;
     LanguagePOJO.Global global;
 
-    int floorParentID = 0, cityPlaceID = 0, cityPlaceParentID = 0,cityID = 0,cityParentID = 0,locationID = 0,locationParentID = 0;
+    int floorParentID = 0, cityPlaceID = 0, cityPlaceParentID = 0,cityID = 0,cityParentID = 0,locationID = 0,locationParentID = 0,
+    floorPositon;
 
     String CountryName = "";
     String CityName = "";
@@ -172,7 +174,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                 String endTime = binding.editEndTime.getText().toString();
                 String vehicleNum = binding.editVehicleNum.getText().toString();
 
-                if (isValidate(phone,email)){
+                if (isValidate(phone,email) && floorParentID!=0){
                     //profileData.setFullName(name);
                     profileData.setFullName(editDisplayName);
                     profileData.setPhoneNumber(phone);
@@ -226,6 +228,11 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             binding.editVehicleNum.setText(profileData.getVehicleRegNumber());
             binding.tvEditTel.setText(profileData.getDeskPhoneNumber());
 
+            if (profileData.getDefaultLocation()!=null){
+                binding.editDefaultLocaton.setText(profileData.getDefaultLocation().getName());
+                floorParentID = profileData.getDefaultLocation().getParentLocationId();
+            }
+
 
         }
 
@@ -237,6 +244,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                         if (result.getResultCode() == Activity.RESULT_OK) {
 
                             ArrayList<DAOActiveLocation> finalLocationArrayList = new ArrayList<>();
+                            ArrayList<DAOActiveLocation> cityPlaceFloorArrayList = new ArrayList<>();
 
                             Intent intent = result.getData();
 
@@ -245,8 +253,33 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                                 int position = intent.getIntExtra("Position",0);
                                 floorName = intent.getStringExtra("floorName");
                                 finalLocationArrayList = (ArrayList<DAOActiveLocation>)intent.getSerializableExtra("List");
+                                cityPlaceFloorArrayList = (ArrayList<DAOActiveLocation>)intent.getSerializableExtra("FloorList");
 
                                 floorParentID = finalLocationArrayList.get(position).getParentLocationId();
+                                Integer id = finalLocationArrayList.get(position).getId();
+                                UserDetailsResponse.DefaultLocation defaultLocation = new UserDetailsResponse.DefaultLocation();
+
+                                ArrayList<DAOActiveLocation> selectFloors = new ArrayList<>();
+                                selectFloors = (ArrayList<DAOActiveLocation>) cityPlaceFloorArrayList.stream().filter(val -> val.getParentLocationId() == floorParentID).collect(Collectors.toList());
+
+                                for (int i=0;i<selectFloors.size();i++) {
+
+                                    if (id.equals(selectFloors.get(i).getId())) {
+                                        floorPositon = i;
+                                        break;
+                                    }
+                                }
+
+                                defaultLocation.setId(finalLocationArrayList.get(position).getId());
+                                defaultLocation.setName(finalLocationArrayList.get(position).getName());
+                                defaultLocation.setDescription(finalLocationArrayList.get(position).getDescription());
+                                defaultLocation.setLeafLocation(finalLocationArrayList.get(position).getIsLeafLocation());
+                                defaultLocation.setLocationType(finalLocationArrayList.get(position).getLocationType());
+                                defaultLocation.setActive(finalLocationArrayList.get(position).getIsActive());
+                                defaultLocation.setTimeZoneId(finalLocationArrayList.get(position).getTimeZoneId());
+                                defaultLocation.setParentLocationId(floorParentID);
+
+                                profileData.setDefaultLocation(defaultLocation);
 
                                 ArrayList<DAOActiveLocation> buildingPlace = new ArrayList<>();
                                 ArrayList<DAOActiveLocation> cityList = new ArrayList<>();
@@ -605,6 +638,11 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 //        Toast.makeText(EditProfileActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
         //New...
+        SessionHandler.getInstance().saveInt(EditProfileActivity.this,AppConstants.PARENT_ID,floorParentID);
+        SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.FLOOR_POSITION,floorPositon);
+
+        Log.d("floorParentID", String.valueOf(floorParentID));
+        Log.d("floorPositon", String.valueOf(floorPositon));
 
         /*SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.COUNTRY_NAME,CountryName);
         SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.BUILDING,buildingName);

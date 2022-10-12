@@ -107,7 +107,7 @@ public class MeetingRoomEditRequest {
             String from;
             String subject;
             @SerializedName("externalAttendees")
-            List<ExternalAttendees> externalAttendeesList;
+            List<String> externalAttendeesList;
             String comments;
             boolean isRequest;
             String to;
@@ -136,11 +136,11 @@ public class MeetingRoomEditRequest {
                 this.subject = subject;
             }
 
-            public List<ExternalAttendees> getExternalAttendeesList() {
+            public List<String> getExternalAttendeesList() {
                 return externalAttendeesList;
             }
 
-            public void setExternalAttendeesList(List<ExternalAttendees> externalAttendeesList) {
+            public void setExternalAttendeesList(List<String> externalAttendeesList) {
                 this.externalAttendeesList = externalAttendeesList;
             }
 

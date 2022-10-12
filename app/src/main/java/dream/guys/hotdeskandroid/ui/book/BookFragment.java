@@ -3283,7 +3283,7 @@ public class BookFragment extends Fragment implements
 
 
         rvParticipant.setVisibility(View.VISIBLE);
-        ParticipantNameShowAdapter participantNameShowAdapter = new ParticipantNameShowAdapter(getContext(), participantDetsilResponseList, this);
+        ParticipantNameShowAdapter participantNameShowAdapter = new ParticipantNameShowAdapter(getContext(), participantDetsilResponseList, this,rvParticipant);
         rvParticipant.setAdapter(participantNameShowAdapter);
     }
 
@@ -3379,7 +3379,7 @@ public class BookFragment extends Fragment implements
 
 
     @Override
-    public void onParticipantSelect(ParticipantDetsilResponse participantDetsilResponse) {
+    public void onParticipantSelect(ParticipantDetsilResponse participantDetsilResponse, RecyclerView recyclerView) {
 
         this.participantDetsilResponse= participantDetsilResponse;
 

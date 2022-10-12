@@ -9,6 +9,16 @@ public class ParticipantDetsilResponse {
     String email;
     boolean active;
 
+
+    public ParticipantDetsilResponse(int id, String firstName, String lastName, String fullName, String email, boolean active) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.fullName = fullName;
+        this.email = email;
+        this.active = active;
+    }
+
     public int getId() {
         return id;
     }
