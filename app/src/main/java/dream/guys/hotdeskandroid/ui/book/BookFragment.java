@@ -81,6 +81,7 @@ import dream.guys.hotdeskandroid.model.request.MeetingRoomRecurrence;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.request.MeetingStatusModel;
 import dream.guys.hotdeskandroid.model.request.Point;
+import dream.guys.hotdeskandroid.model.response.ActiveTeamsResponse;
 import dream.guys.hotdeskandroid.model.response.AmenitiesResponse;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
@@ -93,6 +94,7 @@ import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
 import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
 import dream.guys.hotdeskandroid.model.response.RoomListResponse;
+import dream.guys.hotdeskandroid.model.response.TeamsResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.CalendarView;
@@ -266,6 +268,9 @@ public class BookFragment extends Fragment implements
     //FloorSearch
     boolean floorSearchStatus=false;
 
+    //teams list and Desk List
+    List<ActiveTeamsResponse> activeTeamsList = new ArrayList<>();;
+    int selectedTeamId=0;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -277,6 +282,7 @@ public class BookFragment extends Fragment implements
         binding = FragmentBookBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        selectedTeamId = SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID);
         setLanguage();
 
         checkVeichleReg();
@@ -287,6 +293,7 @@ public class BookFragment extends Fragment implements
             binding.locateEndTime.setText("23:59");
         }
 
+        getActiveTeams();
         getAmenities();
         checkTeamsCheckBox();
         binding.locateStartTime.setText(getCurrentTime());
@@ -431,6 +438,32 @@ public class BookFragment extends Fragment implements
 
         return root;
     }
+
+    private void getActiveTeams() {
+
+        if (Utils.isNetworkAvailable(getActivity())) {
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<ActiveTeamsResponse>> call = apiService.getActiveTeams();
+            call.enqueue(new Callback<List<ActiveTeamsResponse>>() {
+                @Override
+                public void onResponse(Call<List<ActiveTeamsResponse>> call, Response<List<ActiveTeamsResponse>> response) {
+                    activeTeamsList = response.body();
+                }
+
+                @Override
+                public void onFailure(Call<List<ActiveTeamsResponse>> call, Throwable t) {
+
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
+        }
+
+    }
+
 
     private void getAmenities() {
         if (Utils.isNetworkAvailable(getActivity())) {

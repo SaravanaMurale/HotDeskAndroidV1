@@ -109,10 +109,12 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
             holder.bookingIvEdit.setVisibility(View.GONE);
             holder.bookingIvLocation.setVisibility(View.GONE);
-            System.out.println("date check Balaaaa"+list.get(position).getDate()+" : "+Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate()));
+            System.out.println("date check Balaaaa"
+                    +list.get(position).getDate()+
+                    " : "
+                    +Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate()));
         } else if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
             System.out.println("check date of today present "+list.get(position).getDate());
-
             if (!fragment.showPastStatus && !pastCheck)
                 holder.tv_past_event.setVisibility(View.VISIBLE);
             else

@@ -30,6 +30,7 @@ import dream.guys.hotdeskandroid.model.request.PersonalHelpRequest;
 import dream.guys.hotdeskandroid.model.request.QuestionListRequest;
 import dream.guys.hotdeskandroid.model.request.ReportIssueRequest;
 import dream.guys.hotdeskandroid.model.request.TokenRequest;
+import dream.guys.hotdeskandroid.model.response.ActiveTeamsResponse;
 import dream.guys.hotdeskandroid.model.response.AmenitiesResponse;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
@@ -222,9 +223,6 @@ public interface ApiInterface {
     @PUT("api/MeetingRoomBooking/Bookings")
     Call<BaseResponse> meetingRoomBookingBookings(@Body JsonObject body);
 
-//    Call<BaseResponse> carParkbookingBookings(@Body String body);
-
-
     @GET("api/locate/ImmediateChildLocations")
     Call<List<LocateCountryRespose>> getLocationCountryList();
 
@@ -293,6 +291,9 @@ public interface ApiInterface {
 
     @GET("api/teams")
     Call<List<TeamsResponse>> getTeams();
+
+    @GET("api/Teams/ActiveTeams")
+    Call<List<ActiveTeamsResponse>> getActiveTeams();
 
     //CarPark Availability Checking
     @GET("api/ParkingSlot/carparkparkingslots")
