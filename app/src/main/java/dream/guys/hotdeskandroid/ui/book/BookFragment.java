@@ -56,6 +56,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.adapter.ActiveTeamsAdapter;
 import dream.guys.hotdeskandroid.adapter.BookingListToEditAdapter;
 import dream.guys.hotdeskandroid.adapter.CarListToEditAdapterBooking;
 import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
@@ -63,6 +64,7 @@ import dream.guys.hotdeskandroid.adapter.FloorAdapter;
 import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
 import dream.guys.hotdeskandroid.adapter.LocateMyTeamAdapter;
 import dream.guys.hotdeskandroid.adapter.MeetingListToEditAdapter;
+import dream.guys.hotdeskandroid.adapter.NewDeskListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.ParkingSpotListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.ParticipantNameShowAdapter;
 import dream.guys.hotdeskandroid.adapter.RoomListRecyclerAdapter;
@@ -96,6 +98,7 @@ import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
 import dream.guys.hotdeskandroid.model.response.RoomListResponse;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
+import dream.guys.hotdeskandroid.ui.wellbeing.NotificationsListActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.CalendarView;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
@@ -111,6 +114,8 @@ public class BookFragment extends Fragment implements
         MeetingListToEditAdapter.OnMeetingEditClickable,
         BookingListToEditAdapter.OnEditClickable,
         DeskListRecyclerAdapter.OnSelectSelected,
+        NewDeskListRecyclerAdapter.OnChangeSelected,
+        ActiveTeamsAdapter.OnActiveTeamsSelected,
         CarListToEditAdapterBooking.CarEditClickableBooking,
         ParkingSpotListRecyclerAdapter.OnSelectSelected,
         ParticipantNameShowAdapter.OnParticipantSelectable,
@@ -175,6 +180,8 @@ public class BookFragment extends Fragment implements
 
     BottomSheetDialog bookEditBottomSheet;
     BottomSheetDialog roomBottomSheet;
+    BottomSheetDialog deskListBottomSheet;
+    BottomSheetDialog activeTeamsBottomSheet;
     int selectedicon = 0;
     String calSelectedDate="";
     String calSelectedMont="";
@@ -186,9 +193,12 @@ public class BookFragment extends Fragment implements
 
     int teamId=0,teamMembershipId=0,selectedDeskId=0;
 
-    RecyclerView rvHomeBooking,rvDeskRecycler;
+    RecyclerView rvHomeBooking,rvDeskRecycler, rvActiveTeams;
     HomeBookingListAdapter homeBookingListAdapter;
     DeskListRecyclerAdapter deskListRecyclerAdapter;
+    NewDeskListRecyclerAdapter newdeskListRecyclerAdapter;
+    ActiveTeamsAdapter activeTeamsAdapter;
+
     ParkingSpotListRecyclerAdapter parkingSpotListRecyclerAdapter;
     RoomListRecyclerAdapter roomListRecyclerAdapter;
     LinearLayoutManager linearLayoutManager;
@@ -244,7 +254,7 @@ public class BookFragment extends Fragment implements
     int enableCurrentWeek=-1;
     boolean repeatActvieStatus=false;
     boolean isGlobalLocationSetUP = false;
-    TextView tvRepeat;
+    TextView tvRepeat, tvTeamName;
     int participants = 0;
     BottomSheetDialog repeatBottomSheetDialog;
     ChipGroup chipGroup;
@@ -270,7 +280,10 @@ public class BookFragment extends Fragment implements
 
     //teams list and Desk List
     List<ActiveTeamsResponse> activeTeamsList = new ArrayList<>();;
-    int selectedTeamId=0;
+    public int selectedTeamId = 0;
+    public int selectedTeamAutoApproveStatus = 0;
+    String selectedTeamName="";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -449,6 +462,13 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onResponse(Call<List<ActiveTeamsResponse>> call, Response<List<ActiveTeamsResponse>> response) {
                     activeTeamsList = response.body();
+
+                    for (int i=0; i<activeTeamsList.size(); i++){
+                        if (selectedTeamId==activeTeamsList.get(i).getId()) {
+                            selectedTeamName = activeTeamsList.get(i).getName();
+                            selectedTeamAutoApproveStatus = activeTeamsList.get(i).getAutomaticApprovalStatus();
+                        }
+                    }
                 }
 
                 @Override
@@ -1623,9 +1643,12 @@ public class BookFragment extends Fragment implements
                 }
 
                 if(isGlobalLocationSetUP)
-                    editBookingUsingBottomSheet(editBookingDetails,1,0,"request");
+                    editBookingUsingBottomSheet(editBookingDetails,
+                            1,0,"request");
                 else
-                    editBookingUsingBottomSheet(editBookingDetails,1,0,"new");
+                    editBookingUsingBottomSheet(editBookingDetails,
+                            1,0,"new");
+//                getDeskList("3", calSelectedDate);
             }
         });
         editClose.setOnClickListener(new View.OnClickListener() {
@@ -2724,6 +2747,106 @@ public class BookFragment extends Fragment implements
         bottomSheetDialog.show();
     }
 
+    private void callDeskListBottomSheetDialog() {
+        for (int i=0; i<activeTeamsList.size(); i++){
+            if (selectedTeamId==activeTeamsList.get(i).getId()) {
+                selectedTeamName = activeTeamsList.get(i).getName();
+                selectedTeamAutoApproveStatus = activeTeamsList.get(i).getAutomaticApprovalStatus();
+            }
+        }
+        deskListBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        deskListBottomSheet.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_select_desk_new,
+                new RelativeLayout(getContext()))));
+
+        TextView bsRepeatBack, selectDesk;
+        rvDeskRecycler= deskListBottomSheet.findViewById(R.id.desk_list_select_recycler);
+        selectDesk= deskListBottomSheet.findViewById(R.id.sheet_name);
+        tvTeamName= deskListBottomSheet.findViewById(R.id.tv_team_name);
+        bsRepeatBack=deskListBottomSheet.findViewById(R.id.bsDeskBack);
+
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvDeskRecycler.setLayoutManager(linearLayoutManager);
+        rvDeskRecycler.setHasFixedSize(true);
+        if (selectedicon == 2){
+            selectDesk.setText("Select Parking");
+            parkingSpotListRecyclerAdapter =new ParkingSpotListRecyclerAdapter(getContext(),
+                    this,getActivity(),parkingSpotModelList,getContext(),deskListBottomSheet);
+            rvDeskRecycler.setAdapter(parkingSpotListRecyclerAdapter);
+        }else if (selectedicon==1){
+            selectDesk.setText("Select Meeting Room");
+            roomListRecyclerAdapter =new RoomListRecyclerAdapter(getContext(),
+                    this,getActivity(),userAllowedMeetingResponseListUpdated,getContext(),
+                    deskListBottomSheet);
+            rvDeskRecycler.setAdapter(roomListRecyclerAdapter);
+        }else {
+            selectDesk.setText("Book a Workspace");
+            tvTeamName.setText(selectedTeamName);
+
+            /*
+            deskListRecyclerAdapter =new DeskListRecyclerAdapter(getContext(),this,
+                    getActivity(),bookingForEditResponseDesk,getContext(),deskListBottomSheet);
+            */
+
+            newdeskListRecyclerAdapter =new NewDeskListRecyclerAdapter(getContext(),this,
+                    getActivity(),bookingDeskList,this,deskListBottomSheet);
+            rvDeskRecycler.setAdapter(newdeskListRecyclerAdapter);
+
+        }
+
+        tvTeamName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callActiveTeamsBottomSheet();
+            }
+        });
+
+        bsRepeatBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deskListBottomSheet.dismiss();
+            }
+        });
+
+        deskListBottomSheet.show();
+    }
+
+    private void callActiveTeamsBottomSheet() {
+        activeTeamsBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        activeTeamsBottomSheet.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_active_teams,
+                new RelativeLayout(getContext()))));
+
+        TextView bsRepeatBack, selectDesk;
+        rvActiveTeams= activeTeamsBottomSheet.findViewById(R.id.desk_list_select_recycler);
+        selectDesk= activeTeamsBottomSheet.findViewById(R.id.sheet_name);
+        bsRepeatBack=activeTeamsBottomSheet.findViewById(R.id.bsDeskBack);
+
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvActiveTeams.setLayoutManager(linearLayoutManager);
+        rvActiveTeams.setHasFixedSize(true);
+        selectDesk.setText("Book from another team");
+
+        activeTeamsAdapter =new ActiveTeamsAdapter(getContext(),this,
+                    getActivity(),activeTeamsList,this,activeTeamsBottomSheet);
+        rvActiveTeams.setAdapter(newdeskListRecyclerAdapter);
+
+
+        tvTeamName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        bsRepeatBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activeTeamsBottomSheet.dismiss();
+            }
+        });
+
+        activeTeamsBottomSheet.show();
+    }
+
     private void callDeskBottomSheetDialog() {
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -3809,6 +3932,40 @@ public class BookFragment extends Fragment implements
 
     }
 */
+    private void getDeskList(String code,String date) {
+        if (Utils.isNetworkAvailable(getContext())) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+            Call<List<BookingForEditResponse.TeamDeskAvailabilities>> call = apiService.
+                    getTeamDeskAvailability(
+                    selectedTeamId,
+                    date,
+                    date);
+
+            call.enqueue(new Callback<List<BookingForEditResponse.TeamDeskAvailabilities>>() {
+                @Override
+                public void onResponse(Call<List<BookingForEditResponse.TeamDeskAvailabilities>> call, Response<List<BookingForEditResponse.TeamDeskAvailabilities>> response) {
+                    bookingDeskList.clear();
+                    bookingDeskList = response.body();
+
+                    callDeskListBottomSheetDialog();
+                    System.out.println("dasdadas"+bookingDeskList.size());
+                }
+
+                @Override
+                public void onFailure(Call<List<BookingForEditResponse.TeamDeskAvailabilities>> call, Throwable t) {
+//                    deepLinking();
+
+                }
+            });
+
+
+        } else {
+            Utils.toastMessage(getContext(), "Please Enable Internet");
+        }
+
+    }
+
     private void getAvaliableDeskDetails(String code, String date) {
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 //        System.out.println("check cala"+horizontalCalendar.getSelectedDate().getTime());
@@ -5254,4 +5411,13 @@ public class BookFragment extends Fragment implements
 
     }
 
+    @Override
+    public void onChangeDesk(int deskId, String deskName) {
+
+    }
+
+    @Override
+    public void onActiveTeamsSelected(int deskId, String deskName) {
+
+    }
 }

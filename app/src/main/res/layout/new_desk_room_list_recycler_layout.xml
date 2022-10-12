@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginHorizontal="@dimen/_10sdp"
+    android:layout_marginVertical="@dimen/_7sdp"
+    app:cardCornerRadius="@dimen/_3sdp"
+    app:cardElevation="@dimen/_2sdp"
+    >
+
+    <RelativeLayout
+        android:id="@+id/repeatNoneBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        android:background="@color/bg_grey">
+
+        <TextView
+            android:id="@+id/tv_desk_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@id/tv_select"
+            android:layout_centerHorizontal="true"
+            android:text="Desk"
+            android:layout_marginVertical="@dimen/_3sdp"
+            android:textColor="@color/black"
+            android:theme="@style/TextBold" />
+
+
+        <TextView
+            android:id="@+id/tv_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:text="Select"
+            android:textColor="@color/figmaBlue"
+            android:theme="@style/TextBold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_toLeftOf="@id/tv_select"
+            android:layout_below="@id/tv_desk_name"
+            android:gravity="center_vertical"
+            >
+            <ImageView
+                android:id="@+id/desk_icon_status"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:src="@drawable/bg_circle_vector"
+                />
+            <TextView
+                android:id="@+id/desk_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/TextRegular"
+                android:text="Available"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:textColor="@color/black"
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

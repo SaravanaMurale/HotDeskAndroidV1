@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/login_background_corner_white"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/head_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingVertical="@dimen/_10sdp"
+        >
+        <TextView
+            android:id="@+id/sheet_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:text="Select Desk"
+            android:textColor="@color/figmaBlack"
+            android:textSize="@dimen/_15sdp"
+            android:theme="@style/TextBold" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/desk_list_select_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bsDeskBack"
+        android:layout_below="@id/head_layout"
+        android:background="@color/figmaBgGrey"/>
+
+    <TextView
+        android:id="@+id/bsDeskBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:text="@string/back"
+        android:theme="@style/TextBold" />
+
+
+</RelativeLayout>

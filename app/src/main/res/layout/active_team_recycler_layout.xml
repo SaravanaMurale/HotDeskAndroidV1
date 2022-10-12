@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/_10sdp"
+    android:layout_marginVertical="@dimen/_2sdp"
+    app:cardCornerRadius="@dimen/_3sdp"
+    app:cardElevation="@dimen/_2sdp"
+    >
+
+    <RelativeLayout
+        android:id="@+id/repeatNoneBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_5sdp"
+        android:background="@color/bg_grey">
+
+        <TextView
+            android:id="@+id/tv_team_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@id/tick"
+            android:layout_centerHorizontal="true"
+            android:text="Desk"
+            android:layout_marginVertical="@dimen/_3sdp"
+            android:textColor="@color/black"
+            android:theme="@style/TextBold" />
+
+
+        <ImageView
+            android:id="@+id/tick"
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:src="@drawable/tick"
+            />
+
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
