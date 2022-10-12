@@ -16,6 +16,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,6 +35,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
@@ -38,6 +43,7 @@ import dream.guys.hotdeskandroid.adapter.EditDefaultAssetAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityEditProfileBinding;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
 import dream.guys.hotdeskandroid.model.response.DAOCountryList;
 import dream.guys.hotdeskandroid.model.response.DefaultAssetResponse;
 import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
@@ -74,6 +80,14 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     LanguagePOJO.ActionOverLays actionOverLays;
     LanguagePOJO.Booking bookindata ;
     LanguagePOJO.Global global;
+
+    int floorParentID = 0, cityPlaceID = 0, cityPlaceParentID = 0,cityID = 0,cityParentID = 0,locationID = 0,locationParentID = 0;
+
+    String CountryName = "";
+    String CityName = "";
+    String buildingName = "";
+    String floorName  = "";
+    String fullPathLocation  = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,11 +229,70 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
         }
 
+        ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+
+                            ArrayList<DAOActiveLocation> finalLocationArrayList = new ArrayList<>();
+
+                            Intent intent = result.getData();
+
+                            if (intent!=null){
+
+                                int position = intent.getIntExtra("Position",0);
+                                floorName = intent.getStringExtra("floorName");
+                                finalLocationArrayList = (ArrayList<DAOActiveLocation>)intent.getSerializableExtra("List");
+
+                                floorParentID = finalLocationArrayList.get(position).getParentLocationId();
+
+                                ArrayList<DAOActiveLocation> buildingPlace = new ArrayList<>();
+                                ArrayList<DAOActiveLocation> cityList = new ArrayList<>();
+                                ArrayList<DAOActiveLocation> location = new ArrayList<>();
+
+                                binding.editDefaultLocaton.setText(floorName);
+
+                                buildingPlace.addAll(finalLocationArrayList.stream().filter(val -> val.getId() == floorParentID).collect(Collectors.toList()));
+
+                                if (buildingPlace.size()>0) {
+                                    cityPlaceID = buildingPlace.get(0).getId();
+                                    cityPlaceParentID = buildingPlace.get(0).getParentLocationId();
+                                    buildingName = buildingPlace.get(0).getName();
+                                }
+
+                                cityList.addAll(finalLocationArrayList.stream().filter(val -> val.getId() == cityPlaceParentID).collect(Collectors.toList()));
+
+                                if (cityList.size()>0){
+                                    cityID = cityList.get(0).getId();
+                                    cityParentID = cityList.get(0).getParentLocationId();
+                                    CityName = cityList.get(0).getName();
+                                }
+
+                                location.addAll(finalLocationArrayList.stream().filter(val -> val.getId() == cityParentID).collect(Collectors.toList()));
+
+                                if (location.size()>0){
+                                    locationID = location.get(0).getId();
+                                    locationParentID = location.get(0).getParentLocationId();
+                                    CountryName = location.get(0).getName();
+                                }
+
+
+                            }
+
+                        }
+
+                    }
+                });
+
         binding.editDefaultLocaton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(EditProfileActivity.this,DefaultLocationActivity.class);
-                startActivity(intent);
+                resultLauncher.launch(intent);
+                //startActivity(intent);
             }
         });
 
@@ -530,6 +603,14 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         String json = gson.toJson(profileData);
         SessionHandler.getInstance().save(EditProfileActivity.this,AppConstants.LOGIN_RESPONSE,json);
 //        Toast.makeText(EditProfileActivity.this, "Success", Toast.LENGTH_SHORT).show();
+
+        //New...
+
+        /*SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.COUNTRY_NAME,CountryName);
+        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.BUILDING,buildingName);
+        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FLOOR,floorName);
+        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FULLPATHLOCATION,fullPathLocation);*/
+
     }
 
     private void makeEnable() {

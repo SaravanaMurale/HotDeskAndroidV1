@@ -1,7 +1,10 @@
 package dream.guys.hotdeskandroid.ui.home;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +23,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DefaultLocationActivity extends AppCompatActivity {
+public class DefaultLocationActivity extends AppCompatActivity implements DefaultLocationAdapter.DefaultLocationInterface {
 
     ActivityDefaultLocationBinding binding;
     ArrayList<DAOActiveLocation> activeLocationArrayList = new ArrayList<>();
@@ -34,6 +37,8 @@ public class DefaultLocationActivity extends AppCompatActivity {
     ArrayList<DAOActiveLocation> cityPlaceArrayList = new ArrayList<>();
     ArrayList<DAOActiveLocation> cityPlaceFloorArrayList = new ArrayList<>();
 
+    int floorParentID = 0, cityPlaceID = 0, cityPlaceParentID = 0,cityID = 0,cityParentID = 0,locationID = 0,locationParentID = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +46,13 @@ public class DefaultLocationActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         defaultLocationCall();
+
+        binding.profileBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
     }
 
@@ -86,7 +98,8 @@ public class DefaultLocationActivity extends AppCompatActivity {
             }
         });
 
-        activeLocationArrayList.remove(activeLocationArrayList.size()-1);
+        //activeLocationArrayList.remove(activeLocationArrayList.size()-1);
+        activeLocationArrayList = (ArrayList<DAOActiveLocation>) activeLocationArrayList.stream().filter(val -> val.getParentLocationId() != null).collect(Collectors.toList());
 
         firstParentLocationArrayList = (ArrayList<DAOActiveLocation>) activeLocationArrayList.stream().filter(val -> val.getParentLocationId() == 1).collect(Collectors.toList());
 
@@ -180,8 +193,14 @@ public class DefaultLocationActivity extends AppCompatActivity {
                             int id = cityPlaceArrayList.get(c).getId();
 
                             finalLocationArrayList.addAll((ArrayList<DAOActiveLocation>) cityPlaceFloorArrayList.stream().filter(val -> val.getParentLocationId() == id).collect(Collectors.toList()));
-                            b++;
-                            break loopc;
+
+                            if (c == cityPlaceArrayList.size()-1){
+                                b++;
+                                break loopc;
+                            }else {
+                                c++;
+                            }
+
                             /*for (int d=0;d<cityPlaceFloorArrayList.size();d++){
 
                                 if (cityPlaceArrayList.get(c).getId().equals(cityPlaceFloorArrayList.get(d).getParentLocationId())) {
@@ -190,7 +209,13 @@ public class DefaultLocationActivity extends AppCompatActivity {
                             }*/
 
                         }else {
-                            c++;
+                            //c++;
+                            if (c == cityPlaceArrayList.size()-1){
+                                b++;
+                                break loopc;
+                            }else {
+                                c++;
+                            }
                         }
 
                     }
@@ -213,9 +238,20 @@ public class DefaultLocationActivity extends AppCompatActivity {
         //activeLocationArrayList.sort(Comparator.comparing(DAOActiveLocation::getLevel));
 
         defaultLocationAdapter = new DefaultLocationAdapter(DefaultLocationActivity.this,
-                finalLocationArrayList);
+                finalLocationArrayList,this);
         binding.recyclerview.setAdapter(defaultLocationAdapter);
 
     }
 
+    @Override
+    public void clickEvent(int position,String floorName) {
+
+        Intent intent = new Intent();
+        intent.putExtra("List",finalLocationArrayList);
+        intent.putExtra("Position",position);
+        intent.putExtra("floorName",floorName);
+        setResult(RESULT_OK,intent);
+        finish();
+
+    }
 }

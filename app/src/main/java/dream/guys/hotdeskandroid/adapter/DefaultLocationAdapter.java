@@ -20,10 +20,13 @@ public class DefaultLocationAdapter extends RecyclerView.Adapter<DefaultLocation
 
     Context context;
     ArrayList<DAOActiveLocation> activeLocationArrayList;
+    DefaultLocationInterface locationInterface;
 
-    public DefaultLocationAdapter(Context context, ArrayList<DAOActiveLocation> activeLocationArrayList) {
+    public DefaultLocationAdapter(Context context, ArrayList<DAOActiveLocation> activeLocationArrayList,
+                                  DefaultLocationInterface locationInterface) {
         this.context = context;
         this.activeLocationArrayList = activeLocationArrayList;
+        this.locationInterface = locationInterface;
     }
 
     @NonNull
@@ -35,6 +38,8 @@ public class DefaultLocationAdapter extends RecyclerView.Adapter<DefaultLocation
 
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
+
+        int pos = holder.getAbsoluteAdapterPosition();
 
         switch (activeLocationArrayList.get(position).getLevel()) {
 
@@ -58,6 +63,17 @@ public class DefaultLocationAdapter extends RecyclerView.Adapter<DefaultLocation
         }
 
         holder.txt_title.setText(activeLocationArrayList.get(position).getName());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (holder.txt_title.isEnabled()){
+                    locationInterface.clickEvent(pos,holder.txt_title.getText().toString());
+                }else {
+
+                }
+            }
+        });
 
     }
 
@@ -91,6 +107,10 @@ public class DefaultLocationAdapter extends RecyclerView.Adapter<DefaultLocation
             txt_title = itemView.findViewById(R.id.txt_title);
 
         }
+    }
+
+    public interface DefaultLocationInterface{
+        public void clickEvent(int position,String floorName);
     }
 
 }

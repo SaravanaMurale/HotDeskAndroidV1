@@ -3,7 +3,9 @@ package dream.guys.hotdeskandroid.model.response;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class DAOActiveLocation {
+import java.io.Serializable;
+
+public class DAOActiveLocation implements Serializable {
 
     @SerializedName("id")
     @Expose
