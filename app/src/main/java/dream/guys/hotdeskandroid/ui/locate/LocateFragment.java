@@ -878,9 +878,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     public void initLoadFloorDetails(int canvasDrawStatus) {
 
-        int initFloorPosition=SessionHandler.getInstance().getInt(getContext(),AppConstants.FLOOR_POSITION);
-
-        System.out.println("InitFlooorPositiojn "+initFloorPosition);
 
 
 
@@ -983,10 +980,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 @Override
                 public void onResponse(Call<List<LocationWithMR_Response>> call, Response<List<LocationWithMR_Response>> response) {
 
-                    if (response.body()!=null && response.body().size()>0){
+                    //if (response.body()!=null && response.body().size()>0){
                         locationWithMR_response = response.body();
 
-                    }
+                    //}
                     getUserAllowedMeeting(parentId, canvasDrawStatus);
 
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
@@ -1211,12 +1208,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             call.enqueue(new Callback<List<CarParkingslotsResponse>>() {
                 @Override
                 public void onResponse(Call<List<CarParkingslotsResponse>> call, Response<List<CarParkingslotsResponse>> response) {
-                    if (response.body()!=null && response.body().size()>0){
+                    //if (response.body()!=null && response.body().size()>0){
                         carParkingslots = response.body();
 
                         //CallCarParkAvalibilitySlotsAPI
                         getCarParkingAvalibilitySlots();
-                    }
+                    //}
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
                 }
@@ -1281,7 +1278,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     ProgressDialog.clearTouchLock(getContext(), getActivity());
 
-                    if (response.body()!=null && response.body().size()>0) {
+                    //if (response.body()!=null && response.body().size()>0) {
 
                         locateCountryResposeList = response.body();
                         if (desksCode != null) {
@@ -1363,7 +1360,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                             Toast.makeText(getContext(), "No Data", Toast.LENGTH_LONG).show();
                         }
 
-                    }
+                    //}
 
                     //ProgressDialog.dismisProgressBar(getContext(), dialog);
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
@@ -1806,7 +1803,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                                 } else {
 
-                                                    //I Added Newly
+                                                    //I Added Newly on 11-10-2022
                                                     //MeetingRoomRequest
                                                     /*ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_request));
                                                     meetingStatusModel = new MeetingStatusModel(key, id, code, 4);
@@ -2225,7 +2222,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 @Override
                 public void onResponse(Call<List<MeetingListToEditResponse>> call, Response<List<MeetingListToEditResponse>> response) {
 
-                    if (response.body()!=null && response.body().size()>0){
+                    //if (response.body()!=null && response.body().size()>0){
 
                         List<MeetingListToEditResponse> meetingListToEditResponseList = response.body();
 
@@ -2233,7 +2230,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                         callMeetingRoomEditListAdapterBottomSheet(meetingListToEditResponseList, meetingRoomName, isReqduest);
 
-                    }
+                    //}
 
                 }
 
@@ -2495,21 +2492,19 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         TextView editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle, showtvRoomStartTime;
-        EditText etParticipants, etSubject, etComments;
+        EditText etParticipants,externalAttendees, etSubject, etComments;
         RecyclerView rvParticipant;
         LinearLayoutManager linearLayoutManager;
-        RelativeLayout startTimeLayout, endTimeLayout, rl_repeat_block_room,amenitiesBlock,rl_teams_layout_room;
+        RelativeLayout startTimeLayout, endTimeLayout, rl_repeat_block_room,amenitiesBlock,rl_teams_layout_room,selectMeetingRoomLayout;
         //New...
         LinearLayout subCmtLay, child_layout;
         TextView roomDate;
-        ChipGroup chipGroup;
+        ChipGroup chipGroup,externalAttendeesChipGroup;
 
         //Language
         TextView tvRoomStart,tvRoomEnd,tv_teams_room,tv_repeat_room;
 
         CheckBox teams_check_box_room;
-
-
 
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -2525,7 +2520,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         rl_teams_layout_room=bottomSheetDialog.findViewById(R.id.rl_teams_layout_room);
         teams_check_box_room=bottomSheetDialog.findViewById(R.id.teams_check_box_room);
 
+        selectMeetingRoomLayout=bottomSheetDialog.findViewById(R.id.selectMeetingRoomLayout);
+        selectMeetingRoomLayout.setVisibility(View.GONE);
+
         chipGroup=bottomSheetDialog.findViewById(R.id.meetingAmenitiesChipGroup);
+
+        externalAttendees=bottomSheetDialog.findViewById(R.id.externalAttendees);
+        externalAttendeesChipGroup=bottomSheetDialog.findViewById(R.id.externalAttendeesChipGroup);
+
 
 
         for (int i = 0; i <amenitiesList.size() ; i++) {
@@ -2538,6 +2540,65 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             chipGroup.addView(chip);
         }
 
+        List<String> externalAttendeesEmail=new ArrayList<>();
+
+        externalAttendees.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(s.toString().contains(" ")){
+
+                    Chip chip=new Chip(getContext());
+                    chip.setText(s.toString());
+                    chip.setCheckable(false);
+                    chip.setClickable(false);
+                    chip.setCloseIconVisible(true);
+                    externalAttendeesChipGroup.setVisibility(View.VISIBLE);
+                    externalAttendeesChipGroup.addView(chip);
+
+                    externalAttendeesEmail.add(s.toString());
+
+                    externalAttendees.clearFocus();
+                    externalAttendees.setText("");
+
+
+
+
+                    chip.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            if(externalAttendeesEmail!=null){
+
+                                for (int i = 0; i <externalAttendeesEmail.size() ; i++) {
+
+                                    if(chip.getText().toString().contains(externalAttendeesEmail.get(i))){
+                                        externalAttendeesEmail.remove(i);
+                                        externalAttendeesChipGroup.removeView(chip);
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+                    });
+
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
 
 
@@ -2799,7 +2860,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         bottomSheetDialog.dismiss();
 
                         if(!repeatActvieStatus){
-                            doMeetingRoomBooking(meetingRoomId, startRoomTime.getText().toString(), endTRoomime.getText().toString(), subject, comment, isRequest);
+
+                            /*for (int i = 0; i <externalAttendeesEmail.size() ; i++) {
+                                System.out.println("FinalExternalAttendessList "+externalAttendeesEmail.get(i));
+                            }*/
+
+                            doMeetingRoomBooking(meetingRoomId, startRoomTime.getText().toString(), endTRoomime.getText().toString(), subject, comment, isRequest,externalAttendeesEmail);
                         }else {
                             doRepeatMeetingRoomBookingForWeek();
                         }
@@ -2864,7 +2930,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         rvParticipant.setAdapter(participantNameShowAdapter);
     }
 
-    private void doMeetingRoomBooking(int meetingRoomId, String startMeetRoomTime, String endMeetRoomTime, String subject, String comment, boolean isRequest) {
+    private void doMeetingRoomBooking(int meetingRoomId, String startMeetRoomTime, String endMeetRoomTime, String subject, String comment, boolean isRequest,List<String> externalAttendeesEmail) {
 
         if (Utils.isNetworkAvailable(getActivity())) {
 
@@ -2911,10 +2977,24 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             } //End
 
+            //ExternalAttendess
+            List<String> externalAttendeesListStr = new ArrayList<>();
+
+            if(externalAttendeesEmail!=null){
+
+                for (int i = 0; i <externalAttendeesEmail.size() ; i++) {
+                    externalAttendeesListStr.add(externalAttendeesEmail.get(i));
+                }
+
+            }
+
+
+
+
             changes.setAttendees(attendeesList);
 
             List<MeetingRoomRequest.Changeset.Changes.ExternalAttendees> externalAttendeesList = new ArrayList<>();
-            changes.setExternalAttendees(externalAttendeesList);
+            changes.setExternalAttendees(externalAttendeesListStr);
 
             List<MeetingRoomRequest.DeleteIds> deleteIdsList = new ArrayList<>();
             meetingRoomRequest.setDeletedIds(deleteIdsList);
@@ -6785,11 +6865,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         TextView startRoomTime, endTRoomime, editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle, showtvRoomStartTime;
         EditText etParticipants, etSubject, etComments;
-        RelativeLayout startTimeLayout, endTimeLayout,rl_repeat_block_room;
+        RelativeLayout startTimeLayout, endTimeLayout,rl_repeat_block_room,selectMeetingRoomLayout;
         RecyclerView rvParticipant;
+        LinearLayout capacityBlock;
         //New...
         LinearLayout subCmtLay, child_layout;
-        TextView roomDate;
+        TextView roomDate,select_desk_room_room,tv_desk_room_name_room,meetingRoomLocation,user_status_room;
+
+        ChipGroup chipGroupListItem;
 
         //Language
         TextView tvRoomStart,tvRoomEnd;
@@ -6799,10 +6882,44 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 new RelativeLayout(getContext()))));
 
         tvRoomStart=bottomSheetDialog.findViewById(R.id.tvRoomStart);
-        tvRoomEnd=bottomSheetDialog.findViewById(R.id.tvRoomStart);
+        tvRoomEnd=bottomSheetDialog.findViewById(R.id.tvRoomEnd);
 
         startRoomTime = bottomSheetDialog.findViewById(R.id.tvRoomStartTime);
         endTRoomime = bottomSheetDialog.findViewById(R.id.tvRoomEndTime);
+
+        selectMeetingRoomLayout=bottomSheetDialog.findViewById(R.id.selectMeetingRoomLayout);
+        selectMeetingRoomLayout.setVisibility(View.VISIBLE);
+        select_desk_room_room=bottomSheetDialog.findViewById(R.id.select_desk_room_room);
+        select_desk_room_room.setVisibility(View.GONE);
+
+        tv_desk_room_name_room=bottomSheetDialog.findViewById(R.id.tv_desk_room_name_room);
+        tv_desk_room_name_room.setText(meetingListToEditResponse.getMeetingRoomName());
+
+        meetingRoomLocation=bottomSheetDialog.findViewById(R.id.meetingRoomLocation);
+
+        capacityBlock=bottomSheetDialog.findViewById(R.id.capacityBlock);
+        capacityBlock.setVisibility(View.GONE);
+
+        chipGroupListItem=bottomSheetDialog.findViewById(R.id.list_item);
+        chipGroupListItem.setVisibility(View.GONE);
+
+       /* for (int i = 0; i <meetingListToEditResponse.getAttendeesList().size() ; i++) {
+
+            System.out.println("AttendeesListInLoop "+meetingListToEditResponse.getAttendeesList().get(i).getEmail());
+
+            Chip chip=new Chip(getContext());
+            chip.setText(meetingListToEditResponse.getAttendeesList().get(i).getEmail());
+            chip.setCheckable(false);
+            chip.setClickable(false);
+            chipGroupListItem.addView(chip);
+
+        }*/
+
+
+        user_status_room=bottomSheetDialog.findViewById(R.id.user_status_room);
+        user_status_room.setText("Avaliable");
+
+
         etParticipants = bottomSheetDialog.findViewById(R.id.etParticipants);
         etSubject = bottomSheetDialog.findViewById(R.id.etSubject);
         rvParticipant = bottomSheetDialog.findViewById(R.id.rvParticipant);
@@ -6860,9 +6977,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         if (CountryName == null && buildingName == null && floorName == null) {
 
             roomDate.setText(buildingName + "," + floorName);
+            meetingRoomLocation.setText(buildingName + "," + floorName);
 
         } else {
             roomDate.setText(CountryName + "," + buildingName + "," + floorName);
+            meetingRoomLocation.setText(CountryName + "," + buildingName + "," + floorName);
 
         }
 
@@ -7037,6 +7156,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         status = false;
                         return;
                     }
+
+                    chipGroupListItem.setVisibility(View.VISIBLE);
+                    etSubject.setText(meetingListToEditResponse.getSubject());
+                    etComments.setText(meetingListToEditResponse.getComments());
 
                     subCmtLay.setVisibility(View.VISIBLE);
                     child_layout.setVisibility(View.GONE);
