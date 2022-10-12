@@ -22,19 +22,21 @@ public class ParticipantNameShowAdapter extends RecyclerView.Adapter<Participant
     Context context;
     List<ParticipantDetsilResponse> participantDetsilResponseList;
     OnParticipantSelectable onParticipantSelectable;
+    RecyclerView recyclerView;
 
     public interface OnParticipantSelectable{
 
-        public void onParticipantSelect(ParticipantDetsilResponse participantDetsilResponse);
+        public void onParticipantSelect(ParticipantDetsilResponse participantDetsilResponse, RecyclerView recyclerView);
 
     }
 
 
-    public ParticipantNameShowAdapter(Context context, List<ParticipantDetsilResponse> participantDetsilResponseList,OnParticipantSelectable onParticipantSelectable) {
+    public ParticipantNameShowAdapter(Context context, List<ParticipantDetsilResponse> participantDetsilResponseList,OnParticipantSelectable onParticipantSelectable,RecyclerView recyclerView) {
 
         this.context=context;
         this.participantDetsilResponseList=participantDetsilResponseList;
         this.onParticipantSelectable=onParticipantSelectable;
+        this.recyclerView=recyclerView;
 
     }
 
@@ -55,7 +57,7 @@ public class ParticipantNameShowAdapter extends RecyclerView.Adapter<Participant
             @Override
             public void onClick(View v) {
 
-                onParticipantSelectable.onParticipantSelect(participantDetsilResponseList.get(holder.getAbsoluteAdapterPosition()));
+                onParticipantSelectable.onParticipantSelect(participantDetsilResponseList.get(holder.getAbsoluteAdapterPosition()),recyclerView);
 
             }
         });

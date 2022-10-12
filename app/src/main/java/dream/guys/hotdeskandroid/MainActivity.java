@@ -6,7 +6,6 @@ import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
 import android.app.Dialog;
 import android.app.UiModeManager;
 import android.content.Intent;
-import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -28,8 +27,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -64,7 +61,6 @@ import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
 import dream.guys.hotdeskandroid.ui.chat.FreshChatActivity;
-import dream.guys.hotdeskandroid.ui.locate.LocateFragment;
 import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.ui.login.SignInActivity;
@@ -633,7 +629,7 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
 
 
         rvParticipant.setVisibility(View.VISIBLE);
-        ParticipantNameShowAdapter participantNameShowAdapter = new ParticipantNameShowAdapter(getContext(), participantDetsilResponseList, this);
+        ParticipantNameShowAdapter participantNameShowAdapter = new ParticipantNameShowAdapter(getContext(), participantDetsilResponseList, this,rvParticipant);
         rvParticipant.setAdapter(participantNameShowAdapter);
     }
 
@@ -936,7 +932,7 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
     }
 
     @Override
-    public void onParticipantSelect(ParticipantDetsilResponse participantDetsilResponse) {
+    public void onParticipantSelect(ParticipantDetsilResponse participantDetsilResponse, RecyclerView recyclerView) {
 
         this.participantDetsilResponse= participantDetsilResponse;
 
