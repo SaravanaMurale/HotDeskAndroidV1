@@ -26,9 +26,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -919,7 +922,14 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
         NavigationUI.setupWithNavController(binding.navView, navController);
         navView.setItemIconTintList(null);
         deepLinking();
-
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController navController,
+                                             @NonNull NavDestination navDestination,
+                                             @Nullable Bundle bundle) {
+                System.out.println("home frag"+navDestination.getAction(R.id.navigation_home));
+            }
+        });
     }
 
 

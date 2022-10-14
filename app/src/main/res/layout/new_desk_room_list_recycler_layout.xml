@@ -8,7 +8,6 @@
     android:layout_marginHorizontal="@dimen/_10sdp"
     android:layout_marginVertical="@dimen/_7sdp"
     app:cardCornerRadius="@dimen/_3sdp"
-    app:cardElevation="@dimen/_2sdp"
     >
 
     <RelativeLayout
@@ -22,11 +21,11 @@
             android:id="@+id/tv_desk_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@id/tv_select"
             android:layout_centerHorizontal="true"
-            android:text="Desk"
             android:layout_marginVertical="@dimen/_3sdp"
+            android:layout_toLeftOf="@id/tv_select"
+            android:layout_toRightOf="@id/info_layout"
+            android:text="Desk"
             android:textColor="@color/black"
             android:theme="@style/TextBold" />
 
@@ -42,11 +41,13 @@
             android:theme="@style/TextBold" />
 
         <LinearLayout
+            android:id="@+id/status_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_toLeftOf="@id/tv_select"
             android:layout_below="@id/tv_desk_name"
+            android:layout_toRightOf="@id/info_layout"
             android:gravity="center_vertical"
             >
             <ImageView
@@ -54,7 +55,7 @@
                 android:layout_width="@dimen/_10sdp"
                 android:layout_height="@dimen/_10sdp"
                 android:src="@drawable/bg_circle_vector"
-                />
+                app:tint="@color/figmaBlue" />
             <TextView
                 android:id="@+id/desk_status"
                 android:layout_width="match_parent"
@@ -66,6 +67,23 @@
                 />
 
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/info_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
 
-    </RelativeLayout>
+            >
+            <ImageView
+                android:id="@+id/info_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_3sdp"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/info_circle"
+                android:layout_marginTop="@dimen/_4sdp"
+                app:tint="@color/figmaBlue" />
+
+        </LinearLayout>
+            </RelativeLayout>
 </androidx.cardview.widget.CardView>

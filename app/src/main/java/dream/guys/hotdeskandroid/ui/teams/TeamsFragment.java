@@ -11,8 +11,12 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -239,8 +243,6 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
         return root;
     }
-
-
     private void getBookingUsageTypes() {
 
         if (Utils.isNetworkAvailable(getActivity())) {

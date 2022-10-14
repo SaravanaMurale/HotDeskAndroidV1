@@ -13,6 +13,7 @@ public class EditBookingDetails {
     String locationAddress;
     String bookedForUser;
     String parkingSlotCode;
+    String timeZone;
     int calId=0;
     int desktId=0;
     int deskTeamId=0;
@@ -26,6 +27,15 @@ public class EditBookingDetails {
     boolean isTeamsChecked;
     public int requestedTeamId;
     public int requestedTeamDeskId;
+
+
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
+    }
 
     public int getRequestedTeamId() {
         return requestedTeamId;

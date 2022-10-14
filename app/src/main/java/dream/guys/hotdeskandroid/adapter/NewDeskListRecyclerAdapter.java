@@ -2,6 +2,7 @@ package dream.guys.hotdeskandroid.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
     BottomSheetDialog bottomSheetDialog;
 
     public NewDeskListRecyclerAdapter(Context context, OnChangeSelected onSelectSelected, FragmentActivity activity, List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse, BookFragment context1, BottomSheetDialog bottomSheetDialog) {
-         this.fragment=context1;
+        this.fragment=context1;
         this.context = context;
         this.onChangeSelected =onSelectSelected;
         this.activity = activity;
@@ -44,7 +45,7 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
 
     }
     public interface OnChangeSelected{
-        public void onChangeDesk(int deskId,String deskName);
+        public void onChangeDesk(int deskId, String deskName, String request, String timeZone);
 
     }
 
@@ -61,40 +62,48 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
     public void onBindViewHolder(@NonNull viewholder holder, int position) {
 //        fragment.selectedTeamId
         holder.desk_name.setText(deskList.get(position).getDeskCode());
-
-        if (deskList.get(position).getTeamId() != SessionHandler.getInstance().getInt(context, AppConstants.TEAM_ID)
-                && fragment.selectedTeamAutoApproveStatus != 2){
-            holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
+        if (deskList.get(position).getTeamId() != SessionHandler.getInstance()
+                .getInt(context, AppConstants.TEAM_ID)
+                && fragment.selectedTeamAutoApproveStatus != 2) {
+            holder.card.setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
             holder.select.setVisibility(View.VISIBLE);
+            System.out.println("chec stats adapter "+fragment.selectedTeamAutoApproveStatus);
 
             holder.deskStatus.setText("Available For Request");
-            holder.deskIconStatus.setColorFilter(ContextCompat.getColor(context, R.color.figma_orange),
-                    android.graphics.PorterDuff.Mode.MULTIPLY);
+            holder.deskIconStatus.setColorFilter(context.getColor(R.color.figma_orange));
         } else {
-            holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
+            holder.card.setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
             holder.select.setVisibility(View.VISIBLE);
 
             holder.deskStatus.setText("Available");
-            holder.deskIconStatus.setColorFilter(ContextCompat.getColor(context, R.color.figmaLiteGreen),
-                    android.graphics.PorterDuff.Mode.MULTIPLY);
-
+            holder.deskIconStatus.setColorFilter(context.getColor(R.color.figmaLiteGreen));
         }
 
-        if (deskList.get(position).isBookedByUser()){
+        if (deskList.get(position).isBookedByUser()) {
             holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
             holder.select.setVisibility(View.VISIBLE);
             holder.deskStatus.setText("Booked by me");
-            holder.deskIconStatus.setColorFilter(ContextCompat.getColor(context, R.color.figmaBlue),
-                    android.graphics.PorterDuff.Mode.MULTIPLY);
-        }
-        if (deskList.get(position).isBookedByElse()){
-            holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
-            holder.select.setVisibility(View.GONE);
-            holder.deskStatus.setText("Booked by Other");
-            holder.deskIconStatus.setColorFilter(ContextCompat.getColor(context, R.color.figmaGrey),
-                    android.graphics.PorterDuff.Mode.MULTIPLY);
+
+            holder.deskIconStatus.setColorFilter(context.getColor(R.color.figmaBlue));
         }
 
+        if (deskList.get(position).isBookedByElse()) {
+            holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
+            holder.select.setVisibility(View.GONE);
+
+            holder.deskStatus.setText("Booked by Other");
+            holder.deskIconStatus.setColorFilter(context.getColor(R.color.figmaGrey));
+        }
+
+        holder.select.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onChangeSelected.onChangeDesk(deskList.get(holder.getAbsoluteAdapterPosition()).getTeamDeskId(),
+                        deskList.get(holder.getAbsoluteAdapterPosition()).getDeskCode(),""+ holder.deskStatus.getText()
+                        , deskList.get(holder.getAbsoluteAdapterPosition()).getTimeZones().get(0).getTimeZoneId());
+                bottomSheetDialog.dismiss();
+            }
+        });
 
     }
 

@@ -242,7 +242,7 @@
         android:id="@+id/bookingDetailsBlock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnCheckInNow"
+        android:layout_above="@+id/check_in_layout"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/_30sdp">
 
@@ -313,17 +313,37 @@
     </RelativeLayout>
 
     <!--Button CheckIn-->
-    <Button
-        android:id="@+id/btnCheckInNow"
+    <LinearLayout
+        android:id="@+id/check_in_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_above="@+id/scheduleBlock"
-        android:layout_marginLeft="@dimen/_20sdp"
-        android:layout_marginRight="@dimen/_20sdp"
-        android:layout_marginBottom="@dimen/_25sdp"
-        android:background="@drawable/button_blue_bg"
-        android:text="@string/check_in_now"
-        android:theme="@style/TextBoldButton" />
+        >
+        <Button
+            android:id="@+id/btnCheckInNow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_25sdp"
+            android:background="@drawable/button_blue_bg"
+            android:text="@string/check_in_now"
+            android:theme="@style/TextBoldButton" />
+        <Button
+            android:id="@+id/btnCheckInQr"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_25sdp"
+            android:background="@drawable/button_blue_bg"
+            android:text="Checkin \nQR"
+            android:theme="@style/TextBoldButton" />
+
+    </LinearLayout>
 
     <!--Skip and Change schedule-->
     <RelativeLayout

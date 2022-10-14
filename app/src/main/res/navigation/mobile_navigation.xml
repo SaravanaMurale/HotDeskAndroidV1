@@ -12,13 +12,22 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_navigation_home_to_bookingDetailFragment"
-            app:destination="@id/bookingDetailFragment" />
+            app:destination="@id/bookingDetailFragment"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="true"
+            />
         <action
             android:id="@+id/action_qrFragment"
-            app:destination="@id/qrFragment" />
+            app:destination="@id/qrFragment"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="true"
+            />
         <action
             android:id="@+id/action_navigation_home_to_navigation_locate"
-            app:destination="@id/navigation_locate" />
+            app:destination="@id/navigation_locate"
+            app:popUpTo="@id/navigation_home"
+            app:popUpToInclusive="true"
+            />
 
     </fragment>
 
@@ -50,6 +59,10 @@
         android:name="dream.guys.hotdeskandroid.ui.book.BookingDetailFragment"
         android:label="fragment_booking_detail"
         tools:layout="@layout/fragment_booking_detail" >
+        <action
+            android:id="@+id/action_qrFragment"
+            app:destination="@id/qrFragment" />
+
         <action
             android:id="@+id/action_change_schedule"
             app:destination="@id/changeScheduleFragment" />

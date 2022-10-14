@@ -1,12 +1,15 @@
 package dream.guys.hotdeskandroid.ui.book;
 
+import android.Manifest;
 import android.app.Dialog;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -40,6 +43,7 @@ import retrofit2.Response;
 public class BookingDetailFragment extends Fragment {
 
     FragmentBookingDetailBinding fragmentBookingDetailBinding;
+    private static final int PERMISSION_REQUEST_CODE = 1;
 
     @BindView(R.id.bookDetailUserName)
     TextView bookDetailUserName;
@@ -180,6 +184,18 @@ public class BookingDetailFragment extends Fragment {
                 changeCheckIn();
             }
         });
+        fragmentBookingDetailBinding.btnCheckInQr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                changeCheckIn();
+                if (checkPermission()){
+                    NavController navController= Navigation.findNavController(view);
+                    navController.navigate(R.id.action_qrFragment,bundle);
+                }
+                else
+                    requestPermission();
+            }
+        });
 
         return root;
     }
@@ -248,4 +264,22 @@ public class BookingDetailFragment extends Fragment {
         });
         dialog.show();
     }
+    private boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CAMERA);
+        if (result == PackageManager.PERMISSION_GRANTED) {
+
+            return true;
+
+        } else {
+
+            return false;
+        }
+    }
+    private void requestPermission() {
+
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CODE);
+
+    }
+
 }

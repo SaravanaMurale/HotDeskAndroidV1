@@ -204,7 +204,7 @@ public class BookingForEditResponse {
             }
         }
 
-        private class TimeZones {
+        public class TimeZones {
             @SerializedName("startDate")
             private String startDate;
             @SerializedName("endDate")

@@ -323,7 +323,7 @@ public class Utils {
             public void onClick(View v) {
                 hour=simpleTimePicker.getHour();
                 minutes=simpleTimePicker.getMinute();
-                Toast.makeText(mContext, "ih"+isrequested+title, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mContext, "ih"+isrequested+title, Toast.LENGTH_SHORT).show();
                 if (title.equalsIgnoreCase("end time") && isrequested){
                     if (hour > oldHour || (hour==oldHour && minutes >oldMinutes)){
                         Toast.makeText(mContext, "For Request end time cant be more that approved hours", Toast.LENGTH_SHORT).show();

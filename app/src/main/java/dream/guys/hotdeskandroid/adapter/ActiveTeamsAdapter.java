@@ -22,6 +22,8 @@ import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.ActiveTeamsResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.ui.book.BookFragment;
+import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.SessionHandler;
 
 public class ActiveTeamsAdapter extends RecyclerView.Adapter<ActiveTeamsAdapter.Viewholder> {
     Context context;
@@ -41,7 +43,7 @@ public class ActiveTeamsAdapter extends RecyclerView.Adapter<ActiveTeamsAdapter.
 
     }
     public interface OnActiveTeamsSelected{
-        public void onActiveTeamsSelected(int deskId,String deskName);
+        public void onActiveTeamsSelected(int teamId,String teamName);
 
     }
 
@@ -55,7 +57,31 @@ public class ActiveTeamsAdapter extends RecyclerView.Adapter<ActiveTeamsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
+        if (activeTeamsList.get(position).getId()
+                == SessionHandler.getInstance().getInt(context, AppConstants.TEAM_ID)){
+            holder.teamName.setText(activeTeamsList.get(position).getName()+" (Default)");
+        } else {
+            holder.teamName.setText(activeTeamsList.get(position).getName());
+        }
 
+        if (fragment.selectedTeamId == activeTeamsList.get(position).getId()){
+            holder.tick.setVisibility(View.VISIBLE);
+        } else {
+            holder.tick.setVisibility(View.GONE);
+        }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onActiveTeamsSelected.onActiveTeamsSelected(
+                        activeTeamsList.get(holder.getAbsoluteAdapterPosition()).getId(),
+                        activeTeamsList.get(holder.getAbsoluteAdapterPosition()).getName()
+                        );
+                if (fragment.deskListBottomSheet!=null)
+                    fragment.deskListBottomSheet.dismiss();
+                bottomSheetDialog.dismiss();
+            }
+        });
     }
 
     @Override

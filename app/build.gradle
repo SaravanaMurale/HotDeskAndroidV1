@@ -10,7 +10,7 @@ android {
         applicationId "dream.guys.hotdeskandroid"
         minSdk 26
         targetSdk 31
-        versionCode 13
+        versionCode 15
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -117,5 +117,7 @@ dependencies {
 
     //PDFView
     implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+    //Facebook Connection
+    implementation 'com.facebook.network.connectionclass:connectionclass:1.0.1'
 
 }

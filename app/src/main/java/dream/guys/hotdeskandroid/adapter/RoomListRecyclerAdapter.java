@@ -59,7 +59,8 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
             public void onClick(View v) {
                 bottomSheetDialog.dismiss();
                 onSelectSelected.onSelectRoom(rooms.get(holder.getAbsoluteAdapterPosition()).getId(),
-                        rooms.get(holder.getAbsoluteAdapterPosition()).getName(),rooms.get(holder.getAbsoluteAdapterPosition()).getLocationMeeting().getName(),
+                        rooms.get(holder.getAbsoluteAdapterPosition()).getName(),
+                        rooms.get(holder.getAbsoluteAdapterPosition()).getLocationMeeting().getName(),
                         rooms.get(holder.getAbsoluteAdapterPosition()).getAmenities());
             }
         });
