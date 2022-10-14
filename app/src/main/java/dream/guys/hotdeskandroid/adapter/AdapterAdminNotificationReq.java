@@ -136,6 +136,9 @@ public class AdapterAdminNotificationReq extends RecyclerView.Adapter<AdapterAdm
                     holder.txt_title_count.setVisibility(View.GONE);
                     holder.btn_layout.setVisibility(View.GONE);
                     //holder.txt_title_count.setText("(" + String.valueOf(cIncoming) + ")");
+
+                    holder.profile_layout.setVisibility(View.GONE);
+                    holder.line_view.setVisibility(View.GONE);
                 }
 
             }

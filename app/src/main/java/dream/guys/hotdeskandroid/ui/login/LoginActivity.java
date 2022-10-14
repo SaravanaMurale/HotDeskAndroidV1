@@ -117,6 +117,12 @@ public class LoginActivity extends AppCompatActivity {
     int floorParentID = 0, cityPlaceID = 0, cityPlaceParentID = 0,cityID = 0,cityParentID = 0,locationID = 0,locationParentID = 0,
             floorPositon;
 
+    String CountryName = null;
+    String CityName = null;
+    String buildingName = null;
+    String floorName  = null;
+    String fullPathLocation  = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -684,6 +690,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     floorParentID = defaultLocation.getParentLocationId();
                     Integer id = defaultLocation.getId();
+                    floorName = defaultLocation.getName();
 
                     activeLocationArrayList = (ArrayList<DAOActiveLocation>) activeLocationArrayList.stream().filter(val -> val.getParentLocationId() != null).collect(Collectors.toList());
 
@@ -701,6 +708,40 @@ public class LoginActivity extends AppCompatActivity {
                     //New...
                     SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.PARENT_ID,floorParentID);
                     SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.FLOOR_POSITION,floorPositon);
+
+                    ArrayList<DAOActiveLocation> buildingPlace = new ArrayList<>();
+                    ArrayList<DAOActiveLocation> cityList = new ArrayList<>();
+                    ArrayList<DAOActiveLocation> location = new ArrayList<>();
+
+                    buildingPlace.addAll(activeLocationArrayList.stream().filter(val -> val.getId() == floorParentID).collect(Collectors.toList()));
+
+                    if (buildingPlace.size()>0) {
+                        cityPlaceID = buildingPlace.get(0).getId();
+                        cityPlaceParentID = buildingPlace.get(0).getParentLocationId();
+                        buildingName = buildingPlace.get(0).getName();
+                    }
+
+                    cityList.addAll(activeLocationArrayList.stream().filter(val -> val.getId() == cityPlaceParentID).collect(Collectors.toList()));
+
+                    if (cityList.size()>0){
+                        cityID = cityList.get(0).getId();
+                        cityParentID = cityList.get(0).getParentLocationId();
+                        CityName = cityList.get(0).getName();
+                    }
+
+                    location.addAll(activeLocationArrayList.stream().filter(val -> val.getId() == cityParentID).collect(Collectors.toList()));
+
+                    if (location.size()>0){
+                        locationID = location.get(0).getId();
+                        locationParentID = location.get(0).getParentLocationId();
+                        CountryName = location.get(0).getName();
+                    }
+
+
+                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.COUNTRY_NAME,CountryName);
+                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.BUILDING,buildingName);
+                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FLOOR,floorName);
+                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FULLPATHLOCATION,fullPathLocation);
 
                     launchWelcomeActivity();
 

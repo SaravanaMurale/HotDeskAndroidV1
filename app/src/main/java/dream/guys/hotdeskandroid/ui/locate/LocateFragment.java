@@ -16,6 +16,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -2914,6 +2915,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         }
 
+        //New...
+        bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                page = 1;
+            }
+        });
 
         bottomSheetDialog.show();
 
@@ -7436,6 +7444,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         });
 
+        //New...
+        bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                page = 1;
+            }
+        });
 
         bottomSheetDialog.show();
 
