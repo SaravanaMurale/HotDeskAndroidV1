@@ -344,6 +344,12 @@ public interface ApiInterface {
     @GET("api/meetingrooms/userallowedmeetingrooms")
     Call<List<UserAllowedMeetingResponse>> userAllowedMeetings();
 
+    //Get All Meetings
+    @GET("api/meetingrooms/getAll")
+    Call<List<UserAllowedMeetingResponse>> getAllMeetings();
+
+
+
     @POST("api/MeetingRooms/locationsWithMR")
     Call<List<LocationWithMR_Response>> getLocationMR(@Body LocationMR_Request locationMR_request);
 

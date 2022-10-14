@@ -42,7 +42,6 @@ public class DefaultLocationAdapter extends RecyclerView.Adapter<DefaultLocation
         int pos = holder.getAbsoluteAdapterPosition();
 
         switch (activeLocationArrayList.get(position).getLevel()) {
-
             case 1:
                 setMargins(holder,0);
                 setDisable(holder,position);

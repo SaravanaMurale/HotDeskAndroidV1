@@ -183,12 +183,14 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:theme="@style/TextBold"
                 android:textColor="@color/figmaBlack"
+                android:visibility="gone"
                 android:textSize="@dimen/_12sdp"/>
 
             <TextView
                 android:id="@+id/editProfileHybridHereTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:text="The Name that will be displayed across  Hybrid Hero" />
 
 
@@ -197,6 +199,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint=""
+                android:visibility="gone"
                 android:layout_marginTop="@dimen/_3sdp"
                 android:enabled="false"
                 android:background="@drawable/edittext_bg"
@@ -600,9 +603,9 @@
                         android:id="@+id/editParkChange"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Change"
                         android:layout_alignParentRight="true"
-                        android:enabled="false"/>
+                        android:enabled="false"
+                        android:text="Change" />
 
                 </RelativeLayout>
 

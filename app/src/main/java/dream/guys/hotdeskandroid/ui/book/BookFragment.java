@@ -288,8 +288,8 @@ public class BookFragment extends Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -301,7 +301,6 @@ public class BookFragment extends Fragment implements
 
         checkVeichleReg();
 
-        System.out.println("selct time"+Utils.selectedTimeWithExtraMins(Utils.getCurrentTime(),30));
         dialog= new Dialog(getActivity());
         if (endTimeSelectedStats == 0) {
             binding.locateEndTime.setText("23:59");
@@ -1009,30 +1008,20 @@ public class BookFragment extends Fragment implements
             dialog= ProgressDialog.showProgressBar(getContext());
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-//            System.out.println("check dat"+startDate+" adn"+endDate);
             Call<List<CarParkListToEditResponse>> call = apiService.getCarParkListToEdit(startDate, endDate);
             call.enqueue(new Callback<List<CarParkListToEditResponse>>() {
                 @Override
                 public void onResponse(Call<List<CarParkListToEditResponse>> call, Response<List<CarParkListToEditResponse>> response) {
 
                     List<CarParkListToEditResponse> carParkingForEditResponse = response.body();
-//                    List<CarParkListToEditResponse> carParkingForEditResponse = response.body();
-
-//                    toastMessage(getActivity(),"hvhvhv");
                     CallCarBookingEditList(carParkingForEditResponse, "5");
 
-                     ProgressDialog.dismisProgressBar(getContext(),dialog);
-
-//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
-
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
                 }
 
                 @Override
                 public void onFailure(Call<List<CarParkListToEditResponse>> call, Throwable t) {
                     ProgressDialog.dismisProgressBar(getContext(),dialog);
-                    CallCarBookingEditList(null, "5");
-
-//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 }
             });
 
@@ -1041,7 +1030,7 @@ public class BookFragment extends Fragment implements
         }
 
     }
-    private void getCarParkLocationsList() {
+    private void getCarParkLocationsList(EditBookingDetails editBookingDetails, String status) {
         if (Utils.isNetworkAvailable(getActivity())) {
             dialog= ProgressDialog.showProgressBar(getContext());
 
@@ -1050,12 +1039,12 @@ public class BookFragment extends Fragment implements
             call.enqueue(new Callback<List<CarParkLocationsModel>>() {
                 @Override
                 public void onResponse(Call<List<CarParkLocationsModel>> call, Response<List<CarParkLocationsModel>> response) {
-
-//                    CarParkLocationsModel carParkLocationsModel = response.body().get(0);
-//                    getParkingSpotList(""+carParkLocationsModel.getId(), editBookingDetails);
-
+                    if (response.code()==200 && response.body().size()>0){
+                        getParkingSpotList(""+response.body().get(0).getId(),editBookingDetails,status);
+                    } else {
+                        Toast.makeText(getContext(), "No parking locations Aavilable", Toast.LENGTH_SHORT).show();
+                    }
                      ProgressDialog.dismisProgressBar(getContext(),dialog);
-//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
                 }
 
@@ -1081,13 +1070,16 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onResponse(Call<List<ParkingSpotModel>> call, Response<List<ParkingSpotModel>> response) {
                     parkingSpotModelList.clear();
-                    if(response.body()!=null){
+                    if(response.code()==200 && response.body()!=null){
                         for(int i=0;i<response.body().size();i++){
                             if(response.body().get(i).getAssignees().size() == 0
                                     && response.body().get(i).isActive()){
                                 parkingSpotModelList.add(response.body().get(i));
                             }
                         }
+
+                    } else {
+                        Toast.makeText(getContext(), "api erorr "+response.code(), Toast.LENGTH_LONG).show();
                     }
 
                     ProgressDialog.dismisProgressBar(getContext(),dialog);
@@ -1103,6 +1095,7 @@ public class BookFragment extends Fragment implements
                         }
                     }
 
+//                    Toast.makeText(getContext(), "getParkingSpotList "+response.code(), Toast.LENGTH_LONG).show();
                     if (newEdit.equalsIgnoreCase("new"))
                         editBookingUsingBottomSheet(editBookingDetails,3,0,"new");
                     else if (newEdit.equalsIgnoreCase("new_deep_link")){
@@ -1112,8 +1105,6 @@ public class BookFragment extends Fragment implements
                             editBookingUsingBottomSheet(editBookingDetails,3,0,"request");
                     }else
                         editBookingUsingBottomSheet(editBookingDetails,3,0,"edit");
-
-//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
                 }
 
@@ -1316,7 +1307,10 @@ public class BookFragment extends Fragment implements
 
                 }
                 editBookingDetails.setDate(Utils.convertStringToDateFormet(calSelectedDate));
-                getParkingSpotList(""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID),editBookingDetails,"new");
+                if(SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID)>0)
+                    getParkingSpotList(""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID),editBookingDetails,"new");
+                else
+                    getCarParkLocationsList(editBookingDetails,"new");
 
             }
         });
@@ -3988,11 +3982,10 @@ public class BookFragment extends Fragment implements
                 public void onResponse(Call<BookingForEditResponse> call, Response<BookingForEditResponse> response) {
                     if(response.code()==200){
                         bookingDeskList.clear();
-                        bookingDeskList = response.body().getTeamDeskAvailability();
-                        System.out.println(
-                                "dasdasadasdasdas"+bookingDeskList.size()
-                        );
-                        selectedTeamId = bookingDeskList.get(0).getTeamId();
+                        if(response.body().getTeamDeskAvailability() != null)
+                            bookingDeskList = response.body().getTeamDeskAvailability();
+                        if(bookingDeskList!=null && bookingDeskList.size() > 0)
+                            selectedTeamId = bookingDeskList.get(0).getTeamId();
                     }
 
                 }

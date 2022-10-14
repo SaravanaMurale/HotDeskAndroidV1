@@ -115,7 +115,8 @@ public class DefaultLocationActivity extends AppCompatActivity implements Defaul
 
             for (int j=0;j<activeLocationArrayList.size();j++) {
 
-                if (firstParentLocationArrayList.get(i).getId().equals(activeLocationArrayList.get(j).getParentLocationId())) {
+                if (firstParentLocationArrayList.get(i).getId()
+                        .equals(activeLocationArrayList.get(j).getParentLocationId())) {
                     activeLocationArrayList.get(j).setLevel(2);
                 }
 
