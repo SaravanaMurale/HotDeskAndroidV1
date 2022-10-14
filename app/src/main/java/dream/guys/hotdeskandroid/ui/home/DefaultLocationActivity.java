@@ -2,6 +2,7 @@ package dream.guys.hotdeskandroid.ui.home;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,11 +13,15 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.DefaultLocationAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityDefaultLocationBinding;
 import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
 import dream.guys.hotdeskandroid.model.response.FirstAidResponse;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
+import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
+import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
 import retrofit2.Call;
@@ -39,13 +44,19 @@ public class DefaultLocationActivity extends AppCompatActivity implements Defaul
 
     int floorParentID = 0, cityPlaceID = 0, cityPlaceParentID = 0,cityID = 0,cityParentID = 0,locationID = 0,locationParentID = 0;
 
+    String sFrom = "";
+    Context context;
+    int mainParentID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityDefaultLocationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        defaultLocationCall();
+        context = DefaultLocationActivity.this;
+
+        getLocateCountryList();
 
         binding.profileBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +64,58 @@ public class DefaultLocationActivity extends AppCompatActivity implements Defaul
                 finish();
             }
         });
+
+        //New...
+        try {
+            Intent intent = getIntent();
+            if (intent!=null && intent.getStringExtra(AppConstants.FROM)!=null){
+                sFrom = intent.getStringExtra(AppConstants.FROM);
+            }
+        }catch (Exception e){
+
+        }
+
+
+    }
+
+    //New...
+    private void getLocateCountryList() {
+
+        if (Utils.isNetworkAvailable(context)) {
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<LocateCountryRespose>> call = apiService.getLocationCountryList();
+            call.enqueue(new Callback<List<LocateCountryRespose>>() {
+                @Override
+                public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
+
+                    if (response.body()!=null && response.code() == 200 && response.body().size()>0) {
+
+                        List<LocateCountryRespose> locateCountryResposes = response.body();
+                        locateCountryResposes.sort(Comparator.comparing(LocateCountryRespose::getName, String::compareToIgnoreCase));
+
+                        if (locateCountryResposes.size()>0) {
+                            mainParentID = locateCountryResposes.get(0).getParentLocationId();
+                            defaultLocationCall();
+                        }
+
+                    }else {
+                        binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
+
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(context, getResources().getString(R.string.enable_internet));
+        }
 
     }
 
@@ -63,7 +126,7 @@ public class DefaultLocationActivity extends AppCompatActivity implements Defaul
         call.enqueue(new Callback<ArrayList<DAOActiveLocation>>() {
             @Override
             public void onResponse(Call<ArrayList<DAOActiveLocation>> call, Response<ArrayList<DAOActiveLocation>> response) {
-
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 if (response.body()!=null && response.code() == 200) {
 
                     activeLocationArrayList = new ArrayList<>();
@@ -77,7 +140,7 @@ public class DefaultLocationActivity extends AppCompatActivity implements Defaul
 
             @Override
             public void onFailure(Call<ArrayList<DAOActiveLocation>> call, Throwable t) {
-
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -101,7 +164,7 @@ public class DefaultLocationActivity extends AppCompatActivity implements Defaul
         //activeLocationArrayList.remove(activeLocationArrayList.size()-1);
         activeLocationArrayList = (ArrayList<DAOActiveLocation>) activeLocationArrayList.stream().filter(val -> val.getParentLocationId() != null).collect(Collectors.toList());
 
-        firstParentLocationArrayList = (ArrayList<DAOActiveLocation>) activeLocationArrayList.stream().filter(val -> val.getParentLocationId() == 1).collect(Collectors.toList());
+        firstParentLocationArrayList = (ArrayList<DAOActiveLocation>) activeLocationArrayList.stream().filter(val -> val.getParentLocationId() == mainParentID).collect(Collectors.toList());
 
         setCityLogic();
 
@@ -238,7 +301,7 @@ public class DefaultLocationActivity extends AppCompatActivity implements Defaul
         //activeLocationArrayList.sort(Comparator.comparing(DAOActiveLocation::getLevel));
 
         defaultLocationAdapter = new DefaultLocationAdapter(DefaultLocationActivity.this,
-                finalLocationArrayList,this);
+                finalLocationArrayList,this,sFrom);
         binding.recyclerview.setAdapter(defaultLocationAdapter);
 
     }
@@ -251,6 +314,7 @@ public class DefaultLocationActivity extends AppCompatActivity implements Defaul
         intent.putExtra("FloorList",cityPlaceFloorArrayList);
         intent.putExtra("Position",position);
         intent.putExtra("floorName",floorName);
+        intent.putExtra("sFrom",sFrom);
         setResult(RESULT_OK,intent);
         finish();
 

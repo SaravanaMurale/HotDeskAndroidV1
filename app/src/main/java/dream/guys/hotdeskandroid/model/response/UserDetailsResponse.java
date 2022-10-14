@@ -497,7 +497,7 @@ public class UserDetailsResponse {
         }
     }
 
-    public class DefaultCarParkLocation{
+    public static class DefaultCarParkLocation{
 
         @SerializedName("id")
         private int id;

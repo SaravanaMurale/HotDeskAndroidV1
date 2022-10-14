@@ -120,4 +120,8 @@ public class AppConstants {
     public static final String MeetingManager = "Meeting Room Manager";
     public static final String TeamManager = "Team Manager";
 
+    public static final String DefaultLocation = "DefaultLocation";
+    public static final String ParkingLocation = "ParkingLocation";
+    public static final String FROM = "FROM";
+
 }
