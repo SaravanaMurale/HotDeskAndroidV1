@@ -16,6 +16,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -121,6 +122,7 @@ import dream.guys.hotdeskandroid.model.response.TeamsResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.LogicHandler;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
@@ -301,6 +303,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     TextView txtInterval;
     BottomSheetDialog repeatDataBottomSheetDialog, locateEditBottomSheet, locateCarEditBottomSheet, locateMeetEditBottomSheet;
     List<ParticipantDetsilResponse> chipList = new ArrayList<>();
+
+    //In Participant Edit add and delete attendees
+    //List<Integer> attendeesAddDelList=new ArrayList<>();
+    List<MeetingListToEditResponse.Attendees> attendeesListForEdit;
 
     int page = 1;
 
@@ -2113,7 +2119,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 } else if (meetingStatusModelList.get(i).getStatus() == 1) {
                                     editLastEndTime = "";
                                     boolean isReqduest = false;
-                                    callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest, "BOOK");
+                                    //New...
+                                    getMeetingRoomDescription(meetingRoomId,meetingRoomName, isReqduest, "BOOK");
+
+                                    //callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest, "BOOK");
                                 } else if (meetingStatusModelList.get(i).getStatus() == 2) {
                                     boolean isReqduest = false;
                                     getMeetingBookingListToEdit(meetingRoomId, meetingRoomName, isReqduest);
@@ -2122,7 +2131,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 } else if (meetingStatusModelList.get(i).getStatus() == 4) {
                                     editLastEndTime = "";
                                     boolean isReqduest = true;
-                                    callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest, "BOOK");
+                                    //New...
+                                    getMeetingRoomDescription(meetingRoomId, meetingRoomName, isReqduest, "BOOK");
+
+                                    //callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest, "BOOK");
                                 }
                                 //System.out.println("ClickedRoomIdStatus" + meetingStatusModelList.get(i).getStatus() + " " + meetingStatusModelList.get(i).getKey() + " " + meetingStatusModelList.get(i).getId());
                             }
@@ -2254,7 +2266,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     int c = meetingListToEditResponseList.size();
                     editLastEndTime = Utils.splitTime(meetingListToEditResponseList.get(c - 1).getTo());
                 }
-                callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest, "EDIT");
+                //New...
+                getMeetingRoomDescription(meetingRoomId, meetingRoomName, isReqduest, "EDIT");
+
+                //callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest, "EDIT");
             }
         });
 
@@ -2355,7 +2370,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
-    private void getMeetingRoomDescription(int meetingRoomId) {
+    private void getMeetingRoomDescription(int meetingRoomId,String meetingRoomName, boolean isReqduest, String action) {
 
         if (Utils.isNetworkAvailable(getActivity())) {
             binding.locateProgressBar.setVisibility(View.VISIBLE);
@@ -2367,12 +2382,16 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     MeetingRoomDescriptionResponse meetingRoomDescriptionResponse = response.body();
                     meetingRoomDescription = meetingRoomDescriptionResponse.getDescription();
 
+                    //New...
+                    callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest, action);
+
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 }
 
                 @Override
                 public void onFailure(Call<MeetingRoomDescriptionResponse> call, Throwable t) {
-
+                    //New...
+                    callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest, action);
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 }
             });
@@ -2568,7 +2587,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         tv_repeat_room.setText(appKeysPage.getRepeat());
         editRoomBookingContinue.setText(appKeysPage.getContinue());
         editRoomBookingBack.setText(appKeysPage.getBack());
-        tvMeetingRoomDescription.setText(appKeysPage.getDescription());
+        //tvMeetingRoomDescription.setText(appKeysPage.getDescription());
         etComments.setHint(appKeysPage.getComments());
         etSubject.setHint(meetingRoomsLanguage.getSubject());
         meetingAvaliable.setText(global.getAvailable());
@@ -2679,8 +2698,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }
 
         if (meetingRoomDescription != null) {
-            tvMeetingRoomDescription.setText(tvMeetingRoomDescription.getText().toString() + ":" + meetingRoomDescription);
+            tvMeetingRoomDescription.setText(tvMeetingRoomDescription.getText().toString() + meetingRoomDescription);
         } else {
+            tvMeetingRoomDescription.setText(appKeysPage.getDescription());
             //tvMeetingRoomDescription.setText("Description:");
         }
 
@@ -2895,6 +2915,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         }
 
+        //New...
+        bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                page = 1;
+            }
+        });
 
         bottomSheetDialog.show();
 
@@ -2957,6 +2984,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         chip.setClickable(false);
 
         chipList.add(participantDetsilResponse);
+
+
 
         participantChipGroup.addView(chip);
         participantChipGroup.setVisibility(View.VISIBLE);
@@ -6898,6 +6927,17 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //Clear Internal Participants here
         chipList.clear();
 
+        if(attendeesListForEdit!=null && attendeesListForEdit.size()>0){
+            attendeesListForEdit.clear();
+        }
+
+
+
+
+
+        //Get AttendeeList To Edit
+         attendeesListForEdit=meetingListToEditResponse.getAttendeesList();
+
         TextView startRoomTime, endTRoomime, editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle, showtvRoomStartTime;
         EditText etParticipants, externalAttendees, etSubject, etComments;
         RelativeLayout startTimeLayout, endTimeLayout, rl_repeat_block_room, selectMeetingRoomLayout;
@@ -7015,6 +7055,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         for (int i = 0; i < meetingListToEditResponse.getAttendeesList().size(); i++) {
 
+
             System.out.println("AttendeesListInLoop " + meetingListToEditResponse.getAttendeesList().get(i).getEmail());
             //System.out.println("AttendeesListInChipList " + chipList.get(i).getEmail());
 
@@ -7036,8 +7077,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     if (chipList != null) {
                         for (int i = 0; i < chipList.size(); i++) {
 
-                            if (chip.getText().toString().contains(chipList.get(i).getFullName())) {
+                            if (chip.getText().toString().contains(chipList.get(i).getEmail())) {
                                 chipList.remove(chipList.get(i));
+                                participantChipGroup.removeView(chip);
+                                break;
                             }
 
                         }
@@ -7045,7 +7088,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     //System.out.println("RemoveChipGroupName"+chip.getText().toString());
 
-                    participantChipGroup.removeView(chip);
+
 
                 }
             });
@@ -7401,6 +7444,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         });
 
+        //New...
+        bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                page = 1;
+            }
+        });
 
         bottomSheetDialog.show();
 
@@ -7469,18 +7519,36 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             List<Integer> attendeesList = new ArrayList<>();
 
-            if (chipList != null) {
-                MeetingRoomEditRequest.Changesets.Changes.Attendees attendees = changes.new Attendees();
 
+
+            /*if (chipList != null) {
+                //MeetingRoomEditRequest.Changesets.Changes.Attendees attendees = changes.new Attendees();
                 for (int i = 0; i < chipList.size(); i++) {
-
                     System.out.println("EditedAndAddedParticipants "+chipList.get(i).getId());
-
                     attendeesList.add(chipList.get(i).getId());
                 }
+            }*/
 
+
+            List<Integer> addedList=LogicHandler.getNewlyAdded(attendeesListForEdit,chipList);
+            System.out.println("NewellyAddedParticipant "+addedList);
+
+            if(addedList!=null && addedList.size()>0){
+
+                for (int i = 0; i <addedList.size() ; i++) {
+                    attendeesList.add(addedList.get(i));
+                }
 
             }
+
+            List<Integer> removedList=LogicHandler.getRemoved(attendeesListForEdit,chipList);
+            System.out.println("RemovedParticipant "+removedList);
+            if(removedList!=null && removedList.size()>0){
+                for (int i = 0; i <removedList.size() ; i++) {
+                    attendeesList.add(removedList.get(i));
+                }
+            }
+
             changes.setAttendeesList(attendeesList);
 
             changes.setFrom(getCurrentDate() + "" + "T" + startTime + ":" + "00" + "." + "000" + "Z");

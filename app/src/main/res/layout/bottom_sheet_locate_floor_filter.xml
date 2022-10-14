@@ -46,6 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/bsGeneralSearch"
         android:layout_marginTop="@dimen/_10sdp"
+        android:layout_above="@+id/bsBack"
         android:orientation="vertical">
 
          <!--Country-->

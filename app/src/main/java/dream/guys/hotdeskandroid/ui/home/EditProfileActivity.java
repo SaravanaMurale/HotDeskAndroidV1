@@ -85,11 +85,11 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     int floorParentID = 0, cityPlaceID = 0, cityPlaceParentID = 0,cityID = 0,cityParentID = 0,locationID = 0,locationParentID = 0,
     floorPositon;
 
-    String CountryName = "";
-    String CityName = "";
-    String buildingName = "";
-    String floorName  = "";
-    String fullPathLocation  = "";
+    String CountryName = null;
+    String CityName = null;
+    String buildingName = null;
+    String floorName  = null;
+    String fullPathLocation  = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -336,6 +336,9 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                 startActivity(intent);
             }
         });
+
+        //New...
+        makeDisable();
 
     }
 
@@ -644,10 +647,11 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         Log.d("floorParentID", String.valueOf(floorParentID));
         Log.d("floorPositon", String.valueOf(floorPositon));
 
-        /*SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.COUNTRY_NAME,CountryName);
+
+        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.COUNTRY_NAME,CountryName);
         SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.BUILDING,buildingName);
         SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FLOOR,floorName);
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FULLPATHLOCATION,fullPathLocation);*/
+        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FULLPATHLOCATION,fullPathLocation);
 
     }
 
