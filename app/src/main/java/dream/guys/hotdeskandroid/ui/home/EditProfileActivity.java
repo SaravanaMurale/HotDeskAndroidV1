@@ -208,8 +208,6 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             }
         });
 
-
-
         if (profileData!=null) {
 
             binding.editName.setText(profileData.getFullName());

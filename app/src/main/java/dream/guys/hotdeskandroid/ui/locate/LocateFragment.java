@@ -2470,7 +2470,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     private void callMeetingRoomBookingBottomSheet(int meetingRoomId, String meetingRoomName, boolean isRequest, String action) {
 
         //Show Amenities in Meeting Booking
-
         //Amenities Block
         List<String> amenitiesList = new ArrayList<>();
         for (int i = 0; i < userAllowedMeetingResponseList.size(); i++) {
@@ -2501,7 +2500,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         EditText etParticipants, externalAttendees, etSubject, etComments;
         RecyclerView rvParticipant;
         LinearLayoutManager linearLayoutManager;
-        RelativeLayout startTimeLayout, endTimeLayout, rl_repeat_block_room, amenitiesBlock, rl_teams_layout_room, selectMeetingRoomLayout;
+        RelativeLayout startTimeLayout, endTimeLayout, rl_repeat_block_room,
+                amenitiesBlock, rl_teams_layout_room, selectMeetingRoomLayout;
         //New...
         LinearLayout subCmtLay, child_layout;
         TextView roomDate;
@@ -2872,11 +2872,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 System.out.println("FinalExternalAttendessList "+externalAttendeesEmail.get(i));
                             }*/
 
-                            doMeetingRoomBooking(meetingRoomId, startRoomTime.getText().toString(), endTRoomime.getText().toString(), subject, comment, isRequest, externalAttendeesEmail);
+                            doMeetingRoomBooking(meetingRoomId,
+                                    startRoomTime.getText().toString(),
+                                    endTRoomime.getText().toString(),
+                                    subject, comment, isRequest, externalAttendeesEmail);
                         } else {
                             doRepeatMeetingRoomBookingForWeek();
                         }
-
 
                     } else {
                         Toast.makeText(getContext(), "Please Enter All Details", Toast.LENGTH_LONG).show();

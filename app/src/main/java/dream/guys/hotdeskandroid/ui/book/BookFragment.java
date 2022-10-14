@@ -43,6 +43,7 @@ import android.widget.Toast;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -98,6 +99,8 @@ import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
 import dream.guys.hotdeskandroid.model.response.RoomListResponse;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
+import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
+import dream.guys.hotdeskandroid.ui.home.EditProfileActivity;
 import dream.guys.hotdeskandroid.ui.wellbeing.NotificationsListActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.CalendarView;
@@ -284,6 +287,7 @@ public class BookFragment extends Fragment implements
     public int selectedTeamAutoApproveStatus = 0;
     String selectedTeamName="";
     EditBookingDetails editBookingDetailsGlobal;
+    UserDetailsResponse profileData; //= new UserDetailsResponse();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -295,6 +299,12 @@ public class BookFragment extends Fragment implements
                              Bundle savedInstanceState) {
         binding = FragmentBookBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        Gson gson = new Gson();
+        String json = SessionHandler.getInstance().get(getContext(), AppConstants.LOGIN_RESPONSE);
+        if (json!=null){
+            profileData = gson.fromJson(json, UserDetailsResponse.class);
+        }
 
         selectedTeamId = SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID);
         setLanguage();
@@ -1039,12 +1049,12 @@ public class BookFragment extends Fragment implements
             call.enqueue(new Callback<List<CarParkLocationsModel>>() {
                 @Override
                 public void onResponse(Call<List<CarParkLocationsModel>> call, Response<List<CarParkLocationsModel>> response) {
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
                     if (response.code()==200 && response.body().size()>0){
                         getParkingSpotList(""+response.body().get(0).getId(),editBookingDetails,status);
                     } else {
                         Toast.makeText(getContext(), "No parking locations Aavilable", Toast.LENGTH_SHORT).show();
                     }
-                     ProgressDialog.dismisProgressBar(getContext(),dialog);
 
                 }
 
@@ -1069,42 +1079,43 @@ public class BookFragment extends Fragment implements
             call.enqueue(new Callback<List<ParkingSpotModel>>() {
                 @Override
                 public void onResponse(Call<List<ParkingSpotModel>> call, Response<List<ParkingSpotModel>> response) {
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+
                     parkingSpotModelList.clear();
-                    if(response.code()==200 && response.body()!=null){
+                    if(response.code()==200 && response.body()!=null && response.body().size()>0){
                         for(int i=0;i<response.body().size();i++){
                             if(response.body().get(i).getAssignees().size() == 0
                                     && response.body().get(i).isActive()){
                                 parkingSpotModelList.add(response.body().get(i));
                             }
                         }
-
-                    } else {
-                        Toast.makeText(getContext(), "api erorr "+response.code(), Toast.LENGTH_LONG).show();
-                    }
-
-                    ProgressDialog.dismisProgressBar(getContext(),dialog);
-                    boolean checkIsRequest=false;
-                    if (parkingSpotModelList!=null && parkingSpotModelList.size()>0){
-                        loo :
-                        for (int i=0;i<parkingSpotModelList.size();i++){
-                            if (editBookingDetails.getParkingSlotId()==parkingSpotModelList.get(i).getId()){
-                                editBookingDetails.setLocationAddress(parkingSpotModelList.get(i).getLocation().getName());
-                                checkIsRequest=true;
-                                break loo;
+                        boolean checkIsRequest=false;
+                        if (parkingSpotModelList!=null && parkingSpotModelList.size()>0){
+                            loo :
+                            for (int i=0;i<parkingSpotModelList.size();i++){
+                                if (editBookingDetails.getParkingSlotId()==parkingSpotModelList.get(i).getId()){
+                                    editBookingDetails.setLocationAddress(parkingSpotModelList.get(i).getLocation().getName());
+                                    checkIsRequest=true;
+                                    break loo;
+                                }
                             }
                         }
-                    }
 
 //                    Toast.makeText(getContext(), "getParkingSpotList "+response.code(), Toast.LENGTH_LONG).show();
-                    if (newEdit.equalsIgnoreCase("new"))
-                        editBookingUsingBottomSheet(editBookingDetails,3,0,"new");
-                    else if (newEdit.equalsIgnoreCase("new_deep_link")){
-                        if (checkIsRequest)
-                            editBookingUsingBottomSheet(editBookingDetails,3,0,"new_deep_link");
-                        else
-                            editBookingUsingBottomSheet(editBookingDetails,3,0,"request");
-                    }else
-                        editBookingUsingBottomSheet(editBookingDetails,3,0,"edit");
+                        if (newEdit.equalsIgnoreCase("new"))
+                            editBookingUsingBottomSheet(editBookingDetails,3,0,"new");
+                        else if (newEdit.equalsIgnoreCase("new_deep_link")){
+                            if (checkIsRequest)
+                                editBookingUsingBottomSheet(editBookingDetails,3,0,"new_deep_link");
+                            else
+                                editBookingUsingBottomSheet(editBookingDetails,3,0,"request");
+                        }else
+                            editBookingUsingBottomSheet(editBookingDetails,3,0,"edit");
+
+
+                    } else {
+                        getCarParkLocationsList(editBookingDetails,"new");
+                    }
 
                 }
 
@@ -1798,6 +1809,7 @@ public class BookFragment extends Fragment implements
         }else {
             if (newEditStatus.equalsIgnoreCase("edit")){
                 repeatBlock.setVisibility(View.GONE);
+                commentRegistration.setText(editDeskBookingDetails.getVehicleRegNumber());
             }else
                 repeatBlock.setVisibility(View.VISIBLE);
 
@@ -1807,7 +1819,8 @@ public class BookFragment extends Fragment implements
             commentBlock.setVisibility(View.GONE);
             commentRegistration.setHint("Registration Number");
             tvComments.setText("Regitration Number");
-            commentRegistration.setText(editDeskBookingDetails.getVehicleRegNumber());
+            if (profileData != null)
+                commentRegistration.setText(profileData.getVehicleRegNumber());
             chipGroup.setVisibility(View.GONE);
             capacitylayout.setVisibility(View.GONE);
             if(newEditStatus.equalsIgnoreCase("new") ||newEditStatus.equalsIgnoreCase("new_deep_link")
@@ -3136,8 +3149,36 @@ public class BookFragment extends Fragment implements
     //Room Booking Methods
     private void callMeetingRoomBookingBottomSheet(EditBookingDetails editDeskBookingDetails, TextView startTime, TextView endTime, int meetingRoomId, String meetingRoomName, boolean isRequest) {
 
+        //Show Amenities in Meeting Booking
+        //Amenities Block
+        List<String> amenitiesList = new ArrayList<>();
+        for (int i = 0; i < userAllowedMeetingResponseList.size(); i++) {
+
+            if (meetingRoomId == userAllowedMeetingResponseList.get(i).getId()) {
+
+                for (int j = 0; j < userAllowedMeetingResponseList.get(i).getAmenities().size(); j++) {
+                    System.out.println("MeetingAmenities " + userAllowedMeetingResponseList.get(i).getAmenities().get(j).getId());
+
+                    for (int k = 0; k < amenitiesListToShowInMeetingRoomList.size(); k++) {
+
+                        if (userAllowedMeetingResponseList.get(i).getAmenities().get(j).getId() == amenitiesListToShowInMeetingRoomList.get(k).getId()) {
+                            amenitiesList.add(amenitiesListToShowInMeetingRoomList.get(k).getName());
+                            System.out.println("TotalAmenitiesForThisRoom " + amenitiesListToShowInMeetingRoomList.get(k).getName());
+
+                        }
+
+                    }
+                }
+
+
+            }
+
+        }
+
         TextView startRoomTime, endTRoomime, editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle;
-        EditText etParticipants, etSubject, etComments;
+        EditText etParticipants, externalAttendees, etSubject, etComments;
+        ChipGroup chipGroup, externalAttendeesChipGroup;
+
         RecyclerView rvParticipant;
         LinearLayoutManager linearLayoutManager;
         RelativeLayout startTimeLayout, endTimeLayout;
@@ -3157,6 +3198,24 @@ public class BookFragment extends Fragment implements
         rvParticipant = bottomSheetDialog.findViewById(R.id.rvParticipant);
         participantChipGroup = bottomSheetDialog.findViewById(R.id.participantChipGroup);
 
+        chipGroup = bottomSheetDialog.findViewById(R.id.meetingAmenitiesChipGroup);
+
+        externalAttendees = bottomSheetDialog.findViewById(R.id.externalAttendees);
+        externalAttendeesChipGroup = bottomSheetDialog.findViewById(R.id.externalAttendeesChipGroup);
+
+        //Set All Amenities Here
+        for (int i = 0; i < amenitiesList.size(); i++) {
+
+            System.out.println("RoomAmenitiesList " + amenitiesList.get(i));
+            Chip chip = new Chip(getContext());
+            chip.setText(amenitiesList.get(i));
+            chip.setCheckable(false);
+            chip.setClickable(false);
+            chipGroup.addView(chip);
+        }
+
+        List<String> externalAttendeesEmail = new ArrayList<>();
+
         //Language
         editRoomBookingContinue.setText(appKeysPage.getContinue());
         editRoomBookingBack.setText(appKeysPage.getBack());
@@ -3169,6 +3228,64 @@ public class BookFragment extends Fragment implements
 
 
         roomTitle.setText(meetingRoomName);
+        externalAttendees.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                etParticipants.setText("");
+
+                if (s.toString().contains(" ")) {
+
+                    Chip chip = new Chip(getContext());
+                    chip.setText(s.toString());
+                    chip.setCheckable(false);
+                    chip.setClickable(false);
+                    chip.setCloseIconVisible(true);
+                    externalAttendeesChipGroup.setVisibility(View.VISIBLE);
+                    externalAttendeesChipGroup.addView(chip);
+
+                    //Add In List
+                    externalAttendeesEmail.add(s.toString());
+
+                    externalAttendees.clearFocus();
+                    externalAttendees.setText("");
+
+
+                    chip.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            if (externalAttendeesEmail != null) {
+
+                                for (int i = 0; i < externalAttendeesEmail.size(); i++) {
+
+                                    if (chip.getText().toString().contains(externalAttendeesEmail.get(i))) {
+                                        externalAttendeesEmail.remove(i);
+                                        externalAttendeesChipGroup.removeView(chip);
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+                    });
+
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
 
         etParticipants.addTextChangedListener(new TextWatcher() {

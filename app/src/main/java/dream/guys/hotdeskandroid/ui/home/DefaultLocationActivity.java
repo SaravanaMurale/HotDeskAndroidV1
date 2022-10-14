@@ -99,7 +99,8 @@ public class DefaultLocationActivity extends AppCompatActivity implements Defaul
         });
 
         //activeLocationArrayList.remove(activeLocationArrayList.size()-1);
-        activeLocationArrayList = (ArrayList<DAOActiveLocation>) activeLocationArrayList.stream().filter(val -> val.getParentLocationId() != null).collect(Collectors.toList());
+        activeLocationArrayList = (ArrayList<DAOActiveLocation>) activeLocationArrayList.stream().
+                filter(val -> val.getParentLocationId() != null).collect(Collectors.toList());
 
         firstParentLocationArrayList = (ArrayList<DAOActiveLocation>) activeLocationArrayList.stream().filter(val -> val.getParentLocationId() == 1).collect(Collectors.toList());
 
