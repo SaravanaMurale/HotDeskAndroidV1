@@ -93,6 +93,13 @@
                     android:textColor="@color/figmaBlack"/>
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/meetingRoomDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description:"
+                />
+
         </LinearLayout>
 
 
@@ -103,13 +110,6 @@
             android:orientation="vertical"
             android:id="@+id/child_layout">
 
-
-        <TextView
-            android:id="@+id/meetingRoomDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Description:"
-            />
 
         <RelativeLayout
             android:id="@+id/startTimeLayout"

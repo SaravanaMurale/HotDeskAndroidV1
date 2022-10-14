@@ -41,6 +41,7 @@ import com.microsoft.identity.client.exception.MsalServiceException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,9 +49,11 @@ import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
+import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.model.response.TypeOfLoginResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
+import dream.guys.hotdeskandroid.ui.home.EditProfileActivity;
 import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
 import dream.guys.hotdeskandroid.ui.login.sso.B2CConfiguration;
 import dream.guys.hotdeskandroid.ui.login.sso.B2CUser;
@@ -108,6 +111,12 @@ public class LoginActivity extends AppCompatActivity {
     /* Azure AD Variables */
     private IMultipleAccountPublicClientApplication b2cApp;
     String tentantName="";
+
+    //New...
+    ArrayList<DAOActiveLocation> activeLocationArrayList = new ArrayList<>();
+    int floorParentID = 0, cityPlaceID = 0, cityPlaceParentID = 0,cityID = 0,cityParentID = 0,locationID = 0,locationParentID = 0,
+            floorPositon;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -556,7 +565,13 @@ public class LoginActivity extends AppCompatActivity {
 
                             //Check welcome screen viewed status
                             //boolean welcomeViewStatus=SessionHandler.getInstance().getBoolean(LoginActivity.this,AppConstants.WELCOME_VIEWED_STATUS);
-                            launchWelcomeActivity();
+
+                            //New...
+                            if (userDetailsResponse.getDefaultLocation()!=null){
+                                setLocate(userDetailsResponse.getDefaultLocation());
+                            }else{
+                                launchWelcomeActivity();
+                            }
 
                         } else {
                             ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
@@ -581,6 +596,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
+
 
     private void sendFCMToken() {
         String tokenInSharedPreference=SessionHandler.getInstance().get(getApplicationContext(),AppConstants.SAVETOKEN);
@@ -649,6 +665,56 @@ public class LoginActivity extends AppCompatActivity {
             signInSso.setText(appKeysPage.getSignInWithPin( ));
             //tvSignInWith.setText(appKeysPage.getOrSignInWith());
         }
+
+    }
+
+    //New...
+    private void setLocate(UserDetailsResponse.DefaultLocation defaultLocation) {
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<ArrayList<DAOActiveLocation>> call = apiService.getActiveLocations();
+        call.enqueue(new Callback<ArrayList<DAOActiveLocation>>() {
+            @Override
+            public void onResponse(Call<ArrayList<DAOActiveLocation>> call, Response<ArrayList<DAOActiveLocation>> response) {
+
+                if (response.body()!=null && response.code() == 200 && response.body().size()>0) {
+
+                    activeLocationArrayList = new ArrayList<>();
+                    activeLocationArrayList = response.body();
+
+                    floorParentID = defaultLocation.getParentLocationId();
+                    Integer id = defaultLocation.getId();
+
+                    activeLocationArrayList = (ArrayList<DAOActiveLocation>) activeLocationArrayList.stream().filter(val -> val.getParentLocationId() != null).collect(Collectors.toList());
+
+                    ArrayList<DAOActiveLocation> selectFloors = new ArrayList<>();
+                    selectFloors = (ArrayList<DAOActiveLocation>) activeLocationArrayList.stream().filter(val -> val.getParentLocationId() == floorParentID).collect(Collectors.toList());
+
+                    for (int i=0;i<selectFloors.size();i++) {
+
+                        if (id.equals(selectFloors.get(i).getId())) {
+                            floorPositon = i;
+                            break;
+                        }
+                    }
+
+                    //New...
+                    SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.PARENT_ID,floorParentID);
+                    SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.FLOOR_POSITION,floorPositon);
+
+                    launchWelcomeActivity();
+
+                }else {
+                    launchWelcomeActivity();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<DAOActiveLocation>> call, Throwable t) {
+                launchWelcomeActivity();
+            }
+        });
 
     }
 

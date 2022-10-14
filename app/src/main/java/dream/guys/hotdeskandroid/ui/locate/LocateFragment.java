@@ -2113,7 +2113,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 } else if (meetingStatusModelList.get(i).getStatus() == 1) {
                                     editLastEndTime = "";
                                     boolean isReqduest = false;
-                                    callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest, "BOOK");
+                                    //New...
+                                    getMeetingRoomDescription(meetingRoomId,meetingRoomName, isReqduest, "BOOK");
+
+                                    //callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest, "BOOK");
                                 } else if (meetingStatusModelList.get(i).getStatus() == 2) {
                                     boolean isReqduest = false;
                                     getMeetingBookingListToEdit(meetingRoomId, meetingRoomName, isReqduest);
@@ -2122,7 +2125,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 } else if (meetingStatusModelList.get(i).getStatus() == 4) {
                                     editLastEndTime = "";
                                     boolean isReqduest = true;
-                                    callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest, "BOOK");
+                                    //New...
+                                    getMeetingRoomDescription(meetingRoomId, meetingRoomName, isReqduest, "BOOK");
+
+                                    //callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest, "BOOK");
                                 }
                                 //System.out.println("ClickedRoomIdStatus" + meetingStatusModelList.get(i).getStatus() + " " + meetingStatusModelList.get(i).getKey() + " " + meetingStatusModelList.get(i).getId());
                             }
@@ -2254,7 +2260,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     int c = meetingListToEditResponseList.size();
                     editLastEndTime = Utils.splitTime(meetingListToEditResponseList.get(c - 1).getTo());
                 }
-                callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest, "EDIT");
+                //New...
+                getMeetingRoomDescription(meetingRoomId, meetingRoomName, isReqduest, "EDIT");
+
+                //callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest, "EDIT");
             }
         });
 
@@ -2355,7 +2364,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
-    private void getMeetingRoomDescription(int meetingRoomId) {
+    private void getMeetingRoomDescription(int meetingRoomId,String meetingRoomName, boolean isReqduest, String action) {
 
         if (Utils.isNetworkAvailable(getActivity())) {
             binding.locateProgressBar.setVisibility(View.VISIBLE);
@@ -2367,12 +2376,16 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     MeetingRoomDescriptionResponse meetingRoomDescriptionResponse = response.body();
                     meetingRoomDescription = meetingRoomDescriptionResponse.getDescription();
 
+                    //New...
+                    callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest, action);
+
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 }
 
                 @Override
                 public void onFailure(Call<MeetingRoomDescriptionResponse> call, Throwable t) {
-
+                    //New...
+                    callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest, action);
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 }
             });
@@ -2568,7 +2581,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         tv_repeat_room.setText(appKeysPage.getRepeat());
         editRoomBookingContinue.setText(appKeysPage.getContinue());
         editRoomBookingBack.setText(appKeysPage.getBack());
-        tvMeetingRoomDescription.setText(appKeysPage.getDescription());
+        //tvMeetingRoomDescription.setText(appKeysPage.getDescription());
         etComments.setHint(appKeysPage.getComments());
         etSubject.setHint(meetingRoomsLanguage.getSubject());
         meetingAvaliable.setText(global.getAvailable());
@@ -2679,8 +2692,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }
 
         if (meetingRoomDescription != null) {
-            tvMeetingRoomDescription.setText(tvMeetingRoomDescription.getText().toString() + ":" + meetingRoomDescription);
+            tvMeetingRoomDescription.setText(tvMeetingRoomDescription.getText().toString() + meetingRoomDescription);
         } else {
+            tvMeetingRoomDescription.setText(appKeysPage.getDescription());
             //tvMeetingRoomDescription.setText("Description:");
         }
 
