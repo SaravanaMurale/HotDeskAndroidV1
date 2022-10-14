@@ -15,18 +15,21 @@ import java.util.ArrayList;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
 import dream.guys.hotdeskandroid.ui.home.DefaultLocationActivity;
+import dream.guys.hotdeskandroid.utils.AppConstants;
 
 public class DefaultLocationAdapter extends RecyclerView.Adapter<DefaultLocationAdapter.viewHolder> {
 
     Context context;
     ArrayList<DAOActiveLocation> activeLocationArrayList;
     DefaultLocationInterface locationInterface;
+    String sFrom;
 
     public DefaultLocationAdapter(Context context, ArrayList<DAOActiveLocation> activeLocationArrayList,
-                                  DefaultLocationInterface locationInterface) {
+                                  DefaultLocationInterface locationInterface,String sFrom) {
         this.context = context;
         this.activeLocationArrayList = activeLocationArrayList;
         this.locationInterface = locationInterface;
+        this.sFrom = sFrom;
     }
 
     @NonNull
@@ -56,7 +59,15 @@ public class DefaultLocationAdapter extends RecyclerView.Adapter<DefaultLocation
                 break;
             case 4:
                 setMargins(holder,150);
-                setEnable(holder,position);
+                if (sFrom.equalsIgnoreCase(AppConstants.DefaultLocation)){
+                    setEnable(holder,position);
+                }else {
+                    if (activeLocationArrayList.get(position).getLocationType().equals(26)){
+                        setEnable(holder,position);
+                    }else {
+                        setDisable(holder,position);
+                    }
+                }
                 break;
 
         }

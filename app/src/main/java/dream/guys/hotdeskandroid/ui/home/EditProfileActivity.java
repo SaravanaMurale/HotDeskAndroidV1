@@ -84,6 +84,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
     int floorParentID = 0, cityPlaceID = 0, cityPlaceParentID = 0,cityID = 0,cityParentID = 0,locationID = 0,locationParentID = 0,
     floorPositon;
+    int carFloorParentID;
 
     String CountryName = null;
     String CityName = null;
@@ -217,9 +218,6 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             }
             binding.tvEditPhone.setText(profileData.getPhoneNumber());
             binding.tvEditEmail.setText(profileData.getEmail());
-            if (profileData.getDefaultLocation()!=null){
-                binding.editDefaultLocaton.setText(profileData.getDefaultLocation().getName());
-            }
 
             binding.editStartTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
             binding.editEndTime.setText(Utils.splitTime(profileData.getWorkHoursTo()));
@@ -229,6 +227,11 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             if (profileData.getDefaultLocation()!=null){
                 binding.editDefaultLocaton.setText(profileData.getDefaultLocation().getName());
                 floorParentID = profileData.getDefaultLocation().getParentLocationId();
+            }
+
+            if (profileData.getDefaultCarParkLocation()!=null) {
+                binding.editPark.setText(profileData.getDefaultCarParkLocation().getName());
+                carFloorParentID = profileData.getDefaultCarParkLocation().getParentLocationId();
             }
 
 
@@ -248,70 +251,96 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
                             if (intent!=null){
 
-                                int position = intent.getIntExtra("Position",0);
-                                floorName = intent.getStringExtra("floorName");
-                                finalLocationArrayList = (ArrayList<DAOActiveLocation>)intent.getSerializableExtra("List");
-                                cityPlaceFloorArrayList = (ArrayList<DAOActiveLocation>)intent.getSerializableExtra("FloorList");
+                                if (intent.getStringExtra("sFrom")!=null) {
 
-                                floorParentID = finalLocationArrayList.get(position).getParentLocationId();
-                                Integer id = finalLocationArrayList.get(position).getId();
-                                UserDetailsResponse.DefaultLocation defaultLocation = new UserDetailsResponse.DefaultLocation();
+                                    String from = intent.getStringExtra("sFrom");
+                                    int position = intent.getIntExtra("Position",0);
+                                    floorName = intent.getStringExtra("floorName");
 
-                                ArrayList<DAOActiveLocation> selectFloors = new ArrayList<>();
-                                selectFloors = (ArrayList<DAOActiveLocation>) cityPlaceFloorArrayList.stream().filter(val -> val.getParentLocationId() == floorParentID).collect(Collectors.toList());
+                                    finalLocationArrayList = (ArrayList<DAOActiveLocation>)intent.getSerializableExtra("List");
+                                    cityPlaceFloorArrayList = (ArrayList<DAOActiveLocation>)intent.getSerializableExtra("FloorList");
 
-                                for (int i=0;i<selectFloors.size();i++) {
+                                    floorParentID = finalLocationArrayList.get(position).getParentLocationId();
+                                    Integer id = finalLocationArrayList.get(position).getId();
 
-                                    if (id.equals(selectFloors.get(i).getId())) {
-                                        floorPositon = i;
-                                        break;
+                                    if (from.equalsIgnoreCase(AppConstants.DefaultLocation)) {
+
+                                        UserDetailsResponse.DefaultLocation defaultLocation = new UserDetailsResponse.DefaultLocation();
+
+                                        ArrayList<DAOActiveLocation> selectFloors = new ArrayList<>();
+                                        selectFloors = (ArrayList<DAOActiveLocation>) cityPlaceFloorArrayList.stream().filter(val -> val.getParentLocationId() == floorParentID).collect(Collectors.toList());
+
+                                        for (int i=0;i<selectFloors.size();i++) {
+
+                                            if (id.equals(selectFloors.get(i).getId())) {
+                                                floorPositon = i;
+                                                break;
+                                            }
+                                        }
+
+                                        defaultLocation.setId(finalLocationArrayList.get(position).getId());
+                                        defaultLocation.setName(finalLocationArrayList.get(position).getName());
+                                        defaultLocation.setDescription(finalLocationArrayList.get(position).getDescription());
+                                        defaultLocation.setLeafLocation(finalLocationArrayList.get(position).getIsLeafLocation());
+                                        defaultLocation.setLocationType(finalLocationArrayList.get(position).getLocationType());
+                                        defaultLocation.setActive(finalLocationArrayList.get(position).getIsActive());
+                                        defaultLocation.setTimeZoneId(finalLocationArrayList.get(position).getTimeZoneId());
+                                        defaultLocation.setParentLocationId(floorParentID);
+
+                                        profileData.setDefaultLocation(defaultLocation);
+
+                                        ArrayList<DAOActiveLocation> buildingPlace = new ArrayList<>();
+                                        ArrayList<DAOActiveLocation> cityList = new ArrayList<>();
+                                        ArrayList<DAOActiveLocation> location = new ArrayList<>();
+
+                                        binding.editDefaultLocaton.setText(floorName);
+
+                                        buildingPlace.addAll(finalLocationArrayList.stream().filter(val -> val.getId() == floorParentID).collect(Collectors.toList()));
+
+                                        if (buildingPlace.size()>0) {
+                                            cityPlaceID = buildingPlace.get(0).getId();
+                                            cityPlaceParentID = buildingPlace.get(0).getParentLocationId();
+                                            buildingName = buildingPlace.get(0).getName();
+                                        }
+
+                                        cityList.addAll(finalLocationArrayList.stream().filter(val -> val.getId() == cityPlaceParentID).collect(Collectors.toList()));
+
+                                        if (cityList.size()>0){
+                                            cityID = cityList.get(0).getId();
+                                            cityParentID = cityList.get(0).getParentLocationId();
+                                            CityName = cityList.get(0).getName();
+                                        }
+
+                                        location.addAll(finalLocationArrayList.stream().filter(val -> val.getId() == cityParentID).collect(Collectors.toList()));
+
+                                        if (location.size()>0){
+                                            locationID = location.get(0).getId();
+                                            locationParentID = location.get(0).getParentLocationId();
+                                            CountryName = location.get(0).getName();
+                                        }
+
+
+                                    }else {
+
+                                        //Car Parking...
+                                        binding.editPark.setText(floorName);
+
+                                        UserDetailsResponse.DefaultCarParkLocation carPark = new UserDetailsResponse.DefaultCarParkLocation();
+                                        carPark.setId(finalLocationArrayList.get(position).getId());
+                                        carPark.setName(finalLocationArrayList.get(position).getName());
+                                        carPark.setDescription(finalLocationArrayList.get(position).getDescription());
+                                        carPark.setLeafLocation(finalLocationArrayList.get(position).getIsLeafLocation());
+                                        carPark.setLocationType(finalLocationArrayList.get(position).getLocationType());
+                                        carPark.setActive(finalLocationArrayList.get(position).getIsActive());
+                                        carPark.setTimeZoneId(finalLocationArrayList.get(position).getTimeZoneId());
+                                        carPark.setParentLocationId(floorParentID);
+
+                                        profileData.setDefaultCarParkLocation(carPark);
+
                                     }
                                 }
 
-                                defaultLocation.setId(finalLocationArrayList.get(position).getId());
-                                defaultLocation.setName(finalLocationArrayList.get(position).getName());
-                                defaultLocation.setDescription(finalLocationArrayList.get(position).getDescription());
-                                defaultLocation.setLeafLocation(finalLocationArrayList.get(position).getIsLeafLocation());
-                                defaultLocation.setLocationType(finalLocationArrayList.get(position).getLocationType());
-                                defaultLocation.setActive(finalLocationArrayList.get(position).getIsActive());
-                                defaultLocation.setTimeZoneId(finalLocationArrayList.get(position).getTimeZoneId());
-                                defaultLocation.setParentLocationId(floorParentID);
-
-                                profileData.setDefaultLocation(defaultLocation);
-
-                                ArrayList<DAOActiveLocation> buildingPlace = new ArrayList<>();
-                                ArrayList<DAOActiveLocation> cityList = new ArrayList<>();
-                                ArrayList<DAOActiveLocation> location = new ArrayList<>();
-
-                                binding.editDefaultLocaton.setText(floorName);
-
-                                buildingPlace.addAll(finalLocationArrayList.stream().filter(val -> val.getId() == floorParentID).collect(Collectors.toList()));
-
-                                if (buildingPlace.size()>0) {
-                                    cityPlaceID = buildingPlace.get(0).getId();
-                                    cityPlaceParentID = buildingPlace.get(0).getParentLocationId();
-                                    buildingName = buildingPlace.get(0).getName();
-                                }
-
-                                cityList.addAll(finalLocationArrayList.stream().filter(val -> val.getId() == cityPlaceParentID).collect(Collectors.toList()));
-
-                                if (cityList.size()>0){
-                                    cityID = cityList.get(0).getId();
-                                    cityParentID = cityList.get(0).getParentLocationId();
-                                    CityName = cityList.get(0).getName();
-                                }
-
-                                location.addAll(finalLocationArrayList.stream().filter(val -> val.getId() == cityParentID).collect(Collectors.toList()));
-
-                                if (location.size()>0){
-                                    locationID = location.get(0).getId();
-                                    locationParentID = location.get(0).getParentLocationId();
-                                    CountryName = location.get(0).getName();
-                                }
-
-
                             }
-
                         }
 
                     }
@@ -322,6 +351,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             public void onClick(View view) {
 
                 Intent intent = new Intent(EditProfileActivity.this,DefaultLocationActivity.class);
+                intent.putExtra(AppConstants.FROM,AppConstants.DefaultLocation);
                 resultLauncher.launch(intent);
                 //startActivity(intent);
             }
@@ -337,6 +367,16 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
         //New...
         makeDisable();
+        binding.editParkChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(EditProfileActivity.this,DefaultLocationActivity.class);
+                intent.putExtra(AppConstants.FROM,AppConstants.ParkingLocation);
+                resultLauncher.launch(intent);
+                //startActivity(intent);
+            }
+        });
 
     }
 

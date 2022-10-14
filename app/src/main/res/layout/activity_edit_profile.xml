@@ -616,13 +616,14 @@
                     android:layout_height="wrap_content"
                     android:text="Room"
                     android:layout_marginTop="@dimen/_10sdp"
-                    />
+                    android:visibility="gone"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rectangle_greybg_with_corner"
-                    android:padding="@dimen/_6sdp">
+                    android:padding="@dimen/_6sdp"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/editRoom"
