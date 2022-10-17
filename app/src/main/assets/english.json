@@ -114,7 +114,7 @@
             "SUBMIT_SUCCESS": "Personal help request sent!",
             "SUBMIT_FAILED": "Something went wrong sending your request, try again"
         }
-    },
+    ,
     "APPROVALS": {
         "TAB_TITLE": "Approvals",
         "PAST_APPROVALS": "Include past approvals"

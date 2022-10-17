@@ -1,5 +1,6 @@
 package dream.guys.hotdeskandroid.ui.wellbeing;
 
+import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getWellBeingScreenData;
 
 import android.content.Intent;
@@ -26,13 +27,14 @@ import dream.guys.hotdeskandroid.utils.AppConstants;
 public class WellbeingCommonActivity extends AppCompatActivity
 {
 
-    TextView profile_edit, tvHeader, tvContent;
+    TextView profile_edit, tvHeader, tvContent,tvLinks;
     RecyclerView rvCommon;
     ImageView ReportBack;
 
     LinearLayoutManager mLayoutManager;
     WellbeingCommonAdapter wellbeingCommonAdapter;
     List<WellbeingConfigResponse.Link> linksArray = new ArrayList<>();
+    LanguagePOJO.AppKeys appKeysPage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -46,6 +48,7 @@ public class WellbeingCommonActivity extends AppCompatActivity
         rvCommon = findViewById(R.id.rvCommon);
         tvContent = findViewById(R.id.tvContent);
         ReportBack = findViewById(R.id.ReportBack);
+        tvLinks = findViewById(R.id.tvLinks);
 
         profile_edit.setText(intent.getStringExtra(AppConstants.WELLBEING_TYPE));
         tvContent.setText(intent.getStringExtra(AppConstants.WELLBEING_TYPE));
@@ -74,13 +77,15 @@ public class WellbeingCommonActivity extends AppCompatActivity
         rvCommon.setAdapter(wellbeingCommonAdapter);
 
 
-        //setLanguage();
+        setLanguage();
 
     }
 
     private void setLanguage() {
         LanguagePOJO.WellBeing wellBeingPage = getWellBeingScreenData(this);
+        appKeysPage = getAppKeysPageScreenData(this);
         profile_edit.setText(wellBeingPage.getTabTitle());
         tvContent.setText(wellBeingPage.getTabTitle());
+        tvLinks.setText(appKeysPage.getLinks());
     }
 }
