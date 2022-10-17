@@ -55,6 +55,10 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import org.altbeacon.beacon.BeaconManager;
+import org.altbeacon.beacon.MonitorNotifier;
+import org.altbeacon.beacon.Region;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -153,6 +157,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     public static int expiryCheckInTime=0;
     public boolean showPastStatus=false;
 
+//    protected static final String TAG = "MonitoringActivity";
+    private BeaconManager beaconManager;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -169,7 +176,39 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         earlyCheckInTime();
         bookingExpiryGraceTimeInMinutes();
 
-        System.out.println("Seesin userId"+SessionHandler.getInstance().getInt(getActivity(),AppConstants.USER_ID));
+        beaconManager = BeaconManager.getInstanceForApplication(getActivity());
+        // To detect proprietary beacons, you must add a line like below corresponding to your beacon
+        // type.  Do a web search for "setBeaconLayout" to get the proper expression.
+        // beaconManager.getBeaconParsers().add(new BeaconParser().
+        //        setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
+        beaconManager.addMonitorNotifier(new MonitorNotifier() {
+            @Override
+            public void didEnterRegion(Region region) {
+                System.out.println("brcon reciever"+region.getUniqueId());
+//                Toast.makeText(getContext(), " enter ", Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "I just saw an beacon for the first time!");
+            }
+
+            @Override
+            public void didExitRegion(Region region) {
+//                Toast.makeText(getActivity(), " exit ", Toast.LENGTH_SHORT).show();
+
+                Log.i(TAG, "I no longer see an beacon");
+            }
+
+            @Override
+            public void didDetermineStateForRegion(int state, Region region) {
+//                Toast.makeText(getContext(), " enter ", Toast.LENGTH_SHORT).show();
+
+                Log.i(TAG, "I have just switched from seeing/not seeing beacons: "+state);
+            }
+        });
+
+        beaconManager.startMonitoring(new Region("myMonitoringUniqueId", null, null, null));
+        
+        System.out.println("Seesin userId" + SessionHandler.getInstance()
+                .getInt(getActivity(),
+                AppConstants.USER_ID));
         userProfile = root.findViewById(R.id.user_profile_pic);
         notiIcon = root.findViewById(R.id.noti_icon);
         profile = root.findViewById(R.id.profile);

@@ -388,6 +388,7 @@
     "AppKeys": {
         
         "SignIn": "Daxil olun",
+        "SignInWithSso": "SSO ilə daxil olun",
         "SignInWithPin": "PIN ilə daxil olun",
         "Tenant": "Kirayəçi",
         "Username": "İstifadəçi adı",

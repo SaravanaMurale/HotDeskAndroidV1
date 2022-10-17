@@ -4158,6 +4158,9 @@ public class LanguagePOJO {
         @SerializedName("SignInWithPin")
         @Expose
         private String signInWithPin;
+        @SerializedName("SignInWithSso")
+        @Expose
+        private String signInWithSso;
         @SerializedName("Tenant")
         @Expose
         private String tenant;
@@ -5127,6 +5130,14 @@ public class LanguagePOJO {
         @SerializedName("Send")
         @Expose
         private String Send;
+
+        public String getSignInWithSso() {
+            return signInWithSso;
+        }
+
+        public void setSignInWithSso(String signInWithSso) {
+            this.signInWithSso = signInWithSso;
+        }
 
         public String getSend() {
             return Send;

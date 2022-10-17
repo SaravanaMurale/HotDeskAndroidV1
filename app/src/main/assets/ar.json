@@ -390,9 +390,9 @@
   },
   
   "AppKeys": {
-      
       "SignIn": "تسجيل الدخول",
       "SignInWithPin": "قم بتسجيل الدخول باستخدام PIN",
+      "SignInWithSso": "تسجيل الدخول باستخدام SSO",
       "Tenant": "مستأجر",
       "Username": "اسم المستخدم",
       "Password": "كلمة المرور",

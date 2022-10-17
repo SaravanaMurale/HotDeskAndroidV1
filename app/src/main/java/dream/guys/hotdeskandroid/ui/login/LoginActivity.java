@@ -479,11 +479,11 @@ public class LoginActivity extends AppCompatActivity {
                             getUserDetailsUsingToken(getTokenResponse.getToken());
                         } else {
                             ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
-                            Utils.toastMessage(LoginActivity.this, "No Token Found");
+                            Utils.toastMessage(LoginActivity.this, "You have entered wrong username or password");
                         }
                     } else if(response.code()==401) {
                         ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
-                        Utils.toastMessage(LoginActivity.this, "Token Expired");
+                        Utils.toastMessage(LoginActivity.this, "You have entered wrong username or password");
                     } else if(response.code()==403) {
                         Intent intent = new Intent(getApplicationContext(),GDPRActivity.class);
                         intent.putExtra("tenantName",companyName);
@@ -495,7 +495,6 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<GetTokenResponse> call, Throwable t) {
                     ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
-                    Utils.toastMessage(LoginActivity.this, "You have entered wrong username or password");
 
                 }
             });
@@ -668,7 +667,7 @@ public class LoginActivity extends AppCompatActivity {
             etPassword.setHint(appKeysPage.getPassword());
             tvForgotPassword.setText(appKeysPage.getForgotPassword());
             tvBackToLogin.setText(appKeysPage.getGoBackToSignIn());
-            signInSso.setText(appKeysPage.getSignInWithPin( ));
+            signInSso.setText(appKeysPage.getSignInWithSso( ));
             //tvSignInWith.setText(appKeysPage.getOrSignInWith());
         }
 

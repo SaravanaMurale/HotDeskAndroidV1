@@ -387,6 +387,7 @@
       
       "SignIn": "Einloggen",
       "SignInWithPin": "Mit PIN anmelden",
+      "SignInWithSso": "Inloggen met SSO",
       "Tenant": "Mieter",
       "Username": "Nutzername",
       "Password": "Passwort",

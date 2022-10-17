@@ -405,7 +405,6 @@ public class BookFragment extends Fragment implements
                             getCarParListToEdit(""+Utils.getISO8601format(date),""+Utils.getISO8601format(date));
                             calSelectedDate=Utils.getISO8601format(date);
                         }else {
-
                         }
                     }else
                         Toast.makeText(getContext(), "Please Select current Date", Toast.LENGTH_SHORT).show();
@@ -789,6 +788,7 @@ public class BookFragment extends Fragment implements
                 moreParams.weight = 1.0f;
                 binding.moreLayout.setLayoutParams(moreParams);
                 binding.calendarView.setVisibility(View.GONE);
+                binding.relativeMore.setVisibility(View.GONE);
 //                getDeskCount(Utils.getCurrentDate());
                 break;
             default:

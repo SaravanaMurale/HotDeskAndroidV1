@@ -362,6 +362,7 @@
   "AppKeys": {
       "SignIn": "Sign in",
       "SignInWithPin": "Sign in with PIN",
+      "SignInWithSso": "Sign in with SSO",
       "Tenant": "Tenant",
       "Username": "Username",
       "Password": "Password",
