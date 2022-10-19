@@ -183,7 +183,64 @@ public class CarParkingslotsResponse {
 
     public class Assigness{
 
+        int id;
+        String firstName;
+        String latName;
+        String fullName;
+        String email;
+        boolean active;
 
+        public Assigness(int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+
+        public String getLatName() {
+            return latName;
+        }
+
+        public void setLatName(String latName) {
+            this.latName = latName;
+        }
+
+        public String getFullName() {
+            return fullName;
+        }
+
+        public void setFullName(String fullName) {
+            this.fullName = fullName;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public boolean isActive() {
+            return active;
+        }
+
+        public void setActive(boolean active) {
+            this.active = active;
+        }
     }
 
 

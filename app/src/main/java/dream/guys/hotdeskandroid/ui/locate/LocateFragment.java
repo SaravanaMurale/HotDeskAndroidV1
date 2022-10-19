@@ -60,10 +60,12 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import butterknife.BindView;
 import dream.guys.hotdeskandroid.MainActivity;
@@ -1063,7 +1065,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         if (carParkingslotsResponse.getCarParkingSlotId() == carParkAvalibilityResponseList.get(j).getParkingSlotAvalibilityId()) {
                             carParkAvalibilityResponse = carParkAvalibilityResponseList.get(j);
                             //carParkingStatusModel=new CarParkingStatusModel()
-                            if (carParkAvalibilityResponse.isBookedByElse() == false && carParkAvalibilityResponse.isBookedByUser() == false && carParkAvalibilityResponse.isAvailable() == true && (carParkingslots.get(i).getParkingSlotAvailability() == 1 && (carParkingslots.get(i).getAssignessList().size() == 0))) {
+
+
+                            if (carParkAvalibilityResponse.isBookedByElse() == false && carParkAvalibilityResponse.isBookedByUser() == false && carParkAvalibilityResponse.isAvailable() == true && (carParkingslots.get(i).getParkingSlotAvailability() == 1 && (carParkingslots.get(i).getAssignessList().size() == 0 || checkCurrentUserStatus(carParkingslots.get(i).getAssignessList())))) {
                                 carParkingStatusModel = new CarParkingStatusModel(carParkingslotsResponse.getCarParkingSlotId(), carParkingslotsResponse.getCode(), 1);
                                 System.out.println("CarParkAvaliable");
                                 // ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_avaliable));
@@ -1115,6 +1119,28 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             //deskStatusModelList.add(deskStatusModel);
             //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
         }
+
+    }
+
+    private boolean checkCurrentUserStatus(List<CarParkingslotsResponse.Assigness> assignessList) {
+
+        boolean status=false;
+
+        if(assignessList!=null && assignessList.size()>0) {
+
+            int UserId = SessionHandler.getInstance().getInt(getContext(), AppConstants.USER_ID);
+
+            ArrayList<CarParkingslotsResponse.Assigness> result = new ArrayList<>();
+            result = (ArrayList<CarParkingslotsResponse.Assigness>) assignessList.stream().filter(val -> val.getId() == UserId).collect(Collectors.toList());
+
+            if (result != null && result.size() > 0) {
+                status = true;
+            }
+
+        }
+
+
+        return  status;
 
     }
 
@@ -1481,10 +1507,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //Desk
         DeskStatusModel deskStatusModel = null;
         //List<DeskStatusModel> deskStatusModelList = new ArrayList<>();
+        //Inside Loop Added Status
+        boolean deskAddedStatus=false;
+
         //Room
         MeetingStatusModel meetingStatusModel = null;
         //List<MeetingStatusModel> meetingStatusModelList = new ArrayList<>();
-
+        //Inside Loop Added Status
+        boolean meetingAddedStatus=false;
 
         //Desk Avaliablity Checking
 
@@ -1544,10 +1574,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                     System.out.println("BookingUnavaliable");
                                     ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
 
+                                    deskAddedStatus=true;
+
                                     deskStatusModel = new DeskStatusModel(key, id, code, 0);
 
                                 } else if (teamDeskAvaliability.isPartiallyAvailable() == true && second == 2 && third == 1) {
-
+                                    deskAddedStatus=true;
                                     if (teamDeskAvaliability.isBookedByUser() == true) {
                                         System.out.println("BookingbookedForMe");
                                         ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_bookedbyme));
@@ -1617,6 +1649,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 deskStatusModelList.add(deskStatusModel);
             }
 
+            //If desk is not go inside loop by default it will be unavaliable
+            if(!deskAddedStatus){
+                deskStatusModel = new DeskStatusModel(key, id, code, 0);
+                deskStatusModelList.add(deskStatusModel);
+            }
+
 
         } else if (code.equals(AppConstants.CAR_PARKING)) {
 
@@ -1665,6 +1703,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             //ByDefault Set Meeting Image
             ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
 
+
             int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
 
             if (locationWithMR_response != null) {
@@ -1690,6 +1729,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
                                                 if (id == lMatches.getMatchesId()) {
+                                                    //M-Added-19-10
+                                                    meetingAddedStatus=true;
+
 
                                                     //GetCurrentDate and Add OffsetTime
                                                     String offSetAddedDate = Utils.addingHoursToCurrentDate(lMatches.getCurrentTimeZoneOffset());
@@ -1836,6 +1878,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 }
 
+            }
+
+            //M-Added-19-10
+            //If meeting room is not go inside (id == lMatches.getMatchesId()) it will be activated
+           // If meeting is not go inside loop by default it will be unavaliable
+            if(!meetingAddedStatus){
+                meetingStatusModel = new MeetingStatusModel(key, id, code, 0);
+                meetingStatusModelList.add(meetingStatusModel);
             }
 
 
