@@ -123,6 +123,7 @@ import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
+import dream.guys.hotdeskandroid.ui.wellbeing.NotificationsListActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.LogicHandler;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
@@ -352,10 +353,15 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     //FloorSearch
     boolean floorSearchStatus = false;
 
+    //Get TimeZoneId
+    List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilitiesList;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
 
     }
 
@@ -379,6 +385,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         setLanguage();
         //New...
         checkVeichleReg();
+
+        //TimeZoneId
+        getTimeZoneForBooking();
 
         //TeamsCheck
         checkTeamsCheckBox();
@@ -936,6 +945,49 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }
     }
 
+    private void getTimeZoneForBooking() {
+
+        if (Utils.isNetworkAvailable(getContext())) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+            Call<List<BookingForEditResponse.TeamDeskAvailabilities>> call = apiService.
+                    getTeamDeskAvailability(
+                            SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID),
+                            Utils.getCurrentDate(),
+                            Utils.getCurrentDate());
+
+            call.enqueue(new Callback<List<BookingForEditResponse.TeamDeskAvailabilities>>() {
+                @Override
+                public void onResponse(Call<List<BookingForEditResponse.TeamDeskAvailabilities>> call, Response<List<BookingForEditResponse.TeamDeskAvailabilities>> response) {
+                    System.out.println("SuccessPrintHere ");
+                     teamDeskAvailabilitiesList=response.body();
+
+                    for (int i = 0; i <teamDeskAvailabilitiesList.size() ; i++) {
+                        System.out.println("VAlue "+teamDeskAvailabilitiesList.get(i).getTimeZones().get(i).getTimeZoneId());
+                    }
+
+                    /*if(teamDeskAvailabilitiesList!=null && teamDeskAvailabilitiesList.size()>0){
+
+                    }*/
+
+
+
+                }
+
+                @Override
+                public void onFailure(Call<List<BookingForEditResponse.TeamDeskAvailabilities>> call, Throwable t) {
+//                    deepLinking();
+                    System.out.println("FailurePrint "+t.getMessage().toString());
+                }
+            });
+
+
+        } else {
+            Utils.toastMessage(getContext(), "Please Enable Internet");
+        }
+
+    }
+
     private void afterBookingDisableRepeat() {
         //After booking disable repeat book here
         repeatActvieStatus = false;
@@ -954,7 +1006,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         locationMR_request.setDate(binding.locateCalendearView.getText().toString());
         locationMR_request.setLocationId(parentId);
         LocationMR_Request.Timezone timezone = locationMR_request.new Timezone();
-        timezone.setId("India Standard Time");
+        //timezone.setId("India Standard Time");
+        timezone.setId(teamDeskAvailabilitiesList.get(0).getTimeZones().get(0).getTimeZoneId());
 
         locationMR_request.setTimezone(timezone);
 
@@ -5236,7 +5289,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             changes.setFrom(getCurrentDate() + "" + "T" + locateCheckInTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
             changes.setTo(getCurrentDate() + "" + "T" + locateCheckoutTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
-            changes.setTimeZoneId("India Standard Time");
+            //changes.setTimeZoneId("India Standard Time");
+            changes.setTimeZoneId(teamDeskAvailabilitiesList.get(0).getTimeZones().get(0).getTimeZoneId());
             changes.setTeamDeskId(null);
             changes.setRequestedTeamId(requestTeamId);
             changes.setRequestedTeamDeskId(requestTeamDeskId);
@@ -5366,7 +5420,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             changes.setFrom(getCurrentDate() + "" + "T" + locateCheckInTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
             changes.setTo(getCurrentDate() + "" + "T" + locateCheckoutTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
-            changes.setTimeZoneId("India Standard Time");
+            //changes.setTimeZoneId("India Standard Time");
+            changes.setTimeZoneId(teamDeskAvailabilitiesList.get(0).getTimeZones().get(0).getTimeZoneId());
             changes.setTeamDeskId(teamDeskIdForBooking);
             changes.setTypeOfCheckIn(1);
 
@@ -5457,7 +5512,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             changes.setFrom(getCurrentDate() + "" + "T" + locateCheckInTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
             changes.setTo(getCurrentDate() + "" + "T" + locateCheckoutTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
-            changes.setTimeZoneId("India Standard Time");
+            //changes.setTimeZoneId("India Standard Time");
+            changes.setTimeZoneId(teamDeskAvailabilitiesList.get(0).getTimeZones().get(0).getTimeZoneId());
             changes.setTeamDeskId(null);
             changes.setRequestedTeamId(requestTeamId);
             changes.setRequestedTeamDeskId(requestTeamDeskId);
@@ -5611,7 +5667,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             changes.setFrom(getCurrentDate() + "" + "T" + locateCheckInTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
             changes.setTo(getCurrentDate() + "" + "T" + locateCheckoutTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
-            changes.setTimeZoneId("India Standard Time");
+
+
+
+            changes.setTimeZoneId(teamDeskAvailabilitiesList.get(0).getTimeZones().get(0).getTimeZoneId());
             changes.setTeamDeskId(teamDeskIdForBooking);
             changes.setTypeOfCheckIn(1);
 
@@ -6039,7 +6098,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             changes.setFrom(getCurrentDate() + "" + "T" + startTime + ":" + "00" + "." + "000" + "Z");
             changes.setTo(getCurrentDate() + "" + "T" + endTime + ":" + "00" + "." + "000" + "Z");
-            changes.setTimeZoneId("India Standard Time");
+            changes.setTimeZoneId(teamDeskAvailabilitiesList.get(0).getTimeZones().get(0).getTimeZoneId());
+            // changes.setTimeZoneId("India Standard Time");
             if (selectedDeskId > 0) {
                 changes.setTeamDeskId(selectedDeskId);
             } else {
