@@ -156,6 +156,8 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
                 callSearchRecyclerData(s.toString());
             }
         });
+
+
         binding.close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -922,14 +924,29 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
         NavigationUI.setupWithNavController(binding.navView, navController);
         navView.setItemIconTintList(null);
         deepLinking();
-        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
-            @Override
-            public void onDestinationChanged(@NonNull NavController navController,
-                                             @NonNull NavDestination navDestination,
-                                             @Nullable Bundle bundle) {
-                System.out.println("home frag"+navDestination.getAction(R.id.navigation_home));
-            }
-        });
+
+
+            navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+                @Override
+                public void onDestinationChanged(@NonNull NavController navController,
+                                                 @NonNull NavDestination navDestination,
+                                                 @Nullable Bundle bundle) {
+
+                    int teamId=SessionHandler.getInstance().getInt(MainActivity.this,AppConstants.TEAM_ID);
+                    //System.out.println("TeamIdHere "+teamId);
+                    //teamId=0;
+                    if(teamId<0){
+                        binding.navView.setSelectedItemId(R.id.navigation_home);
+
+                        Utils.toastMessage(MainActivity.this,"Not assigned to a team.Please contact administrator!");
+                    }
+
+                    System.out.println("home frag"+navDestination.getAction(R.id.navigation_home));
+                }
+            });
+
+
+
     }
 
 

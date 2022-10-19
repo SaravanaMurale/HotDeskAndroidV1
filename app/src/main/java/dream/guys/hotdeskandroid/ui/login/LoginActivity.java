@@ -533,6 +533,8 @@ public class LoginActivity extends AppCompatActivity {
 
                             userDetailsResponse.getFullName();
 
+
+
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.USERNAME,userDetailsResponse.getFullName());
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.COMPANY_NAME,companyName);
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.CURRENT_TEAM,userDetailsResponse.getCurrentTeam().getCurrentTeamName());
@@ -552,6 +554,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (userDetailsResponse.getDefaultLocation()!=null){
                                 SessionHandler.getInstance().save(LoginActivity.this,AppConstants.DEFAULT_LOCATION_NAME,userDetailsResponse.getDefaultLocation().getName());
                                 SessionHandler.getInstance().save(LoginActivity.this,AppConstants.DEFAULT_LOCATION_ID,String.valueOf(userDetailsResponse.getDefaultLocation().getParentLocationId()));
+                                SessionHandler.getInstance().save(LoginActivity.this,AppConstants.DEFAULT_LOCATION_UNIQUE_ID,String.valueOf(userDetailsResponse.getDefaultLocation().getId()));
                             }
 
                             System.out.println("login chec"+SessionHandler.getInstance().getBoolean(LoginActivity.this,AppConstants.PIN_SETUP_DONE));

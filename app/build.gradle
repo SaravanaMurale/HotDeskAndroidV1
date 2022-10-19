@@ -122,4 +122,8 @@ dependencies {
     implementation 'com.facebook.network.connectionclass:connectionclass:1.0.1'
     implementation 'org.altbeacon:android-beacon-library:2+'
     implementation 'com.google.android.gms:play-services-nearby:18.3.0'
+
+    //Chips in EditText
+    implementation "com.hootsuite.android:nachos:1.1.1"
+
 }

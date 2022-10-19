@@ -2163,4 +2163,26 @@ public class Utils {
 
     }
 
+    public static String selectDateWithCurrentTimeTZFormat(String d){
+
+        //Current Time...
+        String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+
+        String dateWithTime="",currentDateTime = d + " " + currentTime;
+
+        SimpleDateFormat spf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date newDate= null;
+        try {
+            newDate = spf.parse(currentDateTime);
+            spf= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            if (newDate != null) {
+                dateWithTime = spf.format(newDate);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return dateWithTime;
+    }
+
 }
