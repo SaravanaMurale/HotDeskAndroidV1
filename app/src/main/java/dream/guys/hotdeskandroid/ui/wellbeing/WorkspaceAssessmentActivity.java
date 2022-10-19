@@ -3,20 +3,34 @@ package dream.guys.hotdeskandroid.ui.wellbeing;
 import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getWellBeingScreenData;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import dream.guys.hotdeskandroid.listener.QuestionListEditListener;
 import dream.guys.hotdeskandroid.listener.QuestionListListener;
@@ -25,8 +39,14 @@ import dream.guys.hotdeskandroid.adapter.AssessmentAdapter;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.QuestionListRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
 import dream.guys.hotdeskandroid.model.response.DeskResponseNew;
 import dream.guys.hotdeskandroid.model.response.QuestionListResponse;
+import dream.guys.hotdeskandroid.model.response.TeamDeskResponse;
+import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
+import dream.guys.hotdeskandroid.ui.home.DefaultLocationActivity;
+import dream.guys.hotdeskandroid.ui.home.EditProfileActivity;
+import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
@@ -36,7 +56,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WorkspaceAssessmentActivity extends AppCompatActivity implements QuestionListListener
+public class WorkspaceAssessmentActivity extends AppCompatActivity implements QuestionListListener , AdapterView.OnItemSelectedListener
 {
     private static final String TAG = "WorkspaceAssessment";
 
@@ -52,6 +72,23 @@ public class WorkspaceAssessmentActivity extends AppCompatActivity implements Qu
 
     LanguagePOJO.AppKeys appKeysPage;
     TextView mTitle,tvLocation,tvDescription;
+
+    UserDetailsResponse profileData;
+    String id;
+
+    int floorParentID = 0, cityPlaceID = 0, cityPlaceParentID = 0,cityID = 0,cityParentID = 0,locationID = 0,locationParentID = 0,
+            floorPositon;
+    int carFloorParentID;
+
+    String CountryName = "";
+    String CityName = "";
+    String buildingName = "";
+    String floorName  = "";
+    String fullPathLocation  = "";
+
+    //TextView etDesk;
+    Spinner etDesk;
+    List<TeamDeskResponse.Desk> deskList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +107,8 @@ public class WorkspaceAssessmentActivity extends AppCompatActivity implements Qu
         tvLocation = findViewById(R.id.tvLocation);
         tvDescription = findViewById(R.id.tvDescription);
 
+        etDesk = findViewById(R.id.etDesk);
+
         setLanguage();
 
         reportSubmit.setOnClickListener(new View.OnClickListener()
@@ -79,19 +118,20 @@ public class WorkspaceAssessmentActivity extends AppCompatActivity implements Qu
             {
                 if(assessmentAdapter!=null)
                 {
-                    for(QuestionListResponse item:questionListResponse)
+                    validateData(questionListResponse);
+                    /*for(QuestionListResponse item:questionListResponse)
                     {
                         List<QuestionListResponse.ChecklistQuestions> checklistQuestions = item.getChecklistQuestions();
 
                         validateData(questionListResponse);
-                       /* for(QuestionListResponse.ChecklistQuestions subItem:checklistQuestions)
+                       *//* for(QuestionListResponse.ChecklistQuestions subItem:checklistQuestions)
                         {
                             Log.d(TAG, "CategoryName" + subItem.getCategoryName());
                             Log.d(TAG, "Question" + subItem.getRiskFactors());
                             Log.d(TAG, "Answer" + subItem.isAnswer());
                             Log.d(TAG, "Action" + subItem.getActionToTake());
-                        }*/
-                    }
+                        }*//*
+                    }*/
                 }
             }
         });
@@ -123,8 +163,136 @@ public class WorkspaceAssessmentActivity extends AppCompatActivity implements Qu
             }
         });
 
+        //New...
+        profileData = Utils.getLoginData(WorkspaceAssessmentActivity.this);
+        if (profileData.getDefaultLocation()!=null){
+            id = String.valueOf(profileData.getDefaultLocation().getId());
+        }
+
         getLocationRI();
         getQuestionList();
+
+        ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+
+                            ArrayList<DAOActiveLocation> finalLocationArrayList = new ArrayList<>();
+                            ArrayList<DAOActiveLocation> cityPlaceFloorArrayList = new ArrayList<>();
+
+                            Intent intent = result.getData();
+
+                            if (intent!=null){
+
+                                if (intent.getStringExtra("sFrom")!=null) {
+
+                                    String from = intent.getStringExtra("sFrom");
+                                    int position = intent.getIntExtra("Position",0);
+                                    floorName = intent.getStringExtra("floorName");
+
+                                    finalLocationArrayList = (ArrayList<DAOActiveLocation>)intent.getSerializableExtra("List");
+                                    cityPlaceFloorArrayList = (ArrayList<DAOActiveLocation>)intent.getSerializableExtra("FloorList");
+
+                                    floorParentID = finalLocationArrayList.get(position).getParentLocationId();
+                                    id = String.valueOf(finalLocationArrayList.get(position).getId());
+
+                                    if (from.equalsIgnoreCase(AppConstants.DefaultLocation)) {
+
+                                        //UserDetailsResponse.DefaultLocation defaultLocation = new UserDetailsResponse.DefaultLocation();
+
+                                        ArrayList<DAOActiveLocation> selectFloors = new ArrayList<>();
+                                        selectFloors = (ArrayList<DAOActiveLocation>) cityPlaceFloorArrayList.stream().filter(val -> val.getParentLocationId() == floorParentID).collect(Collectors.toList());
+
+                                        for (int i=0;i<selectFloors.size();i++) {
+
+                                            if (id.equals(selectFloors.get(i).getId())) {
+                                                floorPositon = i;
+                                                break;
+                                            }
+                                        }
+
+                                        /*defaultLocation.setId(finalLocationArrayList.get(position).getId());
+                                        defaultLocation.setName(finalLocationArrayList.get(position).getName());
+                                        defaultLocation.setDescription(finalLocationArrayList.get(position).getDescription());
+                                        defaultLocation.setLeafLocation(finalLocationArrayList.get(position).getIsLeafLocation());
+                                        defaultLocation.setLocationType(finalLocationArrayList.get(position).getLocationType());
+                                        defaultLocation.setActive(finalLocationArrayList.get(position).getIsActive());
+                                        defaultLocation.setTimeZoneId(finalLocationArrayList.get(position).getTimeZoneId());
+                                        defaultLocation.setParentLocationId(floorParentID);
+
+                                        profileData.setDefaultLocation(defaultLocation);*/
+
+                                        ArrayList<DAOActiveLocation> buildingPlace = new ArrayList<>();
+                                        ArrayList<DAOActiveLocation> cityList = new ArrayList<>();
+                                        ArrayList<DAOActiveLocation> location = new ArrayList<>();
+
+                                        etLocation.setText(floorName);
+
+                                        buildingPlace.addAll(finalLocationArrayList.stream().filter(val -> val.getId() == floorParentID).collect(Collectors.toList()));
+
+                                        if (buildingPlace.size()>0) {
+                                            cityPlaceID = buildingPlace.get(0).getId();
+                                            cityPlaceParentID = buildingPlace.get(0).getParentLocationId();
+                                            buildingName = buildingPlace.get(0).getName();
+                                        }
+
+                                        cityList.addAll(finalLocationArrayList.stream().filter(val -> val.getId() == cityPlaceParentID).collect(Collectors.toList()));
+
+                                        if (cityList.size()>0){
+                                            cityID = cityList.get(0).getId();
+                                            cityParentID = cityList.get(0).getParentLocationId();
+                                            CityName = cityList.get(0).getName();
+                                        }
+
+                                        location.addAll(finalLocationArrayList.stream().filter(val -> val.getId() == cityParentID).collect(Collectors.toList()));
+
+                                        if (location.size()>0){
+                                            locationID = location.get(0).getId();
+                                            locationParentID = location.get(0).getParentLocationId();
+                                            CountryName = location.get(0).getName();
+                                        }
+
+                                        getLocationRI();
+
+                                    }/*else {
+
+                                        //Car Parking...
+                                        binding.editPark.setText(floorName);
+
+                                        UserDetailsResponse.DefaultCarParkLocation carPark = new UserDetailsResponse.DefaultCarParkLocation();
+                                        carPark.setId(finalLocationArrayList.get(position).getId());
+                                        carPark.setName(finalLocationArrayList.get(position).getName());
+                                        carPark.setDescription(finalLocationArrayList.get(position).getDescription());
+                                        carPark.setLeafLocation(finalLocationArrayList.get(position).getIsLeafLocation());
+                                        carPark.setLocationType(finalLocationArrayList.get(position).getLocationType());
+                                        carPark.setActive(finalLocationArrayList.get(position).getIsActive());
+                                        carPark.setTimeZoneId(finalLocationArrayList.get(position).getTimeZoneId());
+                                        carPark.setParentLocationId(floorParentID);
+
+                                        profileData.setDefaultCarParkLocation(carPark);
+
+                                    }*/
+                                }
+
+                            }
+                        }
+
+                    }
+                });
+
+        etLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(WorkspaceAssessmentActivity.this, DefaultLocationActivity.class);
+                intent.putExtra(AppConstants.FROM,AppConstants.DefaultLocation);
+                resultLauncher.launch(intent);
+            }
+        });
+
+        etLocation.setText(SessionHandler.getInstance().get(WorkspaceAssessmentActivity.this, AppConstants.DEFAULT_LOCATION_NAME));
+
     }
 
     private void validateData(List<QuestionListResponse> item)
@@ -144,13 +312,16 @@ public class WorkspaceAssessmentActivity extends AppCompatActivity implements Qu
             List<QuestionListResponse> questionsList = new ArrayList<>();
             QuestionListRequest.FromDetails fromDetails = new QuestionListRequest.FromDetails();
 
+            String dateTime = Utils.selectDateWithCurrentTimeTZFormat(etDate.getText().toString());
 
-            questionListRequest.setAssessmentDate(etDate.getText().toString());
+            questionListRequest.setAssessmentDate(dateTime);
             questionListRequest.setTemplate("");
-            questionListRequest.setLocation(SessionHandler.getInstance().get(WorkspaceAssessmentActivity.this, AppConstants.DEFAULT_LOCATION_NAME));
+            //questionListRequest.setLocation(SessionHandler.getInstance().get(WorkspaceAssessmentActivity.this, AppConstants.DEFAULT_LOCATION_NAME));
+            questionListRequest.setLocation(etLocation.getText().toString());
 
             fromDetails.setComment(etDescription.getText().toString());
-            fromDetails.setLocationId(SessionHandler.getInstance().get(WorkspaceAssessmentActivity.this, AppConstants.DEFAULT_LOCATION_ID));
+            //fromDetails.setLocationId(SessionHandler.getInstance().get(WorkspaceAssessmentActivity.this, AppConstants.DEFAULT_LOCATION_ID));
+            fromDetails.setLocationId(id);
             fromDetails.setDeskId(String.valueOf(deskId));
             /*questionListRequest.getFormDetails().setComment(etDescription.getText().toString());
             questionListRequest.getFormDetails().setLocationId(SessionHandler.getInstance().get(WorkspaceAssessmentActivity.this, AppConstants.DEFAULT_LOCATION_ID));
@@ -196,34 +367,66 @@ public class WorkspaceAssessmentActivity extends AppCompatActivity implements Qu
 
     private void getLocationRI()
     {
+
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<DeskResponseNew> call = apiService.getDesk(AppConstants.BASE_URL+"api/wellness/desks"+"?locationId=20");
+        Call<DeskResponseNew> call = apiService.getDesk(AppConstants.BASE_URL+"api/wellness/desks"+"?locationId="+id);
         call.enqueue(new Callback<DeskResponseNew>() {
             @Override
             public void onResponse(Call<DeskResponseNew> call, Response<DeskResponseNew> response)
             {
+                deskList = new ArrayList<>();
+
                 if (response.body()!=null && response.code() == 200) {
 
                     if (response.body().getDesk()!=null && response.body().getDesk().size()>0) {
-
-                        deskId = response.body().getDesk().get(0).getId();
-                        etLocation.setText(SessionHandler.getInstance().get(WorkspaceAssessmentActivity.this, AppConstants.DEFAULT_LOCATION_NAME)+" Desk-"+response.body().getDesk().get(0).getCode());
-
-                    }else {
-
+                        deskList = response.body().getDesk();
+                        setValuesToSpinner();
+                        etDesk.setVisibility(View.VISIBLE);
+                        //etDesk.setText(response.body().getDesk().get(0).getCode());
+                    } else {
+                        hideSpinner();
+                        //setValuesToSpinner();
+                        //etLocation.setText(SessionHandler.getInstance().get(WorkspaceAssessmentActivity.this, AppConstants.DEFAULT_LOCATION_NAME));
                     }
 
+                }else {
+                    hideSpinner();
+                    //setValuesToSpinner();
+                    //etLocation.setText(SessionHandler.getInstance().get(WorkspaceAssessmentActivity.this, AppConstants.DEFAULT_LOCATION_NAME));
                 }
 
             }
 
             @Override
             public void onFailure(Call<DeskResponseNew> call, Throwable t) {
-
+                hideSpinner();
             }
 
 
         });
+    }
+
+    private void hideSpinner() {
+
+        etDesk.setVisibility(View.INVISIBLE);
+        deskId = 0;
+    }
+
+    private void setValuesToSpinner() {
+
+        /*ArrayList<String> subCategory = new ArrayList<>();
+        subCategory.add("Select Desk");
+        for (int i = 0; i < deskList.size(); i++) {
+            subCategory.add(deskList.get(i).getCode().toString());
+        }
+
+        ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item,subCategory);
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        etDesk.setAdapter(aa);*/
+
+        CustomAdapter customAdapter=new CustomAdapter(getApplicationContext(),deskList);
+        etDesk.setAdapter(customAdapter);
+
     }
 
     private void getQuestionList()
@@ -303,13 +506,58 @@ public class WorkspaceAssessmentActivity extends AppCompatActivity implements Qu
 
             mTitle.setText(wellBeingPage.getWorkPlaceAssessment());
             tvLocation.setText(appKeysPage.getLocation());
-            etDate.setText(appKeysPage.getSelectDate());
+            etDate.setHint(appKeysPage.getSelectDate());
             reportCancel.setText(appKeysPage.getCancel());
             reportSubmit.setText(appKeysPage.getSubmit());
             tvDescription.setText(appKeysPage.getDescription());
 
         }
 
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        deskId = deskList.get(i).getId();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
+    public class CustomAdapter extends BaseAdapter {
+        Context context;
+        List<TeamDeskResponse.Desk> deskList;
+        LayoutInflater inflter;
+
+        public CustomAdapter(Context applicationContext, List<TeamDeskResponse.Desk> deskList) {
+            this.context = applicationContext;
+            this.deskList = deskList;
+            inflter = (LayoutInflater.from(applicationContext));
+        }
+
+        @Override
+        public int getCount() {
+            return deskList.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            view = inflter.inflate(R.layout.text_spinner, null);
+            TextView names = (TextView) view.findViewById(R.id.txt_name);
+            names.setText(deskList.get(i).getCode());
+            return view;
+        }
     }
 
 }

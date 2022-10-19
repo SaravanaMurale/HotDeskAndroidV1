@@ -124,4 +124,6 @@ public class AppConstants {
     public static final String ParkingLocation = "ParkingLocation";
     public static final String FROM = "FROM";
 
+    public static final String DEFAULT_LOCATION_UNIQUE_ID="DEFAULT_LOCATION_UNIQUE_ID";
+
 }

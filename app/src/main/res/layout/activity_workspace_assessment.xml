@@ -65,27 +65,50 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:theme="@style/TextBold" />
 
-        <TextView
-            android:id="@+id/etLocation"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_30sdp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/location_lay"
             app:layout_constraintTop_toBottomOf="@id/tvLocation"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:theme="@style/TextBold"
-            android:enabled="false"
-            android:paddingStart="@dimen/_5sdp"
-            android:backgroundTint="@color/figmaBgGrey"
-            android:gravity="center_vertical"
-            android:background="@drawable/button_white_bg"/>
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/etLocation"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:theme="@style/TextBold"
+                android:enabled="true"
+                android:paddingStart="@dimen/_5sdp"
+                android:backgroundTint="@color/figmaBgGrey"
+                android:gravity="center_vertical"
+                android:background="@drawable/button_white_bg"
+                android:layout_weight="1"/>
+
+            <Spinner
+                android:id="@+id/etDesk"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:theme="@style/TextBold"
+                android:paddingStart="@dimen/_5sdp"
+                android:backgroundTint="@color/figmaBgGrey"
+                android:background="@drawable/button_white_bg"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"/>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/etLocation"
+            app:layout_constraintTop_toBottomOf="@+id/location_lay"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="@dimen/_10sdp"
             android:text="@string/assessment_date_txt"
@@ -108,7 +131,8 @@
             android:paddingStart="@dimen/_5sdp"
             android:theme="@style/TextBold"
             android:backgroundTint="@color/figmaBgGrey"
-            android:background="@drawable/button_white_bg"/>
+            android:background="@drawable/button_white_bg"
+            android:text=""/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvWorkspaceHeader"
@@ -189,10 +213,5 @@
 
 
         </RelativeLayout>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 </androidx.core.widget.NestedScrollView>

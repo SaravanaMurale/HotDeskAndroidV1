@@ -71,6 +71,7 @@ import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
 
+
 import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
@@ -637,16 +638,22 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 //                            Utils.toastMessage(getContext(),imageResponse.getMessage().getCode());
                             userProfile.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.avatar));
                         }
-                        if (imageResponse.getImage()!=null && !imageResponse.getImage().equalsIgnoreCase("") && !imageResponse.getImage().isEmpty()){
-                            String cleanImage = imageResponse.getImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");
-                            SessionHandler.getInstance().save(getActivity(), AppConstants.USERIMAGE
-                                    , cleanImage);
-                            byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
-                            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                            userProfile.setImageBitmap(decodedByte);
-                        } else {
+
+                        try {
+                            if (imageResponse.getImage()!=null && !imageResponse.getImage().equalsIgnoreCase("") && !imageResponse.getImage().isEmpty()){
+                                String cleanImage = imageResponse.getImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");
+                                SessionHandler.getInstance().save(getActivity(), AppConstants.USERIMAGE
+                                        , cleanImage);
+                                byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
+                                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                                userProfile.setImageBitmap(decodedByte);
+                            } else {
+                                userProfile.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.avatar));
+                            }
+                        }catch (Exception e){
                             userProfile.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.avatar));
                         }
+
                     }else if(response.code()==401){
                         Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
