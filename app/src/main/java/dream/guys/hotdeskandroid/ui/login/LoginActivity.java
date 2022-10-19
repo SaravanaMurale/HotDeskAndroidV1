@@ -256,13 +256,15 @@ public class LoginActivity extends AppCompatActivity {
                              */
                             List<Pair<String, String>> extraQueryParameters = new ArrayList<>();
 //                            extraQueryParameters.add( new Pair<String, String>("domain_hint", "google.com"));
-                            extraQueryParameters.add( new Pair<String, String>("domain_hint", typeOfLoginResponse.getMobileIdentityProvider()));
+                            extraQueryParameters.add( new Pair<String, String>("domain_hint",
+                                    typeOfLoginResponse.getMobileIdentityProvider()));
+
 
                             AcquireTokenParameters parameters = new AcquireTokenParameters.Builder()
                                     .startAuthorizationFromActivity(LoginActivity.this)
                                     .fromAuthority(B2CConfiguration.getAuthorityFromPolicyName("B2C_1A_signup_signin_Multitenant"))
                                     .withScopes(B2CConfiguration.getScopes())
-                                    .withPrompt(Prompt.LOGIN)
+                                    .withPrompt(Prompt.SELECT_ACCOUNT)
 //                                    .withLoginHint(typeOfLoginResponse.getMobileIdentityProvider())
                                     .withAuthorizationQueryStringParameters(extraQueryParameters)
                                     .withCallback(getAuthInteractiveCallback())
