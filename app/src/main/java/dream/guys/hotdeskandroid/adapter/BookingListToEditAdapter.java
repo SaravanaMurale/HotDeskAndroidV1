@@ -159,6 +159,16 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
 
     private void makeVisible(BookingListToEditViewHolder holder, int position) {
 
+        if (bookingsListToEdit.get(position).getStatus()!=null &&
+                bookingsListToEdit.get(position).getStatus().getTimeStatus().equalsIgnoreCase("PAST")) {
+            holder.editTextEdit.setVisibility(View.GONE);
+            holder.editDelete.setVisibility(View.GONE);
+        }else if (bookingsListToEdit.get(position).getStatus()!=null &&
+                bookingsListToEdit.get(position).getStatus().getTimeStatus().equalsIgnoreCase("ONGOING")) {
+            holder.editTextEdit.setVisibility(View.VISIBLE);
+            holder.editDelete.setVisibility(View.GONE);
+        }
+
         holder.editCheckInIcon.setVisibility(View.VISIBLE);
         holder.editCheckOutIcon.setVisibility(View.VISIBLE);
         holder.editCheckInTime.setVisibility(View.VISIBLE);

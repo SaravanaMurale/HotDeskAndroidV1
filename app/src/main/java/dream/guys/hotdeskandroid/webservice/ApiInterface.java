@@ -430,7 +430,7 @@ public interface ApiInterface {
     Call<Void> postPersonalHelp(@Body PersonalHelpRequest personalHelpRequest);
 
     @POST("api/wellness/completeAndSign")
-    Call<BaseResponse> completeAndSign(@Body QuestionListRequest questionListRequest);
+    Call<ResponseBody> completeAndSign(@Body QuestionListRequest questionListRequest);
 
     @GET("api/wellness/checklistQuestions")
     Call<List<QuestionListResponse>> getQuestionList();
