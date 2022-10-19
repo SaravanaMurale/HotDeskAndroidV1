@@ -470,9 +470,14 @@ public class BookFragment extends Fragment implements
             call.enqueue(new Callback<List<ActiveTeamsResponse>>() {
                 @Override
                 public void onResponse(Call<List<ActiveTeamsResponse>> call, Response<List<ActiveTeamsResponse>> response) {
-                    activeTeamsList = response.body();
+//                    activeTeamsList = response.body();
+                    for (int i=0;i<response.body().size();i++) {
+                        if (response.body().get(i).isLeafTeam()){
+                            activeTeamsList.add(response.body().get(i));
+                        }
+                    }
 
-                    for (int i=0; i<activeTeamsList.size(); i++){
+                    for (int i=0; i<activeTeamsList.size(); i++) {
                         if (selectedTeamId==activeTeamsList.get(i).getId()) {
                             selectedTeamName = activeTeamsList.get(i).getName();
                             selectedTeamAutoApproveStatus = activeTeamsList.get(i).getAutomaticApprovalStatus();
@@ -482,7 +487,6 @@ public class BookFragment extends Fragment implements
 
                 @Override
                 public void onFailure(Call<List<ActiveTeamsResponse>> call, Throwable t) {
-
 
                 }
             });
@@ -3045,8 +3049,12 @@ public class BookFragment extends Fragment implements
         editDeskBookingDetails.setDate(Utils.convertStringToDateFormet(bookings.getDate()));
         editDeskBookingDetails.setCalId(bookings.getId());
         editDeskBookingDetails.setDeskCode(bookings.getDeskCode());
-        editDeskBookingDetails.setDeskStatus(0);
+        if (bookings.getStatus().getTimeStatus().equalsIgnoreCase("ongoing"))
+            editDeskBookingDetails.setDeskStatus(2);
+        else
+            editDeskBookingDetails.setDeskStatus(0);
         editDeskBookingDetails.setDesktId(bookings.getTeamDeskId());
+        editDeskBookingDetails.setTimeStatus(bookings.getStatus().getTimeStatus());
 
         if (bookings.getRequestedTeamDeskId()!=null)
             editDeskBookingDetails.setRequestedTeamDeskId(bookings.getRequestedTeamDeskId());
@@ -4062,7 +4070,7 @@ public class BookFragment extends Fragment implements
                 public void onResponse(Call<List<BookingForEditResponse.TeamDeskAvailabilities>> call, Response<List<BookingForEditResponse.TeamDeskAvailabilities>> response) {
                     bookingDeskList.clear();
                     bookingDeskList = response.body();
-                    System.out.println("Selecrt id"+selectedTeamId + bookingDeskList.get(0).getDeskCode());
+//                    System.out.println("Selecrt id"+selectedTeamId + bookingDeskList.get(0).getDeskCode());
                     callDeskListBottomSheetDialog();
 
                 }

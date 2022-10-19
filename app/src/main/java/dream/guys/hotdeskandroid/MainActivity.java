@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
                     }*/
 
                 }else {
-                    System.out.println("You Cant zoom more than this");
+//                    System.out.println("You Cant zoom more than this");
                 }
                 return true;
 

@@ -64,6 +64,15 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
         holder.desk_name.setText(deskList.get(position).getDeskCode());
         if (deskList.get(position).getTeamId() != SessionHandler.getInstance()
                 .getInt(context, AppConstants.TEAM_ID)
+                && fragment.selectedTeamAutoApproveStatus == 3){
+            holder.card.setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
+            holder.select.setVisibility(View.GONE);
+            System.out.println("chec stats adapter "+fragment.selectedTeamAutoApproveStatus);
+
+            holder.deskStatus.setText("Not Available For Request");
+            holder.deskIconStatus.setColorFilter(context.getColor(R.color.figma_red));
+        } else if (deskList.get(position).getTeamId() != SessionHandler.getInstance()
+                .getInt(context, AppConstants.TEAM_ID)
                 && fragment.selectedTeamAutoApproveStatus != 2) {
             holder.card.setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
             holder.select.setVisibility(View.VISIBLE);

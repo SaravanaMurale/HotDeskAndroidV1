@@ -222,7 +222,7 @@ public class CalendarView extends LinearLayout
             Date now =Calendar.getInstance().getTime();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Calendar tempCalendar = (Calendar) currentDate.clone();
-            System.out.println("current temp date "+tempCalendar.getTime());
+//            System.out.println("current temp date "+tempCalendar.getTime());
             tempCalendar.set(Calendar.DAY_OF_MONTH, 1);
             currentDay = (String) DateFormat.format("dd",   now);
             currentMonth = (String) DateFormat.format("MM",   now);
@@ -285,7 +285,7 @@ public class CalendarView extends LinearLayout
 //            if (month !=  currentDate.get(Calendar.MONTH) || year !=  currentDate.get(Calendar.YEAR)) {
 //                ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGrey));
 //            }
-            System.out.println("mont check"+month+" "+today.getMonth());
+//            System.out.println("mont check"+month+" "+today.getMonth());
             if (day == today.getDate() && month==today.getMonth()) {
                 ((TextView) dateBox).setTypeface(null, Typeface.BOLD);
                 ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.figmaBlack));

@@ -420,7 +420,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
 
-            holder.tvBookingWorkingRemote.setText("Car Parking Requested");
+            holder.tvBookingWorkingRemote.setText("Request For Parking - "+list.get(position).getCarParkBookingsModel().getParkingSlotCode());
             holder.tvSubBookingWorkingRemote.setText(""
                     +Utils.splitTime(list.get(position).getCarParkBookingsModel().getFrom())
                     +" - "

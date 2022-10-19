@@ -203,9 +203,10 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.editEndTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Utils.bottomSheetTimePickerInBooking(EditProfileActivity.this, EditProfileActivity.this, binding.editEndTime,
+                Utils.bottomSheetTimePickerInBooking(EditProfileActivity.this,
+                        EditProfileActivity.this, binding.editEndTime,
                         "End", "");
-                //Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time","");
+//                Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time","");
             }
         });
 

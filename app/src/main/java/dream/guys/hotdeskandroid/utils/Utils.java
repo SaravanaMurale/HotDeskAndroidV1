@@ -179,6 +179,17 @@ public class Utils {
         }else {
             dateTv.setText(date);
         }
+        Toast.makeText(mContext, "tv.ge"+tv.getText(), Toast.LENGTH_SHORT).show();
+        String[] parts =tv.getText().toString().split(":");
+        simpleTimePicker24Hours.setHour(Integer.parseInt(parts[0]));
+        simpleTimePicker24Hours.setMinute(Integer.parseInt(parts[1]));
+
+        int oldHour = Integer.parseInt(parts[0]);
+        int oldMinutes = Integer.parseInt(parts[1]);
+        String part1 = parts[0]; // 004
+        String part2 = parts[1]; // 034556
+        simpleTimePicker24Hours.setHour(Integer.parseInt(part1));
+        simpleTimePicker24Hours.setMinute(Integer.parseInt(part2));
 
 
         backTv.setOnClickListener(new View.OnClickListener() {

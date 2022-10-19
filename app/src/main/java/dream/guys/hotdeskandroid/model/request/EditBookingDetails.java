@@ -3,6 +3,8 @@ package dream.guys.hotdeskandroid.model.request;
 import java.util.Date;
 import java.util.List;
 
+import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
+
 public class EditBookingDetails {
 
     String editStartTTime;
@@ -14,6 +16,8 @@ public class EditBookingDetails {
     String bookedForUser;
     String parkingSlotCode;
     String timeZone;
+    public String timeStatus;
+
     int calId=0;
     int desktId=0;
     int deskTeamId=0;
@@ -27,7 +31,23 @@ public class EditBookingDetails {
     boolean isTeamsChecked;
     public int requestedTeamId;
     public int requestedTeamDeskId;
+    public Status status;
 
+    public String getTimeStatus() {
+        return timeStatus;
+    }
+
+    public void setTimeStatus(String timeStatus) {
+        this.timeStatus = timeStatus;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
     public String getTimeZone() {
         return timeZone;
@@ -196,5 +216,44 @@ public class EditBookingDetails {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public class Status {
+        public String timeStatus;
+        public String bookingStatus;
+        public String bookingType;
+        public boolean isToday;
+
+        public String getTimeStatus() {
+            return timeStatus;
+        }
+
+        public void setTimeStatus(String timeStatus) {
+            this.timeStatus = timeStatus;
+        }
+
+        public String getBookingStatus() {
+            return bookingStatus;
+        }
+
+        public void setBookingStatus(String bookingStatus) {
+            this.bookingStatus = bookingStatus;
+        }
+
+        public String getBookingType() {
+            return bookingType;
+        }
+
+        public void setBookingType(String bookingType) {
+            this.bookingType = bookingType;
+        }
+
+        public boolean isToday() {
+            return isToday;
+        }
+
+        public void setToday(boolean today) {
+            isToday = today;
+        }
     }
 }
