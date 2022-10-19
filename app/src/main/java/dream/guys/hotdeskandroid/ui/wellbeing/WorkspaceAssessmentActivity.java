@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import dream.guys.hotdeskandroid.adapter.CustomAdapter;
 import dream.guys.hotdeskandroid.listener.QuestionListEditListener;
 import dream.guys.hotdeskandroid.listener.QuestionListListener;
 import dream.guys.hotdeskandroid.R;
@@ -52,6 +53,7 @@ import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -341,10 +343,10 @@ public class WorkspaceAssessmentActivity extends AppCompatActivity implements Qu
     private void completeAndSign(QuestionListRequest questionListRequest)
     {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<BaseResponse> call = apiService.completeAndSign(questionListRequest);
-        call.enqueue(new Callback<BaseResponse>() {
+        Call<ResponseBody> call = apiService.completeAndSign(questionListRequest);
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
                 Log.d(TAG, "onResponse: ");
                 Toast.makeText(getApplicationContext(),"Successfully Reported",Toast.LENGTH_LONG).show();
@@ -353,7 +355,7 @@ public class WorkspaceAssessmentActivity extends AppCompatActivity implements Qu
             }
 
             @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Toast.makeText(getApplicationContext(),"Successfully Updated",Toast.LENGTH_LONG).show();
                 Log.d(TAG, "onFailure: "+t.getMessage());
                 finish();
@@ -523,41 +525,6 @@ public class WorkspaceAssessmentActivity extends AppCompatActivity implements Qu
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
-    }
-
-    public class CustomAdapter extends BaseAdapter {
-        Context context;
-        List<TeamDeskResponse.Desk> deskList;
-        LayoutInflater inflter;
-
-        public CustomAdapter(Context applicationContext, List<TeamDeskResponse.Desk> deskList) {
-            this.context = applicationContext;
-            this.deskList = deskList;
-            inflter = (LayoutInflater.from(applicationContext));
-        }
-
-        @Override
-        public int getCount() {
-            return deskList.size();
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            view = inflter.inflate(R.layout.text_spinner, null);
-            TextView names = (TextView) view.findViewById(R.id.txt_name);
-            names.setText(deskList.get(i).getCode());
-            return view;
-        }
     }
 
 }
