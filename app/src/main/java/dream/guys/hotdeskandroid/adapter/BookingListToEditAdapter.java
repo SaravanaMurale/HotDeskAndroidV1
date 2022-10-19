@@ -112,7 +112,6 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
                 holder.editCode.setText(bookingsListToEdit.get(position).getDeskCode());
                 holder.editCheckInTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getFrom()));
                 holder.editCheckOutTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getMyto()));*/
-
                 holder.editCode.setText(bookingsListToEdit.get(position).getDeskCode());
                 makeVisible(holder,position);
 
