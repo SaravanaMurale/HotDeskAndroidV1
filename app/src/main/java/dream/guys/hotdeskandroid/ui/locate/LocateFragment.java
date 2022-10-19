@@ -1054,6 +1054,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 if (carParkAvalibilityResponseList != null) {
 
+                    //M-Added-04-10
+                    carParkingStatusModel = new CarParkingStatusModel(carParkingslotsResponse.getCarParkingSlotId(), carParkingslotsResponse.getCode(), 0);
+                    //M-Added-04-10
+
                     for (int j = 0; j < carParkAvalibilityResponseList.size(); j++) {
 
                         if (carParkingslotsResponse.getCarParkingSlotId() == carParkAvalibilityResponseList.get(j).getParkingSlotAvalibilityId()) {
@@ -1272,7 +1276,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     ProgressDialog.clearTouchLock(getContext(), getActivity());
 
-                    //if (response.body()!=null && response.body().size()>0) {
+                    if (response.body()!=null && response.body().size()>0) {
 
                     locateCountryResposeList = response.body();
                     if (desksCode != null) {
@@ -1354,7 +1358,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         Toast.makeText(getContext(), "No Data", Toast.LENGTH_LONG).show();
                     }
 
-                    //}
+                    }
 
                     //ProgressDialog.dismisProgressBar(getContext(), dialog);
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
@@ -1619,30 +1623,36 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             //CarPark Avalibility Checking
 
             //if(!carParkingCheckingStatus) {
-            for (int i = 0; i < carParkingStatusModelList.size(); i++) {
 
-                if (id == carParkingStatusModelList.get(i).getId()) {
+            //M-Added
+            if(carParkingStatusModelList!=null && carParkingStatusModelList.size()>0) {
 
-                    if (carParkingStatusModelList.get(i).getStatus() == 0) {
-                        System.out.println("Unavaliable");
-                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.car_unavaliable));
-                    } else if (carParkingStatusModelList.get(i).getStatus() == 1) {
-                        System.out.println("Avaliable");
-                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.car_available));
-                    } else if (carParkingStatusModelList.get(i).getStatus() == 2) {
-                        System.out.println("BookedByMe");
-                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.car_bookedbyme));
+                for (int i = 0; i < carParkingStatusModelList.size(); i++) {
 
-                    } else if (carParkingStatusModelList.get(i).getStatus() == 3) {
-                        System.out.println("BookingBookedOther");
-                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.locate_car_booked));
-                    } else if (carParkingStatusModelList.get(i).getStatus() == 4) {
-                        System.out.println("Request");
-                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.car_request));
+                    if (id == carParkingStatusModelList.get(i).getId()) {
+
+                        if (carParkingStatusModelList.get(i).getStatus() == 0) {
+                            System.out.println("Unavaliable");
+                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.car_unavaliable));
+                        } else if (carParkingStatusModelList.get(i).getStatus() == 1) {
+                            System.out.println("Avaliable");
+                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.car_available));
+                        } else if (carParkingStatusModelList.get(i).getStatus() == 2) {
+                            System.out.println("BookedByMe");
+                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.car_bookedbyme));
+
+                        } else if (carParkingStatusModelList.get(i).getStatus() == 3) {
+                            System.out.println("BookingBookedOther");
+                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.locate_car_booked));
+                        } else if (carParkingStatusModelList.get(i).getStatus() == 4) {
+                            System.out.println("Request");
+                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.car_request));
+                        }
+
                     }
+                    // System.out.println("CarParkTesting" + carParkingStatusModelList.get(i).getKey() + " " + carParkingStatusModelList.get(i).getStatus());
 
                 }
-                // System.out.println("CarParkTesting" + carParkingStatusModelList.get(i).getKey() + " " + carParkingStatusModelList.get(i).getStatus());
 
             }
 
