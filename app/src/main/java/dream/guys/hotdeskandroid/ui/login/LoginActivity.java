@@ -539,19 +539,25 @@ public class LoginActivity extends AppCompatActivity {
 
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.USERNAME,userDetailsResponse.getFullName());
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.COMPANY_NAME,companyName);
-                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.CURRENT_TEAM,userDetailsResponse.getCurrentTeam().getCurrentTeamName());
+
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.PHONE_NUMBER,userDetailsResponse.getPhoneNumber());
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.EMAIL,email);
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.PASSWORD,password);
                             SessionHandler.getInstance().saveBoolean(LoginActivity.this,AppConstants.USER_DETAILS_SAVED_STATUS,true);
                             SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.TEAMMEMBERSHIP_ID,userDetailsResponse.getTeamMembershipId());
-                            SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.TEAM_ID,userDetailsResponse.getCurrentTeam().getCurrentTeamId());
+
                             SessionHandler.getInstance().saveBoolean(LoginActivity.this,AppConstants.PIN_SETUP_DONE,userDetailsResponse.isHasPinSetup());
                             //Log.d(TAG, "onResponse: "+userDetailsResponse.getDefaultLocation().getParentLocationId());
                             if (userDetailsResponse.getDefaultCarParkLocation()!=null){
                                 SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.DEFAULT_CAR_PARK_LOCATION_ID,userDetailsResponse.getDefaultCarParkLocation().getId());
 
                             }
+
+                            if(userDetailsResponse.getCurrentTeam()!=null) {
+                                SessionHandler.getInstance().save(LoginActivity.this, AppConstants.CURRENT_TEAM, userDetailsResponse.getCurrentTeam().getCurrentTeamName());
+                                SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.TEAM_ID, userDetailsResponse.getCurrentTeam().getCurrentTeamId());
+                            }
+
 
                             if (userDetailsResponse.getDefaultLocation()!=null){
                                 SessionHandler.getInstance().save(LoginActivity.this,AppConstants.DEFAULT_LOCATION_NAME,userDetailsResponse.getDefaultLocation().getName());

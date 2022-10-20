@@ -1023,6 +1023,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         locationMR_request.setLocationId(parentId);
         LocationMR_Request.Timezone timezone = locationMR_request.new Timezone();
         //timezone.setId("India Standard Time");
+
         timezone.setId(teamDeskAvailabilitiesList.get(0).getTimeZones().get(0).getTimeZoneId());
 
         locationMR_request.setTimezone(timezone);
@@ -3851,6 +3852,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 floorSearchStatus = true;
 
+                bsApply.setVisibility(View.VISIBLE);
+                back.setVisibility(View.VISIBLE);
+
                 floorBlock.setVisibility(View.VISIBLE);
                 floor.setVisibility(View.VISIBLE);
                 floor.setText(locateCountryRespose.getName());
@@ -5293,6 +5297,16 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         List<LocateDeskBookingRequest.ChangeSets> changeSetsList = new ArrayList<>();
 
+        //Get Time Zone
+        /*String timeZone="India Standard Time";
+        for (int j = 0; j <teamDeskAvailabilitiesList.size() ; j++) {
+
+            if(requestTeamDeskId==teamDeskAvailabilitiesList.get(j).getTeamDeskId()){
+                timeZone=teamDeskAvailabilitiesList.get(j).getTimeZones().get(0).getTimeZoneId();
+            }
+
+        }*/
+
         for (int i = 0; i < dateList.size(); i++) {
 
             LocateDeskBookingRequest.ChangeSets changeSets = locateDeskBookingRequest.new ChangeSets();
@@ -5306,6 +5320,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             changes.setFrom(getCurrentDate() + "" + "T" + locateCheckInTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
             changes.setTo(getCurrentDate() + "" + "T" + locateCheckoutTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
             //changes.setTimeZoneId("India Standard Time");
+
+
+
             changes.setTimeZoneId(teamDeskAvailabilitiesList.get(0).getTimeZones().get(0).getTimeZoneId());
             changes.setTeamDeskId(null);
             changes.setRequestedTeamId(requestTeamId);
@@ -5421,6 +5438,16 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         List<LocateBookingRequest.ChangeSets> changeSetsList = new ArrayList<>();
 
+        //Get Time Zone
+       /* String timeZone="India Standard Time";
+        for (int j = 0; j <teamDeskAvailabilitiesList.size() ; j++) {
+
+            if(teamDeskIdForBooking==teamDeskAvailabilitiesList.get(j).getTeamDeskId()){
+                timeZone=teamDeskAvailabilitiesList.get(j).getTimeZones().get(0).getTimeZoneId();
+            }
+
+        }*/
+
 
         for (int i = 0; i < dateList.size(); i++) {
             //System.out.println("AddedDateList "+dateList.get(i));
@@ -5437,6 +5464,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             changes.setFrom(getCurrentDate() + "" + "T" + locateCheckInTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
             changes.setTo(getCurrentDate() + "" + "T" + locateCheckoutTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
             //changes.setTimeZoneId("India Standard Time");
+
+
+
             changes.setTimeZoneId(teamDeskAvailabilitiesList.get(0).getTimeZones().get(0).getTimeZoneId());
             changes.setTeamDeskId(teamDeskIdForBooking);
             changes.setTypeOfCheckIn(1);
@@ -5529,6 +5559,17 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             changes.setFrom(getCurrentDate() + "" + "T" + locateCheckInTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
             changes.setTo(getCurrentDate() + "" + "T" + locateCheckoutTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
             //changes.setTimeZoneId("India Standard Time");
+
+            //Get Time Zone
+            /*String timeZone="India Standard Time";
+            for (int i = 0; i <teamDeskAvailabilitiesList.size() ; i++) {
+
+                if(requestTeamDeskId==teamDeskAvailabilitiesList.get(i).getTeamDeskId()){
+                    timeZone=teamDeskAvailabilitiesList.get(i).getTimeZones().get(0).getTimeZoneId();
+                }
+
+            }*/
+
             changes.setTimeZoneId(teamDeskAvailabilitiesList.get(0).getTimeZones().get(0).getTimeZoneId());
             changes.setTeamDeskId(null);
             changes.setRequestedTeamId(requestTeamId);
@@ -5685,8 +5726,17 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             changes.setTo(getCurrentDate() + "" + "T" + locateCheckoutTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
 
 
+            //Get Time Zone
+            String timeZone="India Standard Time";
+            for (int i = 0; i <teamDeskAvailabilitiesList.size() ; i++) {
 
-            changes.setTimeZoneId(teamDeskAvailabilitiesList.get(0).getTimeZones().get(0).getTimeZoneId());
+                if(teamDeskIdForBooking==teamDeskAvailabilitiesList.get(i).getTeamDeskId()){
+                    timeZone=teamDeskAvailabilitiesList.get(i).getTimeZones().get(0).getTimeZoneId();
+                }
+
+            }
+
+            changes.setTimeZoneId(timeZone);
             changes.setTeamDeskId(teamDeskIdForBooking);
             changes.setTypeOfCheckIn(1);
 
@@ -5750,6 +5800,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     resultString = "Invalid timeperiod";
                 } else if (response.body().getResultCode().toString().equals("USER_TIME_OVERLAP")) {
                     resultString = "Time overlaps with another booking";
+                } else if(response.body().getResultCode().toString().equals("COVID_SYMPTOMS")){
+                    resultString = "COVID_SYMPTOMS";
                 }
                 //Utils.showCustomAlertDialog(getActivity(), "Booking Not Updated " + resultString);
                 Utils.showCustomAlertDialog(getActivity(), resultString);
@@ -6114,8 +6166,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             changes.setFrom(getCurrentDate() + "" + "T" + startTime + ":" + "00" + "." + "000" + "Z");
             changes.setTo(getCurrentDate() + "" + "T" + endTime + ":" + "00" + "." + "000" + "Z");
-            changes.setTimeZoneId(teamDeskAvailabilitiesList.get(0).getTimeZones().get(0).getTimeZoneId());
+
+
+
             // changes.setTimeZoneId("India Standard Time");
+            changes.setTimeZoneId(bookings.getTimeZoneId());
+
+
             if (selectedDeskId > 0) {
                 changes.setTeamDeskId(selectedDeskId);
             } else {

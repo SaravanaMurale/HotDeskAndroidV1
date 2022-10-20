@@ -932,10 +932,11 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
                                                  @NonNull NavDestination navDestination,
                                                  @Nullable Bundle bundle) {
 
-                    int teamId=SessionHandler.getInstance().getInt(MainActivity.this,AppConstants.TEAM_ID);
+
                     //System.out.println("TeamIdHere "+teamId);
-                    //teamId=0;
-                    if(teamId<0){
+                    int teamId=SessionHandler.getInstance().getInt(MainActivity.this,AppConstants.TEAM_ID);
+                    //int teamId=0;
+                    if(teamId<=0){
                         binding.navView.setSelectedItemId(R.id.navigation_home);
 
                         Utils.toastMessage(MainActivity.this,"Not assigned to a team.Please contact administrator!");
