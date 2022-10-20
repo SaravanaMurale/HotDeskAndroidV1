@@ -672,7 +672,7 @@ public class LoginActivity extends AppCompatActivity {
             etPassword.setHint(appKeysPage.getPassword());
             tvForgotPassword.setText(appKeysPage.getForgotPassword());
             tvBackToLogin.setText(appKeysPage.getGoBackToSignIn());
-            signInSso.setText(appKeysPage.getSignInWithSso( ));
+            signInSso.setText(appKeysPage.getSignInWithSso());
             //tvSignInWith.setText(appKeysPage.getOrSignInWith());
         }
 

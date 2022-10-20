@@ -34,6 +34,16 @@
 
     </RelativeLayout>
 
+    <devs.mulham.horizontalcalendar.HorizontalCalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:visibility="visible"
+        app:textColorNormal="@color/figmaBlack"
+        app:textColorSelected="@color/white"
+        android:layout_marginTop="@dimen/_8sdp"/>
+
     <LinearLayout
         android:id="@+id/head"
         android:layout_width="match_parent"
@@ -41,16 +51,6 @@
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="@dimen/_10sdp">
-
-        <devs.mulham.horizontalcalendar.HorizontalCalendarView
-            android:id="@+id/calendarView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:visibility="visible"
-            app:textColorNormal="@color/figmaBlack"
-            app:textColorSelected="@color/white"
-            android:layout_marginTop="@dimen/_8sdp"/>
 
         <LinearLayout
             android:id="@+id/ll_book"

@@ -6584,7 +6584,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         locateFilterMainRV = bottomSheetDialog.findViewById(R.id.locateFilterMainRV);
-        locateFilterMainRV.setHasFixedSize(true);
+        //locateFilterMainRV.setHasFixedSize(true);
         locateFilterMainRV.setLayoutManager(new LinearLayoutManager(getContext()));
 
 

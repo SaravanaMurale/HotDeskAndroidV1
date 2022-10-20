@@ -129,7 +129,7 @@ public class Utils {
     }
 
     public static boolean isValiedCompanyName(String text){
-        return !TextUtils.isEmpty(text) && !text.equals("") && text!=null &&text.matches("^[a-zA-Z]*$");
+        return !TextUtils.isEmpty(text) && !text.equals("");
     }
 
     public static boolean isValiedText(String text){

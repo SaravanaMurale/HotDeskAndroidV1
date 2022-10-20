@@ -652,7 +652,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                 = new HorizontalCalendar.Builder(root, R.id.calendarView)
                 .range(startDate, endDate)
                 .mode(HorizontalCalendar.Mode.DAYS)
-                .datesNumberOnScreen(4)
+                .datesNumberOnScreen(5)
                 .configure()
                 .formatBottomText("EEE")
                 .formatMiddleText("dd MMM")
@@ -673,9 +673,12 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                 currendate = date.get(Calendar.YEAR) + "-" +
                         (date.get(Calendar.MONTH) + 1) + "-" + date.get(Calendar.DATE);
 //2022-08-13T10:51:17.830Z
+                int  a = horizontalCalendar.getSelectedDatePosition();
+
                 try {
                     currendate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new SimpleDateFormat("yyyy-M-d").parse(currendate));
                     selectedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new SimpleDateFormat("yyyy-M-d").parse(currendate));
+
 
                     getTeamMembers();
                 } catch (ParseException e) {
