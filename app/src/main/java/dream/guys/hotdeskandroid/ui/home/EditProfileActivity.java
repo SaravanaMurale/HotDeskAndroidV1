@@ -2,12 +2,15 @@ package dream.guys.hotdeskandroid.ui.home;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PatternMatcher;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
@@ -29,9 +32,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -60,6 +67,9 @@ import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -133,7 +143,10 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.tvUpdateImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectImage();
+                if (Utils.checkCameraPermission(EditProfileActivity.this))
+                    CropImage.activity().start(EditProfileActivity.this);
+
+                //selectImage();
             }
         });
         binding.profileEdit.setOnClickListener(new View.OnClickListener() {
@@ -517,7 +530,6 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         attachChooser.setContentView((EditProfileActivity.this).getLayoutInflater().inflate(R.layout.popup_add_attach_options,
                 new LinearLayout(EditProfileActivity.this)));
         attachChooser.show();
-        //TODO: lang
         LinearLayout btnStartCamera = (LinearLayout) attachChooser.findViewById(R.id.btn_from_camera);
         LinearLayout btnStartFileBrowser = (LinearLayout) attachChooser.findViewById(R.id.btn_from_local);
         btnStartCamera.setOnClickListener(new View.OnClickListener() {
@@ -525,82 +537,21 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             public void onClick(View v) {
                 attachChooser.dismiss();
                 if (Utils.checkCameraPermission(EditProfileActivity.this))
-                    cameraIntent();
+                    //cameraIntent();
+                    CropImage.activity().start(EditProfileActivity.this);
             }
         });
         btnStartFileBrowser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 attachChooser.dismiss();
-                if (Utils.checkCameraPermission(EditProfileActivity.this))
-                    galleryIntent();
+                if (Utils.checkPermission(EditProfileActivity.this))
+                    //galleryIntent();
+                    CropImage.activity().start(EditProfileActivity.this);
             }
         });
     }
 
-    private void cameraIntent() {
-        Intent intent = new Intent(EditProfileActivity.this, ImagePickerActivity.class);
-        intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_IMAGE_CAPTURE);
-
-        // setting aspect ratio
-        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
-        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
-        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
-
-        // setting maximum bitmap width and height
-        intent.putExtra(ImagePickerActivity.INTENT_SET_BITMAP_MAX_WIDTH_HEIGHT, true);
-        intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_WIDTH, 1000);
-        intent.putExtra(ImagePickerActivity.INTENT_BITMAP_MAX_HEIGHT, 1000);
-
-        startActivityForResult(intent, REQUEST_IMAGE);
-    }
-
-    private void galleryIntent() {
-        Intent intent = new Intent(EditProfileActivity.this, ImagePickerActivity.class);
-        intent.putExtra(ImagePickerActivity.INTENT_IMAGE_PICKER_OPTION, ImagePickerActivity.REQUEST_GALLERY_IMAGE);
-
-        // setting aspect ratio
-        intent.putExtra(ImagePickerActivity.INTENT_LOCK_ASPECT_RATIO, true);
-        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_X, 1); // 16x9, 1x1, 3:4, 3:2
-        intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
-        startActivityForResult(intent, REQUEST_IMAGE);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE) {
-            if (resultCode == Activity.RESULT_OK) {
-                Uri uri = data.getParcelableExtra("path");
-                // loading profile image from local cache
-                //loadProfile(uri.toString());
-                try {
-                    // You can update this bitmap to your server
-                    Bitmap bitmap = null;
-                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-                    getStringImage(bitmap);
-                    String bast64InString= String.valueOf("data:image/png;base64," + encodedImage);
-                    //base64Img = RequestBody.create(MediaType.parse("text/plain"), "data:image/png;base64," + encodedImage);
-
-                    //New...
-                    BitmapFactory.Options options = Utils.getImageSize(uri);
-                    if (options.outWidth>=250 && options.outHeight>=250){
-                        updateProfilePicture(bast64InString);
-                    }else {
-                        Utils.toastMessage(EditProfileActivity.this,"Please Select Image more than 250X250 ");
-                    }
-
-
-                    System.out.println();
-                    Glide.with(this).load(uri.toString())
-                            .into(binding.ivEditPrifle);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 
     public String getStringImage(Bitmap bmp) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -933,6 +884,48 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
     }
 
+
+    //New...
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        /*if (requestCode == RC_LOAD_IMG_BROWSER) {
+            onSelectFromGalleryResult(data);
+        } else if (requestCode == RC_LOAD_IMG_CAMERA) {
+            onCaptureImageResult(data);
+        }*/
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if (resultCode == RESULT_OK) {
+
+                Uri resultUri = result.getUri();
+                Glide.with(EditProfileActivity.this).load(resultUri).into(binding.ivEditPrifle);
+
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
+                    getStringImage(bitmap);
+                    String bast64InString= String.valueOf("data:image/png;base64," + encodedImage);
+                    //base64Img = RequestBody.create(MediaType.parse("text/plain"), "data:image/png;base64," + encodedImage);
+                    //New...
+                    BitmapFactory.Options options = Utils.getImageSize(resultUri);
+                    if (options.outWidth>=250 && options.outHeight>=250){
+                        updateProfilePicture(bast64InString);
+                    }else {
+                        Utils.toastMessage(EditProfileActivity.this,"Please Select Image more than 250X250 ");
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
 
 
 }

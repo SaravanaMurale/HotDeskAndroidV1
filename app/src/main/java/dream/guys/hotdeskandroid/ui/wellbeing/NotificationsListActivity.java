@@ -646,10 +646,11 @@ AdapterAdminNotificationReq.AccRejReqInterface{
                 if (statusZerIncomingList.size()>0){
 
                     if (statusNonZerIncomingList.size()>0){
-                        notiList.get(statusZerIncomingList.size()).setTitle(true);
-                    }else {
+                        //notiList.get(statusZerIncomingList.size()).setTitle(true);
+                        notiList.get(notiList.size()-statusNonZerIncomingList.size()).setTitle(true);
+                    }/*else {
                         notiList.get(statusZerIncomingList.size()-1).setTitle(true);
-                    }
+                    }*/
 
                 }else {
                     notiList.get(0).setTitle(true);
