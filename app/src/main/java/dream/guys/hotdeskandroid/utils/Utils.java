@@ -192,7 +192,7 @@ public class Utils {
         }else {
             dateTv.setText(date);
         }
-        Toast.makeText(mContext, "tv.ge"+tv.getText(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(mContext, "tv.ge"+tv.getText(), Toast.LENGTH_SHORT).show();
         String[] parts =tv.getText().toString().split(":");
         simpleTimePicker24Hours.setHour(Integer.parseInt(parts[0]));
         simpleTimePicker24Hours.setMinute(Integer.parseInt(parts[1]));

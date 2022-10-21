@@ -531,7 +531,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             @Override
             public void onClick(View v) {
                 attachChooser.dismiss();
-                if (Utils.checkCameraPermission(EditProfileActivity.this))
+                if (Utils.checkPermission(EditProfileActivity.this))
                     galleryIntent();
             }
         });
