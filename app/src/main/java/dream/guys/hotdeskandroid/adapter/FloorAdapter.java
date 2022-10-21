@@ -41,6 +41,7 @@ public class FloorAdapter extends RecyclerView.Adapter<FloorAdapter.FloorAdapter
     //Search
     List<LocateCountryRespose> locateCountryResposeListAll;
 
+    //Locate Frgment
     public FloorAdapter(Context context, List<LocateCountryRespose> locateCountryResposeList, LocateFragment locateFragment, String identifier) {
         this.context=context;
         this.locateCountryResposeList=locateCountryResposeList;

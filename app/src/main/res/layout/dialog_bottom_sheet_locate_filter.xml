@@ -2,15 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_margin="@dimen/_10sdp"
-    >
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:fillViewport="true"
         >
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -58,11 +59,16 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/locateFilterMainRV"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_400sdp" />
+                android:layout_height="match_parent"
+                android:layout_below="@+id/locateFilterHeadBlock"
+                android:layout_marginBottom="@dimen/_10sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/bottom_lay"
+                android:layout_alignParentBottom="true">
 
                 <TextView
                     android:id="@+id/locateFilterCancel"
@@ -88,7 +94,7 @@
 
             </RelativeLayout>
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </androidx.core.widget.NestedScrollView>
 

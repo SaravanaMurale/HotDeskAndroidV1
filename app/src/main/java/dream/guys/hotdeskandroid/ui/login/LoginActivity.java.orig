@@ -587,6 +587,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+<<<<<<< HEAD
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.USERNAME,Utils.checkStringParms(userDetailsResponse.getFullName()));
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.COMPANY_NAME,Utils.checkStringParms(companyName));
                             if (userDetailsResponse.getCurrentTeam()!=null){
@@ -598,6 +599,16 @@ public class LoginActivity extends AppCompatActivity {
                             SessionHandler.getInstance().save(LoginActivity.this,AppConstants.PASSWORD,Utils.checkStringParms(email));
                             SessionHandler.getInstance().saveBoolean(LoginActivity.this,AppConstants.USER_DETAILS_SAVED_STATUS,true);
                             SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.TEAMMEMBERSHIP_ID,Utils.checkStringParms(userDetailsResponse.getTeamMembershipId()));
+=======
+                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.USERNAME,userDetailsResponse.getFullName());
+                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.COMPANY_NAME,companyName);
+
+                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.PHONE_NUMBER,userDetailsResponse.getPhoneNumber());
+                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.EMAIL,email);
+                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.PASSWORD,password);
+                            SessionHandler.getInstance().saveBoolean(LoginActivity.this,AppConstants.USER_DETAILS_SAVED_STATUS,true);
+                            SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.TEAMMEMBERSHIP_ID,userDetailsResponse.getTeamMembershipId());
+>>>>>>> 7b6c2f1ff4f64edb3ea09736bfb6cf80e145a971
 
                             SessionHandler.getInstance().saveBoolean(LoginActivity.this,AppConstants.PIN_SETUP_DONE,userDetailsResponse.isHasPinSetup());
                             //Log.d(TAG, "onResponse: "+userDetailsResponse.getDefaultLocation().getParentLocationId());

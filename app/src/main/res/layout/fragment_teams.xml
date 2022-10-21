@@ -6,61 +6,66 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.teams.TeamsFragment"
     android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/hdr_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_12sdp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="My Team"
+            android:textColor="@color/figmaBlack"
+            android:textSize="@dimen/_18sdp"
+            android:theme="@style/TextBold"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="dgguys"
+            android:textColor="@color/figmaBlack"
+            android:textSize="@dimen/_12sdp"
+            android:theme="@style/TextRegular"
+            android:layout_below="@+id/title"/>
+
+        <TextView
+            android:id="@+id/txt_allteam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:text="All Team"
+            android:textColor="@color/figmaBlue"
+            android:textSize="@dimen/_11sdp"
+            android:theme="@style/TextBold" />
+
+    </RelativeLayout>
+
+    <devs.mulham.horizontalcalendar.HorizontalCalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:textColorNormal="@color/figmaBlack"
+        app:textColorSelected="@color/white"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_below="@+id/hdr_layout"/>
+
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:layout_below="@+id/calendarView">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_margin="@dimen/_12sdp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:text="My Team"
-                    android:textColor="@color/figmaBlack"
-                    android:textSize="@dimen/_18sdp"
-                    android:theme="@style/TextBold"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:text="dgguys"
-                    android:textColor="@color/figmaBlack"
-                    android:textSize="@dimen/_12sdp"
-                    android:theme="@style/TextRegular"
-                    android:layout_below="@+id/title"/>
-
-                <TextView
-                    android:id="@+id/txt_allteam"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:text="All Team"
-                    android:textColor="@color/figmaBlue"
-                    android:textSize="@dimen/_11sdp"
-                    android:theme="@style/TextBold" />
-
-            </RelativeLayout>
-
-            <devs.mulham.horizontalcalendar.HorizontalCalendarView
-                android:id="@+id/calendarView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:textColorNormal="@color/figmaBlack"
-                app:textColorSelected="@color/white"
-                android:layout_marginTop="@dimen/_8sdp"/>
 
             <LinearLayout
                 android:id="@+id/search_block"

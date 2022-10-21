@@ -221,6 +221,7 @@
         android:layout_marginBottom="@dimen/_10sdp"
         android:layout_marginLeft="@dimen/_20sdp"
         android:textSize="@dimen/_15sdp"
+        android:visibility="gone"
         />
 
     <TextView
@@ -235,6 +236,8 @@
         android:textStyle="bold"
         android:textColor="@color/blue"
         android:textSize="@dimen/_13sdp"
+        android:visibility="gone"
+
         />
 
 

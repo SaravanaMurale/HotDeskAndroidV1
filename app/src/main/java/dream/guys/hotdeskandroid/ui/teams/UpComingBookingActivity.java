@@ -228,7 +228,7 @@ public class UpComingBookingActivity extends AppCompatActivity {
                 = new HorizontalCalendar.Builder(this, R.id.calendarView)
                 .range(startDate, endDate)
                 .mode(HorizontalCalendar.Mode.MONTHS)
-                .datesNumberOnScreen(4)
+                .datesNumberOnScreen(3)
                 .configure()
                 .formatBottomText("yyyy")
                 .formatMiddleText("MMM")
@@ -246,12 +246,6 @@ public class UpComingBookingActivity extends AppCompatActivity {
         horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
             @Override
             public void onDateSelected(Calendar date, int position) {
-
-            }
-
-            @Override
-            public void onCalendarScroll(HorizontalCalendarView calendarView,
-                                         int dx, int dy) {
                 currendate = horizontalCalendar.getSelectedDate().get(Calendar.YEAR) + "-" +
                         (horizontalCalendar.getSelectedDate().get(Calendar.MONTH) + 1) + "-" + horizontalCalendar.getSelectedDate().get(Calendar.DATE);
 //                horizontalCalendar.getSelectedDate();
@@ -265,6 +259,12 @@ public class UpComingBookingActivity extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onCalendarScroll(HorizontalCalendarView calendarView,
+                                         int dx, int dy) {
+
 
             }
 
@@ -539,7 +539,10 @@ public class UpComingBookingActivity extends AppCompatActivity {
             upComingBookingAdapter=new UpComingMonthlyBookingAdapter(context,upcomingArrayList,"");
             binding.upbookingRecyclerview.setAdapter(upComingBookingAdapter);
         } else {
-            binding.upbookingRecyclerview.getAdapter().notifyDataSetChanged();
+            if (binding.upbookingRecyclerview.getAdapter()!=null){
+                binding.upbookingRecyclerview.getAdapter().notifyDataSetChanged();
+            }
+
         }
 
     }
