@@ -11,6 +11,14 @@
     },
     {
       "type": "B2C",
+      "authority_url": "https://hdplusdev.b2clogin.com/tfp/hdplusdev.google.com/B2C_1A_signup_signin_Multitenant"
+    },
+    {
+      "type": "B2C",
+      "authority_url": "https://hdplusdev.b2clogin.com/tfp/hdplusdev.okta.com/B2C_1A_signup_signin_Multitenant"
+    },
+    {
+      "type": "B2C",
       "authority_url": "https://hdplusdev.b2clogin.com/tfp/hdplusdev.onmicrosoft.com/b2c_1_edit_profile/"
     },
     {

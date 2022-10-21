@@ -24,9 +24,32 @@ public class DAOTeamMember implements Serializable {
     @SerializedName("lastName")
     @Expose
     private String lastName;
+    @SerializedName("profileImageUrl")
+    @Expose
+    private String profileImageUrl;
+    @SerializedName("profileImage")
+    @Expose
+    private String profileImage;
+
     @SerializedName("dayGroups")
     @Expose
     private ArrayList<DayGroup> dayGroups;
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
 
     public Integer getUserId() {
         return userId;

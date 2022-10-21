@@ -418,6 +418,11 @@ public interface ApiInterface {
 
     @GET("api/mywork/myteammemberstatus")
     Call<ArrayList<DAOTeamMember>> getTeamMembers(@Query("date") String date);
+    @GET("api/mywork/teammemberstatus")
+    Call<ArrayList<DAOTeamMember>> getTeamMembersWithImage(@Query("date") String date,
+                                                  @Query("teamId") String teamId,
+                                                  @Query("returnProfilePhotoUrls") boolean b1,
+                                                  @Query("returnProfilePhotos") boolean b2);
 
     //https://dev-api.hotdeskplus.com/api/requests/outgoing?includePastRequests=true
 

@@ -1,6 +1,9 @@
 package dream.guys.hotdeskandroid.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +15,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
+import dream.guys.hotdeskandroid.ui.home.EditProfileActivity;
 import dream.guys.hotdeskandroid.ui.teams.TeamsFragment;
 
 public class TeamsContactsAdapter extends RecyclerView.Adapter<TeamsContactsAdapter.viewHolder> {
@@ -56,6 +62,17 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<TeamsContactsAdap
 
         }else {
             holder.relative.setVisibility(View.GONE);
+        }
+
+        if (teamMembersList.get(position).getProfileImage()!=null
+                && !teamMembersList.get(position).getProfileImage().equalsIgnoreCase("")){
+            String cleanImage = teamMembersList.get(position).getProfileImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");
+            byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            holder.profile_image.setImageBitmap(decodedByte);
+        } else {
+            Glide.with(context).load(R.drawable.avatar)
+                    .into(holder.profile_image);
         }
 
         holder.profile_image.setOnClickListener(new View.OnClickListener() {

@@ -274,7 +274,8 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                                         UserDetailsResponse.DefaultLocation defaultLocation = new UserDetailsResponse.DefaultLocation();
 
                                         ArrayList<DAOActiveLocation> selectFloors = new ArrayList<>();
-                                        selectFloors = (ArrayList<DAOActiveLocation>) cityPlaceFloorArrayList.stream().filter(val -> val.getParentLocationId() == floorParentID).collect(Collectors.toList());
+                                        selectFloors = (ArrayList<DAOActiveLocation>) cityPlaceFloorArrayList.stream()
+                                                .filter(val -> val.getParentLocationId() == floorParentID).collect(Collectors.toList());
 
                                         for (int i=0;i<selectFloors.size();i++) {
 

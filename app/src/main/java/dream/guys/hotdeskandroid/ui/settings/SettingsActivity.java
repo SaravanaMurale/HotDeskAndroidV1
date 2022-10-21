@@ -5,6 +5,7 @@ import static dream.guys.hotdeskandroid.utils.Utils.dateWithDayString;
 import static dream.guys.hotdeskandroid.utils.Utils.getSettingsPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getWellBeingScreenData;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
@@ -35,6 +36,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.microsoft.identity.client.IAccount;
+import com.microsoft.identity.client.IMultipleAccountPublicClientApplication;
+import com.microsoft.identity.client.IPublicClientApplication;
+import com.microsoft.identity.client.PublicClientApplication;
+import com.microsoft.identity.client.exception.MsalException;
 import com.nimbusds.jose.util.IOUtils;
 
 import java.io.File;
@@ -46,6 +52,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Set;
 
 import dream.guys.hotdeskandroid.LanguageListActivity;
@@ -57,7 +64,9 @@ import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.ProfilePicResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import dream.guys.hotdeskandroid.ui.home.EditProfileActivity;
+import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
+import dream.guys.hotdeskandroid.ui.login.sso.B2CUser;
 import dream.guys.hotdeskandroid.ui.wellbeing.CovidCertificationActivity;
 import dream.guys.hotdeskandroid.ui.wellbeing.NotificationActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
@@ -73,6 +82,7 @@ import retrofit2.Response;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    private static final String TAG = "Seeting_TAG";
     ActivitySettingsBinding binding;
     Context context;
     UserDetailsResponse profileData;
@@ -88,6 +98,10 @@ public class SettingsActivity extends AppCompatActivity {
     LanguagePOJO.Settings settings;
 
 
+    private List<B2CUser> users;
+    IAccount IaccUser;
+    /* Azure AD Variables */
+    private IMultipleAccountPublicClientApplication b2cApp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,7 +136,26 @@ public class SettingsActivity extends AppCompatActivity {
         if (SessionHandler.getInstance().get(context, AppConstants.LANGUAGE)!=null){
             binding.txtLang.setText(SessionHandler.getInstance().get(context, AppConstants.LANGUAGE));
         }
+// Creates a PublicClientApplication object with res/raw/auth_config_single_account.json
+        PublicClientApplication.createMultipleAccountPublicClientApplication(this,
+                R.raw.auth_config_b2c,
+                new IPublicClientApplication.IMultipleAccountApplicationCreatedListener() {
+                    @Override
+                    public void onCreated(IMultipleAccountPublicClientApplication application) {
+                        b2cApp = application;
+                        System.out.println("sso check oncreate");
+                        loadAccounts();
+                    }
 
+                    @Override
+                    public void onError(MsalException exception) {
+                        System.out.println("sso bala check" +exception.getMessage());
+                        displayError(exception);
+//                        removeAccountButton.setEnabled(false);
+//                        runUserFlowButton.setEnabled(false);
+//                        acquireTokenSilentButton.setEnabled(false);
+                    }
+                });
 
         binding.switchDarkMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -155,7 +188,12 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                SessionHandler.getInstance().removeAll(getContext());
-                SessionHandler.getInstance().saveBoolean(context, AppConstants.LOGIN_CHECK,false);
+                if (SessionHandler.getInstance().getInt(SettingsActivity.this,
+                        AppConstants.TYPE_OF_LOGIN) != 1) {
+                    signOutAccounts();
+                }
+
+                    SessionHandler.getInstance().saveBoolean(context, AppConstants.LOGIN_CHECK,false);
                 Utils.finishAllActivity(context);
                 SessionHandler.getInstance().remove(context,AppConstants.COUNTRY_NAME);
                 SessionHandler.getInstance().remove(context,AppConstants.BUILDING);
@@ -572,4 +610,56 @@ public class SettingsActivity extends AppCompatActivity {
             binding.tvViewProfileName.setText(profileData.getFullName());
         }
     }
+    private void loadAccounts() {
+        if (b2cApp == null) {
+            return;
+        }
+
+        b2cApp.getAccounts(new IPublicClientApplication.LoadAccountsCallback() {
+            @Override
+            public void onTaskCompleted(final List<IAccount> result) {
+                Toast.makeText(SettingsActivity.this, "b2c acc check"+result.size(), Toast.LENGTH_SHORT).show();
+                users = B2CUser.getB2CUsersFromAccountList(result);
+                System.out.println("sso check userList"+users.size());
+//                updateUI(users);
+            }
+
+            @Override
+            public void onError(MsalException exception) {
+                displayError(exception);
+            }
+        });
+    }
+    /**
+     * Display the error message
+     */
+    private void displayError(@NonNull final Exception exception) {
+        Log.d(TAG, "displayError: "+exception.toString());
+    }
+    private void signOutAccounts() {
+        if (b2cApp == null) {
+            return;
+        }
+        if (users!=null &&users.size()>0){
+            final B2CUser selectedUser = users.get(0);
+            selectedUser.signOutAsync(b2cApp,
+                    new IMultipleAccountPublicClientApplication.RemoveAccountCallback() {
+                        @Override
+                        public void onRemoved() {
+                            System.out.println("sso sign out");
+                            loadAccounts();
+                        }
+
+                        @Override
+                        public void onError(@NonNull MsalException exception) {
+                            displayError(exception);
+                        }
+                    });
+        } else {
+            System.out.println("sso sigout user not available");
+        }
+
+    }
+
+
 }

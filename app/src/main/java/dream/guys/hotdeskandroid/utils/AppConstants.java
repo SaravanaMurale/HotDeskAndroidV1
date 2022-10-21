@@ -78,6 +78,7 @@ public class AppConstants {
     public static final String WELLBEING_PAGE = "WELLBEING_PAGE";
 
     public static final String WELLBEING_TYPE="WELLBEING_TYPE";
+    public static final String TYPE_OF_LOGIN="TYPE_OF_LOGIN";
     public static final String PERSONAL_CONTENT="PERSONAL_CONTENT";
     public static final String PERSONAL_LINKS="PERSONAL_LINKS";
 

@@ -314,7 +314,9 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             binding.locateProgressBar.setVisibility(View.VISIBLE);
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<ArrayList<DAOTeamMember>> call = apiService.getTeamMembers(selectedDate);
+            Call<ArrayList<DAOTeamMember>> call = apiService.getTeamMembersWithImage("2022-10-21T00:00:00Z",
+                    ""+SessionHandler.getInstance().getInt(getContext(),AppConstants.TEAM_ID),
+                    true, true);
             call.enqueue(new Callback<ArrayList<DAOTeamMember>>() {
                 @Override
                 public void onResponse(Call<ArrayList<DAOTeamMember>> call,
@@ -331,7 +333,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                             teamMembersList = response.body();
                             copyTeamMembersList = response.body();
                             floorList.clear();
-
+                            System.out.println("bala check team outer"+teamMembersList.size());
                             for (int i=0; i < teamMembersList.size(); i++){
                                 if (teamMembersList.get(i).getDayGroups().size() > 0
                                 && teamMembersList.get(i).getDayGroups().get(0)
@@ -340,9 +342,14 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                                             .getCalendarEntries().get(0)
                                             .getUsageTypeAbbreviation()){
                                         case "IO":
+                                            System.out.println("bala check IO  outer for"+teamMembersList.get(i).getDayGroups().size());
                                             teamMembersInOfficeList.add(teamMembersList.get(i));
                                             for (int j=0; j<teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries().size();j++){
-                                                if (!floorList.containsKey(teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
+                                                System.out.println("bala check inside for"+teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
+                                                        .get(j).getBooking());
+                                                if (teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
+                                                        .get(j).getBooking() != null
+                                                        && !floorList.containsKey(teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
                                                         .get(j).getBooking().getLocationBuildingFloor().getFloorID())) {
                                                     floorList.put(teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
                                                                     .get(j).getBooking().getLocationBuildingFloor().getFloorID(),

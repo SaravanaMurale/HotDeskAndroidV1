@@ -150,9 +150,6 @@ public class LoginActivity extends AppCompatActivity {
                     public void onError(MsalException exception) {
                         System.out.println("sso bala check" +exception.getMessage());
                         displayError(exception);
-//                        removeAccountButton.setEnabled(false);
-//                        runUserFlowButton.setEnabled(false);
-//                        acquireTokenSilentButton.setEnabled(false);
                     }
                 });
         tvBackToLogin.setOnClickListener(new View.OnClickListener() {
@@ -213,15 +210,16 @@ public class LoginActivity extends AppCompatActivity {
 
 //                    SessionHandler.getInstance().remove(MyApp.getContext(), AppConstants.USERTOKEN);
                     /*List<Pair<String, String>> extraQueryParameters = new ArrayList<>();
-                    extraQueryParameters.add( new Pair<String, String>("domain_hint", "google.com"));
+//                    extraQueryParameters.add( new Pair<String, String>("domain_hint", "google.com"));
+                    extraQueryParameters.add( new Pair<String, String>("domain_hint", "hdplusdev"));
 //                            extraQueryParameters.add( new Pair<String, String>("domain_hint",
 //                                    typeOfLoginResponse.getMobileIdentityProvider()));
 
 
                     AcquireTokenParameters parameters = new AcquireTokenParameters.Builder()
                             .startAuthorizationFromActivity(LoginActivity.this)
-                            .fromAuthority(B2CConfiguration
-                                    .getAuthorityFromPolicyName("B2C_1A_signup_signin_Multitenant"))
+//                            .fromAuthority(B2CConfiguration
+//                                    .getAuthorityFromPolicyName("B2C_1A_signup_signin_Multitenant"))
                             .withScopes(B2CConfiguration.getScopes())
                             .withPrompt(Prompt.SELECT_ACCOUNT)
 //                                    .withLoginHint(typeOfLoginResponse.getMobileIdentityProvider())
@@ -230,6 +228,7 @@ public class LoginActivity extends AppCompatActivity {
                             .build();
 
                     b2cApp.acquireToken(parameters);*/
+
                     checkSsoEnabled();
                 }else {
                     Toast.makeText(LoginActivity.this, "Enter Tenant Name", Toast.LENGTH_SHORT).show();
@@ -262,6 +261,7 @@ public class LoginActivity extends AppCompatActivity {
                     TypeOfLoginResponse typeOfLoginResponse = response.body();
                     if (response.code()==200 && typeOfLoginResponse!=null){
                         if (typeOfLoginResponse.getTypeOfLogin()==1) {
+                            SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.TYPE_OF_LOGIN, typeOfLoginResponse.getTypeOfLogin());
                             ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
                             Utils.showCustomAlertDialog(LoginActivity.this, "SSO Login has not been set up, please contact Admin to Setup");
                         } else{
@@ -278,10 +278,10 @@ public class LoginActivity extends AppCompatActivity {
                              * which you can subsequently use to obtain your resources.
                              */
                             List<Pair<String, String>> extraQueryParameters = new ArrayList<>();
-                            extraQueryParameters.add( new Pair<String, String>("domain_hint", "google.com"));
-//                            extraQueryParameters.add( new Pair<String, String>("domain_hint",
-//                                    typeOfLoginResponse.getMobileIdentityProvider()));
-
+//                            extraQueryParameters.add( new Pair<String, String>("domain_hint", "google.com"));
+                            extraQueryParameters.add( new Pair<String, String>("domain_hint",
+                                    typeOfLoginResponse.getMobileIdentityProvider()));
+                            System.out.println("domain_hint"+typeOfLoginResponse.getMobileIdentityProvider());
 
                             AcquireTokenParameters parameters = new AcquireTokenParameters.Builder()
                                     .startAuthorizationFromActivity(LoginActivity.this)
@@ -330,10 +330,61 @@ public class LoginActivity extends AppCompatActivity {
                 System.out.println("bala sso"+authenticationResult.getAccount());
                 /* display result info */
                 IaccUser = authenticationResult.getAccount();
+
                 displayResult(authenticationResult);
 
                 /* Reload account asynchronously to get the up-to-date list. */
                 loadAccounts();
+                dialog.dismiss();
+
+            }
+            @Override
+            public void onError(MsalException exception) {
+                dialog.dismiss();
+                Toast.makeText(LoginActivity.this, "SSO AUth Failed", Toast.LENGTH_SHORT).show();
+                System.out.println("bala sso error"+exception.getMessage());
+                final String B2C_PASSWORD_CHANGE = "AADB2C90118";
+                if (exception.getMessage().contains(B2C_PASSWORD_CHANGE)) {
+                    Log.d(TAG, "onError: The user clicks the 'Forgot Password' link in a sign-up or sign-in user flow.\\n\" +\n" +
+                            "                            \"Your application needs to handle this error code by running a specific user flow that resets the password.");
+                    return;
+                }
+
+                /* Failed to acquireToken */
+                Log.d(TAG, "Authentication failed: " + exception.toString());
+                displayError(exception);
+
+                if (exception instanceof MsalClientException) {
+                    /* Exception inside MSAL, more info inside MsalError.java */
+                } else if (exception instanceof MsalServiceException) {
+                    /* Exception when communicating with the STS, likely config issue */
+                }
+            }
+
+            @Override
+            public void onCancel() {
+                /* User canceled the authentication */
+                System.out.println("bala sso cancel");
+                Log.d(TAG, "User cancelled login.");
+            }
+        };
+    }
+    private AuthenticationCallback getSignOutAuthInteractiveCallback() {
+        return new AuthenticationCallback() {
+
+            @Override
+            public void onSuccess(IAuthenticationResult authenticationResult) {
+                /* Successfully got a token, use it to call a protected resource - MSGraph */
+                Log.d(TAG, "Successfully authenticated");
+                System.out.println("bala sso"+authenticationResult.getAccount());
+                /* display result info */
+                IaccUser = authenticationResult.getAccount();
+
+                displayResult(authenticationResult);
+
+                /* Reload account asynchronously to get the up-to-date list. */
+                loadAccounts();
+                signOutAccounts();
                 dialog.dismiss();
 
             }
@@ -374,20 +425,26 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        final B2CUser selectedUser = users.get(0);
-        selectedUser.signOutAsync(b2cApp,
-                new IMultipleAccountPublicClientApplication.RemoveAccountCallback() {
-                    @Override
-                    public void onRemoved() {
-                        System.out.println("sso sign out");
-                        loadAccounts();
-                    }
+        if (users.size()>0){
+            final B2CUser selectedUser = users.get(0);
+            selectedUser.signOutAsync(b2cApp,
+                    new IMultipleAccountPublicClientApplication.RemoveAccountCallback() {
+                        @Override
+                        public void onRemoved() {
+                            System.out.println("sso sign out if");
+                            loadAccounts();
+                        }
 
-                    @Override
-                    public void onError(@NonNull MsalException exception) {
-                        displayError(exception);
-                    }
-                });
+                        @Override
+                        public void onError(@NonNull MsalException exception) {
+                            System.out.println("sso sign out else");
+                            displayError(exception);
+                        }
+                    });
+        } else {
+            System.out.println("sso sigout user not available");
+        }
+
     }
     private void loadAccounts() {
         if (b2cApp == null) {
