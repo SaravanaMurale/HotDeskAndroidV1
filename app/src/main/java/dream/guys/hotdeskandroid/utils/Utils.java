@@ -31,9 +31,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
+import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
@@ -61,6 +64,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -192,6 +196,7 @@ public class Utils {
         }else {
             dateTv.setText(date);
         }
+        //keText(mContext, "tv.ge"+tv.getText(), Toast.LENGTH_SHORT).show();
         //Toast.makeText(mContext, "tv.ge"+tv.getText(), Toast.LENGTH_SHORT).show();
         String[] parts =tv.getText().toString().split(":");
         simpleTimePicker24Hours.setHour(Integer.parseInt(parts[0]));
