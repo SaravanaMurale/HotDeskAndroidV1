@@ -55,9 +55,11 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+/*
 import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.MonitorNotifier;
 import org.altbeacon.beacon.Region;
+*/
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -159,7 +161,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     public boolean showPastStatus=false;
 
 //    protected static final String TAG = "MonitoringActivity";
-    private BeaconManager beaconManager;
+//    private BeaconManager beaconManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -177,6 +179,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         earlyCheckInTime();
         bookingExpiryGraceTimeInMinutes();
 
+/*
         beaconManager = BeaconManager.getInstanceForApplication(getActivity());
         // To detect proprietary beacons, you must add a line like below corresponding to your beacon
         // type.  Do a web search for "setBeaconLayout" to get the proper expression.
@@ -207,6 +210,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
         beaconManager.startMonitoring(new Region("myMonitoringUniqueId", null, null, null));
 
+*/
         System.out.println("Seesin userId" + SessionHandler.getInstance()
                 .getInt(getActivity(),
                 AppConstants.USER_ID));
@@ -944,7 +948,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         BookingListResponse bookingListResponses = body;
         recyclerModelArrayList = new ArrayList<>();
 //        ArrayList<BookingListResponse> recyclerModelArrayList = new ArrayList<>();
-        if (bookingListResponses!=null){
+        if (bookingListResponses.getDayGroups()!=null){
 
             for (int i=0; i<bookingListResponses.getDayGroups().size(); i++){
                 boolean dateCheck =true;

@@ -124,6 +124,19 @@ public class Utils {
         }
     }
 
+    public static String checkStringParms(String text) {
+        if (text!=null)
+            return text;
+        else
+            return "";
+    }
+    public static Integer checkStringParms(Integer text) {
+        if (text!=null)
+            return text;
+        else
+            return 0;
+    }
+
     public static boolean isValidEmail(String email) {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }

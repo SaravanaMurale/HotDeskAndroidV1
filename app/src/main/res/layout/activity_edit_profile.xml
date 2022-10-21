@@ -841,15 +841,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_toLeftOf="@id/tvEditTelIcon"
-                    android:text=""
                     android:layout_centerInParent="true"
-                    android:textColor="@color/figmaBlack"
-                    android:theme="@style/TextRegular"
-                    android:enabled="false"
+                    android:layout_toLeftOf="@id/tvEditTelIcon"
                     android:background="@null"
+                    android:enabled="false"
                     android:inputType="number"
-                    android:maxLength="10"/>
+                    android:maxLength="10"
+                    android:text=""
+                    android:textColor="@color/figmaBlack"
+                    android:theme="@style/TextRegular" />
 
                 <ImageView
                     android:id="@+id/tvEditTelIcon"

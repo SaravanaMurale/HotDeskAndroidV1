@@ -230,40 +230,6 @@
                     android:host="dev-app.hotdeskplus.com"
                     android:scheme="https" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="example"
-                    android:scheme="http" />
-            </intent-filter>
-
-            <!-- Accept chrome links -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="example.com"
-                    android:pathPrefix="/"
-                    android:scheme="http" />
-            </intent-filter>
-            <!-- Accept adb data flag -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="example.com"
-                    android:scheme="http" />
-            </intent-filter>
 
             <meta-data
                 android:name="android.app.searchable"
@@ -280,16 +246,6 @@
                     android:pathPrefix="/booking"
                     android:scheme="https" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="www.baladaw.com"
-                    android:scheme="http" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".example.DummyActivity"
@@ -302,6 +258,18 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="dream.guys.hotdeskandroid"
+                    android:pathPrefix="/booking"
+                    android:scheme="https" />
+            </intent-filter>
+
         </activity>
 
         <service

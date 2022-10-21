@@ -60,6 +60,7 @@ import dream.guys.hotdeskandroid.ui.login.sso.B2CUser;
 import dream.guys.hotdeskandroid.ui.login.sso.WebViewActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.FirebaseNotificationService;
+import dream.guys.hotdeskandroid.utils.MyApp;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
@@ -107,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
     RelativeLayout loginLayout;
 
     private List<B2CUser> users;
-
+    IAccount IaccUser;
     /* Azure AD Variables */
     private IMultipleAccountPublicClientApplication b2cApp;
     String tentantName="";
@@ -141,11 +142,13 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onCreated(IMultipleAccountPublicClientApplication application) {
                         b2cApp = application;
+                        System.out.println("sso check oncreate");
                         loadAccounts();
                     }
 
                     @Override
                     public void onError(MsalException exception) {
+                        System.out.println("sso bala check" +exception.getMessage());
                         displayError(exception);
 //                        removeAccountButton.setEnabled(false);
 //                        runUserFlowButton.setEnabled(false);
@@ -207,6 +210,26 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!etTenantName.getText().toString().equalsIgnoreCase("") && !etTenantName.getText().toString().isEmpty()){
                     tentantName=etTenantName.getText().toString();
+
+//                    SessionHandler.getInstance().remove(MyApp.getContext(), AppConstants.USERTOKEN);
+                    /*List<Pair<String, String>> extraQueryParameters = new ArrayList<>();
+                    extraQueryParameters.add( new Pair<String, String>("domain_hint", "google.com"));
+//                            extraQueryParameters.add( new Pair<String, String>("domain_hint",
+//                                    typeOfLoginResponse.getMobileIdentityProvider()));
+
+
+                    AcquireTokenParameters parameters = new AcquireTokenParameters.Builder()
+                            .startAuthorizationFromActivity(LoginActivity.this)
+                            .fromAuthority(B2CConfiguration
+                                    .getAuthorityFromPolicyName("B2C_1A_signup_signin_Multitenant"))
+                            .withScopes(B2CConfiguration.getScopes())
+                            .withPrompt(Prompt.SELECT_ACCOUNT)
+//                                    .withLoginHint(typeOfLoginResponse.getMobileIdentityProvider())
+                            .withAuthorizationQueryStringParameters(extraQueryParameters)
+                            .withCallback(getAuthInteractiveCallback())
+                            .build();
+
+                    b2cApp.acquireToken(parameters);*/
                     checkSsoEnabled();
                 }else {
                     Toast.makeText(LoginActivity.this, "Enter Tenant Name", Toast.LENGTH_SHORT).show();
@@ -255,14 +278,15 @@ public class LoginActivity extends AppCompatActivity {
                              * which you can subsequently use to obtain your resources.
                              */
                             List<Pair<String, String>> extraQueryParameters = new ArrayList<>();
-//                            extraQueryParameters.add( new Pair<String, String>("domain_hint", "google.com"));
-                            extraQueryParameters.add( new Pair<String, String>("domain_hint",
-                                    typeOfLoginResponse.getMobileIdentityProvider()));
+                            extraQueryParameters.add( new Pair<String, String>("domain_hint", "google.com"));
+//                            extraQueryParameters.add( new Pair<String, String>("domain_hint",
+//                                    typeOfLoginResponse.getMobileIdentityProvider()));
 
 
                             AcquireTokenParameters parameters = new AcquireTokenParameters.Builder()
                                     .startAuthorizationFromActivity(LoginActivity.this)
-                                    .fromAuthority(B2CConfiguration.getAuthorityFromPolicyName("B2C_1A_signup_signin_Multitenant"))
+                                    .fromAuthority(B2CConfiguration
+                                            .getAuthorityFromPolicyName("B2C_1A_signup_signin_Multitenant"))
                                     .withScopes(B2CConfiguration.getScopes())
                                     .withPrompt(Prompt.SELECT_ACCOUNT)
 //                                    .withLoginHint(typeOfLoginResponse.getMobileIdentityProvider())
@@ -305,6 +329,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(TAG, "Successfully authenticated");
                 System.out.println("bala sso"+authenticationResult.getAccount());
                 /* display result info */
+                IaccUser = authenticationResult.getAccount();
                 displayResult(authenticationResult);
 
                 /* Reload account asynchronously to get the up-to-date list. */
@@ -315,6 +340,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onError(MsalException exception) {
                 dialog.dismiss();
+                Toast.makeText(LoginActivity.this, "SSO AUth Failed", Toast.LENGTH_SHORT).show();
                 System.out.println("bala sso error"+exception.getMessage());
                 final String B2C_PASSWORD_CHANGE = "AADB2C90118";
                 if (exception.getMessage().contains(B2C_PASSWORD_CHANGE)) {
@@ -343,6 +369,26 @@ public class LoginActivity extends AppCompatActivity {
         };
     }
 
+    private void signOutAccounts() {
+        if (b2cApp == null) {
+            return;
+        }
+
+        final B2CUser selectedUser = users.get(0);
+        selectedUser.signOutAsync(b2cApp,
+                new IMultipleAccountPublicClientApplication.RemoveAccountCallback() {
+                    @Override
+                    public void onRemoved() {
+                        System.out.println("sso sign out");
+                        loadAccounts();
+                    }
+
+                    @Override
+                    public void onError(@NonNull MsalException exception) {
+                        displayError(exception);
+                    }
+                });
+    }
     private void loadAccounts() {
         if (b2cApp == null) {
             return;
@@ -351,8 +397,10 @@ public class LoginActivity extends AppCompatActivity {
         b2cApp.getAccounts(new IPublicClientApplication.LoadAccountsCallback() {
             @Override
             public void onTaskCompleted(final List<IAccount> result) {
+                Toast.makeText(LoginActivity.this, "b2c acc check"+result.size(), Toast.LENGTH_SHORT).show();
                 users = B2CUser.getB2CUsersFromAccountList(result);
-                updateUI(users);
+                System.out.println("sso check userList"+users.size());
+//                updateUI(users);
             }
 
             @Override
@@ -417,6 +465,8 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra("userName",email);
                         startActivity(intent);
                     }else {
+                        signOutAccounts();
+
                         ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
                         Utils.showCustomAlertDialog(LoginActivity.this,"SSO Login is not setup for this email contact admin.");
                     }
@@ -537,34 +587,33 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.USERNAME,userDetailsResponse.getFullName());
-                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.COMPANY_NAME,companyName);
-                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.CURRENT_TEAM,userDetailsResponse.getCurrentTeam().getCurrentTeamName());
-                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.PHONE_NUMBER,userDetailsResponse.getPhoneNumber());
-                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.EMAIL,email);
-                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.PASSWORD,password);
+                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.USERNAME,Utils.checkStringParms(userDetailsResponse.getFullName()));
+                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.COMPANY_NAME,Utils.checkStringParms(companyName));
+                            if (userDetailsResponse.getCurrentTeam()!=null){
+                                SessionHandler.getInstance().save(LoginActivity.this,AppConstants.CURRENT_TEAM,Utils.checkStringParms(userDetailsResponse.getCurrentTeam().getCurrentTeamName()));
+                                SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.TEAM_ID,Utils.checkStringParms(userDetailsResponse.getCurrentTeam().getCurrentTeamId()));
+                            }
+                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.PHONE_NUMBER,Utils.checkStringParms(userDetailsResponse.getPhoneNumber()));
+                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.EMAIL,Utils.checkStringParms(email));
+                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.PASSWORD,Utils.checkStringParms(email));
                             SessionHandler.getInstance().saveBoolean(LoginActivity.this,AppConstants.USER_DETAILS_SAVED_STATUS,true);
-                            SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.TEAMMEMBERSHIP_ID,userDetailsResponse.getTeamMembershipId());
-                            SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.TEAM_ID,userDetailsResponse.getCurrentTeam().getCurrentTeamId());
+                            SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.TEAMMEMBERSHIP_ID,Utils.checkStringParms(userDetailsResponse.getTeamMembershipId()));
+
                             SessionHandler.getInstance().saveBoolean(LoginActivity.this,AppConstants.PIN_SETUP_DONE,userDetailsResponse.isHasPinSetup());
                             //Log.d(TAG, "onResponse: "+userDetailsResponse.getDefaultLocation().getParentLocationId());
                             if (userDetailsResponse.getDefaultCarParkLocation()!=null){
-                                SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.DEFAULT_CAR_PARK_LOCATION_ID,userDetailsResponse.getDefaultCarParkLocation().getId());
-
+                                SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.DEFAULT_CAR_PARK_LOCATION_ID,Utils.checkStringParms(userDetailsResponse.getCurrentTeam().getCurrentTeamId()));
                             }
 
                             if (userDetailsResponse.getDefaultLocation()!=null){
-                                SessionHandler.getInstance().save(LoginActivity.this,AppConstants.DEFAULT_LOCATION_NAME,userDetailsResponse.getDefaultLocation().getName());
-                                SessionHandler.getInstance().save(LoginActivity.this,AppConstants.DEFAULT_LOCATION_ID,String.valueOf(userDetailsResponse.getDefaultLocation().getParentLocationId()));
-                                SessionHandler.getInstance().save(LoginActivity.this,AppConstants.DEFAULT_LOCATION_UNIQUE_ID,String.valueOf(userDetailsResponse.getDefaultLocation().getId()));
+                                SessionHandler.getInstance().save(LoginActivity.this,AppConstants.DEFAULT_LOCATION_NAME,Utils.checkStringParms(userDetailsResponse.getDefaultLocation().getName()));
+                                SessionHandler.getInstance().save(LoginActivity.this,AppConstants.DEFAULT_LOCATION_ID,String.valueOf(Utils.checkStringParms(userDetailsResponse.getDefaultLocation().getParentLocationId())));
+                                SessionHandler.getInstance().save(LoginActivity.this,AppConstants.DEFAULT_LOCATION_UNIQUE_ID,String.valueOf(Utils.checkStringParms(userDetailsResponse.getDefaultLocation().getId())));
                             }
 
-                            System.out.println("login chec"+SessionHandler.getInstance().getBoolean(LoginActivity.this,AppConstants.PIN_SETUP_DONE));
-                            System.out.println("login chec respos"+userDetailsResponse.isHasPinSetup());
-
                             //Save UserId
-                            SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.USER_ID,userDetailsResponse.getId());
-                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.ROLE,userDetailsResponse.getHighestRole());
+                            SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.USER_ID,Utils.checkStringParms(userDetailsResponse.getId()));
+                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.ROLE,Utils.checkStringParms(userDetailsResponse.getHighestRole()));
 
                             ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
 

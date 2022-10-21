@@ -169,6 +169,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                 String name = binding.editName.getText().toString();
                 String editDisplayName = binding.editDisplayName.getText().toString();
                 String phone = binding.tvEditPhone.getText().toString();
+                String deskPhone = binding.tvEditTel.getText().toString();
                 String email = binding.tvEditEmail.getText().toString();
                 String teams = binding.tvEditTeams.getText().toString();
                 String startTime = binding.editStartTime.getText().toString();
@@ -179,6 +180,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                     //profileData.setFullName(name);
                     profileData.setFullName(editDisplayName);
                     profileData.setPhoneNumber(phone);
+                    profileData.setDeskPhoneNumber(deskPhone);
                     profileData.setEmail(email);
                     profileData.getCurrentTeam().setCurrentTeamName(teams);
                     profileData.setWorkHoursFrom("2000-01-01T" + startTime + ":00.000Z");
@@ -230,6 +232,9 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                 floorParentID = profileData.getDefaultLocation().getParentLocationId();
             }
 
+            if (profileData.getPreferredDesk()!=null) {
+                binding.editDesk.setText(profileData.getPreferredDesk().getCode());
+            }
             if (profileData.getDefaultCarParkLocation()!=null) {
                 binding.editPark.setText(profileData.getDefaultCarParkLocation().getName());
                 carFloorParentID = profileData.getDefaultCarParkLocation().getParentLocationId();
