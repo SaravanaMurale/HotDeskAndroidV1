@@ -7171,10 +7171,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             attendeesListForEdit.clear();
         }
 
-
-
-
-
         //Get AttendeeList To Edit
          attendeesListForEdit=meetingListToEditResponse.getAttendeesList();
 
