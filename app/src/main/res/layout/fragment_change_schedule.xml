@@ -829,4 +829,14 @@
             android:theme="@style/TextBold" />
 
     </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progrss_bar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:outlineAmbientShadowColor="@color/black"
+        android:outlineSpotShadowColor="@color/figmaGrey"
+        android:visibility="invisible" />
 </RelativeLayout>

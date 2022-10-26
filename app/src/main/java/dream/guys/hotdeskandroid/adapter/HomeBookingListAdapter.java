@@ -92,10 +92,10 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.lineLayout.setVisibility(View.VISIBLE);
         }
 
-        System.out.println("check date of today "+list.size());
+//        System.out.println("check date of today "+list.size());
         //condition displays today string instead od date and disable previous date
         if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate()) == 1){
-            System.out.println("check date of today past"+list.get(position).getDate()+fragment.showPastStatus);
+//            System.out.println("check date of today past"+list.get(position).getDate()+fragment.showPastStatus);
         /*    if (!fragment.showPastStatus){
                 holder.allLayout.setVisibility(View.GONE);
                 holder.allLinearLayout.setVisibility(View.GONE);
@@ -109,10 +109,10 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
             holder.bookingIvEdit.setVisibility(View.GONE);
             holder.bookingIvLocation.setVisibility(View.GONE);
-            System.out.println("date check Balaaaa"
-                    +list.get(position).getDate()+
-                    " : "
-                    +Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate()));
+//            System.out.println("date check Balaaaa"
+//                    +list.get(position).getDate()+
+//                    " : "
+//                    +Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate()));
         } else if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
             System.out.println("check date of today present "+list.get(position).getDate());
             if (!fragment.showPastStatus && !pastCheck)

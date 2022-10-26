@@ -10,7 +10,7 @@ android {
         applicationId "dream.guys.hotdeskandroid"
         minSdk 26
         targetSdk 31
-        versionCode 18
+        versionCode 19
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -126,6 +126,6 @@ dependencies {
     //Chips in EditText
     implementation "com.hootsuite.android:nachos:1.1.1"
 
-    //implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+//    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
 }

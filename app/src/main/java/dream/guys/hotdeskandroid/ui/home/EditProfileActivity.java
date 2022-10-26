@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.EditDefaultAssetAdapter;
@@ -214,7 +215,14 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                         , "Start", "");
             }
         });
-
+        binding.ivEditSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("loadFrag","changeSchedule");
+                startActivity(intent);
+            }
+        });
         binding.editEndTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -247,15 +247,15 @@
                             android:textColor="@color/figmaBlack"
                             android:theme="@style/TextSmall" />
                     </LinearLayout>
+
                     <ImageView
                         android:id="@+id/ivEditSchedule"
                         android:layout_width="@dimen/_15sdp"
                         android:layout_height="@dimen/_15sdp"
-                        android:src="@drawable/edit"
-                        android:layout_marginEnd="@dimen/_5sdp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        />
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:src="@drawable/edit" />
 
                 </RelativeLayout>
 

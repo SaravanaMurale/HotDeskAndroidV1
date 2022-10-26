@@ -659,6 +659,14 @@ public class Utils {
 
     }
 
+    public static String getDayFromDate(Date date){
+        DateFormat df = new SimpleDateFormat("EEE");
+        return df.format(date);
+    }
+    public static String getDateFromDate(Date date){
+        DateFormat df = new SimpleDateFormat("d");
+        return df.format(date);
+    }
     public static String getDayAndDate(Date date){
         DateFormat df = new SimpleDateFormat("EEE,d");
         return df.format(date);
@@ -1014,6 +1022,23 @@ public class Utils {
         Calendar cal = Calendar.getInstance();
         cal.setTime(d);
         cal.add(Calendar.SECOND, currentTimeZoneOffset);
+        String newTime = df.format(cal.getTime());
+
+        return  newTime;
+    }
+    public static String addHoursToDate(int currentTimeZoneOffset){
+        //Should add seconds
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date d = null;
+        try {
+            d = df.parse(Utils.getCurrentTimeIn24HourFormat());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+        cal.add(Calendar.HOUR, currentTimeZoneOffset);
         String newTime = df.format(cal.getTime());
 
         return  newTime;
@@ -2169,7 +2194,8 @@ public class Utils {
         //Date currentTime = Calendar.getInstance().getTime();
         String time = selTime; //tFormat.format(currentTime);
 
-        Date d = null;String newTime = selTime;
+        Date d = null;
+        String newTime = selTime;
 
         try {
             d = tFormat.parse(time);

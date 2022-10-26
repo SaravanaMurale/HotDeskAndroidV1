@@ -1,5 +1,7 @@
 package dream.guys.hotdeskandroid.ui.book;
 
+import static dream.guys.hotdeskandroid.utils.Utils.addingHoursToCurrentDate;
+import static dream.guys.hotdeskandroid.utils.Utils.compareTwoDate;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentTime;
 import static dream.guys.hotdeskandroid.utils.Utils.toastMessage;
@@ -30,6 +32,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -101,6 +105,7 @@ import dream.guys.hotdeskandroid.model.response.TeamsResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import dream.guys.hotdeskandroid.ui.home.EditProfileActivity;
+import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.wellbeing.NotificationsListActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.CalendarView;
@@ -613,7 +618,7 @@ public class BookFragment extends Fragment implements
 
                 editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
                 System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
-                editBookingDetails.setEditEndTime(Utils.addingHoursToCurrentDate(2));
+                editBookingDetails.setEditEndTime(Utils.addHoursToDate(2));
 
                 calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
 
@@ -632,7 +637,7 @@ public class BookFragment extends Fragment implements
 
                 editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
                 System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
-                editBookingDetails.setEditEndTime(Utils.addingHoursToCurrentDate(2));
+                editBookingDetails.setEditEndTime(Utils.addHoursToDate(2));
 
                 calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
 //
@@ -831,7 +836,8 @@ public class BookFragment extends Fragment implements
                     } else if(response.code()==401){
                         //Handle if token got expired
 //                        ProgressDialog.dismisProgressBar(getContext(),dialog);
-                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                        SessionHandler.getInstance().saveBoolean(getActivity(),
+                                AppConstants.LOGIN_CHECK,false);
                         Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
                     }
                 }
@@ -1537,14 +1543,21 @@ public class BookFragment extends Fragment implements
 //                    ProgressDialog.dismisProgressBar(getContext(),dialog);
                     if (code.equalsIgnoreCase("3"))
                         callBottomSheetToEdit(bookingForEditResponse, code);
-                    else
-                        deepLinking();
+                    else{
+                        if(SessionHandler.getInstance().getBoolean(getContext(),AppConstants.LOGIN_CHECK))
+                            deepLinking();
+                        else
+                            deeplinkLoginPopUP();
+                    }
 
                 }
 
                 @Override
                 public void onFailure(Call<BookingForEditResponse> call, Throwable t) {
-                    deepLinking();
+                    if(SessionHandler.getInstance().getBoolean(getContext(),AppConstants.LOGIN_CHECK))
+                        deepLinking();
+                    else
+                        deeplinkLoginPopUP();
 
                 }
             });
@@ -1555,6 +1568,36 @@ public class BookFragment extends Fragment implements
         }
 
     }
+
+    private void deeplinkLoginPopUP() {
+        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        int width = (int) (getActivity().getResources().getDisplayMetrics().widthPixels * 0.80);
+        int height = (int) (getActivity().getResources().getDisplayMetrics().heightPixels * 0.20);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog_validation);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        TextView text = dialog.findViewById(R.id.tv_err_msg);
+        text.setText("Please Login and then scan the QR Code");
+        TextView dialogButton = dialog.findViewById(R.id.tv_ok);
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                getActivity().startActivity(intent);
+
+//                mContext.startActivityForResult(intent, 123);
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+    }
+
     //    Desk Edit List
     private void callBottomSheetToEdit(BookingForEditResponse bookingForEditResponse, String code) {
         String sDate="";
@@ -1744,6 +1787,21 @@ public class BookFragment extends Fragment implements
             statusCheckLayout.setVisibility(View.GONE);
 //            chipGroup.setVisibility(View.GONE);
         }
+        if (Utils.compareTwoDate(editDeskBookingDetails.getDate(), Utils.getCurrentDate())==2
+                && Utils.compareTimeIfCheckInEnable(Utils.getCurrentTime(),
+                editDeskBookingDetails.getEditStartTTime()
+        )){
+            startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
+            select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
+        }
+        if (Utils.compareTwoDate(editDeskBookingDetails.getDate(), Utils.getCurrentDate())==2
+                && Utils.compareTimeIfCheckInEnable(Utils.getCurrentTime(),
+                editDeskBookingDetails.getEditEndTime()
+        )){
+            endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
+            select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
+        }
+
 
         if (newEditStatus.equalsIgnoreCase("new_deep_link")){
             select.setVisibility(View.GONE);
@@ -1846,10 +1904,20 @@ public class BookFragment extends Fragment implements
             }
 
         }
-        if (editDeskBookingDetails.getEditStartTTime()!=null)
+        toastMessage(getContext(),""+editDeskBookingDetails.getEditStartTTime());
+        if (editDeskBookingDetails.getEditStartTTime()!=null){
             startTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()));
-        if (editDeskBookingDetails.getEditEndTime()!=null)
+            if(!newEditStatus.equalsIgnoreCase("edit") &&
+                    Utils.compareTwoDate(editDeskBookingDetails.getDate(), Utils.getCurrentDate())==2)
+                startTime.setText(Utils.convert24HrsTO12Hrs(Utils.getCurrentTime()));
+        }
+        if (editDeskBookingDetails.getEditEndTime()!=null){
             endTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditEndTime()));
+            if(!newEditStatus.equalsIgnoreCase("edit") &&
+                    Utils.compareTimeIfCheckInEnable(Utils.convert12HrsTO24Hrs(""+startTime.getText()),
+                    editDeskBookingDetails.getEditEndTime()))
+                endTime.setText(Utils.convert24HrsTO12Hrs(Utils.addHoursToSelectedTime(Utils.convert24HrsTO12Hrs(""+startTime.getText()), 4)));
+        }
         if (editDeskBookingDetails.getDate()!=null)
         date.setText(""+Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
 
@@ -2925,6 +2993,7 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     dialog.dismiss();
+                    String resultString="";
                     if (response.code()==200){
 //                        Utils.showCustomAlertDialog(getActivity(),"Update Success");
 //                        Toast.makeText(getActivity(), "Success Bala", Toast.LENGTH_SHORT).show();
@@ -2956,7 +3025,20 @@ public class BookFragment extends Fragment implements
 
 //                            openCheckoutDialog("Booking Updated");
                         }else {
-                            Utils.showCustomAlertDialog(getActivity(),"Booking Not Updated "+response.body().getResultCode().toString());
+                            if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
+                                resultString = "Invalid booking start time";
+                            } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
+                                resultString = "Invalid booking end time";
+                            } else if (response.body().getResultCode().toString().equals("INVALID_TIMEZONE_ID")) {
+                                resultString = "Invalid timezone";
+                            } else if (response.body().getResultCode().toString().equals("INVALID_TIMEPERIOD")) {
+                                resultString = "Invalid timeperiod";
+                            } else if (response.body().getResultCode().toString().equals("USER_TIME_OVERLAP")) {
+                                resultString = "Time overlaps with another booking";
+                            } else if(response.body().getResultCode().toString().equals("COVID_SYMPTOMS")){
+                                resultString = "COVID_SYMPTOMS";
+                            }
+                            Utils.showCustomAlertDialog(getActivity(), resultString);
                         }
                     }else if (response.code() == 500){
                         Utils.showCustomAlertDialog(getActivity(),"500 Response");
@@ -3351,7 +3433,8 @@ public class BookFragment extends Fragment implements
                     if (!repeatActvieStatus)
                         doMeetingRoomBooking(meetingRoomId,
                                 startTime.getText().toString(),
-                                endTime.getText().toString(), subject, comment, isRequest, editDeskBookingDetails.isTeamsChecked());
+                                endTime.getText().toString(), subject, comment,
+                                isRequest, editDeskBookingDetails.isTeamsChecked());
                     else
                         doRepeatMeetingRoomBookingForWeek(editDeskBookingDetails.isTeamsChecked());
 
@@ -3459,8 +3542,8 @@ public class BookFragment extends Fragment implements
 
         changes.setAttendees(attendeesList);
 
-        List<MeetingRoomRequest.Changeset.Changes.ExternalAttendees> externalAttendeesList = new ArrayList<>();
-        //changes.setExternalAttendees(externalAttendeesList);
+        List<String> externalAttendeesList = new ArrayList<>();
+        changes.setExternalAttendees(externalAttendeesList);
 
         List<MeetingRoomRequest.DeleteIds> deleteIdsList = new ArrayList<>();
         meetingRoomRequest.setDeletedIds(deleteIdsList);

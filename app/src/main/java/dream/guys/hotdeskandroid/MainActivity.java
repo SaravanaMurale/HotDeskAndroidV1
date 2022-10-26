@@ -117,6 +117,8 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
         setContentView(binding.getRoot());
         uiModeManager = (UiModeManager) getSystemService(UI_MODE_SERVICE);
         dialog = new Dialog(this);
+
+
         if (SessionHandler.getInstance().getBoolean(MainActivity.this,AppConstants.LOGIN_CHECK) ){
 //            Toast.makeText(this, "toast daaaa", Toast.LENGTH_SHORT).show();
             uiInit();
@@ -747,6 +749,7 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     dialog.dismiss();
+                    String resultString="";
                     if (response.code()==200){
 //                        Utils.showCustomAlertDialog(getActivity(),"Update Success");
 //                        Toast.makeText(getActivity(), "Success Bala", Toast.LENGTH_SHORT).show();
@@ -774,7 +777,21 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
 
 //                            openCheckoutDialog("Booking Updated");
                         }else {
-                            Utils.showCustomAlertDialog(MainActivity.this,"Booking Not Updated "+response.body().getResultCode().toString());
+
+                            if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
+                                resultString = "Invalid booking start time";
+                            } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
+                                resultString = "Invalid booking end time";
+                            } else if (response.body().getResultCode().toString().equals("INVALID_TIMEZONE_ID")) {
+                                resultString = "Invalid timezone";
+                            } else if (response.body().getResultCode().toString().equals("INVALID_TIMEPERIOD")) {
+                                resultString = "Invalid timeperiod";
+                            } else if (response.body().getResultCode().toString().equals("USER_TIME_OVERLAP")) {
+                                resultString = "Time overlaps with another booking";
+                            } else if(response.body().getResultCode().toString().equals("COVID_SYMPTOMS")){
+                                resultString = "COVID_SYMPTOMS";
+                            }
+                            Utils.showCustomAlertDialog(MainActivity.this, resultString);
                         }
                     }else if (response.code() == 500){
                         Utils.showCustomAlertDialog(MainActivity.this,"500 Response");
@@ -923,6 +940,13 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
 
         NavigationUI.setupWithNavController(binding.navView, navController);
         navView.setItemIconTintList(null);
+        if (getIntent().getExtras()!=null
+                && getIntent().getStringExtra("loadFrag")!=null){
+            if (getIntent().getStringExtra("loadFrag").equalsIgnoreCase("changeSchedule")){
+                binding.navView.setSelectedItemId(R.id.navigation_home);
+                navController.navigate(R.id.action_change_schedule);
+            }
+        }
         deepLinking();
 
 

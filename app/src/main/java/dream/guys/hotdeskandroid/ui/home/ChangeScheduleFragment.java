@@ -1,5 +1,8 @@
 package dream.guys.hotdeskandroid.ui.home;
 
+import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,15 +13,29 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.gson.JsonObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.stream.Collectors;
 
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.databinding.FragmentChangeScheduleBinding;
 import dream.guys.hotdeskandroid.databinding.FragmentQrBinding;
+import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
+import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
+import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
@@ -28,7 +45,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ChangeScheduleFragment extends Fragment {
+public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnCheckedChangeListener {
 
 
     @Override
@@ -37,12 +54,11 @@ public class ChangeScheduleFragment extends Fragment {
 
     }
     FragmentChangeScheduleBinding fragmentChangeScheduleBinding;
-
+    BookingListResponse bookingListResponse;
     int teamId=0,teamMembershipId=0,selectedDeskId=0;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//        inflater.inflate(R.layout.fragment_change_schedule, container, false)
         fragmentChangeScheduleBinding = fragmentChangeScheduleBinding.inflate(inflater, container, false);
         View root = fragmentChangeScheduleBinding.getRoot();
 
@@ -53,8 +69,93 @@ public class ChangeScheduleFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        loadHomeList();
+        fragmentChangeScheduleBinding.mondayGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                View radio = group.findViewById(checkedId);
+                int idx = group.indexOfChild(radio);
+                RadioButton r = (RadioButton) group.getChildAt(idx);
+
+                if (bookingListResponse !=null && !r.isChecked()){
+                    checkSwitchState("Mon",checkedId,group);
+                }
+            }
+        });
+        fragmentChangeScheduleBinding.tuesdayGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                View radio = group.findViewById(checkedId);
+                int idx = group.indexOfChild(radio);
+                RadioButton r = (RadioButton) group.getChildAt(idx);
+
+                if (bookingListResponse !=null && r.isChecked()){
+                    checkSwitchState("Tue",checkedId,group);
+                }
+            }
+        });
+        fragmentChangeScheduleBinding.wednesdayGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                View radio = group.findViewById(checkedId);
+                int idx = group.indexOfChild(radio);
+                RadioButton r = (RadioButton) group.getChildAt(idx);
+
+                if (bookingListResponse !=null && r.isChecked()){
+                    checkSwitchState("Wed",checkedId,group);
+                }
+            }
+        });
+        fragmentChangeScheduleBinding.thursdayGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                View radio = group.findViewById(checkedId);
+                int idx = group.indexOfChild(radio);
+                RadioButton r = (RadioButton) group.getChildAt(idx);
+
+                if (bookingListResponse !=null && r.isChecked()){
+                    checkSwitchState("Thu",checkedId,group);
+                }
+            }
+        });
+        fragmentChangeScheduleBinding.fridayGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                View radio = group.findViewById(checkedId);
+                int idx = group.indexOfChild(radio);
+                RadioButton r = (RadioButton) group.getChildAt(idx);
+
+                if (bookingListResponse !=null && r.isChecked()){
+                    checkSwitchState("Fri",checkedId,group);
+                }
+            }
+        });
+        fragmentChangeScheduleBinding.saturdayGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                View radio = group.findViewById(checkedId);
+                int idx = group.indexOfChild(radio);
+                RadioButton r = (RadioButton) group.getChildAt(idx);
+
+                if (bookingListResponse !=null && r.isChecked()){
+                    checkSwitchState("Sat",checkedId,group);
+                }
+            }
+        });
+        fragmentChangeScheduleBinding.sundayGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                View radio = group.findViewById(checkedId);
+                int idx = group.indexOfChild(radio);
+                RadioButton r = (RadioButton) group.getChildAt(idx);
+
+                if (bookingListResponse !=null && r.isChecked()){
+                    checkSwitchState("Sun",checkedId,group);
+                }
+            }
+        });
         // Inflate the layout for this fragment
-        DateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+        /*DateFormat format = new SimpleDateFormat("MM/dd/yyyy");
         DateFormat dayFormat = new SimpleDateFormat("EEE");
         DateFormat dateFormat = new SimpleDateFormat("dd");
         Calendar calendar = Calendar.getInstance();
@@ -69,6 +170,10 @@ public class ChangeScheduleFragment extends Fragment {
             System.out.println("days check bala"+dayFormat.format(calendar.getTime()));
             switch (dayFormat.format(calendar.getTime())){
                 case "Mon":
+                    fragmentChangeScheduleBinding.mRemote.setEnabled(false);
+                    fragmentChangeScheduleBinding.mSick.setEnabled(false);
+                    fragmentChangeScheduleBinding.mOutOffice.setEnabled(false);
+
                     if (Utils.compareTwoDate(calendar.getTime(),Utils.getCurrentDate())!=1){
                         fragmentChangeScheduleBinding.mondayGroup.setEnabled(false);
                         fragmentChangeScheduleBinding.tvMondayDate.setTextColor(getResources().getColor(R.color.figmaBlue));
@@ -107,37 +212,314 @@ public class ChangeScheduleFragment extends Fragment {
             }
             days[i] = format.format(calendar.getTime());
             calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }*/
+    }
+
+    private void checkSwitchState(String day, int checkedId, RadioGroup radioGroup) {
+        for (int i=0; i<bookingListResponse.getDayGroups().size();i++){
+            if (!(Utils.compareTwoDate(bookingListResponse.getDayGroups().get(i).getDate(),
+                    Utils.getCurrentDate()) == 1) &&
+                    Utils.getDayFromDate(bookingListResponse.getDayGroups().get(i).getDate())
+                            .equalsIgnoreCase(day) &&
+                    bookingListResponse.getDayGroups().get(i).getCalendarEntries() !=null &&
+                    bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
+            ){
+                switch (day){
+                    case "Mon":
+                        boolean checkInOffice = false;
+                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries().get(x).getUsageTypeAbbreviation()
+                                    .equalsIgnoreCase("IO")){
+                                checkInOffice = true;
+                            }
+                        }
+                        if (checkInOffice){
+                            statusPopUp(bookingListResponse.getDayGroups().get(i).getDate(),
+                                    checkedId, radioGroup,day);
+                        }
+
+                        break;
+                    case "Tue":
+                        boolean tcheckInOffice = false;
+                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries().get(x).getUsageTypeAbbreviation()
+                                    .equalsIgnoreCase("IO")){
+                                tcheckInOffice = true;
+                            }
+                        }
+                        if (tcheckInOffice){
+                            statusPopUp(bookingListResponse.getDayGroups().get(i).getDate(),
+                                    checkedId, radioGroup,day);
+                        }
+
+                        break;
+                    case "Wed":
+                        boolean wcheckInOffice = false;
+                        Toast.makeText(getActivity(), "wed", Toast.LENGTH_SHORT).show();
+                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries().get(x).getUsageTypeAbbreviation()
+                                    .equalsIgnoreCase("IO")){
+                                wcheckInOffice = true;
+                            }
+                        }
+                        if (wcheckInOffice){
+                            statusPopUp(bookingListResponse.getDayGroups().get(i).getDate(),
+                                    checkedId, radioGroup,day);
+                        }
+
+                        break;
+                    case "Thu":
+                        boolean thcheckInOffice = false;
+                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries().get(x).getUsageTypeAbbreviation()
+                                    .equalsIgnoreCase("IO")){
+                                thcheckInOffice = true;
+                            }
+                        }
+                        if (thcheckInOffice){
+                            statusPopUp(bookingListResponse.getDayGroups().get(i).getDate(),
+                                    checkedId, radioGroup,day);
+                        }
+                        break;
+                    case "Fri":
+                        boolean fcheckInOffice = false;
+                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries().get(x).getUsageTypeAbbreviation()
+                                    .equalsIgnoreCase("IO")){
+                                fcheckInOffice = true;
+                            }
+                        }
+                        if (fcheckInOffice){
+                            statusPopUp(bookingListResponse.getDayGroups().get(i).getDate(),
+                                    checkedId, radioGroup,day);
+                        }
+                        break;
+                    case "Sat":
+                        boolean scheckInOffice = false;
+                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries().get(x).getUsageTypeAbbreviation()
+                                    .equalsIgnoreCase("IO")){
+                                scheckInOffice = true;
+                            }
+                        }
+                        if (scheckInOffice){
+                            statusPopUp(bookingListResponse.getDayGroups().get(i).getDate(),
+                                    checkedId, radioGroup,day);
+                        }
+                        break;
+                    case "Sun":
+                        boolean sucheckInOffice = false;
+                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries().get(x).getUsageTypeAbbreviation()
+                                    .equalsIgnoreCase("IO")){
+                                sucheckInOffice = true;
+                            }
+                        }
+                        if (sucheckInOffice){
+                            statusPopUp(bookingListResponse.getDayGroups().get(i).getDate(),
+                                    checkedId, radioGroup,day);
+                        }
+
+                        break;
+                    default:
+                }
+            }
+        }
+    }
+
+    private void statusPopUp(Date date, int checkedId, RadioGroup radioGroup,String day) {
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        int width = (int) (getActivity().getResources().getDisplayMetrics().widthPixels * 0.80);
+        int height = (int) (getActivity().getResources().getDisplayMetrics().heightPixels * 0.20);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog_pin_pop_up);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        TextView text = dialog.findViewById(R.id.tv_err_msg);
+        text.setText("There is an existing In office booking. \n Do you want to cancel to the selected booking type?");
+        TextView dialogButton = dialog.findViewById(R.id.tv_ok);
+        TextView dialogButtonCancel = dialog.findViewById(R.id.tv_cancel);
+        dialogButton.setBackgroundColor(getResources().getColor(R.color.figma_red));
+        dialogButtonCancel.setBackgroundColor(getResources().getColor(R.color.figmaGrey));
+//        dialogButtonCancel.setTextColor(getResources().getColor(R.color.figmaBlack));
+        dialogButtonCancel.setText("Cancel");
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("radio group check id"+checkedId);
+                System.out.println("radio group check butt id"+radioGroup.getCheckedRadioButtonId());
+                switch (day){
+                    case "Mon":
+                        if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.mRemote.getId()){
+                            callClearApi(date, radioGroup,9);
+                        } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.mOutOffice.getId()){
+                            callClearApi(date, radioGroup,9);
+                        } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.mSick.getId()){
+                            callClearApi(date, radioGroup,9);
+                        }
+                        break;
+                    case "Tue":
+                        if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.tRemote.getId()){
+                            callClearApi(date, radioGroup,9);
+                        } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.tOutOffice.getId()){
+                            callClearApi(date, radioGroup,9);
+                        } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.tSick.getId()){
+                            callClearApi(date, radioGroup,9);
+                        }
+                        break;
+                    case "Wed":
+                        if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.wRemote.getId()){
+                            callClearApi(date, radioGroup,9);
+                        } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.wOutOffice.getId()){
+                            callClearApi(date, radioGroup,9);
+                        } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.wSick.getId()){
+                            callClearApi(date, radioGroup,9);
+                        }
+                        break;
+                    case "Thu":
+                        if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.thRemote.getId()){
+                            callClearApi(date, radioGroup,9);
+                        } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.thOutOffice.getId()){
+                            callClearApi(date, radioGroup,9);
+                        } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.thSick.getId()){
+                            callClearApi(date, radioGroup,9);
+                        }
+                        break;
+                    case "Fri":
+                        if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.fRemote.getId()){
+                            callClearApi(date, radioGroup,9);
+                        } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.fOutOffice.getId()){
+                            callClearApi(date, radioGroup,9);
+                        } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.fSick.getId()){
+                            callClearApi(date, radioGroup,9);
+                        }
+                        break;
+                    case "Sat":
+                        if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.sRemote.getId()){
+                            callClearApi(date, radioGroup,9);
+                        } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.sOutOffice.getId()){
+                            callClearApi(date, radioGroup,9);
+                        } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.sSick.getId()){
+                            callClearApi(date, radioGroup,9);
+                        }
+                        break;
+                    case "Sun":
+                        if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.suRemote.getId()){
+                            callClearApi(date, radioGroup,9);
+                        } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.suOutOffice.getId()){
+                            callClearApi(date, radioGroup,9);
+                        } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.suSick.getId()){
+                            callClearApi(date, radioGroup,9);
+                        }
+                        break;
+                    default:
+                }
+                if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.thSick.getId()){
+                    Toast.makeText(getContext(), "tutut", Toast.LENGTH_SHORT).show();
+                }
+//                callClearApi(date, radioGroup);
+                dialog.dismiss();
+            }
+        });
+        dialogButtonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View radio = radioGroup.findViewById(checkedId);
+                int idx = radioGroup.indexOfChild(radio);
+                RadioButton r = (RadioButton) radioGroup.getChildAt(idx);
+                r.setChecked(false);
+                Toast.makeText(getActivity(), "id "+idx, Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+    }
+    
+    private void callFulldayBooking(Date date, int usageTypeId) {
+        if (Utils.isNetworkAvailable(getActivity())) {
+            fragmentChangeScheduleBinding.progrssBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("date",""+date);
+            jsonObject.addProperty("teamId",SessionHandler.getInstance().getInt(getContext(),AppConstants.TEAM_ID));
+            jsonObject.addProperty("teamMembershipId",SessionHandler.getInstance().getInt(getContext(),AppConstants.TEAMMEMBERSHIP_ID));
+            jsonObject.addProperty("userId",SessionHandler.getInstance().getInt(getContext(),AppConstants.USER_ID));
+            jsonObject.addProperty("usageTypeId", usageTypeId);
+
+            Call<BaseResponse> call = apiService.fullDayBooking(jsonObject);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                    if(response.code()==200) {
+
+                    }else if(response.code()==401){
+                        //Handle if token got expired
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+                    }
+                }
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
+    }
+    private void callClearApi(Date date, RadioGroup radioGroup, int usageTypeId) {
+        if (Utils.isNetworkAvailable(getActivity())) {
+            fragmentChangeScheduleBinding.progrssBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("date",""+date);
+            jsonObject.addProperty("teamId",SessionHandler.getInstance().getInt(getContext(),AppConstants.TEAM_ID));
+            jsonObject.addProperty("teamMembershipId",SessionHandler.getInstance().getInt(getContext(),AppConstants.TEAMMEMBERSHIP_ID));
+
+            Call<BaseResponse> call = apiService.clearBooking(jsonObject);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                    if(response.code()==200) {
+                        callFulldayBooking(date,usageTypeId);
+                    }else if(response.code()==401){
+                        //Handle if token got expired
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+                    }
+                }
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
         }
     }
 
     private void loadHomeList(){
         if (Utils.isNetworkAvailable(getActivity())) {
-//            dialog= ProgressDialog.showProgressBar(getContext());
+            fragmentChangeScheduleBinding.progrssBar.setVisibility(View.VISIBLE);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<BookingListResponse> call = apiService.getUserMyWorkDetails(Utils.getCurrentDate(),true);
-//            Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-07-18",true);
-            //Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-07-04",true);
             call.enqueue(new Callback<BookingListResponse>() {
                 @Override
                 public void onResponse(Call<BookingListResponse> call, Response<BookingListResponse> response) {
                     if(response.code()==200) {
-                        BookingListResponse bookingListResponse  =response.body();
+                        bookingListResponse  =response.body();
                         teamId = bookingListResponse.getTeamId();
                         teamMembershipId = bookingListResponse.getTeamMembershipId();
-//                        createRecyclerList(bookingListResponse);
-//                        loadDeskList();
-
-//                        ProgressDialog.dismisProgressBar(getContext(),dialog);
-//                        Log.d(TAG, "onResponse: if");
-
+                        fragmentChangeScheduleBinding.progrssBar.setVisibility(View.GONE);
+                        calculateSchedule(bookingListResponse);
                     }else if(response.code()==401){
                         //Handle if token got expired
-//                        ProgressDialog.dismisProgressBar(getContext(),dialog);
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
                         Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
-//                        Utils.finishAllActivity(getContext());
-//                        redirectToBioMetricAccess();
-
                     }
                 }
                 @Override
@@ -151,4 +533,283 @@ public class ChangeScheduleFragment extends Fragment {
         }
     }
 
+    private void calculateSchedule(BookingListResponse bookingListResponse) {
+        for(int i=0; i<bookingListResponse.getDayGroups().size(); i++){
+            switch (Utils.getDayFromDate(bookingListResponse.getDayGroups().get(i).getDate())){
+
+            }
+            switch (Utils.getDayFromDate(bookingListResponse.getDayGroups().get(i).getDate())){
+                case "Mon":
+                    String date = Utils.getDayFromDate(bookingListResponse.getDayGroups().get(i).getDate())
+                            +"\n"+ Utils.getDateFromDate(bookingListResponse.getDayGroups().get(i).getDate());
+                    date.replace(","," \n");
+                    fragmentChangeScheduleBinding.tvMondayDate.setText(date);
+                    if (Utils.compareTwoDate(bookingListResponse.getDayGroups().get(i).getDate(),
+                            Utils.getCurrentDate()) == 1){
+                        fragmentChangeScheduleBinding.tvMondayDate.setTextColor(getResources().getColor(R.color.figmaGrey));
+                        fragmentChangeScheduleBinding.mRemote.setEnabled(false);
+                        fragmentChangeScheduleBinding.mSick.setEnabled(false);
+                        fragmentChangeScheduleBinding.mOutOffice.setEnabled(false);
+                    } else {
+                        fragmentChangeScheduleBinding.tvMondayDate.setTextColor(getResources().getColor(R.color.figmaBlack));
+                        fragmentChangeScheduleBinding.mRemote.setEnabled(true);
+                        fragmentChangeScheduleBinding.mSick.setEnabled(true);
+                        fragmentChangeScheduleBinding.mOutOffice.setEnabled(true);
+                    }
+
+                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
+                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
+                        ){
+                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
+                                fragmentChangeScheduleBinding.mRemote.setChecked(true);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
+                                fragmentChangeScheduleBinding.mOutOffice.setChecked(true);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
+                                fragmentChangeScheduleBinding.mSick.setChecked(true);
+                            } else {
+
+                            }
+                        }
+                    }
+
+                    break;
+                case "Tue":
+                    String tdate =Utils.getDayFromDate(bookingListResponse.getDayGroups().get(i).getDate())
+                            +"\n"+ Utils.getDateFromDate(bookingListResponse.getDayGroups().get(i).getDate());
+                    tdate.replace(","," \n");
+                    fragmentChangeScheduleBinding.tvTuesdayDate.setText(tdate);
+                    if (Utils.compareTwoDate(bookingListResponse.getDayGroups().get(i).getDate(),
+                            Utils.getCurrentDate()) == 1){
+                        fragmentChangeScheduleBinding.tvTuesdayDate.setTextColor(getResources().getColor(R.color.figmaGrey));
+                        fragmentChangeScheduleBinding.tRemote.setEnabled(false);
+                        fragmentChangeScheduleBinding.tSick.setEnabled(false);
+                        fragmentChangeScheduleBinding.tOutOffice.setEnabled(false);
+                    } else {
+                        fragmentChangeScheduleBinding.tvTuesdayDate.setTextColor(getResources().getColor(R.color.figmaBlack));
+                        fragmentChangeScheduleBinding.tRemote.setEnabled(true);
+                        fragmentChangeScheduleBinding.tSick.setEnabled(true);
+                        fragmentChangeScheduleBinding.tOutOffice.setEnabled(true);
+                    }
+
+                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
+                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
+                    ){
+                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
+                                fragmentChangeScheduleBinding.tRemote.setChecked(true);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
+                                fragmentChangeScheduleBinding.tOutOffice.setChecked(true);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
+                                fragmentChangeScheduleBinding.tSick.setChecked(true);
+                            } else {
+
+                            }
+                        }
+                    }
+
+                    break;
+                case "Wed":
+                    String wdate = Utils.getDayFromDate(bookingListResponse.getDayGroups().get(i).getDate())
+                            +"\n"+ Utils.getDateFromDate(bookingListResponse.getDayGroups().get(i).getDate());
+                    wdate.replace(","," \n");
+                    fragmentChangeScheduleBinding.tvWednesdayDate.setText(wdate);
+                    if (Utils.compareTwoDate(bookingListResponse.getDayGroups().get(i).getDate(),
+                            Utils.getCurrentDate()) == 1){
+                        fragmentChangeScheduleBinding.tvWednesdayDate.setTextColor(getResources().getColor(R.color.figmaGrey));
+                        fragmentChangeScheduleBinding.wRemote.setEnabled(false);
+                        fragmentChangeScheduleBinding.wSick.setEnabled(false);
+                        fragmentChangeScheduleBinding.wOutOffice.setEnabled(false);
+                    } else {
+                        fragmentChangeScheduleBinding.tvWednesdayDate.setTextColor(getResources().getColor(R.color.figmaBlack));
+                        fragmentChangeScheduleBinding.wRemote.setEnabled(true);
+                        fragmentChangeScheduleBinding.wSick.setEnabled(true);
+                        fragmentChangeScheduleBinding.wOutOffice.setEnabled(true);
+                    }
+
+                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
+                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
+                    ){
+                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
+                                fragmentChangeScheduleBinding.wRemote.setChecked(true);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
+                                fragmentChangeScheduleBinding.wOutOffice.setChecked(true);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
+                                fragmentChangeScheduleBinding.wSick.setChecked(true);
+                            } else {
+
+                            }
+                        }
+                    }
+
+                    break;
+                case "Thu":
+                    String thdate = Utils.getDayFromDate(bookingListResponse.getDayGroups().get(i).getDate())
+                            +"\n"+ Utils.getDateFromDate(bookingListResponse.getDayGroups().get(i).getDate());
+                    thdate.replace(","," \n");
+                    fragmentChangeScheduleBinding.tvThursdayDate.setText(thdate);
+                    if (Utils.compareTwoDate(bookingListResponse.getDayGroups().get(i).getDate(),
+                            Utils.getCurrentDate()) == 1){
+                        fragmentChangeScheduleBinding.tvThursdayDate.setTextColor(getResources().getColor(R.color.figmaGrey));
+                        fragmentChangeScheduleBinding.thRemote.setEnabled(false);
+                        fragmentChangeScheduleBinding.thSick.setEnabled(false);
+                        fragmentChangeScheduleBinding.thOutOffice.setEnabled(false);
+                    } else {
+                        fragmentChangeScheduleBinding.tvThursdayDate.setTextColor(getResources().getColor(R.color.figmaBlack));
+                        fragmentChangeScheduleBinding.thRemote.setEnabled(true);
+                        fragmentChangeScheduleBinding.thSick.setEnabled(true);
+                        fragmentChangeScheduleBinding.thOutOffice.setEnabled(true);
+                    }
+
+                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
+                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
+                    ){
+                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
+                                fragmentChangeScheduleBinding.thRemote.setChecked(true);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
+                                fragmentChangeScheduleBinding.thOutOffice.setChecked(true);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
+                                fragmentChangeScheduleBinding.thSick.setChecked(true);
+                            } else {
+
+                            }
+                        }
+                    }
+                    break;
+                case "Fri":
+                    String fdate = Utils.getDayFromDate(bookingListResponse.getDayGroups().get(i).getDate())
+                            +"\n"+ Utils.getDateFromDate(bookingListResponse.getDayGroups().get(i).getDate());
+                    fdate.replace(","," \n");
+                    fragmentChangeScheduleBinding.tvFridayDate.setText(fdate);
+                    if (Utils.compareTwoDate(bookingListResponse.getDayGroups().get(i).getDate(),
+                            Utils.getCurrentDate()) == 1){
+                        fragmentChangeScheduleBinding.tvFridayDate.setTextColor(getResources().getColor(R.color.figmaGrey));
+                        fragmentChangeScheduleBinding.fRemote.setEnabled(false);
+                        fragmentChangeScheduleBinding.fSick.setEnabled(false);
+                        fragmentChangeScheduleBinding.fOutOffice.setEnabled(false);
+                    } else {
+                        fragmentChangeScheduleBinding.tvFridayDate.setTextColor(getResources().getColor(R.color.figmaBlack));
+                        fragmentChangeScheduleBinding.fRemote.setEnabled(true);
+                        fragmentChangeScheduleBinding.fSick.setEnabled(true);
+                        fragmentChangeScheduleBinding.fOutOffice.setEnabled(true);
+                    }
+
+                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
+                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
+                    ){
+                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
+                                fragmentChangeScheduleBinding.fRemote.setChecked(true);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
+                                fragmentChangeScheduleBinding.fOutOffice.setChecked(true);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
+                                fragmentChangeScheduleBinding.fSick.setChecked(true);
+                            } else {
+
+                            }
+                        }
+                    }
+                    break;
+                case "Sat":
+                    String sdate = Utils.getDayFromDate(bookingListResponse.getDayGroups().get(i).getDate())
+                            +"\n"+ Utils.getDateFromDate(bookingListResponse.getDayGroups().get(i).getDate());
+                    sdate.replace(","," \n");
+                    fragmentChangeScheduleBinding.tvSaturdayDate.setText(sdate);
+                    if (Utils.compareTwoDate(bookingListResponse.getDayGroups().get(i).getDate(),
+                            Utils.getCurrentDate()) == 1){
+                        fragmentChangeScheduleBinding.tvSaturdayDate.setTextColor(getResources().getColor(R.color.figmaGrey));
+                        fragmentChangeScheduleBinding.sRemote.setEnabled(false);
+                        fragmentChangeScheduleBinding.sSick.setEnabled(false);
+                        fragmentChangeScheduleBinding.sOutOffice.setEnabled(false);
+                    } else {
+                        fragmentChangeScheduleBinding.tvSaturdayDate.setTextColor(getResources().getColor(R.color.figmaBlack));
+                        fragmentChangeScheduleBinding.sRemote.setEnabled(true);
+                        fragmentChangeScheduleBinding.sSick.setEnabled(true);
+                        fragmentChangeScheduleBinding.sOutOffice.setEnabled(true);
+                    }
+
+                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
+                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
+                    ){
+                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
+                                fragmentChangeScheduleBinding.sRemote.setChecked(true);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
+                                fragmentChangeScheduleBinding.sOutOffice.setChecked(true);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
+                                fragmentChangeScheduleBinding.sSick.setChecked(true);
+                            } else {
+
+                            }
+                        }
+                    }
+                    break;
+                case "Sun":
+                    String sudate = Utils.getDayFromDate(bookingListResponse.getDayGroups().get(i).getDate())
+                            +"\n"+ Utils.getDateFromDate(bookingListResponse.getDayGroups().get(i).getDate());
+                    sudate.replace(","," \n");
+                    fragmentChangeScheduleBinding.tvSundayDate.setText(sudate);
+                    if (Utils.compareTwoDate(bookingListResponse.getDayGroups().get(i).getDate(),
+                            Utils.getCurrentDate()) == 1){
+                        fragmentChangeScheduleBinding.tvSundayDate.setTextColor(getResources().getColor(R.color.figmaBgGrey));
+                        fragmentChangeScheduleBinding.suRemote.setEnabled(false);
+                        fragmentChangeScheduleBinding.suSick.setEnabled(false);
+                        fragmentChangeScheduleBinding.suOutOffice.setEnabled(false);
+                    } else {
+                        fragmentChangeScheduleBinding.tvSundayDate.setTextColor(getResources().getColor(R.color.figmaBlack));
+                        fragmentChangeScheduleBinding.suRemote.setEnabled(true);
+                        fragmentChangeScheduleBinding.suSick.setEnabled(true);
+                        fragmentChangeScheduleBinding.suOutOffice.setEnabled(true);
+                    }
+
+                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
+                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
+                    ){
+                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
+                                fragmentChangeScheduleBinding.suRemote.setChecked(true);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
+                                fragmentChangeScheduleBinding.suOutOffice.setChecked(true);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
+                                fragmentChangeScheduleBinding.suSick.setChecked(true);
+                            } else {
+
+                            }
+                        }
+                    }
+
+                    break;
+                default:
+            }
+        }
+    }
+
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+    }
 }

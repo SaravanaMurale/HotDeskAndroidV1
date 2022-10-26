@@ -101,6 +101,10 @@ public interface ApiInterface {
 
     @POST("api/account/TypeOfLogin")
     Call<TypeOfLoginResponse> typeOfLogin(@Body JsonObject jsonObject);
+    @PUT("api/Booking/Clear")
+    Call<BaseResponse> clearBooking(@Body JsonObject jsonObject);
+    @PUT("api/Booking/FullDayBooking")
+    Call<BaseResponse> fullDayBooking(@Body JsonObject jsonObject);
 
     @POST("api/account/TokenExchange")
     Call<GetTokenResponse> tokenExchange(@Body JsonObject jsonObject);

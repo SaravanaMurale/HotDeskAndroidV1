@@ -8,6 +8,7 @@ import static dream.guys.hotdeskandroid.utils.Utils.getLoginScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getResetPasswordPageScreencreenData;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.UiModeManager;
 import android.content.Context;
@@ -159,7 +160,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     public static int earlyCheckInTime=0;
     public static int expiryCheckInTime=0;
     public boolean showPastStatus=false;
-
+    Activity activityContext;
 //    protected static final String TAG = "MonitoringActivity";
 //    private BeaconManager beaconManager;
 
@@ -180,7 +181,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         bookingExpiryGraceTimeInMinutes();
 
 /*
-        beaconManager = BeaconManager.getInstanceForApplication(getActivity());
+        beaconManager = BeaconManager.getInstanceForApplication(activityContext);
         // To detect proprietary beacons, you must add a line like below corresponding to your beacon
         // type.  Do a web search for "setBeaconLayout" to get the proper expression.
         // beaconManager.getBeaconParsers().add(new BeaconParser().
@@ -195,7 +196,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
             @Override
             public void didExitRegion(Region region) {
-//                Toast.makeText(getActivity(), " exit ", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(activityContext, " exit ", Toast.LENGTH_SHORT).show();
 
                 Log.i(TAG, "I no longer see an beacon");
             }
@@ -299,9 +300,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         meetingRecurenceCall();
         qrEnabledCall();
         //loadUserImage();
-        loadTenantImage();
         //loadNotification();
-        loadHomeList();
 
         if (SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE)!=null &&
                 SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE).equalsIgnoreCase(AppConstants.Administrator)
@@ -602,7 +601,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         }
                         if (imageResponse.getImage()!=null){
                             String cleanImage = imageResponse.getImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");
-                            SessionHandler.getInstance().save(getActivity(), AppConstants.TENANTIMAGE
+                            SessionHandler.getInstance().save(activityContext, AppConstants.TENANTIMAGE
                                     , cleanImage);
                             byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
                             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
@@ -680,6 +679,11 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         super.onViewCreated(view, savedInstanceState);
         //loadHomeList();
         this.view=view;
+        activityContext=getActivity();
+        loadTenantImage();
+        loadHomeList();
+
+
     }
     private void doTokenExpiryHere() {
 
@@ -714,6 +718,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     dialog.dismiss();
+                    String resultString="";
                     if (response.code()==200){
 //                        Utils.showCustomAlertDialog(getActivity(),"Update Success");
 //                        Toast.makeText(getActivity(), "Success Bala", Toast.LENGTH_SHORT).show();
@@ -722,7 +727,21 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                             loadHomeList();
 //                            openCheckoutDialog("Booking Updated");
                         }else {
-                            Utils.showCustomAlertDialog(getActivity(),"Booking Not Updated "+response.body().getResultCode().toString());
+
+                            if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
+                                resultString = "Invalid booking start time";
+                            } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
+                                resultString = "Invalid booking end time";
+                            } else if (response.body().getResultCode().toString().equals("INVALID_TIMEZONE_ID")) {
+                                resultString = "Invalid timezone";
+                            } else if (response.body().getResultCode().toString().equals("INVALID_TIMEPERIOD")) {
+                                resultString = "Invalid timeperiod";
+                            } else if (response.body().getResultCode().toString().equals("USER_TIME_OVERLAP")) {
+                                resultString = "Time overlaps with another booking";
+                            } else if(response.body().getResultCode().toString().equals("COVID_SYMPTOMS")){
+                                resultString = "COVID_SYMPTOMS";
+                            }
+                            Utils.showCustomAlertDialog(getActivity(), resultString);
                         }
                     }else if (response.code() == 500){
                         Utils.showCustomAlertDialog(getActivity(),"500 Response");
@@ -896,7 +915,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     }
     private void loadDeskList() {
         System.out.println("desk Code enter");
-        if (Utils.isNetworkAvailable(getActivity())) {
+        if (Utils.isNetworkAvailable(activityContext)) {
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<BookingForEditResponse> call = apiService.getBookingsForEdit(teamId,teamMembershipId,
@@ -1356,7 +1375,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         continueEditBook.setText(appKeysPage.getContinue());
         back.setText(appKeysPage.getBack());
         select.setText(appKeysPage.getSelect());
-
+        Toast.makeText(getActivity(), " "+Utils.compareTimeIfCheckInEnable(editDeskBookingDetails.getEditStartTTime(),
+                Utils.getCurrentTime()), Toast.LENGTH_SHORT).show();
 
         if (editDeskBookingDetails.getDeskStatus() == 1){
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
@@ -1378,6 +1398,20 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             statusCheckLayout.setVisibility(View.GONE);
             llCapacityLayout.setVisibility(View.GONE);
 //            chipGroup.setVisibility(View.GONE);
+        }
+        if (Utils.compareTwoDate(editDeskBookingDetails.getDate(), Utils.getCurrentDate())==2
+                && Utils.compareTimeIfCheckInEnable(Utils.getCurrentTime(),
+                editDeskBookingDetails.getEditStartTTime()
+                )){
+            startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
+            select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
+        }
+        if (Utils.compareTwoDate(editDeskBookingDetails.getDate(), Utils.getCurrentDate())==2
+                && Utils.compareTimeIfCheckInEnable(Utils.getCurrentTime(),
+                editDeskBookingDetails.getEditEndTime()
+                )){
+            endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
+            select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
         }
 
         if (dskRoomParkStatus == 1) {
