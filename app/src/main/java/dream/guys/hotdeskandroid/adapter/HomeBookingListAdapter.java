@@ -213,7 +213,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                                 )){
                             holder.bookingBtnCheckIn.setVisibility(View.GONE);
                         }else {
-                            holder.bookingBtnCheckIn.setVisibility(View.VISIBLE);
+//                            holder.bookingBtnCheckIn.setVisibility(View.VISIBLE);
                         }
 
                     }
