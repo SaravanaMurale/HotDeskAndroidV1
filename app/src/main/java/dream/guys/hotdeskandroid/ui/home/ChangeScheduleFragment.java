@@ -70,7 +70,7 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
         super.onViewCreated(view, savedInstanceState);
 
         loadHomeList();
-        fragmentChangeScheduleBinding.mondayGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+/*        fragmentChangeScheduleBinding.mondayGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 View radio = group.findViewById(checkedId);
@@ -153,66 +153,8 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
                     checkSwitchState("Sun",checkedId,group);
                 }
             }
-        });
-        // Inflate the layout for this fragment
-        /*DateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-        DateFormat dayFormat = new SimpleDateFormat("EEE");
-        DateFormat dateFormat = new SimpleDateFormat("dd");
-        Calendar calendar = Calendar.getInstance();
-        calendar.setFirstDayOfWeek(Calendar.MONDAY);
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        });*/
 
-        String day="";
-        String date="";
-        String[] days = new String[7];
-        for (int i = 0; i < 7; i++)
-        {
-            System.out.println("days check bala"+dayFormat.format(calendar.getTime()));
-            switch (dayFormat.format(calendar.getTime())){
-                case "Mon":
-                    fragmentChangeScheduleBinding.mRemote.setEnabled(false);
-                    fragmentChangeScheduleBinding.mSick.setEnabled(false);
-                    fragmentChangeScheduleBinding.mOutOffice.setEnabled(false);
-
-                    if (Utils.compareTwoDate(calendar.getTime(),Utils.getCurrentDate())!=1){
-                        fragmentChangeScheduleBinding.mondayGroup.setEnabled(false);
-                        fragmentChangeScheduleBinding.tvMondayDate.setTextColor(getResources().getColor(R.color.figmaBlue));
-                    } else {
-                        fragmentChangeScheduleBinding.tvMondayDate.setTextColor(getResources().getColor(R.color.figmaBlack));
-                    }
-                    fragmentChangeScheduleBinding.tvMondayDate.setText(dayFormat.format(calendar.getTime())
-                            +" \n"+dateFormat.format(calendar.getTime()));
-                    break;
-                case "Tue":
-                    fragmentChangeScheduleBinding.tvTuesdayDate.setText(dayFormat.format(calendar.getTime())
-                            +" \n"+dateFormat.format(calendar.getTime()));
-
-                    break;
-                case "Wed":
-                    fragmentChangeScheduleBinding.tvWednesdayDate.setText(dayFormat.format(calendar.getTime())
-                            +" \n"+dateFormat.format(calendar.getTime()));
-                    break;
-                case "Thu":
-                    fragmentChangeScheduleBinding.tvThursdayDate.setText(dayFormat.format(calendar.getTime())
-                            +" \n"+dateFormat.format(calendar.getTime()));
-                    break;
-                case "Fri":
-                    fragmentChangeScheduleBinding.tvFridayDate.setText(dayFormat.format(calendar.getTime())
-                            +" \n"+dateFormat.format(calendar.getTime()));
-                    break;
-                case "Sat":
-                    fragmentChangeScheduleBinding.tvSaturdayDate.setText(dayFormat.format(calendar.getTime())
-                            +" \n"+dateFormat.format(calendar.getTime()));
-                    break;
-                case "Sun":
-                    fragmentChangeScheduleBinding.tvSundayDate.setText(dayFormat.format(calendar.getTime())
-                            +" \n"+dateFormat.format(calendar.getTime()));
-                    break;
-                default:
-            }
-            days[i] = format.format(calendar.getTime());
-            calendar.add(Calendar.DAY_OF_MONTH, 1);
-        }*/
     }
 
     private void checkSwitchState(String day, int checkedId, RadioGroup radioGroup) {
@@ -236,6 +178,12 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
                         if (checkInOffice){
                             statusPopUp(bookingListResponse.getDayGroups().get(i).getDate(),
                                     checkedId, radioGroup,day);
+                        } else {
+                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0){
+                                
+                                statusPopUp(bookingListResponse.getDayGroups().get(i).getDate(),
+                                        checkedId, radioGroup,day);
+                            }
                         }
 
                         break;
@@ -350,66 +298,75 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
                 System.out.println("radio group check butt id"+radioGroup.getCheckedRadioButtonId());
                 switch (day){
                     case "Mon":
-                        if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.mRemote.getId()){
+                        if (radioGroup.getCheckedRadioButtonId() ==
+                                fragmentChangeScheduleBinding.mRemote.getId()){
                             callClearApi(date, radioGroup,9);
-                        } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.mOutOffice.getId()){
-                            callClearApi(date, radioGroup,9);
-                        } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.mSick.getId()){
-                            callClearApi(date, radioGroup,9);
+                        } else if (radioGroup.getCheckedRadioButtonId() ==
+                                fragmentChangeScheduleBinding.mOutOffice.getId()){
+                            callClearApi(date, radioGroup,6);
+                        } else if (radioGroup.getCheckedRadioButtonId() ==
+                                fragmentChangeScheduleBinding.mSick.getId()){
+                            callClearApi(date, radioGroup,18);
                         }
                         break;
                     case "Tue":
                         if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.tRemote.getId()){
                             callClearApi(date, radioGroup,9);
-                        } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.tOutOffice.getId()){
-                            callClearApi(date, radioGroup,9);
-                        } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.tSick.getId()){
-                            callClearApi(date, radioGroup,9);
+                        } else if (radioGroup.getCheckedRadioButtonId() ==
+                                fragmentChangeScheduleBinding.tOutOffice.getId()){
+                            callClearApi(date, radioGroup,6);
+                        } else if (radioGroup.getCheckedRadioButtonId() ==
+                                fragmentChangeScheduleBinding.tSick.getId()){
+                            callClearApi(date, radioGroup,18);
                         }
                         break;
                     case "Wed":
                         if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.wRemote.getId()){
                             callClearApi(date, radioGroup,9);
                         } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.wOutOffice.getId()){
-                            callClearApi(date, radioGroup,9);
+                            callClearApi(date, radioGroup,6);
                         } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.wSick.getId()){
-                            callClearApi(date, radioGroup,9);
+                            callClearApi(date, radioGroup,18);
                         }
                         break;
                     case "Thu":
                         if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.thRemote.getId()){
                             callClearApi(date, radioGroup,9);
                         } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.thOutOffice.getId()){
-                            callClearApi(date, radioGroup,9);
+                            callClearApi(date, radioGroup,6);
                         } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.thSick.getId()){
-                            callClearApi(date, radioGroup,9);
+                            callClearApi(date, radioGroup,18);
                         }
                         break;
                     case "Fri":
                         if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.fRemote.getId()){
                             callClearApi(date, radioGroup,9);
                         } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.fOutOffice.getId()){
-                            callClearApi(date, radioGroup,9);
-                        } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.fSick.getId()){
-                            callClearApi(date, radioGroup,9);
+                            callClearApi(date, radioGroup,6);
+                        } else if (radioGroup.getCheckedRadioButtonId() ==
+                                fragmentChangeScheduleBinding.fSick.getId()){
+                            callClearApi(date, radioGroup,18);
                         }
                         break;
                     case "Sat":
                         if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.sRemote.getId()){
                             callClearApi(date, radioGroup,9);
                         } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.sOutOffice.getId()){
-                            callClearApi(date, radioGroup,9);
-                        } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.sSick.getId()){
-                            callClearApi(date, radioGroup,9);
+                            callClearApi(date, radioGroup,6);
+                        } else if (radioGroup.getCheckedRadioButtonId() ==
+                                fragmentChangeScheduleBinding.sSick.getId()){
+                            callClearApi(date, radioGroup,18);
                         }
                         break;
                     case "Sun":
                         if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.suRemote.getId()){
                             callClearApi(date, radioGroup,9);
-                        } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.suOutOffice.getId()){
-                            callClearApi(date, radioGroup,9);
-                        } else if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.suSick.getId()){
-                            callClearApi(date, radioGroup,9);
+                        } else if (radioGroup.getCheckedRadioButtonId() ==
+                                fragmentChangeScheduleBinding.suOutOffice.getId()){
+                            callClearApi(date, radioGroup,6);
+                        } else if (radioGroup.getCheckedRadioButtonId() ==
+                                fragmentChangeScheduleBinding.suSick.getId()){
+                            callClearApi(date, radioGroup,18);
                         }
                         break;
                     default:
@@ -534,10 +491,14 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
     }
 
     private void calculateSchedule(BookingListResponse bookingListResponse) {
+        fragmentChangeScheduleBinding.mondayGroup.setOnCheckedChangeListener(null);
+        fragmentChangeScheduleBinding.tuesdayGroup.setOnCheckedChangeListener(null);
+        fragmentChangeScheduleBinding.wednesdayGroup.setOnCheckedChangeListener(null);
+        fragmentChangeScheduleBinding.thursdayGroup.setOnCheckedChangeListener(null);
+        fragmentChangeScheduleBinding.fridayGroup.setOnCheckedChangeListener(null);
+        fragmentChangeScheduleBinding.saturdayGroup.setOnCheckedChangeListener(null);
+        fragmentChangeScheduleBinding.sundayGroup.setOnCheckedChangeListener(null);
         for(int i=0; i<bookingListResponse.getDayGroups().size(); i++){
-            switch (Utils.getDayFromDate(bookingListResponse.getDayGroups().get(i).getDate())){
-
-            }
             switch (Utils.getDayFromDate(bookingListResponse.getDayGroups().get(i).getDate())){
                 case "Mon":
                     String date = Utils.getDayFromDate(bookingListResponse.getDayGroups().get(i).getDate())
@@ -805,11 +766,25 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
                 default:
             }
         }
+        fragmentChangeScheduleBinding.mondayGroup.setOnCheckedChangeListener(this::onCheckedChanged);
+        fragmentChangeScheduleBinding.tuesdayGroup.setOnCheckedChangeListener(this::onCheckedChanged);
+        fragmentChangeScheduleBinding.wednesdayGroup.setOnCheckedChangeListener(this::onCheckedChanged);
+        fragmentChangeScheduleBinding.thursdayGroup.setOnCheckedChangeListener(this::onCheckedChanged);
+        fragmentChangeScheduleBinding.fridayGroup.setOnCheckedChangeListener(this::onCheckedChanged);
+        fragmentChangeScheduleBinding.saturdayGroup.setOnCheckedChangeListener(this::onCheckedChanged);
+        fragmentChangeScheduleBinding.sundayGroup.setOnCheckedChangeListener(this::onCheckedChanged);
     }
 
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
+        Toast.makeText(getContext(), "private", Toast.LENGTH_SHORT).show();
+        View radio = group.findViewById(checkedId);
+        int idx = group.indexOfChild(radio);
+        RadioButton r = (RadioButton) group.getChildAt(idx);
 
+        if (bookingListResponse !=null && !r.isChecked()){
+            checkSwitchState("Mon",checkedId,group);
+        }
     }
 }

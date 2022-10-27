@@ -103,7 +103,6 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
                     .getFrom(), Utils.getCurrentDate())==1){
                 holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
                 holder.select.setVisibility(View.GONE);
-
                 holder.deskStatus.setText("Booked by Other");
                 holder.deskIconStatus.setColorFilter(context.getColor(R.color.figmaGrey));
 
