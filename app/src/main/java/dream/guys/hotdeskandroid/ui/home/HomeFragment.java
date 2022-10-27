@@ -334,7 +334,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         homeNotificationIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (notiList!=null && notiList.size()>0){
+                //if (notiList!=null && notiList.size()>0){
 
                     if (profileData!=null) {
 
@@ -356,7 +356,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         startActivity(intent);
                     }
 
-                }
+                //}
             }
         });
 

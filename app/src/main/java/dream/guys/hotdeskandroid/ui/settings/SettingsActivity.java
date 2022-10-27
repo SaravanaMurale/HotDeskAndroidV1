@@ -509,19 +509,23 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ProfilePicResponse> call, Response<ProfilePicResponse> response) {
 
-                ProfilePicResponse profilePicResponse=response.body();
+                if (response.body()!=null) {
 
-                //System.out.println("Base64Image"+profilePicResponse.getImage());
+                    ProfilePicResponse profilePicResponse=response.body();
 
-                if(profilePicResponse.getImage()!=null &&
-                        !profilePicResponse.getImage().equalsIgnoreCase("") &&
-                        !profilePicResponse.getImage().isEmpty() ) {
-                    String base64String = profilePicResponse.getImage();
-                    String base64Image = base64String.split(",")[1];
-                    byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
-                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    //System.out.println("Base64Image"+profilePicResponse.getImage());
 
-                    binding.ivViewPrifle.setImageBitmap(decodedByte);
+                    if(profilePicResponse.getImage()!=null &&
+                            !profilePicResponse.getImage().equalsIgnoreCase("") &&
+                            !profilePicResponse.getImage().isEmpty() ) {
+                        String base64String = profilePicResponse.getImage();
+                        String base64Image = base64String.split(",")[1];
+                        byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                        binding.ivViewPrifle.setImageBitmap(decodedByte);
+                    }
+
                 }
 
             }
