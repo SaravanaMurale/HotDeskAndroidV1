@@ -569,7 +569,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                                 notiIcon.setVisibility(View.VISIBLE);
                                 break loo;
                             }
-                            SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.SHOWNOTIFICATION,false);
+                            SessionHandler.getInstance().saveBoolean(activityContext, AppConstants.SHOWNOTIFICATION,false);
                         }
 
                     }else {

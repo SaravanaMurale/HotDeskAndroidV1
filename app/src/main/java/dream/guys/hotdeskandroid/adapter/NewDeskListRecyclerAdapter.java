@@ -106,6 +106,14 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
                 holder.deskStatus.setText("Booked by Other");
                 holder.deskIconStatus.setColorFilter(context.getColor(R.color.figmaGrey));
 
+            } else if (deskList.get(position).getTeamId() != SessionHandler.getInstance()
+                    .getInt(context, AppConstants.TEAM_ID)
+                    && fragment.selectedTeamAutoApproveStatus != 2){
+                holder.card.setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
+                holder.select.setVisibility(View.VISIBLE);
+
+                holder.deskStatus.setText("Available For Request");
+                holder.deskIconStatus.setColorFilter(context.getColor(R.color.figma_orange));
             } else {
                 holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
                 holder.select.setVisibility(View.VISIBLE);

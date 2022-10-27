@@ -1,70 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.home.ChangeScheduleFragment">
     <!--Profile and Head Block-->
     <LinearLayout
-        android:id="@+id/bookDetailHeadBlock"
+        android:id="@+id/HeadBlock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:visibility="visible"
         tools:ignore="MissingConstraints">
 
         <!--Notification,Search-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            >
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/bookDetailNotificationIcon"
+                    android:id="@+id/homeNotificationIcon"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:src="@drawable/notification_icon" />
+                    android:src="@drawable/notification_icon"
+                    app:tint="@color/black" />
 
                 <ImageView
                     android:id="@+id/noti_icon"
                     android:layout_width="@dimen/_10sdp"
                     android:layout_height="@dimen/_10sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:visibility="gone"
                     android:src="@drawable/notification_red"
-
+                    android:visibility="gone"
                     />
 
             </RelativeLayout>
-
             <view
-                class="android.widget.ImageView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
+                class="android.widget.ImageView"
+                android:layout_weight="1"
+                />
             <ImageView
+                android:id="@+id/search_icon"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
-                android:src="@drawable/search_icon" />
-
+                android:src="@drawable/search_icon"
+                app:tint="@color/black"
+                />
             <ImageView
+                android:id="@+id/profile"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
-                android:src="@drawable/user_profile_icon" />
+                android:src="@drawable/ic_outline_settings_24"
+                app:tint="@color/black"
+                />
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/figmaGrey"
+            android:background="@color/figmaBgGrey"
             />
 
         <!--User Image and other-->
@@ -76,76 +82,56 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                app:cardElevation="@dimen/_3sdp"
+                android:layout_marginBottom="@dimen/_3sdp"
                 >
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
+                    android:orientation="horizontal"
+                    android:background="@color/white"
+                    >
                     <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:minHeight="@dimen/_80sdp">
+                        android:minHeight="@dimen/_80sdp"
+                        >
 
                         <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/bookDetailUserProfilePic"
-                            android:layout_width="@dimen/_50sdp"
+                            android:id="@+id/user_profile_pic"
+                            android:layout_width="@dimen/_45sdp"
                             android:layout_height="@dimen/_45sdp"
                             android:layout_centerInParent="true"
                             android:background="@drawable/bg_circle_vector"
-                            android:src="@drawable/mygirl" />
+                            android:padding="@dimen/_2sdp"
+                            android:src="@drawable/avatar" />
                     </RelativeLayout>
-
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
                         android:layout_weight="2"
+                        android:orientation="vertical"
                         android:gravity="center_vertical"
-                        android:orientation="vertical">
-
+                        android:layout_gravity="center_vertical"
+                        >
                         <TextView
-                            android:id="@+id/bookDetailUserName"
+                            android:id="@+id/homeUserName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:theme="@style/TextBold"
                             android:text="Hi, Bala"
-                            android:theme="@style/TextBold" />
-
+                            />
                         <TextView
+                            android:id="@+id/homeTeamName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginVertical="@dimen/_3sdp"
+                            android:theme="@style/TextRegular"
                             android:text="Back Office"
                             android:textColor="@color/black"
-                            android:theme="@style/TextRegular" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-                            <ImageView
-                                android:id="@+id/user_status"
-                                android:layout_width="@dimen/_10sdp"
-                                android:layout_height="@dimen/_10sdp"
-                                android:src="@drawable/bg_circle_vector"
-                                />
-                            <TextView
-                                android:id="@+id/user_current_status"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:theme="@style/TextRegular"
-                                android:text="Checked In"
-                                android:layout_marginStart="@dimen/_3sdp"
-                                android:textColor="@color/black"
-                                />
-
-                        </LinearLayout>
+                            android:layout_marginVertical="@dimen/_3sdp"
+                            />
                     </LinearLayout>
-
                     <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -153,14 +139,13 @@
 
                         <view
                             class="android.widget.TextView"
-                            android:layout_width="@dimen/_1sdp"
+                            android:layout_width="@dimen/_2sdp"
                             android:layout_height="match_parent"
-                            android:layout_marginBottom="@dimen/_15sdp"
-                            android:layout_marginTop="@dimen/_15sdp"
-
+                            android:layout_marginVertical="@dimen/_5sdp"
                             android:background="@color/figmaGrey" />
 
                         <ImageView
+                            android:id="@+id/tentant_image_view"
                             android:layout_width="@dimen/_50sdp"
                             android:layout_height="@dimen/_50sdp"
                             android:layout_centerInParent="true"
@@ -170,16 +155,18 @@
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
         </LinearLayout>
 
 
     </LinearLayout>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
         android:layout_above="@id/scheduleBlock"
-        android:layout_below="@id/bookDetailHeadBlock"
+        android:layout_below="@id/HeadBlock"
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -825,6 +812,7 @@
             android:text="Change your \n    schedule"
             android:textColor="@color/figmaBlue"
             android:textSize="@dimen/_13sdp"
+            android:visibility="gone"
             android:textStyle="bold"
             android:theme="@style/TextBold" />
 

@@ -66,6 +66,7 @@ public class AppConstants {
 
     public static final String DEFAULT_LOCATION_NAME="DEFAULT_LOCATION_NAME";
     public static final String DEFAULT_LOCATION_ID="DEFAULT_LOCATION_ID";
+    public static final String DEFAULT_TIME_ZONE_ID="DEFAULT_TIME_ZONE_ID";
 
     public static final String APPTHEME = "APPTHEME";
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;

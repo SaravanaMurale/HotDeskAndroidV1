@@ -669,6 +669,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
                             if (userDetailsResponse.getDefaultLocation()!=null){
+                                SessionHandler.getInstance().save(LoginActivity.this,AppConstants.DEFAULT_TIME_ZONE_ID,Utils.checkStringParms(userDetailsResponse.getDefaultLocation().getTimeZoneId()));
                                 SessionHandler.getInstance().save(LoginActivity.this,AppConstants.DEFAULT_LOCATION_NAME,Utils.checkStringParms(userDetailsResponse.getDefaultLocation().getName()));
                                 SessionHandler.getInstance().save(LoginActivity.this,AppConstants.DEFAULT_LOCATION_ID,String.valueOf(Utils.checkStringParms(userDetailsResponse.getDefaultLocation().getParentLocationId())));
                                 SessionHandler.getInstance().save(LoginActivity.this,AppConstants.DEFAULT_LOCATION_UNIQUE_ID,String.valueOf(Utils.checkStringParms(userDetailsResponse.getDefaultLocation().getId())));

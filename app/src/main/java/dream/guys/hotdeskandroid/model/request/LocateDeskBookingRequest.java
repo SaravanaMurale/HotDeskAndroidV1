@@ -81,7 +81,7 @@ public class LocateDeskBookingRequest {
             this.changes = changes;
         }
 
-        public  class   Changes {
+        public  class Changes {
             @SerializedName("usageTypeId")
             int usageTypeId;
 

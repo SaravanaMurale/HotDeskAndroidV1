@@ -52,6 +52,7 @@ import dream.guys.hotdeskandroid.adapter.EditDefaultAssetAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityEditProfileBinding;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
 import dream.guys.hotdeskandroid.model.response.DAOCountryList;
 import dream.guys.hotdeskandroid.model.response.DefaultAssetResponse;
@@ -113,7 +114,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         setLanguage();
 
         getProfilePicture();
-
+        loadHomeList();
         Gson gson = new Gson();
         String json = SessionHandler.getInstance().get(EditProfileActivity.this, AppConstants.LOGIN_RESPONSE);
         if (json!=null){
@@ -406,6 +407,297 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             }
         });
 
+    }
+
+    private void loadHomeList(){
+        if (Utils.isNetworkAvailable(this)) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BookingListResponse> call = apiService.getUserMyWorkDetails(Utils.getCurrentDate(),true);
+            call.enqueue(new Callback<BookingListResponse>() {
+                @Override
+                public void onResponse(Call<BookingListResponse> call, Response<BookingListResponse> response) {
+                    if(response.code()==200) {
+                        BookingListResponse bookingListResponse  =response.body();
+                        calculateSchedule(bookingListResponse);
+                    }else if(response.code()==401){
+                        //Handle if token got expired
+                        SessionHandler.getInstance().saveBoolean(EditProfileActivity.this, AppConstants.LOGIN_CHECK,false);
+                        Utils.showCustomTokenExpiredDialog(EditProfileActivity.this,"Token Expired");
+                    }
+                }
+                @Override
+                public void onFailure(Call<BookingListResponse> call, Throwable t) {
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(EditProfileActivity.this, "Please Enable Internet");
+        }
+    }
+
+    private void calculateSchedule(BookingListResponse bookingListResponse) {
+        for(int i=0; i<bookingListResponse.getDayGroups().size(); i++){
+            switch (Utils.getDayFromDate(bookingListResponse.getDayGroups().get(i).getDate())){
+                case "Mon":
+                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
+                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
+                    ){
+                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
+                                Glide.with(this)
+                                        .load(R.drawable.remote_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivMonday);
+
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
+                                Glide.with(this)
+                                        .load(R.drawable.out_of_office_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivMonday);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
+                                Glide.with(this)
+                                        .load(R.drawable.sick_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivMonday);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
+                                Glide.with(this)
+                                        .load(R.drawable.building_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivMonday);
+                            } else {
+
+                            }
+                        }
+                    }
+
+                    break;
+                case "Tue":
+
+                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
+                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
+                    ){
+                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
+                                Glide.with(this)
+                                        .load(R.drawable.remote_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivTuesday);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
+                                Glide.with(this)
+                                        .load(R.drawable.out_of_office_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivTuesday);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
+                                Glide.with(this)
+                                        .load(R.drawable.sick_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivTuesday);
+                            } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
+                                Glide.with(this)
+                                        .load(R.drawable.building_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivTuesday);
+                            } else {
+
+                            }
+                        }
+                    }
+
+                    break;
+                case "Wed":
+
+                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
+                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
+                    ){
+                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
+                                Glide.with(this)
+                                        .load(R.drawable.remote_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivWednesday);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
+                                Glide.with(this)
+                                        .load(R.drawable.out_of_office_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivWednesday);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
+                                Glide.with(this)
+                                        .load(R.drawable.sick_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivWednesday);
+                            } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
+                                Glide.with(this)
+                                        .load(R.drawable.building_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivWednesday);
+                            } else {
+
+                            }
+                        }
+                    }
+
+                    break;
+                case "Thu":
+
+                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
+                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
+                    ){
+                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
+                                Glide.with(this)
+                                        .load(R.drawable.remote_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivThursday);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
+                                Glide.with(this)
+                                        .load(R.drawable.out_of_office_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivThursday);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
+                                Glide.with(this)
+                                        .load(R.drawable.sick_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivThursday);
+                            } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
+                                Glide.with(this)
+                                        .load(R.drawable.building_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivThursday);
+                            } else {
+
+                            }
+                        }
+                    }
+                    break;
+                case "Fri":
+
+                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
+                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
+                    ){
+                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
+                                Glide.with(this)
+                                        .load(R.drawable.remote_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivFriday);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
+                                Glide.with(this)
+                                        .load(R.drawable.out_of_office_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivFriday);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
+                                Glide.with(this)
+                                        .load(R.drawable.sick_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivFriday);
+                            } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
+                                Glide.with(this)
+                                        .load(R.drawable.building_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivFriday);
+                            } else {
+
+                            }
+                        }
+                    }
+                    break;
+                case "Sat":
+
+                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
+                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
+                    ){
+                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
+                                Glide.with(this)
+                                        .load(R.drawable.remote_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivSaturday);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
+                                Glide.with(this)
+                                        .load(R.drawable.out_of_office_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivSaturday);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
+                                Glide.with(this)
+                                        .load(R.drawable.sick_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivSaturday);
+                            } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
+                                Glide.with(this)
+                                        .load(R.drawable.building_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivSaturday);
+                            } else {
+
+                            }
+                        }
+                    }
+                    break;
+                case "Sun":
+
+                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
+                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
+                    ){
+                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
+                                Glide.with(this)
+                                        .load(R.drawable.remote_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivSunday);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
+                                Glide.with(this)
+                                        .load(R.drawable.out_of_office_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivSunday);
+                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
+                                Glide.with(this)
+                                        .load(R.drawable.remote_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivMonday);
+                            } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
+                                Glide.with(this)
+                                        .load(R.drawable.building_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivSunday);
+                            }else {
+
+                            }
+                        }
+                    }
+
+                    break;
+                default:
+            }
+        }
     }
 
     private boolean isValidate(String phone,String email) {

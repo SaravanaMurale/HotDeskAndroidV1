@@ -274,6 +274,7 @@
                         android:gravity="center_horizontal"
                         android:layout_weight="1">
                         <ImageView
+                            android:id="@+id/iv_monday"
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
                             android:src="@drawable/building_circle"
@@ -293,6 +294,7 @@
                         android:layout_marginStart="@dimen/_5sdp"
                         android:layout_weight="1">
                         <ImageView
+                            android:id="@+id/iv_tuesday"
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
                             android:src="@drawable/info_circle"
@@ -312,6 +314,7 @@
                         android:layout_marginStart="@dimen/_5sdp"
                         android:layout_weight="1">
                         <ImageView
+                            android:id="@+id/iv_wednesday"
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
                             android:src="@drawable/info_circle"
@@ -331,6 +334,7 @@
                         android:layout_marginStart="@dimen/_5sdp"
                         android:layout_weight="1">
                         <ImageView
+                            android:id="@+id/iv_thursday"
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
                             android:src="@drawable/info_circle"
@@ -350,6 +354,7 @@
                         android:layout_marginStart="@dimen/_5sdp"
                         android:layout_weight="1">
                         <ImageView
+                            android:id="@+id/iv_friday"
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
                             android:src="@drawable/info_circle"
@@ -369,6 +374,7 @@
                         android:layout_marginStart="@dimen/_5sdp"
                         android:layout_weight="1">
                         <ImageView
+                            android:id="@+id/iv_saturday"
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
                             android:src="@drawable/info_circle"
@@ -388,6 +394,7 @@
                         android:layout_marginStart="@dimen/_5sdp"
                         android:layout_weight="1">
                         <ImageView
+                            android:id="@+id/iv_sunday"
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
                             android:src="@drawable/info_circle"

@@ -101,7 +101,8 @@ public class BookingDetailFragment extends Fragment {
         View root = fragmentBookingDetailBinding.getRoot();
 
         dialog = new Dialog(getContext());
-        fragmentBookingDetailBinding.bookDetailUserName.setText(SessionHandler.getInstance().get(getContext(), AppConstants.USERNAME));
+        fragmentBookingDetailBinding.bookDetailUserName.setText(
+                SessionHandler.getInstance().get(getContext(), AppConstants.USERNAME));
 
         if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null && SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked in")){
             userCurrentStatus.setText("Checked In");
