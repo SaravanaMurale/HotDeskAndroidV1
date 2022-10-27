@@ -2937,7 +2937,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             public void afterTextChanged(Editable editable) {
                 showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " " + startRoomTime.getText().toString());
 
-                endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
+                boolean b = Utils.checkIsCurrentDate(binding.locateCalendearView.getText().toString());
+
+                if (b){
+                    endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
+                }else {
+
+                }
 
             }
         });
@@ -3065,8 +3071,22 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         if (editLastEndTime.equals("") && action.equalsIgnoreCase("BOOK")) {
 
-            startRoomTime.setText(Utils.setNearestThirtyMinToMeeting(getCurrentTime()));
-            showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " " + startRoomTime.getText().toString());
+            boolean b = Utils.checkIsCurrentDate(binding.locateCalendearView.getText().toString());
+
+            if (b) {
+
+                startRoomTime.setText(Utils.setNearestThirtyMinToMeeting(getCurrentTime()));
+                showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " " + startRoomTime.getText().toString());
+
+            } else {
+                if (profileData != null) {
+
+                    startRoomTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
+                    endTRoomime.setText(Utils.splitTime(profileData.getWorkHoursTo()));
+                    showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " " + startRoomTime.getText().toString());
+                }
+            }
+
 
 
         } else {
