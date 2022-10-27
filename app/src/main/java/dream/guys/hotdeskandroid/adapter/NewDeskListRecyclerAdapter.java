@@ -26,6 +26,7 @@ import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.ui.book.BookFragment;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
+import dream.guys.hotdeskandroid.utils.Utils;
 
 public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskListRecyclerAdapter.viewholder> {
     Context context;
@@ -97,11 +98,23 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
         }
 
         if (deskList.get(position).isBookedByElse()) {
-            holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
-            holder.select.setVisibility(View.GONE);
+            if(Utils.compareTwoDates(deskList.get(position).getAvailableTimeSlots()
+                    .get(deskList.get(position).getAvailableTimeSlots().size() - 1)
+                    .getFrom(), Utils.getCurrentDate())==1){
+                holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
+                holder.select.setVisibility(View.GONE);
 
-            holder.deskStatus.setText("Booked by Other");
-            holder.deskIconStatus.setColorFilter(context.getColor(R.color.figmaGrey));
+                holder.deskStatus.setText("Booked by Other");
+                holder.deskIconStatus.setColorFilter(context.getColor(R.color.figmaGrey));
+
+            } else {
+                holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
+                holder.select.setVisibility(View.VISIBLE);
+
+                holder.deskStatus.setText("Available");
+                holder.deskIconStatus.setColorFilter(context.getColor(R.color.figmaLiteGreen));
+            }
+
         }
 
         holder.select.setOnClickListener(new View.OnClickListener() {
