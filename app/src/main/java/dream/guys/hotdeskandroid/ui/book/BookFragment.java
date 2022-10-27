@@ -294,6 +294,8 @@ public class BookFragment extends Fragment implements
     EditBookingDetails editBookingDetailsGlobal;
     UserDetailsResponse profileData; //= new UserDetailsResponse();
 
+    List<MeetingListToEditResponse.Attendees> attendeesListForEdit;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -1418,6 +1420,13 @@ public class BookFragment extends Fragment implements
         editDeskBookingDetails.setDate(Utils.convertStringToDateFormet(meetingListToEditResponse.getDate()));
         editDeskBookingDetails.setCalId(meetingListToEditResponse.getId());
         editDeskBookingDetails.setMeetingRoomtId(meetingListToEditResponse.getMeetingRoomId());
+
+        //New...
+        editDeskBookingDetails.setAttendeesList(meetingListToEditResponse.getAttendeesList());
+        editDeskBookingDetails.setExternalAttendeesList(meetingListToEditResponse.getExternalAttendeesList());
+        editDeskBookingDetails.setComments(meetingListToEditResponse.getComments());
+        editDeskBookingDetails.setSubject(meetingListToEditResponse.getSubject());
+
         callAmenitiesListForMeetingRoom(editDeskBookingDetails,
                 editDeskBookingDetails.getEditStartTTime(),
                 editDeskBookingDetails.getEditEndTime(),
@@ -1747,6 +1756,9 @@ public class BookFragment extends Fragment implements
 
         deskRoomName=roomBottomSheet.findViewById(R.id.tv_desk_room_name);
         locationAddress=roomBottomSheet.findViewById(R.id.tv_location_details);
+        //New...
+        locationAddress.setVisibility(View.GONE);
+
         date=roomBottomSheet.findViewById(R.id.date);
         TextView title=roomBottomSheet.findViewById(R.id.title);
         TextView checkInDate=roomBottomSheet.findViewById(R.id.checkInDate);
@@ -3293,6 +3305,7 @@ public class BookFragment extends Fragment implements
         externalAttendees = bottomSheetDialog.findViewById(R.id.externalAttendees);
         externalAttendeesChipGroup = bottomSheetDialog.findViewById(R.id.externalAttendeesChipGroup);
 
+
         //Set All Amenities Here
         for (int i = 0; i < amenitiesList.size(); i++) {
 
@@ -3433,8 +3446,7 @@ public class BookFragment extends Fragment implements
                     if (!repeatActvieStatus)
                         doMeetingRoomBooking(meetingRoomId,
                                 startTime.getText().toString(),
-                                endTime.getText().toString(), subject, comment,
-                                isRequest, editDeskBookingDetails.isTeamsChecked());
+                                endTime.getText().toString(), subject, comment, isRequest, editDeskBookingDetails.isTeamsChecked(),externalAttendeesEmail);
                     else
                         doRepeatMeetingRoomBookingForWeek(editDeskBookingDetails.isTeamsChecked());
 
@@ -3444,6 +3456,139 @@ public class BookFragment extends Fragment implements
 
             }
         });
+
+
+        //New...
+        if(attendeesListForEdit!=null && attendeesListForEdit.size()>0){
+            attendeesListForEdit.clear();
+        }
+
+
+        //Get AttendeeList To Edit
+        if (editDeskBookingDetails.getAttendeesList()!=null){
+            attendeesListForEdit=editDeskBookingDetails.getAttendeesList();
+        }
+
+
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvParticipant.setLayoutManager(linearLayoutManager);
+        rvParticipant.setHasFixedSize(true);
+
+        try {
+
+            if (editDeskBookingDetails.getExternalAttendeesList()!=null &&
+                    editDeskBookingDetails.getExternalAttendeesList().size()>0){
+                externalAttendeesChipGroup.setVisibility(View.VISIBLE);
+            }
+
+            for (int i = 0; i < editDeskBookingDetails.getExternalAttendeesList().size(); i++) {
+                System.out.println("ExternalAttendeesListInLoop " + editDeskBookingDetails.getExternalAttendeesList().get(i));
+
+                Chip chip = new Chip(getContext());
+                chip.setText(editDeskBookingDetails.getExternalAttendeesList().get(i));
+                chip.setCheckable(false);
+                chip.setClickable(false);
+                chip.setCloseIconVisible(true);
+                externalAttendeesChipGroup.addView(chip);
+
+                //Add In List
+                externalAttendeesEmail.add(editDeskBookingDetails.getExternalAttendeesList().get(i));
+
+
+                chip.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if (externalAttendeesEmail != null) {
+
+                            for (int i = 0; i < externalAttendeesEmail.size(); i++) {
+
+                                if (chip.getText().toString().contains(externalAttendeesEmail.get(i))) {
+                                    externalAttendeesEmail.remove(i);
+                                    externalAttendeesChipGroup.removeView(chip);
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+                });
+            }
+
+
+        }catch (Exception e){
+
+        }
+
+
+        try {
+            for (int i = 0; i < attendeesListForEdit.size(); i++) {
+                //System.out.println("ExternalAttendeesListInLoop " + editDeskBookingDetails.getExternalAttendeesList().get(i));
+
+                Chip chip = new Chip(getContext());
+                chip.setText(attendeesListForEdit.get(i).getEmail());
+                chip.setCheckable(false);
+                chip.setClickable(false);
+                chip.setCloseIconVisible(true);
+                participantChipGroup.addView(chip);
+
+                //Add In List
+                externalAttendeesEmail.add(attendeesListForEdit.get(i).getEmail());
+
+
+                chip.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if (externalAttendeesEmail != null) {
+
+                            for (int i = 0; i < externalAttendeesEmail.size(); i++) {
+
+                                if (chip.getText().toString().contains(externalAttendeesEmail.get(i))) {
+                                    externalAttendeesEmail.remove(i);
+                                    externalAttendeesChipGroup.removeView(chip);
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+                });
+            }
+        }catch (Exception e){
+
+        }
+
+
+        etSubject.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                etParticipants.setText("");
+                rvParticipant.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        try {
+            etSubject.setText(editDeskBookingDetails.getSubject());
+            etComments.setText(editDeskBookingDetails.getComments());
+        }catch (Exception e){
+
+        }
 
 
         bottomSheetDialog.show();
@@ -3498,7 +3643,7 @@ public class BookFragment extends Fragment implements
                                       String subject,
                                       String comment,
                                       boolean isRequest,
-                                      boolean isTeamsChecked) {
+                                      boolean isTeamsChecked,List<String> externalAttendeesEmail) {
 
 //        binding.locateProgressBar.setVisibility(View.VISIBLE);
         dialog= ProgressDialog.showProgressBar(getContext());
@@ -3541,6 +3686,7 @@ public class BookFragment extends Fragment implements
         } //End
 
         changes.setAttendees(attendeesList);
+
 
         List<String> externalAttendeesList = new ArrayList<>();
         changes.setExternalAttendees(externalAttendeesList);

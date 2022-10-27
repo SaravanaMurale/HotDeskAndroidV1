@@ -1024,7 +1024,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         LocationMR_Request.Timezone timezone = locationMR_request.new Timezone();
         //timezone.setId("India Standard Time");
 
-        timezone.setId(teamDeskAvailabilitiesList.get(0).getTimeZones().get(0).getTimeZoneId());
+        //New...
+        if(teamDeskAvailabilitiesList!=null &&teamDeskAvailabilitiesList.size()>0
+        &&teamDeskAvailabilitiesList.get(0).getTimeZones()!=null &&
+                teamDeskAvailabilitiesList.get(0).getTimeZones().size()>0) {
+            timezone.setId(teamDeskAvailabilitiesList.get(0).getTimeZones().get(0).getTimeZoneId());
+        }
+
+
 
         locationMR_request.setTimezone(timezone);
 
@@ -3625,9 +3632,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 @Override
                 public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
 
-                    List<LocateCountryRespose> locateCountryResposes = response.body();
+                    if (response.body()!=null) {
+                        List<LocateCountryRespose> locateCountryResposes = response.body();
 
-                    CallFloorBottomSheet(locateCountryResposes);
+                        CallFloorBottomSheet(locateCountryResposes);
+                    }else {
+                        Utils.toastMessage(getActivity(),"No Data");
+                    }
+
 
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
 

@@ -282,12 +282,14 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                 @Override
                 public void onResponse(Call<ArrayList<DAOUpcomingBooking>> call, Response<ArrayList<DAOUpcomingBooking>> response) {
 
-                    ArrayList<DAOUpcomingBooking> daoUpcomingBookingArrayList=response.body();
+                    if (response.body()!=null) {
+                        ArrayList<DAOUpcomingBooking> daoUpcomingBookingArrayList = response.body();
 
-                    for (int i = 0; i <daoUpcomingBookingArrayList.size() ; i++) {
+                        for (int i = 0; i < daoUpcomingBookingArrayList.size(); i++) {
 
-                        System.out.println("CalendarEntryReceivedDataTeamId "+daoUpcomingBookingArrayList.get(i).getTeamId());
+                            System.out.println("CalendarEntryReceivedDataTeamId " + daoUpcomingBookingArrayList.get(i).getTeamId());
 
+                        }
                     }
 
                     binding.locateProgressBar.setVisibility(View.GONE);

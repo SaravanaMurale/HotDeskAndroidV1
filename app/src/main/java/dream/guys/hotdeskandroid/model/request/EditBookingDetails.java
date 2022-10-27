@@ -1,9 +1,12 @@
 package dream.guys.hotdeskandroid.model.request;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 import java.util.List;
 
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
+import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
 
 public class EditBookingDetails {
 
@@ -255,5 +258,47 @@ public class EditBookingDetails {
         public void setToday(boolean today) {
             isToday = today;
         }
+    }
+
+    //New...
+    @SerializedName("attendees")
+    List<MeetingListToEditResponse.Attendees> attendeesList;
+    @SerializedName("externalAttendees")
+    List<String> externalAttendeesList;
+    @SerializedName("subject")
+    String subject;
+    @SerializedName("comments")
+    String comments;
+
+    public List<MeetingListToEditResponse.Attendees> getAttendeesList() {
+        return attendeesList;
+    }
+
+    public void setAttendeesList(List<MeetingListToEditResponse.Attendees> attendeesList) {
+        this.attendeesList = attendeesList;
+    }
+
+    public List<String> getExternalAttendeesList() {
+        return externalAttendeesList;
+    }
+
+    public void setExternalAttendeesList(List<String> externalAttendeesList) {
+        this.externalAttendeesList = externalAttendeesList;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 }
