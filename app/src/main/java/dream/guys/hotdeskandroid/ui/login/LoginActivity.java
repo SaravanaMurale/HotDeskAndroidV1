@@ -454,7 +454,7 @@ public class LoginActivity extends AppCompatActivity {
         b2cApp.getAccounts(new IPublicClientApplication.LoadAccountsCallback() {
             @Override
             public void onTaskCompleted(final List<IAccount> result) {
-                Toast.makeText(LoginActivity.this, "b2c acc check"+result.size(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(LoginActivity.this, "b2c acc check"+result.size(), Toast.LENGTH_SHORT).show();
                 users = B2CUser.getB2CUsersFromAccountList(result);
                 System.out.println("sso check userList"+users.size());
 //                updateUI(users);

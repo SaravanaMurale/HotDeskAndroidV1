@@ -257,6 +257,23 @@ public class CalendarView extends LinearLayout
             view.setBackgroundResource(0);
             if (eventDays != null) {
                 for (DeskRoomCountResponse eventDate : eventDays) {
+                    if (Utils.compareTwoDate(Utils.convertStringToDateFormet(eventDate.getDate()),
+                            Utils.getCurrentDate())==1){
+                        ((TextView) count).setVisibility(GONE);
+                        ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGrey));
+                    } else if (Utils.compareTwoDate(Utils.convertStringToDateFormet(eventDate.getDate()),
+                            Utils.getCurrentDate())==2){
+                        ((TextView) count).setVisibility(VISIBLE);
+                        ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
+
+                    }else if (Utils.compareTwoDate(Utils.convertStringToDateFormet(eventDate.getDate()),
+                            Utils.getCurrentDate())==3){
+                        ((TextView) count).setVisibility(VISIBLE);
+                        ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
+                    } else {
+                        ((TextView) count).setVisibility(GONE);
+                        ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGrey));
+                    }
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     Date d = new Date(); //Get system date
                     try {
@@ -265,11 +282,15 @@ public class CalendarView extends LinearLayout
                                 d.getMonth() == month &&
                                 d.getYear() == year) {
                             if (eventDate.getAvailableCount()>0)
-                                ((TextView) count).setText(""+eventDate.getAvailableCount());
+                                ((TextView) count).setText("" + eventDate.getAvailableCount());
                             else if (eventDate.getAssignedCount()>0)
-                                ((TextView) count).setText(""+(eventDate.getAssignedCount()-eventDate.getUsedCount()));
+                                ((TextView) count).setText("" + (eventDate.getAssignedCount() - eventDate.getUsedCount()));
+
                             Log.d("CalendarView", "getView: "+eventDate.getAvailableCount());
                             break;
+                        } else {
+                            ((TextView) count).setVisibility(GONE);
+                            ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGrey));
                         }
                     } catch (ParseException e) {
                         e.printStackTrace();
@@ -280,7 +301,7 @@ public class CalendarView extends LinearLayout
             }
 
             ((TextView) dateBox).setTypeface(null, Typeface.NORMAL);
-            ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
+//            ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
 
 //            if (month !=  currentDate.get(Calendar.MONTH) || year !=  currentDate.get(Calendar.YEAR)) {
 //                ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGrey));

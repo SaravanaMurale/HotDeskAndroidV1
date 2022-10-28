@@ -19,23 +19,40 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <TextView
+                    android:id="@+id/header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_alignParentStart="true"
+                    android:text="Terms of service"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textColor="@color/figmaGrey"
+                    android:textSize="@dimen/_14sdp"
+                    android:theme="@style/TextBoldButton"
+                    android:drawableStart="@drawable/ic_baseline_arrow_back_ios_24"
+                    />
+                <ImageView
+                    android:id="@+id/notice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/info_circle"
+                    android:layout_centerInParent="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    />
+            </RelativeLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:layout_below="@id/btnSubmit"
-                android:layout_alignParentStart="true"
-                android:text="Terms of service"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:textColor="@color/figmaGrey"
-                android:textSize="@dimen/_14sdp"
-                android:theme="@style/TextBoldButton"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
+                android:visibility="gone"
                 android:layout_below="@id/btnSubmit"
                 android:layout_alignParentStart="true"
                 android:text="Last updated 11 July 2022"
@@ -58,11 +75,25 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView2"
         android:fillViewport="true"
         >
-        <WebView
-            android:id="@+id/webView"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
+            >
+            <WebView
+                android:id="@+id/webView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                />
+            <WebView
+                android:id="@+id/webView2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/webView"
+                android:visibility="gone"
+                />
+        </RelativeLayout>
+
     </ScrollView>
 
     <androidx.cardview.widget.CardView

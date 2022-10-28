@@ -50,6 +50,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.microsoft.identity.common.internal.telemetry.TelemetryEventStrings;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -553,18 +554,19 @@ public class BookFragment extends Fragment implements
                 String deskCode = appLinkData.getQueryParameter("deskCode");
                 String deskId = appLinkData.getQueryParameter("deskId");
                 String requestedTeamId = appLinkData.getQueryParameter("teamId");
-
+                String timeZoneId = appLinkData.getQueryParameter("timeZoneId");
+                timeZoneId = timeZoneId.replace("_"," ");
                 EditBookingDetails editBookingDetails= new EditBookingDetails();
-                lop :
+                /*lop :
                 for (int i=0; i<bookingDeskList.size();i++){
                     if (Integer.parseInt(deskId)
-                            == bookingDeskList.get(i).getTeamDeskId()){
-                        Toast.makeText(getActivity(), ""+bookingForEditResponse.getBookings().size(), Toast.LENGTH_SHORT).show();
+                            == bookingDeskList.get(i).getTeamDeskId()) {
+//                        Toast.makeText(getActivity(), ""+bookingForEditResponse.getBookings().size(), Toast.LENGTH_SHORT).show();
                         if (bookingForEditResponse.getBookings().size() > 0){
                             editBookingDetails.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
                                     .getMyto()));
-                            editBookingDetails.setEditEndTime(Utils.addingHoursToDate(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
-                                    .getMyto(),2));
+                            editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
+                                    .getMyto(),2)));
                         }else {
                             editBookingDetails.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursFrom()));
                             editBookingDetails.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
@@ -575,10 +577,12 @@ public class BookFragment extends Fragment implements
 
                         System.out.println("date con"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+"Z");
                         editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
-                        editBookingDetails.setEditEndTime(Utils.addingHoursToDate(Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z",2));
-
+                        editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z",2)));
                     }
-                }
+                    }
+                    */
+
+
 /*
                 if (bookingForEditResponseDesk.size()==0){
                     editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
@@ -594,7 +598,10 @@ public class BookFragment extends Fragment implements
                 editBookingDetails.setDeskCode(deskCode);
                 editBookingDetails.setDesktId(Integer.parseInt(deskId));
                 editBookingDetails.setDeskTeamId(Integer.parseInt(requestedTeamId));
+                editBookingDetails.setTimeZone(timeZoneId);
                 editBookingDetails.setDeskStatus(0);
+                editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
+                editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z",2)));
 
                 if (bookingDeskList!=null && bookingDeskList.size()>0){
                     loo :
@@ -608,7 +615,9 @@ public class BookFragment extends Fragment implements
                 System.out.println("cajec vava"+bookingDeskList.size() +"  "+checkIsRequest);
                 if (checkIsRequest)
                     editBookingUsingBottomSheet(editBookingDetails,1,0,"new_deep_link");
-                else
+                else if (Integer.parseInt(requestedTeamId) == SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID)) {
+                    editBookingUsingBottomSheet(editBookingDetails,1,0,"new_deep_link");
+                } else
                     editBookingUsingBottomSheet(editBookingDetails,1,0,"request");
 
             } else if (data1.equalsIgnoreCase("room")){
@@ -1673,44 +1682,53 @@ public class BookFragment extends Fragment implements
         addNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditBookingDetails editBookingDetails= new EditBookingDetails();
                 for (int i=0; i<bookingForEditResponseDesk.size();i++){
+                    editBookingDetailsGlobal = new EditBookingDetails();
                     if (bookingForEditResponse.getUserPreferences().getTeamDeskId()
                             == bookingForEditResponseDesk.get(i).getTeamDeskId()){
                         if (bookingForEditResponse.getBookings().size() > 0){
-                            editBookingDetails.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
+                            editBookingDetailsGlobal.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
                                     .getMyto()));
 
-                            editBookingDetails.setEditEndTime(Utils.addingHoursToDate(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
-                                    .getMyto(),2));
+                            editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
+                                    .getMyto(),2)));
                         } else {
-                            editBookingDetails.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursFrom()));
-                            editBookingDetails.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
+                            editBookingDetailsGlobal.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursFrom()));
+                            editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
                         }
 
-                        editBookingDetails.setDate(Utils.convertStringToDateFormet(calSelectedDate));
-                        editBookingDetails.setCalId(0);
-                        editBookingDetails.setDeskCode(bookingForEditResponseDesk.get(i).getDeskCode());
-                        editBookingDetails.setDesktId(bookingForEditResponseDesk.get(i).getTeamDeskId());
-                        editBookingDetails.setDeskStatus(0);
+                        editBookingDetailsGlobal.setDate(Utils.convertStringToDateFormet(calSelectedDate));
+                        editBookingDetailsGlobal.setCalId(0);
+                        editBookingDetailsGlobal.setDeskCode(bookingForEditResponseDesk.get(i).getDeskCode());
+                        editBookingDetailsGlobal.setDesktId(bookingForEditResponseDesk.get(i).getTeamDeskId());
+                        editBookingDetailsGlobal.setDeskStatus(0);
                     } else {
-                        editBookingDetails.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursFrom()));
-                        editBookingDetails.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
-                        editBookingDetails.setDeskCode(bookingForEditResponseDesk.get(0).getDeskCode());
-                        editBookingDetails.setDesktId(bookingForEditResponseDesk.get(0).getTeamDeskId());
+                        editBookingDetailsGlobal.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursFrom()));
+                        editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
+                        editBookingDetailsGlobal.setDeskCode(bookingForEditResponseDesk.get(0).getDeskCode());
+                        editBookingDetailsGlobal.setDesktId(bookingForEditResponseDesk.get(0).getTeamDeskId());
 
-                        editBookingDetails.setDate(Utils.convertStringToDateFormet(calSelectedDate));
-                        editBookingDetails.setCalId(0);
-                        editBookingDetails.setDeskStatus(0);
+                        editBookingDetailsGlobal.setDate(Utils.convertStringToDateFormet(calSelectedDate));
+                        editBookingDetailsGlobal.setCalId(0);
+                        editBookingDetailsGlobal.setDeskStatus(0);
+
                     }
                 }
-                if (bookingForEditResponseDesk.size()==0){
-                    editBookingDetails.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursFrom()));
-                    editBookingDetails.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
+                if (bookingForEditResponse.getBookings().size() > 0){
+                    editBookingDetailsGlobal.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
+                            .getMyto()));
 
-                    editBookingDetails.setDate(Utils.convertStringToDateFormet(calSelectedDate));
-                    editBookingDetails.setCalId(0);
-                    editBookingDetails.setDeskStatus(0);
+                    editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
+                            .getMyto(),2)));
+                }
+
+                if (bookingForEditResponse.getBookings().size()==0){
+                    editBookingDetailsGlobal.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursFrom()));
+                    editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
+
+                    editBookingDetailsGlobal.setDate(Utils.convertStringToDateFormet(calSelectedDate));
+                    editBookingDetailsGlobal.setCalId(0);
+                    editBookingDetailsGlobal.setDeskStatus(0);
                 }
                 /*
                 if(isGlobalLocationSetUP)
@@ -1720,7 +1738,7 @@ public class BookFragment extends Fragment implements
                     editBookingUsingBottomSheet(editBookingDetails,
                             1,0,"new");
                 */
-                editBookingDetailsGlobal = editBookingDetails;
+//                editBookingDetailsGlobal = editBookingDetails;
                 getDeskList("3", calSelectedDate);
             }
         });
@@ -1810,14 +1828,14 @@ public class BookFragment extends Fragment implements
         if (Utils.compareTwoDate(editDeskBookingDetails.getDate(), Utils.getCurrentDate())==2
                 && Utils.compareTimeIfCheckInEnable(Utils.getCurrentTime(),
                 editDeskBookingDetails.getEditStartTTime()
-        )){
+        ) && newEditStatus.equalsIgnoreCase("edit")){
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
         }
         if (Utils.compareTwoDate(editDeskBookingDetails.getDate(), Utils.getCurrentDate())==2
                 && Utils.compareTimeIfCheckInEnable(Utils.getCurrentTime(),
                 editDeskBookingDetails.getEditEndTime()
-        )){
+        ) && newEditStatus.equalsIgnoreCase("edit")){
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
         }
@@ -1924,19 +1942,24 @@ public class BookFragment extends Fragment implements
             }
 
         }
-        toastMessage(getContext(),""+editDeskBookingDetails.getEditStartTTime());
         if (editDeskBookingDetails.getEditStartTTime()!=null){
             startTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()));
             if(!newEditStatus.equalsIgnoreCase("edit") &&
-                    Utils.compareTwoDate(editDeskBookingDetails.getDate(), Utils.getCurrentDate())==2)
-                startTime.setText(Utils.convert24HrsTO12Hrs(Utils.getCurrentTime()));
+                    Utils.compareTimeIfCheckInEnable(Utils.getCurrentTime(), editDeskBookingDetails.getEditStartTTime()))
+                startTime.setText(Utils.convert24HrsTO12Hrs(Utils.currentTimeWithExtraMins(2)));
         }
         if (editDeskBookingDetails.getEditEndTime()!=null){
             endTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditEndTime()));
             if(!newEditStatus.equalsIgnoreCase("edit") &&
                     Utils.compareTimeIfCheckInEnable(Utils.convert12HrsTO24Hrs(""+startTime.getText()),
-                    editDeskBookingDetails.getEditEndTime()))
-                endTime.setText(Utils.convert24HrsTO12Hrs(Utils.addHoursToSelectedTime(Utils.convert24HrsTO12Hrs(""+startTime.getText()), 4)));
+                    editDeskBookingDetails.getEditEndTime())){
+                if (Utils.compareTimeIfCheckInEnable(Utils.convert12HrsTO24Hrs(""+startTime.getText()),
+                        Utils.addHoursToSelectedTime(Utils.convert12HrsTO24Hrs(""+startTime.getText()), 4))){
+                    endTime.setText(Utils.convert24HrsTO12Hrs("23:59"));
+                } else {
+                    endTime.setText(Utils.convert24HrsTO12Hrs(Utils.addHoursToSelectedTime(Utils.convert12HrsTO24Hrs(""+startTime.getText()), 4)));
+                }
+            }
         }
         if (editDeskBookingDetails.getDate()!=null)
         date.setText(""+Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));

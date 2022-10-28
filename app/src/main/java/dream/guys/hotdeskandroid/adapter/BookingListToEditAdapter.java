@@ -69,13 +69,16 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
         holder.editCheckInTime.setVisibility(View.GONE);
         holder.editCheckOutTime.setVisibility(View.GONE);
 
-        if (bookingsListToEdit.get(position).getStatus().getTimeStatus().equalsIgnoreCase("future")){
+
+        if (bookingsListToEdit.get(position).getStatus().getTimeStatus()
+                .equalsIgnoreCase("future")){
             holder.editDelete.setVisibility(View.VISIBLE);
             holder.editTextEdit.setVisibility(View.VISIBLE);
-        } else if (bookingsListToEdit.get(position).getStatus().getTimeStatus().equalsIgnoreCase("ongoing")) {
+        } else if (bookingsListToEdit.get(position).getStatus().getTimeStatus()
+                .equalsIgnoreCase("ongoing")) {
             holder.editDelete.setVisibility(View.GONE);
             holder.editTextEdit.setVisibility(View.VISIBLE);
-        } else{
+        } else {
             holder.editDelete.setVisibility(View.GONE);
             holder.editTextEdit.setVisibility(View.GONE);
         }
@@ -96,18 +99,38 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
                 break;
             case 9:
                 holder.editCode.setText("Working from home");
+                holder.editCheckInTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getFrom()));
+                holder.editCheckOutTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getMyto()));
+                holder.editCheckInTime.setVisibility(View.VISIBLE);
+                holder.editCheckOutTime.setVisibility(View.VISIBLE);
                 break;
             case 1:
                 holder.editCode.setText("Working in alternative office");
+                holder.editCheckInTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getFrom()));
+                holder.editCheckOutTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getMyto()));
+                holder.editCheckInTime.setVisibility(View.VISIBLE);
+                holder.editCheckOutTime.setVisibility(View.VISIBLE);
                 break;
             case 5:
                 holder.editCode.setText("Not assigned to team");
+                holder.editCheckInTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getFrom()));
+                holder.editCheckOutTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getMyto()));
+                holder.editCheckInTime.setVisibility(View.VISIBLE);
+                holder.editCheckOutTime.setVisibility(View.VISIBLE);
                 break;
             case 8:
                 holder.editCode.setText("Training");
+                holder.editCheckInTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getFrom()));
+                holder.editCheckOutTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getMyto()));
+                holder.editCheckInTime.setVisibility(View.VISIBLE);
+                holder.editCheckOutTime.setVisibility(View.VISIBLE);
                 break;
             case 6:
                 holder.editCode.setText("Out of office");
+                holder.editCheckInTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getFrom()));
+                holder.editCheckOutTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getMyto()));
+                holder.editCheckInTime.setVisibility(View.VISIBLE);
+                holder.editCheckOutTime.setVisibility(View.VISIBLE);
                 break;
             case 18:
                 holder.editCode.setText("Sick Leave");

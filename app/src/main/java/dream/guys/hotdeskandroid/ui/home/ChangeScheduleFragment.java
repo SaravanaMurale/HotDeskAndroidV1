@@ -4,6 +4,8 @@ import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
@@ -14,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -235,6 +238,26 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
         }
 
         loadHomeList();
+        if(SessionHandler.getInstance().get(getContext(),AppConstants.TENANTIMAGE)!=null){
+            String cleanImage = SessionHandler.getInstance().get(getContext(),AppConstants.TENANTIMAGE);
+            byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            fragmentChangeScheduleBinding.tentantImageView.setImageBitmap(decodedByte);
+        }
+        if(SessionHandler.getInstance().get(getContext(),AppConstants.USERIMAGE)!=null){
+            String cleanImage = SessionHandler.getInstance().get(getContext(),AppConstants.USERIMAGE);
+            byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            fragmentChangeScheduleBinding.userProfilePic.setImageBitmap(decodedByte);
+        }
+
+        fragmentChangeScheduleBinding.backIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController= Navigation.findNavController(view);
+                navController.navigate(R.id.navigation_home);
+            }
+        });
         fragmentChangeScheduleBinding.tvSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -542,7 +565,6 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
                             break;
                         case "Wed":
                             boolean wcheckInOffice = false;
-                            Toast.makeText(getActivity(), "wed", Toast.LENGTH_SHORT).show();
                             for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
                                 if (bookingListResponse.getDayGroups().get(i).getCalendarEntries().get(x).getUsageTypeAbbreviation()
                                         .equalsIgnoreCase("IO")){
@@ -1067,7 +1089,7 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
         call.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                Toast.makeText(getContext(), "Success today"+response.code(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -1174,9 +1196,7 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
                         break;
                     default:
                 }
-                if (radioGroup.getCheckedRadioButtonId() == fragmentChangeScheduleBinding.thSick.getId()){
-                    Toast.makeText(getContext(), "tutut", Toast.LENGTH_SHORT).show();
-                }
+
 //                callClearApi(date, radioGroup);
                 dialog.dismiss();
             }
@@ -1188,7 +1208,6 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
                 int idx = radioGroup.indexOfChild(radio);
                 RadioButton r = (RadioButton) radioGroup.getChildAt(idx);
                 r.setChecked(false);
-                Toast.makeText(getActivity(), "id "+idx, Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
@@ -1213,13 +1232,14 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     if(response.code()==200) {
-                        Toast.makeText(getContext(), "Fullday Success", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
 
                     } else if(response.code()==401){
                         //Handle if token got expired
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
                         Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
-
+                    } else {
+                        Toast.makeText(getContext(), "Not Updated", Toast.LENGTH_SHORT).show();
                     }
                     fragmentChangeScheduleBinding.progrssBar.setVisibility(View.GONE);
                 }
@@ -1586,7 +1606,6 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        Toast.makeText(getContext(), "private", Toast.LENGTH_SHORT).show();
         View radio = group.findViewById(checkedId);
         int idx = group.indexOfChild(radio);
         RadioButton r = (RadioButton) group.getChildAt(idx);

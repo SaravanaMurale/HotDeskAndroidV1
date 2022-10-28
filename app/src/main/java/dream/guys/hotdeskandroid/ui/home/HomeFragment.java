@@ -597,7 +597,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         ImageResponse imageResponse = response.body();
                         if (imageResponse.getMessage()!=null && !imageResponse.isStatus()){
 //                            Utils.toastMessage(getContext(),imageResponse.getMessage().getCode());
-                            tenantProfile.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.default_company_logo));
+                            tenantProfile.setImageDrawable(ContextCompat.getDrawable(getContext(),
+                                    R.drawable.default_company_logo));
                         }
                         if (imageResponse.getImage()!=null){
                             String cleanImage = imageResponse.getImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");

@@ -15,6 +15,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,11 +50,17 @@ public class GDPRActivity extends AppCompatActivity {
     Button btnAccept;
     @BindView(R.id.decline)
     TextView decline;
+    @BindView(R.id.header)
+    TextView header;
+    @BindView(R.id.notice)
+    ImageView notice;
     @BindView(R.id.webView)
     WebView mWebView;
+    @BindView(R.id.webView2)
+    WebView mWebView2;
     Dialog dialog;
     String tenantName,userName;
-    String url;
+    String url, url2;
     CustomTabsIntent.Builder customIntent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,20 +70,63 @@ public class GDPRActivity extends AppCompatActivity {
         dialog = new Dialog(getApplicationContext());
         tenantName = getIntent().getExtras().getString("tenantName");
         userName = getIntent().getExtras().getString("userName");
-        getUrlWebview();
+//        getUrlWebview();
         //webview implement
         mWebView.requestFocus();
+        mWebView2.requestFocus();
         mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView2.getSettings().setJavaScriptEnabled(true);
 //        String url="https://hdplusdev.b2clogin.com/hdplusdev.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1A_signup_signin_Multitenant&client_id=3558aa69-9b0b-442d-b81b-d30defd1c72a&response_type=code+id_token&redirect_uri=com.brickendon.hdplus://oauth/redirect&response_mode=query&scope=openid%20offline_access&state=12345";
 //        url="https://hdplusdev.b2clogin.com/hdplusdev.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1A_signup_signin_Multitenant&client_id=3558aa69-9b0b-442d-b81b-d30defd1c72a&response_type=code+id_token&redirect_uri=com.brickendon.hdplus://oauth/redirect&response_mode=query&scope=openid%20offline_access&state=12345&domain_hint=google.com";
 //        String url="https://www.google.com/";
+        url = "https://docs.google.com/viewer?embedded=true&url="+"https://hybridhero.com/documents/EULA_Android.pdf";
+        url2 = "https://docs.google.com/viewer?embedded=true&url="+"https://hybridhero.com/documents/collection_notice.pdf";
+        mWebView.loadUrl(url);
+        mWebView2.loadUrl(url2);
         System.out.println("Baranding Url"+url);
 //        customIntent = new CustomTabsIntent.Builder();
 
         // below line is setting toolbar color
         // for our custom chrome tab.
 //        customIntent.setToolbarColor(ContextCompat.getColor(GDPRActivity.this, R.color.purple_200));
+        notice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mWebView.setVisibility(View.GONE);
+                mWebView2.setVisibility(View.VISIBLE);
+                notice.setVisibility(View.GONE);
+                header.setText("Collection Notice");
+            }
+        });
+        header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (notice.getVisibility() == View.VISIBLE){
+
+                } else {
+                    mWebView.setVisibility(View.VISIBLE);
+                    mWebView2.setVisibility(View.GONE);
+                    notice.setVisibility(View.VISIBLE);
+                    header.setText("Terms of service");
+                }
+            }
+        });
         mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                if (view.getTitle().equals("")) {
+                    view.reload();
+                }
+            }
+        });
+        mWebView2.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
@@ -93,6 +143,18 @@ public class GDPRActivity extends AppCompatActivity {
         });
 
         mWebView.setWebChromeClient(new WebChromeClient() {
+            public void onProgressChanged(WebView view, int progress) {
+                if (progress < 100) {
+//                    progressDialog.show();
+//                    dialog=ProgressDialog.showProgressBar(GDPRActivity.this);
+                }
+                if (progress == 100) {
+//                    progressDialog.dismiss();
+//                    ProgressDialog.dismisProgressBar(GDPRActivity.this,dialog);
+                }
+            }
+        });
+        mWebView2.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
                 if (progress < 100) {
 //                    progressDialog.show();
@@ -138,6 +200,7 @@ public class GDPRActivity extends AppCompatActivity {
                     if (response.code()==200){
                         ProgressDialog.dismisProgressBar(GDPRActivity.this,dialog);
                         url = response.body();
+//                        url = "https://docs.google.com/viewer?embedded=true&url="+response.body();
                         url = "https://docs.google.com/viewer?embedded=true&url="+response.body();
                         mWebView.loadUrl(url);
 

@@ -342,6 +342,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.rlBookingRemoteBlock.setVisibility(View.GONE);
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
+            holder.bookingIvEdit.setVisibility(View.GONE);
             if (map.containsKey(list.get(position).getMeetingBookingsModel().getId())){
                 holder.bookingRefreshIcon.setVisibility(View.VISIBLE);
             }
@@ -384,6 +385,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.rlBookingRemoteBlock.setVisibility(View.GONE);
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
+
             holder.bookingAddress.setText(new StringBuilder()
                     .append("")
                     .append(list.get(position).getCarParkBookingsModel().getLocationBuildingFloor().getBuildingName())
