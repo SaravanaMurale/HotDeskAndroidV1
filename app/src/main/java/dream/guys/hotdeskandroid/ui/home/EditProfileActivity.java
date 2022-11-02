@@ -1,6 +1,7 @@
 package dream.guys.hotdeskandroid.ui.home;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -8,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.PatternMatcher;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
@@ -26,6 +28,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +36,8 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+import com.yalantis.ucrop.UCrop;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -45,6 +50,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import dream.guys.hotdeskandroid.BuildConfig;
 import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
@@ -104,6 +110,13 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     String floorName  = null;
     String fullPathLocation  = null;
 
+    private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
+    private String currentPhotoPath;
+    private static final String SAMPLE_CROPPED_IMAGE_NAME = "SampleCropImage";
+    Bitmap thumbnail;
+    ByteArrayOutputStream bytes;
+    String encodeImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,10 +158,14 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.tvUpdateImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Utils.checkExtPermission(EditProfileActivity.this))
-                    CropImage.activity().start(EditProfileActivity.this);
+/*
+                if (Utils.checkCameraPermission(EditProfileActivity.this))
+                    CropImage.activity()
+                            .setGuidelines(CropImageView.Guidelines.ON)
+                            .start(EditProfileActivity.this);
+*/
 
-                //selectImage();
+                selectImage();
             }
         });
         binding.profileEdit.setOnClickListener(new View.OnClickListener() {
@@ -828,7 +845,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         }
     }
 
-    private void selectImage() {
+    /*private void selectImage() {
         attachChooser = new BottomSheetDialog(EditProfileActivity.this);
         attachChooser.setContentView((EditProfileActivity.this).getLayoutInflater().inflate(R.layout.popup_add_attach_options,
                 new LinearLayout(EditProfileActivity.this)));
@@ -854,7 +871,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             }
         });
     }
-
+*/
 
     public String getStringImage(Bitmap bmp) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -1190,15 +1207,15 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
     //New...
 
-    @Override
+    /*@Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        /*if (requestCode == RC_LOAD_IMG_BROWSER) {
+        *//*if (requestCode == RC_LOAD_IMG_BROWSER) {
             onSelectFromGalleryResult(data);
         } else if (requestCode == RC_LOAD_IMG_CAMERA) {
             onCaptureImageResult(data);
-        }*/
+        }*//*
 //        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
 
@@ -1228,9 +1245,232 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                 }
 
             } else {
-                Toast.makeText(this, "elsed da"+ requestCode, Toast.LENGTH_SHORT).show();
+                System.out.println("errot image"+result.getError());
+                Toast.makeText(this, "elsed da"+ result.getError(), Toast.LENGTH_SHORT).show();
             }
         }
+    }
+*/
+    private void selectImage() {
+        final CharSequence[] items = {"Take Photo", "Gallery",
+                "Cancel"};
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(EditProfileActivity.this);
+        builder.setTitle("Selct Photo");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                boolean result = Utils.checkPermission(EditProfileActivity.this);
+                if (items[item].equals("Take Photo")) {
+//                    userChoosenTask = commonStrings.getTxt_take_photo().getName();
+                    if (result)
+                        cameraIntent();
+                } else if (items[item].equals("Gallery")) {
+//                    userChoosenTask = commonStrings.getTxt_choose_from_gallery().getName();
+                    if (result)
+                        galleryIntent();
+                } else if (items[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+//        CropImage.activity()
+//                .setGuidelines(CropImageView.Guidelines.ON)
+//                .setActivityTitle("Thumbnail Image")
+//                .setCropShape(CropImageView.CropShape.RECTANGLE)
+//                .setCropMenuCropButtonTitle("Done")
+//                .setAllowFlipping(false)
+//                .setMinCropResultSize(400, 400)
+//                .setMaxCropResultSize(400, 400)
+//                .setMinCropWindowSize(400, 400)
+//                .start(this);
+    }
+    private void cameraIntent() {
+        try {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File file = getImageFile(); // 1
+            Uri uri;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) // 2
+                uri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID.concat(".provider"), file);
+            else
+                uri = Uri.fromFile(file); // 3
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri); // 4
+//            startActivityForResult(pictureIntent, CAMERA_ACTION_PICK_REQUEST_CODE);
+            startActivityForResult(intent, REQUEST_CAMERA);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void galleryIntent() {
+        try {
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, SELECT_FILE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void onSelectFromGalleryResult(Intent data) {
+        thumbnail = null;
+        try {
+            thumbnail = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        bytes = new ByteArrayOutputStream();
+        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        Uri selectedImage = data.getData();
+
+        encodeImage = Base64.encodeToString(bytes.toByteArray(), Base64.DEFAULT);
+
+
+        /*
+        requestFile = RequestBody.create(MediaType.parse("image/jpeg"), bytes.toByteArray());
+        body = MultipartBody.Part.createFormData("profile_img", "image.jpg", requestFile);
+        ivImage.setImageBitmap(thumbnail);
+        ivImage.setImageURI(Uri.parse(data.toURI()));*/
+    }
+
+    private File getImageFile() {
+        String imageFileName = "JPEG_" + System.currentTimeMillis() + "_";
+        File storageDir = new File(
+                Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_DCIM
+                ), "Camera"
+        );
+        File file = null;
+        try {
+            file = File.createTempFile(
+                    imageFileName, ".jpg", storageDir
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        currentPhotoPath = "file:" + file.getAbsolutePath();
+        return file;
+    }
+    private void onCaptureImageResult(Intent data) {
+        thumbnail = (Bitmap) data.getExtras().get("data");
+        bytes = new ByteArrayOutputStream();
+        if (thumbnail != null) {
+            thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+            encodeImage = Base64.encodeToString(bytes.toByteArray(), Base64.DEFAULT);
+        }
+//        requestFile = RequestBody.create(MediaType.parse("image/jpeg"), bytes.toByteArray());
+//        body = MultipartBody.Part.createFormData("profile_img", "image.jpg", requestFile);
+//        ivImage.setImageBitmap(thumbnail);
+    }
+
+    private void openCropActivity(Uri sourceUri, Uri destinationUri) {
+        UCrop.of(sourceUri, destinationUri)
+                .withMaxResultSize(400, 400)
+                .withAspectRatio(5f, 5f)
+                .start(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Uri uri = null;
+        String destinationFileName = SAMPLE_CROPPED_IMAGE_NAME;
+        destinationFileName+=".jpg";
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == SELECT_FILE) {
+                Uri sourceUri = data.getData(); // 1
+                File file = getImageFile(); // 2
+                Uri destinationUri = Uri.fromFile(file);  // 3
+                openCropActivity(sourceUri, destinationUri);  // 4
+
+                onSelectFromGalleryResult(data);
+            } else if (requestCode == REQUEST_CAMERA)
+                uri = Uri.parse(currentPhotoPath);
+            openCropActivity(uri, Uri.fromFile(new File(getCacheDir(), destinationFileName)));
+//                onCaptureImageResult(data);
+        }
+        if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
+            onCaptureImageResult(data);
+            uri = UCrop.getOutput(data);
+            System.out.println("print uri"+uri);
+            System.out.println("print uri"+new File(uri.getPath()).getAbsolutePath());
+
+            thumbnail = null;
+            try {
+                thumbnail = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            bytes = new ByteArrayOutputStream();
+            thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+            Uri selectedImage = data.getData();
+            encodeImage = Base64.encodeToString(bytes.toByteArray(), Base64.DEFAULT);
+
+            Glide.with(EditProfileActivity.this).load(uri).into(binding.ivEditPrifle);
+
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                getStringImage(bitmap);
+                String bast64InString= String.valueOf("data:image/png;base64," + encodedImage);
+                //base64Img = RequestBody.create(MediaType.parse("text/plain"), "data:image/png;base64," + encodedImage);
+                //New...
+                BitmapFactory.Options options = Utils.getImageSize(uri);
+                if (options.outWidth>=250 && options.outHeight>=250){
+                    updateProfilePicture(bast64InString);
+                }else {
+                    Utils.toastMessage(EditProfileActivity.this,"Please Select Image more than 250X250 ");
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            /*
+            requestFile = RequestBody.create(MediaType.parse("image/jpeg"), bytes.toByteArray());
+            body = MultipartBody.Part.createFormData("profile_img", "image.jpg", requestFile);
+            ivImage.setImageBitmap(thumbnail);*/
+//            showImage(uri);
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                thumbnail = null;
+                try {
+                    thumbnail = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), result.getUri());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                bytes = new ByteArrayOutputStream();
+                thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+                Uri selectedImage = data.getData();
+                encodeImage = Base64.encodeToString(bytes.toByteArray(), Base64.DEFAULT);
+                Glide.with(EditProfileActivity.this).load(selectedImage).into(binding.ivEditPrifle);
+
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                    getStringImage(bitmap);
+                    String bast64InString= String.valueOf("data:image/png;base64," + encodedImage);
+                    //base64Img = RequestBody.create(MediaType.parse("text/plain"), "data:image/png;base64," + encodedImage);
+                    //New...
+                    BitmapFactory.Options options = Utils.getImageSize(selectedImage);
+                    if (options.outWidth>=250 && options.outHeight>=250){
+                        updateProfilePicture(encodedImage);
+                    }else {
+                        Utils.toastMessage(EditProfileActivity.this,"Please Select Image more than 250X250 ");
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                /*
+                requestFile = RequestBody.create(MediaType.parse("image/jpeg"), bytes.toByteArray());
+                body = MultipartBody.Part.createFormData("profile_img", "image.jpg", requestFile);
+                ivImage.setImageBitmap(thumbnail);*/
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+            }
+        }
+
     }
 
 
