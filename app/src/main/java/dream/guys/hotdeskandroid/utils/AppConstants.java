@@ -71,6 +71,7 @@ public class AppConstants {
     public static final String APPTHEME = "APPTHEME";
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
+    public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 124;
 
     public static final String LANGUAGE = "LANGUAGE";
     public static final String LANGUAGE_KEY = "LANGUAGE_KEY";

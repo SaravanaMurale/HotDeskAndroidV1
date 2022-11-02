@@ -652,10 +652,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                                 userProfile.setImageBitmap(decodedByte);
                             } else {
-                                userProfile.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.avatar));
+                                userProfile.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.avatar));
                             }
                         }catch (Exception e){
-                            userProfile.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.avatar));
+                            userProfile.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.avatar));
                         }
 
                     }else if(response.code()==401){

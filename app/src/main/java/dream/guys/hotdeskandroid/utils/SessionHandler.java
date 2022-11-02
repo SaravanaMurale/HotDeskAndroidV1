@@ -27,7 +27,7 @@ import android.content.SharedPreferences;
  */
 public class SessionHandler {
 
-    public static final String PREF_NAME="HOTDESK";
+    public static final String PREF_NAME="HYBRIDHERO";
 
 
     private static final SessionHandler ourInstance = new SessionHandler();
@@ -41,40 +41,40 @@ public class SessionHandler {
 
 
     public SharedPreferences sharedPreferencesInstance(Context mContext) {
-        return mContext.getSharedPreferences("HOTDESK", Context.MODE_PRIVATE);
+        return mContext.getSharedPreferences("HYBRIDHERO", Context.MODE_PRIVATE);
     }
 
 
     public void save(Context mContext, String key, String value) {
-        mContext.getSharedPreferences("HOTDESK", Context.MODE_PRIVATE).edit().putString(key, value).apply();
+        mContext.getSharedPreferences("HYBRIDHERO", Context.MODE_PRIVATE).edit().putString(key, value).apply();
     }
 
 
     public void saveInt(Context mContext, String key, int value) {
-        mContext.getSharedPreferences("HOTDESK", Context.MODE_PRIVATE).edit().putInt(key, value).commit();
+        mContext.getSharedPreferences("HYBRIDHERO", Context.MODE_PRIVATE).edit().putInt(key, value).commit();
     }
 
     public void saveBoolean(Context mContext, String key, boolean value) {
-        mContext.getSharedPreferences("HOTDESK", Context.MODE_PRIVATE).edit().putBoolean(key, value).commit();
+        mContext.getSharedPreferences("HYBRIDHERO", Context.MODE_PRIVATE).edit().putBoolean(key, value).commit();
     }
 
     public boolean getBoolean(Context mContext, String key) {
-        return mContext.getSharedPreferences("HOTDESK", Context.MODE_PRIVATE).getBoolean(key, false);
+        return mContext.getSharedPreferences("HYBRIDHERO", Context.MODE_PRIVATE).getBoolean(key, false);
     }
 
     public void remove(Context mContext, String key) {
-        mContext.getSharedPreferences("HOTDESK", Context.MODE_PRIVATE).edit().remove(key).commit();
+        mContext.getSharedPreferences("HYBRIDHERO", Context.MODE_PRIVATE).edit().remove(key).commit();
     }
 
     public void removeAll(Context mContext) {
-            mContext.getSharedPreferences("HOTDESK", Context.MODE_PRIVATE).edit().clear().commit();
+            mContext.getSharedPreferences("HYBRIDHERO", Context.MODE_PRIVATE).edit().clear().commit();
     }
 
     public String get(Context mContext, String key) {
-        return mContext.getSharedPreferences("HOTDESK", Context.MODE_PRIVATE).getString(key, null);
+        return mContext.getSharedPreferences("HYBRIDHERO", Context.MODE_PRIVATE).getString(key, null);
     }
 
     public int getInt(Context mContext, String key) {
-        return mContext.getSharedPreferences("HOTDESK", Context.MODE_PRIVATE).getInt(key, 0);
+        return mContext.getSharedPreferences("HYBRIDHERO", Context.MODE_PRIVATE).getInt(key, 0);
     }
 }

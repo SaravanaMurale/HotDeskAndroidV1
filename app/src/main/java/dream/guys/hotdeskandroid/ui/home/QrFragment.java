@@ -188,8 +188,16 @@ public class QrFragment extends Fragment {
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                    Toast.makeText(getActivity(), ""+response.body().getResultCode(), Toast.LENGTH_SHORT).show();
-                    SessionHandler.getInstance().save(getActivity(), AppConstants.USER_CURRENT_STATUS,"Checked IN");
+                    if (response.code()==200 && response.body().getResultCode().equalsIgnoreCase("ok")){
+                        Toast.makeText(getActivity(), ""+response.body().getResultCode(), Toast.LENGTH_SHORT).show();
+                        SessionHandler.getInstance().save(getActivity(), AppConstants.USER_CURRENT_STATUS,"Checked IN");
+                    } else {
+                        if (response.code() == 200)
+                            Toast.makeText(getActivity(), ""+response.body().getResultCode(), Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(getActivity(), "Error Check In", Toast.LENGTH_SHORT).show();
+
+                    }
 
                     dialog.dismiss();
                     openCheckoutDialog();

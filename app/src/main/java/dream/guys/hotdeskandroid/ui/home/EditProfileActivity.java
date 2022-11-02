@@ -145,7 +145,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.tvUpdateImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Utils.checkCameraPermission(EditProfileActivity.this))
+                if (Utils.checkExtPermission(EditProfileActivity.this))
                     CropImage.activity().start(EditProfileActivity.this);
 
                 //selectImage();
@@ -1199,6 +1199,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         } else if (requestCode == RC_LOAD_IMG_CAMERA) {
             onCaptureImageResult(data);
         }*/
+//        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
 
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
@@ -1226,6 +1227,8 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                     e.printStackTrace();
                 }
 
+            } else {
+                Toast.makeText(this, "elsed da"+ requestCode, Toast.LENGTH_SHORT).show();
             }
         }
     }
