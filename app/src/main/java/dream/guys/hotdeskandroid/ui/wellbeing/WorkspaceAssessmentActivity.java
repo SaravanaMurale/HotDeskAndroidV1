@@ -350,7 +350,7 @@ public class WorkspaceAssessmentActivity extends AppCompatActivity implements Qu
 
                 Log.d(TAG, "onResponse: ");
                 Toast.makeText(getApplicationContext(),"Successfully Reported",Toast.LENGTH_LONG).show();
-//                finish();
+             finish();
 
             }
 
