@@ -2241,6 +2241,35 @@ public class Utils {
         }
 
     }
+    public static String addHoursToSelectedTimeWithMinutes(String selTime,int minutes) {
+
+        SimpleDateFormat tFormat = new SimpleDateFormat("HH:mm",Locale.getDefault());
+        //Date currentTime = Calendar.getInstance().getTime();
+        String time = selTime; //tFormat.format(currentTime);
+
+        Date d = null;
+        String newTime = selTime;
+
+        try {
+            d = tFormat.parse(time);
+            Calendar cal = Calendar.getInstance();
+            if (d != null) {
+
+                cal.setTime(d);
+                cal.add(Calendar.MINUTE, minutes);
+
+                newTime = tFormat.format(cal.getTime());
+
+                return newTime;
+
+            }else {
+                return newTime;
+            }
+        } catch (ParseException e) {
+            return newTime;
+        }
+
+    }
 
     public static String selectDateWithCurrentTimeTZFormat(String d){
 
