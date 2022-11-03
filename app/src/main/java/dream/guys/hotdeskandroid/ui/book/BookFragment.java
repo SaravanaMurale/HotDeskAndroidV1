@@ -59,6 +59,7 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import butterknife.BindView;
 import dream.guys.hotdeskandroid.R;
@@ -1395,6 +1396,9 @@ public class BookFragment extends Fragment implements
         addNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                chipList.clear();
+
                 EditBookingDetails editBookingDetails= new EditBookingDetails();
                 if (meetingListToEditResponseList.size() > 0){
                     editBookingDetails.setEditStartTTime(Utils.splitTime(meetingListToEditResponseList.get(meetingListToEditResponseList.size()-1).getTo()));
@@ -3707,9 +3711,14 @@ public class BookFragment extends Fragment implements
 
     private void showParticipantNameInRecyclerView(List<ParticipantDetsilResponse> participantDetsilResponseList, RecyclerView rvParticipant) {
 
+        //Get Saved UserId
+        int userId=SessionHandler.getInstance().getInt(getContext(), AppConstants.USER_ID);
+
+        List<ParticipantDetsilResponse> result = new ArrayList<>();
+        result = (List<ParticipantDetsilResponse>) participantDetsilResponseList.stream().filter(val -> val.getId() != userId).collect(Collectors.toList());
 
         rvParticipant.setVisibility(View.VISIBLE);
-        ParticipantNameShowAdapter participantNameShowAdapter = new ParticipantNameShowAdapter(getContext(), participantDetsilResponseList, this,rvParticipant);
+        ParticipantNameShowAdapter participantNameShowAdapter = new ParticipantNameShowAdapter(getContext(), result, this,rvParticipant);
         rvParticipant.setAdapter(participantNameShowAdapter);
     }
 
@@ -3848,7 +3857,46 @@ public class BookFragment extends Fragment implements
 
         this.participantDetsilResponse= participantDetsilResponse;
 
-        Chip chip=new Chip(getContext());
+
+        Chip chip = new Chip(getContext());
+
+        //Should not add already added user
+        if(chipList.size()>0) {
+
+            boolean alreadyHasId = chipList.stream().anyMatch(m -> m.getId() == participantDetsilResponse.getId());
+
+            if (alreadyHasId) {
+                recyclerView.setVisibility(View.GONE);
+            }else {
+                chipList.add(participantDetsilResponse);
+
+                chip.setText(participantDetsilResponse.getFullName());
+                chip.setCloseIconVisible(true);
+                chip.setCheckable(false);
+                chip.setClickable(false);
+
+                participantChipGroup.addView(chip);
+                participantChipGroup.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+            }
+
+
+        }else {
+            chipList.add(participantDetsilResponse);
+
+            chip.setText(participantDetsilResponse.getFullName());
+            chip.setCloseIconVisible(true);
+            chip.setCheckable(false);
+            chip.setClickable(false);
+
+            participantChipGroup.addView(chip);
+            participantChipGroup.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        }
+
+
+
+       /* Chip chip=new Chip(getContext());
         chip.setText(participantDetsilResponse.getFullName());
         chip.setCloseIconVisible(true);
         chip.setCheckable(false);
@@ -3858,7 +3906,7 @@ public class BookFragment extends Fragment implements
 
         participantChipGroup.addView(chip);
         participantChipGroup.setVisibility(View.VISIBLE);
-
+*/
 
         chip.setOnClickListener(new View.OnClickListener() {
             @Override

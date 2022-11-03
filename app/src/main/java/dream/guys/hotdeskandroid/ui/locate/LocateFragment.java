@@ -3158,33 +3158,59 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     private void showParticipantNameInRecyclerView(List<ParticipantDetsilResponse> participantDetsilResponseList, RecyclerView rvParticipant) {
 
 
+        //Get Saved UserId
+        int userId=SessionHandler.getInstance().getInt(getContext(), AppConstants.USER_ID);
+
+        List<ParticipantDetsilResponse> result = new ArrayList<>();
+        result = (List<ParticipantDetsilResponse>) participantDetsilResponseList.stream().filter(val -> val.getId() != userId).collect(Collectors.toList());
+
+
         rvParticipant.setVisibility(View.VISIBLE);
-        ParticipantNameShowAdapter participantNameShowAdapter = new ParticipantNameShowAdapter(getContext(), participantDetsilResponseList, this,rvParticipant);
+        ParticipantNameShowAdapter participantNameShowAdapter = new ParticipantNameShowAdapter(getContext(), result, this,rvParticipant);
         rvParticipant.setAdapter(participantNameShowAdapter);
     }
 
     @Override
     public void onParticipantSelect(ParticipantDetsilResponse participantDetsilResponse, RecyclerView recyclerView) {
 
-
-
-
         this.participantDetsilResponse = participantDetsilResponse;
 
         Chip chip = new Chip(getContext());
-        chip.setText(participantDetsilResponse.getFullName());
-        chip.setCloseIconVisible(true);
-        chip.setCheckable(false);
-        chip.setClickable(false);
-
-        chipList.add(participantDetsilResponse);
 
 
+        //Should not add already added user
+        if(chipList.size()>0) {
 
-        participantChipGroup.addView(chip);
-        participantChipGroup.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.GONE);
+            boolean alreadyHasId = chipList.stream().anyMatch(m -> m.getId() == participantDetsilResponse.getId());
 
+            if (alreadyHasId) {
+                recyclerView.setVisibility(View.GONE);
+            }else {
+                chipList.add(participantDetsilResponse);
+
+                chip.setText(participantDetsilResponse.getFullName());
+                chip.setCloseIconVisible(true);
+                chip.setCheckable(false);
+                chip.setClickable(false);
+
+                participantChipGroup.addView(chip);
+                participantChipGroup.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+            }
+
+
+        }else {
+            chipList.add(participantDetsilResponse);
+
+            chip.setText(participantDetsilResponse.getFullName());
+            chip.setCloseIconVisible(true);
+            chip.setCheckable(false);
+            chip.setClickable(false);
+
+            participantChipGroup.addView(chip);
+            participantChipGroup.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        }
 
         chip.setOnClickListener(new View.OnClickListener() {
             @Override
