@@ -2120,7 +2120,7 @@ public class Utils {
 
     }
 
-    public static String setNearestThirtyMinToMeeting(String cTime) {
+    public static String setStartNearestThirtyMinToMeeting(String cTime) {
 
         String fTime = "";
         String[] orgSTime = cTime.split(":");
@@ -2144,6 +2144,41 @@ public class Utils {
             }else {
 
                 fTime = roundOffHour(cTime.replace(orgSTime[1],"15"));
+
+            }
+
+        }else {
+            fTime = cTime;
+        }
+
+        return fTime;
+    }
+
+
+    public static String setNearestThirtyMinToMeeting(String cTime) {
+
+        String fTime = "";
+        String[] orgSTime = cTime.split(":");
+
+        if (orgSTime.length>0){
+
+            int min = Integer.parseInt(orgSTime[1]);
+
+            if (min>=0 && min<=15){
+
+                fTime = cTime.replace(orgSTime[1],"45");
+
+            }else if (min>15 && min<=30){
+
+                fTime = roundOffHour(cTime.replace(orgSTime[1],"00"));
+
+            }else if (min>30 && min<=45){
+
+                fTime =  roundOffHour(cTime.replace(orgSTime[1],"15"));
+
+            }else if (min>45 && min<=59) {
+
+                fTime = roundOffHour(cTime.replace(orgSTime[1],"30"));
 
             }
 

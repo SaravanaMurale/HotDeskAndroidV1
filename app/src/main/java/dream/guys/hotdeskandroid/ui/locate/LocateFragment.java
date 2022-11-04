@@ -2940,7 +2940,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 boolean b = Utils.checkIsCurrentDate(binding.locateCalendearView.getText().toString());
 
                 if (b){
-                    endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
+                    //endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
+                    endTRoomime.setText(Utils.setNearestThirtyMinToMeeting(startRoomTime.getText().toString()));
                 }else {
 
                 }
@@ -3075,7 +3076,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             if (b) {
 
-                startRoomTime.setText(Utils.setNearestThirtyMinToMeeting(getCurrentTime()));
+                startRoomTime.setText(Utils.setStartNearestThirtyMinToMeeting(getCurrentTime()));
                 showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " " + startRoomTime.getText().toString());
 
             } else {
@@ -3864,9 +3865,22 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 if (!floorSearchStatus) {
-                    showCountryAdapter.getFilter().filter(s.toString());
+
+                    if(showCountryAdapter!=null) {
+
+                        showCountryAdapter.getFilter().filter(s.toString());
+
+                    }else {
+                        Utils.toastMessage(getContext(),"Choose Any Location");
+                    }
                 } else {
-                    floorAdapter.getFilter().filter(s.toString());
+                    if(floorAdapter!=null) {
+
+                        floorAdapter.getFilter().filter(s.toString());
+
+                    }else {
+                        Utils.toastMessage(getContext(),"Choose Any Floor");
+                    }
                 }
 
 

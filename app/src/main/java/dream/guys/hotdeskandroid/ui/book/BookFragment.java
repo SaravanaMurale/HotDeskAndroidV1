@@ -3670,7 +3670,6 @@ public class BookFragment extends Fragment implements
             }
         });
 
-
         bottomSheetDialog.show();
 
     }
