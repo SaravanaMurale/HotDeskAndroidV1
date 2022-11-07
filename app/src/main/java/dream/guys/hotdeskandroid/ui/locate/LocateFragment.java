@@ -17,6 +17,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -32,6 +33,7 @@ import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -45,6 +47,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,6 +56,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.nimbusds.jose.util.Resource;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -3710,11 +3714,52 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     //Select Floor Plan BottomSheeet
     private void CallFloorBottomSheet(List<LocateCountryRespose> locateCountryResposes) {
 
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        /* BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView(getLayoutInflater().
                 inflate(R.layout.bottom_sheet_locate_floor_filter,
-                        new RelativeLayout(getContext())));
+                        new RelativeLayout(getContext())));*/
 
+
+
+
+       /* BottomSheetDialog locateCheckInBottomSheet = new BottomSheetDialog(getContext());
+        View view = View.inflate(getContext(), R.layout.dialog_locate_unavalible_bottomsheet, null);
+        locateCheckInBottomSheet.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(500);*/
+
+
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        View view = View.inflate(getContext(), R.layout.bottom_sheet_locate_floor_filter, null);
+        bottomSheetDialog.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(500);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+        CoordinatorLayout layout = bottomSheetDialog.findViewById(R.id.parentIdLocate);
+        layout.setMinimumHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+
+
+       /* // This listener's onShow is fired when the dialog is shown
+        bottomSheetDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+
+                // In a previous life I used this method to get handles to the positive and negative buttons
+                // of a dialog in order to change their Typeface. Good ol' days.
+
+                BottomSheetDialog d = (BottomSheetDialog) dialog;
+
+                // This is gotten directly from the source of BottomSheetDialog
+                // in the wrapInBottomSheet() method
+               RelativeLayout bottomSheet = (RelativeLayout) d.findViewById(R.id.parentIdLocate);
+
+                // Right here!
+                BottomSheetBehavior.from(bottomSheet)
+                        .setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+        });*/
 
         bsLocationSearch = bottomSheetDialog.findViewById(R.id.bsLocationSearch);
         bsGeneralSearch = bottomSheetDialog.findViewById(R.id.bsGeneralSearch);
@@ -3775,21 +3820,27 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                if (floorAdapter.getSelectedPositionCheck() >= 0) {
-                    floorSearchStatus = false;
-                    int floorPosition = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION);
-                    boolean floorSelectedStatus = SessionHandler.getInstance().getBoolean(getContext(), AppConstants.FLOOR_SELECTED_STATUS);
+                if(floorAdapter!=null) {
 
-                    //System.out.println("SelectedFloorPosition "+floorPosition+" "+floorSelectedStatus);
+                    if (floorAdapter.getSelectedPositionCheck() >= 0) {
+                        floorSearchStatus = false;
+                        int floorPosition = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION);
+                        boolean floorSelectedStatus = SessionHandler.getInstance().getBoolean(getContext(), AppConstants.FLOOR_SELECTED_STATUS);
 
-                    //if(floorSelectedStatus){
-                    canvasss = 1;
-                    //removes desk in layout
-                    binding.firstLayout.removeAllViews();
+                        //System.out.println("SelectedFloorPosition "+floorPosition+" "+floorSelectedStatus);
 
-                    initLoadFloorDetails(canvasss);
-                    bottomSheetDialog.dismiss();
-                } else {
+                        //if(floorSelectedStatus){
+                        canvasss = 1;
+                        //removes desk in layout
+                        binding.firstLayout.removeAllViews();
+
+                        initLoadFloorDetails(canvasss);
+                        bottomSheetDialog.dismiss();
+                    } else {
+                        Utils.toastMessage(getContext(), "Please Select Floor");
+                    }
+
+                }else {
                     Utils.toastMessage(getContext(), "Please Select Floor");
                 }
 
