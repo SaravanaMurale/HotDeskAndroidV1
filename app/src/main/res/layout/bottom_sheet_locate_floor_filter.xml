@@ -231,32 +231,30 @@
         android:id="@+id/bsBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/back"
+        android:text="@string/cancel"
         android:layout_alignParentLeft="true"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:layout_marginBottom="@dimen/_10sdp"
         android:layout_marginLeft="@dimen/_20sdp"
         android:textSize="@dimen/_15sdp"
-        android:layout_centerVertical="true"
         android:visibility="visible"
         />
 
-    <TextView
-        android:id="@+id/bsApply"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Apply"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_20sdp"
-        android:textStyle="bold"
-        android:textColor="@color/blue"
-        android:layout_centerVertical="true"
-        android:textSize="@dimen/_13sdp"
-        android:visibility="visible"
+        <TextView
+            android:id="@+id/bsApply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:text="Apply"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:visibility="gone"
 
-        />
+            />
 
     </RelativeLayout>
 

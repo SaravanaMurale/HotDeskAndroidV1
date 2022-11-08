@@ -670,7 +670,9 @@
                             android:id="@+id/s_remote"
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
-                            android:gravity="center" />
+                            android:gravity="center"
+                            android:enabled="false"
+                            />
 
                         <view
                             class="android.widget.TextView"
@@ -682,7 +684,9 @@
                             android:id="@+id/s_out_office"
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
-                            android:src="@drawable/remote_circle" />
+                            android:src="@drawable/remote_circle"
+                            android:enabled="false"
+                            />
 
                         <view
                             class="android.widget.TextView"
@@ -694,7 +698,9 @@
                             android:id="@+id/s_sick"
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
-                            android:src="@drawable/remote_circle" />
+                            android:src="@drawable/remote_circle"
+                            android:enabled="false"
+                            />
 
                         <view
                             class="android.widget.TextView"
@@ -745,7 +751,9 @@
                             android:id="@+id/su_remote"
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
-                            android:gravity="center" />
+                            android:gravity="center"
+                            android:enabled="false"
+                            />
 
                         <view
                             class="android.widget.TextView"
@@ -757,7 +765,9 @@
                             android:id="@+id/su_out_office"
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
-                            android:src="@drawable/remote_circle" />
+                            android:src="@drawable/remote_circle"
+                            android:enabled="false"
+                            />
 
                         <view
                             class="android.widget.TextView"
@@ -769,7 +779,9 @@
                             android:id="@+id/su_sick"
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
-                            android:src="@drawable/remote_circle" />
+                            android:src="@drawable/remote_circle"
+                            android:enabled="false"
+                            />
 
                         <view
                             class="android.widget.TextView"

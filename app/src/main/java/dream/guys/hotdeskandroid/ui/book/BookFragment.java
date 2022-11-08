@@ -1976,7 +1976,7 @@ public class BookFragment extends Fragment implements
             if (editDeskBookingDetails.getEditStartTTime()!=null){
                 startTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()));
                 if(!newEditStatus.equalsIgnoreCase("edit") &&
-                        Utils.compareTimeIfCheckInEnable(editDeskBookingDetails.getEditStartTTime(), Utils.getCurrentTime()))
+                        Utils.compareTimeIfCheckInEnable(Utils.getCurrentTime(),editDeskBookingDetails.getEditStartTTime()))
                     startTime.setText(Utils.convert24HrsTO12Hrs(Utils.currentTimeWithExtraMins(2)));
             }
             if (editDeskBookingDetails.getEditEndTime()!=null){
@@ -4536,11 +4536,15 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onResponse(Call<RoomListResponse> call, Response<RoomListResponse> response) {
                     userAllowedMeetingResponseListUpdated.clear();
-                    userAllowedMeetingResponseList = response.body().getMeetingResponses();
 
-                    for (int i=0; i < response.body().getMeetingResponses().size(); i++){
-                        if (response.body().getMeetingResponses().get(i).isActive()){
-                            userAllowedMeetingResponseList.add(response.body().getMeetingResponses().get(i));
+                    //New
+                    userAllowedMeetingResponseList.clear();
+                    List<UserAllowedMeetingResponse> userAllowedMeeting = response.body().getMeetingResponses();
+
+
+                    for (int i=0; i < userAllowedMeeting.size(); i++){
+                        if (userAllowedMeeting.get(i).isActive()){
+                            userAllowedMeetingResponseList.add(userAllowedMeeting.get(i));
                         }
                     }
 

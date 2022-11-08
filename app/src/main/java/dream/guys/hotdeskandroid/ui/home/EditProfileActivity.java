@@ -3,6 +3,7 @@ package dream.guys.hotdeskandroid.ui.home;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -174,8 +175,10 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                 binding.profileUpdate.setVisibility(View.VISIBLE);
                 binding.profileEdit.setVisibility(View.GONE);
                 makeEnable();
+
             }
         });
+
 
         binding.profileBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -640,77 +643,21 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                     }
                     break;
                 case "Sat":
-
-                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
-                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
-                    ){
-                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
-                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
-                                Glide.with(this)
-                                        .load(R.drawable.remote_circle)
-                                        .placeholder(R.drawable.info_circle)
-                                        .into(binding.ivSaturday);
-                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
-                                Glide.with(this)
-                                        .load(R.drawable.out_of_office_circle)
-                                        .placeholder(R.drawable.info_circle)
-                                        .into(binding.ivSaturday);
-                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
-                                Glide.with(this)
-                                        .load(R.drawable.sick_circle)
-                                        .placeholder(R.drawable.info_circle)
-                                        .into(binding.ivSaturday);
-                            } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
-                                Glide.with(this)
-                                        .load(R.drawable.building_circle)
-                                        .placeholder(R.drawable.info_circle)
-                                        .into(binding.ivSaturday);
-                            } else {
-
-                            }
-                        }
-                    }
+                    Glide.with(this)
+                            .load(R.drawable.building_circle)
+                            .placeholder(R.drawable.out_of_office_circle)
+                            .into(binding.ivSaturday);
+                    binding.tvSaturday.setTextColor(getResources().getColor(R.color.figmaGrey));
+                    binding.ivSaturday.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.figmaGrey)));
                     break;
                 case "Sun":
+                    Glide.with(this)
+                            .load(R.drawable.building_circle)
+                            .placeholder(R.drawable.out_of_office_circle)
+                            .into(binding.ivSunday);
 
-                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
-                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
-                    ){
-                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
-                            if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
-                                Glide.with(this)
-                                        .load(R.drawable.remote_circle)
-                                        .placeholder(R.drawable.info_circle)
-                                        .into(binding.ivSunday);
-                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
-                                Glide.with(this)
-                                        .load(R.drawable.out_of_office_circle)
-                                        .placeholder(R.drawable.info_circle)
-                                        .into(binding.ivSunday);
-                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
-                                Glide.with(this)
-                                        .load(R.drawable.remote_circle)
-                                        .placeholder(R.drawable.info_circle)
-                                        .into(binding.ivMonday);
-                            } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
-                                Glide.with(this)
-                                        .load(R.drawable.building_circle)
-                                        .placeholder(R.drawable.info_circle)
-                                        .into(binding.ivSunday);
-                            }else {
-
-                            }
-                        }
-                    }
-
+                    binding.ivSunday.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.figmaGrey)));
+                    binding.tvSunday.setTextColor(getResources().getColor(R.color.figmaGrey));
                     break;
                 default:
             }

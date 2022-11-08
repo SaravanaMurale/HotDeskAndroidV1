@@ -7625,8 +7625,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             @Override
             public void afterTextChanged(Editable editable) {
+
                 if (meetingListToEditResponse.getStatus() != null) {
-                    if (meetingListToEditResponse.getStatus().getBookingType().equalsIgnoreCase("REQGRN")) {
+
+
+                      //Requested time can change only between start and end time
+                        if (meetingListToEditResponse.getStatus().getBookingType().equalsIgnoreCase("REQGRN")) {
                         if (orgSTime.equalsIgnoreCase(startRoomTime.getText().toString())) {
 
                         } else {
