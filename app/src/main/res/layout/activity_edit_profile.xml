@@ -281,8 +281,9 @@
                         <ImageView
                             android:id="@+id/iv_monday"
                             android:layout_width="@dimen/_15sdp"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/building_circle"
+                            android:layout_height="@dimen/_15sdp"
+                            android:maxHeight="@dimen/_15sdp"
+                            android:src="@drawable/info_circle"
                             />
                         <TextView
                             android:layout_width="wrap_content"
@@ -301,7 +302,7 @@
                         <ImageView
                             android:id="@+id/iv_tuesday"
                             android:layout_width="@dimen/_15sdp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_15sdp"
                             android:src="@drawable/info_circle"
                             />
                         <TextView
@@ -321,7 +322,7 @@
                         <ImageView
                             android:id="@+id/iv_wednesday"
                             android:layout_width="@dimen/_15sdp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_15sdp"
                             android:src="@drawable/info_circle"
                             />
                         <TextView
@@ -341,7 +342,7 @@
                         <ImageView
                             android:id="@+id/iv_thursday"
                             android:layout_width="@dimen/_15sdp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_15sdp"
                             android:src="@drawable/info_circle"
                             />
                         <TextView
@@ -361,7 +362,7 @@
                         <ImageView
                             android:id="@+id/iv_friday"
                             android:layout_width="@dimen/_15sdp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_15sdp"
                             android:src="@drawable/info_circle"
                             />
                         <TextView
@@ -381,7 +382,7 @@
                         <ImageView
                             android:id="@+id/iv_saturday"
                             android:layout_width="@dimen/_15sdp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_15sdp"
                             android:src="@drawable/out_of_office_circle"
                             />
                         <TextView
@@ -402,7 +403,7 @@
                         <ImageView
                             android:id="@+id/iv_sunday"
                             android:layout_width="@dimen/_15sdp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_15sdp"
                             android:src="@drawable/out_of_office_circle"
                             />
                         <TextView
@@ -498,7 +499,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="10:00"
-                    android:textColor="@color/grey"
+                    android:textColor="@color/figmaBlue"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 
@@ -585,7 +586,9 @@
                         android:layout_alignParentRight="true"
                         android:clickable="true"
                         android:enabled="true"
-                        android:text="Change" />
+                        android:text="Change"
+                        android:textColor="@color/figmaBlue"
+                        />
 
                 </RelativeLayout>
 
@@ -617,7 +620,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="Change" />
+                        android:text="Change"
+                        android:textColor="@color/figmaBlue"
+                        />
 
                 </RelativeLayout>
 
@@ -684,7 +689,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="Change" />
+                        android:text="Change"
+                        android:textColor="@color/figmaBlue"
+                        />
 
                 </RelativeLayout>
 

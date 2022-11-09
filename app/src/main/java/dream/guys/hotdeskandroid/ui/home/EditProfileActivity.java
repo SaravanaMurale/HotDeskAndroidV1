@@ -1042,7 +1042,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                 //ProgressDialog.dismisProgressBar(getContext(),dialog);
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 binding.profileUpdate.setVisibility(View.GONE);
-                binding.profileEdit.setVisibility(View.VISIBLE);
+                binding.profileEdit.setVisibility(View.GONE);
 
 
                 updateProfileValue();
@@ -1057,7 +1057,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                 updateProfileValue();
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 binding.profileUpdate.setVisibility(View.GONE);
-                binding.profileEdit.setVisibility(View.VISIBLE);
+                binding.profileEdit.setVisibility(View.GONE);
                 //makeDisable();
 
             }
