@@ -566,7 +566,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         String endTime = binding.editEndTime.getText().toString();
         String vehicleNum = binding.editVehicleNum.getText().toString();
 
-        if (isValidate(phone,email) && floorParentID!=0){
+        //if (isValidate(phone,email) && floorParentID!=0){
             profileData.setFullName(name);
             //profileData.setFullName(editDisplayName);
             profileData.setPhoneNumber(phone);
@@ -578,7 +578,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             profileData.setVehicleRegNumber(vehicleNum);
 
             callProfileUpdate();
-        }
+       // }
 
 
     }
@@ -1055,8 +1055,16 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     }
 
     private void closeKeyboard() {
-        InputMethodManager inputManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        try {
+            InputMethodManager inputManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            if(inputManager!=null){
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
+        catch (Exception e){
+
+        }
+
 
     }
 
@@ -1212,8 +1220,19 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     @Override
     public void onDefaultAssetSelect(int deskId, String code) {
         binding.editDesk.setText(code);
+
+        System.out.println("SlectedCodeAndId "+code+" "+deskId);
+
+        UserDetailsResponse userDetailsResponse=new UserDetailsResponse();
+        UserDetailsResponse.PreferredDesk preferredDesk=userDetailsResponse.new PreferredDesk();
+        preferredDesk.setId(deskId);
+        preferredDesk.setCode(code);
+        preferredDesk.setDescription("");
+
+       profileData.setPreferredDesk(preferredDesk);
+
         //profileData.getPreferredDesk().setId(deskId);
-        profileData.getPreferredDesk().setCode(code);
+        //profileData.getPreferredDesk().setCode(code);
         validateData();
         //profileData.getPreferredDesk().setDescription("");
 
