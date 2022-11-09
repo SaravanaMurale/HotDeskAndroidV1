@@ -50,7 +50,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import dream.guys.hotdeskandroid.adapter.ActiveTeamsAdapter;
+import dream.guys.hotdeskandroid.adapter.BookingListToEditAdapter;
+import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
+import dream.guys.hotdeskandroid.adapter.NewDeskListRecyclerAdapter;
+import dream.guys.hotdeskandroid.adapter.ParkingSpotListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.ParticipantNameShowAdapter;
+import dream.guys.hotdeskandroid.adapter.RoomListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.SearchRecyclerAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityMainBinding;
 import dream.guys.hotdeskandroid.example.MyCanvasDraw;
@@ -58,11 +64,15 @@ import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
 import dream.guys.hotdeskandroid.model.request.Point;
+import dream.guys.hotdeskandroid.model.response.ActiveTeamsResponse;
+import dream.guys.hotdeskandroid.model.response.AmenitiesResponse;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
+import dream.guys.hotdeskandroid.ui.book.BookFragment;
 import dream.guys.hotdeskandroid.ui.chat.FreshChatActivity;
 import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
@@ -79,7 +89,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class MainActivity extends AppCompatActivity implements SearchRecyclerAdapter.GlobalSearchOnClickable, ParticipantNameShowAdapter.OnParticipantSelectable {
+public class MainActivity extends AppCompatActivity implements
+        BookingListToEditAdapter.OnEditClickable,
+        DeskListRecyclerAdapter.OnSelectSelected,
+        NewDeskListRecyclerAdapter.OnChangeSelected,
+        ActiveTeamsAdapter.OnActiveTeamsSelected,
+        ParkingSpotListRecyclerAdapter.OnSelectSelected,
+        SearchRecyclerAdapter.GlobalSearchOnClickable,
+        RoomListRecyclerAdapter.OnSelectSelected,
+        ParticipantNameShowAdapter.OnParticipantSelectable {
     ActivityMainBinding binding;
     BottomNavigationView navView;
     NavController navController;
@@ -109,6 +127,32 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
     String calSelectedMont="";
     List<ParkingSpotModel> parkingSpotModelList=new ArrayList<>();
     UiModeManager uiModeManager;
+
+
+    BookingForEditResponse bookingForEditResponse;
+    List<BookingForEditResponse.TeamDeskAvailabilities> bookingDeskList = new ArrayList<>();
+    List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponseDesk=new ArrayList<>();
+    boolean isGlobalLocationSetUP = false;
+
+    EditBookingDetails editBookingDetailsGlobal;
+    public int selectedTeamId = 0;
+    List<ActiveTeamsResponse> activeTeamsList = new ArrayList<>();
+    public int selectedTeamAutoApproveStatus = 0;
+    String selectedTeamName="";
+    public BottomSheetDialog deskListBottomSheet;
+    BottomSheetDialog activeTeamsBottomSheet;
+    RecyclerView rvHomeBooking,rvDeskRecycler, rvActiveTeams;
+    DeskListRecyclerAdapter deskListRecyclerAdapter;
+    NewDeskListRecyclerAdapter newdeskListRecyclerAdapter;
+    ActiveTeamsAdapter activeTeamsAdapter;
+
+    List<UserAllowedMeetingResponse> userAllowedMeetingResponseListUpdated=new ArrayList<>();
+    TextView tvRepeat, tvTeamName;
+    List<AmenitiesResponse> amenitiesList = new ArrayList<>();
+    ChipGroup chipGroup;
+
+    ParkingSpotListRecyclerAdapter parkingSpotListRecyclerAdapter;
+    RoomListRecyclerAdapter roomListRecyclerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -241,6 +285,319 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
         }
 
     }
+
+
+    public void getAddEditDesk(String code,String date) {
+        if (Utils.isNetworkAvailable(this)) {
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+            Call<BookingForEditResponse> call = apiService.getBookingsForEdit(
+                    SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID),
+                    SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID),
+                    date,
+                    date);
+
+            call.enqueue(new Callback<BookingForEditResponse>() {
+                @Override
+                public void onResponse(Call<BookingForEditResponse> call, Response<BookingForEditResponse> response) {
+                    bookingForEditResponse = response.body();
+                    if(bookingDeskList==null)
+                        bookingDeskList= new ArrayList<>();
+
+                    if (!isGlobalLocationSetUP) {
+                        bookingDeskList.clear();
+                        if(response.body().getTeamDeskAvailabilities()!=null)
+                            bookingDeskList = response.body().getTeamDeskAvailabilities();
+                    }
+//                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    if (code.equalsIgnoreCase("3"))
+                        callBottomSheetToEdit(bookingForEditResponse, code);
+                    else{
+                        if(SessionHandler.getInstance().getBoolean(getContext(),AppConstants.LOGIN_CHECK))
+                            deepLinking();
+//                        else
+//                            deeplinkLoginPopUP();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<BookingForEditResponse> call, Throwable t) {
+                    if(SessionHandler.getInstance().getBoolean(getContext(),AppConstants.LOGIN_CHECK))
+                        deepLinking();
+//                    else
+//                        deeplinkLoginPopUP();
+
+                }
+            });
+
+
+        } else {
+            Utils.toastMessage(this, "Please Enable Internet");
+        }
+
+    }
+
+    private void callBottomSheetToEdit(BookingForEditResponse bookingForEditResponse, String code) {
+        String sDate="";
+        RecyclerView rvEditList;
+        TextView editClose, editDate, bookingName, addNew;
+        LinearLayoutManager linearLayoutManager;
+        bookingForEditResponseDesk.clear();
+        if (isGlobalLocationSetUP && bookingDeskList.size()>0){
+            System.out.println(" data in");
+            for (int i=0; i < bookingDeskList.size(); i++){
+                if(!bookingDeskList.get(i).isBookedByElse()){
+                    bookingForEditResponseDesk.add(bookingDeskList.get(i));
+                    //System.out.println("check data bala"+bookingForEditResponseDesk.get(i).getDeskCode());
+                }
+            }
+        } else {
+            for (int i=0; i<bookingForEditResponse.getTeamDeskAvailabilities().size(); i++){
+                if(!bookingForEditResponse.getTeamDeskAvailabilities().get(i).isBookedByElse()){
+                    bookingForEditResponseDesk.add(bookingForEditResponse.getTeamDeskAvailabilities().get(i));
+                }
+            }
+        }
+
+//        bookingForEditResponseDesk.addAll(bookingForEditResponse.getTeamDeskAvailabilities());
+        bookEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bookEditBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_edit_booking_bottomsheet,
+                new RelativeLayout(getContext())));
+
+        rvEditList = bookEditBottomSheet.findViewById(R.id.rvEditList);
+        editClose = bookEditBottomSheet.findViewById(R.id.editClose);
+        editDate = bookEditBottomSheet.findViewById(R.id.editDate);
+        bookingName = bookEditBottomSheet.findViewById(R.id.bookingName);
+        addNew = bookEditBottomSheet.findViewById(R.id.editBookingContinue);
+
+//        addNew.setText(appKeysPage.getAddNew());
+//        editClose.setText(appKeysPage.getBack());
+
+
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rvEditList.setLayoutManager(linearLayoutManager);
+        rvEditList.setHasFixedSize(true);
+
+        BookingListToEditAdapter bookingListToEditAdapter = new BookingListToEditAdapter(getContext(), bookingForEditResponse.getBookings(), this, code, bookingForEditResponse.getTeamDeskAvailabilities());
+        rvEditList.setAdapter(bookingListToEditAdapter);
+        editDate.setText(Utils.dateWithDayString(calSelectedDate));
+
+        if (code.equals("3")) {
+            bookingName.setText("Desk Booking");
+        }else if (code.equals("5")) {
+            bookingName.setText("Room Booking");
+        }else if (code.equals("7")) {
+            bookingName.setText("Car Parking Booking");
+        }
+
+
+        addNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i=0; i<bookingForEditResponseDesk.size();i++){
+                    editBookingDetailsGlobal = new EditBookingDetails();
+                    if (bookingForEditResponse.getUserPreferences().getTeamDeskId()
+                            == bookingForEditResponseDesk.get(i).getTeamDeskId()){
+                        if (bookingForEditResponse.getBookings().size() > 0){
+                            editBookingDetailsGlobal.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
+                                    .getMyto()));
+
+                            editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
+                                    .getMyto(),2)));
+                        } else {
+                            editBookingDetailsGlobal.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursFrom()));
+                            editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
+                        }
+
+                        editBookingDetailsGlobal.setDate(Utils.convertStringToDateFormet(calSelectedDate));
+                        editBookingDetailsGlobal.setCalId(0);
+                        editBookingDetailsGlobal.setDeskCode(bookingForEditResponseDesk.get(i).getDeskCode());
+                        editBookingDetailsGlobal.setDesktId(bookingForEditResponseDesk.get(i).getTeamDeskId());
+                        editBookingDetailsGlobal.setDeskStatus(0);
+                    } else {
+                        editBookingDetailsGlobal.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursFrom()));
+                        editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
+                        editBookingDetailsGlobal.setDeskCode(bookingForEditResponseDesk.get(0).getDeskCode());
+                        editBookingDetailsGlobal.setDesktId(bookingForEditResponseDesk.get(0).getTeamDeskId());
+
+                        editBookingDetailsGlobal.setDate(Utils.convertStringToDateFormet(calSelectedDate));
+                        editBookingDetailsGlobal.setCalId(0);
+                        editBookingDetailsGlobal.setDeskStatus(0);
+
+                    }
+                }
+                if (bookingForEditResponse.getBookings().size() > 0){
+                    editBookingDetailsGlobal.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
+                            .getMyto()));
+
+                    editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
+                            .getMyto(),2)));
+                }
+
+                if (bookingForEditResponse.getBookings().size()==0){
+                    editBookingDetailsGlobal.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursFrom()));
+                    editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
+
+                    editBookingDetailsGlobal.setDate(Utils.convertStringToDateFormet(calSelectedDate));
+                    editBookingDetailsGlobal.setCalId(0);
+                    editBookingDetailsGlobal.setDeskStatus(0);
+                }
+                /*
+                if(isGlobalLocationSetUP)
+                    editBookingUsingBottomSheet(editBookingDetails,
+                            1,0,"request");
+                else
+                    editBookingUsingBottomSheet(editBookingDetails,
+                            1,0,"new");
+                */
+//                editBookingDetailsGlobal = editBookingDetails;
+                getDeskList("3", calSelectedDate);
+            }
+        });
+        editClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bookEditBottomSheet.dismiss();
+            }
+        });
+
+        bookEditBottomSheet.show();
+
+    }
+    private void getDeskList(String code,String date) {
+        if (Utils.isNetworkAvailable(getContext())) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+            Call<List<BookingForEditResponse.TeamDeskAvailabilities>> call = apiService.
+                    getTeamDeskAvailability(
+                            selectedTeamId,
+                            date,
+                            date);
+
+            call.enqueue(new Callback<List<BookingForEditResponse.TeamDeskAvailabilities>>() {
+                @Override
+                public void onResponse(Call<List<BookingForEditResponse.TeamDeskAvailabilities>> call, Response<List<BookingForEditResponse.TeamDeskAvailabilities>> response) {
+                    bookingDeskList.clear();
+                    bookingDeskList = response.body();
+//                    System.out.println("Selecrt id"+selectedTeamId + bookingDeskList.get(0).getDeskCode());
+                    callDeskListBottomSheetDialog();
+
+                }
+
+                @Override
+                public void onFailure(Call<List<BookingForEditResponse.TeamDeskAvailabilities>> call, Throwable t) {
+//                    deepLinking();
+
+                }
+            });
+
+
+        } else {
+            Utils.toastMessage(getContext(), "Please Enable Internet");
+        }
+
+    }
+    private void callDeskListBottomSheetDialog() {
+        for (int i=0; i<activeTeamsList.size(); i++) {
+            if (selectedTeamId==activeTeamsList.get(i).getId()) {
+                selectedTeamName = activeTeamsList.get(i).getName();
+                selectedTeamAutoApproveStatus = activeTeamsList.get(i).getAutomaticApprovalStatus();
+            }
+        }
+
+        System.out.println("chec stats " + selectedTeamAutoApproveStatus);
+        deskListBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        deskListBottomSheet.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_select_desk_new,
+                new RelativeLayout(getContext()))));
+
+        TextView bsRepeatBack, selectDesk;
+        rvDeskRecycler= deskListBottomSheet.findViewById(R.id.desk_list_select_recycler);
+        selectDesk= deskListBottomSheet.findViewById(R.id.sheet_name);
+        tvTeamName= deskListBottomSheet.findViewById(R.id.tv_team_name);
+        bsRepeatBack=deskListBottomSheet.findViewById(R.id.bsDeskBack);
+
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rvDeskRecycler.setLayoutManager(linearLayoutManager);
+        rvDeskRecycler.setHasFixedSize(true);
+        if (selectedicon == 2){
+            selectDesk.setText("Select Parking");
+            parkingSpotListRecyclerAdapter =new ParkingSpotListRecyclerAdapter(getContext(),
+                    MainActivity.this,this,parkingSpotModelList,getContext(),deskListBottomSheet);
+            rvDeskRecycler.setAdapter(parkingSpotListRecyclerAdapter);
+        }else if (selectedicon==1){
+            selectDesk.setText("Select Meeting Room");
+            roomListRecyclerAdapter =new RoomListRecyclerAdapter(getContext(),
+                    this,this,userAllowedMeetingResponseListUpdated,getContext(),
+                    deskListBottomSheet);
+            rvDeskRecycler.setAdapter(roomListRecyclerAdapter);
+        }else {
+            selectDesk.setText("Book a Workspace");
+            tvTeamName.setText(selectedTeamName);
+
+            /*
+            deskListRecyclerAdapter =new DeskListRecyclerAdapter(getContext(),this,
+                    getActivity(),bookingForEditResponseDesk,getContext(),deskListBottomSheet);
+            */
+
+            newdeskListRecyclerAdapter =new NewDeskListRecyclerAdapter(getContext(),this,
+                    this,bookingDeskList, null,deskListBottomSheet);
+            rvDeskRecycler.setAdapter(newdeskListRecyclerAdapter);
+
+        }
+
+        tvTeamName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callActiveTeamsBottomSheet();
+            }
+        });
+
+        bsRepeatBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deskListBottomSheet.dismiss();
+            }
+        });
+
+        deskListBottomSheet.show();
+    }
+    private void callActiveTeamsBottomSheet() {
+        activeTeamsBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        activeTeamsBottomSheet.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_active_teams,
+                new RelativeLayout(getContext()))));
+
+        TextView bsRepeatBack, selectDesk;
+        rvActiveTeams= activeTeamsBottomSheet.findViewById(R.id.desk_list_select_recycler);
+        selectDesk= activeTeamsBottomSheet.findViewById(R.id.sheet_name);
+        bsRepeatBack=activeTeamsBottomSheet.findViewById(R.id.bsDeskBack);
+
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rvActiveTeams.setLayoutManager(linearLayoutManager);
+        rvActiveTeams.setHasFixedSize(true);
+        selectDesk.setText("Book from another team");
+
+        activeTeamsAdapter =new ActiveTeamsAdapter(getContext(),this,
+                this,activeTeamsList,null,activeTeamsBottomSheet);
+        rvActiveTeams.setAdapter(activeTeamsAdapter);
+
+
+
+        bsRepeatBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activeTeamsBottomSheet.dismiss();
+            }
+        });
+
+        activeTeamsBottomSheet.show();
+    }
+
+
+
+
+
 
     private void editBookingUsingBottomSheet(EditBookingDetails editDeskBookingDetails, int dskRoomParkStatus, int position,String newEditStatus) {
 
@@ -1025,6 +1382,132 @@ public class MainActivity extends AppCompatActivity implements SearchRecyclerAda
 
     public BottomNavigationView getNav() {
         return  navView;
+    }
+
+    @Override
+    public void onActiveTeamsSelected(int teamId, String teamName) {
+        selectedTeamId = teamId;
+        tvTeamName.setText(teamName);
+        getDeskList("-1", calSelectedDate);
+    }
+
+    @Override
+    public void onEditClick(BookingForEditResponse.Bookings bookings, String code, List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities) {
+        EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
+        editDeskBookingDetails.setEditStartTTime(Utils.splitTime(bookings.getFrom()));
+        editDeskBookingDetails.setEditEndTime(Utils.splitTime(bookings.getMyto()));
+        editDeskBookingDetails.setDate(Utils.convertStringToDateFormet(bookings.getDate()));
+        editDeskBookingDetails.setCalId(bookings.getId());
+        editDeskBookingDetails.setDeskCode(bookings.getDeskCode());
+        if (bookings.getStatus().getTimeStatus().equalsIgnoreCase("ongoing"))
+            editDeskBookingDetails.setDeskStatus(2);
+        else
+            editDeskBookingDetails.setDeskStatus(0);
+        editDeskBookingDetails.setDesktId(bookings.getTeamDeskId());
+        editDeskBookingDetails.setTimeStatus(bookings.getStatus().getTimeStatus());
+
+        if (bookings.getRequestedTeamDeskId()!=null)
+            editDeskBookingDetails.setRequestedTeamDeskId(bookings.getRequestedTeamDeskId());
+        else
+            editDeskBookingDetails.setRequestedTeamDeskId(0);
+        if (bookings.getRequestedTeamId()!=null)
+            editDeskBookingDetails.setRequestedTeamId(bookings.getRequestedTeamId());
+        else
+            editDeskBookingDetails.setRequestedTeamId(0);
+
+        editBookingUsingBottomSheet(editDeskBookingDetails,1,0,"edit");
+
+    }
+
+    @Override
+    public void ondeskDeleteClick(BookingForEditResponse.Bookings bookings, String code, List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities) {
+        EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
+        editDeskBookingDetails.setCalId(bookings.getId());
+//        editBookingUsingBottomSheet(editDeskBookingDetails,1,0,"delete");
+
+        JsonObject jsonOuterObject = new JsonObject();
+        JsonObject jsonInnerObject = new JsonObject();
+        JsonObject jsonChangesObject = new JsonObject();
+        JsonArray jsonChangesetArray = new JsonArray();
+        JsonArray jsonDeletedIdsArray = new JsonArray();
+        jsonOuterObject.addProperty("teamId",SessionHandler.getInstance().getInt(this,AppConstants.TEAM_ID));
+        jsonOuterObject.addProperty("teamMembershipId",SessionHandler.getInstance().getInt(this,AppConstants.TEAMMEMBERSHIP_ID));
+
+        BookingsRequest bookingsRequest = new BookingsRequest();
+        ArrayList<BookingsRequest.ChangeSets> list =new ArrayList<>();
+        ArrayList<Integer> list1 =new ArrayList<>();
+//        list1.add(editDeskBookingDetails.getCalId());
+        jsonDeletedIdsArray.add(editDeskBookingDetails.getCalId());
+
+        jsonOuterObject.add("changesets", jsonChangesetArray);
+        jsonOuterObject.add("deletedIds", jsonDeletedIdsArray);
+
+        System.out.println("json un"+jsonOuterObject.toString());
+
+        editBookingCall(jsonOuterObject,0,1,"delete");
+
+    }
+
+    @Override
+    public void onSelectDesk(int deskId, String deskName) {
+        deskRoomName.setText(""+deskName);
+        selectedDeskId = deskId;
+    }
+
+    @Override
+    public void onChangeDesk(int deskId, String deskName, String request, String timeZone) {
+        editBookingDetailsGlobal.setDeskCode(deskName);
+        editBookingDetailsGlobal.setDesktId(deskId);
+        editBookingDetailsGlobal.setDeskTeamId(selectedTeamId);
+        editBookingDetailsGlobal.setTimeZone(timeZone);
+
+        selectedDeskId=deskId;
+        if(selectedTeamId == SessionHandler.getInstance().getInt(this, AppConstants.TEAM_ID))
+            editBookingUsingBottomSheet(editBookingDetailsGlobal,
+                    1,0,"new");
+        else
+            editBookingUsingBottomSheet(editBookingDetailsGlobal,
+                    1,0,"request");
+
+    }
+
+    @Override
+    public void onSelectParking(int deskId, String deskName, String location) {
+        deskRoomName.setText(""+deskName);
+        selectedDeskId= deskId;
+        locationAddress.setText(location);
+    }
+
+    @Override
+    public void onSelectRoom(int deskId, String deskName,
+                             String location, List<UserAllowedMeetingResponse.Amenity> amenityList) {
+        deskRoomName.setText(""+deskName);
+        selectedDeskId= deskId;
+        locationAddress.setText(location);
+        List<String> amenityStringList= new ArrayList<>();
+        if(amenityList !=null){
+            for (int i=0; i<amenityList.size(); i++){
+                for (int j=0; j<amenitiesList.size();j++){
+                    if (amenityList.get(i).getId() == amenitiesList.get(j).getId()){
+                        amenityStringList.add(amenitiesList.get(j).getName());
+                        break;
+                    }
+                }
+            }
+        }
+        if (amenityStringList.size()>0){
+            chipGroup.removeAllViews();
+            for (int i=0; i<amenityStringList.size(); i++){
+                Chip chip = new Chip(getContext());
+                chip.setId(i);
+                chip.setText(""+amenityStringList.get(i));
+                chip.setChipBackgroundColorResource(R.color.figmaGrey);
+                chip.setCloseIconVisible(false);
+                chip.setTextColor(getContext().getResources().getColor(R.color.white));
+                chipGroup.addView(chip);
+            }
+        }
+
     }
 
 

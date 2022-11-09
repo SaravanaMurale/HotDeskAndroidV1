@@ -61,6 +61,7 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.ActiveTeamsAdapter;
 import dream.guys.hotdeskandroid.adapter.BookingListToEditAdapter;
@@ -405,6 +406,7 @@ public class BookFragment extends Fragment implements
                             /*if (isGlobalLocationSetUP)
                                 getAvaliableDeskDetails("3",Utils.getISO8601format(date));
                             else*/
+//                            ((MainActivity) getActivity()).getAddEditDesk("3",Utils.getISO8601format(date));
                             getAddEditDesk("3",Utils.getISO8601format(date));
                             calSelectedDate=Utils.getISO8601format(date);
                         } else if (selectedicon==1) {
@@ -841,9 +843,15 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onResponse(Call<List<DeskRoomCountResponse>> call, Response<List<DeskRoomCountResponse>> response) {
                     dialog.dismiss();
-                    if (response.code()==200){
+                    if (response.code()==200 && response.body().size()>0){
                         events.clear();
-                        events.addAll(response.body());
+                        List<DeskRoomCountResponse> dsk = response.body();
+                        int firstLocationId = dsk.get(0).getLocationId();
+                        for (int i=0; i<dsk.size();i++){
+                            if (firstLocationId == dsk.get(i).getLocationId()){
+                                events.add(dsk.get(i));
+                            }
+                        }
                         if (events.size()>0){
                             binding.calendarView.updateCalendar(events, -1);
                         }
@@ -869,7 +877,7 @@ public class BookFragment extends Fragment implements
     }
 
     private void getDeskCountLocation(String month, String locationId,int drawStatus) {
-        if (Utils.isNetworkAvailable(getActivity())) {
+        if (Utils.isNetworkAvailable(getActivity()) && Integer.parseInt(locationId)!=0) {
             dialog= ProgressDialog.showProgressBar(getContext());
             System.out.println("check sub parent Id  :  "+locationId);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -934,7 +942,10 @@ public class BookFragment extends Fragment implements
             });
 
         } else {
-            Utils.toastMessage(getActivity(), "Please Enable Internet");
+            if (Integer.parseInt(locationId)==0)
+                getDeskCount(month);
+            else
+                Utils.toastMessage(getActivity(), "Please Enable Internet");
         }
     }
 
@@ -1898,7 +1909,7 @@ public class BookFragment extends Fragment implements
 
             chipGroup.setVisibility(View.VISIBLE);
             capacitylayout.setVisibility(View.VISIBLE);
-            if (userAllowedMeetingResponseListUpdated.size() > 0){
+            if (userAllowedMeetingResponseListUpdated.size() > 0) {
 //                System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
                 deskRoomName.setText(""+userAllowedMeetingResponseListUpdated.get(0).getName());
                 selectedDeskId = userAllowedMeetingResponseListUpdated.get(0).getId();
@@ -1942,23 +1953,23 @@ public class BookFragment extends Fragment implements
                 selectedDeskId = editDeskBookingDetails.getParkingSlotId();
                 locationAddress.setText(""+editDeskBookingDetails.getLocationAddress());
             }
-
         }
+
         //Logic for start time and end time of DESK and MEETING ROOM
-        if(dskRoomParkStatus==2){
-            if (editDeskBookingDetails.getEditStartTTime()!=null){
+        if(dskRoomParkStatus==2) {
+            if (editDeskBookingDetails.getEditStartTTime()!=null) {
                 startTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()));
                 if(!newEditStatus.equalsIgnoreCase("edit") &&
                         Utils.compareTimeIfCheckInEnable(editDeskBookingDetails.getEditStartTTime(), Utils.getCurrentTime()))
                     startTime.setText(Utils.convert24HrsTO12Hrs(Utils.currentTimeWithExtraMins(2)));
             }
-            if (editDeskBookingDetails.getEditEndTime()!=null){
+            if (editDeskBookingDetails.getEditEndTime()!=null) {
                 endTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditEndTime()));
                 if(!newEditStatus.equalsIgnoreCase("edit") &&
                         Utils.compareTimeIfCheckInEnable(Utils.convert12HrsTO24Hrs(""+startTime.getText()),
-                                editDeskBookingDetails.getEditEndTime())){
+                                editDeskBookingDetails.getEditEndTime())) {
                     if (Utils.compareTimeIfCheckInEnable(Utils.convert12HrsTO24Hrs(""+startTime.getText()),
-                            Utils.addHoursToSelectedTimeWithMinutes(Utils.convert12HrsTO24Hrs(""+startTime.getText()), 30))){
+                            Utils.addHoursToSelectedTimeWithMinutes(Utils.convert12HrsTO24Hrs(""+startTime.getText()), 30))) {
                         endTime.setText(Utils.convert24HrsTO12Hrs("23:59"));
                     } else {
                         endTime.setText(Utils.convert24HrsTO12Hrs(Utils.addHoursToSelectedTimeWithMinutes(Utils.convert12HrsTO24Hrs(""+startTime.getText()), 30
@@ -1967,19 +1978,18 @@ public class BookFragment extends Fragment implements
                 }
             }
         } else {
-            System.out.println("check time bala" +
-                    Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()));
-            if (editDeskBookingDetails.getEditStartTTime()!=null){
+
+            if (editDeskBookingDetails.getEditStartTTime()!=null) {
                 startTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()));
                 if(!newEditStatus.equalsIgnoreCase("edit") &&
-                        Utils.compareTimeIfCheckInEnable(editDeskBookingDetails.getEditStartTTime(), Utils.getCurrentTime()))
+                        Utils.compareTimeIfCheckInEnable(Utils.getCurrentTime(), editDeskBookingDetails.getEditStartTTime()))
                     startTime.setText(Utils.convert24HrsTO12Hrs(Utils.currentTimeWithExtraMins(2)));
             }
-            if (editDeskBookingDetails.getEditEndTime()!=null){
+            if (editDeskBookingDetails.getEditEndTime()!=null) {
                 endTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditEndTime()));
                 if(!newEditStatus.equalsIgnoreCase("edit") &&
                         Utils.compareTimeIfCheckInEnable(Utils.convert12HrsTO24Hrs(""+startTime.getText()),
-                                editDeskBookingDetails.getEditEndTime())){
+                                editDeskBookingDetails.getEditEndTime())) {
                     if (Utils.compareTimeIfCheckInEnable(Utils.convert12HrsTO24Hrs(""+startTime.getText()),
                             Utils.addHoursToSelectedTime(Utils.convert12HrsTO24Hrs(""+startTime.getText()), 4))){
                         endTime.setText(Utils.convert24HrsTO12Hrs("23:59"));
@@ -1988,7 +1998,6 @@ public class BookFragment extends Fragment implements
                     }
                 }
             }
-
         }
 
         if (editDeskBookingDetails.getDate()!=null)

@@ -529,7 +529,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                                     notiIcon.setVisibility(View.VISIBLE);
                                     break loo;
                                 }
-                                SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.SHOWNOTIFICATION,false);
+                                SessionHandler.getInstance().saveBoolean(activityContext, AppConstants.SHOWNOTIFICATION,false);
                             }
                         }
                     }else if(response.code()==401){
@@ -1092,7 +1092,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
             } else if(click.equals(AppConstants.REMOTE)){
                 bundle.putString("ACTION",AppConstants.REMOTE);
-                bundle.putString("BOOK_NAME",calendarEntriesModel.getUsageTypeName());
+                bundle.putString("BOOK_NAME",calendarEntriesModel.getUsageTypeAbbreviation());
 
             }
 

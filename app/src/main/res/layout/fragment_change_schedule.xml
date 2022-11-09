@@ -644,7 +644,9 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:theme="@style/TextRegular"
-                    android:minLines="2" />
+                    android:minLines="2"
+                    android:textColor="@color/figmaGrey"
+                    />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -670,6 +672,7 @@
                             android:id="@+id/s_remote"
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
+                            android:enabled="false"
                             android:gravity="center" />
 
                         <view
@@ -682,6 +685,7 @@
                             android:id="@+id/s_out_office"
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
+                            android:enabled="false"
                             android:src="@drawable/remote_circle" />
 
                         <view
@@ -694,6 +698,7 @@
                             android:id="@+id/s_sick"
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
+                            android:enabled="false"
                             android:src="@drawable/remote_circle" />
 
                         <view
@@ -719,6 +724,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:theme="@style/TextRegular"
+                    android:textColor="@color/figmaGrey"
                     android:minLines="2" />
 
                 <LinearLayout
@@ -745,6 +751,7 @@
                             android:id="@+id/su_remote"
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
+                            android:enabled="false"
                             android:gravity="center" />
 
                         <view
@@ -757,6 +764,7 @@
                             android:id="@+id/su_out_office"
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
+                            android:enabled="false"
                             android:src="@drawable/remote_circle" />
 
                         <view
@@ -769,6 +777,7 @@
                             android:id="@+id/su_sick"
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
+                            android:enabled="false"
                             android:src="@drawable/remote_circle" />
 
                         <view

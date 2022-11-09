@@ -301,6 +301,95 @@ public class Utils {
     }
 
 
+    public static void bottomSheetTimePickerChangeEndTime(Context mContext, Activity activity,TextView st,
+                                                          TextView et, String title, String date,
+                                                          Boolean isrequested) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet,
+                new RelativeLayout(activity)));
+        TimePicker simpleTimePicker = bottomSheetDialog.findViewById(R.id.simpleTimePicker);
+        simpleTimePicker.setIs24HourView(false);
+        TextView titleTv = bottomSheetDialog.findViewById(R.id.title);
+        TextView dateTv = bottomSheetDialog.findViewById(R.id.date);
+        TextView continueTv = bottomSheetDialog.findViewById(R.id.continue_tv);
+        TextView backTv = bottomSheetDialog.findViewById(R.id.tv_back);
+        titleTv.setText(title);
+        //New...
+        if (!(date.equalsIgnoreCase(""))){
+            String dateTime = Utils.dateWithDayString(date);
+            if (dateTime.equalsIgnoreCase("")){
+                dateTv.setText(date);
+            }else {
+                dateTv.setText(dateTime);
+            }
+        }else {
+            dateTv.setText(date);
+        }
+
+        String[] parts =Utils.convert12HrsTO24Hrs(st.getText().toString()).split(":");
+        simpleTimePicker.setHour(Integer.parseInt(parts[0]));
+        simpleTimePicker.setMinute(Integer.parseInt(parts[1]));
+
+        int oldHour = Integer.parseInt(parts[0]);
+        int oldMinutes = Integer.parseInt(parts[1]);
+        String part1 = parts[0]; // 004
+        String part2 = parts[1]; // 034556
+        simpleTimePicker.setHour(Integer.parseInt(part1));
+        simpleTimePicker.setMinute(Integer.parseInt(part2));
+
+//        simpleTimePicker.setCurrentHour(5); // before api level 23
+//        simpleTimePicker.setHour(5); // from api level 23
+//        pickerint hours =simpleTimePicker.getCurrentHour(); // before api level 23
+//        int hours =simpleTimePicker.getHour();
+        backTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+        continueTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hour=simpleTimePicker.getHour();
+                minutes=simpleTimePicker.getMinute();
+//                Toast.makeText(mContext, "ih"+isrequested+title, Toast.LENGTH_SHORT).show();
+                if (title.equalsIgnoreCase("end time") && isrequested){
+                    if (hour > oldHour || (hour==oldHour && minutes >oldMinutes)){
+                        Toast.makeText(mContext, "For Request end time cant be more that approved hours", Toast.LENGTH_SHORT).show();
+                        hour= oldHour;
+                        minutes = oldMinutes;
+                    }
+                } else if(title.equalsIgnoreCase("start time") && isrequested){
+                    if (hour < oldHour || (hour==oldHour && minutes < oldMinutes)){
+                        Toast.makeText(mContext, "For Request start time cant be less that approved hours", Toast.LENGTH_SHORT).show();
+                        hour= oldHour;
+                        minutes = oldMinutes;
+                    }
+                }
+
+
+                String time=hour+":"+minutes;
+
+                SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
+
+                try {
+                    Date date=f24hours.parse(time);
+                    SimpleDateFormat f12hours=new SimpleDateFormat("hh:mm aa");
+//                            return String.valueOf(f12hours.format(date));
+                    st.setText(""+f12hours.format(date));
+                    et.setText(Utils.addHoursToSelectedTimeWithMinutes(""+f24hours,30));
+                    System.out.println("ReceivedDate"+f12hours.format(date));
+                    bottomSheetDialog.dismiss();
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+        bottomSheetDialog.show();
+    }
 
     //Bottom Sheet TimePicker
     public static void bottomSheetTimePicker(Context mContext, Activity activity,TextView tv, String title, String date, Boolean isrequested) {

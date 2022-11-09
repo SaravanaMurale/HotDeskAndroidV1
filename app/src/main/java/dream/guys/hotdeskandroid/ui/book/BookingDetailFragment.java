@@ -24,6 +24,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import butterknife.BindView;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.databinding.FragmentBookingDetailBinding;
@@ -123,6 +125,7 @@ public class BookingDetailFragment extends Fragment {
         if (SessionHandler.getInstance().getBoolean(getActivity(), AppConstants.SHOWNOTIFICATION)){
             fragmentBookingDetailBinding.notiIcon.setVisibility(View.VISIBLE);
         }
+
         fragmentBookingDetailBinding.tvSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,20 +167,65 @@ public class BookingDetailFragment extends Fragment {
 
         } else if (action.equals(AppConstants.REMOTE)) {
             fragmentBookingDetailBinding.btnCheckInNow.setVisibility(View.GONE);
+            fragmentBookingDetailBinding.btnCheckInQr.setVisibility(View.GONE);
             fragmentBookingDetailBinding.bookingDetailDeskName.setText(bookName);
             fragmentBookingDetailBinding.bookingDetailCheckInTime.setVisibility(View.INVISIBLE);
             fragmentBookingDetailBinding.bookingCheckOutTime.setVisibility(View.INVISIBLE);
             fragmentBookingDetailBinding.bookingDetailAddress.setVisibility(View.INVISIBLE);
-            fragmentBookingDetailBinding.checkInText.setText(AppConstants.WORKING_REMOTE);
+            fragmentBookingDetailBinding.checkInText.setVisibility(View.GONE);
+            fragmentBookingDetailBinding.remoteText.setVisibility(View.VISIBLE);
+            fragmentBookingDetailBinding.remoteText.setText(bookName);
             fragmentBookingDetailBinding.centerLayoutBlock.setVisibility(View.GONE);
             fragmentBookingDetailBinding.centerBlock.setVisibility(View.VISIBLE);
             fragmentBookingDetailBinding.ivWorkingRemote.setVisibility(View.VISIBLE);
             fragmentBookingDetailBinding.ivNotWorking.setVisibility(View.GONE);
             fragmentBookingDetailBinding.bookingDetailsBlock.setVisibility(View.INVISIBLE);
 
-
+            switch (bookName){
+                case "RQ":
+                    fragmentBookingDetailBinding.remoteText.setText("Request for Desk In Progress");
+                    Glide.with(this)
+                            .load(R.drawable.building)
+                            .placeholder(R.drawable.building)
+                            .into(fragmentBookingDetailBinding.ivWorkingRemote);
+                    break;
+                case "WFH":
+                    fragmentBookingDetailBinding.remoteText.setText("You're Working remotely");
+                    Glide.with(this)
+                            .load(R.drawable.working_remote)
+                            .placeholder(R.drawable.working_remote)
+                            .into(fragmentBookingDetailBinding.ivWorkingRemote);
+                    break;
+                case "WOO":
+                    fragmentBookingDetailBinding.remoteText.setText("You're Working in alternative office");
+                    Glide.with(this)
+                            .load(R.drawable.building)
+                            .placeholder(R.drawable.building)
+                            .into(fragmentBookingDetailBinding.ivWorkingRemote);
+                    break;
+                case "TR":
+                    fragmentBookingDetailBinding.remoteText.setText("You're in training");
+                    Glide.with(this)
+                            .load(R.drawable.building)
+                            .placeholder(R.drawable.building)
+                            .into(fragmentBookingDetailBinding.ivWorkingRemote);
+                    break;
+                case "OO":
+                    fragmentBookingDetailBinding.remoteText.setText("Out of office");
+                    Glide.with(this)
+                            .load(R.drawable.not_working)
+                            .placeholder(R.drawable.not_working)
+                            .into(fragmentBookingDetailBinding.ivWorkingRemote);
+                    break;
+                case "SL":
+                    fragmentBookingDetailBinding.remoteText.setText("You're on Sick Leave");
+                    Glide.with(this)
+                            .load(R.drawable.sick_remote)
+                            .placeholder(R.drawable.sick_remote)
+                            .into(fragmentBookingDetailBinding.ivWorkingRemote);
+                    break;
+            }
         }
-
 
         fragmentBookingDetailBinding.btnCheckInNow.setOnClickListener(new View.OnClickListener() {
             @Override

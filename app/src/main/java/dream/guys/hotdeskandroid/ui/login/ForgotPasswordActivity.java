@@ -72,6 +72,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 ForgotPasswordRequest forgotPasswordRequest = new ForgotPasswordRequest();
                 forgotPasswordRequest.setTenantName(etCompanyName.getText().toString().trim());
                 forgotPasswordRequest.setUserName(etEmail.getText().toString().trim());
+                SessionHandler.getInstance().remove(ForgotPasswordActivity.this,AppConstants.USERTOKEN);
                 Call<Boolean> call = apiService.requestPasswordReset(forgotPasswordRequest);
                 call.enqueue(new Callback<Boolean>() {
                     @Override
