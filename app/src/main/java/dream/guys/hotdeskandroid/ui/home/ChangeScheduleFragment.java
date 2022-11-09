@@ -1528,10 +1528,10 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
                         fragmentChangeScheduleBinding.sSick.setEnabled(false);
                         fragmentChangeScheduleBinding.sOutOffice.setEnabled(false);
                     } else {
-                        fragmentChangeScheduleBinding.tvSaturdayDate.setTextColor(getResources().getColor(R.color.figmaGrey));
-                        fragmentChangeScheduleBinding.sRemote.setEnabled(false);
-                        fragmentChangeScheduleBinding.sSick.setEnabled(false);
-                        fragmentChangeScheduleBinding.sOutOffice.setEnabled(false);
+                        fragmentChangeScheduleBinding.tvSaturdayDate.setTextColor(getResources().getColor(R.color.figmaBlack));
+                        fragmentChangeScheduleBinding.sRemote.setEnabled(true);
+                        fragmentChangeScheduleBinding.sSick.setEnabled(true);
+                        fragmentChangeScheduleBinding.sOutOffice.setEnabled(true);
                     }
 
                     if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
@@ -1540,13 +1540,13 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
                         for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
                             if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
                                     .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
-                                fragmentChangeScheduleBinding.sRemote.setChecked(false);
+                                fragmentChangeScheduleBinding.sRemote.setChecked(true);
                             }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
                                     .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
-                                fragmentChangeScheduleBinding.sOutOffice.setChecked(false);
+                                fragmentChangeScheduleBinding.sOutOffice.setChecked(true);
                             }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
                                     .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
-                                fragmentChangeScheduleBinding.sSick.setChecked(false);
+                                fragmentChangeScheduleBinding.sSick.setChecked(true);
                             } else {
 
                             }
@@ -1565,10 +1565,10 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
                         fragmentChangeScheduleBinding.suSick.setEnabled(false);
                         fragmentChangeScheduleBinding.suOutOffice.setEnabled(false);
                     } else {
-                        fragmentChangeScheduleBinding.tvSundayDate.setTextColor(getResources().getColor(R.color.figmaGrey));
-                        fragmentChangeScheduleBinding.suRemote.setEnabled(false);
-                        fragmentChangeScheduleBinding.suSick.setEnabled(false);
-                        fragmentChangeScheduleBinding.suOutOffice.setEnabled(false);
+                        fragmentChangeScheduleBinding.tvSundayDate.setTextColor(getResources().getColor(R.color.figmaBlack));
+                        fragmentChangeScheduleBinding.suRemote.setEnabled(true);
+                        fragmentChangeScheduleBinding.suSick.setEnabled(true);
+                        fragmentChangeScheduleBinding.suOutOffice.setEnabled(true);
                     }
 
                     if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
@@ -1577,13 +1577,13 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
                         for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
                             if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
                                     .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
-                                fragmentChangeScheduleBinding.suRemote.setChecked(false);
+                                fragmentChangeScheduleBinding.suRemote.setChecked(true);
                             }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
                                     .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
-                                fragmentChangeScheduleBinding.suOutOffice.setChecked(false);
+                                fragmentChangeScheduleBinding.suOutOffice.setChecked(true);
                             }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
                                     .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
-                                fragmentChangeScheduleBinding.suSick.setChecked(false);
+                                fragmentChangeScheduleBinding.suSick.setChecked(true);
                             } else {
 
                             }
