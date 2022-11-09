@@ -200,6 +200,7 @@ public class SettingsActivity extends AppCompatActivity {
                 SessionHandler.getInstance().remove(context,AppConstants.FLOOR);
                 SessionHandler.getInstance().remove(context,AppConstants.FULLPATHLOCATION);
                 SessionHandler.getInstance().remove(context,AppConstants.PARENT_ID);
+                SessionHandler.getInstance().remove(context,AppConstants.TEAM_ID);
 
             }
         });
@@ -257,37 +258,55 @@ public class SettingsActivity extends AppCompatActivity {
                         String currentPassword=etCurrentPassword.getText().toString().trim();
                         String newPassword=etNewPassword.getText().toString().trim();
                         String confirmPassword=etConfirmPassword.getText().toString().trim();
-                        if(currentPassword!=null && newPassword.equalsIgnoreCase(confirmPassword)){
 
+                        if (etCurrentPassword.getText().toString().isEmpty()) {
+                           Utils.toastShortMessage(SettingsActivity.this,"Current Password Is Empty");
+                            return;
+                        } else if (etNewPassword.getText().toString().isEmpty()) {
+                            Utils.toastShortMessage(SettingsActivity.this,"New Password Is Empty");
+                            return;
+                        }/* else if (etNewPassword.getText().toString().length() <= 6) {
+                            Utils.toastShortMessage(SettingsActivity.this,"New Password Is Less tha");
+                            return;
+                        }*/ else if (etConfirmPassword.getText().toString().isEmpty()) {
+                            Utils.toastShortMessage(SettingsActivity.this,"Confirm Password Is Empty");
+                            return;
+                        } else if (etCurrentPassword.getText().toString().equalsIgnoreCase(etNewPassword.getText().toString()) ||
+                                etCurrentPassword.getText().toString().equalsIgnoreCase(etConfirmPassword.getText().toString())) {
+                            Utils.toastShortMessage(SettingsActivity.this,"Current And New Password Is Same");
+                            return;
+                        } else if (!etNewPassword.getText().toString().equalsIgnoreCase(etConfirmPassword.getText().toString())) {
+                            Utils.toastShortMessage(SettingsActivity.this,"New And Confirm Password Should Same");
+                            return;
+                        } else {
+
+                            //Utils.toastShortMessage(SettingsActivity.this,"API Success");
                             if (Utils.isNetworkAvailable(SettingsActivity.this)) {
 
-                            proDialog= ProgressDialog.showProgressBar(SettingsActivity.this);
-                            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-                            ChangePasswordRequest changePasswordRequest=new ChangePasswordRequest(currentPassword,newPassword,confirmPassword);
-                            Call<BaseResponse> call=apiService.changePassword(changePasswordRequest);
-                            call.enqueue(new Callback<BaseResponse>() {
-                                @Override
-                                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                                    BaseResponse baseResponse=response.body();
+                                proDialog= ProgressDialog.showProgressBar(SettingsActivity.this);
+                                ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+                                ChangePasswordRequest changePasswordRequest=new ChangePasswordRequest(currentPassword,newPassword,confirmPassword);
+                                Call<BaseResponse> call=apiService.changePassword(changePasswordRequest);
+                                call.enqueue(new Callback<BaseResponse>() {
+                                    @Override
+                                    public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                                        BaseResponse baseResponse=response.body();
 
-                                    dialog.dismiss();
-                                    proDialog.dismiss();
-                                }
+                                        dialog.dismiss();
+                                        proDialog.dismiss();
+                                    }
 
-                                @Override
-                                public void onFailure(Call<BaseResponse> call, Throwable t) {
-                                    dialog.dismiss();
-                                    proDialog.dismiss();
-                                }
-                            });
+                                    @Override
+                                    public void onFailure(Call<BaseResponse> call, Throwable t) {
+                                        dialog.dismiss();
+                                        proDialog.dismiss();
+                                    }
+                                });
 
                             }else {
                                 Utils.toastMessage(SettingsActivity.this, getResources().getString(R.string.enable_internet));
                             }
-
-
                         }
-
 
                     }
                 });

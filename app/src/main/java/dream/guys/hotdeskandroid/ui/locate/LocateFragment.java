@@ -3849,8 +3849,24 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         });
 
 
+
+        country.setText(appKeysPage.getGlobalLocation());
+        rvCountry.setVisibility(View.VISIBLE);
+        showCountryListInAdapter(locateCountryResposes);
+
+
+        //Without click Global location have toload
         //Global Location
-        country.setOnClickListener(new View.OnClickListener() {
+        statBlock.setVisibility(View.GONE);
+        rvState.setVisibility(View.GONE);
+        streetBlock.setVisibility(View.GONE);
+        rvStreet.setVisibility(View.GONE);
+        floorBlock.setVisibility(View.GONE);
+        rvFloor.setVisibility(View.INVISIBLE);
+
+
+        //Global Location
+        /*country.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -3868,7 +3884,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 //getLocateCountryList();
             }
-        });
+        });*/
 
         //City
         state.setOnClickListener(new View.OnClickListener() {

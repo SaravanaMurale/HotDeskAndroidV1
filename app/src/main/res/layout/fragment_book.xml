@@ -209,6 +209,7 @@
                     android:backgroundTint="@color/figmaBackground"
                     android:gravity="center_vertical"
                     android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:visibility="gone"
                     >
                     <ImageView
                         android:id="@+id/iv_more"

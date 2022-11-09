@@ -422,7 +422,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rectangle_greybg_with_corner"
-                android:hint="Participants(optional)"
+                android:hint="@string/attendeesInternal"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:paddingHorizontal="@dimen/_15sdp"
                 android:paddingVertical="@dimen/_10sdp"
@@ -450,8 +450,15 @@
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:paddingHorizontal="@dimen/_15sdp"
                     android:paddingVertical="@dimen/_10sdp"
-                    android:hint="(To add external users type their email address and press space)"
+                    android:hint="@string/attendeesExternal"
                     />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/spaceadd"
+                android:textSize="@dimen/_10sdp"
+                />
 
 
 
@@ -460,7 +467,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rectangle_greybg_with_corner"
-                android:hint="Subject"
+                android:hint="@string/submit"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:paddingHorizontal="@dimen/_15sdp"
                 android:paddingVertical="@dimen/_10sdp"
@@ -471,7 +478,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rectangle_greybg_with_corner"
-                android:hint="Comments"
+                android:hint="@string/comment"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:paddingHorizontal="@dimen/_15sdp"
                 android:paddingVertical="@dimen/_10sdp"

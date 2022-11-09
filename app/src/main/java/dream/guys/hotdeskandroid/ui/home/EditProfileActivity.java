@@ -1,24 +1,26 @@
 package dream.guys.hotdeskandroid.ui.home;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.PatternMatcher;
 import android.provider.MediaStore;
-import android.provider.OpenableColumns;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.KeyEvent;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,7 +29,6 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,14 +38,11 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -54,7 +52,6 @@ import java.util.stream.Collectors;
 import dream.guys.hotdeskandroid.BuildConfig;
 import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
-import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.EditDefaultAssetAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityEditProfileBinding;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
@@ -63,22 +60,16 @@ import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
 import dream.guys.hotdeskandroid.model.response.DAOCountryList;
 import dream.guys.hotdeskandroid.model.response.DefaultAssetResponse;
-import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
 import dream.guys.hotdeskandroid.model.response.ProfilePicResponse;
 import dream.guys.hotdeskandroid.model.response.TeamDeskResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import dream.guys.hotdeskandroid.ui.settings.CountryListActivity;
-import dream.guys.hotdeskandroid.ui.teams.ShowProfileActivity;
-import dream.guys.hotdeskandroid.ui.wellbeing.NotificationActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
-import dream.guys.hotdeskandroid.utils.ProgressDialog;
+import dream.guys.hotdeskandroid.utils.LogicHandler;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -117,6 +108,10 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     Bitmap thumbnail;
     ByteArrayOutputStream bytes;
     String encodeImage;
+
+    //New-M
+    String notifyStartTimeChange="";
+    String notifyEndTimeChange="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,7 +169,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             public void onClick(View view) {
                 binding.profileUpdate.setVisibility(View.VISIBLE);
                 binding.profileEdit.setVisibility(View.GONE);
-                makeEnable();
+                //makeEnable();
 
             }
         });
@@ -201,41 +196,175 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             @Override
             public void onClick(View view) {
 
-                String name = binding.editName.getText().toString();
-                String editDisplayName = binding.editDisplayName.getText().toString();
-                String phone = binding.tvEditPhone.getText().toString();
-                String deskPhone = binding.tvEditTel.getText().toString();
-                String email = binding.tvEditEmail.getText().toString();
-                String teams = binding.tvEditTeams.getText().toString();
-                String startTime = binding.editStartTime.getText().toString();
-                String endTime = binding.editEndTime.getText().toString();
-                String vehicleNum = binding.editVehicleNum.getText().toString();
 
-                if (isValidate(phone,email) && floorParentID!=0){
-                    //profileData.setFullName(name);
-                    profileData.setFullName(editDisplayName);
-                    profileData.setPhoneNumber(phone);
-                    profileData.setDeskPhoneNumber(deskPhone);
-                    profileData.setEmail(email);
-                    profileData.getCurrentTeam().setCurrentTeamName(teams);
-                    profileData.setWorkHoursFrom("2000-01-01T" + startTime + ":00.000Z");
-                    profileData.setWorkHoursTo("2000-01-01T" + endTime + ":00.000Z");
-                    profileData.setVehicleRegNumber(vehicleNum);
 
-                    callProfileUpdate();
+                validateData();
+
+
+
+            }
+        });
+
+
+
+
+        //StartTime API call
+        binding.editStartTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                //notifyStartTime
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if(!notifyStartTimeChange.isEmpty()){
+                    notifyStartTimeChange="";
+                    validateData();
+                }
+
+            }
+        });
+
+        binding.editStartTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                notifyStartTimeChange="start";
+                Utils.bottomSheetTimePickerInBooking(EditProfileActivity.this, EditProfileActivity.this, binding.editStartTime, "Start", "");
+            }
+        });
+
+
+        //EndTimeAPIcall
+
+
+
+        binding.editEndTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                notifyEndTimeChange="End";
+                Utils.bottomSheetTimePickerInBooking(EditProfileActivity.this, EditProfileActivity.this, binding.editEndTime, "End", "");
+            }
+        });
+
+        binding.editEndTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if(!notifyEndTimeChange.isEmpty()){
+                    notifyEndTimeChange="";
+                    validateData();
                 }
 
             }
         });
 
 
-        binding.editStartTime.setOnClickListener(new View.OnClickListener() {
+        //Vehicle Number Change
+        binding.editVehicleNum.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View view) {
-                Utils.bottomSheetTimePickerInBooking(EditProfileActivity.this, EditProfileActivity.this, binding.editStartTime
-                        , "Start", "");
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    validateData();
+                    return true;
+                }
+                return false;
             }
         });
+
+
+
+        //Email Change
+        binding.tvEditEmail.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    validateData();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //Teams
+        binding.tvEditTeams.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    validateData();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //Mobile Number
+        binding.tvEditPhone.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    validateData();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //Telephone Number
+        binding.tvEditTel.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    validateData();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
+        binding.editDeskChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDeskName();
+            }
+        });
+
+
+        basedOnRoleEnableDisable();
+
+
+        binding.editName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    validateData();
+                    return true;
+                }
+
+                return false;
+            }
+        });
+
+
         binding.ivEditSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -244,15 +373,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                 startActivity(intent);
             }
         });
-        binding.editEndTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Utils.bottomSheetTimePickerInBooking(EditProfileActivity.this,
-                        EditProfileActivity.this, binding.editEndTime,
-                        "End", "");
-//                Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time","");
-            }
-        });
+
 
         if (profileData!=null) {
 
@@ -344,6 +465,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
                                         binding.editDefaultLocaton.setText(floorName);
 
+
                                         buildingPlace.addAll(finalLocationArrayList.stream().filter(val -> val.getId() == floorParentID).collect(Collectors.toList()));
 
                                         if (buildingPlace.size()>0) {
@@ -368,6 +490,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                                             CountryName = location.get(0).getName();
                                         }
 
+                                        validateData();
 
                                     }else {
 
@@ -385,6 +508,8 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                                         carPark.setParentLocationId(floorParentID);
 
                                         profileData.setDefaultCarParkLocation(carPark);
+
+                                        validateData();
 
                                     }
                                 }
@@ -415,7 +540,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         });
 
         //New...
-        makeDisable();
+        //makeDisable();
         binding.editParkChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -426,6 +551,35 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                 //startActivity(intent);
             }
         });
+
+    }
+
+    private void validateData() {
+
+        String name = binding.editName.getText().toString();
+        String editDisplayName = binding.editDisplayName.getText().toString();
+        String phone = binding.tvEditPhone.getText().toString();
+        String deskPhone = binding.tvEditTel.getText().toString();
+        String email = binding.tvEditEmail.getText().toString();
+        String teams = binding.tvEditTeams.getText().toString();
+        String startTime = binding.editStartTime.getText().toString();
+        String endTime = binding.editEndTime.getText().toString();
+        String vehicleNum = binding.editVehicleNum.getText().toString();
+
+        if (isValidate(phone,email) && floorParentID!=0){
+            profileData.setFullName(name);
+            //profileData.setFullName(editDisplayName);
+            profileData.setPhoneNumber(phone);
+            profileData.setDeskPhoneNumber(deskPhone);
+            profileData.setEmail(email);
+            profileData.getCurrentTeam().setCurrentTeamName(teams);
+            profileData.setWorkHoursFrom("2000-01-01T" + startTime + ":00.000Z");
+            profileData.setWorkHoursTo("2000-01-01T" + endTime + ":00.000Z");
+            profileData.setVehicleRegNumber(vehicleNum);
+
+            callProfileUpdate();
+        }
+
 
     }
 
@@ -874,19 +1028,22 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 binding.profileUpdate.setVisibility(View.GONE);
                 binding.profileEdit.setVisibility(View.VISIBLE);
+
+
                 updateProfileValue();
-                makeDisable();
+                //makeDisable();
 
             }
 
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
 
+                closeKeyboard();
                 updateProfileValue();
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 binding.profileUpdate.setVisibility(View.GONE);
                 binding.profileEdit.setVisibility(View.VISIBLE);
-                makeDisable();
+                //makeDisable();
 
             }
         });
@@ -894,6 +1051,12 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         }else {
             Utils.toastMessage(EditProfileActivity.this, getResources().getString(R.string.enable_internet));
         }
+
+    }
+
+    private void closeKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
     }
 
@@ -925,7 +1088,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.editEndTime.setEnabled(true);
         binding.editDefaultLocaton.setEnabled(true);
 
-        binding.editDeskChange.setEnabled(true);
+        //binding.editDeskChange.setEnabled(true);
         binding.editParkChange.setEnabled(true);
         binding.editRoomChange.setEnabled(true);
         binding.tvEditEmail.setEnabled(true);
@@ -935,6 +1098,25 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.tvEditTel.setEnabled(true);
         binding.changeCountry.setEnabled(true);
 
+        //basedOnRoleEnableDisable();
+
+
+
+
+
+
+        binding.editRoomChange.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
+        //binding.editDeskChange.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
+        binding.editParkChange.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
+        binding.editStartTime.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
+        binding.editEndTime.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
+        binding.changeCountry.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
+
+    }
+
+    private void basedOnRoleEnableDisable() {
+
+
         if (profileData!=null && profileData.getHighestRole()!=null){
 
             if (profileData.getHighestRole().equalsIgnoreCase(AppConstants.Administrator)
@@ -942,8 +1124,12 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                     ||profileData.getHighestRole().equalsIgnoreCase(AppConstants.TeamManager)
                     ||profileData.getHighestRole().equalsIgnoreCase(AppConstants.MeetingManager)) {
 
-                binding.editDisplayName.setEnabled(true);
-                binding.editName.setEnabled(false);
+                binding.editDisplayName.setEnabled(false);
+                binding.editName.setEnabled(true);
+
+
+
+
             }else {
                 binding.editDisplayName.setEnabled(false);
                 binding.editName.setEnabled(false);
@@ -954,21 +1140,8 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             binding.editName.setEnabled(false);
         }
 
-        binding.editDeskChange.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getDeskName();
-            }
-        });
-
-        binding.editRoomChange.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
-        binding.editDeskChange.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
-        binding.editParkChange.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
-        binding.editStartTime.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
-        binding.editEndTime.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
-        binding.changeCountry.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
-
     }
+
     private void makeDisable() {
         binding.editName.setEnabled(false);
         binding.editDisplayName.setEnabled(false);
@@ -976,7 +1149,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.editEndTime.setEnabled(false);
         binding.editDefaultLocaton.setEnabled(false);
 
-        binding.editDeskChange.setEnabled(false);
+        //binding.editDeskChange.setEnabled(false);
         binding.editParkChange.setEnabled(false);
         binding.editRoomChange.setEnabled(false);
         binding.tvEditEmail.setEnabled(false);
@@ -987,7 +1160,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.changeCountry.setEnabled(false);
 
         binding.editRoomChange.setTextColor(getResources().getColor(R.color.grey,getTheme()));
-        binding.editDeskChange.setTextColor(getResources().getColor(R.color.grey,getTheme()));
+        //binding.editDeskChange.setTextColor(getResources().getColor(R.color.grey,getTheme()));
         binding.editParkChange.setTextColor(getResources().getColor(R.color.grey,getTheme()));
         binding.editStartTime.setTextColor(getResources().getColor(R.color.grey,getTheme()));
         binding.editEndTime.setTextColor(getResources().getColor(R.color.grey,getTheme()));
@@ -1039,6 +1212,11 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     @Override
     public void onDefaultAssetSelect(int deskId, String code) {
         binding.editDesk.setText(code);
+        //profileData.getPreferredDesk().setId(deskId);
+        profileData.getPreferredDesk().setCode(code);
+        validateData();
+        //profileData.getPreferredDesk().setDescription("");
+
     }
 
     @Override
@@ -1054,6 +1232,8 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
             SessionHandler.getInstance().remove(EditProfileActivity.this,AppConstants.SELECTED_COUNTRY);
             SessionHandler.getInstance().remove(EditProfileActivity.this,AppConstants.SELECTED_COUNTRY_ID);
+
+            validateData();
         }
 
     }
@@ -1142,7 +1322,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.editProfileRoomTv.setText(appKeysPage.getRoom());
         binding.editProfileCountryTv.setText(appKeysPage.getCountry());
         binding.editProfileVehicleNumberTv.setText(appKeysPage.getVehicleNumber());
-        binding.editDeskChange.setText(appKeysPage.getChange());
+        //binding.editDeskChange.setText(appKeysPage.getChange());
         binding.editParkChange.setText(appKeysPage.getChange());
         binding.editRoomChange.setText(appKeysPage.getChange());
         binding.tvEditContact.setText(appKeysPage.getContact());

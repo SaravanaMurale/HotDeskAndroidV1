@@ -39,6 +39,12 @@
     <string name="my_view_desc">heloo draw canva</string>
     <string name="repeat">Repeat</string>
 
+    <string name="comment">Comments</string>
+    <string name="subject">Subject</string>
+    <string name="spaceadd">(To add external users type their email address and press space)</string>
+    <string name="attendeesExternal">Attendees-external</string>
+    <string name="attendeesInternal">Attendees-internal</string>
+
     <string name="select_date">Select date</string>
 
     <!--New...-->

@@ -1,5 +1,10 @@
 package dream.guys.hotdeskandroid.utils;
 
+import android.app.Activity;
+import android.content.Context;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,5 +51,8 @@ public class LogicHandler {
         return originalList;
 
     }
+
+
+
 
 }

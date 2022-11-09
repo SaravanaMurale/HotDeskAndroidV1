@@ -58,7 +58,9 @@
             android:src="@drawable/edit"
             android:layout_marginHorizontal="@dimen/_2sdp"
             app:tint="@color/figmaBlack"
-            android:layout_marginEnd="@dimen/_8sdp"/>
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:visibility="gone"
+            />
 
     </LinearLayout>
 
@@ -162,7 +164,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint=""
-                android:enabled="false"
+                android:enabled="true"
+                android:inputType="text"
+                android:imeOptions="actionDone"
                 android:background="@drawable/edittext_bg"
                 android:padding="@dimen/_5sdp"/>
 
@@ -460,8 +464,7 @@
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="9:00"
                     android:textColor="@color/grey"
-                    android:theme="@style/TextBold"
-                    android:enabled="false"/>
+                    android:theme="@style/TextBold" />
             </RelativeLayout>
 
             <!--End-->
@@ -495,8 +498,7 @@
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="10:00"
                     android:textColor="@color/grey"
-                    android:theme="@style/TextBold"
-                    android:enabled="false"/>
+                    android:theme="@style/TextBold" />
             </RelativeLayout>
 
 
@@ -576,11 +578,12 @@
                         />
 
                     <TextView
-                        android:id="@+id/editDeskChange"
+                        android:id="@+id/editDeskChanges"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:enabled="false"
+                        android:clickable="true"
+                        android:enabled="true"
                         android:text="Change" />
 
                 </RelativeLayout>
@@ -613,7 +616,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:enabled="false"
                         android:text="Change" />
 
                 </RelativeLayout>
@@ -681,9 +683,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:enabled="false"
-                        android:text="Change"
-                        />
+                        android:text="Change" />
 
                 </RelativeLayout>
 
@@ -701,10 +701,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint=""
-                    android:enabled="false"
+                    android:enabled="true"
                     android:background="@drawable/edittext_bg"
                     android:padding="@dimen/_5sdp"
-                    android:textColor="@color/figmaBlue"/>
+                    android:textColor="@color/figmaBlue"
+                    android:inputType="text"
+                    android:imeOptions="actionDone"
+                    />
 
             </LinearLayout>
 
@@ -746,18 +749,19 @@
                 android:padding="@dimen/_6sdp"
                 android:layout_marginTop="@dimen/_3sdp">
 
-                    <EditText
-                        android:id="@+id/tvEditEmail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerInParent="true"
-                        android:layout_toLeftOf="@id/ivEditEmailIcon"
-                        android:text="Email"
-                        android:textColor="@color/figmaBlack"
-                        android:theme="@style/TextRegular"
-                        android:enabled="false"
-                        android:background="@null"/>
+                <EditText
+                    android:id="@+id/tvEditEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:layout_toLeftOf="@id/ivEditEmailIcon"
+                    android:background="@null"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:text="Email"
+                    android:textColor="@color/figmaBlack"
+                    android:theme="@style/TextRegular" />
 
                     <ImageView
                         android:id="@+id/ivEditEmailIcon"
@@ -779,18 +783,19 @@
                     android:background="@drawable/rectangle_greybg_with_corner"
                     android:padding="@dimen/_6sdp">
 
-                    <EditText
-                        android:id="@+id/tvEditTeams"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_toLeftOf="@id/ivTeamsIcon"
-                        android:text="Teams"
-                        android:layout_centerInParent="true"
-                        android:textColor="@color/figmaBlack"
-                        android:theme="@style/TextRegular"
-                        android:enabled="false"
-                        android:background="@null"/>
+                <EditText
+                    android:id="@+id/tvEditTeams"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:layout_toLeftOf="@id/ivTeamsIcon"
+                    android:background="@null"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:text="Teams"
+                    android:textColor="@color/figmaBlack"
+                    android:theme="@style/TextRegular" />
 
                     <ImageView
                         android:id="@+id/ivTeamsIcon"
@@ -811,20 +816,20 @@
                 android:background="@drawable/rectangle_greybg_with_corner"
                 android:padding="@dimen/_6sdp">
 
-                    <EditText
-                        android:id="@+id/tvEditPhone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_toLeftOf="@id/tvEditPhoneIcon"
-                        android:text="Phone"
-                        android:layout_centerInParent="true"
-                        android:textColor="@color/figmaBlack"
-                        android:theme="@style/TextRegular"
-                        android:enabled="false"
-                        android:background="@null"
-                        android:inputType="number"
-                        android:maxLength="10"/>
+                <EditText
+                    android:id="@+id/tvEditPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:layout_toLeftOf="@id/tvEditPhoneIcon"
+                    android:background="@null"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:text="Phone"
+                    android:textColor="@color/figmaBlack"
+                    android:theme="@style/TextRegular" />
 
                     <ImageView
                         android:id="@+id/tvEditPhoneIcon"
@@ -853,7 +858,7 @@
                     android:layout_centerInParent="true"
                     android:layout_toLeftOf="@id/tvEditTelIcon"
                     android:background="@null"
-                    android:enabled="false"
+                    android:imeOptions="actionDone"
                     android:inputType="number"
                     android:maxLength="10"
                     android:text=""
