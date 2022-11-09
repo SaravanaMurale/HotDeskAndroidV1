@@ -1565,7 +1565,11 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
                         fragmentChangeScheduleBinding.suSick.setEnabled(false);
                         fragmentChangeScheduleBinding.suOutOffice.setEnabled(false);
                     } else {
+<<<<<<< HEAD
                         fragmentChangeScheduleBinding.tvSundayDate.setTextColor(getResources().getColor(R.color.figmaGrey));
+=======
+                        fragmentChangeScheduleBinding.tvSundayDate.setTextColor(getResources().getColor(R.color.figmaBgGrey));
+>>>>>>> a34a67d0c545f2a887204344aa89dc06a6e81811
                         fragmentChangeScheduleBinding.suRemote.setEnabled(false);
                         fragmentChangeScheduleBinding.suSick.setEnabled(false);
                         fragmentChangeScheduleBinding.suOutOffice.setEnabled(false);

@@ -1986,7 +1986,11 @@ public class BookFragment extends Fragment implements
             if (editDeskBookingDetails.getEditStartTTime()!=null) {
                 startTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()));
                 if(!newEditStatus.equalsIgnoreCase("edit") &&
+<<<<<<< HEAD
                         Utils.compareTimeIfCheckInEnable(Utils.getCurrentTime(), editDeskBookingDetails.getEditStartTTime()))
+=======
+                        Utils.compareTimeIfCheckInEnable(Utils.getCurrentTime(),editDeskBookingDetails.getEditStartTTime()))
+>>>>>>> a34a67d0c545f2a887204344aa89dc06a6e81811
                     startTime.setText(Utils.convert24HrsTO12Hrs(Utils.currentTimeWithExtraMins(2)));
             }
             if (editDeskBookingDetails.getEditEndTime()!=null) {

@@ -1,53 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parentIdLocate"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    app:layout_behavior="@string/bottom_sheet_behavior">
 
-    <TextView
-        android:id="@+id/bsLocationSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:layout_marginRight="@dimen/_9sdp"
-        android:background="@drawable/rectangle_greybg_with_corner"
-        android:drawableRight="@drawable/locate_location"
-        android:gravity="center_vertical"
-        android:hint="40th Bank Street 30th Floor"
-        android:paddingLeft="@dimen/_15sdp"
-        android:paddingTop="@dimen/_5sdp"
-        android:paddingRight="@dimen/_15sdp"
-        android:textSize="@dimen/_10sdp"
-        android:paddingBottom="@dimen/_5sdp"
-        android:textColor="@color/figmaBlack"
-        android:textColorHint="@color/figmaBlack" />
 
-    <EditText
-        android:id="@+id/bsGeneralSearch"
+    <RelativeLayout
+
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bsLocationSearch"
-        android:layout_marginLeft="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_9sdp"
-        android:background="@drawable/rectangle_greybg_with_corner"
-        android:drawableLeft="@drawable/search_1px"
-        android:gravity="center_vertical"
-        android:hint="  Search"
-        android:paddingLeft="@dimen/_8sdp"
-        android:paddingTop="@dimen/_5sdp"
-        android:paddingBottom="@dimen/_7sdp"
-        android:textSize="@dimen/_10sdp" />
+        android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/floorFilterBlock"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bsGeneralSearch"
+        android:layout_height="match_parent"
         android:layout_marginTop="@dimen/_10sdp"
-        android:layout_above="@+id/bsBack"
+        android:layout_above="@+id/bottomBackAndApply"
         android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/bsLocationSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_9sdp"
+            android:background="@drawable/rectangle_greybg_with_corner"
+            android:drawableRight="@drawable/locate_location"
+            android:gravity="center_vertical"
+            android:hint="40th Bank Street 30th Floor"
+            android:paddingLeft="@dimen/_15sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingRight="@dimen/_15sdp"
+            android:textSize="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:textColor="@color/figmaBlack"
+            android:textColorHint="@color/figmaBlack" />
+
+        <EditText
+            android:id="@+id/bsGeneralSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bsLocationSearch"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_9sdp"
+            android:background="@drawable/rectangle_greybg_with_corner"
+            android:drawableLeft="@drawable/search_1px"
+            android:gravity="center_vertical"
+            android:hint="  Search"
+            android:paddingLeft="@dimen/_8sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_7sdp"
+            android:textSize="@dimen/_10sdp" />
 
          <!--Country-->
         <RelativeLayout
@@ -55,6 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/bg_grey"
+            android:layout_marginTop="@dimen/_10sdp"
         android:padding="@dimen/_5sdp">
 
             <TextView
@@ -210,37 +220,47 @@
     </LinearLayout>
 
 
+    <RelativeLayout
+        android:id="@+id/bottomBackAndApply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        >
+
     <TextView
         android:id="@+id/bsBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/back"
-        android:layout_alignParentBottom="true"
+        android:text="@string/cancel"
+        android:layout_alignParentLeft="true"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:layout_marginBottom="@dimen/_10sdp"
         android:layout_marginLeft="@dimen/_20sdp"
         android:textSize="@dimen/_15sdp"
-        android:visibility="gone"
+        android:visibility="visible"
         />
 
-    <TextView
-        android:id="@+id/bsApply"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Apply"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_20sdp"
-        android:textStyle="bold"
-        android:textColor="@color/blue"
-        android:textSize="@dimen/_13sdp"
-        android:visibility="gone"
+        <TextView
+            android:id="@+id/bsApply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:text="Apply"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:visibility="gone"
 
-        />
+            />
+
+    </RelativeLayout>
+
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 
-
-</RelativeLayout>

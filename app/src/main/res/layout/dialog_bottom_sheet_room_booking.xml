@@ -450,7 +450,7 @@
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:paddingHorizontal="@dimen/_15sdp"
                     android:paddingVertical="@dimen/_10sdp"
-                    android:hint="externalattendees"
+                    android:hint="(To add external users type their email address and press space)"
                     />
 
 

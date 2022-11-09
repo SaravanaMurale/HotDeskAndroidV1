@@ -16,6 +16,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
+import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.SessionHandler;
 
 public class ParticipantNameShowAdapter extends RecyclerView.Adapter<ParticipantNameShowAdapter.ParticipantNameViewHolder> {
 
@@ -50,8 +52,10 @@ public class ParticipantNameShowAdapter extends RecyclerView.Adapter<Participant
     @Override
     public void onBindViewHolder(@NonNull ParticipantNameViewHolder holder, int position) {
 
+
         holder.tvParticipantName.setText(participantDetsilResponseList.get(position).getFullName());
         holder.tvParticcipantEmail.setText(participantDetsilResponseList.get(position).getEmail());
+
 
         holder.cardViewParticipant.setOnClickListener(new View.OnClickListener() {
             @Override

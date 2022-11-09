@@ -356,7 +356,7 @@ public class WorkspaceAssessmentActivity extends AppCompatActivity implements Qu
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"Successfully Updated",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),"Successfully Updated",Toast.LENGTH_LONG).show();
                 Log.d(TAG, "onFailure: "+t.getMessage());
                 finish();
                 t.printStackTrace();

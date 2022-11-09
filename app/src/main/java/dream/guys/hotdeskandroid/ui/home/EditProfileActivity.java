@@ -175,8 +175,10 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                 binding.profileUpdate.setVisibility(View.VISIBLE);
                 binding.profileEdit.setVisibility(View.GONE);
                 makeEnable();
+
             }
         });
+
 
         binding.profileBack.setOnClickListener(new View.OnClickListener() {
             @Override
