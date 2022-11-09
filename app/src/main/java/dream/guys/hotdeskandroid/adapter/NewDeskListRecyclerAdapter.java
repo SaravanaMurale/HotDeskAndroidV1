@@ -21,6 +21,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.ui.book.BookFragment;
@@ -68,7 +69,7 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
                 && fragment.selectedTeamAutoApproveStatus == 3){
             holder.card.setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
             holder.select.setVisibility(View.GONE);
-            System.out.println("chec stats adapter "+fragment.selectedTeamAutoApproveStatus);
+//            System.out.println("chec stats adapter "+fragment.selectedTeamAutoApproveStatus);
 
             holder.deskStatus.setText("Not Available For Request");
             holder.deskIconStatus.setColorFilter(context.getColor(R.color.figma_red));
@@ -77,7 +78,7 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
                 && fragment.selectedTeamAutoApproveStatus != 2) {
             holder.card.setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
             holder.select.setVisibility(View.VISIBLE);
-            System.out.println("chec stats adapter "+fragment.selectedTeamAutoApproveStatus);
+//            System.out.println("chec stats adapter "+fragment.selectedTeamAutoApproveStatus);
 
             holder.deskStatus.setText("Available For Request");
             holder.deskIconStatus.setColorFilter(context.getColor(R.color.figma_orange));

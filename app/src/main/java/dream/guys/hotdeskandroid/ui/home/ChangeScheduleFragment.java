@@ -205,10 +205,10 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
                         fragmentChangeScheduleBinding.sSick.setEnabled(false);
                         fragmentChangeScheduleBinding.sOutOffice.setEnabled(false);
                     } else {
-                        fragmentChangeScheduleBinding.tvSaturdayDate.setTextColor(getResources().getColor(R.color.figmaBlack));
-                        fragmentChangeScheduleBinding.sRemote.setEnabled(true);
-                        fragmentChangeScheduleBinding.sSick.setEnabled(true);
-                        fragmentChangeScheduleBinding.sOutOffice.setEnabled(true);
+                        fragmentChangeScheduleBinding.tvSaturdayDate.setTextColor(getResources().getColor(R.color.figmaGrey));
+                        fragmentChangeScheduleBinding.sRemote.setEnabled(false);
+                        fragmentChangeScheduleBinding.sSick.setEnabled(false);
+                        fragmentChangeScheduleBinding.sOutOffice.setEnabled(false);
                     }
 
 
@@ -1528,10 +1528,10 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
                         fragmentChangeScheduleBinding.sSick.setEnabled(false);
                         fragmentChangeScheduleBinding.sOutOffice.setEnabled(false);
                     } else {
-                        fragmentChangeScheduleBinding.tvSaturdayDate.setTextColor(getResources().getColor(R.color.figmaBlack));
-                        fragmentChangeScheduleBinding.sRemote.setEnabled(true);
-                        fragmentChangeScheduleBinding.sSick.setEnabled(true);
-                        fragmentChangeScheduleBinding.sOutOffice.setEnabled(true);
+                        fragmentChangeScheduleBinding.tvSaturdayDate.setTextColor(getResources().getColor(R.color.figmaGrey));
+                        fragmentChangeScheduleBinding.sRemote.setEnabled(false);
+                        fragmentChangeScheduleBinding.sSick.setEnabled(false);
+                        fragmentChangeScheduleBinding.sOutOffice.setEnabled(false);
                     }
 
                     if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
@@ -1540,13 +1540,13 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
                         for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
                             if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
                                     .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
-                                fragmentChangeScheduleBinding.sRemote.setChecked(true);
+                                fragmentChangeScheduleBinding.sRemote.setChecked(false);
                             }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
                                     .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
-                                fragmentChangeScheduleBinding.sOutOffice.setChecked(true);
+                                fragmentChangeScheduleBinding.sOutOffice.setChecked(false);
                             }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
                                     .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
-                                fragmentChangeScheduleBinding.sSick.setChecked(true);
+                                fragmentChangeScheduleBinding.sSick.setChecked(false);
                             } else {
 
                             }
@@ -1565,10 +1565,10 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
                         fragmentChangeScheduleBinding.suSick.setEnabled(false);
                         fragmentChangeScheduleBinding.suOutOffice.setEnabled(false);
                     } else {
-                        fragmentChangeScheduleBinding.tvSundayDate.setTextColor(getResources().getColor(R.color.figmaBlack));
-                        fragmentChangeScheduleBinding.suRemote.setEnabled(true);
-                        fragmentChangeScheduleBinding.suSick.setEnabled(true);
-                        fragmentChangeScheduleBinding.suOutOffice.setEnabled(true);
+                        fragmentChangeScheduleBinding.tvSundayDate.setTextColor(getResources().getColor(R.color.figmaGrey));
+                        fragmentChangeScheduleBinding.suRemote.setEnabled(false);
+                        fragmentChangeScheduleBinding.suSick.setEnabled(false);
+                        fragmentChangeScheduleBinding.suOutOffice.setEnabled(false);
                     }
 
                     if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
@@ -1577,13 +1577,13 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
                         for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
                             if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
                                     .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
-                                fragmentChangeScheduleBinding.suRemote.setChecked(true);
+                                fragmentChangeScheduleBinding.suRemote.setChecked(false);
                             }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
                                     .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
-                                fragmentChangeScheduleBinding.suOutOffice.setChecked(true);
+                                fragmentChangeScheduleBinding.suOutOffice.setChecked(false);
                             }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
                                     .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
-                                fragmentChangeScheduleBinding.suSick.setChecked(true);
+                                fragmentChangeScheduleBinding.suSick.setChecked(false);
                             } else {
 
                             }

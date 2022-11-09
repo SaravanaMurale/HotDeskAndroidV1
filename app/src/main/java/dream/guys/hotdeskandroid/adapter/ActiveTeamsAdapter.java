@@ -18,6 +18,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.ActiveTeamsResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
@@ -64,6 +65,7 @@ public class ActiveTeamsAdapter extends RecyclerView.Adapter<ActiveTeamsAdapter.
             holder.teamName.setText(activeTeamsList.get(position).getName());
         }
 
+//        if (((MainActivity) activity).selectedTeamId == activeTeamsList.get(position).getId()){
         if (fragment.selectedTeamId == activeTeamsList.get(position).getId()){
             holder.tick.setVisibility(View.VISIBLE);
         } else {
@@ -77,6 +79,7 @@ public class ActiveTeamsAdapter extends RecyclerView.Adapter<ActiveTeamsAdapter.
                         activeTeamsList.get(holder.getAbsoluteAdapterPosition()).getId(),
                         activeTeamsList.get(holder.getAbsoluteAdapterPosition()).getName()
                         );
+//                if (((MainActivity) activity).deskListBottomSheet!=null)
                 if (fragment.deskListBottomSheet!=null)
                     fragment.deskListBottomSheet.dismiss();
                 bottomSheetDialog.dismiss();

@@ -119,8 +119,6 @@ public class FloorAdapter extends RecyclerView.Adapter<FloorAdapter.FloorAdapter
                 holder.ivFloor.setImageDrawable(context.getDrawable(R.drawable.floor_disable));
                 sPos = -1;
             } else {
-
-
                 holder.ivFloor.setImageDrawable(context.getDrawable(R.drawable.floor_enable));
                 SessionHandler.getInstance().saveBoolean(context,AppConstants.FLOOR_SELECTED_STATUS,true);
                 //SessionHandler.getInstance().saveInt(context, AppConstants.FLOOR_POSITION, holder.getAbsoluteAdapterPosition());
