@@ -292,6 +292,8 @@ public class CalendarView extends LinearLayout
                                 ((TextView) count).setText("" + eventDate.getAvailableCount());
                             else if (eventDate.getAssignedCount()>0)
                                 ((TextView) count).setText("" + (eventDate.getAssignedCount() - eventDate.getUsedCount()));
+                            else
+                                ((TextView) count).setText("" + eventDate.getAvailableCount());
 
                             Log.d("CalendarView", "getView: "+eventDate.getAvailableCount());
                             break;

@@ -4680,7 +4680,11 @@ public class BookFragment extends Fragment implements
                 break;
 
             case "FLOOR":
+
                 floorSearchStatus=true;
+
+                bsApply.setVisibility(View.VISIBLE);
+                back.setVisibility(View.VISIBLE);
 
                 floorBlock.setVisibility(View.VISIBLE);
                 floor.setVisibility(View.VISIBLE);
