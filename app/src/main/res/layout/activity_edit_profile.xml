@@ -259,7 +259,8 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="@dimen/_5sdp"
-                        android:src="@drawable/edit" />
+                        android:src="@drawable/schedule_edit"
+                        app:tint="@color/figmaBlue" />
 
                 </RelativeLayout>
 
@@ -381,7 +382,7 @@
                             android:id="@+id/iv_saturday"
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/info_circle"
+                            android:src="@drawable/out_of_office_circle"
                             />
                         <TextView
                             android:id="@+id/tv_saturday"
@@ -402,7 +403,7 @@
                             android:id="@+id/iv_sunday"
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/info_circle"
+                            android:src="@drawable/out_of_office_circle"
                             />
                         <TextView
                             android:id="@+id/tv_sunday"
@@ -463,7 +464,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="9:00"
-                    android:textColor="@color/grey"
+                    android:textColor="@color/figmaBlue"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 

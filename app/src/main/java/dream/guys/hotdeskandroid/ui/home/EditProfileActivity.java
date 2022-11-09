@@ -644,7 +644,10 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                                         .placeholder(R.drawable.info_circle)
                                         .into(binding.ivMonday);
                             } else {
-
+                                Glide.with(this)
+                                        .load(R.drawable.info_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivMonday);
                             }
                         }
                     }
@@ -681,7 +684,10 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                                         .placeholder(R.drawable.info_circle)
                                         .into(binding.ivTuesday);
                             } else {
-
+                                Glide.with(this)
+                                        .load(R.drawable.info_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivTuesday);
                             }
                         }
                     }
@@ -718,7 +724,10 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                                         .placeholder(R.drawable.info_circle)
                                         .into(binding.ivWednesday);
                             } else {
-
+                                Glide.with(this)
+                                        .load(R.drawable.info_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivTuesday);
                             }
                         }
                     }
@@ -755,7 +764,10 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                                         .placeholder(R.drawable.info_circle)
                                         .into(binding.ivThursday);
                             } else {
-
+                                Glide.with(this)
+                                        .load(R.drawable.info_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivTuesday);
                             }
                         }
                     }
@@ -791,14 +803,17 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                                         .placeholder(R.drawable.info_circle)
                                         .into(binding.ivFriday);
                             } else {
-
+                                Glide.with(this)
+                                        .load(R.drawable.info_circle)
+                                        .placeholder(R.drawable.info_circle)
+                                        .into(binding.ivTuesday);
                             }
                         }
                     }
                     break;
                 case "Sat":
                     Glide.with(this)
-                            .load(R.drawable.building_circle)
+                            .load(R.drawable.out_of_office_circle)
                             .placeholder(R.drawable.out_of_office_circle)
                             .into(binding.ivSaturday);
                     binding.tvSaturday.setTextColor(getResources().getColor(R.color.figmaGrey));
@@ -806,7 +821,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                     break;
                 case "Sun":
                     Glide.with(this)
-                            .load(R.drawable.building_circle)
+                            .load(R.drawable.out_of_office_circle)
                             .placeholder(R.drawable.out_of_office_circle)
                             .into(binding.ivSunday);
 
