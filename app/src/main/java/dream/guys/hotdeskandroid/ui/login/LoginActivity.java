@@ -823,6 +823,9 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
 
+                    SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.PARENT_ID_CHECK,floorParentID);
+                    SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.FLOOR_POSITION_CHECK,floorPositon);
+
                     //New...
                     SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.PARENT_ID,floorParentID);
                     SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.FLOOR_POSITION,floorPositon);
@@ -854,6 +857,13 @@ public class LoginActivity extends AppCompatActivity {
                         locationParentID = location.get(0).getParentLocationId();
                         CountryName = location.get(0).getName();
                     }
+
+
+                    //To load Default location
+                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.COUNTRY_NAME_CHECK,CountryName);
+                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.BUILDING_CHECK,buildingName);
+                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FLOOR_CHECK,floorName);
+                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FULLPATHLOCATION_CHECK,fullPathLocation);
 
 
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.COUNTRY_NAME,CountryName);

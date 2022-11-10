@@ -202,6 +202,15 @@ public class SettingsActivity extends AppCompatActivity {
                 SessionHandler.getInstance().remove(context,AppConstants.PARENT_ID);
                 SessionHandler.getInstance().remove(context,AppConstants.TEAM_ID);
 
+                //To Load Defaul Location
+                SessionHandler.getInstance().remove(context,AppConstants.PARENT_ID_CHECK);
+                SessionHandler.getInstance().remove(context,AppConstants.FLOOR_POSITION_CHECK);
+
+                SessionHandler.getInstance().remove(context,AppConstants.COUNTRY_NAME_CHECK);
+                SessionHandler.getInstance().remove(context,AppConstants.BUILDING_CHECK);
+                SessionHandler.getInstance().remove(context,AppConstants.FLOOR_CHECK);
+                SessionHandler.getInstance().remove(context,AppConstants.FULLPATHLOCATION_CHECK);
+
             }
         });
         binding.btnResetPin.setOnClickListener(new View.OnClickListener() {

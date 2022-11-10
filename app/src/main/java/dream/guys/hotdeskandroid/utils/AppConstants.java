@@ -37,6 +37,9 @@ public class AppConstants {
     public static final String REMOTE="REMOTE";
 
     //Locate
+    public static final String PARENT_ID_CHECK="PARENT_ID_CHECK";
+    public static final String FLOOR_POSITION_CHECK="FLOOR_POSITION_CHCECK";
+
     public static final String PARENT_ID="PARENT_ID";
     public static final String SUB_PARENT_ID="SUB_PARENT_ID";
     public static final String FLOOR_POSITION="FLOOR_POSITION";
@@ -55,6 +58,11 @@ public class AppConstants {
     public static final String NEW_FLOOR_POSITION="NEW_FLOOR_POSITION";
     public static final String LOGIN_RESPONSE = "LOGIN_RESPONSE";
     public static final String SAVETOKEN="SAVETOKEN";
+
+    public static final String COUNTRY_NAME_CHECK="COUNTRY_NAME_CHECK";
+    public static final String BUILDING_CHECK="BUILDING_CHECK";
+    public static final String FLOOR_CHECK="FLOOR_CHECK";
+    public static final String FULLPATHLOCATION_CHECK="FULLPATHLOCATION_CHECK";
 
 
 
