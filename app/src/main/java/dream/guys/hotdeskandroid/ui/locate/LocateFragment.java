@@ -128,6 +128,7 @@ import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
+import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.wellbeing.NotificationsListActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.LogicHandler;
@@ -233,6 +234,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     View deskView;
     int canvasss = 0;
+    int defaultLocationcheck=0;
 
 
     List<LocateCountryRespose> locateCountryResposeList;
@@ -366,9 +368,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        ProgressDialog.touchLock(getContext(),getActivity());
         //TimeZoneId
         int defaultTeamId=SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID);
         getTimeZoneForBooking(defaultTeamId);
+
+
 
     }
 
@@ -386,6 +391,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 initLoadFloorDetails(0);
             }
         },1500);
+
+        ProgressDialog.clearTouchLock(getContext(),getActivity());
 
 
     }
@@ -904,6 +911,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     public void initLoadFloorDetails(int canvasDrawStatus) {
 
+        ProgressDialog.touchLock(getContext(), getActivity());
 
         afterBookingDisableRepeat();
 
@@ -920,8 +928,31 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }*/
 
 
-        int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+        //To load default location-saved in login Activity
+        int parentIdCheck =SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID_CHECK);
+        if(parentIdCheck>0 && defaultLocationcheck==0){
+            int floorPositionCheck=SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION_CHECK);
 
+            SessionHandler.getInstance().saveInt(getContext(),AppConstants.PARENT_ID,parentIdCheck);
+            SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION,floorPositionCheck);
+
+
+            //To set location
+            String countryCheck=SessionHandler.getInstance().get(getContext(),AppConstants.COUNTRY_NAME_CHECK);
+            String buildingCheck=SessionHandler.getInstance().get(getContext(),AppConstants.BUILDING_CHECK);
+            String floorCheck=SessionHandler.getInstance().get(getContext(),AppConstants.FLOOR_CHECK);
+            String fullPathCheck=SessionHandler.getInstance().get(getContext(),AppConstants.FULLPATHLOCATION_CHECK);
+
+
+            SessionHandler.getInstance().save(getContext(), AppConstants.COUNTRY_NAME,countryCheck);
+            SessionHandler.getInstance().save(getContext(), AppConstants.BUILDING,buildingCheck);
+            SessionHandler.getInstance().save(getContext(), AppConstants.FLOOR,floorCheck);
+            SessionHandler.getInstance().save(getContext(), AppConstants.FULLPATHLOCATION,fullPathCheck);
+
+        }
+
+        int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+        ProgressDialog.clearTouchLock(getContext(), getActivity());
         if (parentId > 0) {
             //Disable touch Screen
             ProgressDialog.touchLock(getContext(), getActivity());
@@ -3834,6 +3865,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         //removes desk in layout
                         binding.firstLayout.removeAllViews();
 
+                        //used to check default location
+                        defaultLocationcheck=1;
+
                         initLoadFloorDetails(canvasss);
                         bottomSheetDialog.dismiss();
                     } else {
@@ -4343,6 +4377,49 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 locateCheckoutTime.setText(Utils.addHoursToSelectedTime(
                         locateCheckInTime.getText().toString(), 4));
             }
+        }
+
+        //Only for Car Part to add 15min in end time
+        if(code.equals("5")){
+            boolean b = Utils.checkIsCurrentDate(locateCheckInDate.getText().toString());
+
+            //Start
+          /*  if (b) {
+                locateCheckInTime.setText(currentTimeWithExtraMins(2));
+            } else {
+                if (profileData != null) {
+                    locateCheckInTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
+                }
+            }*/
+
+            //End
+            if (profileData != null) {
+                String defaultToWorkHours=Utils.splitTime(profileData.getWorkHoursTo());
+                String[] strDefaultWork = defaultToWorkHours.split(":");
+                int workHour=Integer.parseInt(strDefaultWork[0]);
+                int workMinute=Integer.parseInt(strDefaultWork[1]);
+
+                if(workHour==23){
+                    if(workMinute>=44){
+                        locateCheckoutTime.setText("23:59");
+                    }else {
+
+                        int addedFifteen=workMinute+15;
+                        locateCheckoutTime.setText(""+workHour+":"+addedFifteen);
+                    }
+
+                }else {
+                    locateCheckoutTime.setText(Utils.selectedTimeWithExtraMins(Utils.splitTime(profileData.getWorkHoursTo()),15));
+
+
+                    //locateCheckoutTime.setText(Utils.splitTime(profileData.getWorkHoursTo()));
+                }
+
+
+            }
+
+
+
         }
 
 
