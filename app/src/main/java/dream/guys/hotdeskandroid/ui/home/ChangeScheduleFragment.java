@@ -145,7 +145,7 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
                     break;
                 case "Wed":
                     fragmentChangeScheduleBinding.tvWednesdayDate.setText(dayFormat.format(calendar.getTime())
-                        +" \n"+dateFormat.format(calendar.getTime()));
+                            +" \n"+dateFormat.format(calendar.getTime()));
                     if (Utils.compareTwoDate(calendar.getTime(),
                             Utils.getCurrentDate()) == 1){
                         fragmentChangeScheduleBinding.tvWednesdayDate.setTextColor(getResources().getColor(R.color.figmaGrey));
@@ -904,55 +904,55 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
             }
         }
         if (!outerCheck) {
-                    if (radioGroup.getCheckedRadioButtonId() ==
-                            fragmentChangeScheduleBinding.mRemote.getId()
-                            || radioGroup.getCheckedRadioButtonId() ==
-                            fragmentChangeScheduleBinding.tRemote.getId()
-                            || radioGroup.getCheckedRadioButtonId() ==
-                            fragmentChangeScheduleBinding.wRemote.getId()
-                            || radioGroup.getCheckedRadioButtonId() ==
-                            fragmentChangeScheduleBinding.thRemote.getId()
-                            || radioGroup.getCheckedRadioButtonId() ==
-                            fragmentChangeScheduleBinding.fRemote.getId()
-                            || radioGroup.getCheckedRadioButtonId() ==
-                            fragmentChangeScheduleBinding.sRemote.getId()
-                            || radioGroup.getCheckedRadioButtonId() ==
-                            fragmentChangeScheduleBinding.suRemote.getId()){
-                        callFulldayBooking(daysListHash.get(day),
-                                9);
-                    } else if (radioGroup.getCheckedRadioButtonId() ==
-                            fragmentChangeScheduleBinding.mOutOffice.getId()
-                            || radioGroup.getCheckedRadioButtonId() ==
-                            fragmentChangeScheduleBinding.tOutOffice.getId()
-                            || radioGroup.getCheckedRadioButtonId() ==
-                            fragmentChangeScheduleBinding.wOutOffice.getId()
-                            || radioGroup.getCheckedRadioButtonId() ==
-                            fragmentChangeScheduleBinding.thOutOffice.getId()
-                            || radioGroup.getCheckedRadioButtonId() ==
-                            fragmentChangeScheduleBinding.fOutOffice.getId()
-                            || radioGroup.getCheckedRadioButtonId() ==
-                            fragmentChangeScheduleBinding.sOutOffice.getId()
-                            || radioGroup.getCheckedRadioButtonId() ==
-                            fragmentChangeScheduleBinding.suOutOffice.getId()){
-                        callFulldayBooking(daysListHash.get(day),
-                                6);
-                    } else if (radioGroup.getCheckedRadioButtonId() ==
-                            fragmentChangeScheduleBinding.mSick.getId()
-                            || radioGroup.getCheckedRadioButtonId() ==
-                            fragmentChangeScheduleBinding.tSick.getId()
-                            || radioGroup.getCheckedRadioButtonId() ==
-                            fragmentChangeScheduleBinding.wSick.getId()
-                            || radioGroup.getCheckedRadioButtonId() ==
-                            fragmentChangeScheduleBinding.thSick.getId()
-                            || radioGroup.getCheckedRadioButtonId() ==
-                            fragmentChangeScheduleBinding.fSick.getId()
-                            || radioGroup.getCheckedRadioButtonId() ==
-                            fragmentChangeScheduleBinding.sSick.getId()
-                            || radioGroup.getCheckedRadioButtonId() ==
-                            fragmentChangeScheduleBinding.suSick.getId()){
-                        callFulldayBooking(daysListHash.get(day),
-                                18);
-                    }
+            if (radioGroup.getCheckedRadioButtonId() ==
+                    fragmentChangeScheduleBinding.mRemote.getId()
+                    || radioGroup.getCheckedRadioButtonId() ==
+                    fragmentChangeScheduleBinding.tRemote.getId()
+                    || radioGroup.getCheckedRadioButtonId() ==
+                    fragmentChangeScheduleBinding.wRemote.getId()
+                    || radioGroup.getCheckedRadioButtonId() ==
+                    fragmentChangeScheduleBinding.thRemote.getId()
+                    || radioGroup.getCheckedRadioButtonId() ==
+                    fragmentChangeScheduleBinding.fRemote.getId()
+                    || radioGroup.getCheckedRadioButtonId() ==
+                    fragmentChangeScheduleBinding.sRemote.getId()
+                    || radioGroup.getCheckedRadioButtonId() ==
+                    fragmentChangeScheduleBinding.suRemote.getId()){
+                callFulldayBooking(daysListHash.get(day),
+                        9);
+            } else if (radioGroup.getCheckedRadioButtonId() ==
+                    fragmentChangeScheduleBinding.mOutOffice.getId()
+                    || radioGroup.getCheckedRadioButtonId() ==
+                    fragmentChangeScheduleBinding.tOutOffice.getId()
+                    || radioGroup.getCheckedRadioButtonId() ==
+                    fragmentChangeScheduleBinding.wOutOffice.getId()
+                    || radioGroup.getCheckedRadioButtonId() ==
+                    fragmentChangeScheduleBinding.thOutOffice.getId()
+                    || radioGroup.getCheckedRadioButtonId() ==
+                    fragmentChangeScheduleBinding.fOutOffice.getId()
+                    || radioGroup.getCheckedRadioButtonId() ==
+                    fragmentChangeScheduleBinding.sOutOffice.getId()
+                    || radioGroup.getCheckedRadioButtonId() ==
+                    fragmentChangeScheduleBinding.suOutOffice.getId()){
+                callFulldayBooking(daysListHash.get(day),
+                        6);
+            } else if (radioGroup.getCheckedRadioButtonId() ==
+                    fragmentChangeScheduleBinding.mSick.getId()
+                    || radioGroup.getCheckedRadioButtonId() ==
+                    fragmentChangeScheduleBinding.tSick.getId()
+                    || radioGroup.getCheckedRadioButtonId() ==
+                    fragmentChangeScheduleBinding.wSick.getId()
+                    || radioGroup.getCheckedRadioButtonId() ==
+                    fragmentChangeScheduleBinding.thSick.getId()
+                    || radioGroup.getCheckedRadioButtonId() ==
+                    fragmentChangeScheduleBinding.fSick.getId()
+                    || radioGroup.getCheckedRadioButtonId() ==
+                    fragmentChangeScheduleBinding.sSick.getId()
+                    || radioGroup.getCheckedRadioButtonId() ==
+                    fragmentChangeScheduleBinding.suSick.getId()){
+                callFulldayBooking(daysListHash.get(day),
+                        18);
+            }
 
 
         }
@@ -1215,7 +1215,7 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
     }
-    
+
     private void callFulldayBooking(Date date, int usageTypeId) {
         if (Utils.isNetworkAvailable(getActivity())) {
             fragmentChangeScheduleBinding.progrssBar.setVisibility(View.VISIBLE);
@@ -1348,7 +1348,7 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
 
                     if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
                             && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
-                        ){
+                    ){
                         for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
                             if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
                                     .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){

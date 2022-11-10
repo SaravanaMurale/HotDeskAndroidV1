@@ -814,16 +814,16 @@
 
 
         <TextView
-            android:id="@+id/tvChangeSchedule"
+            android:id="@+id/tvConfirmSchedule"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_15sdp"
-            android:text="Change your \n    schedule"
+            android:text="Confirm"
             android:textColor="@color/figmaBlue"
             android:textSize="@dimen/_13sdp"
-            android:visibility="gone"
+            android:visibility="invisible"
             android:textStyle="bold"
             android:theme="@style/TextBold" />
 
