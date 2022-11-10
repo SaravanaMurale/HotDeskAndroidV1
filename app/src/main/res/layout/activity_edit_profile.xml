@@ -621,8 +621,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:text="Change"
-                        android:textColor="@color/figmaBlue"
-                        />
+                        android:textColor="@color/figmaBlue" />
 
                 </RelativeLayout>
 

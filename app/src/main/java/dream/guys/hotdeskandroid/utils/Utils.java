@@ -301,7 +301,7 @@ public class Utils {
     }
 
 
-    public static void bottomSheetTimePickerChangeEndTime(Context mContext, Activity activity,TextView st,
+    public static void bottomSheetTimePickerMeetingRoom(Context mContext, Activity activity,TextView st,
                                                           TextView et, String title, String date,
                                                           Boolean isrequested) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
@@ -353,22 +353,10 @@ public class Utils {
                 hour=simpleTimePicker.getHour();
                 minutes=simpleTimePicker.getMinute();
 //                Toast.makeText(mContext, "ih"+isrequested+title, Toast.LENGTH_SHORT).show();
-                if (title.equalsIgnoreCase("end time") && isrequested){
-                    if (hour > oldHour || (hour==oldHour && minutes >oldMinutes)){
-                        Toast.makeText(mContext, "For Request end time cant be more that approved hours", Toast.LENGTH_SHORT).show();
-                        hour= oldHour;
-                        minutes = oldMinutes;
-                    }
-                } else if(title.equalsIgnoreCase("start time") && isrequested){
-                    if (hour < oldHour || (hour==oldHour && minutes < oldMinutes)){
-                        Toast.makeText(mContext, "For Request start time cant be less that approved hours", Toast.LENGTH_SHORT).show();
-                        hour= oldHour;
-                        minutes = oldMinutes;
-                    }
-                }
 
 
                 String time=hour+":"+minutes;
+                String endTime=Utils.setStartNearestThirtyMinToMeeting(time);
 
                 SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
 
@@ -377,7 +365,7 @@ public class Utils {
                     SimpleDateFormat f12hours=new SimpleDateFormat("hh:mm aa");
 //                            return String.valueOf(f12hours.format(date));
                     st.setText(""+f12hours.format(date));
-                    et.setText(Utils.addHoursToSelectedTimeWithMinutes(""+f24hours,30));
+                    et.setText(""+f12hours.format(f24hours.parse(endTime)));
                     System.out.println("ReceivedDate"+f12hours.format(date));
                     bottomSheetDialog.dismiss();
 
@@ -2242,6 +2230,7 @@ public class Utils {
     }
 
     public static String setStartNearestThirtyMinToMeeting(String cTime) {
+        System.out.println("cTime bala"+ cTime);
 
         String fTime = "";
         String[] orgSTime = cTime.split(":");

@@ -525,7 +525,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                             loo :
                             for (int i=0;i<notiList.size();i++){
                                 if (notiList.get(i).getStatus()==0){
-                                    SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.SHOWNOTIFICATION,true);
+                                    SessionHandler.getInstance().saveBoolean(activityContext, AppConstants.SHOWNOTIFICATION,true);
                                     notiIcon.setVisibility(View.VISIBLE);
                                     break loo;
                                 }
@@ -534,7 +534,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         }
                     }else if(response.code()==401){
                         Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
-                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                        SessionHandler.getInstance().saveBoolean(activityContext, AppConstants.LOGIN_CHECK,false);
 //                        Utils.finishAllActivity(getContext());
                     }
                 }

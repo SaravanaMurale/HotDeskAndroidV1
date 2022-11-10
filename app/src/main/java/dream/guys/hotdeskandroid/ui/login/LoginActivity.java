@@ -659,7 +659,8 @@ public class LoginActivity extends AppCompatActivity {
                             SessionHandler.getInstance().saveBoolean(LoginActivity.this,AppConstants.PIN_SETUP_DONE,userDetailsResponse.isHasPinSetup());
                             //Log.d(TAG, "onResponse: "+userDetailsResponse.getDefaultLocation().getParentLocationId());
                             if (userDetailsResponse.getDefaultCarParkLocation()!=null){
-                                SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.DEFAULT_CAR_PARK_LOCATION_ID,Utils.checkStringParms(userDetailsResponse.getCurrentTeam().getCurrentTeamId()));
+                                SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.DEFAULT_CAR_PARK_LOCATION_ID,
+                                        Utils.checkStringParms(userDetailsResponse.getDefaultCarParkLocation().getId()));
                             }
 
                             if(userDetailsResponse.getCurrentTeam()!=null) {

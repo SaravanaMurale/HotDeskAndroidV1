@@ -78,7 +78,7 @@ public class DefaultLocationAdapter extends RecyclerView.Adapter<DefaultLocation
             public void onClick(View view) {
 
                 if (holder.txt_title.isEnabled()){
-                    locationInterface.clickEvent(pos,holder.txt_title.getText().toString());
+                    locationInterface.clickEvent(pos,holder.txt_title.getText().toString(),activeLocationArrayList.get(holder.getAbsoluteAdapterPosition()).getId());
                 }else {
 
                 }
@@ -120,7 +120,7 @@ public class DefaultLocationAdapter extends RecyclerView.Adapter<DefaultLocation
     }
 
     public interface DefaultLocationInterface{
-        public void clickEvent(int position,String floorName);
+        public void clickEvent(int position,String floorName, int locationId);
     }
 
 }

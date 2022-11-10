@@ -20,7 +20,9 @@ import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
 import dream.guys.hotdeskandroid.model.response.FirstAidResponse;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
+import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
@@ -309,7 +311,10 @@ public class DefaultLocationActivity extends AppCompatActivity implements Defaul
     }
 
     @Override
-    public void clickEvent(int position,String floorName) {
+    public void clickEvent(int position,String floorName,int locationId) {
+        if (sFrom!=null && !sFrom.equalsIgnoreCase(AppConstants.DefaultLocation))
+            SessionHandler.getInstance().saveInt(DefaultLocationActivity.this,AppConstants.DEFAULT_CAR_PARK_LOCATION_ID,
+                locationId);
 
         Intent intent = new Intent();
         intent.putExtra("List",finalLocationArrayList);

@@ -1354,7 +1354,8 @@ public class BookFragment extends Fragment implements
 
                 }
                 editBookingDetails.setDate(Utils.convertStringToDateFormet(calSelectedDate));
-                if(SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID)>0)
+                Toast.makeText(getContext(), " "+SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID), Toast.LENGTH_SHORT).show();
+                if(SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID) > 0)
                     getParkingSpotList(""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID),editBookingDetails,"new");
                 else
                     getCarParkLocationsList(editBookingDetails,"new");
@@ -2032,15 +2033,21 @@ public class BookFragment extends Fragment implements
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(dskRoomParkStatus==2){
+                    Utils.bottomSheetTimePickerMeetingRoom(getContext(),
+                            getActivity(),startTime,endTime,"Start Time",
+                            Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
+                } else {
+                    if (editDeskBookingDetails.getDeskStatus() != 1
+                            && editDeskBookingDetails.getDeskStatus() != 2
+                            && editDeskBookingDetails.getRequestedTeamId() > 0)
+                        Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
+                    else if (editDeskBookingDetails.getDeskStatus() != 1
+                            && editDeskBookingDetails.getDeskStatus() != 2)
+                        Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
+                }
 //                Toast.makeText(context, "fsf"+editDeskBookingDetails.getRequestedTeamDeskId(), Toast.LENGTH_SHORT).show();
-                if (editDeskBookingDetails.getDeskStatus() != 1
-                        && editDeskBookingDetails.getDeskStatus() != 2
-                        && editDeskBookingDetails.getRequestedTeamId() > 0)
-                    Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
-                else if (editDeskBookingDetails.getDeskStatus() != 1
-                        && editDeskBookingDetails.getDeskStatus() != 2)
-                    Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
+
 //                    Utils.popUpTimePicker(getActivity(),startTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
             }
         });

@@ -59,11 +59,13 @@ public class HelpPdfViewActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
-                    if (response != null) {
-
+                    if (response.body() != null) {
                         ResponseBody responseBody = response.body();
                         InputStream is = responseBody.byteStream();
                         pdfView.fromStream(is).load();
+                    } else {
+                        Toast.makeText(HelpPdfViewActivity.this, "Not Available", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                     locateProgressBar.setVisibility(View.GONE);
 
