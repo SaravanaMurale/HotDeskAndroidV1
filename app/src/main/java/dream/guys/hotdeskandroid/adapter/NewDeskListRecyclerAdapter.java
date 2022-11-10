@@ -90,18 +90,10 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
             holder.deskIconStatus.setColorFilter(context.getColor(R.color.figmaLiteGreen));
         }
 
-        if (deskList.get(position).isBookedByUser()) {
-            holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
-            holder.select.setVisibility(View.VISIBLE);
-            holder.deskStatus.setText("Booked by me");
-
-            holder.deskIconStatus.setColorFilter(context.getColor(R.color.figmaBlue));
-        }
-
         if (deskList.get(position).isBookedByElse()) {
-            if(Utils.compareTwoDates(deskList.get(position).getAvailableTimeSlots()
+            if(Utils.compareTwoDatesandTime(Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z",deskList.get(position).getAvailableTimeSlots()
                     .get(deskList.get(position).getAvailableTimeSlots().size() - 1)
-                    .getFrom(), Utils.getCurrentDate())==1){
+                    .getFrom())==1){
                 holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
                 holder.select.setVisibility(View.GONE);
                 holder.deskStatus.setText("Booked by Other");
@@ -125,6 +117,13 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
 
         }
 
+        if (deskList.get(position).isBookedByUser()) {
+            holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
+            holder.select.setVisibility(View.VISIBLE);
+            holder.deskStatus.setText("Booked by me");
+
+            holder.deskIconStatus.setColorFilter(context.getColor(R.color.figmaBlue));
+        }
         holder.select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1035,6 +1035,38 @@ public class Utils {
 
     }
 
+    public static int compareTwoDatesandTime(String date1,String date2){
+        int dateCompare=-1;
+
+        SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        try {
+            Date d1 = sdformat.parse(date1);
+            Date d2 = sdformat.parse(date2);
+            System.out.println("check compare String date bala"+d1.compareTo(d2));
+            if(d1.compareTo(d2)<0){
+                dateCompare=1;
+                System.out.println("CurrentTimeLessAddedTimeHigh");
+            }else if(d1.compareTo(d2)>0){
+                dateCompare=2;
+                System.out.println("CurrentTimeHihgAddedTimeLess");
+            }else if(d1.compareTo(d2)==0){
+                dateCompare=0;
+                System.out.println("CurrentTimeAndAddedTimeEqual");
+            }/*else if(d1.compareTo(d2)<=0){
+                System.out.println("CurrentTimeIsLessOrEqual");
+                dateCompare=3;
+            }*/
+
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return dateCompare;
+
+
+    }
     public static int compareTwoDates(String date1,String date2){
         int dateCompare=-1;
 
@@ -1042,7 +1074,7 @@ public class Utils {
         try {
             Date d1 = sdformat.parse(date1);
             Date d2 = sdformat.parse(date2);
-
+            System.out.println("check compare String date bala"+d1.compareTo(d2));
             if(d1.compareTo(d2)<0){
                 dateCompare=1;
                 System.out.println("CurrentTimeLessAddedTimeHigh");

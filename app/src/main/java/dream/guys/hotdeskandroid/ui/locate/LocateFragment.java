@@ -5986,6 +5986,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     resultString = "Time overlaps with another booking";
                 } else if(response.body().getResultCode().toString().equals("COVID_SYMPTOMS")){
                     resultString = "COVID_SYMPTOMS";
+                }else if(response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")){
+                    resultString = "Desk is Unavailable";
+                }else {
+                    resultString = response.body().getResultCode().toString();
                 }
                 //Utils.showCustomAlertDialog(getActivity(), "Booking Not Updated " + resultString);
                 Utils.showCustomAlertDialog(getActivity(), resultString);

@@ -672,7 +672,7 @@
                             android:id="@+id/s_remote"
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
-                            android:enabled="false"
+                            android:enabled="true"
                             />
 
                         <view
@@ -685,7 +685,7 @@
                             android:id="@+id/s_out_office"
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
-                            android:enabled="false"
+                            android:enabled="true"
                             />
 
                         <view
@@ -698,7 +698,7 @@
                             android:id="@+id/s_sick"
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
-                            android:enabled="false"
+                            android:enabled="true"
                             />
 
                         <view
@@ -751,7 +751,7 @@
                             android:id="@+id/su_remote"
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
-                            android:enabled="false"
+                            android:enabled="true"
                             />
 
                         <view
@@ -764,7 +764,7 @@
                             android:id="@+id/su_out_office"
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
-                            android:enabled="false"
+                            android:enabled="true"
                             />
 
                         <view
@@ -777,7 +777,7 @@
                             android:id="@+id/su_sick"
                             android:layout_width="@dimen/_25sdp"
                             android:layout_height="@dimen/_25sdp"
-                            android:enabled="false"
+                            android:enabled="true"
                             />
 
                         <view

@@ -741,6 +741,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                                 resultString = "Time overlaps with another booking";
                             } else if(response.body().getResultCode().toString().equals("COVID_SYMPTOMS")){
                                 resultString = "COVID_SYMPTOMS";
+                            }else if(response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")){
+                                resultString = "Desk is Unavailable";
+                            }else {
+                                resultString = response.body().getResultCode().toString();
                             }
                             Utils.showCustomAlertDialog(getActivity(), resultString);
                         }

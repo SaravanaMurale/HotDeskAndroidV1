@@ -3123,6 +3123,10 @@ public class BookFragment extends Fragment implements
                                 resultString = "Time overlaps with another booking";
                             } else if(response.body().getResultCode().toString().equals("COVID_SYMPTOMS")){
                                 resultString = "COVID_SYMPTOMS";
+                            }else if(response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")){
+                                resultString = "Desk is Unavailable";
+                            }else {
+                                resultString = response.body().getResultCode().toString();
                             }
                             Utils.showCustomAlertDialog(getActivity(), resultString);
                         }
@@ -5110,6 +5114,10 @@ public class BookFragment extends Fragment implements
                     resultString = "Invalid timeperiod";
                 }else if(response.body().getResultCode().toString().equals("USER_TIME_OVERLAP")){
                     resultString = "Time overlaps with another booking";
+                }else if(response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")){
+                    resultString = "Desk is Unavailable";
+                } else {
+                    resultString = response.body().getResultCode().toString();
                 }
                 //Utils.showCustomAlertDialog(getActivity(), "Booking Not Updated " + resultString);
                 Utils.showCustomAlertDialog(getActivity(), resultString);
