@@ -1839,6 +1839,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                         for (int k = 0; k < userAllowedMeetingResponseList.size(); k++) {
                                             if (locationWithMR.getMatchesList().get(j).getMatchesId() == userAllowedMeetingResponseList.get(k).getId()) {
                                                 locationWithMR.getMatchesList().get(j).setAllowedForBooking(true);
+                                            }
+
                                                 locationWithMR.getMatchesList().get(j).setCurrentTimeZoneOffset(locationWithMR_response.get(i).getTimeZoneOffsetMinutes());
                                                 LocationWithMR_Response.Matches lMatches = locationWithMR.getMatchesList().get(j);
 
@@ -1867,95 +1869,121 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                                         ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_avaliable));
                                                         meetingStatusModel = new MeetingStatusModel(key, id, code, 1);
 
-                                                        for (int l = 0; l < lMatches.getBookingsList().size(); l++) {
+                                                        if(lMatches.getBookingsList().size()>0) {
 
-                                                            LocationWithMR_Response.Matches.Bookings bookings = lMatches.getBookingsList().get(l);
+                                                            for (int l = 0; l < lMatches.getBookingsList().size(); l++) {
 
-                                                            String[] fromUTCDate = bookings.getFromUtc().split("T");
-                                                            String fromUtcDateAlone = fromUTCDate[0];
+                                                                LocationWithMR_Response.Matches.Bookings bookings = lMatches.getBookingsList().get(l);
 
-                                                            String[] toUTCDate = bookings.getToUtc().split("T");
-                                                            String toUtcDateAlone = toUTCDate[0];
+                                                                String[] fromUTCDate = bookings.getFromUtc().split("T");
+                                                                String fromUtcDateAlone = fromUTCDate[0];
 
-                                                            String[] fromDate = bookings.getFrom().split("T");
-                                                            String fromTimeAloneWithT = fromDate[1];
-                                                            String[] fromTimeAlonez = fromTimeAloneWithT.split("Z");
-                                                            String fromTimeAlone = fromTimeAlonez[0];
+                                                                String[] toUTCDate = bookings.getToUtc().split("T");
+                                                                String toUtcDateAlone = toUTCDate[0];
 
-                                                            String[] toDate = bookings.getTo().split("T");
-                                                            String toTimeAloneWithZ = toDate[1];
-                                                            String[] toTimeAlonez = toTimeAloneWithZ.split("Z");
-                                                            String toTimeAlone = toTimeAlonez[0];
+                                                                String[] fromDate = bookings.getFrom().split("T");
+                                                                String fromTimeAloneWithT = fromDate[1];
+                                                                String[] fromTimeAlonez = fromTimeAloneWithT.split("Z");
+                                                                String fromTimeAlone = fromTimeAlonez[0];
+
+                                                                String[] toDate = bookings.getTo().split("T");
+                                                                String toTimeAloneWithZ = toDate[1];
+                                                                String[] toTimeAlonez = toTimeAloneWithZ.split("Z");
+                                                                String toTimeAlone = toTimeAlonez[0];
 
 
-                                                            String fromDateTime = fromUtcDateAlone + " " + fromTimeAlone;
-                                                            String toDateTime = toUtcDateAlone + " " + toTimeAlone;
+                                                                String fromDateTime = fromUtcDateAlone + " " + fromTimeAlone;
+                                                                String toDateTime = toUtcDateAlone + " " + toTimeAlone;
 
-                                                            //String startDate=binding.locateCalendearView.getText().toString()+" "+binding.locateStartTime.getText().toString()+":00";
-                                                            //String endDate=binding.locateCalendearView.getText().toString()+" "+binding.locateEndTime.getText().toString()+":00";
+                                                                //String startDate=binding.locateCalendearView.getText().toString()+" "+binding.locateStartTime.getText().toString()+":00";
+                                                                //String endDate=binding.locateCalendearView.getText().toString()+" "+binding.locateEndTime.getText().toString()+":00";
 
-                                                            //AddViewStart2022-08-02 11:13:00
-                                                            //AddViewEnd2022-08-02 23:59:00
+                                                                //AddViewStart2022-08-02 11:13:00
+                                                                //AddViewEnd2022-08-02 23:59:00
 
-                                                            //fromTime! <= dateEndBook && dateStartBook <= toime!
-                                                            //fromDateTime!<=endDate  &&  startDate!<=toDateTime
+                                                                //fromTime! <= dateEndBook && dateStartBook <= toime!
+                                                                //fromDateTime!<=endDate  &&  startDate!<=toDateTime
 
-                                                            // 2022-08-02 17:05:00 UTC <= 2022-08-02 23:59:00 UTC  &&  2022-08-02 15:00:00 UTC <= 2022-08-02 17:42:00 UTC
+                                                                // 2022-08-02 17:05:00 UTC <= 2022-08-02 23:59:00 UTC  &&  2022-08-02 15:00:00 UTC <= 2022-08-02 17:42:00 UTC
 
-                                                            //fromDateTime less or equal
-                                                            int dateCompar1 = Utils.compareTwoDates(fromDateTime, endDate);
+                                                                //fromDateTime less or equal
+                                                                int dateCompar1 = Utils.compareTwoDates(fromDateTime, endDate);
 
-                                                            //startDate less or equal
-                                                            int dateCompare2 = Utils.compareTwoDates(startDate, toDateTime);
+                                                                //startDate less or equal
+                                                                int dateCompare2 = Utils.compareTwoDates(startDate, toDateTime);
 
-                                                            if ((dateCompar1 == 0 || dateCompar1 == 1) && (dateCompare2 == 0 || dateCompare2 == 1)) {
+                                                                if ((dateCompar1 == 0 || dateCompar1 == 1) && (dateCompare2 == 0 || dateCompare2 == 1)) {
 
-                                                                if (bookings.getBookedByUserId() == SessionHandler.getInstance().getInt(getContext(), AppConstants.USER_ID)) {
+                                                                    if (bookings.getBookedByUserId() == SessionHandler.getInstance().getInt(getContext(), AppConstants.USER_ID)) {
 
-                                                                    if (!lMatches.isAllowedForBooking()) {
+                                                                        if (!lMatches.isAllowedForBooking()) {
 
-                                                                        if (lMatches.getMatchType() == 2 && lMatches.getAutomaticApprovalStatus() == 0) {
-                                                                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_bookedbyme));
-                                                                            meetingStatusModel = new MeetingStatusModel(key, id, code, 2);
-                                                                            System.out.println("MeetingBookedForMe");
+                                                                            if (lMatches.getMatchType() == 2 && lMatches.getAutomaticApprovalStatus() == 0) {
+                                                                                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_bookedbyme));
+                                                                                meetingStatusModel = new MeetingStatusModel(key, id, code, 2);
+                                                                                System.out.println("MeetingBookedForMe");
+                                                                                break;
+                                                                            } else {
+                                                                                meetingStatusModel = new MeetingStatusModel(key, id, code, 4);
+                                                                                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_request));
+                                                                                System.out.println("MeetingRequest");
+                                                                                break;
+                                                                            }
+
                                                                         } else {
-                                                                            meetingStatusModel = new MeetingStatusModel(key, id, code, 4);
-                                                                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_request));
-                                                                            System.out.println("MeetingRequest");
+                                                                            System.out.println("MeetingBookedForMe");
+                                                                            meetingStatusModel = new MeetingStatusModel(key, id, code, 2);
+                                                                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_bookedbyme));
+                                                                            break;
                                                                         }
 
                                                                     } else {
-                                                                        System.out.println("MeetingBookedForMe");
-                                                                        meetingStatusModel = new MeetingStatusModel(key, id, code, 2);
-                                                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_bookedbyme));
+                                                                        meetingStatusModel = new MeetingStatusModel(key, id, code, 3);
+                                                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_booked));
+                                                                        System.out.println("MeetingBookedOther");
+                                                                        break;
                                                                     }
 
+
+                                                                } else if (lMatches.getAutomaticApprovalStatus() == 3 && !lMatches.isAllowedForBooking()) {
+                                                                    meetingStatusModel = new MeetingStatusModel(key, id, code, 0);
+                                                                    System.out.println("MeetingUnavaliable");
+                                                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
+                                                                    break;
+
+                                                                } else if (lMatches.getAutomaticApprovalStatus() == 2 || lMatches.isAllowedForBooking()) {
+                                                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_avaliable));
+                                                                    System.out.println("Meetingavaliable");
+                                                                    meetingStatusModel = new MeetingStatusModel(key, id, code, 1);
+                                                                    break;
+
                                                                 } else {
-                                                                    meetingStatusModel = new MeetingStatusModel(key, id, code, 3);
-                                                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_booked));
-                                                                    System.out.println("MeetingBookedOther");
+                                                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_request));
+                                                                    System.out.println("MeetingRequest");
+                                                                    meetingStatusModel = new MeetingStatusModel(key, id, code, 4);
+                                                                    break;
+
                                                                 }
 
 
-                                                            } else if (lMatches.getAutomaticApprovalStatus() == 3 && !lMatches.isAllowedForBooking()) {
-                                                                meetingStatusModel = new MeetingStatusModel(key, id, code, 0);
-                                                                System.out.println("MeetingUnavaliable");
-                                                                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
-
-                                                            } else if (lMatches.getAutomaticApprovalStatus() == 2 || lMatches.isAllowedForBooking()) {
-                                                                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_avaliable));
-                                                                System.out.println("Meetingavaliable");
-                                                                meetingStatusModel = new MeetingStatusModel(key, id, code, 1);
-
-                                                            } else {
-                                                                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_request));
-                                                                System.out.println("MeetingRequest");
-                                                                meetingStatusModel = new MeetingStatusModel(key, id, code, 4);
-
                                                             }
 
-
+                                                        }else if (lMatches.getAutomaticApprovalStatus() == 3 && !locationWithMR.getMatchesList().get(j).isAllowedForBooking()) {
+                                                            System.out.println("MeetingBookingUnavaliable");
+                                                            meetingStatusModel = new MeetingStatusModel(key, id, code, 0);
+                                                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
+                                                        } else if (lMatches.getAutomaticApprovalStatus() == 2 || locationWithMR.getMatchesList().get(j).isAllowedForBooking()) {
+                                                            System.out.println("MeeingAvvaliableDoubtHere");
+                                                            System.out.println("MeetingAvaliable");
+                                                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_avaliable));
+                                                            meetingStatusModel = new MeetingStatusModel(key, id, code, 1);
+                                                        } else {
+                                                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_request));
+                                                            meetingStatusModel = new MeetingStatusModel(key, id, code, 4);
+                                                            meetingStatusModelList.add(meetingStatusModel);
+                                                            System.out.println("MeetingRequest");
                                                         }
+
 
 
                                                     }
@@ -1972,7 +2000,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                                     System.out.println("MeetingRequest");*/
                                                 }
 
-                                            }
+                                            //}
                                         }
 
                                     }
@@ -1985,6 +2013,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 meetingStatusModel = new MeetingStatusModel(key, id, code, 4);
                                 meetingStatusModelList.add(meetingStatusModel);
                                 System.out.println("MeetingRequest");
+                                break;
                             }
 
                         }
