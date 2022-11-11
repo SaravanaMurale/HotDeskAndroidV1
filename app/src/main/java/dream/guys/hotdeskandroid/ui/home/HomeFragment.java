@@ -1101,6 +1101,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             }
 
             if (qrEnabled){
+                navController.navigate(R.id.action_qrFragment,bundle);
                 if (checkPermission())
                     navController.navigate(R.id.action_qrFragment,bundle);
                 else

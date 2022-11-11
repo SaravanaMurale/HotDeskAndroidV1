@@ -1,9 +1,11 @@
 package dream.guys.hotdeskandroid.ui.home;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,6 +32,8 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -1422,9 +1426,13 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             public void onClick(DialogInterface dialog, int item) {
                 boolean result = Utils.checkPermission(EditProfileActivity.this);
                 if (items[item].equals("Take Photo")) {
+                    if (checkPermission()){
 //                    userChoosenTask = commonStrings.getTxt_take_photo().getName();
-                    if (result)
-                        cameraIntent();
+                        if (result)
+                            cameraIntent();
+                    } else {
+                        requestPermission();
+                    }
                 } else if (items[item].equals("Gallery")) {
 //                    userChoosenTask = commonStrings.getTxt_choose_from_gallery().getName();
                     if (result)
@@ -1634,5 +1642,22 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
     }
 
+    private boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA);
+        if (result == PackageManager.PERMISSION_GRANTED) {
 
+            return true;
+
+        } else {
+
+            return false;
+        }
+    }
+
+    private void requestPermission() {
+
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CODE);
+
+    }
 }
