@@ -383,16 +383,17 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         super.onViewCreated(view, savedInstanceState);
 
 
-
+        //Disable touch screen
+        /*ProgressDialog.touchLock(getContext(),getActivity());
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 //Initally Load Floor Details
-                initLoadFloorDetails(0);
+                //initLoadFloorDetails(0);
             }
-        },1500);
+        },1500);*/
 
-        ProgressDialog.clearTouchLock(getContext(),getActivity());
+        //ProgressDialog.clearTouchLock(getContext(),getActivity());
 
 
     }
@@ -937,7 +938,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION,floorPositionCheck);
 
 
-            //To set location
+            //To set Default location
             String countryCheck=SessionHandler.getInstance().get(getContext(),AppConstants.COUNTRY_NAME_CHECK);
             String buildingCheck=SessionHandler.getInstance().get(getContext(),AppConstants.BUILDING_CHECK);
             String floorCheck=SessionHandler.getInstance().get(getContext(),AppConstants.FLOOR_CHECK);
@@ -1020,6 +1021,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     /*if(teamDeskAvailabilitiesList!=null && teamDeskAvailabilitiesList.size()>0){
 
                     }*/
+
+                    initLoadFloorDetails(0);
 
 
 
@@ -1184,7 +1187,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 System.out.println("CarParkAvaliable");
                                 // ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_avaliable));
                                 break;
-                            } else if (carParkAvalibilityResponse.isBookedByElse() == false && carParkAvalibilityResponse.isBookedByUser() == false && carParkAvalibilityResponse.isAvailable() == true && carParkingslots.get(i).getParkingSlotAvailability() == 2) {
+                            } else if (carParkAvalibilityResponse.isBookedByElse() == false && carParkAvalibilityResponse.isBookedByUser() == false && carParkAvalibilityResponse.isAvailable() == true && carParkingslots.get(i).getParkingSlotAvailability() == 2 && (carParkingslots.get(i).getAssignessList().size() == 0 || checkCurrentUserStatus(carParkingslots.get(i).getAssignessList()))) {
                                 carParkingStatusModel = new CarParkingStatusModel(carParkingslotsResponse.getCarParkingSlotId(), carParkingslotsResponse.getCode(), 4);
                                 System.out.println("CarParkingRequest");
                                 //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_request));
