@@ -125,6 +125,7 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
     }
 
     private void setVivisbleItems(LocateMyTeamViewHolder holder) {
+        holder.locateMyTeamLocation.setVisibility(View.VISIBLE);
         holder.locateMyTeamNameCheckInIcon.setVisibility(View.VISIBLE);
         holder.locateMyTeamCheckOutIcon.setVisibility(View.VISIBLE);
         holder.locateMyTeamCheckInTime.setVisibility(View.VISIBLE);

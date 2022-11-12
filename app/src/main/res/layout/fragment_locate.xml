@@ -44,8 +44,8 @@
                 <RelativeLayout
                     android:id="@+id/firstLayout"
                     android:layout_width="1000dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/_100sdp">
+                    android:layout_height="1000dp"
+                    android:layout_marginTop="@dimen/_80sdp">
 
 
                     <LinearLayout
@@ -354,7 +354,7 @@
     <RelativeLayout
         android:id="@+id/locateMyTeamList"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="320dp"
         android:visibility="gone"
         android:layout_alignParentBottom="true"
         android:background="@color/white">
@@ -370,7 +370,7 @@
                 android:id="@+id/header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_marginRight="@dimen/_5sdp"
                 >
@@ -381,7 +381,7 @@
                     android:layout_height="wrap_content"
                     android:text="MyTeam"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_15sdp" />
+                    android:textSize="@dimen/_13sdp" />
 
                 <TextView
                     android:id="@+id/tvPMOOffice"
@@ -398,7 +398,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:text="All teams"
-                    android:textColor="@color/blue" />
+                    android:textColor="@color/blue"
+                    android:visibility="invisible"
+                    />
 
 
 
@@ -412,7 +414,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/header"
                 android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
                 android:drawableLeft="@drawable/search_1px"
@@ -428,7 +430,7 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/myTeamClose"
                 android:layout_below="@id/locateMyTeamSearch"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <TextView
@@ -437,10 +439,10 @@
                 android:layout_height="@dimen/_40sdp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentBottom="true"
-                android:text="@string/close"
+                android:layout_marginLeft="@dimen/_10sdp"
                 android:background="@color/white"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="@dimen/_10sdp"
+                android:text="@string/close"
                 android:textColor="@color/figmaBlack"
                 android:textSize="@dimen/_15sdp"
                 android:textStyle="bold" />

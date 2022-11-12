@@ -12,14 +12,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_5sdp"
-            android:padding="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
             >
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/locateMyTeamProfile"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_45sdp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/mygirl"
                 app:tint="@color/figmaBlack" />
@@ -36,8 +37,8 @@
 
             <ImageView
                 android:id="@+id/locateMyTeamFireIv"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
                 android:layout_toRightOf="@+id/locateMyTeamProfile"
                 android:src="@drawable/fire" />
 
@@ -54,8 +55,8 @@
 
             <ImageView
                 android:id="@+id/locateMyTeamPlusIv"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginTop="1dp"
                 android:layout_toRightOf="@id/locateMyTeamName"

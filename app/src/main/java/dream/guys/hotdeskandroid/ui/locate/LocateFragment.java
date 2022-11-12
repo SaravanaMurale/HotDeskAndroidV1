@@ -704,6 +704,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
+                locateMyTeamMemberStatusList.clear();
                 //visible BottomNavigation Bar
                 ((MainActivity) getActivity()).getNav().setVisibility(View.VISIBLE);
 
@@ -8328,6 +8329,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         int getFloorPosition = i;
                         if (getFloorPosition == floorPosition) {
                             floorFoundStatus = true;
+
+                            break;
                             //myTeamBottomSheet.dismiss();
                         }
                     }
@@ -8339,7 +8342,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 //Same building but different Floor
                 doFindAndLoadFloorPosition(floorID, deskId);
 
+            }else {
+                //used to check default location
+                defaultLocationcheck=1;
+
+                callInitView();
             }
+
 
 
         } else {
@@ -8372,6 +8381,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         if (deskId == locateCountryResposeList.get(i).getLocationItemLayout().getDesks().get(j).getDesksId()) {
                             SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
                             System.out.println("SelectedFloorPositionInLocate " + i);
+
+                            //used to check default location
+                            defaultLocationcheck=1;
+
                             callInitView();
                             break;
 
@@ -8473,13 +8486,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                             //https://github.com/alexvasilkov/GestureViews/wiki/Usage#viewpager
 
-                                            binding.zoomView.getController().getSettings()
+                                           /* binding.zoomView.getController().getSettings()
                                                     .setZoomEnabled(true)
-                                                    .setMaxZoom(120f);
+                                                    .setMaxZoom(120f);*/
                                             //.setGravity(Gravity.CENTER);
 
 
-                                            binding.firstLayout.setGravity(Gravity.CENTER);
+                                           // binding.firstLayout.setGravity(Gravity.CENTER);
 
                                             binding.firstLayout.addView(perSonView);
 
