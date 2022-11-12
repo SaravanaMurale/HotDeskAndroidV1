@@ -262,6 +262,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/expandRecyclerView"
                 android:layout_marginTop="@dimen/_8sdp"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         </LinearLayout>

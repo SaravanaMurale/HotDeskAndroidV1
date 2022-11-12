@@ -125,7 +125,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             public void onClick(View view) {
                 //Intent intent = new Intent(getActivity(),UpComingBookingActivity.class);
                 //startActivity(intent);
-
+                binding.searchBlock.setVisibility(View.VISIBLE);
+                binding.searchBlock.setVisibility(View.VISIBLE);
                 binding.expandRecyclerView.setVisibility(View.VISIBLE);
                 binding.tvHoliday.setVisibility(View.GONE);
                 binding.tvUnknown.setVisibility(View.GONE);
@@ -316,7 +317,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             binding.locateProgressBar.setVisibility(View.VISIBLE);
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<ArrayList<DAOTeamMember>> call = apiService.getTeamMembersWithImage("2022-10-21T00:00:00Z",
+            Call<ArrayList<DAOTeamMember>> call = apiService.getTeamMembersWithImage(selectedDate,
                     ""+SessionHandler.getInstance().getInt(getContext(),AppConstants.TEAM_ID),
                     true, true);
             call.enqueue(new Callback<ArrayList<DAOTeamMember>>() {
@@ -336,39 +337,48 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                             copyTeamMembersList = response.body();
                             floorList.clear();
                             System.out.println("bala check team outer"+teamMembersList.size());
-                            for (int i=0; i < teamMembersList.size(); i++){
+                            for (int i=0; i < teamMembersList.size(); i++) {
                                 if (teamMembersList.get(i).getDayGroups().size() > 0
                                 && teamMembersList.get(i).getDayGroups().get(0)
                                         .getCalendarEntries().size()>0){
-                                    switch (teamMembersList.get(i).getDayGroups().get(0)
-                                            .getCalendarEntries().get(0)
-                                            .getUsageTypeAbbreviation()){
-                                        case "IO":
-                                            System.out.println("bala check IO  outer for"+teamMembersList.get(i).getDayGroups().size());
-                                            teamMembersInOfficeList.add(teamMembersList.get(i));
-                                            for (int j=0; j<teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries().size();j++){
-                                                System.out.println("bala check inside for"+teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
-                                                        .get(j).getBooking());
-                                                if (teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
-                                                        .get(j).getBooking() != null
-                                                        && !floorList.containsKey(teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
-                                                        .get(j).getBooking().getLocationBuildingFloor().getFloorID())) {
-                                                    floorList.put(teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
-                                                                    .get(j).getBooking().getLocationBuildingFloor().getFloorID(),
-                                                            teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
-                                                                    .get(j).getBooking().getLocationBuildingFloor().getfLoorName());
-                                                }
-                                            }
-                                            break;
-                                        case "WOO":
-                                            teamMembersRemoteList.add(teamMembersList.get(i));
-                                            break;
-                                        case "SL":
-                                            teamMembersHolidayList.add(teamMembersList.get(i));
-                                            break;
-                                        default:
-                                            teamMembersUnknownList.add(teamMembersList.get(i));
+                                    for (int x=0; x<teamMembersList.get(i).getDayGroups().get(0)
+                                            .getCalendarEntries().size(); x++){
+                                        switch (teamMembersList.get(i).getDayGroups().get(0)
+                                                .getCalendarEntries().get(x)
+                                                .getUsageTypeAbbreviation()){
+                                            case "IO":
+                                                System.out.println("bala check IO  outer for"+teamMembersList.get(i).getDayGroups().size());
+                                                teamMembersInOfficeList.add(teamMembersList.get(i));
+//                                                for (int j=0; j<teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries().size();j++){
+                                                    System.out.println("bala check inside for"+teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
+                                                            .get(x).getBooking());
+                                                    if (teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
+                                                            .get(x).getBooking() != null
+                                                            && !floorList.containsKey(teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
+                                                            .get(x).getBooking().getLocationBuildingFloor().getFloorID())) {
+                                                        floorList.put(teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
+                                                                        .get(x).getBooking().getLocationBuildingFloor().getFloorID(),
+                                                                teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
+                                                                        .get(x).getBooking().getLocationBuildingFloor().getfLoorName());
+                                                    }
+//                                                }
+                                                break;
+                                            case "WFH":
+                                                teamMembersRemoteList.add(teamMembersList.get(i));
+                                                break;
+                                            case "OO":
+                                                teamMembersRemoteList.add(teamMembersList.get(i));
+                                                break;
+                                            case "WOO":
+                                                teamMembersRemoteList.add(teamMembersList.get(i));
+                                                break;
+                                            case "SL":
+                                                teamMembersHolidayList.add(teamMembersList.get(i));
+                                                break;
+                                            default:
+                                                teamMembersUnknownList.add(teamMembersList.get(i));
 
+                                        }
                                     }
                                 } else
                                     teamMembersUnknownList.add(teamMembersList.get(i));
@@ -435,7 +445,10 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                 loopu:
                 for (int j=0; j<teamMembersInOfficeList.get(i).getDayGroups().get(0)
                         .getCalendarEntries().size(); j++){
-                    if (key.equals(teamMembersInOfficeList.get(i).getDayGroups().get(0).getCalendarEntries()
+                    if (teamMembersInOfficeList.get(i).getDayGroups().get(0).getCalendarEntries()
+                            .get(j).getBooking()!=null
+                            &&
+                            key.equals(teamMembersInOfficeList.get(i).getDayGroups().get(0).getCalendarEntries()
                             .get(j).getBooking().getLocationBuildingFloor()
                             .getFloorID())) {
                         System.out.println("team add"+teamMembersInOfficeList.get(i).getDayGroups().get(0).getCalendarEntries().size());
@@ -492,16 +505,25 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     private void setValueToAdapter(ArrayList<DAOTeamMember> teamMembersList) {
         if (teamMembersRemoteList.size()>0){
             binding.tvWorkRemote.setVisibility(View.VISIBLE);
-        }else
+            binding.recyclerViewRemote.setVisibility(View.VISIBLE);
+        }else {
             binding.tvWorkRemote.setVisibility(View.GONE);
+            binding.recyclerViewRemote.setVisibility(View.GONE);
+        }
         if (teamMembersUnknownList.size()>0){
             binding.tvUnknown.setVisibility(View.VISIBLE);
-        }else
+            binding.recyclerViewUnkown.setVisibility(View.VISIBLE);
+        }else{
             binding.tvUnknown.setVisibility(View.GONE);
+            binding.recyclerViewUnkown.setVisibility(View.GONE);
+        }
         if (teamMembersHolidayList.size()>0){
             binding.tvHoliday.setVisibility(View.VISIBLE);
-        }else
+            binding.recyclerViewHoliday.setVisibility(View.VISIBLE);
+        }else{
             binding.tvHoliday.setVisibility(View.GONE);
+            binding.recyclerViewHoliday.setVisibility(View.GONE);
+        }
         if (teamMembersInOfficeList.size()>0){
 //            binding.tvFloorName.setVisibility(View.VISIBLE);
             binding.tvAdddress.setVisibility(View.VISIBLE);
@@ -512,7 +534,10 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 //            binding.tvFloorName.setText(""+teamMembersInOfficeList.get(0).getDayGroups()
 //                    .get(0).getCalendarEntries()
 //                    .get(0).getBooking().getLocationBuildingFloor().getfLoorName());
-            binding.tvAdddress.setText(""+teamMembersInOfficeList.get(0).getDayGroups()
+            if (teamMembersInOfficeList.get(0).getDayGroups()
+                    .get(0).getCalendarEntries()
+                    .get(0).getBooking() != null)
+                binding.tvAdddress.setText(""+teamMembersInOfficeList.get(0).getDayGroups()
                     .get(0).getCalendarEntries()
                     .get(0).getBooking().getLocationBuildingFloor().getBuildingName());
         }else{
@@ -569,6 +594,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             binding.tvWorkRemote.setVisibility(View.GONE);
             binding.recyclerViewRemote.setVisibility(View.GONE);
             binding.recyclerViewHoliday.setVisibility(View.GONE);
+            binding.recyclerViewUnkown.setVisibility(View.GONE);
             binding.tvTotalAvail.setVisibility(View.VISIBLE);
             binding.tvExapnd.setVisibility(View.GONE);
             setDataToExpandAdapter(teamMembersList);
