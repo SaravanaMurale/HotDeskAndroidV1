@@ -63,6 +63,18 @@ public class CarListToEditAdapterBooking extends RecyclerView.Adapter<CarListToE
 
     @Override
     public void onBindViewHolder(@NonNull CarListToEditViewHolder holder, int position) {
+        if (carParkBookings.get(position).getStatus().getTimeStatus()
+                .equalsIgnoreCase("future")){
+            holder.editDelete.setVisibility(View.VISIBLE);
+            holder.editTextEdit.setVisibility(View.VISIBLE);
+        } else if (carParkBookings.get(position).getStatus().getTimeStatus()
+                .equalsIgnoreCase("ongoing")) {
+            holder.editDelete.setVisibility(View.GONE);
+            holder.editTextEdit.setVisibility(View.VISIBLE);
+        } else {
+            holder.editDelete.setVisibility(View.GONE);
+            holder.editTextEdit.setVisibility(View.GONE);
+        }
 
         if(code.equals("5")){
             holder.editBookingImage.setImageDrawable(context.getDrawable(R.drawable.car));

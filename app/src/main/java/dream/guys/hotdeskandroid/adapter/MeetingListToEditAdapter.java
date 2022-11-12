@@ -54,7 +54,18 @@ public class MeetingListToEditAdapter extends RecyclerView.Adapter<MeetingListTo
 
     @Override
     public void onBindViewHolder(@NonNull MeetingListViewHolder holder, int position) {
-
+        if (meetingListToEditResponseList.get(position).getStatus().getTimeStatus()
+                .equalsIgnoreCase("future")){
+            holder.editDelete.setVisibility(View.VISIBLE);
+            holder.editTextEdit.setVisibility(View.VISIBLE);
+        } else if (meetingListToEditResponseList.get(position).getStatus().getTimeStatus()
+                .equalsIgnoreCase("ongoing")) {
+            holder.editDelete.setVisibility(View.GONE);
+            holder.editTextEdit.setVisibility(View.VISIBLE);
+        } else {
+            holder.editDelete.setVisibility(View.GONE);
+            holder.editTextEdit.setVisibility(View.GONE);
+        }
         holder.editCode.setText((meetingListToEditResponseList.get(position).getMeetingRoomName()));
         holder.editCheckInTime.setText(Utils.splitTime(meetingListToEditResponseList.get(position).getFrom()));
         holder.editCheckOutTime.setText(Utils.splitTime(meetingListToEditResponseList.get(position).getTo()));

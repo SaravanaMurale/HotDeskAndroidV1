@@ -116,6 +116,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     //New-M
     String notifyStartTimeChange="";
     String notifyEndTimeChange="";
+    private static final int PERMISSION_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -300,9 +300,17 @@ public class SettingsActivity extends AppCompatActivity {
                                     @Override
                                     public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                                         BaseResponse baseResponse=response.body();
-
-                                        dialog.dismiss();
-                                        proDialog.dismiss();
+                                        if (response.code()==200 && response.body().getResultCode().equalsIgnoreCase("ok")){
+                                            Toast.makeText(SettingsActivity.this, "Successfully Updated", Toast.LENGTH_SHORT).show();
+                                            dialog.dismiss();
+                                            proDialog.dismiss();
+                                        } else if(response.code()==200) {
+                                            Toast.makeText(SettingsActivity.this, " " + response.body().getResultCode(), Toast.LENGTH_SHORT).show();
+                                            proDialog.dismiss();
+                                        } else {
+                                            Toast.makeText(SettingsActivity.this, "Not Successfull" , Toast.LENGTH_SHORT).show();
+                                            proDialog.dismiss();
+                                        }
                                     }
 
                                     @Override
