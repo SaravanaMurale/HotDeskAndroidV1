@@ -67,6 +67,7 @@ import dream.guys.hotdeskandroid.model.response.DefaultAssetResponse;
 import dream.guys.hotdeskandroid.model.response.ProfilePicResponse;
 import dream.guys.hotdeskandroid.model.response.TeamDeskResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
+import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.settings.CountryListActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.LogicHandler;
@@ -1093,6 +1094,9 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         SessionHandler.getInstance().save(EditProfileActivity.this,AppConstants.LOGIN_RESPONSE,json);
 //        Toast.makeText(EditProfileActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
+        SessionHandler.getInstance().saveInt(EditProfileActivity.this,AppConstants.PARENT_ID_CHECK,floorParentID);
+        SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.FLOOR_POSITION_CHECK,floorPositon);
+
         //New...
         SessionHandler.getInstance().saveInt(EditProfileActivity.this,AppConstants.PARENT_ID,floorParentID);
         SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.FLOOR_POSITION,floorPositon);
@@ -1100,6 +1104,12 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         Log.d("floorParentID", String.valueOf(floorParentID));
         Log.d("floorPositon", String.valueOf(floorPositon));
 
+
+        //To load Default location
+        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.COUNTRY_NAME_CHECK,CountryName);
+        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.BUILDING_CHECK,buildingName);
+        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FLOOR_CHECK,floorName);
+        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FULLPATHLOCATION_CHECK,fullPathLocation);
 
         SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.COUNTRY_NAME,CountryName);
         SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.BUILDING,buildingName);
@@ -1657,7 +1667,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
     private void requestPermission() {
 
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CODE);
+        //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CODE);
 
     }
 }

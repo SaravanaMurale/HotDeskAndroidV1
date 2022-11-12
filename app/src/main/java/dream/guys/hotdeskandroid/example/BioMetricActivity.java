@@ -38,7 +38,11 @@ public class BioMetricActivity extends AppCompatActivity {
             case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
                 Toast.makeText(this, "No FingerPrint Assigned", Toast.LENGTH_SHORT).show();
                 break;
+
+
+                /*Started Here*/
         }
+
 
         Executor executor= ContextCompat.getMainExecutor(this);
 
@@ -66,5 +70,8 @@ public class BioMetricActivity extends AppCompatActivity {
 
         biometricPrompt.authenticate(promptInfo);
 
+
     }
+
+
 }
