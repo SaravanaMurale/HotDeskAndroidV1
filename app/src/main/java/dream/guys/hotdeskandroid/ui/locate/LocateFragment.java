@@ -6200,6 +6200,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         TextView select = bottomSheetDialog.findViewById(R.id.select_desk_room);
 
+        llDeskLayout.setVisibility(View.GONE);
+
         //Need To Change Date Here
         String sDate = binding.locateCalendearView.getText().toString();
         if (!(sDate.equalsIgnoreCase(""))) {
