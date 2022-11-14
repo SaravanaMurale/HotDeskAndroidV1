@@ -6594,7 +6594,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         startTime.setText(Utils.splitTime(carParkBooking.getFrom()));
         endTime.setText(Utils.splitTime(carParkBooking.getMyto()));
-
+        select.setVisibility(View.GONE);
         select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

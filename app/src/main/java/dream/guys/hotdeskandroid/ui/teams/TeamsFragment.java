@@ -85,6 +85,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     ArrayList<DAOTeamMember> teamMembersRemoteList = new ArrayList<>();
     ArrayList<DAOTeamMember> teamMembersUnknownList = new ArrayList<>();
     ArrayList<DAOTeamMember> teamMembersHolidayList = new ArrayList<>();
+    ArrayList<DAOTeamMember> teamMembersOutOfOffice = new ArrayList<>();
     ArrayList<DAOTeamMember> copyTeamMembersList = new ArrayList<>();
     TeamsContactsAdapter teamsContactsAdapter,teamsContactsRemoteAdapter,teamsContactsHolidaysAdapter, teamsContactsUnknownAdapter;
     TeamsAdapter teamsAdapter;

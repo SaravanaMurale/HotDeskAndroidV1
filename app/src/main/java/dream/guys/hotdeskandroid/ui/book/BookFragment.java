@@ -1454,6 +1454,7 @@ public class BookFragment extends Fragment implements
         editDeskBookingDetails.setDate(Utils.convertStringToDateFormet(meetingListToEditResponse.getDate()));
         editDeskBookingDetails.setCalId(meetingListToEditResponse.getId());
         editDeskBookingDetails.setMeetingRoomtId(meetingListToEditResponse.getMeetingRoomId());
+        editDeskBookingDetails.setRoomName(meetingListToEditResponse.getMeetingRoomName());
 
         //New...
         editDeskBookingDetails.setAttendeesList(meetingListToEditResponse.getAttendeesList());
@@ -1766,9 +1767,7 @@ public class BookFragment extends Fragment implements
                 bookEditBottomSheet.dismiss();
             }
         });
-
         bookEditBottomSheet.show();
-
     }
 
     private void editBookingUsingBottomSheet(EditBookingDetails editDeskBookingDetails, int dskRoomParkStatus, int position,String newEditStatus) {
@@ -1900,13 +1899,13 @@ public class BookFragment extends Fragment implements
         }else if (dskRoomParkStatus==2) {
             if (newEditStatus.equalsIgnoreCase("edit")){
                 repeatBlock.setVisibility(View.GONE);
+                select.setVisibility(View.GONE);
             }else
                 repeatBlock.setVisibility(View.VISIBLE);
 
             llDeskLayout.setVisibility(View.VISIBLE);
             commentRegistration.setVisibility(View.GONE);
             tvComments.setVisibility(View.GONE);
-//            repeatBlock.setVisibility(View.GONE);
             if(teamsCheckBoxStatus)
                 teamsBlock.setVisibility(View.VISIBLE);
             else
@@ -1920,6 +1919,9 @@ public class BookFragment extends Fragment implements
                 selectedDeskId = userAllowedMeetingResponseListUpdated.get(0).getId();
                 locationAddress.setText(""+userAllowedMeetingResponseListUpdated.get(0).getLocationMeeting().getName());
             }
+            if (newEditStatus.equalsIgnoreCase("edit")) {
+                deskRoomName.setText(""+editDeskBookingDetails.getRoomName());
+            }
             if(newEditStatus.equalsIgnoreCase("new") || newEditStatus.equalsIgnoreCase("new_deep_link")
                     || newEditStatus.equalsIgnoreCase("request")){
                 title.setText("Book Meeting Room");
@@ -1927,6 +1929,7 @@ public class BookFragment extends Fragment implements
         }else {
             if (newEditStatus.equalsIgnoreCase("edit")){
                 repeatBlock.setVisibility(View.GONE);
+                select.setVisibility(View.GONE);
                 commentRegistration.setText(editDeskBookingDetails.getVehicleRegNumber());
             }else
                 repeatBlock.setVisibility(View.VISIBLE);
@@ -1947,7 +1950,8 @@ public class BookFragment extends Fragment implements
             }
 //            System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
             if (parkingSpotModelList.size() > 0 && !newEditStatus.equalsIgnoreCase("edit")){
-//                System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
+//                System.out.println("tim else"+
+                select.setVisibility(View.VISIBLE);
                 deskRoomName.setText(""+parkingSpotModelList.get(0).getCode());
                 selectedDeskId = parkingSpotModelList.get(0).getId();
                 locationAddress.setText(""+parkingSpotModelList.get(0).getLocation().getName());
@@ -3846,12 +3850,30 @@ public class BookFragment extends Fragment implements
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
                 chipList.clear();
-
+                String resultString = "";
                 if (response.code()==200){
                     openCheckoutDialog("Booking Succcessfull",2);
-                }else {
+                }else if(response.code()==500){
+                   resultString = response.body().toString();
+                    Utils.showCustomAlertDialog(getActivity(), resultString);
+                } else {
+                    if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
+                        resultString = "Invalid booking start time";
+                    } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
+                        resultString = "Invalid booking end time";
+                    } else if (response.body().getResultCode().toString().equals("INVALID_TIMEZONE_ID")) {
+                        resultString = "Invalid timezone";
+                    } else if (response.body().getResultCode().toString().equals("INVALID_TIMEPERIOD")) {
+                        resultString = "Invalid timeperiod";
+                    }else if(response.body().getResultCode().toString().equals("USER_TIME_OVERLAP")){
+                        resultString = "Time overlaps with another booking";
+                    }else if(response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")){
+                        resultString = "Desk is Unavailable";
+                    } else {
+                        resultString = response.body().getResultCode().toString();
+                    }
                     roomBottomSheet.dismiss();
-                    Utils.showCustomAlertDialog(getActivity(), "Booking Not Successfull");
+                    Utils.showCustomAlertDialog(getActivity(), resultString);
                 }
 
                 ProgressDialog.dismisProgressBar(getContext(),dialog);
