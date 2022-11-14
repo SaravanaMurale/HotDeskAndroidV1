@@ -283,6 +283,9 @@ public class LoginActivity extends AppCompatActivity {
                                     typeOfLoginResponse.getMobileIdentityProvider()));
                             System.out.println("domain_hint"+typeOfLoginResponse.getMobileIdentityProvider());
 
+                            /*extraQueryParameters.add( new Pair<String, String>("domain_hint",
+                                    "okta.com"));*/
+
                             AcquireTokenParameters parameters = new AcquireTokenParameters.Builder()
                                     .startAuthorizationFromActivity(LoginActivity.this)
                                     .fromAuthority(B2CConfiguration
