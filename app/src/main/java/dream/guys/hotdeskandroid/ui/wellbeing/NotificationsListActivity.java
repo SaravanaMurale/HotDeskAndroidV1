@@ -488,7 +488,7 @@ AdapterAdminNotificationReq.AccRejReqInterface{
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 //        Call<IncomingRequestResponse> call = apiService.getIncomingRequest(true);
-        Call<IncomingRequestResponse> call = apiService.getIncomingRequest(false);
+        Call<IncomingRequestResponse> call = apiService.getIncomingRequest(true);
         call.enqueue(new Callback<IncomingRequestResponse>() {
             @Override
             public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {
@@ -559,7 +559,7 @@ AdapterAdminNotificationReq.AccRejReqInterface{
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 //        Call<IncomingRequestResponse> call = apiService.getOutgoingRequest(true);
-        Call<IncomingRequestResponse> call = apiService.getOutgoingRequest(false);
+        Call<IncomingRequestResponse> call = apiService.getOutgoingRequest(true);
         call.enqueue(new Callback<IncomingRequestResponse>() {
             @Override
             public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {

@@ -1417,12 +1417,20 @@ public class BookFragment extends Fragment implements
                     editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(meetingListToEditResponseList.get(meetingListToEditResponseList.size()-1).getTo(),
                             12000)));
                 } else {
-                    editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
-                    System.out.println("tim else" +" "+Utils.getCurrentDate()+"T"
-                            +Utils.getCurrentTime()+"Z");
-                    editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(Utils.getCurrentDate()+"T"
-                            +Utils.getCurrentTime()+":00Z",12000)));
+                    if (profileData != null) {
+                        editBookingDetails.setEditStartTTime(Utils.splitTime(profileData.getWorkHoursFrom()));
+                        editBookingDetails.setEditEndTime(Utils.splitTime(profileData.getWorkHoursTo()));
+//                        startRoomTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
+//                        endTRoomime.setText(Utils.splitTime(profileData.getWorkHoursTo()));
+//                        showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " " + startRoomTime.getText().toString());
+                    } else {
+                        editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
+                        System.out.println("tim else" +" "+Utils.getCurrentDate()+"T"
+                                +Utils.getCurrentTime()+"Z");
+                        editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(Utils.getCurrentDate()+"T"
+                                +Utils.getCurrentTime()+":00Z",12000)));
 
+                    }
                 }
                 editBookingDetails.setDate(Utils.convertStringToDateFormet(calSelectedDate));
                 if (isGlobalLocationSetUP)
@@ -1753,14 +1761,16 @@ public class BookFragment extends Fragment implements
                     editBookingDetailsGlobal.setCalId(0);
                     editBookingDetailsGlobal.setDeskStatus(0);
                 }
+                /*
                 if(isGlobalLocationSetUP)
                     editBookingUsingBottomSheet(editBookingDetailsGlobal,
                             1,0,"request");
                 else
                     editBookingUsingBottomSheet(editBookingDetailsGlobal,
                             1,0,"new");
+                            */
 //                editBookingDetailsGlobal = editBookingDetails;
-//                getDeskList("3", calSelectedDate);
+                getDeskList("3", calSelectedDate);
             }
         });
         editClose.setOnClickListener(new View.OnClickListener() {
@@ -1971,8 +1981,13 @@ public class BookFragment extends Fragment implements
             if (editDeskBookingDetails.getEditStartTTime()!=null) {
                 startTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()));
                 if(!newEditStatus.equalsIgnoreCase("edit") &&
-                        Utils.compareTimeIfCheckInEnable(editDeskBookingDetails.getEditStartTTime(), Utils.getCurrentTime()))
-                    startTime.setText(Utils.convert24HrsTO12Hrs(Utils.currentTimeWithExtraMins(2)));
+                        Utils.compareTimeIfCheckInEnable(editDeskBookingDetails.getEditStartTTime(),
+                                Utils.getCurrentTime())
+                        && Utils.compareTwoDate(editDeskBookingDetails.getDate(),Utils.getCurrentDate())==2){
+                    Toast.makeText(context, "da" +
+                            "s", Toast.LENGTH_SHORT).show();
+                    startTime.setText(Utils.convert24HrsTO12Hrs(Utils.currentTimeWithExtraMins(30)));
+                }
             }
             if (editDeskBookingDetails.getEditEndTime()!=null) {
                 endTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditEndTime()));
@@ -1993,7 +2008,9 @@ public class BookFragment extends Fragment implements
             if (editDeskBookingDetails.getEditStartTTime()!=null) {
                 startTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()));
                 if(!newEditStatus.equalsIgnoreCase("edit") &&
-                        Utils.compareTimeIfCheckInEnable(Utils.getCurrentTime(), editDeskBookingDetails.getEditStartTTime()))
+                        Utils.compareTimeIfCheckInEnable(Utils.getCurrentTime(),
+                                editDeskBookingDetails.getEditStartTTime())
+                        && Utils.compareTwoDate(editDeskBookingDetails.getDate(),Utils.getCurrentDate())==2)
                     startTime.setText(Utils.convert24HrsTO12Hrs(Utils.currentTimeWithExtraMins(2)));
             }
             if (editDeskBookingDetails.getEditEndTime()!=null) {
