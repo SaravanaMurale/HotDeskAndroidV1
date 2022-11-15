@@ -1023,6 +1023,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     }*/
 
+
                     initLoadFloorDetails(0);
 
 
@@ -1822,8 +1823,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
 
+
+
             if (locationWithMR_response != null) {
 
+                outerloop:
                 for (int i = 0; i < locationWithMR_response.size(); i++) {
 
                     if (parentId == locationWithMR_response.get(i).getParentLocationId()) {
@@ -1837,6 +1841,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 for (int j = 0; j < locationWithMR.getMatchesList().size(); j++) {
 
                                     if (userAllowedMeetingResponseList != null) {
+
                                         for (int k = 0; k < userAllowedMeetingResponseList.size(); k++) {
                                             if (locationWithMR.getMatchesList().get(j).getMatchesId() == userAllowedMeetingResponseList.get(k).getId()) {
                                                 locationWithMR.getMatchesList().get(j).setAllowedForBooking(true);
@@ -1865,7 +1870,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                                     } else {
                                                         //29,30
-                                                        System.out.println("MeeingAvvaliableDoubtHere");
                                                         System.out.println("MeetingAvaliable");
                                                         ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_avaliable));
                                                         meetingStatusModel = new MeetingStatusModel(key, id, code, 1);
@@ -1896,16 +1900,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                                                 String fromDateTime = fromUtcDateAlone + " " + fromTimeAlone;
                                                                 String toDateTime = toUtcDateAlone + " " + toTimeAlone;
 
-                                                                //String startDate=binding.locateCalendearView.getText().toString()+" "+binding.locateStartTime.getText().toString()+":00";
-                                                                //String endDate=binding.locateCalendearView.getText().toString()+" "+binding.locateEndTime.getText().toString()+":00";
-
-                                                                //AddViewStart2022-08-02 11:13:00
-                                                                //AddViewEnd2022-08-02 23:59:00
-
-                                                                //fromTime! <= dateEndBook && dateStartBook <= toime!
-                                                                //fromDateTime!<=endDate  &&  startDate!<=toDateTime
-
-                                                                // 2022-08-02 17:05:00 UTC <= 2022-08-02 23:59:00 UTC  &&  2022-08-02 15:00:00 UTC <= 2022-08-02 17:42:00 UTC
 
                                                                 //fromDateTime less or equal
                                                                 int dateCompar1 = Utils.compareTwoDates(fromDateTime, endDate);
@@ -1923,26 +1917,29 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                                                                 ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_bookedbyme));
                                                                                 meetingStatusModel = new MeetingStatusModel(key, id, code, 2);
                                                                                 System.out.println("MeetingBookedForMe");
-                                                                                break;
+                                                                                meetingStatusModelList.add(meetingStatusModel);
+                                                                                break outerloop ;
                                                                             } else {
                                                                                 meetingStatusModel = new MeetingStatusModel(key, id, code, 4);
                                                                                 ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_request));
                                                                                 System.out.println("MeetingRequest");
-                                                                                break;
+                                                                                break  outerloop;
                                                                             }
 
                                                                         } else {
                                                                             System.out.println("MeetingBookedForMe");
                                                                             meetingStatusModel = new MeetingStatusModel(key, id, code, 2);
                                                                             ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_bookedbyme));
-                                                                            break;
+                                                                            meetingStatusModelList.add(meetingStatusModel);
+                                                                            break outerloop ;
                                                                         }
 
                                                                     } else {
                                                                         meetingStatusModel = new MeetingStatusModel(key, id, code, 3);
                                                                         ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_booked));
                                                                         System.out.println("MeetingBookedOther");
-                                                                        break;
+                                                                        meetingStatusModelList.add(meetingStatusModel);
+                                                                        break outerloop ;
                                                                     }
 
 
@@ -1950,19 +1947,22 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                                                     meetingStatusModel = new MeetingStatusModel(key, id, code, 0);
                                                                     System.out.println("MeetingUnavaliable");
                                                                     ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
-                                                                    break;
+                                                                    meetingStatusModelList.add(meetingStatusModel);
+                                                                    break outerloop ;
 
                                                                 } else if (lMatches.getAutomaticApprovalStatus() == 2 || lMatches.isAllowedForBooking()) {
                                                                     ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_avaliable));
                                                                     System.out.println("Meetingavaliable");
                                                                     meetingStatusModel = new MeetingStatusModel(key, id, code, 1);
-                                                                    break;
+                                                                    meetingStatusModelList.add(meetingStatusModel);
+                                                                    break outerloop;
 
                                                                 } else {
                                                                     ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_request));
                                                                     System.out.println("MeetingRequest");
                                                                     meetingStatusModel = new MeetingStatusModel(key, id, code, 4);
-                                                                    break;
+                                                                    meetingStatusModelList.add(meetingStatusModel);
+                                                                    break outerloop;
 
                                                                 }
 
@@ -1973,16 +1973,20 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                                             System.out.println("MeetingBookingUnavaliable");
                                                             meetingStatusModel = new MeetingStatusModel(key, id, code, 0);
                                                             ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
+                                                            meetingStatusModelList.add(meetingStatusModel);
+                                                            break outerloop;
                                                         } else if (lMatches.getAutomaticApprovalStatus() == 2 || locationWithMR.getMatchesList().get(j).isAllowedForBooking()) {
-                                                            System.out.println("MeeingAvvaliableDoubtHere");
                                                             System.out.println("MeetingAvaliable");
                                                             ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_avaliable));
                                                             meetingStatusModel = new MeetingStatusModel(key, id, code, 1);
+                                                            meetingStatusModelList.add(meetingStatusModel);
+                                                            break outerloop;
                                                         } else {
                                                             ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_request));
                                                             meetingStatusModel = new MeetingStatusModel(key, id, code, 4);
                                                             meetingStatusModelList.add(meetingStatusModel);
                                                             System.out.println("MeetingRequest");
+                                                            break outerloop;
                                                         }
 
 
@@ -2014,7 +2018,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 meetingStatusModel = new MeetingStatusModel(key, id, code, 4);
                                 meetingStatusModelList.add(meetingStatusModel);
                                 System.out.println("MeetingRequest");
-                                break;
+                                break outerloop;
                             }
 
                         }
@@ -4442,7 +4446,32 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     }
 
                 }else {
-                    locateCheckoutTime.setText(Utils.selectedTimeWithExtraMins(Utils.splitTime(profileData.getWorkHoursTo()),15));
+                    String[] statTime = locateCheckInTime.getText().toString().split(":");
+                    int startHour = Integer.parseInt(statTime[0]);
+                    int startMin = Integer.parseInt(statTime[1]);
+
+                    String StrEndTime=Utils.selectedTimeWithExtraMins(Utils.splitTime(profileData.getWorkHoursTo()),15);
+
+                    String[] endTimetime = StrEndTime.split(":");
+                    int endHour = Integer.parseInt(endTimetime[0]);
+                    int endMin = Integer.parseInt(endTimetime[1]);
+
+                    if(startHour>=endHour){
+
+                        if(startMin>=endMin){
+                            locateCheckoutTime.setText("23:59");
+                        }else {
+                            locateCheckoutTime.setText(Utils.selectedTimeWithExtraMins(Utils.splitTime(profileData.getWorkHoursTo()),15));
+                        }
+
+
+                    }else {
+                        locateCheckoutTime.setText(Utils.selectedTimeWithExtraMins(Utils.splitTime(profileData.getWorkHoursTo()),15));
+                    }
+
+
+
+
 
 
                     //locateCheckoutTime.setText(Utils.splitTime(profileData.getWorkHoursTo()));
@@ -6179,6 +6208,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     public void onEditClick(BookingForEditResponse.Bookings bookings, String code, List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities) {
 
         TextView startTime, endTime, date, editBookingBack, tv_comment;
+        LinearLayout status_check_layout;
+        RelativeLayout selectDeskEditBlock;
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_booking,
@@ -6192,6 +6223,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         LinearLayout llDeskLayout = bottomSheetDialog.findViewById(R.id.ll_desk_layout);
         RelativeLayout repeatBlock = bottomSheetDialog.findViewById(R.id.rl_repeat_block);
         RelativeLayout rl_comment_block = bottomSheetDialog.findViewById(R.id.rl_comment_block);
+        selectDeskEditBlock=bottomSheetDialog.findViewById(R.id.selectDeskEditBlock);
+        status_check_layout=bottomSheetDialog.findViewById(R.id.status_check_layout);
         tv_comment = bottomSheetDialog.findViewById(R.id.tv_comment);
         RelativeLayout teamsBlock = bottomSheetDialog.findViewById(R.id.rl_teams_layout);
         TextView tvComments = bottomSheetDialog.findViewById(R.id.tv_comments);
@@ -6201,7 +6234,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         TextView select = bottomSheetDialog.findViewById(R.id.select_desk_room);
 
         llDeskLayout.setVisibility(View.GONE);
-
+        status_check_layout.setVisibility(View.GONE);
+        selectDeskEditBlock.setVisibility(View.GONE);
         //Need To Change Date Here
         String sDate = binding.locateCalendearView.getText().toString();
         if (!(sDate.equalsIgnoreCase(""))) {
@@ -6559,6 +6593,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     public void onCarEditClick(CarParkingForEditResponse.CarParkBooking carParkBooking, String selectedCode) {
 
         TextView startTime, endTime, date, editBookingBack;
+        LinearLayout status_check_layout;
+        RelativeLayout selectDeskEditBlock;
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_booking,
@@ -6570,13 +6606,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         deskRoomName = bottomSheetDialog.findViewById(R.id.tv_desk_room_name);
         TextView continueEditBook = bottomSheetDialog.findViewById(R.id.editBookingContinue);
         LinearLayout llDeskLayout = bottomSheetDialog.findViewById(R.id.ll_desk_layout);
+        status_check_layout=bottomSheetDialog.findViewById(R.id.status_check_layout);
         RelativeLayout repeatBlock = bottomSheetDialog.findViewById(R.id.rl_repeat_block);
         RelativeLayout teamsBlock = bottomSheetDialog.findViewById(R.id.rl_teams_layout);
         TextView tvComments = bottomSheetDialog.findViewById(R.id.tv_comments);
         EditText commentRegistration = bottomSheetDialog.findViewById(R.id.ed_registration);
         EditText etBookedBy = bottomSheetDialog.findViewById(R.id.etBookedBy);
         editBookingBack = bottomSheetDialog.findViewById(R.id.editBookingBack);
-
+        selectDeskEditBlock=bottomSheetDialog.findViewById(R.id.selectDeskEditBlock	);
         TextView select = bottomSheetDialog.findViewById(R.id.select_desk_room);
         carSelectedName = bottomSheetDialog.findViewById(R.id.tv_desk_room_name);
 
@@ -6585,13 +6622,15 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         repeatBlock.setVisibility(View.GONE);
         teamsBlock.setVisibility(View.GONE);
-        llDeskLayout.setVisibility(View.VISIBLE);
+        llDeskLayout.setVisibility(View.GONE);
+        status_check_layout.setVisibility(View.GONE);
+        selectDeskEditBlock.setVisibility(View.GONE);
 
         etBookedBy.setVisibility(View.GONE);
         //etBookedBy.setText(carParkBooking.getBookedForUserName());
         tvComments.setVisibility(View.GONE);
         //tvComments.setText("Registration number");
-        commentRegistration.setHint(carParkBooking.getVehicleRegNumber());
+        commentRegistration.setText(carParkBooking.getVehicleRegNumber());
 
 
         startTime.setText(Utils.splitTime(carParkBooking.getFrom()));
@@ -6830,6 +6869,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                locateCarEditBottomSheet.dismiss();
                 locateResponseHandler(response, getResources().getString(R.string.deleted));
 
 
@@ -6838,6 +6878,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                locateCarEditBottomSheet.dismiss();
             }
         });
 
@@ -7455,7 +7496,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         endTRoomime = bottomSheetDialog.findViewById(R.id.tvRoomEndTime);
 
         selectMeetingRoomLayout = bottomSheetDialog.findViewById(R.id.selectMeetingRoomLayout);
-        selectMeetingRoomLayout.setVisibility(View.VISIBLE);
+        selectMeetingRoomLayout.setVisibility(View.GONE);
         select_desk_room_room = bottomSheetDialog.findViewById(R.id.select_desk_room_room);
         select_desk_room_room.setVisibility(View.GONE);
 

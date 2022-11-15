@@ -47,7 +47,9 @@ public class MeetingListToEditAdapter extends RecyclerView.Adapter<MeetingListTo
 
     @NonNull
     @Override
-    public MeetingListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MeetingListViewHolder
+
+    onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_booking_edit_adapter, parent, false);
         return new MeetingListViewHolder(itemView);
     }
