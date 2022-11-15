@@ -3,9 +3,11 @@ package dream.guys.hotdeskandroid;
 import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.UiModeManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -29,6 +31,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
@@ -153,6 +156,8 @@ public class MainActivity extends AppCompatActivity implements
 
     ParkingSpotListRecyclerAdapter parkingSpotListRecyclerAdapter;
     RoomListRecyclerAdapter roomListRecyclerAdapter;
+    private static final int PERMISSION_REQUEST_CODE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -542,7 +547,7 @@ public class MainActivity extends AppCompatActivity implements
             */
 
             newdeskListRecyclerAdapter =new NewDeskListRecyclerAdapter(getContext(),this,
-                    this,bookingDeskList, null,deskListBottomSheet);
+                    this,bookingDeskList, null,deskListBottomSheet,0,null);
             rvDeskRecycler.setAdapter(newdeskListRecyclerAdapter);
 
         }
@@ -841,6 +846,7 @@ public class MainActivity extends AppCompatActivity implements
             public void onClick(View v) {
 //                if (editDeskBookingDetails.getDeskStatus()!=1 && editDeskBookingDetails.getDeskStatus()!=2)
 //                callDeskBottomSheetDialog();
+
             }
         });
         repeatBlock.setOnClickListener(new View.OnClickListener() {
@@ -1459,7 +1465,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onChangeDesk(int deskId, String deskName, String request, String timeZone) {
+    public void onChangeDesk(int deskId, String deskName, String request, String timeZone,int typeId,EditBookingDetails editBookingDetails) {
         editBookingDetailsGlobal.setDeskCode(deskName);
         editBookingDetailsGlobal.setDesktId(deskId);
         editBookingDetailsGlobal.setDeskTeamId(selectedTeamId);
@@ -1641,4 +1647,25 @@ public class MainActivity extends AppCompatActivity implements
     public void callLocateFragmentFromHomeFragment(){
         binding.navView.setSelectedItemId(R.id.navigation_locate);
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        System.out.println("ceck perm result main"+grantResults[0]);
+        if (grantResults[0]==-1){
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA},
+                    PERMISSION_REQUEST_CODE);
+        }
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Case_Download();
+                } else {
+                    //    Snackbar.make(findViewById(R.id.coordinatorLayout),"Permission Denied, Please allow to proceed !", Snackbar.LENGTH_LONG).show();
+
+                }
+                break;
+        }
+    }
+
 }

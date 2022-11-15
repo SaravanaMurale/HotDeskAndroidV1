@@ -23,6 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.ui.book.BookFragment;
 import dream.guys.hotdeskandroid.utils.AppConstants;
@@ -36,18 +37,23 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
     List<BookingForEditResponse.TeamDeskAvailabilities> deskList;
     public OnChangeSelected onChangeSelected;
     BottomSheetDialog bottomSheetDialog;
-
-    public NewDeskListRecyclerAdapter(Context context, OnChangeSelected onSelectSelected, FragmentActivity activity, List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse, BookFragment context1, BottomSheetDialog bottomSheetDialog) {
+    EditBookingDetails editBookingDetails;
+    int typeId;
+    public NewDeskListRecyclerAdapter(Context context, OnChangeSelected onSelectSelected, FragmentActivity activity,
+                                      List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse,
+                                      BookFragment context1, BottomSheetDialog bottomSheetDialog,
+                                      int typeId, EditBookingDetails editBookingDetails) {
         this.fragment=context1;
         this.context = context;
         this.onChangeSelected =onSelectSelected;
         this.activity = activity;
         this.deskList = bookingForEditResponse;
         this.bottomSheetDialog=bottomSheetDialog;
-
+        this.typeId = typeId;
+        this.editBookingDetails = editBookingDetails;
     }
     public interface OnChangeSelected{
-        public void onChangeDesk(int deskId, String deskName, String request, String timeZone);
+        public void onChangeDesk(int deskId, String deskName, String request, String timeZone,int typeId,EditBookingDetails editBookingDetails);
 
     }
 
@@ -129,7 +135,7 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
             public void onClick(View v) {
                 onChangeSelected.onChangeDesk(deskList.get(holder.getAbsoluteAdapterPosition()).getTeamDeskId(),
                         deskList.get(holder.getAbsoluteAdapterPosition()).getDeskCode(),""+ holder.deskStatus.getText()
-                        , deskList.get(holder.getAbsoluteAdapterPosition()).getTimeZones().get(0).getTimeZoneId());
+                        , deskList.get(holder.getAbsoluteAdapterPosition()).getTimeZones().get(0).getTimeZoneId(),typeId,editBookingDetails);
                 bottomSheetDialog.dismiss();
             }
         });

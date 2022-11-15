@@ -336,13 +336,17 @@ public class UpComingBookingAdapter extends RecyclerView.Adapter<UpComingBooking
 
     @Override
     public int getItemCount() {
-        return 2;
-//        return list.size();
-        /*if (sample.equalsIgnoreCase("")){
-            return list.size();
-        }else {
+        if (list.size()>2)
             return 2;
-        }*/
+        else
+            return list.size();
+        /*
+            if (sample.equalsIgnoreCase("")){
+                return list.size();
+            }else {
+                return 2;
+            }
+        */
     }
 
     public class viewHolder extends RecyclerView.ViewHolder{

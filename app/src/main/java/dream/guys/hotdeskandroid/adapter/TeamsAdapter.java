@@ -7,6 +7,7 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
+import dream.guys.hotdeskandroid.utils.Utils;
 
 public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.viewHolder> {
 
@@ -50,6 +52,42 @@ public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.viewHolder> 
         String lName = teamMembersList.get(position).getLastName();
 
         holder.mTxtName.setText(fName + " " + lName);
+        if (teamMembersList.get(position).getDayGroups().size()>0
+                && teamMembersList.get(position).getDayGroups().get(0).getCalendarEntries().size()>0
+                && teamMembersList.get(position).getDayGroups().get(0)
+                .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
+                        .getCalendarEntries().size()-1).getBooking()!=null
+                && teamMembersList.get(position).getDayGroups().get(0)
+                .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
+                        .getCalendarEntries().size()-1).getBooking().getLocationBuildingFloor()!=null
+        ){
+
+            holder.mbookingCheckInTime.setVisibility(View.VISIBLE);
+            holder.mbookingCheckOutTime.setVisibility(View.VISIBLE);
+            holder.ivCheckIn.setVisibility(View.VISIBLE);
+            holder.ivCheckOut.setVisibility(View.VISIBLE);
+
+            holder.mbookingAddress.setText(""+teamMembersList.get(position).getDayGroups().get(0)
+                    .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
+                            .getCalendarEntries().size()-1).getBooking().getLocationBuildingFloor().getfLoorName()+"-"
+                    +teamMembersList.get(position).getDayGroups().get(0)
+                    .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
+                            .getCalendarEntries().size()-1).getBooking().getLocationBuildingFloor().getBuildingName());
+
+            holder.mbookingCheckInTime.setText(Utils.splitTime(teamMembersList.get(position).getDayGroups().get(0)
+                    .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
+                            .getCalendarEntries().size()-1).getMyto()));
+
+            holder.mbookingCheckOutTime.setText(Utils.splitTime(teamMembersList.get(position).getDayGroups().get(0)
+                    .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
+                            .getCalendarEntries().size()-1).getFrom()));
+        } else {
+            holder.mbookingCheckInTime.setVisibility(View.GONE);
+            holder.mbookingCheckOutTime.setVisibility(View.GONE);
+            holder.ivCheckIn.setVisibility(View.GONE);
+            holder.ivCheckOut.setVisibility(View.GONE);
+        }
+
         System.out.println("bala check teams out");
         if (teamMembersList.get(position).getProfileImage()!=null
                 && !teamMembersList.get(position).getProfileImage().equalsIgnoreCase("")){
@@ -77,13 +115,20 @@ public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.viewHolder> 
 
     public class viewHolder extends RecyclerView.ViewHolder{
 
-        TextView mTxtName;
+        TextView mTxtName, mbookingAddress,mbookingCheckOutTime,mbookingCheckInTime;
+        ImageView ivCheckOut,ivCheckIn;
         CircleImageView teamMemberImage;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
 
+            ivCheckOut = itemView.findViewById(R.id.bookingCheckOutIcon);
+            ivCheckIn = itemView.findViewById(R.id.bookingCheckInIcon);
             mTxtName = itemView.findViewById(R.id.bookingDeskName);
+            mbookingCheckInTime = itemView.findViewById(R.id.bookingCheckInTime);
+            mbookingCheckOutTime = itemView.findViewById(R.id.bookingCheckOutTime);
+            mTxtName = itemView.findViewById(R.id.bookingDeskName);
+            mbookingAddress = itemView.findViewById(R.id.bookingAddress);
             teamMemberImage = itemView.findViewById(R.id.bookingIvIcon);
 
         }

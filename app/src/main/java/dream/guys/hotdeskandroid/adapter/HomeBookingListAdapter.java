@@ -264,7 +264,6 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
             switch (list.get(position).getCalendarEntriesModel().getUsageTypeAbbreviation()){
                 case "RQ":
-
                     holder.tvSubBookingWorkingRemote.setText(""
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom())
                             +" - "
@@ -470,7 +469,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                 onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(), AppConstants.CHECKIN, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
 //                    fragment.changeCheckIn(list.get(holder.getAbsoluteAdapterPosition()));
 //                    Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
-                }else if(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel()!=null){
+                }
+                /*else if(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel()!=null){
                     String clickedStatus="CHECKIN";
                     onCheckInClickable.onCheckInMeetingRoomClick(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel(),AppConstants.CHECKIN, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
                     //Toast.makeText(context, "ROOM CLICKED", Toast.LENGTH_SHORT).show();
@@ -478,7 +478,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     String clickedStatus="CHECKIN";
                     onCheckInClickable.onCheckInCarParkingClick(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel(),AppConstants.CHECKIN, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
                     //Toast.makeText(context, "CAR CLICKED", Toast.LENGTH_SHORT).show();
-                }
+                }*/
             }
         });
 

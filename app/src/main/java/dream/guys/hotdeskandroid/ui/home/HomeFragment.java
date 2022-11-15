@@ -1090,20 +1090,22 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 bundle.putInt("ID",calendarEntriesModel.getId());
                 bundle.putInt("DESK_ID",calendarEntriesModel.getBooking().getDeskId());
 
+                if (qrEnabled){
+                    if (checkPermission())
+                        navController.navigate(R.id.action_qrFragment,bundle);
+                    else
+                        requestPermission();
+                } else{
+                    navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment,bundle);
+                }
             } else if(click.equals(AppConstants.REMOTE)){
                 bundle.putString("ACTION",AppConstants.REMOTE);
                 bundle.putString("BOOK_NAME",calendarEntriesModel.getUsageTypeAbbreviation());
 
+                navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment,bundle);
+
             }
 
-            if (qrEnabled){
-//                navController.navigate(R.id.action_qrFragment,bundle);
-                if (checkPermission())
-                    navController.navigate(R.id.action_qrFragment,bundle);
-                else
-                    requestPermission();
-            } else
-                navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment,bundle);
         } else if(click.equals(AppConstants.EDIT)){
             //Edit
             System.out.println("BookingEditClicked");
@@ -1579,21 +1581,22 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     }
 
     private boolean checkPermission() {
+        System.out.println("ceck Perm");
         int result = ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.CAMERA);
-        if (result == PackageManager.PERMISSION_GRANTED) {
-
-            return true;
-
-        } else {
-
+        System.out.println("ceck Perm"+result);
+        if (result != PackageManager.PERMISSION_GRANTED) {
             return false;
+        } else {
+            return true;
         }
     }
 
     private void requestPermission() {
-
-        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CODE);
+        System.out.println("ceck perm req");
+        ActivityCompat.requestPermissions(getActivity(),
+                new String[]{Manifest.permission.CAMERA},
+                PERMISSION_REQUEST_CODE);
 
     }
     private void callDeskBottomSheetDialog() {
@@ -1761,6 +1764,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        System.out.println("ceck perm result");
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
