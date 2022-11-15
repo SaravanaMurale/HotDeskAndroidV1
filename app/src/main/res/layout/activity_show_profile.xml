@@ -740,14 +740,14 @@
 
                 <TextView
                     android:id="@+id/txt_viewAll"
+                    style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:text="View All"
                     android:textColor="@color/figmaBlue"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:textSize="@dimen/_12sdp"
-                    style="@style/TextRegular"
-                    android:layout_alignParentEnd="true" />
+                    android:textSize="@dimen/_12sdp" />
                 <TextView
                     android:id="@+id/notAvailable"
                     android:layout_width="match_parent"

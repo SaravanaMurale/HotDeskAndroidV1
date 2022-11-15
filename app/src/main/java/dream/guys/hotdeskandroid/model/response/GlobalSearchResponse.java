@@ -29,6 +29,82 @@ public class GlobalSearchResponse implements Serializable {
         this.totalRecords = totalRecords;
     }
 
+    public class Status implements Serializable{
+        private int id;
+        private String name;
+        private String abbreviation;
+        private String colorCode;
+        private String description;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getAbbreviation() {
+            return abbreviation;
+        }
+
+        public void setAbbreviation(String abbreviation) {
+            this.abbreviation = abbreviation;
+        }
+
+        public String getColorCode() {
+            return colorCode;
+        }
+
+        public void setColorCode(String colorCode) {
+            this.colorCode = colorCode;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+    }
+    public class Desk implements Serializable{
+        private int id;
+        private String code;
+        private String description;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+    }
     public class Results implements Serializable{
         //entity type 1 people
         private int id;
@@ -37,9 +113,9 @@ public class GlobalSearchResponse implements Serializable {
         private String team;
         private String deskPhoneNumber;
         private String mobile;
-        private String desk;
-        private String status;
-        private String usageType;
+        private Desk desk;
+        private Status status;
+        private UsageType usageType;
         private int rank;
         private int entityType;
 
@@ -55,10 +131,20 @@ public class GlobalSearchResponse implements Serializable {
         private String phoneNumber;
 
 
-        public class CurrentLocation implements Serializable{
+        public class UsageType implements Serializable {
             private int id;
             private String name;
             private String description;
+            private String abbreviation;
+        }
+        public class CurrentLocation implements Serializable{
+            private int id;
+            private int type;
+            private int order;
+            private String name;
+            private String description;
+            private String colorCode;
+            private Boolean editable;
             private int parentLocationId;
             private int locationType;
             private int timeZoneId;
@@ -178,27 +264,27 @@ public class GlobalSearchResponse implements Serializable {
             this.mobile = mobile;
         }
 
-        public String getDesk() {
+        public Desk getDesk() {
             return desk;
         }
 
-        public void setDesk(String desk) {
+        public void setDesk(Desk desk) {
             this.desk = desk;
         }
 
-        public String getStatus() {
+        public Status getStatus() {
             return status;
         }
 
-        public void setStatus(String status) {
+        public void setStatus(Status status) {
             this.status = status;
         }
 
-        public String getUsageType() {
+        public UsageType getUsageType() {
             return usageType;
         }
 
-        public void setUsageType(String usageType) {
+        public void setUsageType(UsageType usageType) {
             this.usageType = usageType;
         }
 

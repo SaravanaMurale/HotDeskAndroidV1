@@ -202,9 +202,7 @@ private void callSearchRecyclerData(String searchText,int selID) {
                 public void onResponse(Call<GlobalSearchResponse> call, Response<GlobalSearchResponse> response) {
 
                     if(response.code()==200){
-
                         binding.locateProgressBar.setVisibility(View.INVISIBLE);
-
                         list.clear();
                         if (response.body().getResults()!=null)
                             list.addAll(response.body().getResults());

@@ -123,7 +123,7 @@ public class QrFragment extends Fragment {
         mCodeScanner.setErrorCallback(new ErrorCallback() {
             @Override
             public void onError(@NonNull Throwable thrown) {
-                Toast.makeText(activity, "calId "+thrown.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(activity, "calId "+thrown.getMessage(), Toast.LENGTH_SHORT).show();
                 System.out.println("calId calId erorr"+calendarId+" "+thrown.getMessage());
 
 
@@ -188,15 +188,40 @@ public class QrFragment extends Fragment {
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                    if (response.code()==200 && response.body().getResultCode().equalsIgnoreCase("ok")){
-                        Toast.makeText(getActivity(), ""+response.body().getResultCode(), Toast.LENGTH_SHORT).show();
-                        SessionHandler.getInstance().save(getActivity(), AppConstants.USER_CURRENT_STATUS,"Checked IN");
+                    String resultString="";
+                    if (response.code()==200){
+                        if (response.body().getResultCode()!=null && response.body().getResultCode().equalsIgnoreCase("ok")){
+//                        Toast.makeText(getActivity(), ""+response.body().getResultCode(), Toast.LENGTH_SHORT).show();
+                            Utils.showCustomAlertDialog(getActivity(), "Checked IN");
+                            SessionHandler.getInstance().save(getActivity(), AppConstants.USER_CURRENT_STATUS,"Checked IN");
+                        }else {
+                            if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
+                                resultString = "Invalid booking start time";
+                            } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
+                                resultString = "Invalid booking end time";
+                            } else if (response.body().getResultCode().toString().equals("INVALID_TIMEZONE_ID")) {
+                                resultString = "Invalid timezone";
+                            } else if (response.body().getResultCode().toString().equals("INVALID_TIMEPERIOD")) {
+                                resultString = "Invalid timeperiod";
+                            } else if (response.body().getResultCode().toString().equals("USER_TIME_OVERLAP")) {
+                                resultString = "Time overlaps with another booking";
+                            } else if(response.body().getResultCode().toString().equals("COVID_SYMPTOMS")){
+                                resultString = "COVID_SYMPTOMS";
+                            }else if(response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")){
+                                resultString = "Desk is Unavailable";
+                            }else {
+                                resultString = response.body().getResultCode().toString();
+                            }
+                            Utils.showCustomAlertDialog(getActivity(), resultString);
+                        }
+                    } else if (response.code() == 500){
+                        Utils.showCustomAlertDialog(getActivity(),"500 Response");
+                    }else if (response.code() == 401){
+                        Utils.showCustomTokenExpiredDialog(getActivity(),"401 Error Response");
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+//                        Utils.finishAllActivity(getContext());
                     } else {
-                        if (response.code() == 200)
-                            Toast.makeText(getActivity(), ""+response.body().getResultCode(), Toast.LENGTH_SHORT).show();
-                        else
-                            Toast.makeText(getActivity(), "Error Check In", Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText(getActivity(), "Response Failure", Toast.LENGTH_SHORT).show();
                     }
 
                     dialog.dismiss();

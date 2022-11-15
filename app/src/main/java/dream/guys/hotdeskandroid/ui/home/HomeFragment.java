@@ -721,14 +721,11 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     dialog.dismiss();
                     String resultString="";
                     if (response.code()==200){
-//                        Utils.showCustomAlertDialog(getActivity(),"Update Success");
-//                        Toast.makeText(getActivity(), "Success Bala", Toast.LENGTH_SHORT).show();
-                        if (response.body().getResultCode()!=null && response.body().getResultCode().equalsIgnoreCase("ok")){
+                        if (response.body().getResultCode()!=null && response.body().getResultCode().equalsIgnoreCase("ok")) {
                             openCheckoutDialog("Booking Updated");
                             loadHomeList();
 //                            openCheckoutDialog("Booking Updated");
                         }else {
-
                             if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
                                 resultString = "Invalid booking start time";
                             } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
@@ -753,7 +750,6 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     }else if (response.code() == 401){
                         Utils.showCustomTokenExpiredDialog(getActivity(),"401 Error Response");
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-//                        Utils.finishAllActivity(getContext());
                     }
                     else {
                         Toast.makeText(getActivity(), "Response Failure", Toast.LENGTH_SHORT).show();
@@ -1101,7 +1097,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             }
 
             if (qrEnabled){
-                navController.navigate(R.id.action_qrFragment,bundle);
+//                navController.navigate(R.id.action_qrFragment,bundle);
                 if (checkPermission())
                     navController.navigate(R.id.action_qrFragment,bundle);
                 else

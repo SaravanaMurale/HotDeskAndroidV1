@@ -336,7 +336,8 @@ public class UpComingBookingAdapter extends RecyclerView.Adapter<UpComingBooking
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return 2;
+//        return list.size();
         /*if (sample.equalsIgnoreCase("")){
             return list.size();
         }else {

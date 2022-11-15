@@ -217,6 +217,26 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
             <TextView
+                android:id="@+id/tvOutOfOffice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/tv_exapnd"
+                android:text="Out of Office"
+                android:visibility="gone"
+                android:textColor="@color/figmaBlack"
+                android:textSize="@dimen/_14sdp"
+                android:theme="@style/TextRegular"
+                android:layout_marginVertical="@dimen/_5sdp"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/recyclerViewOutOfOffice"
+                android:layout_marginTop="@dimen/_8sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            <TextView
                 android:id="@+id/tvHoliday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

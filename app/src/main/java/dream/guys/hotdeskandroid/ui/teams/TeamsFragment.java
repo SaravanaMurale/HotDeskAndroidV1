@@ -87,13 +87,15 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     ArrayList<DAOTeamMember> teamMembersHolidayList = new ArrayList<>();
     ArrayList<DAOTeamMember> teamMembersOutOfOffice = new ArrayList<>();
     ArrayList<DAOTeamMember> copyTeamMembersList = new ArrayList<>();
-    TeamsContactsAdapter teamsContactsAdapter,teamsContactsRemoteAdapter,teamsContactsHolidaysAdapter, teamsContactsUnknownAdapter;
+    TeamsContactsAdapter teamsContactsAdapter,teamsContactsRemoteAdapter,teamsContactsHolidaysAdapter,
+            teamsContactsOutOfOfficeAdapter, teamsContactsUnknownAdapter;
     TeamsAdapter teamsAdapter;
     TeamsFloorListAdapter teamsFloorListAdapter;
 
     List<GlobalSearchResponse.Results> list = new ArrayList<>();
     SearchRecyclerAdapter searchRecyclerAdapter;
-    LinearLayoutManager linearLayoutManager,contactUnknownLinearLayout,contactLinearLayout,contactHolidayLinearLayout,contactRemoteLinearLayout;
+    LinearLayoutManager linearLayoutManager,contactUnknownLinearLayout,contactLinearLayout,
+            contactHolidayLinearLayout,contactOutOfOfficeLinearLayout,contactRemoteLinearLayout;
 
     int selID = 0;
 
@@ -130,6 +132,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                 binding.searchBlock.setVisibility(View.VISIBLE);
                 binding.expandRecyclerView.setVisibility(View.VISIBLE);
                 binding.tvHoliday.setVisibility(View.GONE);
+                binding.tvOutOfOffice.setVisibility(View.GONE);
                 binding.tvUnknown.setVisibility(View.GONE);
                 binding.tvWorkRemote.setVisibility(View.GONE);
 //                binding.tvFloorName.setVisibility(View.GONE);
@@ -141,6 +144,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                 binding.recyclerView.setVisibility(View.GONE);
                 binding.recyclerViewRemote.setVisibility(View.GONE);
                 binding.recyclerViewHoliday.setVisibility(View.GONE);
+                binding.recyclerViewOutOfOffice.setVisibility(View.GONE);
                 binding.recyclerViewUnkown.setVisibility(View.GONE);
                 binding.tvTotalAvail.setVisibility(View.VISIBLE);
 
@@ -333,6 +337,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                             teamMembersUnknownList.clear();
                             teamMembersRemoteList.clear();
                             teamMembersHolidayList.clear();
+                            teamMembersOutOfOffice.clear();
                             teamMembersInOfficeList.clear();
                             teamMembersList = response.body();
                             copyTeamMembersList = response.body();
@@ -368,10 +373,10 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                                                 teamMembersRemoteList.add(teamMembersList.get(i));
                                                 break;
                                             case "OO":
-                                                teamMembersRemoteList.add(teamMembersList.get(i));
+                                                teamMembersOutOfOffice.add(teamMembersList.get(i));
                                                 break;
                                             case "WOO":
-                                                teamMembersRemoteList.add(teamMembersList.get(i));
+//                                                teamMembersRemoteList.add(teamMembersList.get(i));
                                                 break;
                                             case "SL":
                                                 teamMembersHolidayList.add(teamMembersList.get(i));
@@ -518,6 +523,13 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             binding.tvUnknown.setVisibility(View.GONE);
             binding.recyclerViewUnkown.setVisibility(View.GONE);
         }
+        if (teamMembersOutOfOffice.size()>0){
+            binding.tvOutOfOffice.setVisibility(View.VISIBLE);
+            binding.recyclerViewOutOfOffice.setVisibility(View.VISIBLE);
+        }else{
+            binding.tvOutOfOffice.setVisibility(View.GONE);
+            binding.recyclerViewOutOfOffice.setVisibility(View.GONE);
+        }
         if (teamMembersHolidayList.size()>0){
             binding.tvHoliday.setVisibility(View.VISIBLE);
             binding.recyclerViewHoliday.setVisibility(View.VISIBLE);
@@ -556,6 +568,10 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         teamsContactsRemoteAdapter = new TeamsContactsAdapter(getActivity(),teamMembersRemoteList, this);
         binding.recyclerViewRemote.setAdapter(teamsContactsRemoteAdapter);
 
+        teamsContactsOutOfOfficeAdapter = new TeamsContactsAdapter(getActivity(),teamMembersOutOfOffice,
+                this);
+        binding.recyclerViewOutOfOffice.setAdapter(teamsContactsOutOfOfficeAdapter);
+
         teamsContactsHolidaysAdapter = new TeamsContactsAdapter(getActivity(),teamMembersHolidayList, this);
         binding.recyclerViewHoliday.setAdapter(teamsContactsHolidaysAdapter);
 
@@ -587,6 +603,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             binding.recyclerView.setVisibility(View.GONE);
             binding.tvUnknown.setVisibility(View.GONE);
             binding.tvHoliday.setVisibility(View.GONE);
+            binding.tvOutOfOffice.setVisibility(View.GONE);
 //            binding.tvFloorName.setVisibility(View.GONE);
             binding.tvAdddress.setVisibility(View.GONE);
             binding.listTitle.setVisibility(View.GONE);
@@ -594,6 +611,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 //            binding.ivLocation.setVisibility(View.GONE);
             binding.tvWorkRemote.setVisibility(View.GONE);
             binding.recyclerViewRemote.setVisibility(View.GONE);
+            binding.recyclerViewOutOfOffice.setVisibility(View.GONE);
             binding.recyclerViewHoliday.setVisibility(View.GONE);
             binding.recyclerViewUnkown.setVisibility(View.GONE);
             binding.tvTotalAvail.setVisibility(View.VISIBLE);
@@ -637,18 +655,23 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                 LinearLayoutManager.HORIZONTAL,false);
         contactRemoteLinearLayout = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.HORIZONTAL,false);
+        contactOutOfOfficeLinearLayout = new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.HORIZONTAL,false);
         contactHolidayLinearLayout = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.HORIZONTAL,false);
         binding.recyclerView.setLayoutManager(contactLinearLayout);
         binding.recyclerViewRemote.setLayoutManager(contactRemoteLinearLayout);
+        binding.recyclerViewOutOfOffice.setLayoutManager(contactOutOfOfficeLinearLayout);
         binding.recyclerViewHoliday.setLayoutManager(contactHolidayLinearLayout);
         binding.recyclerViewUnkown.setLayoutManager(contactUnknownLinearLayout);
 //        binding.recyclerView.addItemDecoration(new OverlapDecoration());
         binding.recyclerViewRemote.addItemDecoration(new OverlapDecoration());
+        binding.recyclerViewOutOfOffice.addItemDecoration(new OverlapDecoration());
         binding.recyclerViewHoliday.addItemDecoration(new OverlapDecoration());
         binding.recyclerViewUnkown.addItemDecoration(new OverlapDecoration());
         binding.recyclerView.setHasFixedSize(true);
         binding.recyclerViewRemote.setHasFixedSize(true);
+        binding.recyclerViewOutOfOffice.setHasFixedSize(true);
         binding.recyclerViewHoliday.setHasFixedSize(true);
         binding.recyclerViewUnkown.setHasFixedSize(true);
 
@@ -657,6 +680,9 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
         teamsContactsRemoteAdapter = new TeamsContactsAdapter(getActivity(),teamMembersRemoteList, this);
         binding.recyclerViewRemote.setAdapter(teamsContactsRemoteAdapter);
+
+        teamsContactsOutOfOfficeAdapter = new TeamsContactsAdapter(getActivity(),teamMembersOutOfOffice, this);
+        binding.recyclerViewOutOfOffice.setAdapter(teamsContactsOutOfOfficeAdapter);
 
         teamsContactsHolidaysAdapter = new TeamsContactsAdapter(getActivity(),teamMembersHolidayList, this);
         binding.recyclerViewHoliday.setAdapter(teamsContactsHolidaysAdapter);

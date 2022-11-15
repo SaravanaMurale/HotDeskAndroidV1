@@ -1701,10 +1701,13 @@ public class BookFragment extends Fragment implements
         addNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                editBookingDetailsGlobal = new EditBookingDetails();
+                loop:
                 for (int i=0; i<bookingForEditResponseDesk.size();i++){
-                    editBookingDetailsGlobal = new EditBookingDetails();
                     if (bookingForEditResponse.getUserPreferences().getTeamDeskId()
                             == bookingForEditResponseDesk.get(i).getTeamDeskId()){
+//                        Toast.makeText(getContext(), " "+bookingForEditResponseDesk.get(i).getDeskCode(), Toast.LENGTH_SHORT).show();
                         if (bookingForEditResponse.getBookings().size() > 0){
                             editBookingDetailsGlobal.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
                                     .getMyto()));
@@ -1721,6 +1724,7 @@ public class BookFragment extends Fragment implements
                         editBookingDetailsGlobal.setDeskCode(bookingForEditResponseDesk.get(i).getDeskCode());
                         editBookingDetailsGlobal.setDesktId(bookingForEditResponseDesk.get(i).getTeamDeskId());
                         editBookingDetailsGlobal.setDeskStatus(0);
+                        break loop;
                     } else {
                         editBookingDetailsGlobal.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursFrom()));
                         editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
@@ -1749,16 +1753,14 @@ public class BookFragment extends Fragment implements
                     editBookingDetailsGlobal.setCalId(0);
                     editBookingDetailsGlobal.setDeskStatus(0);
                 }
-                /*
                 if(isGlobalLocationSetUP)
-                    editBookingUsingBottomSheet(editBookingDetails,
+                    editBookingUsingBottomSheet(editBookingDetailsGlobal,
                             1,0,"request");
                 else
-                    editBookingUsingBottomSheet(editBookingDetails,
+                    editBookingUsingBottomSheet(editBookingDetailsGlobal,
                             1,0,"new");
-                */
 //                editBookingDetailsGlobal = editBookingDetails;
-                getDeskList("3", calSelectedDate);
+//                getDeskList("3", calSelectedDate);
             }
         });
         editClose.setOnClickListener(new View.OnClickListener() {
