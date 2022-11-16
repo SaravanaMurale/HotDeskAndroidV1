@@ -48,7 +48,7 @@
                 android:layout_marginBottom="@dimen/_20sdp"
                 android:text="@string/close"
                 android:theme="@style/TextBold"
-                android:textColor="@color/figmaBlue"
+                android:textColor="@color/figmaBlueText"
                 android:textSize="@dimen/_15sdp"
                 android:textStyle="bold" />
 

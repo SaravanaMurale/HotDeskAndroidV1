@@ -37,7 +37,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
             android:text="Select"
-            android:textColor="@color/figmaBlue"
+            android:textColor="@color/figmaBlueText"
             android:theme="@style/TextBold" />
 
         <LinearLayout
@@ -55,7 +55,7 @@
                 android:layout_width="@dimen/_10sdp"
                 android:layout_height="@dimen/_10sdp"
                 android:src="@drawable/bg_circle_vector"
-                app:tint="@color/figmaBlue" />
+                app:tint="@color/figmaBlueText" />
             <TextView
                 android:id="@+id/desk_status"
                 android:layout_width="match_parent"
@@ -82,7 +82,7 @@
                 android:layout_alignParentStart="true"
                 android:src="@drawable/info_circle"
                 android:layout_marginTop="@dimen/_4sdp"
-                app:tint="@color/figmaBlue" />
+                app:tint="@color/figmaBlueText" />
 
         </LinearLayout>
             </RelativeLayout>

@@ -85,7 +85,7 @@
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:text="1Day"
-                android:textColor="@color/figmaBlue"
+                android:textColor="@color/figmaBlueText"
                 android:theme="@style/TextBold" />
         </RelativeLayout>
 
@@ -114,7 +114,7 @@
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:text="Tuesday"
-                android:textColor="@color/figmaBlue"
+                android:textColor="@color/figmaBlueText"
                 android:theme="@style/TextBold" />
         </RelativeLayout>
 
@@ -143,7 +143,7 @@
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:text="Forever"
-                android:textColor="@color/figmaBlue"
+                android:textColor="@color/figmaBlueText"
                 android:theme="@style/TextBold" />
         </RelativeLayout>
 

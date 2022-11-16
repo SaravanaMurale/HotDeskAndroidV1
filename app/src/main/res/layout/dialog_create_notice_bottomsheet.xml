@@ -92,7 +92,7 @@
             android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_marginVertical="@dimen/_5sdp"
             android:text="@string/select"
-            android:textColor="@color/figmaBlue"
+            android:textColor="@color/figmaBlueText"
             android:theme="@style/TextBold" />
     </RelativeLayout>
 
@@ -124,7 +124,7 @@
             android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_marginVertical="@dimen/_5sdp"
             android:text="@string/if_applicable"
-            android:textColor="@color/figmaBlue"
+            android:textColor="@color/figmaBlueText"
             android:theme="@style/TextBold" />
     </RelativeLayout>
 
@@ -156,7 +156,7 @@
             android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_marginVertical="@dimen/_5sdp"
             android:text="@string/if_applicable"
-            android:textColor="@color/figmaBlue"
+            android:textColor="@color/figmaBlueText"
             android:theme="@style/TextBold" />
     </RelativeLayout>
 

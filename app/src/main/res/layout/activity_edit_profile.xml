@@ -23,7 +23,7 @@
                 android:layout_height="@dimen/_20sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:src="@drawable/ic_baseline_arrow_back_ios_24"
-                app:tint="@color/figmaBlue" />
+                app:tint="@color/figmaBlueText" />
 
             <TextView
                 android:id="@+id/tv_title"
@@ -112,7 +112,8 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_toRightOf="@+id/ivEditPrifle"
                         android:text="upload photo"
-                        android:textColor="@color/figmaBlue" />
+                        android:textColor="@color/figmaBlueText"
+                        android:theme="@style/TextRegular" />
 
                     <TextView
                         android:id="@+id/tvImageSize"
@@ -465,7 +466,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="9:00"
-                    android:textColor="@color/figmaBlue"
+                    android:textColor="@color/figmaBlueText"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 
@@ -499,7 +500,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="10:00"
-                    android:textColor="@color/figmaBlue"
+                    android:textColor="@color/figmaBlueText"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 
@@ -587,7 +588,7 @@
                         android:clickable="true"
                         android:enabled="true"
                         android:text="Change"
-                        android:textColor="@color/figmaBlue"
+                        android:textColor="@color/figmaBlueText"
                         />
 
                 </RelativeLayout>
@@ -621,7 +622,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:text="Change"
-                        android:textColor="@color/figmaBlue" />
+                        android:textColor="@color/figmaBlueText" />
 
                 </RelativeLayout>
 
@@ -691,7 +692,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:text="Change"
-                        android:textColor="@color/figmaBlue"
+                        android:textColor="@color/figmaBlueText"
                         />
 
                 </RelativeLayout>
@@ -713,7 +714,7 @@
                     android:enabled="true"
                     android:background="@drawable/edittext_bg"
                     android:padding="@dimen/_5sdp"
-                    android:textColor="@color/figmaBlue"
+                    android:textColor="@color/figmaBlueText"
                     android:inputType="text"
                     android:imeOptions="actionDone"
                     />
@@ -772,14 +773,14 @@
                     android:textColor="@color/figmaBlack"
                     android:theme="@style/TextRegular" />
 
-                    <ImageView
-                        android:id="@+id/ivEditEmailIcon"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginHorizontal="@dimen/_2sdp"
-                        android:src="@drawable/ic_outline_mail_outline_24"
-                        app:tint="@color/figmaBlue" />
+                <ImageView
+                    android:id="@+id/ivEditEmailIcon"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginHorizontal="@dimen/_2sdp"
+                    android:src="@drawable/ic_outline_mail_outline_24"
+                    app:tint="@color/figmaBlueText" />
                 </RelativeLayout>
 
             <!--Teams-->
@@ -840,14 +841,14 @@
                     android:textColor="@color/figmaBlack"
                     android:theme="@style/TextRegular" />
 
-                    <ImageView
-                        android:id="@+id/tvEditPhoneIcon"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginHorizontal="@dimen/_2sdp"
-                        android:src="@drawable/ic_baseline_local_phone_24"
-                        app:tint="@color/figmaBlue"/>
+                <ImageView
+                    android:id="@+id/tvEditPhoneIcon"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginHorizontal="@dimen/_2sdp"
+                    android:src="@drawable/ic_baseline_local_phone_24"
+                    app:tint="@color/figmaBlueText" />
                 </RelativeLayout>
 
 
@@ -881,7 +882,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginHorizontal="@dimen/_2sdp"
                     android:src="@drawable/ic_baseline_local_phone_24"
-                    app:tint="@color/figmaBlue"/>
+                    app:tint="@color/figmaBlueText" />
             </RelativeLayout>
 
 

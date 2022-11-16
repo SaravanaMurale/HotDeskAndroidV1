@@ -307,7 +307,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginHorizontal="@dimen/_2sdp"
                 android:src="@drawable/ic_outline_mail_outline_24"
-                app:tint="@color/figmaBlue" />
+                app:tint="@color/figmaBlueText" />
         </RelativeLayout>
 
         <!--Teams-->
@@ -372,7 +372,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginHorizontal="@dimen/_2sdp"
                 android:src="@drawable/ic_baseline_local_phone_24"
-                app:tint="@color/figmaBlue"/>
+                app:tint="@color/figmaBlueText"/>
         </RelativeLayout>
 
         </LinearLayout>

@@ -180,41 +180,6 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         earlyCheckInTime();
         bookingExpiryGraceTimeInMinutes();
 
-/*
-        beaconManager = BeaconManager.getInstanceForApplication(activityContext);
-        // To detect proprietary beacons, you must add a line like below corresponding to your beacon
-        // type.  Do a web search for "setBeaconLayout" to get the proper expression.
-        // beaconManager.getBeaconParsers().add(new BeaconParser().
-        //        setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"));
-        beaconManager.addMonitorNotifier(new MonitorNotifier() {
-            @Override
-            public void didEnterRegion(Region region) {
-                System.out.println("brcon reciever"+region.getUniqueId());
-//                Toast.makeText(getContext(), " enter ", Toast.LENGTH_SHORT).show();
-                Log.i(TAG, "I just saw an beacon for the first time!");
-            }
-
-            @Override
-            public void didExitRegion(Region region) {
-//                Toast.makeText(activityContext, " exit ", Toast.LENGTH_SHORT).show();
-
-                Log.i(TAG, "I no longer see an beacon");
-            }
-
-            @Override
-            public void didDetermineStateForRegion(int state, Region region) {
-//                Toast.makeText(getContext(), " enter ", Toast.LENGTH_SHORT).show();
-
-                Log.i(TAG, "I have just switched from seeing/not seeing beacons: "+state);
-            }
-        });
-
-        beaconManager.startMonitoring(new Region("myMonitoringUniqueId", null, null, null));
-
-*/
-        System.out.println("Seesin userId" + SessionHandler.getInstance()
-                .getInt(getActivity(),
-                AppConstants.USER_ID));
         userProfile = root.findViewById(R.id.user_profile_pic);
         notiIcon = root.findViewById(R.id.noti_icon);
         profile = root.findViewById(R.id.profile);
@@ -230,7 +195,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         closeSearch=root.findViewById(R.id.close);
         mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh);
         mSwipeRefreshLayout.setOnRefreshListener(HomeFragment.this);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.figmaBlue,
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.figmaBlueText,
                 android.R.color.holo_green_dark,
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
@@ -252,7 +217,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
             }else {
                 userCurrentStatus.setText("In Office");
-                userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaBlue), android.graphics.PorterDuff.Mode.MULTIPLY);
+                userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaBlueText), android.graphics.PorterDuff.Mode.MULTIPLY);
             }*/
         }
 
@@ -889,6 +854,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                                     && response.body().getBookings().get(i).getRequestedTeamDeskId() != null){
                                 isRequestedDesk =true;
                             }
+                            if(response.body().getBookings().get(i).getId() ==id){
+                                editDeskBookingDetails.setComments(Utils.checkStringParms(response.body().getBookings().get(i).getComments()));
+                            }
+
                         }
 
                     }else if(response.code()==401){
@@ -1099,11 +1068,11 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment,bundle);
                 }
             } else if(click.equals(AppConstants.REMOTE)){
+
                 bundle.putString("ACTION",AppConstants.REMOTE);
                 bundle.putString("BOOK_NAME",calendarEntriesModel.getUsageTypeAbbreviation());
 
                 navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment,bundle);
-
             }
 
         } else if(click.equals(AppConstants.EDIT)){
@@ -1379,8 +1348,6 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         continueEditBook.setText(appKeysPage.getContinue());
         back.setText(appKeysPage.getBack());
         select.setText(appKeysPage.getSelect());
-        Toast.makeText(getActivity(), " "+Utils.compareTimeIfCheckInEnable(editDeskBookingDetails.getEditStartTTime(),
-                Utils.getCurrentTime()), Toast.LENGTH_SHORT).show();
 
         if (editDeskBookingDetails.getDeskStatus() == 1){
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
@@ -1391,14 +1358,14 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 //            chipGroup.setVisibility(View.GONE);
         }else if (editDeskBookingDetails.getDeskStatus() == 2){
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
-            endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlue));
+            endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlueText));
             select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             statusCheckLayout.setVisibility(View.VISIBLE);
             llCapacityLayout.setVisibility(View.VISIBLE);
 //            chipGroup.setVisibility(View.VISIBLE);
         } else {
-            startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlue));
-            endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlue));
+            startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlueText));
+            endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlueText));
             statusCheckLayout.setVisibility(View.GONE);
             llCapacityLayout.setVisibility(View.GONE);
 //            chipGroup.setVisibility(View.GONE);
@@ -1427,6 +1394,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             tvComments.setText("Comments");
             chipGroup.setVisibility(View.GONE);
             deskRoomName.setText(editDeskBookingDetails.getDeskCode());
+            commentRegistration.setText(editDeskBookingDetails.getComments());
             tvLocationAddress.setText(editDeskBookingDetails.getLocationAddress());
 
         }else if (dskRoomParkStatus==2) {
@@ -1593,12 +1561,12 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     }
 
     private void requestPermission() {
-        System.out.println("ceck perm req");
         ActivityCompat.requestPermissions(getActivity(),
                 new String[]{Manifest.permission.CAMERA},
                 PERMISSION_REQUEST_CODE);
 
     }
+
     private void callDeskBottomSheetDialog() {
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);

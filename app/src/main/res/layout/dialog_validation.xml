@@ -30,7 +30,7 @@
             android:padding="@dimen/_10sdp"
             android:text=""
             android:visibility="gone"
-            android:textColor="@color/figmaBlue"
+            android:textColor="@color/figmaBlueText"
             android:textSize="@dimen/_12sdp" />
 
         <TextView

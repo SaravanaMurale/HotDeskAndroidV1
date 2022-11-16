@@ -113,7 +113,7 @@ public class Utils {
         if (SessionHandler.getInstance().get(mContext, AppConstants.APPTHEME) != null) {
             appTheme = Color.parseColor(SessionHandler.getInstance().get(mContext, AppConstants.APPTHEME));
         } else {
-            appTheme = mContext.getColor(R.color.figmaBlue);
+            appTheme = mContext.getColor(R.color.figmaBlueText);
         }
 
 

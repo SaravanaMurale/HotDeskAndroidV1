@@ -188,9 +188,13 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                SessionHandler.getInstance().removeAll(getContext());
+                System.out.println("sso out"+SessionHandler.getInstance().getInt(SettingsActivity.this,
+                        AppConstants.TYPE_OF_LOGIN));
                 if (SessionHandler.getInstance().getInt(SettingsActivity.this,
                         AppConstants.TYPE_OF_LOGIN) != 1) {
-                    signOutAccounts();
+                    System.out.println("sso out"+SessionHandler.getInstance().getInt(SettingsActivity.this,
+                            AppConstants.TYPE_OF_LOGIN));
+                            signOutAccounts();
                 }
 
                     SessionHandler.getInstance().saveBoolean(context, AppConstants.LOGIN_CHECK,false);
@@ -677,6 +681,7 @@ public class SettingsActivity extends AppCompatActivity {
         Log.d(TAG, "displayError: "+exception.toString());
     }
     private void signOutAccounts() {
+        System.out.println("Signout sso acccc");
         if (b2cApp == null) {
             return;
         }

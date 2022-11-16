@@ -1795,7 +1795,7 @@ public class BookFragment extends Fragment implements
         TextView continueEditBook=roomBottomSheet.findViewById(R.id.editBookingContinue);
         TextView back=roomBottomSheet.findViewById(R.id.editBookingBack);
 
-        
+
         tv_start.setText(appKeysPage.getStart());
         tv_end.setText(appKeysPage.getEnd());
         tv_comment.setText(appKeysPage.getComments());
@@ -1843,13 +1843,13 @@ public class BookFragment extends Fragment implements
 //            chipGroup.setVisibility(View.GONE);
         }else if (editDeskBookingDetails.getDeskStatus() == 2){
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
-            endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlue));
+            endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlueText));
             select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             statusCheckLayout.setVisibility(View.VISIBLE);
 //            chipGroup.setVisibility(View.VISIBLE);
         } else {
-            startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlue));
-            endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlue));
+            startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlueText));
+            endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlueText));
             statusCheckLayout.setVisibility(View.GONE);
 //            chipGroup.setVisibility(View.GONE);
         }
@@ -3006,7 +3006,7 @@ public class BookFragment extends Fragment implements
             if (newEditStatus.equalsIgnoreCase("edit")){
                 tvTeamName.setTextColor(context.getResources().getColor(R.color.figmaGrey));
             }else {
-                tvTeamName.setTextColor(context.getResources().getColor(R.color.figmaBlue));
+                tvTeamName.setTextColor(context.getResources().getColor(R.color.figmaBlueText));
             }
             if (editBookingDetails!=null && editBookingDetails.getRequestedTeamId()>0)
                 tvTeamName.setTextColor(context.getResources().getColor(R.color.figmaGrey));

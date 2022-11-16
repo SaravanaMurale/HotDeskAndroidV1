@@ -248,9 +248,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private void checkSsoEnabled() {
         if (Utils.isNetworkAvailable(this)) {
-
             dialog=ProgressDialog.showProgressBar(LoginActivity.this);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            SessionHandler.getInstance().remove(LoginActivity.this,AppConstants.USERTOKEN);
             JsonObject jsonObject = new JsonObject();
             if (!tentantName.equalsIgnoreCase(""))
                 jsonObject.addProperty("tenantName",tentantName);
@@ -502,6 +502,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (getTokenResponse != null) {
                             //Save token
                             SessionHandler.getInstance().save(LoginActivity.this, AppConstants.USERTOKEN, getTokenResponse.getToken());
+                            SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.TYPE_OF_LOGIN, 2);
 
                             //System.out.println("ReceivedToken" + getTokenResponse.getToken());
                             //System.out.println("ReceivedExpiration" + getTokenResponse.getExpiration());

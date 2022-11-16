@@ -32,7 +32,7 @@
                     android:layout_height="@dimen/_20sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
                     android:src="@drawable/ic_baseline_arrow_back_ios_24"
-                    app:tint="@color/figmaBlue" />
+                    app:tint="@color/figmaBlueText" />
 
 
             </RelativeLayout>
@@ -205,7 +205,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_marginHorizontal="@dimen/_2sdp"
                         android:text="View Team"
-                        android:textColor="@color/figmaBlue"
+                        android:textColor="@color/figmaBlueText"
                         android:theme="@style/TextRegular" />
                 </RelativeLayout>
             </LinearLayout>
@@ -426,7 +426,7 @@
                     android:text="View All"
                     android:layout_marginHorizontal="@dimen/_2sdp"
                     android:layout_alignParentEnd="true"
-                    android:textColor="@color/figmaBlue"
+                    android:textColor="@color/figmaBlueText"
                     />
             </RelativeLayout>
             <androidx.cardview.widget.CardView
@@ -572,7 +572,7 @@
                             android:layout_height="@dimen/_20sdp"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
-                            android:backgroundTint="@color/figmaBlue"
+                            android:backgroundTint="@color/figmaBlueText"
                             android:src="@drawable/blue_location" />
                     </RelativeLayout>
                 </LinearLayout>
@@ -715,7 +715,7 @@
                             android:layout_height="@dimen/_20sdp"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
-                            android:backgroundTint="@color/figmaBlue"
+                            android:backgroundTint="@color/figmaBlueText"
                             android:src="@drawable/blue_location" />
                     </RelativeLayout>
                 </LinearLayout>
@@ -783,7 +783,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_marginHorizontal="@dimen/_2sdp"
                         android:src="@drawable/ic_outline_mail_outline_24"
-                        app:tint="@color/figmaBlue" />
+                        app:tint="@color/figmaBlueText" />
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
@@ -861,7 +861,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_marginHorizontal="@dimen/_2sdp"
                         android:src="@drawable/ic_baseline_local_phone_24"
-                        app:tint="@color/figmaBlue"/>
+                        app:tint="@color/figmaBlueText"/>
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>

@@ -64,7 +64,7 @@
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_3sdp"
                     android:text="Continue"
-                    android:textColor="@color/figmaBlue"
+                    android:textColor="@color/figmaBlueText"
                     android:textSize="@dimen/_14sdp"
                     android:theme="@style/TextBold" />
             </RelativeLayout>

@@ -137,7 +137,7 @@
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="@dimen/_20sdp"
                         android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                        app:tint="@color/figmaBlue"
+                        app:tint="@color/figmaBlueText"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"/>
 
@@ -193,7 +193,7 @@
                         android:text="Desk"
                         android:textSize="@dimen/_14sdp"
                         android:src="@drawable/info_circle"
-                        app:tint="@color/figmaBlue"/>
+                        app:tint="@color/figmaBlueText"/>
 
                     <TextView
                         android:id="@+id/tvAddress"

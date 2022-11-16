@@ -118,7 +118,7 @@ public class BookingDetailFragment extends Fragment {
                 fragmentBookingDetailBinding.userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
             }else {
                 fragmentBookingDetailBinding.userCurrentStatus.setText("In Office");
-                fragmentBookingDetailBinding.userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaBlue), android.graphics.PorterDuff.Mode.MULTIPLY);
+                fragmentBookingDetailBinding.userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaBlueText), android.graphics.PorterDuff.Mode.MULTIPLY);
             }
         }
 

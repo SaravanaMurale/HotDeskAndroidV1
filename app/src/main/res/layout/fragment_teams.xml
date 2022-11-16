@@ -42,7 +42,7 @@
             android:layout_centerVertical="true"
             android:text="All Team"
             android:visibility="gone"
-            android:textColor="@color/figmaBlue"
+            android:textColor="@color/figmaBlueText"
             android:textSize="@dimen/_11sdp"
             android:theme="@style/TextBold" />
 
@@ -182,7 +182,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginStart="@dimen/_4sdp"
                     android:text="Expand all"
-                    android:textColor="@color/figmaBlue"
+                    android:textColor="@color/figmaBlueText"
                     android:textSize="@dimen/_12sdp"
                     android:theme="@style/TextRegular" />
 

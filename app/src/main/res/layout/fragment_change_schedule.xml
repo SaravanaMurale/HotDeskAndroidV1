@@ -821,7 +821,7 @@
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_15sdp"
             android:text="Confirm"
-            android:textColor="@color/figmaBlue"
+            android:textColor="@color/figmaBlueText"
             android:textSize="@dimen/_13sdp"
             android:visibility="invisible"
             android:textStyle="bold"

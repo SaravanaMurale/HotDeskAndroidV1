@@ -16,7 +16,7 @@
         android:drawablePadding="@dimen/_2sdp"
         android:layout_centerHorizontal="true"
         android:paddingVertical="@dimen/_2sdp"
-        android:textColor="@color/figmaBlue"
+        android:textColor="@color/figmaBlueText"
         android:visibility="gone"
         />
     <LinearLayout

@@ -1143,12 +1143,12 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
 
 
-        binding.editRoomChange.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
+        binding.editRoomChange.setTextColor(getResources().getColor(R.color.figmaBlueText,getTheme()));
         //binding.editDeskChange.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
-        binding.editParkChange.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
-        binding.editStartTime.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
-        binding.editEndTime.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
-        binding.changeCountry.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
+        binding.editParkChange.setTextColor(getResources().getColor(R.color.figmaBlueText,getTheme()));
+        binding.editStartTime.setTextColor(getResources().getColor(R.color.figmaBlueText,getTheme()));
+        binding.editEndTime.setTextColor(getResources().getColor(R.color.figmaBlueText,getTheme()));
+        binding.changeCountry.setTextColor(getResources().getColor(R.color.figmaBlueText,getTheme()));
 
     }
 

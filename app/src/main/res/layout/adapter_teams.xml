@@ -117,7 +117,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                        app:tint="@color/figmaBlue" />
+                        app:tint="@color/figmaBlueText" />
 
                     <TextView
                         android:id="@+id/bookingDeskName"
@@ -160,7 +160,7 @@
                         android:layout_marginTop="@dimen/_3sdp"
                         android:layout_toRightOf="@+id/img_layout"
                         android:text="40 Bank Street -30th Floor"
-                        android:textColor="@color/figmaBlue" />
+                        android:textColor="@color/figmaBlueText" />
 
                     <ImageView
                         android:layout_width="@dimen/_12sdp"
@@ -237,7 +237,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/checkout"
                         android:background="@drawable/button_blue_bg"
-                        android:backgroundTint="@color/figmaBlue"
+                        android:backgroundTint="@color/figmaBlueText"
                         android:maxHeight="@dimen/_35sdp"
                         android:minHeight="@dimen/_15sdp"
                         android:layout_below="@+id/bookingCheckInIcon"
@@ -258,7 +258,7 @@
                         android:layout_marginTop="@dimen/_3sdp"
                         android:layout_toRightOf="@+id/img_layout"
                         android:background="@drawable/button_blue_bg"
-                        android:backgroundTint="@color/figmaBlue"
+                        android:backgroundTint="@color/figmaBlueText"
                         android:maxHeight="@dimen/_35sdp"
                         android:minHeight="@dimen/_15sdp"
                         android:text="@string/checkin"

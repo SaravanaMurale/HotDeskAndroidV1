@@ -950,7 +950,7 @@
                     android:text="Settings"
                     android:textSize="@dimen/_16sdp"
                     android:theme="@style/TextBold"
-                    app:tint="@color/figmaBlue" />
+                    app:tint="@color/figmaBlueText" />
 
 
             </RelativeLayout>
@@ -1036,7 +1036,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginHorizontal="@dimen/_2sdp"
                             android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                            app:tint="@color/figmaBlue" />
+                            app:tint="@color/figmaBlueText" />
 
 
                     </RelativeLayout>
@@ -1080,7 +1080,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginHorizontal="@dimen/_2sdp"
                             android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                            app:tint="@color/figmaBlue" />
+                            app:tint="@color/figmaBlueText" />
                     </RelativeLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -1117,7 +1117,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginHorizontal="@dimen/_2sdp"
                             android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                            app:tint="@color/figmaBlue"
+                            app:tint="@color/figmaBlueText"
                             />
                     </RelativeLayout>
 
@@ -1155,7 +1155,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginHorizontal="@dimen/_2sdp"
                             android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                            app:tint="@color/figmaBlue"/>
+                            app:tint="@color/figmaBlueText"/>
                     </RelativeLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -1192,7 +1192,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginHorizontal="@dimen/_2sdp"
                             android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                            app:tint="@color/figmaBlue"/>
+                            app:tint="@color/figmaBlueText"/>
                     </RelativeLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -1251,7 +1251,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginHorizontal="@dimen/_2sdp"
                             android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                            app:tint="@color/figmaBlue" />
+                            app:tint="@color/figmaBlueText" />
                     </RelativeLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -1290,7 +1290,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginHorizontal="@dimen/_2sdp"
                             android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                            app:tint="@color/figmaBlue"
+                            app:tint="@color/figmaBlueText"
                             />
                     </RelativeLayout>
 
@@ -1348,7 +1348,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginHorizontal="@dimen/_2sdp"
                             android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                            app:tint="@color/figmaBlue" />
+                            app:tint="@color/figmaBlueText" />
                     </RelativeLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -1385,7 +1385,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginHorizontal="@dimen/_2sdp"
                             android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                            app:tint="@color/figmaBlue"
+                            app:tint="@color/figmaBlueText"
                             />
                     </RelativeLayout>
 
@@ -1423,7 +1423,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginHorizontal="@dimen/_2sdp"
                             android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                            app:tint="@color/figmaBlue"
+                            app:tint="@color/figmaBlueText"
                             />
                     </RelativeLayout>
 
@@ -1461,7 +1461,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginHorizontal="@dimen/_2sdp"
                             android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                            app:tint="@color/figmaBlue"
+                            app:tint="@color/figmaBlueText"
                             />
                     </RelativeLayout>
 
@@ -1499,7 +1499,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginHorizontal="@dimen/_2sdp"
                             android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                            app:tint="@color/figmaBlue"
+                            app:tint="@color/figmaBlueText"
                             />
                     </RelativeLayout>
 
@@ -1539,7 +1539,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginHorizontal="@dimen/_2sdp"
                             android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                            app:tint="@color/figmaBlue"
+                            app:tint="@color/figmaBlueText"
                             />
                     </RelativeLayout>
 

@@ -64,7 +64,7 @@
                     android:layout_toRightOf="@id/tv_teams"
                     android:gravity="end"
                     android:text="Teams"
-                    android:textColor="@color/figmaBlue"
+                    android:textColor="@color/figmaBlueText"
                     android:theme="@style/TextBold" />
 
 

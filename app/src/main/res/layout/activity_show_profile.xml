@@ -23,7 +23,7 @@
                 android:layout_height="@dimen/_20sdp"
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:src="@drawable/ic_baseline_arrow_back_ios_24"
-                app:tint="@color/figmaBlue" />
+                app:tint="@color/figmaBlueText" />
 
             <TextView
                 android:id="@+id/tv_title"
@@ -112,7 +112,7 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_toRightOf="@+id/ivEditPrifle"
                         android:text="upload photo"
-                        android:textColor="@color/figmaBlue"/>
+                        android:textColor="@color/figmaBlueText"/>
 
                     <TextView
                         android:id="@+id/tvImageSize"
@@ -185,7 +185,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginHorizontal="@dimen/_2sdp"
                         android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                        app:tint="@color/figmaBlue"
+                        app:tint="@color/figmaBlueText"
                         android:visibility="gone"/>
 
                     <RelativeLayout
@@ -280,7 +280,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="@dimen/_4sdp"
                     android:text="View Team"
-                    android:textColor="@color/figmaBlue"
+                    android:textColor="@color/figmaBlueText"
                     android:textSize="@dimen/_12sdp" />
 
 
@@ -746,7 +746,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:text="View All"
-                    android:textColor="@color/figmaBlue"
+                    android:textColor="@color/figmaBlueText"
                     android:textSize="@dimen/_12sdp" />
                 <TextView
                     android:id="@+id/notAvailable"
@@ -833,7 +833,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginHorizontal="@dimen/_2sdp"
                     android:src="@drawable/ic_outline_mail_outline_24"
-                    app:tint="@color/figmaBlue" />
+                    app:tint="@color/figmaBlueText" />
             </RelativeLayout>
 
             <!--Teams-->
@@ -898,7 +898,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginHorizontal="@dimen/_2sdp"
                     android:src="@drawable/ic_baseline_local_phone_24"
-                    app:tint="@color/figmaBlue"/>
+                    app:tint="@color/figmaBlueText"/>
             </RelativeLayout>
 
         </LinearLayout>

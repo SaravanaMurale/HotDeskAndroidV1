@@ -70,7 +70,7 @@
                             android:layout_centerInParent="true"
                             android:layout_marginTop="@dimen/_15sdp"
                             android:src="@drawable/info_circle"
-                            app:tint="@color/figmaBlue" />
+                            app:tint="@color/figmaBlueText" />
 
                     </RelativeLayout>
 
@@ -134,7 +134,7 @@
                             android:layout_marginTop="@dimen/_10sdp"
                             android:layout_marginEnd="@dimen/_5sdp"
                             android:text="Select"
-                            android:textColor="@color/figmaBlue"
+                            android:textColor="@color/figmaBlueText"
                             android:theme="@style/TextBold" />
                     </RelativeLayout>
                 </LinearLayout>
@@ -266,7 +266,7 @@
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="Continue"
-                    android:textColor="@color/figmaBlue"
+                    android:textColor="@color/figmaBlueText"
                     android:textSize="@dimen/_14sdp"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
