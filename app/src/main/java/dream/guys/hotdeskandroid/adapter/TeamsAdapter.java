@@ -82,6 +82,7 @@ public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.viewHolder> 
                     .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
                             .getCalendarEntries().size()-1).getFrom()));
         } else {
+            holder.mbookingAddress.setText("");
             holder.mbookingCheckInTime.setVisibility(View.GONE);
             holder.mbookingCheckOutTime.setVisibility(View.GONE);
             holder.ivCheckIn.setVisibility(View.GONE);

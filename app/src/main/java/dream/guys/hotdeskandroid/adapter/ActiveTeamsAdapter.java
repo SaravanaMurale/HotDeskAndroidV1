@@ -20,6 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
 import dream.guys.hotdeskandroid.model.response.ActiveTeamsResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.ui.book.BookFragment;
@@ -27,24 +28,27 @@ import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 
 public class ActiveTeamsAdapter extends RecyclerView.Adapter<ActiveTeamsAdapter.Viewholder> {
+    int typeId;
     Context context;
     Activity activity;
     BookFragment fragment;
     List<ActiveTeamsResponse> activeTeamsList;
     public OnActiveTeamsSelected onActiveTeamsSelected;
     BottomSheetDialog bottomSheetDialog;
-
-    public ActiveTeamsAdapter(Context context, OnActiveTeamsSelected onSelectSelected, FragmentActivity activity, List<ActiveTeamsResponse> bookingForEditResponse, BookFragment context1, BottomSheetDialog bottomSheetDialog) {
+    EditBookingDetails editBookingDetails;
+    public ActiveTeamsAdapter(Context context, OnActiveTeamsSelected onSelectSelected, FragmentActivity activity, List<ActiveTeamsResponse> bookingForEditResponse, BookFragment context1, BottomSheetDialog bottomSheetDialog,int typeId,EditBookingDetails editBookingDetails) {
         this.fragment=context1;
         this.context = context;
         this.onActiveTeamsSelected =onSelectSelected;
         this.activity = activity;
         this.activeTeamsList = bookingForEditResponse;
         this.bottomSheetDialog=bottomSheetDialog;
+        this.typeId = typeId;
+        this.editBookingDetails = editBookingDetails;
 
     }
     public interface OnActiveTeamsSelected{
-        public void onActiveTeamsSelected(int teamId,String teamName);
+        public void onActiveTeamsSelected(int teamId,String teamName,int typeId,EditBookingDetails editBookingDetails);
 
     }
 
@@ -77,7 +81,9 @@ public class ActiveTeamsAdapter extends RecyclerView.Adapter<ActiveTeamsAdapter.
             public void onClick(View v) {
                 onActiveTeamsSelected.onActiveTeamsSelected(
                         activeTeamsList.get(holder.getAbsoluteAdapterPosition()).getId(),
-                        activeTeamsList.get(holder.getAbsoluteAdapterPosition()).getName()
+                        activeTeamsList.get(holder.getAbsoluteAdapterPosition()).getName(),
+                        typeId,
+                        editBookingDetails
                         );
 //                if (((MainActivity) activity).deskListBottomSheet!=null)
                 if (fragment.deskListBottomSheet!=null)

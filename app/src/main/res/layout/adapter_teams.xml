@@ -163,11 +163,12 @@
                     <ImageView
                         android:layout_width="@dimen/_12sdp"
                         android:layout_height="@dimen/_12sdp"
-                        android:src="@drawable/blue_location"
                         android:layout_below="@+id/bookingDeskName"
-                        android:layout_toRightOf="@+id/bookingAddress"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="@dimen/_6sdp"/>
+                        android:layout_marginStart="@dimen/_6sdp"
+                        android:visibility="gone"
+                        android:layout_toRightOf="@+id/bookingAddress"
+                        android:src="@drawable/blue_location" />
 
                     <ImageView
                         android:id="@+id/bookingCheckInIcon"

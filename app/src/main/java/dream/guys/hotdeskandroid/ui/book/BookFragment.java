@@ -2997,7 +2997,8 @@ public class BookFragment extends Fragment implements
         }else {
             selectDesk.setText("Book a Workspace");
             tvTeamName.setText(selectedTeamName);
-
+            if (editBookingDetails.getRequestedTeamId()>0)
+                tvTeamName.setTextColor(context.getResources().getColor(R.color.figmaGrey));
             /*
             deskListRecyclerAdapter =new DeskListRecyclerAdapter(getContext(),this,
                     getActivity(),bookingForEditResponseDesk,getContext(),deskListBottomSheet);
@@ -3012,7 +3013,10 @@ public class BookFragment extends Fragment implements
         tvTeamName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callActiveTeamsBottomSheet();
+                if (editBookingDetails.getRequestedTeamId()>0){
+                }else {
+                    callActiveTeamsBottomSheet(id,editBookingDetails);
+                }
             }
         });
 
@@ -3026,7 +3030,7 @@ public class BookFragment extends Fragment implements
         deskListBottomSheet.show();
     }
 
-    private void callActiveTeamsBottomSheet() {
+    private void callActiveTeamsBottomSheet(int id,EditBookingDetails editBookingDetails) {
         activeTeamsBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         activeTeamsBottomSheet.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_active_teams,
                 new RelativeLayout(getContext()))));
@@ -3042,7 +3046,7 @@ public class BookFragment extends Fragment implements
         selectDesk.setText("Book from another team");
 
         activeTeamsAdapter =new ActiveTeamsAdapter(getContext(),this,
-                    getActivity(),activeTeamsList,this,activeTeamsBottomSheet);
+                    getActivity(),activeTeamsList,this,activeTeamsBottomSheet,id,editBookingDetails);
         rvActiveTeams.setAdapter(activeTeamsAdapter);
 
 
@@ -6143,9 +6147,20 @@ public class BookFragment extends Fragment implements
     }
 
     @Override
-    public void onActiveTeamsSelected(int teamId, String teamName) {
-        selectedTeamId = teamId;
-        tvTeamName.setText(teamName);
-        getDeskList("-1", calSelectedDate);
+    public void onActiveTeamsSelected(int teamId, String teamName,int typeId, EditBookingDetails editDeskBookingDetails) {
+        if (typeId==0) {
+            selectedTeamId = teamId;
+            tvTeamName.setText(teamName);
+            getDeskList("-1", calSelectedDate);
+        } else {
+            selectedTeamId = teamId;
+            tvTeamName.setText(teamName);
+            if (editDeskBookingDetails.getRequestedTeamId()>0)
+                selectedDeskList(editDeskBookingDetails.getRequestedTeamId(),
+                        Utils.getISO8601format(editDeskBookingDetails.getDate()),editDeskBookingDetails);
+            else
+                selectedDeskList(selectedTeamId,
+                        Utils.getISO8601format(editDeskBookingDetails.getDate()),editDeskBookingDetails);
+        }
     }
 }
