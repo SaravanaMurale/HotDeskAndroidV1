@@ -57,22 +57,22 @@ public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.viewHolder> 
                 && teamMembersList.get(position).getDayGroups().get(0)
                 .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
                         .getCalendarEntries().size()-1).getBooking()!=null
-                && teamMembersList.get(position).getDayGroups().get(0)
-                .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
-                        .getCalendarEntries().size()-1).getBooking().getLocationBuildingFloor()!=null
         ){
 
             holder.mbookingCheckInTime.setVisibility(View.VISIBLE);
             holder.mbookingCheckOutTime.setVisibility(View.VISIBLE);
             holder.ivCheckIn.setVisibility(View.VISIBLE);
             holder.ivCheckOut.setVisibility(View.VISIBLE);
-
-            holder.mbookingAddress.setText(""+teamMembersList.get(position).getDayGroups().get(0)
+            if (teamMembersList.get(position).getDayGroups().get(0)
                     .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
-                            .getCalendarEntries().size()-1).getBooking().getLocationBuildingFloor().getfLoorName()+"-"
-                    +teamMembersList.get(position).getDayGroups().get(0)
-                    .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
-                            .getCalendarEntries().size()-1).getBooking().getLocationBuildingFloor().getBuildingName());
+                            .getCalendarEntries().size()-1).getBooking().getLocationBuildingFloor()!=null) {
+                holder.mbookingAddress.setText(""+teamMembersList.get(position).getDayGroups().get(0)
+                        .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
+                                .getCalendarEntries().size()-1).getBooking().getLocationBuildingFloor().getBuildingName()+"-"
+                        +teamMembersList.get(position).getDayGroups().get(0)
+                        .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
+                                .getCalendarEntries().size()-1).getBooking().getLocationBuildingFloor().getfLoorName());
+            }
 
             holder.mbookingCheckInTime.setText(Utils.splitTime(teamMembersList.get(position).getDayGroups().get(0)
                     .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)

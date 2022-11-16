@@ -104,7 +104,9 @@
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="@dimen/_15sdp"
                             android:layout_gravity="end|bottom"
-                            android:src="@drawable/green_dot" />
+                            android:src="@drawable/green_dot"
+                            android:visibility="gone"
+                            />
 
                     </FrameLayout>
 
@@ -236,7 +238,6 @@
                         android:text="@string/checkout"
                         android:background="@drawable/button_blue_bg"
                         android:backgroundTint="@color/figmaBlue"
-                        android:fontFamily="@font/sen"
                         android:maxHeight="@dimen/_35sdp"
                         android:minHeight="@dimen/_15sdp"
                         android:layout_below="@+id/bookingCheckInIcon"
@@ -258,7 +259,6 @@
                         android:layout_toRightOf="@+id/img_layout"
                         android:background="@drawable/button_blue_bg"
                         android:backgroundTint="@color/figmaBlue"
-                        android:fontFamily="@font/sen"
                         android:maxHeight="@dimen/_35sdp"
                         android:minHeight="@dimen/_15sdp"
                         android:text="@string/checkin"

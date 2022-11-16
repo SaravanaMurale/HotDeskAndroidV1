@@ -184,8 +184,6 @@ public class BookFragment extends Fragment implements
     @BindView(R.id.searchGlobal)
     TextView searchGlobal;
 
-
-
     List<DeskRoomCountResponse> events = new ArrayList<>();
     List<String> dateList = new ArrayList<>();
     Dialog dialog;
@@ -1894,10 +1892,8 @@ public class BookFragment extends Fragment implements
 
             if (editDeskBookingDetails.getUsageTypeId()== 2 ||
                     editDeskBookingDetails.getUsageTypeId()== 7){
-                Toast.makeText(context, "bla", Toast.LENGTH_SHORT).show();
                 select.setVisibility(View.VISIBLE);
-            }
-            else
+            } else
                 select.setVisibility(View.GONE);
 
 
