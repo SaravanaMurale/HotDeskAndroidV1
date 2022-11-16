@@ -1890,8 +1890,10 @@ public class BookFragment extends Fragment implements
             }else
                 repeatBlock.setVisibility(View.VISIBLE);
 
-            if (editDeskBookingDetails.getUsageTypeId()== 2 ||
-                    editDeskBookingDetails.getUsageTypeId()== 7){
+
+            if (newEditStatus.equalsIgnoreCase("edit")
+                    &&(editDeskBookingDetails.getUsageTypeId()== 2 ||
+                    editDeskBookingDetails.getUsageTypeId()== 7)){
                 select.setVisibility(View.VISIBLE);
             } else
                 select.setVisibility(View.GONE);

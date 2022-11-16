@@ -201,7 +201,7 @@
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:text=""
-                android:textColor="@color/figmaBlue"
+                android:textColor="@color/figmaBlueText"
                 android:theme="@style/TextBold" />
         </RelativeLayout>
 
@@ -236,7 +236,7 @@
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:text=""
-                android:textColor="@color/figmaBlue"
+                android:textColor="@color/figmaBlueText"
                 android:theme="@style/TextBold" />
         </RelativeLayout>
 
@@ -397,7 +397,7 @@
             android:text="@string/book_near_by"
             android:layout_marginTop="@dimen/_20sdp"
             android:layout_below="@+id/locateTeamContactBlock"
-            android:textColor="@color/figmaBlue"
+            android:textColor="@color/figmaBlueText"
             />
 
 

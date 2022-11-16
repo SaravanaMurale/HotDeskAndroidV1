@@ -297,7 +297,7 @@
             android:paddingLeft="@dimen/_5sdp"
             android:paddingRight="@dimen/_5sdp"
             android:text=" booked by me"
-            android:textColor="@color/figmaBlue" />
+            android:textColor="@color/figmaBlueText" />
 
 
         <TextView
@@ -562,7 +562,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text=""
-                    android:textColor="@color/figmaBlue"
+                    android:textColor="@color/figmaBlueText"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 
@@ -596,7 +596,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text=""
-                    android:textColor="@color/figmaBlue"
+                    android:textColor="@color/figmaBlueText"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 
@@ -775,7 +775,7 @@
                 android:text="@string/book_near_by"
                 android:gravity="center_vertical"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:textColor="@color/figmaBlue"
+                android:textColor="@color/figmaBlueText"
                 />
 
         </RelativeLayout>
