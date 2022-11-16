@@ -1843,10 +1843,23 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                     if (userAllowedMeetingResponseList != null) {
 
                                         for (int k = 0; k < userAllowedMeetingResponseList.size(); k++) {
-                                            if (locationWithMR.getMatchesList().get(j).getMatchesId() == userAllowedMeetingResponseList.get(k).getId()) {
-                                                locationWithMR.getMatchesList().get(j).setAllowedForBooking(true);
+
+                                            for (int l = 0; l <locationWithMR.getMatchesList().size() ; l++) {
+
+                                                for (int m = 0; m <userAllowedMeetingResponseList.size() ; m++) {
+
+                                                    if(locationWithMR.getMatchesList().get(l).getMatchesId()==userAllowedMeetingResponseList.get(m).getId()){
+                                                        locationWithMR.getMatchesList().get(l).setAllowedForBooking(true);
+                                                    }
+
+                                                }
+
                                             }
 
+                                           /* if (locationWithMR.getMatchesList().get(j).getMatchesId() == userAllowedMeetingResponseList.get(k).getId()) {
+                                                locationWithMR.getMatchesList().get(j).setAllowedForBooking(true);
+                                            }
+*/
                                                 locationWithMR.getMatchesList().get(j).setCurrentTimeZoneOffset(locationWithMR_response.get(i).getTimeZoneOffsetMinutes());
                                                 LocationWithMR_Response.Matches lMatches = locationWithMR.getMatchesList().get(j);
 
@@ -4386,23 +4399,27 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         locateCheckInDate.setText(binding.locateCalendearView.getText());
         showlocateCheckInDate.setText(Utils.showBottomSheetDate(binding.locateCalendearView.getText().toString()));
         //locateCheckInTime.setText(binding.locateStartTime.getText().toString());
-        locateCheckoutTime.setText(binding.locateEndTime.getText().toString());
+
 
         //New...
 
+        //Normal desk booking
         if (editLastEndTime.equals("")) {
 
             boolean b = Utils.checkIsCurrentDate(locateCheckInDate.getText().toString());
 
             if (b) {
+                //If current time add 2min and set
                 locateCheckInTime.setText(currentTimeWithExtraMins(2));
             } else {
+                //If future date set users default works
                 if (profileData != null) {
                     locateCheckInTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
                 }
             }
 
         } else {
+            //If add new clicks need to add 4 hour in end time
             locateCheckInTime.setText(editLastEndTime);
             //Add 4Hour...
             String[] time = locateCheckInTime.getText().toString().split(":");
@@ -4416,20 +4433,105 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         }
 
+
+        //12:42 current
+        //11 default end works
+        if (profileData != null) {
+            String defaultToWorkHours=Utils.splitTime(profileData.getWorkHoursTo());
+            String[] strDefaultWork = defaultToWorkHours.split(":");
+            int workHour=Integer.parseInt(strDefaultWork[0]);
+            int workMinute=Integer.parseInt(strDefaultWork[1]);
+
+
+            String sCurrentTime=Utils.getCurrentTime();
+            String[] current=sCurrentTime.split(":");
+            int currentHour=Integer.parseInt(current[0]);
+            int currentMinute=Integer.parseInt(current[1]);
+
+
+            if(workHour<=currentHour){
+                //locateCheckoutTime.setText("23:59");
+                if(workMinute<=currentMinute){
+                    locateCheckoutTime.setText("23:59");
+                }else {
+                    locateCheckoutTime.setText(defaultToWorkHours);
+                }
+
+            }else {
+                locateCheckoutTime.setText(defaultToWorkHours);
+            }
+
+
+        }
+        //Set Checkout time
+        //locateCheckoutTime.setText(binding.locateEndTime.getText().toString());
+
+
+        locateCheckInTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                isOnTextChanged = true;
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                if (isOnTextChanged) {
+                    isOnTextChanged = false;
+
+                    if (editLastEndTime.equals("")) {
+
+                        //boolean b = Utils.checkSelTimeWithCurrentTime(locateCheckInDate.getText().toString(),locateCheckInTime.getText().toString());
+                        boolean b = Utils.checkIsCurrentDate(locateCheckInDate.getText().toString());
+
+                        if (b) {
+
+                            boolean isTimeCheck = Utils.checkSelTimeWithCurrentTime(b, locateCheckInTime.getText().toString());
+
+                            if (isTimeCheck) {
+                                //Leave it the selected time...
+                            } else {
+                                Toast.makeText(getActivity(), "Start time not less than current time", Toast.LENGTH_SHORT).show();
+                                locateCheckInTime.setText(Utils.currentTimeWithExtraMins(2));
+                            }
+
+                        }/*else {
+                        if (profileData!=null) {
+                            locateCheckInTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
+                        }
+                    }*/
+
+                    } else {
+
+                        //Add 4Hour...
+                        /*String[] time = locateCheckInTime.getText().toString().split(":");
+                        int t1 = Integer.parseInt(time[0]);
+
+                        if (t1>=20){
+                            locateCheckoutTime.setText("23:59");
+                        }else {
+                            locateCheckoutTime.setText(Utils.addHoursToSelectedTime(
+                                    locateCheckoutTime.getText().toString(),4));
+                        }*/
+
+                    }
+
+                }
+
+            }
+        });
+
+
         //Only for Car Part to add 15min in end time
+        //If  start time is higher than the user's default end time below logic goes
         if(code.equals("5")){
             boolean b = Utils.checkIsCurrentDate(locateCheckInDate.getText().toString());
 
-            //Start
-          /*  if (b) {
-                locateCheckInTime.setText(currentTimeWithExtraMins(2));
-            } else {
-                if (profileData != null) {
-                    locateCheckInTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
-                }
-            }*/
-
-            //End
             if (profileData != null) {
                 String defaultToWorkHours=Utils.splitTime(profileData.getWorkHoursTo());
                 String[] strDefaultWork = defaultToWorkHours.split(":");
@@ -4468,12 +4570,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     }else {
                         locateCheckoutTime.setText(Utils.selectedTimeWithExtraMins(Utils.splitTime(profileData.getWorkHoursTo()),15));
                     }
-
-
-
-
-
-
                     //locateCheckoutTime.setText(Utils.splitTime(profileData.getWorkHoursTo()));
                 }
 
@@ -4715,64 +4811,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         });
 
-        locateCheckInTime.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                isOnTextChanged = true;
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-                if (isOnTextChanged) {
-                    isOnTextChanged = false;
-
-                    if (editLastEndTime.equals("")) {
-
-                        //boolean b = Utils.checkSelTimeWithCurrentTime(locateCheckInDate.getText().toString(),locateCheckInTime.getText().toString());
-                        boolean b = Utils.checkIsCurrentDate(locateCheckInDate.getText().toString());
-
-                        if (b) {
-
-                            boolean isTimeCheck = Utils.checkSelTimeWithCurrentTime(b, locateCheckInTime.getText().toString());
-
-                            if (isTimeCheck) {
-                                //Leave it the selected time...
-                            } else {
-                                Toast.makeText(getActivity(), "Start time not less than current time", Toast.LENGTH_SHORT).show();
-                                locateCheckInTime.setText(Utils.currentTimeWithExtraMins(2));
-                            }
-
-                        }/*else {
-                        if (profileData!=null) {
-                            locateCheckInTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
-                        }
-                    }*/
-
-                    } else {
-
-                        //Add 4Hour...
-                        /*String[] time = locateCheckInTime.getText().toString().split(":");
-                        int t1 = Integer.parseInt(time[0]);
-
-                        if (t1>=20){
-                            locateCheckoutTime.setText("23:59");
-                        }else {
-                            locateCheckoutTime.setText(Utils.addHoursToSelectedTime(
-                                    locateCheckoutTime.getText().toString(),4));
-                        }*/
-
-                    }
-
-                }
-
-            }
-        });
 
         locateCheckInDate.addTextChangedListener(new TextWatcher() {
             @Override
