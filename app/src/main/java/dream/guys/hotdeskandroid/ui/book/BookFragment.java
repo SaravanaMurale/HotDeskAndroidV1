@@ -1795,6 +1795,7 @@ public class BookFragment extends Fragment implements
         TextView continueEditBook=roomBottomSheet.findViewById(R.id.editBookingContinue);
         TextView back=roomBottomSheet.findViewById(R.id.editBookingBack);
 
+        
         tv_start.setText(appKeysPage.getStart());
         tv_end.setText(appKeysPage.getEnd());
         tv_comment.setText(appKeysPage.getComments());
