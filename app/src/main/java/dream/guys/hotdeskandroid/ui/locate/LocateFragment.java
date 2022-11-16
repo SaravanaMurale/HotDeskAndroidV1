@@ -2294,6 +2294,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                             if (deskStatusModel1.getId() == teamDeskAvaliabilityList.get(j).getDeskId()) {
                                                 requestTeamId = teamDeskAvaliabilityList.get(j).getTeamId();
+                                                requestTeamDeskId = teamDeskAvaliabilityList.get(j).getTeamDeskId();
                                                 break;
                                             }
                                         }
