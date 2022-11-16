@@ -5708,6 +5708,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     binding.locateProgressBar.setVisibility(View.GONE);
                     afterBookingDisableRepeat();
+
+                    if(locateEditBottomSheet!=null){
+                        locateEditBottomSheet.dismiss();
+                    }
+
                     locateResponseHandler(response, getResources().getString(R.string.booking_success));
                 }
 
@@ -5853,6 +5858,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     binding.locateProgressBar.setVisibility(View.GONE);
                     afterBookingDisableRepeat();
+
+                    if(locateEditBottomSheet!=null){
+                        locateEditBottomSheet.dismiss();
+                    }
+
                     locateResponseHandler(response, getResources().getString(R.string.booking_success));
                 }
 
@@ -5962,6 +5972,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     //requestTeamDeskId=0;
                     //autoApprovedStatus=0;
 
+                    if(locateEditBottomSheet!=null){
+                        locateEditBottomSheet.dismiss();
+                    }
 
                     locateResponseHandler(response, getResources().getString(R.string.booking_request));
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
@@ -6125,6 +6138,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    if(locateEditBottomSheet!=null){
+                        locateEditBottomSheet.dismiss();
+                    }
 
                     locateResponseHandler(response, getResources().getString(R.string.booking_success));
 
