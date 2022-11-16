@@ -141,6 +141,11 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
                 break;
             case 18:
                 holder.editCode.setText("Sick Leave");
+                holder.editCheckInTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getFrom()));
+                holder.editCheckOutTime.setText(Utils.splitTime(bookingsListToEdit.get(position).getMyto()));
+                holder.editCheckInTime.setVisibility(View.VISIBLE);
+                holder.editCheckOutTime.setVisibility(View.VISIBLE);
+
                 break;
             default:
 

@@ -36,7 +36,9 @@ public class ActiveTeamsAdapter extends RecyclerView.Adapter<ActiveTeamsAdapter.
     public OnActiveTeamsSelected onActiveTeamsSelected;
     BottomSheetDialog bottomSheetDialog;
     EditBookingDetails editBookingDetails;
-    public ActiveTeamsAdapter(Context context, OnActiveTeamsSelected onSelectSelected, FragmentActivity activity, List<ActiveTeamsResponse> bookingForEditResponse, BookFragment context1, BottomSheetDialog bottomSheetDialog,int typeId,EditBookingDetails editBookingDetails) {
+    String newEditStatus;
+    public ActiveTeamsAdapter(Context context, OnActiveTeamsSelected onSelectSelected, FragmentActivity activity, List<ActiveTeamsResponse> bookingForEditResponse, BookFragment context1, BottomSheetDialog bottomSheetDialog,
+                              int typeId,EditBookingDetails editBookingDetails,String newEditStatus) {
         this.fragment=context1;
         this.context = context;
         this.onActiveTeamsSelected =onSelectSelected;
@@ -45,10 +47,10 @@ public class ActiveTeamsAdapter extends RecyclerView.Adapter<ActiveTeamsAdapter.
         this.bottomSheetDialog=bottomSheetDialog;
         this.typeId = typeId;
         this.editBookingDetails = editBookingDetails;
-
+        this.newEditStatus= newEditStatus;
     }
     public interface OnActiveTeamsSelected{
-        public void onActiveTeamsSelected(int teamId,String teamName,int typeId,EditBookingDetails editBookingDetails);
+        public void onActiveTeamsSelected(int teamId,String teamName,int typeId,EditBookingDetails editBookingDetails,String newEditStatus);
 
     }
 
@@ -83,7 +85,8 @@ public class ActiveTeamsAdapter extends RecyclerView.Adapter<ActiveTeamsAdapter.
                         activeTeamsList.get(holder.getAbsoluteAdapterPosition()).getId(),
                         activeTeamsList.get(holder.getAbsoluteAdapterPosition()).getName(),
                         typeId,
-                        editBookingDetails
+                        editBookingDetails,
+                        newEditStatus
                         );
 //                if (((MainActivity) activity).deskListBottomSheet!=null)
                 if (fragment.deskListBottomSheet!=null)

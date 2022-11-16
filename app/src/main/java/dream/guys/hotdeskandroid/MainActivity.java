@@ -547,7 +547,7 @@ public class MainActivity extends AppCompatActivity implements
             */
 
             newdeskListRecyclerAdapter =new NewDeskListRecyclerAdapter(getContext(),this,
-                    this,bookingDeskList, null,deskListBottomSheet,0,null);
+                    this,bookingDeskList, null,deskListBottomSheet,0,null,"");
             rvDeskRecycler.setAdapter(newdeskListRecyclerAdapter);
 
         }
@@ -584,7 +584,7 @@ public class MainActivity extends AppCompatActivity implements
         selectDesk.setText("Book from another team");
 
         activeTeamsAdapter =new ActiveTeamsAdapter(getContext(),this,
-                this,activeTeamsList,null,activeTeamsBottomSheet,0,null);
+                this,activeTeamsList,null,activeTeamsBottomSheet,0,null,"");
         rvActiveTeams.setAdapter(activeTeamsAdapter);
 
 
@@ -1395,7 +1395,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onActiveTeamsSelected(int teamId, String teamName,int typeId, EditBookingDetails editBookingDetails) {
+    public void onActiveTeamsSelected(int teamId, String teamName,int typeId, EditBookingDetails editBookingDetails,String newEditstatus) {
         selectedTeamId = teamId;
         tvTeamName.setText(teamName);
         getDeskList("-1", calSelectedDate);
@@ -1465,7 +1465,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onChangeDesk(int deskId, String deskName, String request, String timeZone,int typeId,EditBookingDetails editBookingDetails) {
+    public void onChangeDesk(int deskId, String deskName, String request,
+                             String timeZone,int typeId,EditBookingDetails editBookingDetails,String newEditStatus) {
         editBookingDetailsGlobal.setDeskCode(deskName);
         editBookingDetailsGlobal.setDesktId(deskId);
         editBookingDetailsGlobal.setDeskTeamId(selectedTeamId);

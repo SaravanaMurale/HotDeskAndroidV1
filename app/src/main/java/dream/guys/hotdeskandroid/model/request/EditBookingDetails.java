@@ -28,6 +28,7 @@ public class EditBookingDetails {
     int meetingRoomtId=0;
     int deskStatus=0;
     int noOfPeople=0;
+    int usageTypeId=0;
     Date date;
     String abbrevation;
     List<String> amenities;
@@ -35,6 +36,14 @@ public class EditBookingDetails {
     public int requestedTeamId;
     public int requestedTeamDeskId;
     public Status status;
+
+    public int getUsageTypeId() {
+        return usageTypeId;
+    }
+
+    public void setUsageTypeId(int usageTypeId) {
+        this.usageTypeId = usageTypeId;
+    }
 
     public String getTimeStatus() {
         return timeStatus;
