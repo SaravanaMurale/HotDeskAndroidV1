@@ -213,6 +213,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="none"
+                    android:textColor="@color/figmaBlueText"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 
