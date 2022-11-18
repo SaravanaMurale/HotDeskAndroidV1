@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,15 +26,18 @@ public class TeamsFloorListAdapter extends RecyclerView.Adapter<TeamsFloorListAd
     ArrayList<FloorListModel> floorListModels;
     TeamsContactsAdapter.OnProfileClickable onProfileClickable;
     FloorListener floorListener;
+    TeamsFragment fragment;
 
-    public TeamsFloorListAdapter(Context context, ArrayList<FloorListModel> teamMembersList, FloorListener floorListener, TeamsContactsAdapter.OnProfileClickable OnProfileClickable) {
+    public TeamsFloorListAdapter(Context context, ArrayList<FloorListModel> teamMembersList, FloorListener floorListener, TeamsContactsAdapter.OnProfileClickable OnProfileClickable, Fragment fragment) {
         this.context = context;
         this.floorListModels = teamMembersList;
         this.onProfileClickable = OnProfileClickable;
         this.floorListener = floorListener;
+        this.fragment=(TeamsFragment) fragment;
     }
     public interface FloorListener{
         void floorListenerClick(int floorId, int deskId, String desk);
+        void updateAdapterList(TeamsContactsAdapter teamsContactsAdapter);
     }
 
 
@@ -48,20 +52,23 @@ public class TeamsFloorListAdapter extends RecyclerView.Adapter<TeamsFloorListAd
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
         holder.floorName.setText(floorListModels.get(position).getFloorName());
-        System.out.println("test bala"+floorListModels.get(position).getDeskAvailability());
         holder.tvAvailableCount.setText(floorListModels.get(position).getDeskAvailability());
 
-        LinearLayoutManager linearLayout = new LinearLayoutManager(context,
-                LinearLayoutManager.HORIZONTAL,false);
+        if (fragment.expandStatus)
+            holder.recyclerViewFloor.setLayoutManager(new LinearLayoutManager(context,
+                    LinearLayoutManager.VERTICAL,false));
+        else
+            holder.recyclerViewFloor.setLayoutManager(new LinearLayoutManager(context,
+                    LinearLayoutManager.HORIZONTAL,false));
         holder.recyclerViewFloor.addItemDecoration(new TeamsFragment.OverlapDecoration());
         holder.recyclerViewFloor.setHasFixedSize(true);
 
-        holder.recyclerViewFloor.setLayoutManager(linearLayout);
 
         TeamsContactsAdapter floorAdapter = new TeamsContactsAdapter(context,
                 floorListModels.get(position).getDaoTeamMembers(),
-                onProfileClickable);
+                onProfileClickable,fragment);
         holder.recyclerViewFloor.setAdapter(floorAdapter);
+        floorListener.updateAdapterList(floorAdapter);
 
         holder.floorLocationImage.setOnClickListener(new View.OnClickListener() {
             @Override

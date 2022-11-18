@@ -40,8 +40,9 @@
             android:layout_alignBottom="@id/imageCircleImageView"
             android:layout_gravity="center"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="@dimen/_5sdp"
             android:text=""
+            android:theme="@style/TextSmall"
             android:textColor="#FFFFFF" />
 
     </RelativeLayout>

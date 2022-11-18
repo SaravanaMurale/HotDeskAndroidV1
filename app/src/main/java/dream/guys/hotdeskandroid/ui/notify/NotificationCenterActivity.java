@@ -152,11 +152,13 @@ public class NotificationCenterActivity extends AppCompatActivity {
                             loo :
                             for (int i=0;i<notiList.size();i++){
                                 if (notiList.get(i).getStatus()==0){
-                                    SessionHandler.getInstance().saveBoolean(context, AppConstants.SHOWNOTIFICATION,true);
+                                    SessionHandler.getInstance().saveBoolean(context,
+                                            AppConstants.SHOWNOTIFICATION,true);
                                     binding.notiIcon.setVisibility(View.VISIBLE);
                                     break loo;
                                 }
-                                SessionHandler.getInstance().saveBoolean(context, AppConstants.SHOWNOTIFICATION,false);
+                                SessionHandler.getInstance().saveBoolean(context,
+                                        AppConstants.SHOWNOTIFICATION,false);
                             }
                         notiList.replaceAll(val ->{
                             val.setIncoming("incoming");

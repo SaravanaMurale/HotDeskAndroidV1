@@ -1889,8 +1889,13 @@ public class BookFragment extends Fragment implements
                 if (editDeskBookingDetails.getRequestedTeamId()!=0)
                     select.setVisibility(View.VISIBLE);
                 repeatBlock.setVisibility(View.GONE);
-            }else
-                repeatBlock.setVisibility(View.VISIBLE);
+            }else{
+                if(Utils.compareTwoDate(editDeskBookingDetails.getDate(),Utils.getCurrentDate())==2){
+                    repeatBlock.setVisibility(View.VISIBLE);
+                } else {
+                    repeatBlock.setVisibility(View.GONE);
+                }
+            }
 
 
             if (newEditStatus.equalsIgnoreCase("edit")
@@ -1914,14 +1919,22 @@ public class BookFragment extends Fragment implements
             if(newEditStatus.equalsIgnoreCase("new") || newEditStatus.equalsIgnoreCase("new_deep_link")
                     || newEditStatus.equalsIgnoreCase("request")){
                 title.setText("Book Desk");
+                continueEditBook.setText("Book");
+                back.setText("Cancel");
+
             }
 
         }else if (dskRoomParkStatus==2) {
             if (newEditStatus.equalsIgnoreCase("edit")){
                 repeatBlock.setVisibility(View.GONE);
                 select.setVisibility(View.GONE);
-            }else
-                repeatBlock.setVisibility(View.VISIBLE);
+            }else{
+                if(Utils.compareTwoDate(editDeskBookingDetails.getDate(),Utils.getCurrentDate())==2){
+                    repeatBlock.setVisibility(View.VISIBLE);
+                } else {
+                    repeatBlock.setVisibility(View.GONE);
+                }
+            }
 
             llDeskLayout.setVisibility(View.VISIBLE);
             commentRegistration.setVisibility(View.GONE);
@@ -1951,8 +1964,13 @@ public class BookFragment extends Fragment implements
                 repeatBlock.setVisibility(View.GONE);
                 select.setVisibility(View.GONE);
                 commentRegistration.setText(editDeskBookingDetails.getVehicleRegNumber());
-            }else
-                repeatBlock.setVisibility(View.VISIBLE);
+            }else{
+                if(Utils.compareTwoDate(editDeskBookingDetails.getDate(),Utils.getCurrentDate())==2){
+                    repeatBlock.setVisibility(View.VISIBLE);
+                } else {
+                    repeatBlock.setVisibility(View.GONE);
+                }
+            }
 
             llDeskLayout.setVisibility(View.VISIBLE);
 //            repeatBlock.setVisibility(View.VISIBLE);
@@ -1987,8 +2005,9 @@ public class BookFragment extends Fragment implements
         //Logic for start time and end time of DESK and MEETING ROOM
         if(dskRoomParkStatus==2) {
             if(Utils.compareTwoDate(editDeskBookingDetails.getDate(),Utils.getCurrentDate())==2){
-                startTime.setText(Utils.convert24HrsTO12Hrs(Utils.currentTimeWithExtraMins(0)));
-                endTime.setText(Utils.convert24HrsTO12Hrs(Utils.setStartNearestThirtyMinToMeeting(Utils.getCurrentTime())));
+                startTime.setText(Utils.convert24HrsTO12Hrs(Utils.currentTimeWithExtraMins(2)));
+                endTime.setText(Utils.convert24HrsTO12Hrs(Utils.setStartNearestFiveMinToMeeting(Utils.currentTimeWithExtraMins(32))));
+
             } else {
 
                 if (editDeskBookingDetails.getEditStartTTime()!=null) {
@@ -2988,6 +3007,7 @@ public class BookFragment extends Fragment implements
                 new RelativeLayout(getContext()))));
 
         TextView bsRepeatBack, selectDesk;
+        bsGeneralSearch = deskListBottomSheet.findViewById(R.id.bsGeneralSearch);
         rvDeskRecycler= deskListBottomSheet.findViewById(R.id.desk_list_select_recycler);
         selectDesk= deskListBottomSheet.findViewById(R.id.sheet_name);
         tvTeamName= deskListBottomSheet.findViewById(R.id.tv_team_name);
@@ -3037,6 +3057,21 @@ public class BookFragment extends Fragment implements
                     if(newEditStatus.equalsIgnoreCase("new") || newEditStatus.equalsIgnoreCase("request"))
                         callActiveTeamsBottomSheet(id,editBookingDetails,newEditStatus);
                 }
+            }
+        });
+        bsGeneralSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                newdeskListRecyclerAdapter.getFilter().filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -4181,7 +4216,6 @@ public class BookFragment extends Fragment implements
                 inflate(R.layout.bottom_sheet_locate_floor_filter,
                         new RelativeLayout(getContext())));
 
-
         bsLocationSearch = bottomSheetDialog.findViewById(R.id.bsLocationSearch);
         bsGeneralSearch = bottomSheetDialog.findViewById(R.id.bsGeneralSearch);
 
@@ -4226,6 +4260,16 @@ public class BookFragment extends Fragment implements
         back = bottomSheetDialog.findViewById(R.id.bsBack);
         bsApply = bottomSheetDialog.findViewById(R.id.bsApply);
 
+        country.setText("Global Location");
+        rvCountry.setVisibility(View.VISIBLE);
+
+        showCountryListInAdapter(locateCountryResposes);
+        statBlock.setVisibility(View.GONE);
+        rvState.setVisibility(View.GONE);
+        streetBlock.setVisibility(View.GONE);
+        rvStreet.setVisibility(View.GONE);
+        floorBlock.setVisibility(View.GONE);
+        rvFloor.setVisibility(View.INVISIBLE);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

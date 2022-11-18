@@ -6,6 +6,8 @@ import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -25,16 +28,18 @@ import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
+import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.ui.book.BookFragment;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 
-public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskListRecyclerAdapter.viewholder> {
+public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskListRecyclerAdapter.viewholder> implements Filterable {
     Context context;
     Activity activity;
     BookFragment fragment;
     List<BookingForEditResponse.TeamDeskAvailabilities> deskList;
+    List<BookingForEditResponse.TeamDeskAvailabilities> deskListAll;
     public OnChangeSelected onChangeSelected;
     BottomSheetDialog bottomSheetDialog;
     EditBookingDetails editBookingDetails;
@@ -49,6 +54,7 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
         this.onChangeSelected =onSelectSelected;
         this.activity = activity;
         this.deskList = bookingForEditResponse;
+        this.deskListAll = new ArrayList<>(bookingForEditResponse);
         this.bottomSheetDialog=bottomSheetDialog;
         this.typeId = typeId;
         this.editBookingDetails = editBookingDetails;
@@ -159,6 +165,52 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
     public int getItemCount() {
         return deskList.size();
     }
+
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    Filter filter=new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            List<BookingForEditResponse.TeamDeskAvailabilities> filteredList=new ArrayList<>();
+
+            if(constraint==null || constraint.toString().isEmpty() || constraint.length()==0 || constraint==""){
+                filteredList.addAll(deskListAll);
+            }else {
+                String filterPattern=constraint.toString().toLowerCase().trim();
+
+                for (BookingForEditResponse.TeamDeskAvailabilities dskl:deskListAll){
+
+                    if(dskl.getDeskCode().toLowerCase().contains(filterPattern)){
+
+                        filteredList.add(dskl);
+
+                    }
+
+                }
+
+            }
+
+            FilterResults results=new FilterResults();
+            results.values=filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+            deskList.clear();
+            deskList.addAll((List)results.values);
+            notifyDataSetChanged();
+
+        }
+    };
+
 
     public class viewholder extends RecyclerView.ViewHolder {
         @BindView(R.id.card)

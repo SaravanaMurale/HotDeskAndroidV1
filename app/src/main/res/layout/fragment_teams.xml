@@ -181,7 +181,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_marginStart="@dimen/_4sdp"
-                    android:text="Expand all"
+                    android:text="Expand"
                     android:textColor="@color/figmaBlueText"
                     android:textSize="@dimen/_12sdp"
                     android:theme="@style/TextRegular" />

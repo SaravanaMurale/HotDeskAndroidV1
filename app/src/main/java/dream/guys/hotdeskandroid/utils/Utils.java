@@ -72,6 +72,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -356,13 +357,17 @@ public class Utils {
 
 
                 String time=hour+":"+minutes;
-                String endTime=Utils.setStartNearestThirtyMinToMeeting(time);
 
                 SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
-
                 try {
                     Date date=f24hours.parse(time);
                     SimpleDateFormat f12hours=new SimpleDateFormat("hh:mm aa");
+
+                    Calendar cal =Calendar.getInstance();
+                    cal.setTime(date);
+                    cal.add(Calendar.MINUTE,30);
+                    String endTime=Utils.setStartNearestFiveMinToMeeting(f24hours.format(cal.getTime()));
+
 //                            return String.valueOf(f12hours.format(date));
                     st.setText(""+f12hours.format(date));
                     et.setText(""+f12hours.format(f24hours.parse(endTime)));
@@ -2229,8 +2234,20 @@ public class Utils {
 
     }
 
+    public static String setStartNearestFiveMinToMeeting(String cTime) {
+        String time = Utils.getCurrentDate()+"T"+cTime+":00.000";
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss'Z'");
+        LocalDateTime ldt = LocalDateTime.parse(time).truncatedTo(ChronoUnit.MINUTES);
+        int minute = ldt.getMinute();
+        int remainder = minute % 5;
+        if (remainder != 0) {
+            ldt = ldt.withMinute(minute - remainder);
+        }
+
+        return ""+Utils.splitTime(ldt.format(dtf));
+    }
     public static String setStartNearestThirtyMinToMeeting(String cTime) {
-        System.out.println("cTime bala"+ cTime);
+//        System.out.println("cTime bala"+ cTime);
 
         String fTime = "";
         String[] orgSTime = cTime.split(":");

@@ -85,7 +85,7 @@ public class IncomingRequestResponse implements Serializable {
         private String deskDescription;
         @SerializedName("deskLocation")
         @Expose
-        private Object deskLocation;
+        private String deskLocation;
         @SerializedName("requesterUserId")
         @Expose
         private Integer requesterUserId;
@@ -283,11 +283,11 @@ public class IncomingRequestResponse implements Serializable {
             this.deskDescription = deskDescription;
         }
 
-        public Object getDeskLocation() {
+        public String getDeskLocation() {
             return deskLocation;
         }
 
-        public void setDeskLocation(Object deskLocation) {
+        public void setDeskLocation(String deskLocation) {
             this.deskLocation = deskLocation;
         }
 

@@ -200,14 +200,14 @@
 
                     <TextView
                         android:id="@+id/tvAddress"
+                        style="@style/TextRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pmo Office"
-                        android:layout_marginLeft="@dimen/_6sdp"
-                        android:layout_toEndOf="@+id/ivMeeting"
                         android:layout_below="@+id/tvDesk"
+                        android:layout_marginLeft="@dimen/_6sdp"
                         android:layout_marginTop="@dimen/_2sdp"
-                        style="@style/TextRegular"
+                        android:layout_toEndOf="@+id/ivMeeting"
+                        android:text="Pmo Office"
                         android:textColor="@color/figmaBlack" />
 
                 </RelativeLayout>

@@ -172,7 +172,8 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
 
         holder.tvUserName.setText(notiList.get(position).getRequesterName());
         holder.tvUserTeam.setText(notiList.get(position).getRequesterTeam());
-        holder.txt_date.setText(Utils.dateWithDayString(Utils.splitDate(notiList.get(position).getRequestedDate())));
+//        holder.txt_date.setText(Utils.dateWithDayString(Utils.splitDate(notiList.get(position).getRequestedDate())));
+        holder.txt_date.setText(Utils.dateWithDayString(Utils.splitDate(notiList.get(position).getDate())));
         holder.CheckInTime.setText(Utils.splitTime(notiList.get(position).getFrom()));
         holder.CheckOutTime.setText(Utils.splitTime(notiList.get(position).getTo()));
 
@@ -194,7 +195,7 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
                 } else {
                     holder.tvDesk.setText(notiList.get(position).getDeskCode());
                 }
-                holder.tvAddress.setText(notiList.get(position).getDeskTeam());
+                holder.tvAddress.setText(Utils.checkStringParms(notiList.get(position).getDeskLocation()));
                 break;
             case 4:
                 holder.imgEntity.setImageDrawable(context.getDrawable(R.drawable.room));
@@ -204,7 +205,7 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
             case 5:
                 holder.imgEntity.setImageDrawable(context.getDrawable(R.drawable.car));
                 holder.tvDesk.setText(String.valueOf(notiList.get(position).getParkingSlotCode()));
-                holder.tvAddress.setText(notiList.get(position).getLocationName());
+                holder.tvAddress.setText(Utils.checkStringParms(notiList.get(position).getLocationName()));
                 break;
         }
 
