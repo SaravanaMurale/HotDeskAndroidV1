@@ -528,7 +528,7 @@ public class Utils {
             @Override
             public void onClick(View v) {
 
-                System.out.println("ContinuPrintHere"+locateCheckInDate.getText());
+                //System.out.println("ContinuPrintHere"+locateCheckInDate.getText());
                 //Utils.dayDateMonthFormat();
 
                 bottomSheetDatePicker.dismiss();

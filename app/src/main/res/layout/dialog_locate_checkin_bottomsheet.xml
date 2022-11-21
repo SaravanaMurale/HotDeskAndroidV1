@@ -7,11 +7,11 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_margin="@dimen/_15sdp"
             >
@@ -79,8 +79,6 @@
 
             </RelativeLayout>
 
-
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -99,9 +97,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-
-                >
+                android:layout_marginTop="@dimen/_10sdp">
 
                 <ImageView
                     android:id="@+id/ivOnline"
@@ -129,9 +125,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:padding="@dimen/_3sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/_3sdp">
 
                 <TextView
                     android:id="@+id/tvLocateCheckInDate"
@@ -154,7 +150,7 @@
                     android:text="10 Aug"
                     android:textColor="@color/figmaBlueText"
                     android:theme="@style/TextBold"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible" />
 
                 <TextView
                     android:id="@+id/showlocateCheckInDate"
@@ -266,7 +262,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="none"
+                    android:text="None"
                     android:textColor="@color/figmaBlueText"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
@@ -468,13 +464,15 @@
 
 
 
+
            <!--Continue and Book-->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_35sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_60sdp"
+                >
 
                 <TextView
                     android:id="@+id/editBookingBack"
@@ -500,7 +498,11 @@
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 
+
+
         </LinearLayout>
+
+
     </androidx.core.widget.NestedScrollView>
 
 </RelativeLayout>
