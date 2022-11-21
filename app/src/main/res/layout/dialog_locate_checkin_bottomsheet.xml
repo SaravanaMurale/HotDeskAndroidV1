@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottomBookCoordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:layout_behavior="@string/bottom_sheet_behavior"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomBook">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -465,38 +468,8 @@
 
 
 
-           <!--Continue and Book-->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentBottom="true"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/_60sdp"
-                >
 
-                <TextView
-                    android:id="@+id/editBookingBack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="Cancel"
-                    android:textSize="@dimen/_14sdp"
-                    android:theme="@style/TextBold" />
 
-                <TextView
-                    android:id="@+id/editBookingContinue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="Book"
-                    android:textColor="@color/figmaBlueText"
-                    android:textSize="@dimen/_14sdp"
-                    android:theme="@style/TextBold" />
-            </RelativeLayout>
 
 
 
@@ -505,4 +478,42 @@
 
     </androidx.core.widget.NestedScrollView>
 
-</RelativeLayout>
+    <!--Continue and Book-->
+    <RelativeLayout
+        android:id="@+id/bottomBook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/_10sdp"
+        >
+
+        <TextView
+            android:id="@+id/editBookingBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:text="Cancel"
+            android:textSize="@dimen/_14sdp"
+            android:theme="@style/TextBold" />
+
+        <TextView
+            android:id="@+id/editBookingContinue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:text="Book"
+            android:textColor="@color/figmaBlueText"
+            android:textSize="@dimen/_14sdp"
+            android:theme="@style/TextBold" />
+    </RelativeLayout>
+
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -3847,25 +3847,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         layout.setMinimumHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
 
 
-       /* // This listener's onShow is fired when the dialog is shown
-        bottomSheetDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-
-                // In a previous life I used this method to get handles to the positive and negative buttons
-                // of a dialog in order to change their Typeface. Good ol' days.
-
-                BottomSheetDialog d = (BottomSheetDialog) dialog;
-
-                // This is gotten directly from the source of BottomSheetDialog
-                // in the wrapInBottomSheet() method
-               RelativeLayout bottomSheet = (RelativeLayout) d.findViewById(R.id.parentIdLocate);
-
-                // Right here!
-                BottomSheetBehavior.from(bottomSheet)
-                        .setState(BottomSheetBehavior.STATE_EXPANDED);
-            }
-        });*/
 
         bsLocationSearch = bottomSheetDialog.findViewById(R.id.bsLocationSearch);
         bsGeneralSearch = bottomSheetDialog.findViewById(R.id.bsGeneralSearch);
@@ -4384,9 +4365,26 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         System.out.println("BookingRequestDetail" + selctedCode + " " + key + " " + id + " " + code+" "+statusCode);
 
-        BottomSheetDialog locateCheckInBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        /*BottomSheetDialog locateCheckInBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         locateCheckInBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_checkin_bottomsheet,
-                new RelativeLayout(getContext())));
+                new RelativeLayout(getContext())));*/
+
+
+        BottomSheetDialog locateCheckInBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        View view = View.inflate(getContext(), R.layout.dialog_locate_checkin_bottomsheet, null);
+        locateCheckInBottomSheet.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(500);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+        CoordinatorLayout layout = locateCheckInBottomSheet.findViewById(R.id.bottomBookCoordinatorLayout);
+        layout.setMinimumHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+
+
+
+
+
+
         bookingDateBlock = locateCheckInBottomSheet.findViewById(R.id.bookingDateBlock);
         bookingStartBlock = locateCheckInBottomSheet.findViewById(R.id.bookingStartBlock);
         bookingEndBlock = locateCheckInBottomSheet.findViewById(R.id.bookingEndBlock);
