@@ -99,8 +99,30 @@ public class LocateBookingRequest {
             @SerializedName("teamDeskId")
             int teamDeskId;
 
+            @SerializedName("requestedTeamId")
+            Integer requestedTeamId;
+
+            @SerializedName("requestedTeamDeskId")
+            Integer requestedTeamDeskId;
+
             @SerializedName("typeOfCheckIn")
             int typeOfCheckIn;
+
+            public int getRequestedTeamId() {
+                return requestedTeamId;
+            }
+
+            public void setRequestedTeamId(Integer requestedTeamId) {
+                this.requestedTeamId = requestedTeamId;
+            }
+
+            public int getRequestedTeamDeskId() {
+                return requestedTeamDeskId;
+            }
+
+            public void setRequestedTeamDeskId(Integer requestedTeamDeskId) {
+                this.requestedTeamDeskId = requestedTeamDeskId;
+            }
 
             public int getUsageTypeId() {
                 return usageTypeId;

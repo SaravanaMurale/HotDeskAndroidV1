@@ -29,7 +29,6 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
     public OnSelectSelected onSelectSelected;
     BottomSheetDialog bottomSheetDialog;
 
-
     public RoomListRecyclerAdapter(Context context, OnSelectSelected onSelectSelected, FragmentActivity activity, List<UserAllowedMeetingResponse> bookingForEditResponse, Context context1, BottomSheetDialog bottomSheetDialog) {
         // this.homeFragment=homeFragment;
         this.context = context;
@@ -39,7 +38,8 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
         this.bottomSheetDialog=bottomSheetDialog;
     }
     public interface OnSelectSelected{
-        public void onSelectRoom(int deskId, String deskName, String location, List<UserAllowedMeetingResponse.Amenity> amenityList);
+        public void onSelectRoom(int deskId, String deskName, String location,
+                                 List<UserAllowedMeetingResponse.Amenity> amenityList,int capacityCount);
 
     }
 
@@ -61,7 +61,9 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
                 onSelectSelected.onSelectRoom(rooms.get(holder.getAbsoluteAdapterPosition()).getId(),
                         rooms.get(holder.getAbsoluteAdapterPosition()).getName(),
                         rooms.get(holder.getAbsoluteAdapterPosition()).getLocationMeeting().getName(),
-                        rooms.get(holder.getAbsoluteAdapterPosition()).getAmenities());
+                        rooms.get(holder.getAbsoluteAdapterPosition()).getAmenities(),
+                        rooms.get(holder.getAbsoluteAdapterPosition()).getNoOfPeople()
+                        );
             }
         });
     }

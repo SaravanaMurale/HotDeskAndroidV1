@@ -156,7 +156,16 @@ public class MeetingListToEditResponse {
 
     public class Status {
         String timeStatus;
+        String bookingStatus;
         String bookingType;
+
+        public String getBookingStatus() {
+            return bookingStatus;
+        }
+
+        public void setBookingStatus(String bookingStatus) {
+            this.bookingStatus = bookingStatus;
+        }
 
         public String getBookingType() {
             return bookingType;

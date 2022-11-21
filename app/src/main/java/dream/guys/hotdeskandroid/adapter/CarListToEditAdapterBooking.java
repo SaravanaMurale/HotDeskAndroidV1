@@ -71,9 +71,15 @@ public class CarListToEditAdapterBooking extends RecyclerView.Adapter<CarListToE
                 .equalsIgnoreCase("ongoing")) {
             holder.editDelete.setVisibility(View.GONE);
             holder.editTextEdit.setVisibility(View.VISIBLE);
-        } else {
+        } else if (carParkBookings.get(position).getStatus().getTimeStatus()
+                .equalsIgnoreCase("past")) {
             holder.editDelete.setVisibility(View.GONE);
             holder.editTextEdit.setVisibility(View.GONE);
+        }
+
+        if (carParkBookings.get(position).getStatus().getBookingStatus()
+                .equalsIgnoreCase("none")){
+            holder.editDelete.setVisibility(View.VISIBLE);
         }
 
         if(code.equals("5")){

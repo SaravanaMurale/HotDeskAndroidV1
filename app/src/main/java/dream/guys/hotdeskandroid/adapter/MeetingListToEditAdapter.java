@@ -64,10 +64,12 @@ public class MeetingListToEditAdapter extends RecyclerView.Adapter<MeetingListTo
                 .equalsIgnoreCase("ongoing")) {
             holder.editDelete.setVisibility(View.GONE);
             holder.editTextEdit.setVisibility(View.VISIBLE);
-        } else {
+        } else if (meetingListToEditResponseList.get(position).getStatus().getTimeStatus()
+                .equalsIgnoreCase("past")) {
             holder.editDelete.setVisibility(View.GONE);
             holder.editTextEdit.setVisibility(View.GONE);
         }
+
         holder.editCode.setText((meetingListToEditResponseList.get(position).getMeetingRoomName()));
         holder.editCheckInTime.setText(Utils.splitTime(meetingListToEditResponseList.get(position).getFrom()));
         holder.editCheckOutTime.setText(Utils.splitTime(meetingListToEditResponseList.get(position).getTo()));

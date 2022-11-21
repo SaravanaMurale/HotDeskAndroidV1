@@ -14,6 +14,7 @@ public class EditBookingDetails {
     String editEndTime;
     String deskCode;
     String roomName;
+    String capacity;
     String vehicleRegNumber;
     String locationAddress;
     String bookedForUser;
@@ -36,6 +37,14 @@ public class EditBookingDetails {
     public int requestedTeamId;
     public int requestedTeamDeskId;
     public Status status;
+
+    public String getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(String capacity) {
+        this.capacity = capacity;
+    }
 
     public int getUsageTypeId() {
         return usageTypeId;
