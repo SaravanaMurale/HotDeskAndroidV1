@@ -74,7 +74,7 @@
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:orientation="horizontal">
 
-                <TextView
+                <ImageView
                     android:id="@+id/tv_user_status_room"
                     android:layout_width="@dimen/_10sdp"
                     android:layout_height="@dimen/_10sdp"
@@ -254,7 +254,7 @@
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:enabled="false"
-                android:text="none"
+                android:text="None"
                 android:textColor="@color/figmaBlueText"
                 android:theme="@style/TextBold" />
         </RelativeLayout>
