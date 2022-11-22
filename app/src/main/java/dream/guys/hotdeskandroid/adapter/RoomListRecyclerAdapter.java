@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -76,6 +77,10 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_desk_name)
         TextView room_name;
+        @BindView(R.id.desk_status)
+        TextView deskStatus;
+        @BindView(R.id.desk_icon_status)
+        ImageView deskIconStatus;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -22,17 +22,19 @@
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_16sdp"
+                android:textColor="@color/figmaBlack"
+                android:textSize="26sp"
                 android:layout_marginVertical="@dimen/_3sdp"
-                android:textStyle="bold" />
+                android:theme="@style/TextBold"
+                />
 
             <TextView
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_14sdp" />
+                android:textColor="@color/figmaBlack"
+                android:theme="@style/TextRegular"
+                android:textSize="14sp" />
 
             <TimePicker
                 android:id="@+id/simpleTimePicker"

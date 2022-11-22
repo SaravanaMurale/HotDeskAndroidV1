@@ -21,11 +21,48 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_25sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:text="Select Desk"
             android:textColor="@color/figmaBlack"
-            android:textSize="@dimen/_15sdp"
+            android:textSize="26sp"
             android:theme="@style/TextBold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/_10sdp"
+            >
+            <TextView
+                android:id="@+id/sheet_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:text="Select Desk"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/figmaBlack"
+                android:textSize="14sp"
+                android:theme="@style/TextRegular" />
+            <ImageView
+                android:layout_width="@dimen/_5sdp"
+                android:layout_height="@dimen/_5sdp"
+                android:src="@drawable/dot"
+                android:layout_gravity="center_vertical"
+                />
+            <TextView
+                android:id="@+id/sheet_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:text=""
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/figmaBlack"
+                android:textSize="14sp"
+                android:theme="@style/TextRegular" />
+
+        </LinearLayout>
+
 
         <androidx.cardview.widget.CardView
             android:id="@+id/teams_card"

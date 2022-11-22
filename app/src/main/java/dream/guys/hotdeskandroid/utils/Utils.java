@@ -327,7 +327,7 @@ public class Utils {
             dateTv.setText(date);
         }
 
-        String[] parts =Utils.convert12HrsTO24Hrs(st.getText().toString()).split(":");
+        String[] parts =st.getText().toString().split(":");
         simpleTimePicker.setHour(Integer.parseInt(parts[0]));
         simpleTimePicker.setMinute(Integer.parseInt(parts[1]));
 
@@ -369,8 +369,8 @@ public class Utils {
                     String endTime=Utils.setStartNearestFiveMinToMeeting(f24hours.format(cal.getTime()));
 
 //                            return String.valueOf(f12hours.format(date));
-                    st.setText(""+f12hours.format(date));
-                    et.setText(""+f12hours.format(f24hours.parse(endTime)));
+                    st.setText(""+f24hours.format(date));
+                    et.setText(""+f24hours.format(f24hours.parse(endTime)));
                     System.out.println("ReceivedDate"+f12hours.format(date));
                     bottomSheetDialog.dismiss();
 
@@ -408,7 +408,7 @@ public class Utils {
             dateTv.setText(date);
         }
 
-        String[] parts =Utils.convert12HrsTO24Hrs(tv.getText().toString()).split(":");
+        String[] parts =tv.getText().toString().split(":");
         simpleTimePicker.setHour(Integer.parseInt(parts[0]));
         simpleTimePicker.setMinute(Integer.parseInt(parts[1]));
 
@@ -458,7 +458,7 @@ public class Utils {
                     Date date=f24hours.parse(time);
                     SimpleDateFormat f12hours=new SimpleDateFormat("hh:mm aa");
 //                            return String.valueOf(f12hours.format(date));
-                    tv.setText(""+f12hours.format(date));
+                    tv.setText(""+f24hours.format(date));
                     System.out.println("ReceivedDate"+f12hours.format(date));
                     bottomSheetDialog.dismiss();
 

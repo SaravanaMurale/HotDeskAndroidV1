@@ -20,6 +20,7 @@ public class EditBookingDetails {
     String bookedForUser;
     String parkingSlotCode;
     String timeZone;
+    String displayTime;
     public String timeStatus;
 
     int calId=0;
@@ -40,6 +41,14 @@ public class EditBookingDetails {
 
     public String getCapacity() {
         return capacity;
+    }
+
+    public String getDisplayTime() {
+        return displayTime;
+    }
+
+    public void setDisplayTime(String displayTime) {
+        this.displayTime = displayTime;
     }
 
     public void setCapacity(String capacity) {

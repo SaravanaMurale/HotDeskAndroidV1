@@ -322,7 +322,7 @@ public class CalendarView extends LinearLayout
                 ((TextView) dateBox).setTypeface(null, Typeface.BOLD);
                 ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.figmaBlack));
             } else {
-                ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.white));
+                ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.figmaBackground));
             }
 
             ((TextView) dateBox).setText(String.valueOf(date.getDate()));

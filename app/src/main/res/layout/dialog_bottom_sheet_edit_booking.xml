@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_3sdp"
                 android:text="Edit Your Booking"
-                android:textSize="@dimen/_14sdp"
+                android:textSize="26sp"
                 android:theme="@style/TextBold" />
 
             <TextView
@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_15sdp"
                 android:text="Mon, 10th August, 2022"
+                android:textSize="14sp"
                 android:theme="@style/TextSmall" />
             <!--Date-->
             <RelativeLayout
@@ -349,7 +350,7 @@
                             android:layout_centerInParent="true"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:layout_marginEnd="@dimen/_5sdp"
-                            android:text="Select"
+                            android:text="Change"
                             android:textColor="@color/figmaBlueText"
                             android:theme="@style/TextBold" />
                     </RelativeLayout>

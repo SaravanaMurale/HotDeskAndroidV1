@@ -1421,8 +1421,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             chipGroup.setVisibility(View.GONE);
         }
 
-        startTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()));
-        endTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditEndTime()));
+        startTime.setText(editDeskBookingDetails.getEditStartTTime());
+        endTime.setText(editDeskBookingDetails.getEditEndTime());
         date.setText(""+Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
 //        deskRoomName.setText(editDeskBookingDetails.getDeskCode());
 

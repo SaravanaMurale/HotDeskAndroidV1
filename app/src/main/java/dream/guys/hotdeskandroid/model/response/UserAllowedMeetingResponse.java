@@ -17,8 +17,8 @@ public class UserAllowedMeetingResponse {
     String dailyAvailableTo;
     boolean active;
     int automaticApprovalStatus;
-    String managers;
-    String teams;
+    List<Manager> managers;
+    List<Teams> teams;
 
     List<Amenity> amenities;
 
@@ -110,19 +110,19 @@ public class UserAllowedMeetingResponse {
         this.automaticApprovalStatus = automaticApprovalStatus;
     }
 
-    public String getManagers() {
+    public List<Manager> getManagers() {
         return managers;
     }
 
-    public void setManagers(String managers) {
+    public void setManagers(List<Manager> managers) {
         this.managers = managers;
     }
 
-    public String getTeams() {
+    public List<Teams> getTeams() {
         return teams;
     }
 
-    public void setTeams(String teams) {
+    public void setTeams(List<Teams> teams) {
         this.teams = teams;
     }
 
@@ -203,6 +203,65 @@ public class UserAllowedMeetingResponse {
             }
         }
 
+    public class Manager {
+        private int id;
+        private String firstName;
+        private String lastName;
+        private String fullName;
+        private String email;
+        private boolean active;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+
+        public String getLastName() {
+            return lastName;
+        }
+
+        public void setLastName(String lastName) {
+            this.lastName = lastName;
+        }
+
+        public String getFullName() {
+            return fullName;
+        }
+
+        public void setFullName(String fullName) {
+            this.fullName = fullName;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public boolean isActive() {
+            return active;
+        }
+
+        public void setActive(boolean active) {
+            this.active = active;
+        }
+    }
+    public class Teams {
+
+    }
     public class Amenity {
         private int id;
 
