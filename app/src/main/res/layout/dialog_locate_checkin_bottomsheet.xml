@@ -92,7 +92,9 @@
                     android:id="@+id/tvDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Description" />
+                    android:text="Description"
+                    android:textColor="@color/figma_dark_black"
+                    />
 
 
             </RelativeLayout>
@@ -140,7 +142,7 @@
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="Date"
-                    android:textColor="@color/figmaBlack"
+                    android:textColor="@color/light_black"
                     android:theme="@style/TextBold" />
 
                 <TextView
@@ -187,7 +189,7 @@
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="Start"
-                    android:textColor="@color/figmaBlack"
+                    android:textColor="@color/light_black"
                     android:theme="@style/TextBold" />
 
                 <TextView
@@ -221,7 +223,7 @@
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="End"
-                    android:textColor="@color/figmaBlack"
+                    android:textColor="@color/light_black"
                     android:theme="@style/TextBold" />
 
                 <TextView
@@ -255,7 +257,7 @@
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="Repeat"
-                    android:textColor="@color/figmaBlack"
+                    android:textColor="@color/light_black"
                     android:theme="@style/TextBold" />
 
                 <TextView
@@ -498,6 +500,7 @@
             android:layout_marginVertical="@dimen/_5sdp"
             android:text="Cancel"
             android:textSize="@dimen/_14sdp"
+            android:layout_marginLeft="@dimen/_5sdp"
             android:theme="@style/TextBold" />
 
         <TextView
@@ -508,6 +511,7 @@
             android:layout_marginHorizontal="@dimen/_5sdp"
             android:layout_marginVertical="@dimen/_5sdp"
             android:text="Book"
+            android:layout_marginRight="@dimen/_8sdp"
             android:textColor="@color/figmaBlueText"
             android:textSize="@dimen/_14sdp"
             android:theme="@style/TextBold" />

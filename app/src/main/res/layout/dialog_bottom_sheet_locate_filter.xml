@@ -9,13 +9,11 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        >
+        android:fillViewport="true">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
 
             <RelativeLayout
                 android:id="@+id/locateFilterHeadBlock"
@@ -47,11 +45,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tvFilter"
+                    android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/rectangle_greybg_with_corner"
                     android:drawableLeft="@drawable/search_1px"
-                    android:hint="   Search"
-                    android:padding="@dimen/_5sdp" />
+                    android:drawablePadding="@dimen/_10sdp"
+                    android:hint="         tedt"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_5sdp" />
 
 
             </RelativeLayout>
@@ -62,7 +64,9 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/locateFilterHeadBlock"
                 android:layout_marginBottom="@dimen/_10sdp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_above="@+id/bottom_lay"
+                />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -75,7 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Cancel"
-                    android:layout_marginTop="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_30sdp"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_15sdp"
                     />
@@ -84,9 +88,9 @@
                     android:id="@+id/locateFilterApply"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Apply"
                     android:layout_alignParentRight="true"
-                    android:layout_marginTop="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:text="Apply"
                     android:textColor="@color/blue"
                     android:textSize="@dimen/_15sdp"
 

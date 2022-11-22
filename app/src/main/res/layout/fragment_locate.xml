@@ -370,18 +370,18 @@
                 android:id="@+id/header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_marginRight="@dimen/_5sdp"
-                >
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_5sdp">
 
                 <TextView
                     android:id="@+id/tvMyTeam"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:text="MyTeam"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_13sdp" />
+                    android:textSize="@dimen/_15sdp" />
 
                 <TextView
                     android:id="@+id/tvPMOOffice"
@@ -390,7 +390,8 @@
                     android:layout_below="@id/tvMyTeam"
                     android:text="PMO Office"
                     android:textColor="@color/figmaBlack"
-                    android:textSize="@dimen/_9sdp" />
+                    android:textSize="@dimen/_9sdp"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tvAllTeams"
@@ -399,10 +400,7 @@
                     android:layout_alignParentRight="true"
                     android:text="All teams"
                     android:textColor="@color/blue"
-                    android:visibility="invisible"
-                    />
-
-
+                    android:visibility="invisible" />
 
 
             </RelativeLayout>
@@ -443,9 +441,8 @@
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:text="@string/close"
-                android:textColor="@color/figmaBlack"
                 android:textSize="@dimen/_15sdp"
-                android:textStyle="bold" />
+                 />
 
         </RelativeLayout>
 

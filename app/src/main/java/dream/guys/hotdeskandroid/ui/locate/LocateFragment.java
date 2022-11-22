@@ -2729,6 +2729,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         System.out.println("MeetingIsRequetStatus "+isRequest);
 
+        int capacity=0;
+
 
         //Show Amenities in Meeting Booking
         //Amenities Block
@@ -2736,6 +2738,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         for (int i = 0; i < userAllowedMeetingResponseList.size(); i++) {
 
             if (meetingRoomId == userAllowedMeetingResponseList.get(i).getId()) {
+
+                capacity=userAllowedMeetingResponseList.get(i).getNoOfPeople();
 
                 for (int j = 0; j < userAllowedMeetingResponseList.get(i).getAmenities().size(); j++) {
                     System.out.println("MeetingAmenities " + userAllowedMeetingResponseList.get(i).getAmenities().get(j).getId());
@@ -2757,7 +2761,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }
 
 
-        TextView editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle, showtvRoomStartTime;
+        TextView editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle, showtvRoomStartTime,tv_cap,tv_cap_size;
         EditText etParticipants, externalAttendees, etSubject, etComments;
         RecyclerView rvParticipant;
         LinearLayoutManager linearLayoutManager;
@@ -2795,6 +2799,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         externalAttendees = bottomSheetDialog.findViewById(R.id.externalAttendees);
         externalAttendeesChipGroup = bottomSheetDialog.findViewById(R.id.externalAttendeesChipGroup);
+
+        tv_cap=bottomSheetDialog.findViewById(R.id.tv_cap);
+        tv_cap_size=bottomSheetDialog.findViewById(R.id.tv_cap_size);
+
+        tv_cap_size.setText(""+capacity);
 
 
         //Set All Amenities Here
@@ -2886,24 +2895,29 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 etParticipants.setText("");
-
+                Chip chip = new Chip(getContext());
                 if (s.toString().contains(" ")) {
+                    //validate email address
+                   if( Utils.isValidEmail(s.toString().trim())){
 
-                    Chip chip = new Chip(getContext());
-                    chip.setText(s.toString());
-                    chip.setCheckable(false);
-                    chip.setClickable(false);
-                    chip.setCloseIconVisible(true);
-                    externalAttendeesChipGroup.setVisibility(View.VISIBLE);
-                    externalAttendeesChipGroup.addView(chip);
+                       chip.setText(s.toString());
+                       chip.setCheckable(false);
+                       chip.setClickable(false);
+                       chip.setCloseIconVisible(true);
+                       externalAttendeesChipGroup.setVisibility(View.VISIBLE);
+                       externalAttendeesChipGroup.addView(chip);
 
-                    //Add In List
-                    externalAttendeesEmail.add(s.toString());
+                       //Add In List
+                       externalAttendeesEmail.add(s.toString());
 
-                    externalAttendees.clearFocus();
-                    externalAttendees.setText("");
+                       externalAttendees.clearFocus();
+                       externalAttendees.setText("");
+                   }else {
+                        Utils.toastMessage(getContext(), "Pls Enter Valid Email");
+                    }
 
 
+                    //After Email is added in chip
                     chip.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -3109,8 +3123,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     subCmtLay.setVisibility(View.VISIBLE);
                     child_layout.setVisibility(View.GONE);
-                    roomDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()) +
-                            startRoomTime.getText().toString() + "to" + endTRoomime.getText().toString());
+                    roomDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString())+" • "+
+                            startRoomTime.getText().toString() + " to " + endTRoomime.getText().toString());
 
                     page = 2;
 
@@ -3428,6 +3442,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     locateResponseHandler(response, getResources().getString(R.string.booking_success));
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
 
 
                 }
@@ -6035,7 +6050,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         locateEditBottomSheet.dismiss();
                     }
 
-                    locateResponseHandler(response, getResources().getString(R.string.booking_request));
+                    locateResponseHandler(response, getResources().getString(R.string.booking_success));
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
 
@@ -7092,7 +7107,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         //Language
-        filterSearch.setHint(appKeysPage.getSearch());
+        filterSearch.setHint("   "+appKeysPage.getSearch());
         tvFilterAmenities.setText(appKeysPage.getFilters());
 
 
@@ -7827,6 +7842,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 if (s.toString().contains(" ")) {
 
                     Chip chip = new Chip(getContext());
+                    //validate email address
+                    if( Utils.isValidEmail(s.toString().trim())){
+
+
+
                     chip.setText(s.toString());
                     chip.setCheckable(false);
                     chip.setClickable(false);
@@ -7839,7 +7859,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     externalAttendees.clearFocus();
                     externalAttendees.setText("");
-
+                    }else {
+                        Utils.toastMessage(getContext(), "Pls Enter Valid Email");
+                    }
 
                     chip.setOnClickListener(new View.OnClickListener() {
                         @Override
