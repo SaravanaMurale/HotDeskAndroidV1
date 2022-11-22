@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/figmaBackground">
+    android:layout_height="match_parent">
 
     <!-- date toolbar -->
     <RelativeLayout
@@ -64,7 +63,9 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:textColor="@color/figmaBlack"
-            android:text="SUN"/>
+            android:text="Sun"
+            android:theme="@style/TextRegular"
+            />
 
         <TextView
             android:layout_width="0dp"
@@ -72,7 +73,8 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:textColor="@color/figmaBlack"
-            android:text="MON"/>
+            android:text="Mon"
+            android:theme="@style/TextRegular"/>
 
         <TextView
             android:layout_width="0dp"
@@ -80,7 +82,9 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:textColor="@color/figmaBlack"
-            android:text="TUE"/>
+            android:text="Tue"
+            android:theme="@style/TextRegular"
+            />
 
         <TextView
             android:layout_width="0dp"
@@ -88,7 +92,9 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:textColor="@color/figmaBlack"
-            android:text="WED"/>
+            android:text="Wed"
+            android:theme="@style/TextRegular"
+            />
 
         <TextView
             android:layout_width="0dp"
@@ -96,7 +102,9 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:textColor="@color/figmaBlack"
-            android:text="THU"/>
+            android:text="Thu"
+            android:theme="@style/TextRegular"
+            />
 
         <TextView
             android:layout_width="0dp"
@@ -104,7 +112,9 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:textColor="@color/figmaBlack"
-            android:text="FRI"/>
+            android:text="Fri"
+            android:theme="@style/TextRegular"
+            />
 
         <TextView
             android:layout_width="0dp"
@@ -112,7 +122,9 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:textColor="@color/figmaBlack"
-            android:text="SAT"/>
+            android:text="Sat"
+            android:theme="@style/TextRegular"
+            />
     </LinearLayout>
 
     <!-- days view -->

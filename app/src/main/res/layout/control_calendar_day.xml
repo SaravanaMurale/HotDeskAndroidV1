@@ -17,7 +17,7 @@
 		app:layout_constraintEnd_toEndOf="parent"
 		android:gravity="center"
 		android:background="@drawable/circle_date_calender"
-		android:backgroundTint="@color/figmaBackground"
+		android:backgroundTint="@color/white"
 		android:padding="@dimen/_3sdp"
 		android:textSize="@dimen/_9sdp"
 		android:textColor="@color/figmaGrey"

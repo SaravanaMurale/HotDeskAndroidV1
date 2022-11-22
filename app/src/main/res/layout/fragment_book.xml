@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     xmlns:CalendarView="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.book.BookFragment">
 
@@ -31,8 +32,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:text="Calendar Booking"
-                    android:textSize="@dimen/_16sdp"
+                    android:text="Book a workspace"
+                    android:textSize="26sp"
                     android:theme="@style/TextBold"
                     app:tint="@color/figmaBlueText" />
 
@@ -51,7 +52,7 @@
             android:orientation="vertical"
 
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginHorizontal="20dp"
             >
 
             <LinearLayout
@@ -259,8 +260,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_9sdp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/rectangle_bg_with_corner"
                     android:drawableRight="@drawable/locate_location"
                     android:drawableTint="@color/figmaBlack"
@@ -277,12 +277,11 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/searchGlobal"
                     android:layout_alignParentStart="true"
-                    android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_8sdp"
                     android:background="@drawable/rectangle_bg_with_corner"
-                    android:paddingLeft="@dimen/_8sdp"
-                    android:paddingRight="@dimen/_8sdp"
+                    android:paddingLeft="@dimen/_4sdp"
+                    android:paddingRight="@dimen/_4sdp"
                     tools:ignore="MissingConstraints">
 
                     <TextView
@@ -290,8 +289,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
                         android:text="Participants"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textSize="12sp"
+                        android:theme="@style/TextRegular" />
 
                     <EditText
                         android:id="@+id/tvParticipantsCount"
@@ -299,6 +301,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginTop="4dp"
                         android:layout_marginRight="@dimen/_4sdp"
                         android:layout_toRightOf="@id/tvParticipants"
                         android:background="@drawable/edittext_bg"
@@ -307,7 +310,7 @@
                         android:minWidth="@dimen/_16sdp"
                         android:text="0"
                         android:textColor="@color/figmaBlack"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
@@ -329,46 +332,61 @@
                 <!--StartAndEndTime-->
 
                 <!--StartAndEndTime-->
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/rlTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/searchGlobal"
-                    android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_8sdp"
                     android:layout_toRightOf="@id/rlParticipants"
+                    android:gravity="center_vertical"
                     android:background="@drawable/rectangle_bg_with_corner"
+                    android:orientation="horizontal"
                     android:paddingLeft="@dimen/_8sdp"
                     android:paddingRight="@dimen/_8sdp"
                     tools:ignore="MissingConstraints">
 
+                    <view
+                        class="android.widget.TextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
 
                     <TextView
                         android:id="@+id/tvStartLocate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
                         android:text="Start"
-                        android:textSize="@dimen/_10sdp" />
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:textSize="12sp"
+                        android:theme="@style/TextRegular" />
 
                     <TextView
                         android:id="@+id/locateStartTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/_2sdp"
                         android:layout_marginRight="@dimen/_4sdp"
                         android:layout_toRightOf="@id/tvStartLocate"
                         android:text="8:00"
                         android:textColor="@color/figmaBlack"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textSize="14sp"
+                        android:theme="@style/TextRegular" />
 
+                    <view
+                        class="android.widget.TextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
 
                     <view
                         class="android.widget.TextView"
                         android:layout_width="@dimen/_1sdp"
-                        android:layout_height="14dp"
+                        android:layout_height="12dp"
                         android:layout_centerVertical="true"
                         android:layout_marginVertical="@dimen/_5sdp"
                         android:layout_marginLeft="@dimen/_4sdp"
@@ -376,6 +394,12 @@
                         android:background="@color/grey"
 
                         />
+
+                    <view
+                        class="android.widget.TextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
 
                     <TextView
                         android:id="@+id/tvLocateEndTime"
@@ -385,7 +409,8 @@
                         android:layout_marginLeft="@dimen/_13sdp"
                         android:layout_toRightOf="@id/locateStartTime"
                         android:text="End"
-                        android:textSize="@dimen/_10sdp"
+                        android:textSize="12sp"
+                        android:theme="@style/TextRegular"
 
                         />
 
@@ -393,31 +418,39 @@
                         android:id="@+id/locateEndTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
                         android:layout_marginLeft="@dimen/_5sdp"
                         android:layout_toRightOf="@+id/tvLocateEndTime"
                         android:text="17:30"
                         android:textColor="@color/figmaBlack"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textSize="14sp"
+                        android:theme="@style/TextRegular" />
 
-
-                </RelativeLayout>
+                    <view
+                        class="android.widget.TextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </LinearLayout>
                 <RelativeLayout
                     android:id="@+id/rlFilter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:layout_below="@+id/searchGlobal"
                     android:layout_alignParentEnd="true"
                     android:layout_toRightOf="@id/rlTime"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
                     android:background="@drawable/rectangle_bg_with_corner"
                     tools:ignore="MissingConstraints">
 
                     <ImageView
-                        android:layout_width="@dimen/_45sdp"
-                        android:layout_height="@dimen/_25sdp"
-                        android:src="@drawable/locate_filter" />
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/filter_icon"
+                        android:paddingVertical="@dimen/_6sdp"
+                        android:paddingHorizontal="@dimen/_4sdp"
+                        />
             </RelativeLayout>
 
 
@@ -431,8 +464,8 @@
             android:layout_height="@dimen/_285sdp"
             android:layout_marginTop="@dimen/_20sdp"
             app:layout_constraintTop_toBottomOf="@+id/head"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             />
 
     </LinearLayout>

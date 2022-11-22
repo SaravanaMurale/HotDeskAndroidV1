@@ -240,15 +240,18 @@
                     android:textColor="@color/figmaBlack"
                     android:theme="@style/TextBold" />
 
-                <TextView
-                    android:id="@+id/comment"
+                <EditText
+                    android:id="@+id/comments"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/rectangle_greybg_with_corner"
+                    android:backgroundTint="@color/bg_grey"
                     android:layout_alignParentEnd="true"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
-                    android:enabled="false"
-                    android:text="none"
+                    android:layout_toEndOf="@+id/tv_comment"
+                    android:gravity="end"
+                    android:hint="none"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 
@@ -372,6 +375,7 @@
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:layout_marginStart="@dimen/_15sdp"
                     android:gravity="center_vertical"
+                    android:visibility="gone"
                     android:orientation="horizontal">
 
                     <TextView
