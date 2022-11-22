@@ -1310,7 +1310,7 @@ public class BookFragment extends Fragment implements
         LinearLayoutManager linearLayoutManager;
 
         bookEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        bookEditBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_edit_booking_bottomsheet,
+        bookEditBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_calendar_edit_booking_bottomsheet,
                 new RelativeLayout(getContext())));
 
         rvCarEditList = bookEditBottomSheet.findViewById(R.id.rvEditList);
@@ -1404,7 +1404,7 @@ public class BookFragment extends Fragment implements
         LinearLayoutManager linearLayoutManager;
 
         bookEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        bookEditBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_edit_booking_bottomsheet,
+        bookEditBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_calendar_edit_booking_bottomsheet,
                 new RelativeLayout(getContext())));
 
         rvMeeingEditList = bookEditBottomSheet.findViewById(R.id.rvEditList);
@@ -1713,7 +1713,7 @@ public class BookFragment extends Fragment implements
 
 //        bookingForEditResponseDesk.addAll(bookingForEditResponse.getTeamDeskAvailabilities());
         bookEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        bookEditBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_edit_booking_bottomsheet,
+        bookEditBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_calendar_edit_booking_bottomsheet,
                 new RelativeLayout(getContext())));
 
         rvEditList = bookEditBottomSheet.findViewById(R.id.rvEditList);
