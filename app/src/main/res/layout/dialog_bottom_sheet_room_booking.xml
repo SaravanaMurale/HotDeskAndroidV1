@@ -37,19 +37,50 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_2sdp"
+                android:textColor="@color/light_black"
                 android:text="Mon, 10th August, 2022"
-                android:theme="@style/TextSmall"
                 />
 
-            <TextView
-                android:id="@+id/tv_cap"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_2sdp"
-                android:text="Capacity 5"
-                android:theme="@style/TextSmall"
-                android:visibility="gone"
-                />
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_cap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:text="Capacity"
+                    android:visibility="visible"
+                    android:textColor="@color/light_black"
+                    />
+
+                <ImageView
+                    android:id="@+id/meetingDotLine"
+                    android:layout_width="@dimen/_5sdp"
+                    android:layout_height="@dimen/_5sdp"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_toRightOf="@+id/tv_cap"
+                    android:src="@drawable/dot" />
+
+                <TextView
+                    android:id="@+id/tv_cap_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:text="5"
+                    android:layout_toRightOf="@+id/meetingDotLine"
+                    android:visibility="visible"
+                    android:textColor="@color/light_black"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    />
+
+            </RelativeLayout>
+
 
             <RelativeLayout
                 android:id="@+id/amenitiesBlock"
@@ -66,12 +97,22 @@
 
             </RelativeLayout>
 
+
+            <TextView
+                android:id="@+id/meetingRoomDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description:"
+                android:textColor="@color/figma_dark_black"
+                />
+
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/list_item"
                 android:gravity="center_vertical"
-                android:layout_marginVertical="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -89,16 +130,10 @@
                     android:text="Available"
                     android:layout_marginStart="@dimen/_6sdp"
                     android:theme="@style/TextBold"
-
                     android:textColor="@color/figmaBlack"/>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/meetingRoomDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Description:"
-                />
+
 
         </LinearLayout>
 
@@ -108,6 +143,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginTop="@dimen/_10sdp"
             android:id="@+id/child_layout">
 
 
@@ -409,6 +445,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:id="@+id/subCmtLay"
+            android:layout_marginTop="@dimen/_10sdp"
             android:visibility="gone">
 
             <com.google.android.material.chip.ChipGroup
@@ -476,7 +513,7 @@
             <EditText
                 android:id="@+id/etCommentsMeeting"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_60sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
                 android:hint="@string/comment"
                 android:layout_marginVertical="@dimen/_5sdp"

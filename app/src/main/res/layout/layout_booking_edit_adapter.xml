@@ -23,7 +23,7 @@
             android:id="@+id/editBookingImage"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
-            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginLeft="@dimen/_15sdp"
             android:layout_toRightOf="@id/edit_outLine"
             android:src="@drawable/car_edit" />
 
@@ -36,6 +36,7 @@
             android:layout_toLeftOf="@+id/editCheckInIcon"
             android:layout_toRightOf="@id/editBookingImage"
             android:text="Space-001"
+            android:textColor="@color/figmaBlack"
             android:textStyle="bold"
 
             />
@@ -83,8 +84,7 @@
             android:text="8:00"
             android:textColor="@color/figmaBlack"
             android:textSize="@dimen/_10sdp"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/editCheckInIcon"
