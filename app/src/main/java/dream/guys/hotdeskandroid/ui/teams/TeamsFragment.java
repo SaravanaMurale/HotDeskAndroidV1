@@ -752,8 +752,6 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         teamsContactsUnknownAdapter = new TeamsContactsAdapter(getActivity(),teamMembersUnknownList, this,this);
         binding.recyclerViewHoliday.setAdapter(teamsContactsUnknownAdapter);
 
-
-
         Calendar startDate = Calendar.getInstance();
         day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         month = Calendar.getInstance().get(Calendar.MONTH);
@@ -771,6 +769,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             e.printStackTrace();
         }
 
+        Toast.makeText(getActivity(), ""+startDate.getTime(), Toast.LENGTH_SHORT).show();
         //final HorizontalCalendar horizontalCalendar
         horizontalCalendar
                 = new HorizontalCalendar.Builder(root, R.id.calendarView)

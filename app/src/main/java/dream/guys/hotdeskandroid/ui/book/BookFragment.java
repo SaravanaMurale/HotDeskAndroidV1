@@ -1306,7 +1306,7 @@ public class BookFragment extends Fragment implements
     private void CallCarBookingEditList(List<CarParkListToEditResponse> carParkingForEditResponse, String code) {
 
         RecyclerView rvCarEditList;
-        TextView editClose, editDate, bookingName,addNew;
+        TextView editClose, editDate, bookingName,addNew,tvActive;
         LinearLayoutManager linearLayoutManager;
 
         bookEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -1317,6 +1317,7 @@ public class BookFragment extends Fragment implements
         editClose = bookEditBottomSheet.findViewById(R.id.editClose);
         editDate = bookEditBottomSheet.findViewById(R.id.editDate);
         bookingName = bookEditBottomSheet.findViewById(R.id.bookingName);
+        tvActive = bookEditBottomSheet.findViewById(R.id.tvactive);
         addNew = bookEditBottomSheet.findViewById(R.id.editBookingContinue);
 
         addNew.setText(appKeysPage.getAddNew());
@@ -1325,7 +1326,13 @@ public class BookFragment extends Fragment implements
         //New...
         editDate.setText(Utils.dateWithDayString(calSelectedDate));
 
-        bookingName.setText("Car Booking");
+        bookingName.setText("Book parking");
+        if(carParkingForEditResponse !=null && carParkingForEditResponse.size()>0){
+            tvActive.setText("Active bookings");
+        } else {
+            tvActive.setText("No active bookings");
+        }
+
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvCarEditList.setLayoutManager(linearLayoutManager);
@@ -1393,7 +1400,7 @@ public class BookFragment extends Fragment implements
 
     private void callMeetingRoomEditListAdapterBottomSheet(List<MeetingListToEditResponse> meetingListToEditResponseList, String newEditStatus) {
         RecyclerView rvMeeingEditList;
-        TextView editClose,editDate,addNew;
+        TextView editClose,editDate,addNew,bookingName, tvActive;
         LinearLayoutManager linearLayoutManager;
 
         bookEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -1403,6 +1410,8 @@ public class BookFragment extends Fragment implements
         rvMeeingEditList = bookEditBottomSheet.findViewById(R.id.rvEditList);
         editClose=bookEditBottomSheet.findViewById(R.id.editClose);
         editDate=bookEditBottomSheet.findViewById(R.id.editDate);
+        bookingName=bookEditBottomSheet.findViewById(R.id.bookingName);
+        tvActive=bookEditBottomSheet.findViewById(R.id.tvactive);
         addNew=bookEditBottomSheet.findViewById(R.id.editBookingContinue);
         editDate.setText(Utils.dateWithDayString(calSelectedDate));
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -1415,7 +1424,15 @@ public class BookFragment extends Fragment implements
         System.out.println("recycler bala"+meetingListToEditResponseList.size());
 
         addNew.setText(appKeysPage.getAddNew());
-        editClose.setText(appKeysPage.getBack());
+//        editClose.setText(appKeysPage.getBack());
+        if(meetingListToEditResponseList !=null && meetingListToEditResponseList.size()>0){
+            tvActive.setText("Active bookings");
+        } else {
+            tvActive.setText("No active bookings");
+        }
+
+        bookingName.setText("Book a room");
+
 
         editClose.setOnClickListener(new View.OnClickListener() {
             @Override
