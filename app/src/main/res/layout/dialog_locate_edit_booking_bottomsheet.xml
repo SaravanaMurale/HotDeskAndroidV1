@@ -19,8 +19,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
-            android:text="Meeting Book"
-            android:textSize="@dimen/_14sdp"
+            android:text="Book a room"
+            android:textSize="@dimen/_16sdp"
             android:theme="@style/TextBold" />
 
         <TextView
@@ -31,22 +31,33 @@
             android:theme="@style/TextRegular" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvActiveBookings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/listHead"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:textColor="@color/figmaBlack"
+        android:text="Active bookings"
+        />
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
-        android:layout_below="@id/listHead"
-        >
+        android:layout_marginTop="@dimen/_6sdp"
+        android:layout_below="@id/tvActiveBookings">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvEditList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:minHeight="@dimen/_200sdp" />
             <view
                 class="android.widget.TextView"
@@ -70,7 +81,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="@string/back"
+                    android:text="@string/cancel"
                     android:textSize="@dimen/_14sdp"
                     android:theme="@style/TextBold"
                     android:visibility="visible" />

@@ -14,6 +14,7 @@
 
     <color name="blue">#0f62ab</color>
     <color name="grey">#b1b1b1</color>
+    <color name="half_white">#FAFAFA</color>
 
     //Figma
     <color name="figmaGrey">#777777</color>

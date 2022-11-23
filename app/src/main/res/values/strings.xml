@@ -155,10 +155,11 @@
     <string name="avaliable">Avaliable</string>
 
     <!--Response Handler-->
-    <string name="booking_success">Booking Successfull</string>
+    <string name="booking_success">Booking Created</string>
+    <string name="booking_updated">Booking Updated</string>
     <string name="booking_request">Booking Request Success</string>
     <string name="car_park_request_success">CarPark Request Success</string>
-    <string name="desk_book_deleted">Desk Booking Deleted</string>
+    <string name="desk_book_deleted">Booking Deleted</string>
     <string name="deleted">Deleted</string>
 
 </resources>
