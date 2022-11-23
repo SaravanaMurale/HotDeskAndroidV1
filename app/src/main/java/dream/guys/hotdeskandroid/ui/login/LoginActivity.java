@@ -4,26 +4,21 @@ import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getLoginScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getResetPasswordPageScreencreenData;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
-import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -53,28 +48,22 @@ import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.model.response.TypeOfLoginResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
-import dream.guys.hotdeskandroid.ui.home.EditProfileActivity;
-import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
 import dream.guys.hotdeskandroid.ui.login.sso.B2CConfiguration;
 import dream.guys.hotdeskandroid.ui.login.sso.B2CUser;
-import dream.guys.hotdeskandroid.ui.login.sso.WebViewActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.FirebaseNotificationService;
-import dream.guys.hotdeskandroid.utils.MyApp;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
-import okhttp3.Headers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Header;
 
 
 public class LoginActivity extends AppCompatActivity {
-    String TAG="Zure SSo";
+    String TAG = "Zure SSo";
 
     Dialog dialog;
 
@@ -111,18 +100,18 @@ public class LoginActivity extends AppCompatActivity {
     IAccount IaccUser;
     /* Azure AD Variables */
     private IMultipleAccountPublicClientApplication b2cApp;
-    String tentantName="";
+    String tentantName = "";
 
     //New...
     ArrayList<DAOActiveLocation> activeLocationArrayList = new ArrayList<>();
-    int floorParentID = 0, cityPlaceID = 0, cityPlaceParentID = 0,cityID = 0,cityParentID = 0,locationID = 0,locationParentID = 0,
+    int floorParentID = 0, cityPlaceID = 0, cityPlaceParentID = 0, cityID = 0, cityParentID = 0, locationID = 0, locationParentID = 0,
             floorPositon;
 
     String CountryName = null;
     String CityName = null;
     String buildingName = null;
-    String floorName  = null;
-    String fullPathLocation  = null;
+    String floorName = null;
+    String fullPathLocation = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(MsalException exception) {
-                        System.out.println("sso bala check" +exception.getMessage());
+                        System.out.println("sso bala check" + exception.getMessage());
                         displayError(exception);
                     }
                 });
@@ -196,8 +185,8 @@ public class LoginActivity extends AppCompatActivity {
                 String password = etPassword.getText().toString().trim();
 
                 //Validate Input User Details
-                if(validateLoginDetails(companyName, email, password)){
-                    doLogin(companyName,email,password);
+                if (validateLoginDetails(companyName, email, password)) {
+                    doLogin(companyName, email, password);
                 }
 
             }
@@ -205,8 +194,8 @@ public class LoginActivity extends AppCompatActivity {
         signInSso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!etTenantName.getText().toString().equalsIgnoreCase("") && !etTenantName.getText().toString().isEmpty()){
-                    tentantName=etTenantName.getText().toString();
+                if (!etTenantName.getText().toString().equalsIgnoreCase("") && !etTenantName.getText().toString().isEmpty()) {
+                    tentantName = etTenantName.getText().toString();
 
 //                    SessionHandler.getInstance().remove(MyApp.getContext(), AppConstants.USERTOKEN);
                     /*List<Pair<String, String>> extraQueryParameters = new ArrayList<>();
@@ -230,7 +219,7 @@ public class LoginActivity extends AppCompatActivity {
                     b2cApp.acquireToken(parameters);*/
 
                     checkSsoEnabled();
-                }else {
+                } else {
                     Toast.makeText(LoginActivity.this, "Enter Tenant Name", Toast.LENGTH_SHORT).show();
                 }
 
@@ -240,7 +229,7 @@ public class LoginActivity extends AppCompatActivity {
         tvForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+                Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
                 startActivity(intent);
             }
         });
@@ -248,24 +237,24 @@ public class LoginActivity extends AppCompatActivity {
 
     private void checkSsoEnabled() {
         if (Utils.isNetworkAvailable(this)) {
-            dialog=ProgressDialog.showProgressBar(LoginActivity.this);
+            dialog = ProgressDialog.showProgressBar(LoginActivity.this);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            SessionHandler.getInstance().remove(LoginActivity.this,AppConstants.USERTOKEN);
+            SessionHandler.getInstance().remove(LoginActivity.this, AppConstants.USERTOKEN);
             JsonObject jsonObject = new JsonObject();
             if (!tentantName.equalsIgnoreCase(""))
-                jsonObject.addProperty("tenantName",tentantName);
+                jsonObject.addProperty("tenantName", tentantName);
             Call<TypeOfLoginResponse> call = apiService.typeOfLogin(jsonObject);
             call.enqueue(new Callback<TypeOfLoginResponse>() {
                 @Override
                 public void onResponse(Call<TypeOfLoginResponse> call, Response<TypeOfLoginResponse> response) {
                     TypeOfLoginResponse typeOfLoginResponse = response.body();
-                    if (response.code()==200 && typeOfLoginResponse!=null){
-                        if (typeOfLoginResponse.getTypeOfLogin()==1) {
-                            SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.TYPE_OF_LOGIN, typeOfLoginResponse.getTypeOfLogin());
-                            ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+                    if (response.code() == 200 && typeOfLoginResponse != null) {
+                        if (typeOfLoginResponse.getTypeOfLogin() == 1) {
+                            SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.TYPE_OF_LOGIN, typeOfLoginResponse.getTypeOfLogin());
+                            ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
                             Utils.showCustomAlertDialog(LoginActivity.this, "SSO Login has not been set up, please contact Admin to Setup");
-                        } else{
-                            ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+                        } else {
+                            ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
 
                             if (b2cApp == null) {
                                 return;
@@ -279,9 +268,9 @@ public class LoginActivity extends AppCompatActivity {
                              */
                             List<Pair<String, String>> extraQueryParameters = new ArrayList<>();
 //                            extraQueryParameters.add( new Pair<String, String>("domain_hint", "google.com"));
-                            extraQueryParameters.add( new Pair<String, String>("domain_hint",
+                            extraQueryParameters.add(new Pair<String, String>("domain_hint",
                                     typeOfLoginResponse.getMobileIdentityProvider()));
-                            System.out.println("domain_hint"+typeOfLoginResponse.getMobileIdentityProvider());
+                            System.out.println("domain_hint" + typeOfLoginResponse.getMobileIdentityProvider());
 
                             /*extraQueryParameters.add( new Pair<String, String>("domain_hint",
                                     "okta.com"));*/
@@ -299,14 +288,15 @@ public class LoginActivity extends AppCompatActivity {
 
                             b2cApp.acquireToken(parameters);
                         }
-                    }else if (response.code() == 403){
-                        ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+                    } else if (response.code() == 403) {
+                        ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
 
-                    }else {
-                        ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
-                        Utils.showCustomAlertDialog(LoginActivity.this,"SSO Login is not setup for this email contact admin.");
+                    } else {
+                        ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
+                        Utils.showCustomAlertDialog(LoginActivity.this, "SSO Login is not setup for this email contact admin.");
                     }
                 }
+
                 @Override
                 public void onFailure(Call<TypeOfLoginResponse> call, Throwable t) {
 
@@ -330,7 +320,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(IAuthenticationResult authenticationResult) {
                 /* Successfully got a token, use it to call a protected resource - MSGraph */
                 Log.d(TAG, "Successfully authenticated");
-                System.out.println("bala sso"+authenticationResult.getAccount());
+                System.out.println("bala sso" + authenticationResult.getAccount());
                 /* display result info */
                 IaccUser = authenticationResult.getAccount();
 
@@ -341,11 +331,12 @@ public class LoginActivity extends AppCompatActivity {
                 dialog.dismiss();
 
             }
+
             @Override
             public void onError(MsalException exception) {
                 dialog.dismiss();
                 Toast.makeText(LoginActivity.this, "SSO AUth Failed", Toast.LENGTH_SHORT).show();
-                System.out.println("bala sso error"+exception.getMessage());
+                System.out.println("bala sso error" + exception.getMessage());
                 final String B2C_PASSWORD_CHANGE = "AADB2C90118";
                 if (exception.getMessage().contains(B2C_PASSWORD_CHANGE)) {
                     Log.d(TAG, "onError: The user clicks the 'Forgot Password' link in a sign-up or sign-in user flow.\\n\" +\n" +
@@ -372,6 +363,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
     }
+
     private AuthenticationCallback getSignOutAuthInteractiveCallback() {
         return new AuthenticationCallback() {
 
@@ -379,7 +371,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(IAuthenticationResult authenticationResult) {
                 /* Successfully got a token, use it to call a protected resource - MSGraph */
                 Log.d(TAG, "Successfully authenticated");
-                System.out.println("bala sso"+authenticationResult.getAccount());
+                System.out.println("bala sso" + authenticationResult.getAccount());
                 /* display result info */
                 IaccUser = authenticationResult.getAccount();
 
@@ -391,11 +383,12 @@ public class LoginActivity extends AppCompatActivity {
                 dialog.dismiss();
 
             }
+
             @Override
             public void onError(MsalException exception) {
                 dialog.dismiss();
                 Toast.makeText(LoginActivity.this, "SSO AUth Failed", Toast.LENGTH_SHORT).show();
-                System.out.println("bala sso error"+exception.getMessage());
+                System.out.println("bala sso error" + exception.getMessage());
                 final String B2C_PASSWORD_CHANGE = "AADB2C90118";
                 if (exception.getMessage().contains(B2C_PASSWORD_CHANGE)) {
                     Log.d(TAG, "onError: The user clicks the 'Forgot Password' link in a sign-up or sign-in user flow.\\n\" +\n" +
@@ -428,7 +421,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        if (users.size()>0){
+        if (users.size() > 0) {
             final B2CUser selectedUser = users.get(0);
             selectedUser.signOutAsync(b2cApp,
                     new IMultipleAccountPublicClientApplication.RemoveAccountCallback() {
@@ -449,6 +442,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
+
     private void loadAccounts() {
         if (b2cApp == null) {
             return;
@@ -459,7 +453,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onTaskCompleted(final List<IAccount> result) {
 //                Toast.makeText(LoginActivity.this, "b2c acc check"+result.size(), Toast.LENGTH_SHORT).show();
                 users = B2CUser.getB2CUsersFromAccountList(result);
-                System.out.println("sso check userList"+users.size());
+                System.out.println("sso check userList" + users.size());
 //                updateUI(users);
             }
 
@@ -469,6 +463,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
     /**
      * Display the graph response
      */
@@ -477,27 +472,27 @@ public class LoginActivity extends AppCompatActivity {
                 "Access Token :" + result.getAccessToken() + "\n" +
                         "Scope : " + result.getScope() + "\n" +
                         "Expiry : " + result.getExpiresOn() + "\n" +
-                        "Tenant ID : " + result.getTenantId() + "\n"+
+                        "Tenant ID : " + result.getTenantId() + "\n" +
                         "email : " + result.getAccount().getUsername() + "\n";
-        if (result.getAccessToken()!=null)
+        if (result.getAccessToken() != null)
             SessionHandler.getInstance().save(LoginActivity.this, AppConstants.USERTOKEN, result.getAccessToken());
         callTokenExachange(result.getAccount().getUsername());
-        Log.d(TAG, "displayResult: "+output);
+        Log.d(TAG, "displayResult: " + output);
     }
 
     private void callTokenExachange(String email) {
         if (Utils.isNetworkAvailable(this)) {
 
-            dialog=ProgressDialog.showProgressBar(LoginActivity.this);
+            dialog = ProgressDialog.showProgressBar(LoginActivity.this);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             JsonObject jsonObject = new JsonObject();
             if (!tentantName.equalsIgnoreCase(""))
-            jsonObject.addProperty("tenantName",tentantName);
+                jsonObject.addProperty("tenantName", tentantName);
             Call<GetTokenResponse> call = apiService.tokenExchange(jsonObject);
             call.enqueue(new Callback<GetTokenResponse>() {
                 @Override
                 public void onResponse(Call<GetTokenResponse> call, Response<GetTokenResponse> response) {
-                    if (response.code()==200){
+                    if (response.code() == 200) {
                         GetTokenResponse getTokenResponse = response.body();
                         if (getTokenResponse != null) {
                             //Save token
@@ -508,30 +503,31 @@ public class LoginActivity extends AppCompatActivity {
                             //System.out.println("ReceivedExpiration" + getTokenResponse.getExpiration());
                             //String token=getTokenResponse.getExpiration();
 
-                            ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+                            ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
 
                             //GetUser Details Using Token
 
-                            SessionHandler.getInstance().saveBoolean(LoginActivity.this, AppConstants.LOGIN_CHECK,true);
+                            SessionHandler.getInstance().saveBoolean(LoginActivity.this, AppConstants.LOGIN_CHECK, true);
                             getUserDetailsUsingToken(getTokenResponse.getToken());
                         } else {
-                            ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+                            ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
                             Utils.toastMessage(LoginActivity.this, "No Token Found");
                         }
-                    }else if (response.code() == 403){
-                        ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+                    } else if (response.code() == 403) {
+                        ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
 
                         Intent intent = new Intent(getApplicationContext(), GDPRActivity.class);
-                        intent.putExtra("tenantName",tentantName);
-                        intent.putExtra("userName",email);
+                        intent.putExtra("tenantName", tentantName);
+                        intent.putExtra("userName", email);
                         startActivity(intent);
-                    }else {
+                    } else {
                         signOutAccounts();
 
-                        ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
-                        Utils.showCustomAlertDialog(LoginActivity.this,"SSO Login is not setup for this email contact admin.");
+                        ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
+                        Utils.showCustomAlertDialog(LoginActivity.this, "SSO Login is not setup for this email contact admin.");
                     }
                 }
+
                 @Override
                 public void onFailure(Call<GetTokenResponse> call, Throwable t) {
 
@@ -548,7 +544,7 @@ public class LoginActivity extends AppCompatActivity {
      * Display the error message
      */
     private void displayError(@NonNull final Exception exception) {
-        Log.d(TAG, "displayError: "+exception.toString());
+        Log.d(TAG, "displayError: " + exception.toString());
     }
 
     /**
@@ -569,8 +565,8 @@ public class LoginActivity extends AppCompatActivity {
     private void doLogin(String companyName, String email, String password) {
 
         if (Utils.isNetworkAvailable(this)) {
-            dialog=ProgressDialog.showProgressBar(LoginActivity.this);
-            SessionHandler.getInstance().remove(LoginActivity.this,AppConstants.USERTOKEN);
+            dialog = ProgressDialog.showProgressBar(LoginActivity.this);
+            SessionHandler.getInstance().remove(LoginActivity.this, AppConstants.USERTOKEN);
             GetTokenRequest getTokenRequest = new GetTokenRequest(companyName, email, password);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<GetTokenResponse> call = apiService.getLoginToken(getTokenRequest);
@@ -578,36 +574,36 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<GetTokenResponse> call, Response<GetTokenResponse> response) {
 
-                    if(response.code()==200){
+                    if (response.code() == 200) {
                         GetTokenResponse getTokenResponse = response.body();
                         if (getTokenResponse != null) {
                             //Save token
                             SessionHandler.getInstance().save(LoginActivity.this, AppConstants.USERTOKEN, getTokenResponse.getToken());
 
-                            ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+                            ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
 
                             //GetUser Details Using Token
 
-                            SessionHandler.getInstance().saveBoolean(LoginActivity.this, AppConstants.LOGIN_CHECK,true);
+                            SessionHandler.getInstance().saveBoolean(LoginActivity.this, AppConstants.LOGIN_CHECK, true);
                             getUserDetailsUsingToken(getTokenResponse.getToken());
                         } else {
-                            ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+                            ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
                             Utils.toastMessage(LoginActivity.this, "You have entered wrong username or password");
                         }
-                    } else if(response.code()==401) {
-                        ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+                    } else if (response.code() == 401) {
+                        ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
                         Utils.toastMessage(LoginActivity.this, "You have entered wrong username or password");
-                    } else if(response.code()==403) {
-                        Intent intent = new Intent(getApplicationContext(),GDPRActivity.class);
-                        intent.putExtra("tenantName",companyName);
-                        intent.putExtra("userName",email);
+                    } else if (response.code() == 403) {
+                        Intent intent = new Intent(getApplicationContext(), GDPRActivity.class);
+                        intent.putExtra("tenantName", companyName);
+                        intent.putExtra("userName", email);
                         startActivity(intent);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<GetTokenResponse> call, Throwable t) {
-                    ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+                    ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
 
                 }
             });
@@ -624,14 +620,14 @@ public class LoginActivity extends AppCompatActivity {
     private void getUserDetailsUsingToken(String token) {
 
         if (Utils.isNetworkAvailable(this)) {
-            dialog=ProgressDialog.showProgressBar(LoginActivity.this);
+            dialog = ProgressDialog.showProgressBar(LoginActivity.this);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<UserDetailsResponse> call = apiService.getLoginUserDetails();
             call.enqueue(new Callback<UserDetailsResponse>() {
                 @Override
                 public void onResponse(Call<UserDetailsResponse> call, Response<UserDetailsResponse> response) {
 
-                    if(response.code()==200){
+                    if (response.code() == 200) {
                         UserDetailsResponse userDetailsResponse = response.body();
 
                         if (userDetailsResponse != null) {
@@ -647,67 +643,66 @@ public class LoginActivity extends AppCompatActivity {
                             userDetailsResponse.getFullName();
 
 
-
-                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.USERNAME,Utils.checkStringParms(userDetailsResponse.getFullName()));
-                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.COMPANY_NAME,Utils.checkStringParms(companyName));
-                            if (userDetailsResponse.getCurrentTeam()!=null){
-                                SessionHandler.getInstance().save(LoginActivity.this,AppConstants.CURRENT_TEAM,Utils.checkStringParms(userDetailsResponse.getCurrentTeam().getCurrentTeamName()));
-                                SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.TEAM_ID,Utils.checkStringParms(userDetailsResponse.getCurrentTeam().getCurrentTeamId()));
+                            SessionHandler.getInstance().save(LoginActivity.this, AppConstants.USERNAME, Utils.checkStringParms(userDetailsResponse.getFullName()));
+                            SessionHandler.getInstance().save(LoginActivity.this, AppConstants.COMPANY_NAME, Utils.checkStringParms(companyName));
+                            if (userDetailsResponse.getCurrentTeam() != null) {
+                                SessionHandler.getInstance().save(LoginActivity.this, AppConstants.CURRENT_TEAM, Utils.checkStringParms(userDetailsResponse.getCurrentTeam().getCurrentTeamName()));
+                                SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.TEAM_ID, Utils.checkStringParms(userDetailsResponse.getCurrentTeam().getCurrentTeamId()));
                             }
-                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.PHONE_NUMBER,Utils.checkStringParms(userDetailsResponse.getPhoneNumber()));
-                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.EMAIL,Utils.checkStringParms(email));
-                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.PASSWORD,Utils.checkStringParms(email));
-                            SessionHandler.getInstance().saveBoolean(LoginActivity.this,AppConstants.USER_DETAILS_SAVED_STATUS,true);
-                            SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.TEAMMEMBERSHIP_ID,Utils.checkStringParms(userDetailsResponse.getTeamMembershipId()));
+                            SessionHandler.getInstance().save(LoginActivity.this, AppConstants.PHONE_NUMBER, Utils.checkStringParms(userDetailsResponse.getPhoneNumber()));
+                            SessionHandler.getInstance().save(LoginActivity.this, AppConstants.EMAIL, Utils.checkStringParms(email));
+                            SessionHandler.getInstance().save(LoginActivity.this, AppConstants.PASSWORD, Utils.checkStringParms(email));
+                            SessionHandler.getInstance().saveBoolean(LoginActivity.this, AppConstants.USER_DETAILS_SAVED_STATUS, true);
+                            SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.TEAMMEMBERSHIP_ID, Utils.checkStringParms(userDetailsResponse.getTeamMembershipId()));
 
-                            SessionHandler.getInstance().saveBoolean(LoginActivity.this,AppConstants.PIN_SETUP_DONE,userDetailsResponse.isHasPinSetup());
+                            SessionHandler.getInstance().saveBoolean(LoginActivity.this, AppConstants.PIN_SETUP_DONE, userDetailsResponse.isHasPinSetup());
                             //Log.d(TAG, "onResponse: "+userDetailsResponse.getDefaultLocation().getParentLocationId());
-                            if (userDetailsResponse.getDefaultCarParkLocation()!=null){
-                                SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.DEFAULT_CAR_PARK_LOCATION_ID,
+                            if (userDetailsResponse.getDefaultCarParkLocation() != null) {
+                                SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.DEFAULT_CAR_PARK_LOCATION_ID,
                                         Utils.checkStringParms(userDetailsResponse.getDefaultCarParkLocation().getId()));
                             }
 
-                            if(userDetailsResponse.getCurrentTeam()!=null) {
+                            if (userDetailsResponse.getCurrentTeam() != null) {
                                 SessionHandler.getInstance().save(LoginActivity.this, AppConstants.CURRENT_TEAM, userDetailsResponse.getCurrentTeam().getCurrentTeamName());
                                 SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.TEAM_ID, userDetailsResponse.getCurrentTeam().getCurrentTeamId());
                             }
 
 
-                            if (userDetailsResponse.getDefaultLocation()!=null){
-                                SessionHandler.getInstance().save(LoginActivity.this,AppConstants.DEFAULT_TIME_ZONE_ID,Utils.checkStringParms(userDetailsResponse.getDefaultLocation().getTimeZoneId()));
-                                SessionHandler.getInstance().save(LoginActivity.this,AppConstants.DEFAULT_LOCATION_NAME,Utils.checkStringParms(userDetailsResponse.getDefaultLocation().getName()));
-                                SessionHandler.getInstance().save(LoginActivity.this,AppConstants.DEFAULT_LOCATION_ID,String.valueOf(Utils.checkStringParms(userDetailsResponse.getDefaultLocation().getParentLocationId())));
-                                SessionHandler.getInstance().save(LoginActivity.this,AppConstants.DEFAULT_LOCATION_UNIQUE_ID,String.valueOf(Utils.checkStringParms(userDetailsResponse.getDefaultLocation().getId())));
+                            if (userDetailsResponse.getDefaultLocation() != null) {
+                                SessionHandler.getInstance().save(LoginActivity.this, AppConstants.DEFAULT_TIME_ZONE_ID, Utils.checkStringParms(userDetailsResponse.getDefaultLocation().getTimeZoneId()));
+                                SessionHandler.getInstance().save(LoginActivity.this, AppConstants.DEFAULT_LOCATION_NAME, Utils.checkStringParms(userDetailsResponse.getDefaultLocation().getName()));
+                                SessionHandler.getInstance().save(LoginActivity.this, AppConstants.DEFAULT_LOCATION_ID, String.valueOf(Utils.checkStringParms(userDetailsResponse.getDefaultLocation().getParentLocationId())));
+                                SessionHandler.getInstance().save(LoginActivity.this, AppConstants.DEFAULT_LOCATION_UNIQUE_ID, String.valueOf(Utils.checkStringParms(userDetailsResponse.getDefaultLocation().getId())));
                             }
 
                             //Save UserId
-                            SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.USER_ID,Utils.checkStringParms(userDetailsResponse.getId()));
-                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.ROLE,Utils.checkStringParms(userDetailsResponse.getHighestRole()));
+                            SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.USER_ID, Utils.checkStringParms(userDetailsResponse.getId()));
+                            SessionHandler.getInstance().save(LoginActivity.this, AppConstants.ROLE, Utils.checkStringParms(userDetailsResponse.getHighestRole()));
 
-                            ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+                            ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
 
                             //New...
                             Gson gson = new Gson();
                             String json = gson.toJson(userDetailsResponse);
-                            SessionHandler.getInstance().save(LoginActivity.this,AppConstants.LOGIN_RESPONSE,json);
+                            SessionHandler.getInstance().save(LoginActivity.this, AppConstants.LOGIN_RESPONSE, json);
 
                             //Check welcome screen viewed status
                             //boolean welcomeViewStatus=SessionHandler.getInstance().getBoolean(LoginActivity.this,AppConstants.WELCOME_VIEWED_STATUS);
 
                             //New...
-                            if (userDetailsResponse.getDefaultLocation()!=null){
+                            if (userDetailsResponse.getDefaultLocation() != null) {
                                 setLocate(userDetailsResponse.getDefaultLocation());
-                            }else{
+                            } else {
                                 launchWelcomeActivity();
                             }
 
                         } else {
-                            ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+                            ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
                             Utils.toastMessage(LoginActivity.this, "User Details Not Found");
                         }
 
-                    }else if(response.code()==401){
-                        ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+                    } else if (response.code() == 401) {
+                        ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
                         Utils.toastMessage(LoginActivity.this, "Please Try Again");
                     }
 
@@ -715,7 +710,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<UserDetailsResponse> call, Throwable t) {
-                    ProgressDialog.dismisProgressBar(LoginActivity.this,dialog);
+                    ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
                 }
             });
         } else {
@@ -727,8 +722,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void sendFCMToken() {
-        String tokenInSharedPreference=SessionHandler.getInstance().get(getApplicationContext(),AppConstants.SAVETOKEN);
-        if(tokenInSharedPreference!=null) {
+        String tokenInSharedPreference = SessionHandler.getInstance().get(getApplicationContext(), AppConstants.SAVETOKEN);
+        if (tokenInSharedPreference != null) {
             FirebaseNotificationService.saveTokenInserver(tokenInSharedPreference);
         }
     }
@@ -741,7 +736,7 @@ public class LoginActivity extends AppCompatActivity {
         if (Utils.isValiedCompanyName(companyName)) {
             if (Utils.isValidEmail(email)) {
                 if (Utils.isValiedText(password)) {
-                    userDetailStatus=true;
+                    userDetailStatus = true;
                 } else {
                     Utils.toastMessage(LoginActivity.this, "Pls Enter Valid Password");
                 }
@@ -782,13 +777,13 @@ public class LoginActivity extends AppCompatActivity {
         LanguagePOJO.AppKeys appKeysPage = getAppKeysPageScreenData(this);
         LanguagePOJO.ResetPassword resetPage = getResetPasswordPageScreencreenData(this);
 
-        if (logoinPage!=null) {
+        if (logoinPage != null) {
 
             etTenantName.setHint(appKeysPage.getTenantName());
             etCompanyName.setHint(resetPage.getCompany());
             etEmail.setHint(appKeysPage.getEmail());
             etPassword.setHint(appKeysPage.getPassword());
-            tvForgotPassword.setText(appKeysPage.getForgotPassword());
+            tvForgotPassword.setText(appKeysPage.getForgotPassword() + "?");
             tvBackToLogin.setText(appKeysPage.getGoBackToSignIn());
             signInSso.setText(appKeysPage.getSignInWithSso());
             //tvSignInWith.setText(appKeysPage.getOrSignInWith());
@@ -805,7 +800,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ArrayList<DAOActiveLocation>> call, Response<ArrayList<DAOActiveLocation>> response) {
 
-                if (response.body()!=null && response.code() == 200 && response.body().size()>0) {
+                if (response.body() != null && response.code() == 200 && response.body().size() > 0) {
 
                     activeLocationArrayList = new ArrayList<>();
                     activeLocationArrayList = response.body();
@@ -819,7 +814,7 @@ public class LoginActivity extends AppCompatActivity {
                     ArrayList<DAOActiveLocation> selectFloors = new ArrayList<>();
                     selectFloors = (ArrayList<DAOActiveLocation>) activeLocationArrayList.stream().filter(val -> val.getParentLocationId() == floorParentID).collect(Collectors.toList());
 
-                    for (int i=0;i<selectFloors.size();i++) {
+                    for (int i = 0; i < selectFloors.size(); i++) {
 
                         if (id.equals(selectFloors.get(i).getId())) {
                             floorPositon = i;
@@ -827,12 +822,12 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
 
-                    SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.PARENT_ID_CHECK,floorParentID);
-                    SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.FLOOR_POSITION_CHECK,floorPositon);
+                    SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.PARENT_ID_CHECK, floorParentID);
+                    SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.FLOOR_POSITION_CHECK, floorPositon);
 
                     //New...
-                    SessionHandler.getInstance().saveInt(LoginActivity.this,AppConstants.PARENT_ID,floorParentID);
-                    SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.FLOOR_POSITION,floorPositon);
+                    SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.PARENT_ID, floorParentID);
+                    SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.FLOOR_POSITION, floorPositon);
 
                     ArrayList<DAOActiveLocation> buildingPlace = new ArrayList<>();
                     ArrayList<DAOActiveLocation> cityList = new ArrayList<>();
@@ -840,7 +835,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     buildingPlace.addAll(activeLocationArrayList.stream().filter(val -> val.getId() == floorParentID).collect(Collectors.toList()));
 
-                    if (buildingPlace.size()>0) {
+                    if (buildingPlace.size() > 0) {
                         cityPlaceID = buildingPlace.get(0).getId();
                         cityPlaceParentID = buildingPlace.get(0).getParentLocationId();
                         buildingName = buildingPlace.get(0).getName();
@@ -848,7 +843,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     cityList.addAll(activeLocationArrayList.stream().filter(val -> val.getId() == cityPlaceParentID).collect(Collectors.toList()));
 
-                    if (cityList.size()>0){
+                    if (cityList.size() > 0) {
                         cityID = cityList.get(0).getId();
                         cityParentID = cityList.get(0).getParentLocationId();
                         CityName = cityList.get(0).getName();
@@ -856,7 +851,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     location.addAll(activeLocationArrayList.stream().filter(val -> val.getId() == cityParentID).collect(Collectors.toList()));
 
-                    if (location.size()>0){
+                    if (location.size() > 0) {
                         locationID = location.get(0).getId();
                         locationParentID = location.get(0).getParentLocationId();
                         CountryName = location.get(0).getName();
@@ -864,20 +859,20 @@ public class LoginActivity extends AppCompatActivity {
 
 
                     //To load Default location
-                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.COUNTRY_NAME_CHECK,CountryName);
-                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.BUILDING_CHECK,buildingName);
-                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FLOOR_CHECK,floorName);
-                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FULLPATHLOCATION_CHECK,fullPathLocation);
+                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.COUNTRY_NAME_CHECK, CountryName);
+                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.BUILDING_CHECK, buildingName);
+                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FLOOR_CHECK, floorName);
+                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FULLPATHLOCATION_CHECK, fullPathLocation);
 
 
-                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.COUNTRY_NAME,CountryName);
-                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.BUILDING,buildingName);
-                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FLOOR,floorName);
-                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FULLPATHLOCATION,fullPathLocation);
+                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.COUNTRY_NAME, CountryName);
+                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.BUILDING, buildingName);
+                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FLOOR, floorName);
+                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FULLPATHLOCATION, fullPathLocation);
 
                     launchWelcomeActivity();
 
-                }else {
+                } else {
                     launchWelcomeActivity();
                 }
 
@@ -890,7 +885,6 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
-
 
 
 }

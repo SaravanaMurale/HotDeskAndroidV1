@@ -96,12 +96,11 @@
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_toRightOf="@+id/ivViewPrifle"
                         android:textColor="@color/figmaBlack"
-                        style="@style/TextBold"
+                        android:theme="@style/TextBold"
                         android:textSize="@dimen/_13sdp"/>
 
                     <TextView
                         android:id="@+id/settingViewProfile"
-                        style="@style/TextBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tvViewProfileName"
@@ -109,6 +108,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_toRightOf="@+id/ivViewPrifle"
                         android:text="View Profile"
+                        android:theme="@style/TextRegular"
                         android:textColor="@color/figmaBlack"
                         android:textSize="@dimen/_13sdp" />
 
@@ -488,6 +488,7 @@
                     android:orientation="horizontal"
                     android:background="@drawable/setting_item_bg"
                     android:paddingVertical="@dimen/_10sdp"
+                    android:visibility="gone"
                     android:paddingHorizontal="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_2sdp">
 
@@ -540,12 +541,22 @@
                         android:id="@+id/help_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
                         android:layout_marginHorizontal="@dimen/_2sdp"
-                        android:text="1.2"
-                        android:textColor="@color/figmaBlack"
+                        android:layout_centerInParent="true"
+                        android:layout_toStartOf="@id/about"
+                        android:textColor="@color/figmaBlueText"
                         android:textSize="@dimen/_12sdp"
                         android:theme="@style/TextRegular"
+                        />
+
+                    <ImageView
+                        android:id="@+id/about"
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
+                        android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+                        app:tint="@color/figmaBlueText"
                         />
                 </RelativeLayout>
                 <RelativeLayout

@@ -535,7 +535,9 @@
                     android:hint="4oth Bank Street"
                     android:focusable="false"
                     android:background="@drawable/edittext_bg"
-                    android:padding="@dimen/_5sdp"
+                    android:padding="@dimen/_7sdp"
+                    android:theme="@style/TextBold"
+                    android:textSize="@dimen/_11sdp"
                     android:layout_marginTop="@dimen/_4sdp"/>
 
             </LinearLayout>
@@ -716,6 +718,8 @@
                     android:padding="@dimen/_5sdp"
                     android:textColor="@color/figmaBlueText"
                     android:inputType="text"
+                    android:theme="@style/TextBold"
+                    android:textSize="@dimen/_10sdp"
                     android:imeOptions="actionDone"
                     />
 
@@ -881,7 +885,7 @@
                     android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentEnd="true"
                     android:layout_marginHorizontal="@dimen/_2sdp"
-                    android:src="@drawable/ic_baseline_local_phone_24"
+                    android:src="@drawable/ic_telephone"
                     app:tint="@color/figmaBlueText" />
             </RelativeLayout>
 

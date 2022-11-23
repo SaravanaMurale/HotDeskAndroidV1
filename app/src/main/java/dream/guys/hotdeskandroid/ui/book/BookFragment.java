@@ -3407,7 +3407,7 @@ public class BookFragment extends Fragment implements
                             if (newEditDelete.equalsIgnoreCase("new")
                                     || newEditDelete.equalsIgnoreCase("new_deep_link")
                                     )
-                                openCheckoutDialog("Booking Successful",dskRoomStatus);
+                                openCheckoutDialog("Booking Created",dskRoomStatus);
                             else if (newEditDelete.equalsIgnoreCase("edit"))
                                 openCheckoutDialog("Booking Updated",dskRoomStatus);
                             else if (newEditDelete.equalsIgnoreCase("request"))
@@ -3513,7 +3513,7 @@ public class BookFragment extends Fragment implements
         TextView dialogMsg = popDialog.findViewById(R.id.dialog_text);
         ImageView ivChecout = popDialog.findViewById(R.id.ivCheckoutSuccess);
 //        ivChecout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figma_red));
-        ivChecout.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.figma_red));
+       // ivChecout.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.figma_red));
         dialogMsg.setText(""+mesg);
         if (dskRoomStatus==1 && bookEditBottomSheet!=null)
             bookEditBottomSheet.dismiss();

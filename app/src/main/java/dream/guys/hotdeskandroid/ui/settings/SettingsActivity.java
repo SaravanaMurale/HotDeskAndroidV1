@@ -1,28 +1,16 @@
 package dream.guys.hotdeskandroid.ui.settings;
 
-import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
-import static dream.guys.hotdeskandroid.utils.Utils.dateWithDayString;
 import static dream.guys.hotdeskandroid.utils.Utils.getSettingsPageScreenData;
-import static dream.guys.hotdeskandroid.utils.Utils.getWellBeingScreenData;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.app.UiModeManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Base64;
@@ -36,24 +24,22 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.microsoft.identity.client.IAccount;
 import com.microsoft.identity.client.IMultipleAccountPublicClientApplication;
 import com.microsoft.identity.client.IPublicClientApplication;
 import com.microsoft.identity.client.PublicClientApplication;
 import com.microsoft.identity.client.exception.MsalException;
-import com.nimbusds.jose.util.IOUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Set;
 
 import dream.guys.hotdeskandroid.LanguageListActivity;
 import dream.guys.hotdeskandroid.R;
@@ -64,10 +50,8 @@ import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.ProfilePicResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import dream.guys.hotdeskandroid.ui.home.EditProfileActivity;
-import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
 import dream.guys.hotdeskandroid.ui.login.sso.B2CUser;
-import dream.guys.hotdeskandroid.ui.wellbeing.CovidCertificationActivity;
 import dream.guys.hotdeskandroid.ui.wellbeing.NotificationActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
@@ -86,14 +70,14 @@ public class SettingsActivity extends AppCompatActivity {
     ActivitySettingsBinding binding;
     Context context;
     UserDetailsResponse profileData;
-    Dialog dialog,proDialog;
+    Dialog dialog, proDialog;
 
     //For Language
     LanguagePOJO.Login logoinPage;
     LanguagePOJO.AppKeys appKeysPage;
-    LanguagePOJO.ResetPassword resetPage ;
+    LanguagePOJO.ResetPassword resetPage;
     LanguagePOJO.ActionOverLays actionOverLays;
-    LanguagePOJO.Booking bookindata ;
+    LanguagePOJO.Booking bookindata;
     LanguagePOJO.Global global;
     LanguagePOJO.Settings settings;
 
@@ -102,18 +86,19 @@ public class SettingsActivity extends AppCompatActivity {
     IAccount IaccUser;
     /* Azure AD Variables */
     private IMultipleAccountPublicClientApplication b2cApp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_settings);
         binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        
+
         context = SettingsActivity.this;
 
         //New...
         setLanguage();
-        if (SessionHandler.getInstance().getBoolean(SettingsActivity.this,AppConstants.DARK_MODE_CHECK))
+        if (SessionHandler.getInstance().getBoolean(SettingsActivity.this, AppConstants.DARK_MODE_CHECK))
             binding.switchDarkMode.setChecked(true);
         else
             binding.switchDarkMode.setChecked(false);
@@ -124,16 +109,17 @@ public class SettingsActivity extends AppCompatActivity {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             String version = pInfo.versionName;
             //int num = pInfo.versionCode;
-            binding.helpIcon.setText("Version" + String.valueOf(version));
+            // binding.helpIcon.setText("Version" + String.valueOf(version));
+            binding.helpIcon.setText(String.valueOf(version));
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
 
-        if (profileData!=null) {
+        if (profileData != null) {
             binding.tvViewProfileName.setText(profileData.getFullName());
         }
 
-        if (SessionHandler.getInstance().get(context, AppConstants.LANGUAGE)!=null){
+        if (SessionHandler.getInstance().get(context, AppConstants.LANGUAGE) != null) {
             binding.txtLang.setText(SessionHandler.getInstance().get(context, AppConstants.LANGUAGE));
         }
 // Creates a PublicClientApplication object with res/raw/auth_config_single_account.json
@@ -149,7 +135,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(MsalException exception) {
-                        System.out.println("sso bala check" +exception.getMessage());
+                        System.out.println("sso bala check" + exception.getMessage());
                         displayError(exception);
 //                        removeAccountButton.setEnabled(false);
 //                        runUserFlowButton.setEnabled(false);
@@ -160,7 +146,7 @@ public class SettingsActivity extends AppCompatActivity {
         binding.switchDarkMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    setNightModeHere(SettingsActivity.this,isChecked);
+                setNightModeHere(SettingsActivity.this, isChecked);
 
 
             }
@@ -172,9 +158,9 @@ public class SettingsActivity extends AppCompatActivity {
 
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("message/rfc822");
-                i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"feedback@hybridhero.com"});
+                i.putExtra(Intent.EXTRA_EMAIL, new String[]{"feedback@hybridhero.com"});
                 i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
-                i.putExtra(Intent.EXTRA_TEXT   , "body of email");
+                i.putExtra(Intent.EXTRA_TEXT, "body of email");
                 try {
                     startActivity(Intent.createChooser(i, "Send mail..."));
                 } catch (android.content.ActivityNotFoundException ex) {
@@ -188,32 +174,32 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                SessionHandler.getInstance().removeAll(getContext());
-                System.out.println("sso out"+SessionHandler.getInstance().getInt(SettingsActivity.this,
+                System.out.println("sso out" + SessionHandler.getInstance().getInt(SettingsActivity.this,
                         AppConstants.TYPE_OF_LOGIN));
                 if (SessionHandler.getInstance().getInt(SettingsActivity.this,
                         AppConstants.TYPE_OF_LOGIN) != 1) {
-                    System.out.println("sso out"+SessionHandler.getInstance().getInt(SettingsActivity.this,
+                    System.out.println("sso out" + SessionHandler.getInstance().getInt(SettingsActivity.this,
                             AppConstants.TYPE_OF_LOGIN));
-                            signOutAccounts();
+                    signOutAccounts();
                 }
 
-                    SessionHandler.getInstance().saveBoolean(context, AppConstants.LOGIN_CHECK,false);
+                SessionHandler.getInstance().saveBoolean(context, AppConstants.LOGIN_CHECK, false);
                 Utils.finishAllActivity(context);
-                SessionHandler.getInstance().remove(context,AppConstants.COUNTRY_NAME);
-                SessionHandler.getInstance().remove(context,AppConstants.BUILDING);
-                SessionHandler.getInstance().remove(context,AppConstants.FLOOR);
-                SessionHandler.getInstance().remove(context,AppConstants.FULLPATHLOCATION);
-                SessionHandler.getInstance().remove(context,AppConstants.PARENT_ID);
-                SessionHandler.getInstance().remove(context,AppConstants.TEAM_ID);
+                SessionHandler.getInstance().remove(context, AppConstants.COUNTRY_NAME);
+                SessionHandler.getInstance().remove(context, AppConstants.BUILDING);
+                SessionHandler.getInstance().remove(context, AppConstants.FLOOR);
+                SessionHandler.getInstance().remove(context, AppConstants.FULLPATHLOCATION);
+                SessionHandler.getInstance().remove(context, AppConstants.PARENT_ID);
+                SessionHandler.getInstance().remove(context, AppConstants.TEAM_ID);
 
                 //To Load Defaul Location
-                SessionHandler.getInstance().remove(context,AppConstants.PARENT_ID_CHECK);
-                SessionHandler.getInstance().remove(context,AppConstants.FLOOR_POSITION_CHECK);
+                SessionHandler.getInstance().remove(context, AppConstants.PARENT_ID_CHECK);
+                SessionHandler.getInstance().remove(context, AppConstants.FLOOR_POSITION_CHECK);
 
-                SessionHandler.getInstance().remove(context,AppConstants.COUNTRY_NAME_CHECK);
-                SessionHandler.getInstance().remove(context,AppConstants.BUILDING_CHECK);
-                SessionHandler.getInstance().remove(context,AppConstants.FLOOR_CHECK);
-                SessionHandler.getInstance().remove(context,AppConstants.FULLPATHLOCATION_CHECK);
+                SessionHandler.getInstance().remove(context, AppConstants.COUNTRY_NAME_CHECK);
+                SessionHandler.getInstance().remove(context, AppConstants.BUILDING_CHECK);
+                SessionHandler.getInstance().remove(context, AppConstants.FLOOR_CHECK);
+                SessionHandler.getInstance().remove(context, AppConstants.FULLPATHLOCATION_CHECK);
 
             }
         });
@@ -229,8 +215,8 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                dialog=new Dialog(SettingsActivity.this);
-                proDialog=new Dialog(SettingsActivity.this);
+                dialog = new Dialog(SettingsActivity.this);
+                proDialog = new Dialog(SettingsActivity.this);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 int width = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.80);
                 int height = (int) (context.getResources().getDisplayMetrics().heightPixels * 0.20);
@@ -238,15 +224,14 @@ public class SettingsActivity extends AppCompatActivity {
                 dialog.setContentView(R.layout.layout_change_password);
                 dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-                EditText etCurrentPassword=dialog.findViewById(R.id.etCurrentPassword);
-                EditText etNewPassword=dialog.findViewById(R.id.etNewPassword);
-                EditText etConfirmPassword=dialog.findViewById(R.id.etConfirmPassword);
-                TextView tv_titleChangePassword=dialog.findViewById(R.id.tv_titleChangePassword);
+                EditText etCurrentPassword = dialog.findViewById(R.id.etCurrentPassword);
+                EditText etNewPassword = dialog.findViewById(R.id.etNewPassword);
+                EditText etConfirmPassword = dialog.findViewById(R.id.etConfirmPassword);
+                TextView tv_titleChangePassword = dialog.findViewById(R.id.tv_titleChangePassword);
 
 
-
-                Button buttonChangePassword=dialog.findViewById(R.id.btnChangePasswordSubmit);
-                Button buttonChangePasswordCancel=dialog.findViewById(R.id.btnChangePasswordCancel);
+                Button buttonChangePassword = dialog.findViewById(R.id.btnChangePasswordSubmit);
+                Button buttonChangePasswordCancel = dialog.findViewById(R.id.btnChangePasswordCancel);
 
                 //tv_titleChangePassword.setText(appKeysPage.getChangePassword());
                 buttonChangePasswordCancel.setText(appKeysPage.getCancel());
@@ -254,8 +239,6 @@ public class SettingsActivity extends AppCompatActivity {
                 etCurrentPassword.setHint(appKeysPage.getCurrentPassword());
                 etNewPassword.setHint(appKeysPage.getNewPassword());
                 etConfirmPassword.setHint(appKeysPage.getConfirmPassword());
-
-
 
 
                 buttonChangePasswordCancel.setOnClickListener(new View.OnClickListener() {
@@ -268,51 +251,51 @@ public class SettingsActivity extends AppCompatActivity {
                 buttonChangePassword.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String currentPassword=etCurrentPassword.getText().toString().trim();
-                        String newPassword=etNewPassword.getText().toString().trim();
-                        String confirmPassword=etConfirmPassword.getText().toString().trim();
+                        String currentPassword = etCurrentPassword.getText().toString().trim();
+                        String newPassword = etNewPassword.getText().toString().trim();
+                        String confirmPassword = etConfirmPassword.getText().toString().trim();
 
                         if (etCurrentPassword.getText().toString().isEmpty()) {
-                           Utils.toastShortMessage(SettingsActivity.this,"Current Password Is Empty");
+                            Utils.toastShortMessage(SettingsActivity.this, "Current Password Is Empty");
                             return;
                         } else if (etNewPassword.getText().toString().isEmpty()) {
-                            Utils.toastShortMessage(SettingsActivity.this,"New Password Is Empty");
+                            Utils.toastShortMessage(SettingsActivity.this, "New Password Is Empty");
                             return;
                         }/* else if (etNewPassword.getText().toString().length() <= 6) {
                             Utils.toastShortMessage(SettingsActivity.this,"New Password Is Less tha");
                             return;
                         }*/ else if (etConfirmPassword.getText().toString().isEmpty()) {
-                            Utils.toastShortMessage(SettingsActivity.this,"Confirm Password Is Empty");
+                            Utils.toastShortMessage(SettingsActivity.this, "Confirm Password Is Empty");
                             return;
                         } else if (etCurrentPassword.getText().toString().equalsIgnoreCase(etNewPassword.getText().toString()) ||
                                 etCurrentPassword.getText().toString().equalsIgnoreCase(etConfirmPassword.getText().toString())) {
-                            Utils.toastShortMessage(SettingsActivity.this,"Current And New Password Is Same");
+                            Utils.toastShortMessage(SettingsActivity.this, "Current And New Password Is Same");
                             return;
                         } else if (!etNewPassword.getText().toString().equalsIgnoreCase(etConfirmPassword.getText().toString())) {
-                            Utils.toastShortMessage(SettingsActivity.this,"New And Confirm Password Should Same");
+                            Utils.toastShortMessage(SettingsActivity.this, "New And Confirm Password Should Same");
                             return;
                         } else {
 
                             //Utils.toastShortMessage(SettingsActivity.this,"API Success");
                             if (Utils.isNetworkAvailable(SettingsActivity.this)) {
 
-                                proDialog= ProgressDialog.showProgressBar(SettingsActivity.this);
+                                proDialog = ProgressDialog.showProgressBar(SettingsActivity.this);
                                 ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-                                ChangePasswordRequest changePasswordRequest=new ChangePasswordRequest(currentPassword,newPassword,confirmPassword);
-                                Call<BaseResponse> call=apiService.changePassword(changePasswordRequest);
+                                ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest(currentPassword, newPassword, confirmPassword);
+                                Call<BaseResponse> call = apiService.changePassword(changePasswordRequest);
                                 call.enqueue(new Callback<BaseResponse>() {
                                     @Override
                                     public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                                        BaseResponse baseResponse=response.body();
-                                        if (response.code()==200 && response.body().getResultCode().equalsIgnoreCase("ok")){
+                                        BaseResponse baseResponse = response.body();
+                                        if (response.code() == 200 && response.body().getResultCode().equalsIgnoreCase("ok")) {
                                             Toast.makeText(SettingsActivity.this, "Successfully Updated", Toast.LENGTH_SHORT).show();
                                             dialog.dismiss();
                                             proDialog.dismiss();
-                                        } else if(response.code()==200) {
+                                        } else if (response.code() == 200) {
                                             Toast.makeText(SettingsActivity.this, " " + response.body().getResultCode(), Toast.LENGTH_SHORT).show();
                                             proDialog.dismiss();
                                         } else {
-                                            Toast.makeText(SettingsActivity.this, "Not Successfull" , Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(SettingsActivity.this, "Not Successfull", Toast.LENGTH_SHORT).show();
                                             proDialog.dismiss();
                                         }
                                     }
@@ -324,7 +307,7 @@ public class SettingsActivity extends AppCompatActivity {
                                     }
                                 });
 
-                            }else {
+                            } else {
                                 Utils.toastMessage(SettingsActivity.this, getResources().getString(R.string.enable_internet));
                             }
                         }
@@ -335,7 +318,6 @@ public class SettingsActivity extends AppCompatActivity {
                 dialog.show();
 
 
-
             }
         });
 
@@ -343,7 +325,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent=new Intent(context, EditProfileActivity.class);
+                Intent intent = new Intent(context, EditProfileActivity.class);
                 startActivity(intent);
 
             }
@@ -353,7 +335,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent=new Intent(context, LanguageListActivity.class);
+                Intent intent = new Intent(context, LanguageListActivity.class);
                 startActivity(intent);
 
             }
@@ -362,7 +344,7 @@ public class SettingsActivity extends AppCompatActivity {
         binding.notificationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(context, NotificationActivity.class);
+                Intent intent = new Intent(context, NotificationActivity.class);
                 startActivity(intent);
             }
         });
@@ -378,8 +360,10 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent=new Intent(SettingsActivity.this,HelpPdfViewActivity.class);
-                startActivity(intent);
+                Utils.openMail(SettingsActivity.this, "feedback@hybridhero.com");
+
+                // Intent intent=new Intent(SettingsActivity.this,HelpPdfViewActivity.class);
+                //startActivity(intent);
 
                 /*String locationOfPdfFile=Environment.getExternalStorageDirectory() + "/" + "hotdesk"+"/Help.pdf";
                 File file=new File(locationOfPdfFile);
@@ -399,8 +383,6 @@ public class SettingsActivity extends AppCompatActivity {
                 }*/
 
 
-
-
             }
         });
 
@@ -409,7 +391,7 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                Intent intent=new Intent(SettingsActivity.this,WhatsNewActiviy.class);
+                Intent intent = new Intent(SettingsActivity.this, WhatsNewActiviy.class);
                 startActivity(intent);
 
             }
@@ -508,7 +490,7 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
-        }else {
+        } else {
             Utils.toastMessage(this, "Please Enable Internet");
         }
 
@@ -522,7 +504,7 @@ public class SettingsActivity extends AppCompatActivity {
     private void setNightModeHere(SettingsActivity settingsActivity, boolean state) {
         if (state) {
             SessionHandler.getInstance().saveBoolean(SettingsActivity.this,
-                    AppConstants.DARK_MODE_CHECK,true);
+                    AppConstants.DARK_MODE_CHECK, true);
             AppCompatDelegate
                     .setDefaultNightMode(
                             AppCompatDelegate
@@ -531,7 +513,7 @@ public class SettingsActivity extends AppCompatActivity {
             //Toast.makeText(target, "Dark", Toast.LENGTH_SHORT).show();
         } else {
             SessionHandler.getInstance().saveBoolean(SettingsActivity.this,
-                    AppConstants.DARK_MODE_CHECK,false);
+                    AppConstants.DARK_MODE_CHECK, false);
             AppCompatDelegate
                     .setDefaultNightMode(
                             AppCompatDelegate
@@ -549,15 +531,15 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ProfilePicResponse> call, Response<ProfilePicResponse> response) {
 
-                if (response.body()!=null) {
+                if (response.body() != null) {
 
-                    ProfilePicResponse profilePicResponse=response.body();
+                    ProfilePicResponse profilePicResponse = response.body();
 
                     //System.out.println("Base64Image"+profilePicResponse.getImage());
 
-                    if(profilePicResponse.getImage()!=null &&
+                    if (profilePicResponse.getImage() != null &&
                             !profilePicResponse.getImage().equalsIgnoreCase("") &&
-                            !profilePicResponse.getImage().isEmpty() ) {
+                            !profilePicResponse.getImage().isEmpty()) {
                         String base64String = profilePicResponse.getImage();
                         String base64Image = base64String.split(",")[1];
                         byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
@@ -585,13 +567,13 @@ public class SettingsActivity extends AppCompatActivity {
         resetPage = Utils.getResetPasswordPageScreencreenData(this);
         actionOverLays = Utils.getActionOverLaysPageScreenData(this);
         bookindata = Utils.getBookingPageScreenData(this);
-        global=Utils.getGlobalScreenData(this);
-        settings=Utils.getSettingsPageScreenData(this);
+        global = Utils.getGlobalScreenData(this);
+        settings = Utils.getSettingsPageScreenData(this);
 
 
         binding.settingViewProfile.setText(settings.getViewProfile());
 
-        if (wellBeingPage!=null) {
+        if (wellBeingPage != null) {
 
             //binding.tvContact.setText(wellBeingPage.getDefault());
             binding.tvOrganization.setText(wellBeingPage.getChangeOrganisation());
@@ -650,10 +632,11 @@ public class SettingsActivity extends AppCompatActivity {
         super.onResume();
         getProfilePicture();
         profileData = Utils.getLoginData(context);
-        if (profileData!=null) {
+        if (profileData != null) {
             binding.tvViewProfileName.setText(profileData.getFullName());
         }
     }
+
     private void loadAccounts() {
         if (b2cApp == null) {
             return;
@@ -664,7 +647,7 @@ public class SettingsActivity extends AppCompatActivity {
             public void onTaskCompleted(final List<IAccount> result) {
 //                Toast.makeText(SettingsActivity.this, "b2c acc check"+result.size(), Toast.LENGTH_SHORT).show();
                 users = B2CUser.getB2CUsersFromAccountList(result);
-                System.out.println("sso check userList"+users.size());
+                System.out.println("sso check userList" + users.size());
 //                updateUI(users);
             }
 
@@ -674,18 +657,20 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
     }
+
     /**
      * Display the error message
      */
     private void displayError(@NonNull final Exception exception) {
-        Log.d(TAG, "displayError: "+exception.toString());
+        Log.d(TAG, "displayError: " + exception.toString());
     }
+
     private void signOutAccounts() {
         System.out.println("Signout sso acccc");
         if (b2cApp == null) {
             return;
         }
-        if (users!=null &&users.size()>0){
+        if (users != null && users.size() > 0) {
             final B2CUser selectedUser = users.get(0);
             selectedUser.signOutAsync(b2cApp,
                     new IMultipleAccountPublicClientApplication.RemoveAccountCallback() {
