@@ -6340,6 +6340,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         TextView startTime, endTime, date, editBookingBack, tv_comment;
         LinearLayout status_check_layout;
         RelativeLayout selectDeskEditBlock;
+        EditText et_comment_desk;
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_booking,
@@ -6362,7 +6363,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         editBookingBack = bottomSheetDialog.findViewById(R.id.editBookingBack);
 
         TextView select = bottomSheetDialog.findViewById(R.id.select_desk_room);
+        et_comment_desk=bottomSheetDialog.findViewById(R.id.et_comment_desk);
 
+        et_comment_desk.setVisibility(View.VISIBLE);
+        et_comment_desk.setText(bookings.getComments());
         llDeskLayout.setVisibility(View.GONE);
         status_check_layout.setVisibility(View.GONE);
         selectDeskEditBlock.setVisibility(View.GONE);
