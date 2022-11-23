@@ -4,7 +4,7 @@ public class ValuesPOJO {
 
     private int id;
     public String values;
-    boolean isChecked;
+    public boolean isChecked;
 
     public ValuesPOJO() {
     }

@@ -120,6 +120,7 @@ import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.DeskDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
+import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.LocationWithMR_Response;
 import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
@@ -142,7 +143,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSelectListener, BookingListToEditAdapter.OnEditClickable, DeskListRecyclerAdapter.OnSelectSelected, CarListToEditAdapter.CarEditClickable, MeetingListToEditAdapter.OnMeetingEditClickable, DeskSelectListAdapter.OnDeskSelectClickable, ParticipantNameShowAdapter.OnParticipantSelectable,
-        RepeateDataAdapter.repeatInterface, LocateMyTeamAdapter.ShowMyTeamLocationClickable {
+        RepeateDataAdapter.repeatInterface, LocateMyTeamAdapter.ShowMyTeamLocationClickable , ItemAdapter.selectItemInterface {
 
     @BindView(R.id.locateProgressBar)
     ProgressBar progressBar;
@@ -363,6 +364,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     //Get TimeZoneId
     List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilitiesList;
 
+    //New...
+    //For Displaying the count
+    TextView filterTotalSize;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -7097,7 +7101,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         EditText filterSearch;
 
 
-        TextView locateFilterCancel, locateFilterApply, tvFilterAmenities, filterTotalSize;
+        TextView locateFilterCancel, locateFilterApply, tvFilterAmenities;
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((this).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_locate_filter,
@@ -7204,11 +7208,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         for (int i = 0; i < mList.size(); i++) {
 
-            mList.get(i).setExpandable(false);
+            mList.get(i).setExpandable(true);
 
         }
         filterTotalSize.setText("(" + mList.get(1).getNestedList().size() + ")");
-        adapter = new ItemAdapter(mList);
+        adapter = new ItemAdapter(mList,this);
         locateFilterMainRV.setAdapter(adapter);
 
 
@@ -8886,5 +8890,37 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             Utils.toastMessage(getContext(), "Please Enable Internet");
         }
     }
+
+    //New...
+    @Override
+    public void clickCount(ArrayList<DataModel> mList,int pos) {
+
+        if (mList!=null && mList.size()>0) {
+
+            ArrayList<ValuesPOJO> nestedList = mList.get(pos).getNestedList();
+
+            if (nestedList!=null && nestedList.size()>0){
+
+                ArrayList<ValuesPOJO> inComingList = new ArrayList<>();
+                inComingList = (ArrayList<ValuesPOJO>) nestedList.stream().filter(val -> val.isChecked()).collect(Collectors.toList());
+
+                if(inComingList!=null && inComingList.size()>0) {
+
+                    if (filterTotalSize!=null){
+                        filterTotalSize.setText(String.valueOf(inComingList.size()));
+                    }
+
+                }else {
+                    if (filterTotalSize!=null){
+                        filterTotalSize.setText("0");
+                    }
+                }
+
+            }
+
+        }
+
+    }
+
 
 }

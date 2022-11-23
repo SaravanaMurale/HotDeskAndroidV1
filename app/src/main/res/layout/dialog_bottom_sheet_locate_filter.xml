@@ -37,7 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="(11)"
+                    android:text="(0)"
                     android:textColor="@color/figma_orange" />
 
                 <EditText
@@ -63,9 +63,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/locateFilterHeadBlock"
-                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_25sdp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:layout_above="@+id/bottom_lay"
+
                 />
 
             <RelativeLayout
