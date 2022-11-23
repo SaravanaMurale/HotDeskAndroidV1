@@ -22,6 +22,7 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.NestedView
 
     private ArrayList<ValuesPOJO> mList;
     int pos=0;
+    ItemAdapter itemAdapter;
 
     public NestedAdapter(ArrayList<ValuesPOJO> mList){
         this.mList = mList;
@@ -30,6 +31,13 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.NestedView
     public NestedAdapter(ArrayList<ValuesPOJO> list,int pos) {
         this.mList = list;
         this.pos = pos;
+    }
+
+    //New...
+    public NestedAdapter(ArrayList<ValuesPOJO> list,int pos,ItemAdapter itemAdapter) {
+        this.mList = list;
+        this.pos = pos;
+        this.itemAdapter = itemAdapter;
     }
 
 
@@ -55,6 +63,7 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.NestedView
 
                 ItemAdapter.mList.get(pos).getNestedList().get(holder.getAdapterPosition()).setChecked(b);
                 //itemAdapter.notifyDataSetChanged();
+                itemAdapter.notifyDataSetChanged();
 
             }
         });

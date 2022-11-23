@@ -23,6 +23,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     public static ArrayList<DataModel> mList;
     private ArrayList<ValuesPOJO> list = new ArrayList<>();
     NestedAdapter adapter;
+    selectItemInterface selectItemInterface;
 
     public ArrayList<DataModel> getUpdatedList(){
         return mList;
@@ -34,6 +35,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     public ItemAdapter(ArrayList<DataModel> mList){
         this.mList  = mList;
         notifyDataSetChanged();
+    }
+
+    public ItemAdapter(ArrayList<DataModel> mList,selectItemInterface selectItemInterface){
+        this.mList  = mList;
+        notifyDataSetChanged();
+        this.selectItemInterface = selectItemInterface;
     }
     @NonNull
     @Override
@@ -50,8 +57,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             DataModel model = mList.get(holder.getAdapterPosition());
             holder.mTextView.setText(model.getItemText());
 
-            boolean isExpandable = model.isExpandable();
-            holder.expandableLayout.setVisibility(isExpandable ? View.VISIBLE : View.GONE);
+            //boolean isExpandable = model.isExpandable();
+            //holder.expandableLayout.setVisibility(isExpandable ? View.VISIBLE : View.GONE);
 
             if (model.isChecked()) {
                 mList.get(position).setChecked(true);
@@ -61,12 +68,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                 holder.checkBox.setChecked(false);
             }
 
-            if (isExpandable) {
+            /*if (isExpandable) {
                 holder.mArrowImage.setImageResource(R.drawable.minus_1px);
+                holder.expandableLayout.setVisibility(View.VISIBLE);
             } else {
                 holder.mArrowImage.setImageResource(R.drawable.plus_1px);
+                holder.expandableLayout.setVisibility(View.GONE);
             }
-
+*/
             holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -101,6 +110,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                 }
             });
 
+            //New...
+            list = mList.get(holder.getAdapterPosition()).getNestedList();
+
             setValueToadapter(holder, holder.getAbsoluteAdapterPosition());
 
             holder.linearLayout.setOnClickListener(new View.OnClickListener() {
@@ -121,10 +133,27 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     private void setValueToadapter(ItemViewHolder holder,int pos) {
 
 
-        adapter = new NestedAdapter(list,pos);
+        adapter = new NestedAdapter(list,pos,ItemAdapter.this);
         holder.nestedRecyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
         holder.nestedRecyclerView.setHasFixedSize(true);
         holder.nestedRecyclerView.setAdapter(adapter);
+
+        boolean isExpandable = mList.get(pos).isExpandable();
+        holder.expandableLayout.setVisibility(isExpandable ? View.VISIBLE : View.GONE);
+
+        if (isExpandable) {
+            holder.mArrowImage.setImageResource(R.drawable.minus_1px);
+            holder.expandableLayout.setVisibility(View.VISIBLE);
+        } else {
+            holder.mArrowImage.setImageResource(R.drawable.plus_1px);
+            holder.expandableLayout.setVisibility(View.GONE);
+        }
+
+        //New...
+        if (selectItemInterface!=null){
+            selectItemInterface.clickCount(mList,pos);
+        }
+
 
     }
 
@@ -152,4 +181,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             checkBox = itemView.findViewById(R.id.check_box);
         }
     }
+
+
+    //New...
+    public interface selectItemInterface {
+        public void clickCount(ArrayList<DataModel> mList,int pos);
+    }
+
+
 }

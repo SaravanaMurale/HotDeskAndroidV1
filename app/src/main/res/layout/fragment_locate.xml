@@ -269,80 +269,182 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/_30sdp"
         android:layout_toLeftOf="@+id/endBlock"
-        android:visibility="invisible">
+        android:visibility="gone">
 
-        <TextView
+
+
+        <RelativeLayout
             android:id="@+id/statusUnAvaliable"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_80sdp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/rectangle_bg_with_corner"
-            android:drawableLeft="@drawable/status_unavaliable"
-            android:paddingLeft="@dimen/_5sdp"
-            android:paddingRight="@dimen/_5sdp"
-            android:text=" unavaliable"
-            android:textColor="@color/figma_unavaliable" />
+            android:padding="@dimen/_1sdp"
+            android:background="@drawable/rectangle_bg_with_corner">
+
+            <ImageView
+                android:layout_width="@dimen/_8sdp"
+                android:layout_height="@dimen/_8sdp"
+                android:src="@drawable/status_unavaliable"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:paddingLeft="@dimen/_2sdp"
+                android:layout_toLeftOf="@+id/unavaliableTxt"
+                />
+
+            <TextView
+                android:id="@+id/unavaliableTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/_2sdp"
+                android:paddingRight="@dimen/_6sdp"
+                android:text=" unavaliable"
+                android:textColor="@color/figma_unavaliable" />
 
 
-        <TextView
+
+        </RelativeLayout>
+
+
+
+
+        <RelativeLayout
             android:id="@+id/statusBookedByMe"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_90sdp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginRight="@dimen/_5sdp"
             android:layout_toLeftOf="@+id/statusUnAvaliable"
             android:background="@drawable/rectangle_bg_with_corner"
-            android:drawableLeft="@drawable/status_booked_byme"
-            android:paddingLeft="@dimen/_5sdp"
-            android:paddingRight="@dimen/_5sdp"
-            android:text=" booked by me"
-            android:textColor="@color/figmaBlueText" />
+            android:layout_marginRight="@dimen/_5sdp">
 
 
-        <TextView
+            <ImageView
+                android:layout_width="@dimen/_8sdp"
+                android:layout_height="@dimen/_8sdp"
+                android:src="@drawable/status_booked_byme"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:paddingLeft="@dimen/_2sdp"
+                android:layout_toLeftOf="@+id/bookedByMeTxt"
+                />
+
+            <TextView
+                android:id="@+id/bookedByMeTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_2sdp"
+                android:text=" booked by me"
+                android:paddingRight="@dimen/_6sdp"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/figmaBlueText"
+                />
+
+        </RelativeLayout>
+
+
+
+        <RelativeLayout
             android:id="@+id/statusBooked"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_60sdp"
             android:layout_height="wrap_content"
             android:layout_above="@id/statusUnAvaliable"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
             android:background="@drawable/rectangle_bg_with_corner"
-            android:drawableLeft="@drawable/status_booked"
-            android:paddingLeft="@dimen/_5sdp"
-            android:paddingRight="@dimen/_5sdp"
-            android:text=" booked" />
+            android:layout_marginBottom="@dimen/_5sdp">
 
-        <TextView
+
+            <ImageView
+                android:layout_width="@dimen/_8sdp"
+                android:layout_height="@dimen/_8sdp"
+                android:src="@drawable/status_booked"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:paddingLeft="@dimen/_2sdp"
+                android:layout_toLeftOf="@+id/bookedTxt"
+                />
+
+            <TextView
+                android:id="@+id/bookedTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_2sdp"
+                android:text=" booked"
+                android:paddingRight="@dimen/_6sdp"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/grey" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
             android:id="@+id/statusByRequest"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_70sdp"
             android:layout_height="wrap_content"
             android:layout_above="@id/statusUnAvaliable"
-            android:layout_marginRight="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
             android:layout_toLeftOf="@+id/statusBooked"
             android:background="@drawable/rectangle_bg_with_corner"
-            android:drawableLeft="@drawable/byrequest"
-            android:paddingLeft="@dimen/_5sdp"
-            android:paddingRight="@dimen/_5sdp"
-            android:text=" by request"
-            android:textColor="@color/figma_byrequest" />
-
-        <TextView
-            android:id="@+id/statusAvaliable"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/statusUnAvaliable"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_5sdp"
+            >
+
+            <ImageView
+                android:layout_width="@dimen/_8sdp"
+                android:layout_height="@dimen/_8sdp"
+                android:src="@drawable/byrequest"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:paddingLeft="@dimen/_2sdp"
+                android:layout_toLeftOf="@+id/byRequestTxt"
+                />
+
+            <TextView
+                android:id="@+id/byRequestTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/_2sdp"
+                android:paddingRight="@dimen/_6sdp"
+                android:text=" by request"
+                android:textColor="@color/figma_byrequest" />
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/statusAvaliable"
+            android:layout_width="@dimen/_65sdp"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/statusUnAvaliable"
             android:layout_toLeftOf="@+id/statusByRequest"
             android:background="@drawable/rectangle_bg_with_corner"
-            android:drawableLeft="@drawable/status_avaliable"
-            android:paddingLeft="@dimen/_5sdp"
-            android:paddingRight="@dimen/_5sdp"
-            android:text=" avaliable"
-            android:textColor="@color/figma_dark_green" />
+            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_2sdp"
+
+            >
+
+
+            <ImageView
+                android:layout_width="@dimen/_8sdp"
+                android:layout_height="@dimen/_8sdp"
+                android:src="@drawable/status_avaliable"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:paddingLeft="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_3sdp"
+                android:layout_toLeftOf="@+id/avaliableTxt"
+                />
+
+            <TextView
+                android:id="@+id/avaliableTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/_2sdp"
+                android:paddingRight="@dimen/_6sdp"
+                android:text=" avaliable"
+                android:textColor="@color/figma_dark_green" />
+
+
+        </RelativeLayout>
+
 
 
     </RelativeLayout>
@@ -441,8 +543,9 @@
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:text="@string/close"
-                android:textSize="@dimen/_15sdp"
-                 />
+                android:textStyle="bold"
+                android:textColor="@color/figmaBlack"
+                android:textSize="@dimen/_15sdp" />
 
         </RelativeLayout>
 
@@ -481,7 +584,7 @@
                 android:id="@+id/locateMyTeamUserName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_toRightOf="@+id/locateMyTeamProfile"
                 android:text="Space-001"
                 android:textStyle="bold"
@@ -548,7 +651,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="Start"
+                    android:text="Check in"
                     android:textColor="@color/figmaBlack" />
 
                 <TextView
@@ -581,9 +684,8 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="End"
-                    android:textColor="@color/figmaBlack"
-                    />
+                    android:text="Check out"
+                    android:textColor="@color/figmaBlack" />
 
                 <TextView
                     android:id="@+id/myTeam_tv_end_time"
@@ -620,6 +722,7 @@
                         android:layout_alignParentStart="true"
                         android:layout_toLeftOf="@id/contact_edit"
                         android:text="Contact"
+
                         android:textColor="@color/figmaBlack"
                         android:textSize="@dimen/_12sdp"
                         android:theme="@style/TextBold" />

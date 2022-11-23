@@ -64,10 +64,11 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
 
     @Override
     public void onBindViewHolder(@NonNull BookingListToEditViewHolder holder, int position) {
-        holder.editCheckInIcon.setVisibility(View.GONE);
-        holder.editCheckOutIcon.setVisibility(View.GONE);
-        holder.editCheckInTime.setVisibility(View.GONE);
-        holder.editCheckOutTime.setVisibility(View.GONE);
+        //holder.editCheckInIcon.setVisibility(View.GONE);
+        //holder.editCheckOutIcon.setVisibility(View.GONE);
+        //holder.editCheckInTime.setVisibility(View.GONE);
+        //holder.editCheckOutTime.setVisibility(View.GONE);
+
 
 
         if (bookingsListToEdit.get(position).getStatus().getTimeStatus()
@@ -243,6 +244,8 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
         TextView editDelete;
         @BindView(R.id.editTextEdit)
         TextView editTextEdit;
+        @BindView(R.id.editRefreshIcon)
+        ImageView editRefreshIcon;
 
 
         public BookingListToEditViewHolder(@NonNull View itemView) {

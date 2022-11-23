@@ -65,12 +65,12 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
         holder.locateMyTeamName.setText(daoTeamMemberList.get(position).getFirstName()+" "+daoTeamMemberList.get(position).getLastName());
 
         if(daoTeamMemberList.get(position).getDayGroups().isEmpty() || daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().size()==0){
-            holder.locateMyTeamDeskName.setText("No Booking Avaliable");
-            holder.locateMyTeamCheckInTime.setVisibility(View.INVISIBLE);
-            holder.locateMyTeamCheckOutTime.setVisibility(View.INVISIBLE);
-            holder.locateMyTeamLocation.setVisibility(View.INVISIBLE);
-            holder.locateMyTeamNameCheckInIcon.setVisibility(View.INVISIBLE);
-            holder.locateMyTeamCheckOutIcon.setVisibility(View.INVISIBLE);
+            //holder.locateMyTeamDeskName.setText("No Booking Avaliable");
+            holder.locateMyTeamCheckInTime.setVisibility(View.GONE);
+            holder.locateMyTeamCheckOutTime.setVisibility(View.GONE);
+            holder.locateMyTeamLocation.setVisibility(View.GONE);
+            holder.locateMyTeamNameCheckInIcon.setVisibility(View.GONE);
+            holder.locateMyTeamCheckOutIcon.setVisibility(View.GONE);
         }else {
 
             if(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getBooking()!=null){
@@ -81,12 +81,12 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
                 holder.locateMyTeamCheckOutTime.setText(Utils.splitTime(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getMyto()));
 
             }else if(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getBooking()==null){
-                holder.locateMyTeamDeskName.setText("No Booking Avaliable");
-                holder.locateMyTeamCheckInTime.setVisibility(View.INVISIBLE);
-                holder.locateMyTeamCheckOutTime.setVisibility(View.INVISIBLE);
-                holder.locateMyTeamLocation.setVisibility(View.INVISIBLE);
-                holder.locateMyTeamNameCheckInIcon.setVisibility(View.INVISIBLE);
-                holder.locateMyTeamCheckOutIcon.setVisibility(View.INVISIBLE);
+                //holder.locateMyTeamDeskName.setText("No Booking Avaliable");
+                holder.locateMyTeamCheckInTime.setVisibility(View.GONE);
+                holder.locateMyTeamCheckOutTime.setVisibility(View.GONE);
+                holder.locateMyTeamLocation.setVisibility(View.GONE);
+                holder.locateMyTeamNameCheckInIcon.setVisibility(View.GONE);
+                holder.locateMyTeamCheckOutIcon.setVisibility(View.GONE);
             }
 
         }

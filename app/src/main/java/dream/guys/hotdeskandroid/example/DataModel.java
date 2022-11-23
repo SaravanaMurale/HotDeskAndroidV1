@@ -7,13 +7,13 @@ public class DataModel {
 
     private ArrayList<ValuesPOJO> nestedList;
     private String itemText;
-    private boolean isExpandable;
+    private boolean isExpandable = true;
     private boolean isChecked;
 
     public DataModel(ArrayList<ValuesPOJO> itemList, String itemText) {
         this.nestedList = itemList;
         this.itemText = itemText;
-        isExpandable = false;
+        isExpandable = true;
     }
 
     public boolean isChecked() {
