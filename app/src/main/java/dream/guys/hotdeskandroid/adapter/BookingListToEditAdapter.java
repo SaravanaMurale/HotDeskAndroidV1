@@ -85,7 +85,7 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
         }
 
         if (bookingsListToEdit.get(position).getStatus().getBookingStatus()
-                .equalsIgnoreCase("none"))
+                .equalsIgnoreCase("None"))
             holder.editDelete.setVisibility(View.VISIBLE);
 
 

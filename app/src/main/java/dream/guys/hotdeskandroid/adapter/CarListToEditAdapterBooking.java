@@ -78,7 +78,7 @@ public class CarListToEditAdapterBooking extends RecyclerView.Adapter<CarListToE
         }
 
         if (carParkBookings.get(position).getStatus().getBookingStatus()
-                .equalsIgnoreCase("none")){
+                .equalsIgnoreCase("None")){
             holder.editDelete.setVisibility(View.VISIBLE);
         }
 

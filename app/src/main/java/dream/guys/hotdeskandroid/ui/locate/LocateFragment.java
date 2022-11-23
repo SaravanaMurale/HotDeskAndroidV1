@@ -323,7 +323,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     //Repeat
     BottomSheetDialog repeatBottomSheetDialog;
-    String type = "none";
+    String type = "None";
     int enableCurrentWeek = -1;
     //Used to call repeat and recurrence
     boolean repeatActvieStatus = false;

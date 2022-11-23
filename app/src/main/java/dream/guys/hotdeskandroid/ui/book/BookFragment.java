@@ -2020,7 +2020,7 @@ public class BookFragment extends Fragment implements
             if(newEditStatus.equalsIgnoreCase("new") || newEditStatus.equalsIgnoreCase("new_deep_link")
                     || newEditStatus.equalsIgnoreCase("request")){
                 title.setText("Book Meeting Room");
-                continueEditBook.setText("Book");
+                continueEditBook.setText("Continue");
                 back.setText("Cancel");
             } else {
                 if (editDeskBookingDetails.getComments() != null &&
@@ -3678,8 +3678,8 @@ public class BookFragment extends Fragment implements
 
         }
 
-        TextView startRoomTime, endTRoomime, editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle,sheetDate,sheetTime;
-        EditText etParticipants, externalAttendees, etSubject, etComments,capacityNo;
+        TextView startRoomTime, endTRoomime, editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle,sheetDate,sheetTime,capacityNo;
+        EditText etParticipants, externalAttendees, etSubject, etComments;
         ChipGroup chipGroup, externalAttendeesChipGroup;
 
         RecyclerView rvParticipant;

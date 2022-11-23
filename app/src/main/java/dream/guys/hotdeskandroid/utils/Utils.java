@@ -1271,7 +1271,7 @@ public class Utils {
         Date newDate= null;
         try {
             newDate = spf.parse(d);
-            spf= new SimpleDateFormat("E, dd'th' MMM, yyyy");
+            spf= new SimpleDateFormat("E, dd'th' MMMM, yyyy");
             if (newDate != null) {
                 date = spf.format(newDate);
             }

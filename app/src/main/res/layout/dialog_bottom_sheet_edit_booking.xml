@@ -221,7 +221,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="none"
+                    android:text="None"
                     android:textSize="18sp"
                     android:textColor="@color/figmaBlueText"
                     android:theme="@style/TextBold" />
@@ -262,7 +262,7 @@
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:layout_toEndOf="@+id/tv_comment"
                     android:gravity="end"
-                    android:hint="none"
+                    android:hint="None"
                     android:textSize="18sp"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
