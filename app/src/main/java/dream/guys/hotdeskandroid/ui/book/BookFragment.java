@@ -1809,7 +1809,9 @@ public class BookFragment extends Fragment implements
 
         BookingListToEditAdapter bookingListToEditAdapter = new BookingListToEditAdapter(getContext(), bookingForEditResponse.getBookings(), this, code, bookingForEditResponse.getTeamDeskAvailabilities());
         rvEditList.setAdapter(bookingListToEditAdapter);
-        editDate.setText(Utils.dateWithDayString(calSelectedDate));
+//        editDate.setText(Utils.dateWithDayString(calSelectedDate));
+        editDate.setText(Utils.calendarDay10thMonthYearformat
+                (Utils.convertStringToDateFormet(calSelectedDate)));
 
         if(bookingForEditResponse !=null && bookingForEditResponse.getBookings().size()>0){
             tvActive.setText("Active bookings");
@@ -2242,7 +2244,7 @@ public class BookFragment extends Fragment implements
         }
 
         if (editDeskBookingDetails.getDate()!=null)
-            date.setText(""+Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
+            date.setText(""+Utils.calendarDay10thMonthformat(editDeskBookingDetails.getDate()));
 
         if (editDeskBookingDetails.getAmenities()!=null)
             System.out.println("chip check"+editDeskBookingDetails.getAmenities().size());
@@ -3204,7 +3206,7 @@ public class BookFragment extends Fragment implements
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvDeskRecycler.setLayoutManager(linearLayoutManager);
         rvDeskRecycler.setHasFixedSize(true);
-        sheetDate.setText(Utils.dateWithDayString(calSelectedDate));
+        sheetDate.setText(Utils.calendarDay10thMonthformat(Utils.convertStringToDateFormet(calSelectedDate)));
         if(editBookingDetails.getDisplayTime()!=null)
             sheetTime.setText(""+editBookingDetails.getDisplayTime());
 

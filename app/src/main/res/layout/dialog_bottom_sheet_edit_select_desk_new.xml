@@ -62,6 +62,36 @@
                 android:theme="@style/TextRegular" />
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/_10sdp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:text="Filter"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/figmaBlueText"
+                android:textSize="18sp"
+                android:theme="@style/TextBold" />
+            <view
+                class="android.widget.TextView"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_5sdp"
+                android:layout_weight="1"
+                />
+            <ImageView
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/location"
+                android:tint="@color/figmaBlueText"
+                />
+
+        </LinearLayout>
 
 
         <androidx.cardview.widget.CardView
@@ -139,9 +169,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_20sdp"
+        android:paddingBottom="@dimen/_20sdp"
+        android:paddingStart="@dimen/_20sdp"
         android:text="@string/back"
         android:textSize="18sp"
         android:theme="@style/TextBold" />

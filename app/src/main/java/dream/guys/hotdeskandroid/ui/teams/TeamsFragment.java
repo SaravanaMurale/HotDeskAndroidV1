@@ -769,7 +769,6 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             e.printStackTrace();
         }
 
-        Toast.makeText(getActivity(), ""+startDate.getTime(), Toast.LENGTH_SHORT).show();
         //final HorizontalCalendar horizontalCalendar
         horizontalCalendar
                 = new HorizontalCalendar.Builder(root, R.id.calendarView)

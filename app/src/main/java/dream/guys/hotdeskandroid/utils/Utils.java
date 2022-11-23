@@ -746,6 +746,46 @@ public class Utils {
         return df.format(date);
     }
 
+    public static String calendarDay10thMonthYearformat(Date date) {
+        Calendar cal=Calendar.getInstance();
+        cal.setTime(date);
+        //2nd of march 2015
+        int day=cal.get(Calendar.DATE);
+
+        if(!((day>10) && (day<19)))
+            switch (day % 10) {
+                case 1:
+                    return new SimpleDateFormat("EEE, d'st' MMMM, yyyy").format(date);
+                case 2:
+                    return new SimpleDateFormat("EEE, d'nd' MMMM, yyyy").format(date);
+                case 3:
+                    return new SimpleDateFormat("EEE, d'rd'  MMMM, yyyy").format(date);
+                default:
+                    return new SimpleDateFormat("EEE, d'th' MMMM, yyyy").format(date);
+            }
+        return new SimpleDateFormat("EEE, d'th' MMMM, yyyy").format(date);
+
+    }
+    public static String calendarDay10thMonthformat(Date date) {
+        Calendar cal=Calendar.getInstance();
+        cal.setTime(date);
+        //2nd of march 2015
+        int day=cal.get(Calendar.DATE);
+
+        if(!((day>10) && (day<19)))
+            switch (day % 10) {
+                case 1:
+                    return new SimpleDateFormat("EEE, d'st' MMMM").format(date);
+                case 2:
+                    return new SimpleDateFormat("EEE, d'nd' MMMM").format(date);
+                case 3:
+                    return new SimpleDateFormat("EEE, d'rd'  MMMM").format(date);
+                default:
+                    return new SimpleDateFormat("EEE, d'th' MMMM").format(date);
+            }
+        return new SimpleDateFormat("EEE, d'th' MMMM").format(date);
+
+    }
     public static String dayDateMonthFormat(Date date) {
         DateFormat df = new SimpleDateFormat("EEE,d MMMM yyyy");
         return df.format(date);
