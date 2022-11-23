@@ -141,6 +141,7 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
         holder.select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (deskList.get(holder.getAbsoluteAdapterPosition()).getTeamId() != SessionHandler.getInstance()
                         .getInt(context, AppConstants.TEAM_ID)
                         && fragment.selectedTeamAutoApproveStatus != 2)

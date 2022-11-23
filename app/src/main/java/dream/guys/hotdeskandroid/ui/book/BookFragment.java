@@ -242,7 +242,7 @@ public class BookFragment extends Fragment implements
     Activity activityContext;
 
     //BottomSheetData
-    TextView country, state, street, floor, back, bsApply;
+    TextView country, state, street, floor, back, bsApply,deskStatusText,deskStatusDot;
     RecyclerView rvCountry, rvState, rvStreet, rvFloor;
     ShowCountryAdapter showCountryAdapter;
     FloorAdapter floorAdapter;
@@ -1911,6 +1911,8 @@ public class BookFragment extends Fragment implements
         TextView tv_comment=roomBottomSheet.findViewById(R.id.tv_comment);
         TextView tv_repeat=roomBottomSheet.findViewById(R.id.tv_repeat);
         repeat = roomBottomSheet.findViewById(R.id.repeat);
+        deskStatusText = roomBottomSheet.findViewById(R.id.desk_status_text);
+        deskStatusDot = roomBottomSheet.findViewById(R.id.user_status_dot);
         TextView continueEditBook=roomBottomSheet.findViewById(R.id.editBookingContinue);
         TextView back=roomBottomSheet.findViewById(R.id.editBookingBack);
 
@@ -1930,7 +1932,7 @@ public class BookFragment extends Fragment implements
         deskRoomName=roomBottomSheet.findViewById(R.id.tv_desk_room_name);
         locationAddress=roomBottomSheet.findViewById(R.id.tv_location_details);
         //New...
-        locationAddress.setVisibility(View.GONE);
+        locationAddress.setVisibility(View.VISIBLE);
 
         date=roomBottomSheet.findViewById(R.id.date);
         TextView title=roomBottomSheet.findViewById(R.id.title);
@@ -1960,7 +1962,7 @@ public class BookFragment extends Fragment implements
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
-            statusCheckLayout.setVisibility(View.GONE);
+            statusCheckLayout.setVisibility(View.VISIBLE);
 //            chipGroup.setVisibility(View.GONE);
         }else if (editDeskBookingDetails.getDeskStatus() == 2){
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
@@ -1971,7 +1973,7 @@ public class BookFragment extends Fragment implements
         } else {
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlueText));
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlueText));
-            statusCheckLayout.setVisibility(View.GONE);
+            statusCheckLayout.setVisibility(View.VISIBLE);
 //            chipGroup.setVisibility(View.GONE);
         }
         if (Utils.compareTwoDate(editDeskBookingDetails.getDate(), Utils.getCurrentDate())==2
@@ -1993,8 +1995,21 @@ public class BookFragment extends Fragment implements
         if (newEditStatus.equalsIgnoreCase("new_deep_link")) {
             select.setVisibility(View.GONE);
             dateBlock.setVisibility(View.VISIBLE);
+            deskStatusText.setVisibility(View.INVISIBLE);
+            deskStatusDot.setVisibility(View.INVISIBLE);
+
         } else if (newEditStatus.equalsIgnoreCase("request") ||
                 newEditStatus.equalsIgnoreCase("new")) {
+            deskStatusText.setVisibility(View.VISIBLE);
+            deskStatusDot.setVisibility(View.VISIBLE);
+            if(newEditStatus.equalsIgnoreCase("new")){
+                deskStatusText.setText("Available");
+                deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaLiteGreen));
+            } else {
+                deskStatusText.setText("Available For Request");
+                deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figma_orange));
+            }
+
             select.setVisibility(View.VISIBLE);
             dateBlock.setVisibility(View.GONE);
         } else {
@@ -2033,7 +2048,7 @@ public class BookFragment extends Fragment implements
             commentRegistration.setHint("Comments");
             tvComments.setText("Comments");
             capacitylayout.setVisibility(View.GONE);
-            chipGroup.setVisibility(View.GONE);
+            chipGroup.setVisibility(View.INVISIBLE);
             commentRegistration.setVisibility(View.GONE);
             tvComments.setVisibility(View.GONE);
 
@@ -2123,7 +2138,7 @@ public class BookFragment extends Fragment implements
             tvComments.setText("Regitration Number");
             if (profileData != null)
                 commentRegistration.setText(profileData.getVehicleRegNumber());
-            chipGroup.setVisibility(View.GONE);
+            chipGroup.setVisibility(View.INVISIBLE);
             capacitylayout.setVisibility(View.GONE);
             if(newEditStatus.equalsIgnoreCase("new") ||newEditStatus.equalsIgnoreCase("new_deep_link")
                     || newEditStatus.equalsIgnoreCase("request")){
