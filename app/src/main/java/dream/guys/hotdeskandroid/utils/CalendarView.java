@@ -50,9 +50,11 @@ public class CalendarView extends LinearLayout
     private Calendar currentDate = Calendar.getInstance();
     private EventHandler eventHandler = null;
     private LinearLayout header;
-    private ImageView btnPrev;
-    private ImageView btnNext;
+    // private ImageView btnPrev;
+    //  private ImageView btnNext;
     private TextView txtDate;
+    private TextView prevMonth;
+    private TextView nextMonth;
     private GridView grid;
     public OnPrevNxtInClickable onPrevNxtInClickable;
     String  currentDay, currentMonth;
@@ -97,10 +99,12 @@ public class CalendarView extends LinearLayout
 
     private void assignUiElements(Context context) {
         header = (LinearLayout) findViewById(R.id.calendar_header);
-        btnPrev = (ImageView) findViewById(R.id.calendar_prev_button);
-        btnNext = (ImageView) findViewById(R.id.calendar_next_button);
+//        btnPrev = (ImageView) findViewById(R.id.calendar_prev_button);
+//        btnNext = (ImageView) findViewById(R.id.calendar_next_button);
         txtDate = (TextView) findViewById(R.id.calendar_date_display);
         grid = (GridView) findViewById(R.id.calendar_grid);
+        prevMonth = (TextView) findViewById(R.id.prevMonth);
+        nextMonth = (TextView) findViewById(R.id.nextMonth);
 
         if (Utils.isThemeChanged(context)) {
             header.setBackgroundResource(R.drawable.btn_bg_app_theme);
@@ -110,7 +114,7 @@ public class CalendarView extends LinearLayout
     }
 
     private void assignClickHandlers() {
-        btnNext.setOnClickListener(new OnClickListener() {
+        nextMonth.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 currentDate.add(Calendar.MONTH, 1);
@@ -120,7 +124,7 @@ public class CalendarView extends LinearLayout
             }
         });
 
-        btnPrev.setOnClickListener(new OnClickListener() {
+        prevMonth.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -187,8 +191,17 @@ public class CalendarView extends LinearLayout
         grid.setAdapter(new CalendarAdapter(getContext(), cells,
                 events, currentDate, selectedPosition));
 
-        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+//        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+        SimpleDateFormat sdf = (new SimpleDateFormat("MMMM yyyy"));
         txtDate.setText(sdf.format(currentDate.getTime()));
+
+        Calendar cal = currentDate;
+        cal.add(Calendar.MONTH, -1);
+        prevMonth.setText(new SimpleDateFormat("MMMM yyyy").format(cal.getTime()));
+        Calendar cal1 = currentDate;
+        cal1.add(Calendar.MONTH, +2);
+        nextMonth.setText(new SimpleDateFormat("MMMM yyyy").format(cal1.getTime()));
+        cal1.add(Calendar.MONTH, -1);
 
 //        int season = monthSeason[month];
 //        int color = rainbow[season];
