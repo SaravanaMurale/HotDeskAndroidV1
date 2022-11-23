@@ -256,13 +256,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rectangle_greybg_with_corner"
-                    android:backgroundTint="@color/figmaBlueDisabled"
+                    android:backgroundTint="@color/bg_grey"
                     android:layout_alignParentEnd="true"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:layout_toEndOf="@+id/tv_comment"
                     android:gravity="end"
                     android:hint="None"
+                    android:textColorHint="@color/figmaBlueDisabled"
+                    android:textColor="@color/figmaBlue"
                     android:textSize="18sp"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
@@ -402,6 +404,8 @@
                     android:id="@+id/user_status_dot"
                     android:layout_width="@dimen/_10sdp"
                     android:layout_height="@dimen/_10sdp"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
                     android:background="@drawable/bg_circle_vector"
                     android:backgroundTint="@color/figmaLiteGreen" />
 
