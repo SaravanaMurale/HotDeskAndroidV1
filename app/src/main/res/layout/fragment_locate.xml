@@ -483,6 +483,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:text="MyTeam"
                     android:textColor="@color/black"
+                    android:textStyle="bold"
                     android:textSize="@dimen/_15sdp" />
 
                 <TextView
@@ -492,8 +493,9 @@
                     android:layout_below="@id/tvMyTeam"
                     android:text="PMO Office"
                     android:textColor="@color/figmaBlack"
-                    android:textSize="@dimen/_9sdp"
-                    android:visibility="gone" />
+
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:visibility="visible" />
 
                 <TextView
                     android:id="@+id/tvAllTeams"
@@ -520,7 +522,7 @@
                 android:drawableLeft="@drawable/search_1px"
                 android:hint="   Search"
                 android:paddingLeft="@dimen/_10sdp"
-                android:paddingTop="@dimen/_5sdp"
+                android:paddingTop="@dimen/_7sdp"
                 android:paddingBottom="@dimen/_5sdp" />
 
             <!--RecyclerView-->

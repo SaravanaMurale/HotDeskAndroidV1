@@ -23,8 +23,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_3sdp"
-                android:text="Edit Your Booking"
-                android:textSize="26sp"
+                android:text="Edit your booking"
+                android:textSize="20sp"
                 android:theme="@style/TextBold" />
 
             <TextView
@@ -115,7 +115,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text=""
-                    android:textSize="18sp"
+                    android:textSize="15sp"
                     android:textColor="@color/figmaBlueText"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
@@ -151,7 +151,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text=""
-                    android:textSize="18sp"
+                    android:textSize="15sp"
                     android:textColor="@color/figmaBlueText"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
@@ -223,7 +223,7 @@
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="None"
                     android:textSize="18sp"
-                    android:textColor="@color/figmaBlueDisabled"
+                    android:textColor="@color/figmaBlueText"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 
@@ -282,7 +282,7 @@
                     android:id="@+id/ll_desk_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:orientation="horizontal">
 
                     <RelativeLayout
@@ -322,8 +322,7 @@
                             android:layout_marginVertical="@dimen/_3sdp"
                             android:text="location1, location 2"
                             android:textSize="14sp"
-                            android:textColor="@color/figmaBlack"
-                            android:theme="@style/TextRegular" />
+                            android:textColor="@color/figmaBlack" />
 
                         <LinearLayout
                             android:id="@+id/capacity_layout"
@@ -369,8 +368,8 @@
                             android:layout_marginTop="@dimen/_10sdp"
                             android:layout_marginEnd="@dimen/_5sdp"
                             android:text="Change"
-                            android:textSize="18sp"
                             android:textColor="@color/figmaBlueText"
+                            android:textSize="18sp"
                             android:theme="@style/TextBold" />
                     </RelativeLayout>
                 </LinearLayout>
@@ -385,7 +384,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:layout_marginVertical="@dimen/_5sdp">
+                        android:layout_marginVertical="@dimen/_3sdp">
 
                         <!-- Chips can be declared here, or added dynamically. -->
 
@@ -395,7 +394,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/list_item"
-                        android:layout_marginVertical="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
                         android:layout_marginStart="@dimen/_30sdp"
                         android:gravity="center_vertical"
                         android:visibility="visible"

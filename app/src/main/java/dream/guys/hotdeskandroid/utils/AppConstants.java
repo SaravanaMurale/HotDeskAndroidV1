@@ -44,6 +44,7 @@ public class AppConstants {
     public static final String SUB_PARENT_ID="SUB_PARENT_ID";
     public static final String FLOOR_POSITION="FLOOR_POSITION";
     public static final String FLOOR_SELECTED_STATUS="FLOOR_SELECTED_STATUS";
+    public static final String VEHICLE_NUMBER="VEHICLE_NUMBER";
 
     public static final String FLOOR_ICON_BLINK="FLOOR_ICON_BLINK";
 

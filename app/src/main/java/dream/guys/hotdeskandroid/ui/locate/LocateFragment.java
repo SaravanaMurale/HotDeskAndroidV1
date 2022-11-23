@@ -569,6 +569,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void getMyTeamMemberData() {
 
+        binding.tvPMOOffice.setText(SessionHandler.getInstance().get(getContext(),AppConstants.CURRENT_TEAM));
 
         String startTime = binding.locateStartTime.getText().toString() + ":00.000Z";
 
@@ -3557,7 +3558,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         });
 
-        bookingName.setText("Car Booking");
+        bookingName.setText("Booking Parking");
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvCarEditList.setLayoutManager(linearLayoutManager);
@@ -4744,8 +4745,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             bookingVechicleRegtBlock.setVisibility(View.GONE);
             getAvaliableDeskDetails(null, id);
         } else if (code.equals("5")) {
+            bookingDateBlock.setVisibility(View.GONE);
             bookingCommentBlock.setVisibility(View.GONE);
             bookingVechicleRegtBlock.setVisibility(View.VISIBLE);
+            String vehicleNumber=SessionHandler.getInstance().get(getContext(),AppConstants.VEHICLE_NUMBER);
+            if(vehicleNumber!=null){
+                etVehicleReg.setText(vehicleNumber);
+            }
             getParkingSlotId(selctedCode);
         }
 
@@ -6737,18 +6743,22 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     @Override
     public void onCarEditClick(CarParkingForEditResponse.CarParkBooking carParkBooking, String selectedCode) {
 
-        TextView startTime, endTime, date, editBookingBack;
-        LinearLayout status_check_layout;
+        TextView startTime, endTime, date, editBookingBack,tv_location_details;
+        LinearLayout status_check_layout,capacity_layout;
         RelativeLayout selectDeskEditBlock;
+        ChipGroup list_item;
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_booking,
                 new RelativeLayout(getContext()))));
 
+        list_item=bottomSheetDialog.findViewById(R.id.list_item);
+        tv_location_details=bottomSheetDialog.findViewById(R.id.tv_location_details);
         startTime = bottomSheetDialog.findViewById(R.id.start_time);
         endTime = bottomSheetDialog.findViewById(R.id.end_time);
         date = bottomSheetDialog.findViewById(R.id.date);
         deskRoomName = bottomSheetDialog.findViewById(R.id.tv_desk_room_name);
+        capacity_layout=bottomSheetDialog.findViewById(R.id.capacity_layout);
         TextView continueEditBook = bottomSheetDialog.findViewById(R.id.editBookingContinue);
         LinearLayout llDeskLayout = bottomSheetDialog.findViewById(R.id.ll_desk_layout);
         status_check_layout=bottomSheetDialog.findViewById(R.id.status_check_layout);
@@ -6765,16 +6775,36 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         carSelectedName.setText(selectedCode);
 
 
+        //New...
+        String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
+        String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
+        String CountryName = SessionHandler.getInstance().get(getContext(), AppConstants.COUNTRY_NAME);
+        if (CountryName == null && buildingName == null && floorName == null) {
+
+            tv_location_details.setText(buildingName + "," + floorName);
+            //meetingRoomLocation.setText(buildingName + "," + floorName);
+
+        } else {
+            tv_location_details.setText(CountryName + "," + buildingName + "," + floorName);
+            //meetingRoomLocation.setText(CountryName + "," + buildingName + "," + floorName);
+
+        }
+
+
+        list_item.setVisibility(View.GONE);
+        capacity_layout.setVisibility(View.GONE);
+        select.setVisibility(View.GONE);
         repeatBlock.setVisibility(View.GONE);
         teamsBlock.setVisibility(View.GONE);
-        llDeskLayout.setVisibility(View.GONE);
-        status_check_layout.setVisibility(View.GONE);
-        selectDeskEditBlock.setVisibility(View.GONE);
+        llDeskLayout.setVisibility(View.VISIBLE);
+        status_check_layout.setVisibility(View.VISIBLE);
+        selectDeskEditBlock.setVisibility(View.VISIBLE);
 
         etBookedBy.setVisibility(View.GONE);
         //etBookedBy.setText(carParkBooking.getBookedForUserName());
         tvComments.setVisibility(View.GONE);
         //tvComments.setText("Registration number");
+        System.out.println("REceivedCarRegNumber "+carParkBooking.getVehicleRegNumber());
         commentRegistration.setText(carParkBooking.getVehicleRegNumber());
 
 
