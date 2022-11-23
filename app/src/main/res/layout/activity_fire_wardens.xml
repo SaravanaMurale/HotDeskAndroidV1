@@ -165,7 +165,7 @@
             android:id="@+id/headFire"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Fire Warden"
+            android:text="Your Fire Warden"
             android:theme="@style/TextBold"
             />
         <TextView

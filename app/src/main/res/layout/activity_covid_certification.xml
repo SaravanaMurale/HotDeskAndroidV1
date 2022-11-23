@@ -41,7 +41,7 @@
             android:id="@+id/profile_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Covid self Certification"
+            android:text="Covid Self-Certification"
             android:layout_marginLeft="@dimen/_10sdp"
             android:textColor="@color/black"
             android:theme="@style/TextBold"
@@ -142,13 +142,12 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 >
 
-                <Button
+                <TextView
                     android:id="@+id/covidCancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/cancel"
                     android:textAllCaps="false"
-                    android:background="@drawable/button_round_corner"
                     android:theme="@style/TextBoldButton"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="@dimen/_5sdp"

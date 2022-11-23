@@ -456,7 +456,7 @@ private void callSearchRecyclerData(String searchText,int selID) {
         bookindata = Utils.getBookingPageScreenData(ShowProfileActivity.this);
         global=Utils.getGlobalScreenData(ShowProfileActivity.this);
 
-        binding.tvTitle.setText(appKeysPage.getProfile());
+        //binding.tvTitle.setText(appKeysPage.getProfile());
         binding.titleTeam.setText(appKeysPage.getTeam());
         binding.scheduleProfile.setText(appKeysPage.getSchedule());
         binding.titleUpcoming.setText(appKeysPage.getUpcomingBookings());

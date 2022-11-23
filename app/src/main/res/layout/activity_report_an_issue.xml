@@ -14,11 +14,11 @@
 
 
         <LinearLayout
+            android:id="@+id/tool_bar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:id="@+id/tool_bar">
+            android:orientation="horizontal">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -36,29 +36,28 @@
             </RelativeLayout>
 
             <ImageView
+                android:id="@+id/profile_update"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
-                android:src="@drawable/report"
-                android:id="@+id/profile_update"
-                />
+                android:src="@drawable/report" />
+
             <TextView
                 android:id="@+id/profile_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/report_an_issue"
                 android:layout_marginLeft="@dimen/_10sdp"
-                android:theme="@style/TextBold"
-                android:textSize="@dimen/_15sdp"/>
+                android:text="@string/report_an_issue"
+                android:textSize="@dimen/_15sdp"
+                android:theme="@style/TextBold" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_10sdp"
-            >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/issue_content"
@@ -66,23 +65,23 @@
                 android:layout_height="wrap_content"
                 android:text="@string/create_issue"
                 android:textSize="@dimen/_15sdp"
-                android:theme="@style/TextBold"/>
+                android:theme="@style/TextBold" />
 
 
             <TextView
                 android:id="@+id/txt_locate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:text="@string/location"
                 android:textSize="@dimen/_16sdp"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:theme="@style/TextBold" />
 
             <LinearLayout
+                android:id="@+id/location_lay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:id="@+id/location_lay"
                 android:weightSum="2">
 
                 <TextView
@@ -90,26 +89,26 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_30sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    android:paddingStart="@dimen/_5sdp"
-                    android:gravity="center_vertical"
-                    android:theme="@style/TextRegular"
-                    android:backgroundTint="@color/figmaBgGrey"
+                    android:layout_weight="1"
                     android:background="@drawable/button_white_bg"
+                    android:backgroundTint="@color/figmaBgGrey"
                     android:enabled="true"
-                    android:layout_weight="1"/>
+                    android:gravity="center_vertical"
+                    android:paddingStart="@dimen/_5sdp"
+                    android:theme="@style/TextRegular" />
 
                 <Spinner
                     android:id="@+id/etDesk"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_30sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:theme="@style/TextBold"
-                    android:paddingStart="@dimen/_5sdp"
-                    android:backgroundTint="@color/figmaBgGrey"
-                    android:background="@drawable/button_white_bg"
-                    android:layout_weight="1"
                     android:layout_gravity="center_vertical"
-                    android:gravity="center_vertical"/>
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_white_bg"
+                    android:backgroundTint="@color/figmaBgGrey"
+                    android:gravity="center_vertical"
+                    android:paddingStart="@dimen/_5sdp"
+                    android:theme="@style/TextBold" />
 
             </LinearLayout>
 
@@ -118,57 +117,59 @@
                 android:id="@+id/txt_pastBooking"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/select_past"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:theme="@style/TextBold"
-                android:textSize="@dimen/_16sdp" />
+                android:text="@string/select_past"
+                android:textSize="@dimen/_16sdp"
+                android:theme="@style/TextBold" />
 
             <EditText
                 android:id="@+id/reportLocation"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
-                android:backgroundTint="@color/figmaBgGrey"
-                android:background="@drawable/button_white_bg"/>
+                android:background="@drawable/button_white_bg"
+                android:backgroundTint="@color/figmaBgGrey" />
 
             <TextView
                 android:id="@+id/txt_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/report_select_date"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:theme="@style/TextBold"
-                android:textSize="@dimen/_16sdp"/>
+                android:text="@string/report_select_date"
+                android:textSize="@dimen/_16sdp"
+                android:theme="@style/TextBold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="2">
+
                 <TextView
                     android:id="@+id/reportFromDate"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_30sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_white_bg"
+                    android:backgroundTint="@color/figmaBgGrey"
+                    android:drawableRight="@drawable/locate_calender"
+                    android:gravity="center_vertical"
                     android:hint="From"
                     android:paddingStart="@dimen/_5sdp"
-                    android:gravity="center_vertical"
-                    android:backgroundTint="@color/figmaBgGrey"
-                    android:background="@drawable/button_white_bg"
-                    android:layout_weight="1"
-                    android:theme="@style/TextRegular"
-                    android:drawableRight="@drawable/locate_calender"
-                    android:paddingEnd="@dimen/_4sdp"/>
+                    android:paddingEnd="@dimen/_4sdp"
+                    android:theme="@style/TextRegular" />
+
                 <TextView
                     android:id="@+id/reportFromTime"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_30sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_white_bg"
+                    android:backgroundTint="@color/figmaBgGrey"
+                    android:gravity="center_vertical"
                     android:hint="From Time"
                     android:paddingStart="@dimen/_5sdp"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:gravity="center_vertical"
-                    android:theme="@style/TextRegular"
-                    android:backgroundTint="@color/figmaBgGrey"
-                    android:background="@drawable/button_white_bg"
-                    android:layout_weight="1"/>
+                    android:theme="@style/TextRegular" />
             </LinearLayout>
 
             <LinearLayout
@@ -176,33 +177,35 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="2">
+
                 <TextView
                     android:id="@+id/reportToDate"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_30sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_white_bg"
+                    android:backgroundTint="@color/figmaBgGrey"
+                    android:drawableRight="@drawable/locate_calender"
+                    android:gravity="center_vertical"
                     android:hint="To"
                     android:paddingStart="@dimen/_5sdp"
-                    android:gravity="center_vertical"
-                    android:theme="@style/TextRegular"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:backgroundTint="@color/figmaBgGrey"
-                    android:background="@drawable/button_white_bg"
-                    android:layout_weight="1"
-                    android:drawableRight="@drawable/locate_calender"
-                    android:paddingEnd="@dimen/_4sdp"/>
+                    android:paddingEnd="@dimen/_4sdp"
+                    android:theme="@style/TextRegular" />
+
                 <TextView
                     android:id="@+id/reportToTime"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_30sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_white_bg"
+                    android:backgroundTint="@color/figmaBgGrey"
+                    android:gravity="center_vertical"
                     android:hint="To Time"
                     android:paddingStart="@dimen/_5sdp"
-                    android:theme="@style/TextRegular"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:gravity="center_vertical"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:backgroundTint="@color/figmaBgGrey"
-                    android:background="@drawable/button_white_bg"
-                    android:layout_weight="1"/>
+                    android:theme="@style/TextRegular" />
             </LinearLayout>
 
 
@@ -210,18 +213,19 @@
                 android:id="@+id/txt_report"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/desc"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:theme="@style/TextBold"
-                android:textSize="@dimen/_16sdp" />
+                android:text="@string/desc"
+                android:textSize="@dimen/_16sdp"
+                android:theme="@style/TextBold" />
 
             <EditText
                 android:id="@+id/reportDescr"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
-                android:theme="@style/TextRegular"
+                android:hint="Topic"
+                android:background="@drawable/button_white_bg"
                 android:backgroundTint="@color/figmaBgGrey"
-                android:background="@drawable/button_white_bg"/>
+                android:theme="@style/TextRegular" />
 
 
         </LinearLayout>
@@ -230,38 +234,38 @@
             android:id="@+id/cb_anonymous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
             android:text="Anonymous"
             android:theme="@style/TextRegular"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="@dimen/_5sdp"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
         <CalendarView
             android:id="@+id/calendar_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_35sdp"/>
+            android:layout_marginTop="@dimen/_35sdp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
             android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginEnd="@dimen/_20sdp">
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp">
 
-            <Button
+            <TextView
                 android:id="@+id/reportCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:text="@string/cancel"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
                 android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@color/white"
+                android:backgroundTint="@color/white"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/cancel"
                 android:theme="@style/TextBoldButton"
-                android:background="@drawable/button_round_corner"
-                android:backgroundTint="@color/figmaBlueText"
-                android:padding="@dimen/_5sdp" />
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
 
             <Button
                 android:id="@+id/reportSubmit"
@@ -269,21 +273,20 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
-                android:textColor="@color/white"
-                android:textAllCaps="false"
                 android:layout_marginBottom="@dimen/_5sdp"
-                android:theme="@style/TextBoldButton"
                 android:background="@drawable/button_round_corner"
                 android:backgroundTint="@color/figmaBlueText"
                 android:padding="@dimen/_5sdp"
                 android:text="@string/submit"
-                android:textAlignment="gravity" />
+                android:textAlignment="gravity"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:theme="@style/TextBoldButton" />
 
 
         </RelativeLayout>
 
 
-
     </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+</androidx.core.widget.NestedScrollView>
