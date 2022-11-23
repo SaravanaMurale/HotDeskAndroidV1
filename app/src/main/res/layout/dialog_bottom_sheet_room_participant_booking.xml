@@ -27,44 +27,45 @@
                 android:text="Room Booking"
                 android:textSize="26sp"
                 android:theme="@style/TextBold" />
+
             <LinearLayout
                 android:id="@+id/linera"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_below="@id/select_desk"
-                android:layout_marginBottom="@dimen/_10sdp"
-                >
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/sheet_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:text="Select Desk"
                     android:layout_gravity="center_vertical"
+                    android:text="Select Desk"
                     android:textColor="@color/figmaBlack"
                     android:textSize="14sp"
                     android:theme="@style/TextRegular" />
+
                 <ImageView
                     android:layout_width="@dimen/_5sdp"
                     android:layout_height="@dimen/_5sdp"
-                    android:src="@drawable/dot"
                     android:layout_gravity="center_vertical"
-                    />
+                    android:src="@drawable/dot" />
+
                 <TextView
                     android:id="@+id/sheet_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:text=""
-                    android:layout_gravity="center_vertical"
                     android:textColor="@color/figmaBlack"
                     android:textSize="14sp"
                     android:theme="@style/TextRegular" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/capacity_layout"
                 android:layout_width="match_parent"
@@ -95,13 +96,12 @@
                     android:theme="@style/TextRegular" />
             </LinearLayout>
 
-        <com.google.android.material.chip.ChipGroup
+            <com.google.android.material.chip.ChipGroup
                 android:id="@+id/room_top_chip_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:layout_marginVertical="@dimen/_5sdp"
-                android:layout_below="@id/ll_desk_layout_room">
+                android:layout_below="@id/ll_desk_layout_room"
+                android:layout_marginVertical="@dimen/_5sdp">
 
                 <!-- Chips can be declared here, or added dynamically. -->
 
@@ -121,8 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Description:"
-                android:theme="@style/TextRegular"
-                />
+                android:theme="@style/TextRegular" />
 
 
             <RelativeLayout
@@ -281,24 +280,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone" />
+
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/externalAttendeesChipGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                />
+                android:visibility="gone" />
 
 
             <EditText
                 android:id="@+id/externalAttendees"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rectangle_greybg_with_corner"
                 android:layout_marginVertical="@dimen/_5sdp"
-                android:paddingHorizontal="@dimen/_15sdp"
-                android:paddingVertical="@dimen/_10sdp"
+                android:background="@drawable/rectangle_greybg_with_corner"
                 android:hint="externalattendees"
-                />
+                android:paddingHorizontal="@dimen/_15sdp"
+                android:paddingVertical="@dimen/_10sdp" />
 
 
             <EditText

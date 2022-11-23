@@ -265,7 +265,7 @@
                     android:drawableRight="@drawable/locate_location"
                     android:drawableTint="@color/figmaBlack"
                     android:gravity="center_vertical"
-                    android:hint="Choose Location"
+                    android:hint="choose location from the list"
                     android:padding="@dimen/_5sdp"
                     android:textColorHint="@color/figmaBlack"
                     android:textSize="@dimen/_10sdp" />

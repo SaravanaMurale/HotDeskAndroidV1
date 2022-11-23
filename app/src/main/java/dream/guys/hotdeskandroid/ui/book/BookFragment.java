@@ -299,6 +299,8 @@ public class BookFragment extends Fragment implements
 
     List<MeetingListToEditResponse.Attendees> attendeesListForEdit;
 
+    int defaultLocationcheck=0;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -317,6 +319,7 @@ public class BookFragment extends Fragment implements
         }
 
         selectedTeamId = SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID);
+//        loadDefaultLocation();
         setLanguage();
 
         checkVeichleReg();
@@ -465,6 +468,74 @@ public class BookFragment extends Fragment implements
         });
 
         return root;
+    }
+
+    private void loadDefaultLocation() {
+
+        ProgressDialog.touchLock(getContext(), getActivity());
+
+
+        //To load default location-saved in login Activity
+        int parentIdCheck =SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID_CHECK);
+        if(parentIdCheck>0 && defaultLocationcheck==0){
+            int floorPositionCheck=SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION_CHECK);
+
+            SessionHandler.getInstance().saveInt(getContext(),AppConstants.PARENT_ID,parentIdCheck);
+            SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION,floorPositionCheck);
+
+
+            //To set Default location
+            String countryCheck=SessionHandler.getInstance().get(getContext(),AppConstants.COUNTRY_NAME_CHECK);
+            String buildingCheck=SessionHandler.getInstance().get(getContext(),AppConstants.BUILDING_CHECK);
+            String floorCheck=SessionHandler.getInstance().get(getContext(),AppConstants.FLOOR_CHECK);
+            String fullPathCheck=SessionHandler.getInstance().get(getContext(),AppConstants.FULLPATHLOCATION_CHECK);
+
+
+            SessionHandler.getInstance().save(getContext(), AppConstants.COUNTRY_NAME,countryCheck);
+            SessionHandler.getInstance().save(getContext(), AppConstants.BUILDING,buildingCheck);
+            SessionHandler.getInstance().save(getContext(), AppConstants.FLOOR,floorCheck);
+            SessionHandler.getInstance().save(getContext(), AppConstants.FULLPATHLOCATION,fullPathCheck);
+
+        }
+
+        int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+        ProgressDialog.clearTouchLock(getContext(), getActivity());
+        if (parentId > 0) {
+            //Disable touch Screen
+            ProgressDialog.touchLock(getContext(), getActivity());
+
+            //Set Selected Floor In SearchView
+            String CountryName = SessionHandler.getInstance().get(getContext(), AppConstants.COUNTRY_NAME);
+            String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
+            String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
+            String fullPathLocation = SessionHandler.getInstance().get(getContext(), AppConstants.FULLPATHLOCATION);
+
+            if (CountryName == null && buildingName == null && floorName == null && fullPathLocation == null) {
+                binding.searchGlobal.setHint("choose location from the list");
+            } else {
+                if (fullPathLocation == null) {
+                    binding.searchGlobal.setText(CountryName + "," + buildingName + "," + floorName);
+                } else {
+                    binding.searchGlobal.setText(fullPathLocation);
+                }
+            }
+
+
+            initLoadFloorDetails(canvasss);
+            getAvaliableDeskDetails("3",calSelectedDate);
+            /*
+            //Used For Desk Avaliability Checking
+            getAvaliableDeskDetails(null, 0);
+
+            //CarChecking
+            doInitCarAvalibilityHere(parentId);
+
+            //Meeting Checking
+            doInitMeetingAvalibilityHere(parentId, canvasDrawStatus);*/
+
+        } else {
+            Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void getActiveTeams() {
@@ -1758,7 +1829,7 @@ public class BookFragment extends Fragment implements
         addNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedTeamId = SessionHandler.getInstance().getInt(context,AppConstants.TEAM_ID);
+//                selectedTeamId = SessionHandler.getInstance().getInt(context,AppConstants.TEAM_ID);
                 editBookingDetailsGlobal = new EditBookingDetails();
                 loop:
                 for (int i=0; i<bookingForEditResponseDesk.size();i++){
@@ -1787,7 +1858,6 @@ public class BookFragment extends Fragment implements
                         editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
                         editBookingDetailsGlobal.setDeskCode(bookingForEditResponseDesk.get(0).getDeskCode());
                         editBookingDetailsGlobal.setDesktId(bookingForEditResponseDesk.get(0).getTeamDeskId());
-
                         editBookingDetailsGlobal.setDate(Utils.convertStringToDateFormet(calSelectedDate));
                         editBookingDetailsGlobal.setCalId(0);
                         editBookingDetailsGlobal.setDeskStatus(0);
@@ -2306,7 +2376,6 @@ public class BookFragment extends Fragment implements
                                 }
                                 if (newEditStatus.equalsIgnoreCase("request") ||
                                         (newEditStatus.equalsIgnoreCase("edit") && editDeskBookingDetails.getRequestedTeamId()>0
-                                                && editDeskBookingDetails.getRequestedTeamDeskId()!= editDeskBookingDetails.getDesktId()
                                                 )){
                                     jsonChangesObject.addProperty("requestedTeamDeskId",editDeskBookingDetails.getDesktId());
                                     jsonChangesObject.addProperty("requestedTeamId",editDeskBookingDetails.getDeskTeamId());
@@ -3503,7 +3572,7 @@ public class BookFragment extends Fragment implements
 
 
 //        editBookingUsingBottomSheet(editDeskBookingDetails,1,0,"edit");
-        if (editDeskBookingDetails.getRequestedTeamId() > 0 || editDeskBookingDetails.getRequestedTeamDeskId()>0){
+        if (editDeskBookingDetails.getRequestedTeamId() > 0){
             getRequestDeskDeskList(editDeskBookingDetails,"edit");
         } else{
             editBookingUsingBottomSheet(editDeskBookingDetails,1,0,"edit");
@@ -4456,6 +4525,7 @@ public class BookFragment extends Fragment implements
                     //removes desk in layout
 //                    binding.firstLayout.removeAllViews();
 
+                    defaultLocationcheck = 1;
                     initLoadFloorDetails(canvasss);
                     getAvaliableDeskDetails("3",calSelectedDate);
                     bottomSheetDialog.dismiss();
@@ -4762,7 +4832,7 @@ public class BookFragment extends Fragment implements
             String fullPathLocation = SessionHandler.getInstance().get(getContext(), AppConstants.FULLPATHLOCATION);
 
             if (CountryName == null && buildingName == null && floorName == null && fullPathLocation==null) {
-                binding.searchGlobal.setHint("Choose Location");
+                binding.searchGlobal.setHint("choose location from the list");
             } else {
                 if(fullPathLocation == null) {
                     binding.searchGlobal.setText(CountryName + "," + buildingName + "," + floorName);

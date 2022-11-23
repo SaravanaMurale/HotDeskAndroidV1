@@ -592,7 +592,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     }
 
     private void loadUserImage() {
-        if (Utils.isNetworkAvailable(getActivity())) {
+        if (Utils.isNetworkAvailable(activityContext)) {
 
 //            dialog= ProgressDialog.showProgressBar(getContext());
 
@@ -611,21 +611,21 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         try {
                             if (imageResponse.getImage()!=null && !imageResponse.getImage().equalsIgnoreCase("") && !imageResponse.getImage().isEmpty()){
                                 String cleanImage = imageResponse.getImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");
-                                SessionHandler.getInstance().save(getActivity(), AppConstants.USERIMAGE
+                                SessionHandler.getInstance().save(activityContext, AppConstants.USERIMAGE
                                         , cleanImage);
                                 byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
                                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                                 userProfile.setImageBitmap(decodedByte);
                             } else {
-                                userProfile.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.avatar));
+                                userProfile.setImageDrawable(activityContext.getResources().getDrawable(R.drawable.avatar));
                             }
                         }catch (Exception e){
-                            userProfile.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.avatar));
+                            userProfile.setImageDrawable(activityContext.getResources().getDrawable(R.drawable.avatar));
                         }
 
                     }else if(response.code()==401){
                         Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
-                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                        SessionHandler.getInstance().saveBoolean(activityContext, AppConstants.LOGIN_CHECK,false);
 //                        Utils.finishAllActivity(getContext());
                     }
                 }
