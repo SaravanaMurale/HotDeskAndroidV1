@@ -154,6 +154,7 @@
                     android:backgroundTint="@color/figmaBgGrey"
                     android:background="@drawable/button_white_bg"
                     android:layout_weight="1"
+                    android:theme="@style/TextRegular"
                     android:drawableRight="@drawable/locate_calender"
                     android:paddingEnd="@dimen/_4sdp"/>
                 <TextView
@@ -164,6 +165,7 @@
                     android:paddingStart="@dimen/_5sdp"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:gravity="center_vertical"
+                    android:theme="@style/TextRegular"
                     android:backgroundTint="@color/figmaBgGrey"
                     android:background="@drawable/button_white_bg"
                     android:layout_weight="1"/>
@@ -181,6 +183,7 @@
                     android:hint="To"
                     android:paddingStart="@dimen/_5sdp"
                     android:gravity="center_vertical"
+                    android:theme="@style/TextRegular"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:backgroundTint="@color/figmaBgGrey"
                     android:background="@drawable/button_white_bg"
@@ -193,6 +196,7 @@
                     android:layout_height="@dimen/_30sdp"
                     android:hint="To Time"
                     android:paddingStart="@dimen/_5sdp"
+                    android:theme="@style/TextRegular"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:gravity="center_vertical"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -215,6 +219,7 @@
                 android:id="@+id/reportDescr"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
+                android:theme="@style/TextRegular"
                 android:backgroundTint="@color/figmaBgGrey"
                 android:background="@drawable/button_white_bg"/>
 
@@ -226,6 +231,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Anonymous"
+            android:theme="@style/TextRegular"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="@dimen/_5sdp"/>
 
@@ -243,27 +249,31 @@
             android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_20sdp">
 
-            <TextView
+            <Button
                 android:id="@+id/reportCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:text="@string/cancel"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:layout_marginBottom="@dimen/_5sdp"
-                android:background="@drawable/button_white_bg"
+                android:theme="@style/TextBoldButton"
+                android:background="@drawable/button_round_corner"
                 android:backgroundTint="@color/figmaBlueText"
                 android:padding="@dimen/_5sdp" />
 
-            <TextView
+            <Button
                 android:id="@+id/reportSubmit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
                 android:textColor="@color/white"
+                android:textAllCaps="false"
                 android:layout_marginBottom="@dimen/_5sdp"
-                android:background="@drawable/button_white_bg"
+                android:theme="@style/TextBoldButton"
+                android:background="@drawable/button_round_corner"
                 android:backgroundTint="@color/figmaBlueText"
                 android:padding="@dimen/_5sdp"
                 android:text="@string/submit"

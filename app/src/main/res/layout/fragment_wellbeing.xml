@@ -17,10 +17,11 @@
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="118dp"
+            android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:text="@string/wellbeing"
             android:textSize="26dp"
+            android:theme="@style/TextBold"
             android:textColor="@color/black"
             android:layout_marginTop="@dimen/_20sdp"
             android:textStyle="bold"
@@ -84,7 +85,8 @@
                    android:layout_centerInParent="true"
                    android:text="@string/covid"
                    android:textColor="@color/black"
-                   android:textSize="14dp" />
+                   android:textSize="14dp"
+                   android:theme="@style/TextRegular" />
 
            </RelativeLayout>
 
@@ -132,6 +134,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/fire_wardens"
+                        android:theme="@style/TextRegular"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="@dimen/_8sdp"
                         android:textColor="@color/black"
@@ -178,6 +181,7 @@
                         />
 
                     <TextView
+                        android:theme="@style/TextRegular"
                         android:id="@+id/fireaid"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -228,6 +232,7 @@
                         />
 
                     <TextView
+                        android:theme="@style/TextRegular"
                         android:id="@+id/mental_health"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -290,11 +295,11 @@
                    android:id="@+id/img_training"
                    android:layout_width="@dimen/_25sdp"
                    android:layout_height="@dimen/_25sdp"
-                   android:layout_marginRight="@dimen/_20sdp"
+                   android:layout_centerInParent="true"
+                   android:layout_marginRight="@dimen/_12sdp"
                    android:layout_toLeftOf="@+id/tvTraining"
                    android:padding="@dimen/_2sdp"
-                   android:src="@drawable/training"
-                   />
+                   android:src="@drawable/training" />
 
                <TextView
                    android:id="@+id/tvTraining"
@@ -303,7 +308,8 @@
                    android:layout_centerInParent="true"
                    android:text="@string/trainging"
                    android:textColor="@color/black"
-                   android:textSize="14dp" />
+                   android:textSize="14dp"
+                   android:theme="@style/TextRegular" />
 
 
 
@@ -345,7 +351,7 @@
                    android:id="@+id/img_events"
                    android:layout_width="@dimen/_25sdp"
                    android:layout_height="@dimen/_25sdp"
-                   android:layout_marginRight="@dimen/_20sdp"
+                   android:layout_marginRight="@dimen/_12sdp"
                    android:layout_toLeftOf="@+id/tvEvents"
                    android:padding="@dimen/_2sdp"
                    android:src="@drawable/training"
@@ -353,6 +359,7 @@
                    />
 
                <TextView
+                        android:theme="@style/TextRegular"
                    android:id="@+id/tvEvents"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
@@ -401,7 +408,7 @@
                    android:layout_height="@dimen/_30sdp"
                    android:src="@drawable/healthtips"
                    android:layout_toLeftOf="@+id/tvHealthTips"
-                   android:layout_marginRight="@dimen/_20sdp"
+                   android:layout_marginRight="@dimen/_12sdp"
                    />
 
                <TextView
@@ -411,7 +418,8 @@
                    android:layout_centerInParent="true"
                    android:text="@string/health_tips"
                    android:textColor="@color/black"
-                   android:textSize="14dp" />
+                   android:textSize="14dp"
+                   android:theme="@style/TextRegular" />
 
 
 
@@ -454,7 +462,7 @@
                    android:id="@+id/imgMenu"
                    android:layout_width="@dimen/_25sdp"
                    android:layout_height="@dimen/_25sdp"
-                   android:layout_marginRight="@dimen/_20sdp"
+                   android:layout_marginRight="@dimen/_12sdp"
                    android:layout_toLeftOf="@+id/tvMenu"
                    android:padding="@dimen/_2sdp"
                    android:src="@drawable/notification_icon"
@@ -462,6 +470,7 @@
                    />
 
                <TextView
+                        android:theme="@style/TextRegular"
                    android:id="@+id/tvMenu"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
@@ -511,7 +520,7 @@
                    android:id="@+id/imgNotice"
                    android:layout_width="@dimen/_25sdp"
                    android:layout_height="@dimen/_25sdp"
-                   android:layout_marginRight="@dimen/_20sdp"
+                   android:layout_marginRight="@dimen/_12sdp"
                    android:layout_toLeftOf="@+id/tvNotification"
                    android:padding="@dimen/_2sdp"
                    android:src="@drawable/notification_icon"
@@ -519,6 +528,7 @@
                    />
 
                <TextView
+                        android:theme="@style/TextRegular"
                    android:id="@+id/tvNotification"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
@@ -568,7 +578,7 @@
                    android:id="@+id/imgPersonal"
                    android:layout_width="@dimen/_25sdp"
                    android:layout_height="@dimen/_25sdp"
-                   android:layout_marginRight="@dimen/_20sdp"
+                   android:layout_marginRight="@dimen/_12sdp"
                    android:layout_toLeftOf="@+id/tvPersonal"
                    android:padding="@dimen/_2sdp"
                    android:src="@drawable/ic_personal"
@@ -576,6 +586,7 @@
                    />
 
                <TextView
+                        android:theme="@style/TextRegular"
                    android:id="@+id/tvPersonal"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
@@ -630,12 +641,13 @@
                    android:layout_height="@dimen/_25sdp"
                    android:src="@drawable/report"
                    android:layout_toLeftOf="@+id/tvReportIssue"
-                   android:layout_marginRight="@dimen/_20sdp"
+                   android:layout_marginRight="@dimen/_12sdp"
                    android:padding="@dimen/_2sdp"
 
                    />
 
                <TextView
+                        android:theme="@style/TextRegular"
                    android:id="@+id/tvReportIssue"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
@@ -694,6 +706,7 @@
                    />
 
                <TextView
+                        android:theme="@style/TextRegular"
                    android:id="@+id/tvHealth"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
@@ -803,7 +816,7 @@
                    android:id="@+id/imgRewards"
                    android:layout_width="@dimen/_25sdp"
                    android:layout_height="@dimen/_25sdp"
-                   android:layout_marginRight="@dimen/_20sdp"
+                   android:layout_marginRight="@dimen/_12sdp"
                    android:layout_toLeftOf="@+id/tvRewards"
                    android:padding="@dimen/_2sdp"
                    android:src="@drawable/ic_assessment"
@@ -816,6 +829,7 @@
                    android:layout_height="wrap_content"
                    android:layout_centerInParent="true"
                    android:text="@string/rewards"
+                   android:theme="@style/TextRegular"
                    android:textColor="@color/black"
                    android:textSize="14dp" />
 
@@ -856,7 +870,7 @@
                     android:id="@+id/imgWorkspaceSurvey"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
-                    android:layout_marginRight="@dimen/_20sdp"
+                    android:layout_marginRight="@dimen/_12sdp"
                     android:layout_toLeftOf="@+id/tvWorkspaceSurvey"
                     android:padding="@dimen/_2sdp"
                     android:src="@drawable/ic_assessment"
@@ -869,6 +883,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="@string/workspace_survey"
+                    android:theme="@style/TextRegular"
                     android:textColor="@color/black"
                     android:textSize="14dp" />
 
@@ -908,7 +923,7 @@
                    android:id="@+id/imgWorkAss"
                    android:layout_width="@dimen/_25sdp"
                    android:layout_height="@dimen/_25sdp"
-                   android:layout_marginRight="@dimen/_20sdp"
+                   android:layout_marginRight="@dimen/_12sdp"
                    android:layout_toLeftOf="@+id/tvWorkspace"
                    android:padding="@dimen/_2sdp"
                    android:src="@drawable/ic_assessment"
@@ -921,6 +936,7 @@
                    android:layout_height="wrap_content"
                    android:layout_centerInParent="true"
                    android:text="@string/workspace_assessment"
+                   android:theme="@style/TextRegular"
                    android:textColor="@color/black"
                    android:textSize="14dp" />
 

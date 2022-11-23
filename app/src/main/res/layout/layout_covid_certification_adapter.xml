@@ -20,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:theme="@style/TextRegular"
             android:text="wergqwrgqwrgwqrgwergqewrgqewrgqegrrqegrew" />
 
 
@@ -38,6 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/yes"
+                android:theme="@style/TextRegular"
                 android:checked="false"
                 />
 
@@ -46,6 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/no"
+                android:theme="@style/TextRegular"
                 android:checked="true"
                 />
 

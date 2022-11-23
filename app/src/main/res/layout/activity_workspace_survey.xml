@@ -92,6 +92,7 @@
                 android:layout_height="@dimen/_30sdp"
                 android:hint="From"
                 android:paddingStart="@dimen/_5sdp"
+                android:theme="@style/TextRegular"
                 android:gravity="center_vertical"
                 android:backgroundTint="@color/figmaBgGrey"
                 android:background="@drawable/button_white_bg"/>
@@ -101,6 +102,7 @@
                 android:layout_height="@dimen/_30sdp"
                 android:hint="To"
                 android:paddingStart="@dimen/_5sdp"
+                android:theme="@style/TextRegular"
                 android:gravity="center_vertical"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:backgroundTint="@color/figmaBgGrey"

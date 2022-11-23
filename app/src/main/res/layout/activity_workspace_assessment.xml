@@ -48,7 +48,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15sdp"
                 android:textStyle="bold"
-
+                android:theme="@style/TextBold"
                 />
 
         </LinearLayout>

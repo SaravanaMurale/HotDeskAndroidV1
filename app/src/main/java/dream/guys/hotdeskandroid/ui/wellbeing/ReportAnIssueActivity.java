@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -72,9 +73,10 @@ public class ReportAnIssueActivity extends AppCompatActivity implements AdapterV
 
     EditText reportDescr;
     ImageView ReportBack;
-    TextView reportFromDate, reportToDate, reportCancel, reportSubmit, reportPastBooking;
+    TextView reportFromDate, reportToDate,  reportPastBooking;
     CalendarView calendar_view;
     CheckBox cb_anonymous;
+    Button reportCancel, reportSubmit;
 
     Calendar c = Calendar.getInstance();
     int deskId=0;
