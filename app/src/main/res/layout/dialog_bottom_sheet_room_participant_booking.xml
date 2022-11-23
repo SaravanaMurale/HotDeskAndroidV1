@@ -25,8 +25,87 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_3sdp"
                 android:text="Room Booking"
-                android:textSize="@dimen/_14sdp"
+                android:textSize="26sp"
                 android:theme="@style/TextBold" />
+            <LinearLayout
+                android:id="@+id/linera"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@id/select_desk"
+                android:layout_marginBottom="@dimen/_10sdp"
+                >
+                <TextView
+                    android:id="@+id/sheet_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:text="Select Desk"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="14sp"
+                    android:theme="@style/TextRegular" />
+                <ImageView
+                    android:layout_width="@dimen/_5sdp"
+                    android:layout_height="@dimen/_5sdp"
+                    android:src="@drawable/dot"
+                    android:layout_gravity="center_vertical"
+                    />
+                <TextView
+                    android:id="@+id/sheet_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:text=""
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="14sp"
+                    android:theme="@style/TextRegular" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/capacity_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Capacity"
+                    android:textSize="14sp"
+                    android:theme="@style/TextRegular" />
+
+                <TextView
+                    android:layout_width="@dimen/_6sdp"
+                    android:layout_height="@dimen/_6sdp"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:background="@drawable/bg_circle_vector"
+                    android:backgroundTint="@color/figmaGrey" />
+
+                <TextView
+                    android:id="@+id/tv_capacity_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5"
+                    android:textSize="14sp"
+                    android:theme="@style/TextRegular" />
+            </LinearLayout>
+
+        <com.google.android.material.chip.ChipGroup
+                android:id="@+id/room_top_chip_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginVertical="@dimen/_5sdp"
+                android:layout_below="@id/ll_desk_layout_room">
+
+                <!-- Chips can be declared here, or added dynamically. -->
+
+            </com.google.android.material.chip.ChipGroup>
 
             <TextView
                 android:id="@+id/roomDate"
@@ -41,7 +120,9 @@
                 android:id="@+id/meetingRoomDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Description:" />
+                android:text="Description:"
+                android:theme="@style/TextRegular"
+                />
 
 
             <RelativeLayout
@@ -255,7 +336,7 @@
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="Back"
-                    android:textSize="@dimen/_14sdp"
+                    android:textSize="18sp"
                     android:theme="@style/TextBold" />
 
                 <TextView
@@ -267,7 +348,7 @@
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="Continue"
                     android:textColor="@color/figmaBlueText"
-                    android:textSize="@dimen/_14sdp"
+                    android:textSize="18sp"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 

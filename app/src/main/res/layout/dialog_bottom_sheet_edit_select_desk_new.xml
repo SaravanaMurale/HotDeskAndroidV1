@@ -143,6 +143,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_20sdp"
         android:text="@string/back"
+        android:textSize="18sp"
         android:theme="@style/TextBold" />
 
 

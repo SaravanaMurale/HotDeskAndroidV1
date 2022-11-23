@@ -55,7 +55,7 @@
                     android:layout_marginVertical="@dimen/_3sdp"
                     android:text="Back"
                     android:textColor="@color/figmaBlack"
-                    android:textSize="@dimen/_14sdp"
+                    android:textSize="18sp"
                     android:theme="@style/TextBold" />
 
                 <TextView
@@ -67,7 +67,7 @@
                     android:layout_marginVertical="@dimen/_3sdp"
                     android:text="Continue"
                     android:textColor="@color/figmaBlueText"
-                    android:textSize="@dimen/_14sdp"
+                    android:textSize="18sp"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
         </LinearLayout>

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -20,12 +23,14 @@ import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
+import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 
-public class ParkingSpotListRecyclerAdapter extends RecyclerView.Adapter<ParkingSpotListRecyclerAdapter.Viewholder> {
+public class ParkingSpotListRecyclerAdapter extends RecyclerView.Adapter<ParkingSpotListRecyclerAdapter.Viewholder> implements Filterable {
     // HomeFragment homeFragment;
     Context context;
     Activity activity;
     List<ParkingSpotModel> parkingSpots;
+    List<ParkingSpotModel> parkingSpotsAll;
     public OnSelectSelected onSelectSelected;
     BottomSheetDialog bottomSheetDialog;
 
@@ -36,6 +41,7 @@ public class ParkingSpotListRecyclerAdapter extends RecyclerView.Adapter<Parking
         this.onSelectSelected = onSelectSelected;
         this.activity = activity;
         this.parkingSpots=bookingForEditResponse;
+        this.parkingSpotsAll=new ArrayList<>(bookingForEditResponse);
         this.bottomSheetDialog=bottomSheetDialog;
     }
 
@@ -45,6 +51,51 @@ public class ParkingSpotListRecyclerAdapter extends RecyclerView.Adapter<Parking
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.desk_room_list_recycler_layout, parent, false);
         return new ParkingSpotListRecyclerAdapter.Viewholder(itemView);
     }
+    Filter filter=new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            List<ParkingSpotModel> filteredList=new ArrayList<>();
+
+            if(constraint==null || constraint.toString().isEmpty() || constraint.length()==0 || constraint==""){
+                filteredList.addAll(parkingSpotsAll);
+            }else {
+                String filterPattern=constraint.toString().toLowerCase().trim();
+
+                for (ParkingSpotModel dskl:parkingSpotsAll){
+
+                    if(dskl.getCode().toLowerCase().contains(filterPattern)){
+
+                        filteredList.add(dskl);
+
+                    }
+
+                }
+
+            }
+
+            FilterResults results=new FilterResults();
+            results.values=filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+            parkingSpots.clear();
+            parkingSpots.addAll((List)results.values);
+            notifyDataSetChanged();
+
+        }
+    };
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+
     public interface OnSelectSelected{
         public void onSelectParking(int deskId,String deskName, String location);
 

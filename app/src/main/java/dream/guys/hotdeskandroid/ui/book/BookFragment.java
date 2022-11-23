@@ -2165,6 +2165,7 @@ public class BookFragment extends Fragment implements
             for (int i=0; i<editDeskBookingDetails.getAmenities().size(); i++){
                 Chip chip = new Chip(getContext());
                 chip.setId(i);
+                chip.setTextAppearance(R.style.chipText);
                 chip.setText(""+editDeskBookingDetails.getAmenities().get(i));
                 chip.setChipBackgroundColorResource(R.color.figmaBgGrey);
                 chip.setCloseIconVisible(false);
@@ -2236,7 +2237,7 @@ public class BookFragment extends Fragment implements
         continueEditBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                editDeskBookingDetails.setDisplayTime(startTime.getText()+" to "+endTime.getText());
                 /*
                 //New...
                 if (isVehicleReg) {
@@ -3234,6 +3235,7 @@ public class BookFragment extends Fragment implements
         selectDesk= bottomSheetDialog.findViewById(R.id.select_desk);
         sheetDate = bottomSheetDialog.findViewById(R.id.sheet_date);
         sheetTime = bottomSheetDialog.findViewById(R.id.sheet_time);
+        bsGeneralSearch = bottomSheetDialog.findViewById(R.id.bsGeneralSearch);
         bsRepeatBack=bottomSheetDialog.findViewById(R.id.bsDeskBack);
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -3258,6 +3260,27 @@ public class BookFragment extends Fragment implements
 
         }
 
+        bsGeneralSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (selectedicon == 2){
+                    parkingSpotListRecyclerAdapter.getFilter().filter(s.toString());
+                }else if (selectedicon==1){
+                    roomListRecyclerAdapter.getFilter().filter(s.toString());
+                }else {
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         bsRepeatBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -3655,8 +3678,8 @@ public class BookFragment extends Fragment implements
 
         }
 
-        TextView startRoomTime, endTRoomime, editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle;
-        EditText etParticipants, externalAttendees, etSubject, etComments;
+        TextView startRoomTime, endTRoomime, editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle,sheetDate,sheetTime;
+        EditText etParticipants, externalAttendees, etSubject, etComments,capacityNo;
         ChipGroup chipGroup, externalAttendeesChipGroup;
 
         RecyclerView rvParticipant;
@@ -3671,29 +3694,48 @@ public class BookFragment extends Fragment implements
         etParticipants = bottomSheetDialog.findViewById(R.id.etParticipants);
         etSubject = bottomSheetDialog.findViewById(R.id.etSubject);
 
+        capacityNo = bottomSheetDialog.findViewById(R.id.tv_capacity_no);
         etComments = bottomSheetDialog.findViewById(R.id.etComments);
         editRoomBookingContinue = bottomSheetDialog.findViewById(R.id.editRoomBookingContinue);
         editRoomBookingBack = bottomSheetDialog.findViewById(R.id.editRoomBookingBack);
         roomTitle = bottomSheetDialog.findViewById(R.id.roomTitle);
+        sheetDate = bottomSheetDialog.findViewById(R.id.sheet_date);
+        sheetTime = bottomSheetDialog.findViewById(R.id.sheet_time);
         rvParticipant = bottomSheetDialog.findViewById(R.id.rvParticipant);
         participantChipGroup = bottomSheetDialog.findViewById(R.id.participantChipGroup);
 
-        chipGroup = bottomSheetDialog.findViewById(R.id.meetingAmenitiesChipGroup);
+        chipGroup = bottomSheetDialog.findViewById(R.id.room_top_chip_group);
 
         externalAttendees = bottomSheetDialog.findViewById(R.id.externalAttendees);
         externalAttendeesChipGroup = bottomSheetDialog.findViewById(R.id.externalAttendeesChipGroup);
 
+        if (editDeskBookingDetails.getAmenities()!=null){
+            for (int i=0; i<editDeskBookingDetails.getAmenities().size(); i++){
+                Chip chip = new Chip(getContext());
+                chip.setId(i);
+                chip.setTextAppearance(R.style.chipText);
+                chip.setText(""+editDeskBookingDetails.getAmenities().get(i));
+                chip.setChipBackgroundColorResource(R.color.figmaBgGrey);
+                chip.setCloseIconVisible(false);
+                chip.setTextColor(getContext().getResources().getColor(R.color.figmaBlack));
+//            chip.setTextAppearance(R.style.ChipTextAppearance);
+                chipGroup.addView(chip);
+            }
+        }
 
         //Set All Amenities Here
+/*
         for (int i = 0; i < amenitiesList.size(); i++) {
 
             System.out.println("RoomAmenitiesList " + amenitiesList.get(i));
             Chip chip = new Chip(getContext());
             chip.setText(amenitiesList.get(i));
             chip.setCheckable(false);
+            chip.setTextAppearance(R.style.chipText);
             chip.setClickable(false);
             chipGroup.addView(chip);
         }
+*/
 
         //Language
         editRoomBookingContinue.setText(appKeysPage.getContinue());
@@ -3707,7 +3749,9 @@ public class BookFragment extends Fragment implements
 
 
         roomTitle.setText(meetingRoomName);
-
+        capacityNo.setText(editDeskBookingDetails.getCapacity());
+        sheetTime.setText(editDeskBookingDetails.getDisplayTime());
+        sheetDate.setText(Utils.dateWithDayString(calSelectedDate));
 
         etParticipants.addTextChangedListener(new TextWatcher() {
             @Override
@@ -3808,6 +3852,7 @@ public class BookFragment extends Fragment implements
                 Chip chip = new Chip(getContext());
                 chip.setText(editDeskBookingDetails.getExternalAttendeesList().get(i));
                 chip.setCheckable(false);
+                chip.setTextAppearance(R.style.chipText);
                 chip.setClickable(false);
                 chip.setCloseIconVisible(true);
                 externalAttendeesChipGroup.addView(chip);
@@ -3854,7 +3899,9 @@ public class BookFragment extends Fragment implements
                 Chip chip = new Chip(getContext());
                 chip.setText(attendeesListForEdit.get(i).getEmail());
                 chip.setCheckable(false);
+                chip.setTextAppearance(R.style.chipText);
                 chip.setClickable(false);
+                chip.setTextAppearance(R.style.chipText);
                 chip.setCloseIconVisible(true);
                 participantChipGroup.addView(chip);
 
@@ -3933,6 +3980,7 @@ public class BookFragment extends Fragment implements
                     Chip chip = new Chip(getContext());
                     chip.setText(s.toString());
                     chip.setCheckable(false);
+                    chip.setTextAppearance(R.style.chipText);
                     chip.setClickable(false);
                     chip.setCloseIconVisible(true);
                     externalAttendeesChipGroup.setVisibility(View.VISIBLE);
@@ -4196,6 +4244,7 @@ public class BookFragment extends Fragment implements
                 chip.setText(participantDetsilResponse.getFullName());
                 chip.setCloseIconVisible(true);
                 chip.setCheckable(false);
+                chip.setTextAppearance(R.style.chipText);
                 chip.setClickable(false);
 
                 participantChipGroup.addView(chip);
@@ -4273,6 +4322,7 @@ public class BookFragment extends Fragment implements
             for (int i=0; i<amenityStringList.size(); i++){
                 Chip chip = new Chip(getContext());
                 chip.setId(i);
+                chip.setTextAppearance(R.style.chipText);
                 chip.setText(""+amenityStringList.get(i));
                 chip.setChipBackgroundColorResource(R.color.figmaBgGrey);
                 chip.setCloseIconVisible(false);

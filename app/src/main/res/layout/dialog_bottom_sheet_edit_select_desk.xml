@@ -55,6 +55,23 @@
             android:theme="@style/TextRegular" />
 
     </LinearLayout>
+    <EditText
+        android:id="@+id/bsGeneralSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linera"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_9sdp"
+        android:background="@drawable/rectangle_greybg_with_corner"
+        android:drawableLeft="@drawable/search_1px"
+        android:gravity="center_vertical"
+        android:hint="  Search"
+        android:paddingLeft="@dimen/_8sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_7sdp"
+        android:textSize="@dimen/_10sdp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/desk_list_select_recycler"
@@ -62,7 +79,7 @@
         android:layout_height="wrap_content"
 
         android:layout_above="@id/bsDeskBack"
-        android:layout_below="@id/linera" />
+        android:layout_below="@id/bsGeneralSearch" />
 
     <TextView
         android:id="@+id/bsDeskBack"
@@ -73,6 +90,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_20sdp"
         android:text="@string/back"
+        android:textSize="18sp"
         android:theme="@style/TextBold" />
 
 

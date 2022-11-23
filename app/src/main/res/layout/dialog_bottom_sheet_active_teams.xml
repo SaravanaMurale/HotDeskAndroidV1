@@ -24,7 +24,7 @@
             android:layout_marginBottom="@dimen/_10sdp"
             android:text="Select Desk"
             android:textColor="@color/figmaBlack"
-            android:textSize="@dimen/_15sdp"
+            android:textSize="26sp"
             android:theme="@style/TextBold" />
 
     </LinearLayout>
@@ -46,6 +46,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_20sdp"
         android:text="@string/back"
+        android:textSize="18sp"
         android:theme="@style/TextBold" />
 
 
