@@ -24,6 +24,7 @@
     <color name="figmaBlackGrey">#323232</color>
     <color name="figmaGreenFade">#C6F4E1</color>
     <color name="figmaBlue">#07004D</color>
+    <color name="figmaBlueDisabled">#65A2D9</color>
     <color name="figmaBlueText">#0F62AB</color>
     <color name="figmaBackground">#fafafa</color>
 

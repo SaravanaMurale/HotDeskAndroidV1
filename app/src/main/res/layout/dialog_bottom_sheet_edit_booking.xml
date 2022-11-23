@@ -223,7 +223,7 @@
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="None"
                     android:textSize="18sp"
-                    android:textColor="@color/figmaBlueText"
+                    android:textColor="@color/figmaBlueDisabled"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 
