@@ -1971,7 +1971,7 @@ public class BookFragment extends Fragment implements
             selectedDeskId=editDeskBookingDetails.getDesktId();
             if(newEditStatus.equalsIgnoreCase("new") || newEditStatus.equalsIgnoreCase("new_deep_link")
                     || newEditStatus.equalsIgnoreCase("request")){
-                title.setText("Book Desk");
+                title.setText("Book a workspace");
                 continueEditBook.setText("Book");
                 back.setText("Cancel");
             } else {
@@ -2157,7 +2157,7 @@ public class BookFragment extends Fragment implements
         }
 
         if (editDeskBookingDetails.getDate()!=null)
-        date.setText(""+Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
+            date.setText(""+Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
 
         if (editDeskBookingDetails.getAmenities()!=null)
             System.out.println("chip check"+editDeskBookingDetails.getAmenities().size());

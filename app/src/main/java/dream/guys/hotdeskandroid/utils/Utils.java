@@ -754,7 +754,7 @@ public class Utils {
         return df.format(date);
     }
     public static String dayDateMonthFormat(Date date){
-        DateFormat df = new SimpleDateFormat("EEE,d MMM yyyy");
+        DateFormat df = new SimpleDateFormat("EEE,d MMMM yyyy");
         return df.format(date);
     }
     public static String getISO8601format(Date date){
