@@ -53,6 +53,7 @@
             android:drawableLeft="@drawable/search_1px"
             android:gravity="center_vertical"
             android:hint="  Search"
+            android:drawablePadding="@dimen/_5sdp"
             android:paddingLeft="@dimen/_8sdp"
             android:paddingTop="@dimen/_5sdp"
             android:paddingBottom="@dimen/_7sdp"
