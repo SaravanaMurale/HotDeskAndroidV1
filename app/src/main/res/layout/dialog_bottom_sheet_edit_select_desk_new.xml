@@ -11,9 +11,12 @@
         android:id="@+id/head_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="vertical"
-        android:paddingVertical="@dimen/_10sdp"
-        >
+        android:elevation="@dimen/_3sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:paddingVertical="@dimen/_10sdp">
+
         <TextView
             android:id="@+id/sheet_name"
             android:layout_width="wrap_content"
@@ -26,70 +29,73 @@
             android:textColor="@color/figmaBlack"
             android:textSize="26sp"
             android:theme="@style/TextBold" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginBottom="@dimen/_10sdp"
-            >
+            android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/sheet_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:text="Select Desk"
-                android:layout_gravity="center_vertical"
                 android:textColor="@color/figmaBlack"
                 android:textSize="14sp"
                 android:theme="@style/TextRegular" />
+
             <ImageView
                 android:layout_width="@dimen/_5sdp"
                 android:layout_height="@dimen/_5sdp"
-                android:src="@drawable/dot"
                 android:layout_gravity="center_vertical"
-                />
+                android:src="@drawable/dot" />
+
             <TextView
                 android:id="@+id/sheet_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:text=""
-                android:layout_gravity="center_vertical"
                 android:textColor="@color/figmaBlack"
                 android:textSize="14sp"
                 android:theme="@style/TextRegular" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/_10sdp"
-            >
+            android:padding="@dimen/_10sdp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_gravity="center_vertical"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:text="Filter"
-                android:layout_gravity="center_vertical"
                 android:textColor="@color/figmaBlueText"
                 android:textSize="18sp"
                 android:theme="@style/TextBold" />
+
             <view
                 class="android.widget.TextView"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_5sdp"
-                android:layout_weight="1"
-                />
+                android:layout_weight="1" />
+
             <ImageView
                 android:layout_width="@dimen/_18sdp"
                 android:layout_height="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:src="@drawable/location"
-                android:tint="@color/figmaBlueText"
-                />
+                app:tint="@color/figmaBlueText" />
 
         </LinearLayout>
 
@@ -98,19 +104,18 @@
             android:id="@+id/teams_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/sheet_name"
             android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_marginVertical="@dimen/_7sdp"
             app:cardCornerRadius="@dimen/_3sdp"
-            app:cardElevation="@dimen/_2sdp"
-            android:layout_below="@id/sheet_name"
-            >
+            app:cardElevation="@dimen/_2sdp">
 
             <RelativeLayout
                 android:id="@+id/repeatNoneBlock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_10sdp"
-                android:background="@color/bg_grey">
+                android:background="@color/bg_grey"
+                android:padding="@dimen/_10sdp">
 
                 <TextView
                     android:id="@+id/tv_teams"
@@ -137,6 +142,7 @@
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
+
         <EditText
             android:id="@+id/bsGeneralSearch"
             android:layout_width="match_parent"
@@ -152,17 +158,32 @@
             android:paddingLeft="@dimen/_8sdp"
             android:paddingTop="@dimen/_5sdp"
             android:paddingBottom="@dimen/_7sdp"
-            android:textSize="@dimen/_10sdp" />
+            android:textSize="18sp" />
 
     </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/desk_list_select_recycler"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_above="@id/bsDeskBack"
         android:layout_below="@id/head_layout"
-        android:background="@color/figmaBgGrey"/>
+        android:background="@color/bg_grey"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Workspaces available to your team:"
+            android:theme="@style/TextRegular"
+            android:textSize="14sp"
+            android:textColor="@color/figmaBlack"
+            android:layout_marginStart="@dimen/_10sdp"
+            />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/desk_list_select_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/bsDeskBack"

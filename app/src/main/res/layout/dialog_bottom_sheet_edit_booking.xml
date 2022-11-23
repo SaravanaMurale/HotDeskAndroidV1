@@ -374,50 +374,56 @@
                             android:theme="@style/TextBold" />
                     </RelativeLayout>
                 </LinearLayout>
-
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/list_item"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:layout_below="@id/ll_desk_layout"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:layout_marginVertical="@dimen/_5sdp">
+                    >
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/list_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginVertical="@dimen/_5sdp">
 
-                    <!-- Chips can be declared here, or added dynamically. -->
+                        <!-- Chips can be declared here, or added dynamically. -->
 
-                </com.google.android.material.chip.ChipGroup>
+                    </com.google.android.material.chip.ChipGroup>
+                    <LinearLayout
+                        android:id="@+id/status_check_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/list_item"
+                        android:layout_marginVertical="@dimen/_5sdp"
+                        android:layout_marginStart="@dimen/_30sdp"
+                        android:gravity="center_vertical"
+                        android:visibility="visible"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/user_status_dot"
+                            android:layout_width="@dimen/_10sdp"
+                            android:layout_height="@dimen/_10sdp"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="center_vertical"
+                            android:background="@drawable/bg_circle_vector"
+                            android:backgroundTint="@color/figmaLiteGreen" />
+
+                        <TextView
+                            android:id="@+id/desk_status_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_3sdp"
+                            android:text="Available"
+                            android:textSize="14sp"
+                            android:theme="@style/TextRegular" />
+                    </LinearLayout>
+
+                </LinearLayout>
 
 
             </RelativeLayout>
-            <LinearLayout
-                android:id="@+id/status_check_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/list_item"
-                android:layout_marginVertical="@dimen/_5sdp"
-                android:layout_marginStart="@dimen/_30sdp"
-                android:gravity="center_vertical"
-                android:visibility="visible"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/user_status_dot"
-                    android:layout_width="@dimen/_10sdp"
-                    android:layout_height="@dimen/_10sdp"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/bg_circle_vector"
-                    android:backgroundTint="@color/figmaLiteGreen" />
-
-                <TextView
-                    android:id="@+id/desk_status_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_3sdp"
-                    android:text="Available"
-                    android:textSize="14sp"
-                    android:theme="@style/TextRegular" />
-            </LinearLayout>
 
 
             <EditText

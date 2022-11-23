@@ -22,10 +22,11 @@
 
         <ImageView
             android:id="@+id/editBookingImage"
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_toRightOf="@id/edit_outLine"
+
             android:src="@drawable/car_edit" />
 
         <TextView
@@ -38,9 +39,8 @@
             android:layout_toRightOf="@id/editBookingImage"
             android:text="Space-001"
             android:textColor="@color/figmaBlack"
-            android:textStyle="bold"
-
-            />
+            android:textSize="18sp"
+            android:theme="@style/TextBold" />
 
 
         <ImageView
@@ -61,9 +61,8 @@
             android:layout_toLeftOf="@id/editRefreshIcon"
             android:text="8:00"
             android:textColor="@color/figmaBlack"
-            android:textSize="@dimen/_10sdp"
-            android:textStyle="bold"
-            />
+            android:textSize="14sp"
+            android:theme="@style/TextBold" />
 
         <ImageView
             android:id="@+id/editCheckOutIcon"
@@ -85,8 +84,8 @@
             android:layout_toLeftOf="@+id/editCheckOutIcon"
             android:text="8:00"
             android:textColor="@color/figmaBlack"
-            android:textSize="@dimen/_10sdp"
-            android:textStyle="bold" />
+            android:textSize="14sp"
+            android:theme="@style/TextBold" />
 
         <ImageView
             android:id="@+id/editCheckInIcon"
@@ -108,8 +107,8 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:text="Delete"
             android:textColor="@color/figma_red"
-            android:textSize="@dimen/_13sdp"
-            android:textStyle="bold" />
+            android:textSize="18sp"
+            android:theme="@style/TextBold"/>
 
         <TextView
             android:id="@+id/editTextEdit"
@@ -121,8 +120,9 @@
             android:layout_marginRight="@dimen/_10sdp"
             android:text="Edit"
             android:textColor="@color/blue"
-            android:textSize="@dimen/_13sdp"
-            android:textStyle="bold" />
+            android:textSize="18sp"
+            android:theme="@style/TextBold"
+            />
 
 
     </RelativeLayout>
