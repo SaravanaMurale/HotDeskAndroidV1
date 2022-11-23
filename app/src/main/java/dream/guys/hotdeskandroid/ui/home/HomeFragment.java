@@ -605,7 +605,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         ImageResponse imageResponse = response.body();
                         if (imageResponse.getMessage()!=null && !imageResponse.isStatus()){
 //                            Utils.toastMessage(getContext(),imageResponse.getMessage().getCode());
-                            userProfile.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.avatar));
+                            userProfile.setImageDrawable(ContextCompat.getDrawable(activityContext,R.drawable.avatar));
                         }
 
                         try {
@@ -756,7 +756,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     userCurrentStatus.setText("Checked Out");
                     userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
 
-                    openCheckoutDialog("Checked Out Successfully");
+                    openCheckoutDialog("Check-out successful");
                 }
 
                 @Override

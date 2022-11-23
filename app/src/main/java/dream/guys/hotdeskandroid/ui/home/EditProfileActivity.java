@@ -32,7 +32,6 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -67,10 +66,8 @@ import dream.guys.hotdeskandroid.model.response.DefaultAssetResponse;
 import dream.guys.hotdeskandroid.model.response.ProfilePicResponse;
 import dream.guys.hotdeskandroid.model.response.TeamDeskResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
-import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.settings.CountryListActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
-import dream.guys.hotdeskandroid.utils.LogicHandler;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
@@ -92,20 +89,20 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     //ForLanguage
     LanguagePOJO.Login logoinPage;
     LanguagePOJO.AppKeys appKeysPage;
-    LanguagePOJO.ResetPassword resetPage ;
+    LanguagePOJO.ResetPassword resetPage;
     LanguagePOJO.ActionOverLays actionOverLays;
-    LanguagePOJO.Booking bookindata ;
+    LanguagePOJO.Booking bookindata;
     LanguagePOJO.Global global;
 
-    int floorParentID = 0, cityPlaceID = 0, cityPlaceParentID = 0,cityID = 0,cityParentID = 0,locationID = 0,locationParentID = 0,
-    floorPositon;
+    int floorParentID = 0, cityPlaceID = 0, cityPlaceParentID = 0, cityID = 0, cityParentID = 0, locationID = 0, locationParentID = 0,
+            floorPositon;
     int carFloorParentID;
 
     String CountryName = null;
     String CityName = null;
     String buildingName = null;
-    String floorName  = null;
-    String fullPathLocation  = null;
+    String floorName = null;
+    String fullPathLocation = null;
 
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private String currentPhotoPath;
@@ -115,8 +112,8 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     String encodeImage;
 
     //New-M
-    String notifyStartTimeChange="";
-    String notifyEndTimeChange="";
+    String notifyStartTimeChange = "";
+    String notifyEndTimeChange = "";
     private static final int PERMISSION_REQUEST_CODE = 1;
 
     @Override
@@ -132,7 +129,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         loadHomeList();
         Gson gson = new Gson();
         String json = SessionHandler.getInstance().get(EditProfileActivity.this, AppConstants.LOGIN_RESPONSE);
-        if (json!=null){
+        if (json != null) {
             profileData = gson.fromJson(json, UserDetailsResponse.class);
         }
 
@@ -153,9 +150,9 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         System.out.println("Monday of the Week: " + monday);
         System.out.println("Sunday of the Week: " + sunday);
 
-        binding.weekStartEnd.setText(Utils.showBottomSheetDate(""+monday)+
-                " - "+
-                Utils.showBottomSheetDate(""+sunday));
+        binding.weekStartEnd.setText(Utils.showBottomSheetDate("" + monday) +
+                " - " +
+                Utils.showBottomSheetDate("" + sunday));
 
         binding.tvUpdateImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,15 +200,11 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             public void onClick(View view) {
 
 
-
                 validateData();
-
 
 
             }
         });
-
-
 
 
         //StartTime API call
@@ -231,8 +224,8 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             @Override
             public void afterTextChanged(Editable s) {
 
-                if(!notifyStartTimeChange.isEmpty()){
-                    notifyStartTimeChange="";
+                if (!notifyStartTimeChange.isEmpty()) {
+                    notifyStartTimeChange = "";
                     validateData();
                 }
 
@@ -242,7 +235,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.editStartTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                notifyStartTimeChange="start";
+                notifyStartTimeChange = "start";
                 Utils.bottomSheetTimePickerInBooking(EditProfileActivity.this, EditProfileActivity.this, binding.editStartTime, "Start", "");
             }
         });
@@ -251,11 +244,10 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         //EndTimeAPIcall
 
 
-
         binding.editEndTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                notifyEndTimeChange="End";
+                notifyEndTimeChange = "End";
                 Utils.bottomSheetTimePickerInBooking(EditProfileActivity.this, EditProfileActivity.this, binding.editEndTime, "End", "");
             }
         });
@@ -274,8 +266,8 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             @Override
             public void afterTextChanged(Editable s) {
 
-                if(!notifyEndTimeChange.isEmpty()){
-                    notifyEndTimeChange="";
+                if (!notifyEndTimeChange.isEmpty()) {
+                    notifyEndTimeChange = "";
                     validateData();
                 }
 
@@ -294,7 +286,6 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                 return false;
             }
         });
-
 
 
         //Email Change
@@ -375,17 +366,17 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("loadFrag","changeSchedule");
+                intent.putExtra("loadFrag", "changeSchedule");
                 startActivity(intent);
             }
         });
 
 
-        if (profileData!=null) {
+        if (profileData != null) {
 
             binding.editName.setText(profileData.getFullName());
             binding.editDisplayName.setText(profileData.getFullName());
-            if (profileData.getCurrentTeam()!=null){
+            if (profileData.getCurrentTeam() != null) {
                 binding.tvEditTeams.setText(profileData.getCurrentTeam().getCurrentTeamName());
             }
             binding.tvEditPhone.setText(profileData.getPhoneNumber());
@@ -396,15 +387,15 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             binding.editVehicleNum.setText(profileData.getVehicleRegNumber());
             binding.tvEditTel.setText(profileData.getDeskPhoneNumber());
 
-            if (profileData.getDefaultLocation()!=null){
+            if (profileData.getDefaultLocation() != null) {
                 binding.editDefaultLocaton.setText(profileData.getDefaultLocation().getName());
                 floorParentID = profileData.getDefaultLocation().getParentLocationId();
             }
 
-            if (profileData.getPreferredDesk()!=null) {
+            if (profileData.getPreferredDesk() != null) {
                 binding.editDesk.setText(profileData.getPreferredDesk().getCode());
             }
-            if (profileData.getDefaultCarParkLocation()!=null) {
+            if (profileData.getDefaultCarParkLocation() != null) {
                 binding.editPark.setText(profileData.getDefaultCarParkLocation().getName());
                 carFloorParentID = profileData.getDefaultCarParkLocation().getParentLocationId();
             }
@@ -424,16 +415,16 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
                             Intent intent = result.getData();
 
-                            if (intent!=null){
+                            if (intent != null) {
 
-                                if (intent.getStringExtra("sFrom")!=null) {
+                                if (intent.getStringExtra("sFrom") != null) {
 
                                     String from = intent.getStringExtra("sFrom");
-                                    int position = intent.getIntExtra("Position",0);
+                                    int position = intent.getIntExtra("Position", 0);
                                     floorName = intent.getStringExtra("floorName");
 
-                                    finalLocationArrayList = (ArrayList<DAOActiveLocation>)intent.getSerializableExtra("List");
-                                    cityPlaceFloorArrayList = (ArrayList<DAOActiveLocation>)intent.getSerializableExtra("FloorList");
+                                    finalLocationArrayList = (ArrayList<DAOActiveLocation>) intent.getSerializableExtra("List");
+                                    cityPlaceFloorArrayList = (ArrayList<DAOActiveLocation>) intent.getSerializableExtra("FloorList");
 
                                     floorParentID = finalLocationArrayList.get(position).getParentLocationId();
                                     Integer id = finalLocationArrayList.get(position).getId();
@@ -446,7 +437,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                                         selectFloors = (ArrayList<DAOActiveLocation>) cityPlaceFloorArrayList.stream()
                                                 .filter(val -> val.getParentLocationId() == floorParentID).collect(Collectors.toList());
 
-                                        for (int i=0;i<selectFloors.size();i++) {
+                                        for (int i = 0; i < selectFloors.size(); i++) {
 
                                             if (id.equals(selectFloors.get(i).getId())) {
                                                 floorPositon = i;
@@ -474,7 +465,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
                                         buildingPlace.addAll(finalLocationArrayList.stream().filter(val -> val.getId() == floorParentID).collect(Collectors.toList()));
 
-                                        if (buildingPlace.size()>0) {
+                                        if (buildingPlace.size() > 0) {
                                             cityPlaceID = buildingPlace.get(0).getId();
                                             cityPlaceParentID = buildingPlace.get(0).getParentLocationId();
                                             buildingName = buildingPlace.get(0).getName();
@@ -482,7 +473,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
                                         cityList.addAll(finalLocationArrayList.stream().filter(val -> val.getId() == cityPlaceParentID).collect(Collectors.toList()));
 
-                                        if (cityList.size()>0){
+                                        if (cityList.size() > 0) {
                                             cityID = cityList.get(0).getId();
                                             cityParentID = cityList.get(0).getParentLocationId();
                                             CityName = cityList.get(0).getName();
@@ -490,7 +481,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
                                         location.addAll(finalLocationArrayList.stream().filter(val -> val.getId() == cityParentID).collect(Collectors.toList()));
 
-                                        if (location.size()>0){
+                                        if (location.size() > 0) {
                                             locationID = location.get(0).getId();
                                             locationParentID = location.get(0).getParentLocationId();
                                             CountryName = location.get(0).getName();
@@ -498,7 +489,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
                                         validateData();
 
-                                    }else {
+                                    } else {
 
                                         //Car Parking...
                                         binding.editPark.setText(floorName);
@@ -530,8 +521,8 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(EditProfileActivity.this,DefaultLocationActivity.class);
-                intent.putExtra(AppConstants.FROM,AppConstants.DefaultLocation);
+                Intent intent = new Intent(EditProfileActivity.this, DefaultLocationActivity.class);
+                intent.putExtra(AppConstants.FROM, AppConstants.DefaultLocation);
                 resultLauncher.launch(intent);
                 //startActivity(intent);
             }
@@ -551,13 +542,21 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(EditProfileActivity.this,DefaultLocationActivity.class);
-                intent.putExtra(AppConstants.FROM,AppConstants.ParkingLocation);
+                Intent intent = new Intent(EditProfileActivity.this, DefaultLocationActivity.class);
+                intent.putExtra(AppConstants.FROM, AppConstants.ParkingLocation);
                 resultLauncher.launch(intent);
                 //startActivity(intent);
             }
         });
 
+
+        binding.ivEditEmailIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (profileData.getEmail() != null && !profileData.getEmail().isEmpty())
+                    Utils.openMail(EditProfileActivity.this, profileData.getEmail());
+            }
+        });
     }
 
     private void validateData() {
@@ -573,38 +572,39 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         String vehicleNum = binding.editVehicleNum.getText().toString();
 
         //if (isValidate(phone,email) && floorParentID!=0){
-            profileData.setFullName(name);
-            //profileData.setFullName(editDisplayName);
-            profileData.setPhoneNumber(phone);
-            profileData.setDeskPhoneNumber(deskPhone);
-            profileData.setEmail(email);
-            profileData.getCurrentTeam().setCurrentTeamName(teams);
-            profileData.setWorkHoursFrom("2000-01-01T" + startTime + ":00.000Z");
-            profileData.setWorkHoursTo("2000-01-01T" + endTime + ":00.000Z");
-            profileData.setVehicleRegNumber(vehicleNum);
+        profileData.setFullName(name);
+        //profileData.setFullName(editDisplayName);
+        profileData.setPhoneNumber(phone);
+        profileData.setDeskPhoneNumber(deskPhone);
+        profileData.setEmail(email);
+        profileData.getCurrentTeam().setCurrentTeamName(teams);
+        profileData.setWorkHoursFrom("2000-01-01T" + startTime + ":00.000Z");
+        profileData.setWorkHoursTo("2000-01-01T" + endTime + ":00.000Z");
+        profileData.setVehicleRegNumber(vehicleNum);
 
-            callProfileUpdate();
-       // }
+        callProfileUpdate();
+        // }
 
 
     }
 
-    private void loadHomeList(){
+    private void loadHomeList() {
         if (Utils.isNetworkAvailable(this)) {
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<BookingListResponse> call = apiService.getUserMyWorkDetails(Utils.getCurrentDate(),true);
+            Call<BookingListResponse> call = apiService.getUserMyWorkDetails(Utils.getCurrentDate(), true);
             call.enqueue(new Callback<BookingListResponse>() {
                 @Override
                 public void onResponse(Call<BookingListResponse> call, Response<BookingListResponse> response) {
-                    if(response.code()==200) {
-                        BookingListResponse bookingListResponse  =response.body();
+                    if (response.code() == 200) {
+                        BookingListResponse bookingListResponse = response.body();
                         calculateSchedule(bookingListResponse);
-                    }else if(response.code()==401){
+                    } else if (response.code() == 401) {
                         //Handle if token got expired
-                        SessionHandler.getInstance().saveBoolean(EditProfileActivity.this, AppConstants.LOGIN_CHECK,false);
-                        Utils.showCustomTokenExpiredDialog(EditProfileActivity.this,"Token Expired");
+                        SessionHandler.getInstance().saveBoolean(EditProfileActivity.this, AppConstants.LOGIN_CHECK, false);
+                        Utils.showCustomTokenExpiredDialog(EditProfileActivity.this, "Token Expired");
                     }
                 }
+
                 @Override
                 public void onFailure(Call<BookingListResponse> call, Throwable t) {
 
@@ -617,34 +617,34 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     }
 
     private void calculateSchedule(BookingListResponse bookingListResponse) {
-        for(int i=0; i<bookingListResponse.getDayGroups().size(); i++){
-            switch (Utils.getDayFromDate(bookingListResponse.getDayGroups().get(i).getDate())){
+        for (int i = 0; i < bookingListResponse.getDayGroups().size(); i++) {
+            switch (Utils.getDayFromDate(bookingListResponse.getDayGroups().get(i).getDate())) {
                 case "Mon":
-                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
-                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
-                    ){
-                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries() != null
+                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size() > 0
+                    ) {
+                        for (int x = 0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++) {
                             if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")) {
                                 Glide.with(this)
                                         .load(R.drawable.remote_circle)
                                         .placeholder(R.drawable.info_circle)
                                         .into(binding.ivMonday);
 
-                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
+                            } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")) {
                                 Glide.with(this)
                                         .load(R.drawable.out_of_office_circle)
                                         .placeholder(R.drawable.info_circle)
                                         .into(binding.ivMonday);
-                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
+                            } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")) {
                                 Glide.with(this)
                                         .load(R.drawable.sick_circle)
                                         .placeholder(R.drawable.info_circle)
                                         .into(binding.ivMonday);
-                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
+                            } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("IO")) {
                                 Glide.with(this)
                                         .load(R.drawable.building_circle)
                                         .placeholder(R.drawable.info_circle)
@@ -661,30 +661,30 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                     break;
                 case "Tue":
 
-                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
-                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
-                    ){
-                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries() != null
+                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size() > 0
+                    ) {
+                        for (int x = 0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++) {
                             if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")) {
                                 Glide.with(this)
                                         .load(R.drawable.remote_circle)
                                         .placeholder(R.drawable.info_circle)
                                         .into(binding.ivTuesday);
-                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
+                            } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")) {
                                 Glide.with(this)
                                         .load(R.drawable.out_of_office_circle)
                                         .placeholder(R.drawable.info_circle)
                                         .into(binding.ivTuesday);
-                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
+                            } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")) {
                                 Glide.with(this)
                                         .load(R.drawable.sick_circle)
                                         .placeholder(R.drawable.info_circle)
                                         .into(binding.ivTuesday);
                             } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("IO")) {
                                 Glide.with(this)
                                         .load(R.drawable.building_circle)
                                         .placeholder(R.drawable.info_circle)
@@ -701,30 +701,30 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                     break;
                 case "Wed":
 
-                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
-                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
-                    ){
-                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries() != null
+                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size() > 0
+                    ) {
+                        for (int x = 0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++) {
                             if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")) {
                                 Glide.with(this)
                                         .load(R.drawable.remote_circle)
                                         .placeholder(R.drawable.info_circle)
                                         .into(binding.ivWednesday);
-                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
+                            } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")) {
                                 Glide.with(this)
                                         .load(R.drawable.out_of_office_circle)
                                         .placeholder(R.drawable.info_circle)
                                         .into(binding.ivWednesday);
-                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
+                            } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")) {
                                 Glide.with(this)
                                         .load(R.drawable.sick_circle)
                                         .placeholder(R.drawable.info_circle)
                                         .into(binding.ivWednesday);
                             } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("IO")) {
                                 Glide.with(this)
                                         .load(R.drawable.building_circle)
                                         .placeholder(R.drawable.info_circle)
@@ -741,30 +741,30 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                     break;
                 case "Thu":
 
-                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
-                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
-                    ){
-                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries() != null
+                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size() > 0
+                    ) {
+                        for (int x = 0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++) {
                             if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")) {
                                 Glide.with(this)
                                         .load(R.drawable.remote_circle)
                                         .placeholder(R.drawable.info_circle)
                                         .into(binding.ivThursday);
-                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
+                            } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")) {
                                 Glide.with(this)
                                         .load(R.drawable.out_of_office_circle)
                                         .placeholder(R.drawable.info_circle)
                                         .into(binding.ivThursday);
-                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
+                            } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")) {
                                 Glide.with(this)
                                         .load(R.drawable.sick_circle)
                                         .placeholder(R.drawable.info_circle)
                                         .into(binding.ivThursday);
                             } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("IO")) {
                                 Glide.with(this)
                                         .load(R.drawable.building_circle)
                                         .placeholder(R.drawable.info_circle)
@@ -780,30 +780,30 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                     break;
                 case "Fri":
 
-                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()!=null
-                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size()>0
-                    ){
-                        for (int x=0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++){
+                    if (bookingListResponse.getDayGroups().get(i).getCalendarEntries() != null
+                            && bookingListResponse.getDayGroups().get(i).getCalendarEntries().size() > 0
+                    ) {
+                        for (int x = 0; x < bookingListResponse.getDayGroups().get(i).getCalendarEntries().size(); x++) {
                             if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")){
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("WFH")) {
                                 Glide.with(this)
                                         .load(R.drawable.remote_circle)
                                         .placeholder(R.drawable.info_circle)
                                         .into(binding.ivFriday);
-                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")){
+                            } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("OO")) {
                                 Glide.with(this)
                                         .load(R.drawable.out_of_office_circle)
                                         .placeholder(R.drawable.info_circle)
                                         .into(binding.ivFriday);
-                            }else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")){
+                            } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("SL")) {
                                 Glide.with(this)
                                         .load(R.drawable.sick_circle)
                                         .placeholder(R.drawable.info_circle)
                                         .into(binding.ivFriday);
                             } else if (bookingListResponse.getDayGroups().get(i).getCalendarEntries()
-                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
+                                    .get(x).getUsageTypeAbbreviation().equalsIgnoreCase("IO")) {
                                 Glide.with(this)
                                         .load(R.drawable.building_circle)
                                         .placeholder(R.drawable.info_circle)
@@ -839,15 +839,15 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         }
     }
 
-    private boolean isValidate(String phone,String email) {
+    private boolean isValidate(String phone, String email) {
 
-        if (phone.isEmpty() || phone.length()<=6){
+        if (phone.isEmpty() || phone.length() <= 6) {
             Toast.makeText(EditProfileActivity.this, "Enter Valid Mobile Number", Toast.LENGTH_SHORT).show();
             return false;
-        }else if (email.isEmpty() || !(Patterns.EMAIL_ADDRESS.matcher(email.toString()).matches())){
+        } else if (email.isEmpty() || !(Patterns.EMAIL_ADDRESS.matcher(email.toString()).matches())) {
             Toast.makeText(EditProfileActivity.this, "Enter Valid Email", Toast.LENGTH_SHORT).show();
             return false;
-        }else {
+        } else {
             return true;
         }
 
@@ -858,13 +858,13 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         if (Utils.isNetworkAvailable(EditProfileActivity.this)) {
             binding.locateProgressBar.setVisibility(View.VISIBLE);
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<TeamDeskResponse>> call = apiService.getDeskListInEdit();
-        call.enqueue(new Callback<List<TeamDeskResponse>>() {
-            @Override
-            public void onResponse(Call<List<TeamDeskResponse>> call, Response<List<TeamDeskResponse>> response) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<TeamDeskResponse>> call = apiService.getDeskListInEdit();
+            call.enqueue(new Callback<List<TeamDeskResponse>>() {
+                @Override
+                public void onResponse(Call<List<TeamDeskResponse>> call, Response<List<TeamDeskResponse>> response) {
 
-                List<TeamDeskResponse> teamDeskResponseList =response.body();
+                    List<TeamDeskResponse> teamDeskResponseList = response.body();
 
                 /*for (int i = 0; i <teamDeskResponseList.size() ; i++) {
 
@@ -872,21 +872,20 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
                 }*/
 
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
-                callDeskBottomSheetDialogToSelectDeskCode(teamDeskResponseList);
-            }
+                    callDeskBottomSheetDialogToSelectDeskCode(teamDeskResponseList);
+                }
 
-            @Override
-            public void onFailure(Call<List<TeamDeskResponse>> call, Throwable t) {
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
+                @Override
+                public void onFailure(Call<List<TeamDeskResponse>> call, Throwable t) {
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
 
-        }else {
+        } else {
             Utils.toastMessage(EditProfileActivity.this, getResources().getString(R.string.enable_internet));
         }
-
 
 
     }
@@ -896,28 +895,28 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         if (Utils.isNetworkAvailable(EditProfileActivity.this)) {
             binding.locateProgressBar.setVisibility(View.VISIBLE);
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<BaseResponse> call = apiService.removeProfilePicture();
-        call.enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call = apiService.removeProfilePicture();
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
-               Utils.toastMessage(EditProfileActivity.this,"Image Removed Successfully");
+                    Utils.toastMessage(EditProfileActivity.this, "Image Removed Successfully");
 
-                Glide.with(EditProfileActivity.this).load(R.drawable.mygirl)
-                        .into(binding.ivEditPrifle);
+                    Glide.with(EditProfileActivity.this).load(R.drawable.mygirl)
+                            .into(binding.ivEditPrifle);
 
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
-            }
+                }
 
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
 
-        }else {
+        } else {
             Utils.toastMessage(EditProfileActivity.this, getResources().getString(R.string.enable_internet));
         }
 
@@ -928,41 +927,41 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
         if (Utils.isNetworkAvailable(EditProfileActivity.this)) {
             binding.locateProgressBar.setVisibility(View.VISIBLE);
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ProfilePicResponse> call = apiService.getProfilePicture();
-        call.enqueue(new Callback<ProfilePicResponse>() {
-            @Override
-            public void onResponse(Call<ProfilePicResponse> call, Response<ProfilePicResponse> response) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<ProfilePicResponse> call = apiService.getProfilePicture();
+            call.enqueue(new Callback<ProfilePicResponse>() {
+                @Override
+                public void onResponse(Call<ProfilePicResponse> call, Response<ProfilePicResponse> response) {
 
-                if (response.body()!=null) {
-                    ProfilePicResponse profilePicResponse = response.body();
+                    if (response.body() != null) {
+                        ProfilePicResponse profilePicResponse = response.body();
 
-                    System.out.println("Base64Image" + profilePicResponse.getImage());
+                        System.out.println("Base64Image" + profilePicResponse.getImage());
 
-                    if (profilePicResponse.getImage() != null &&
-                            !profilePicResponse.getImage().equalsIgnoreCase("") &&
-                            !profilePicResponse.getImage().isEmpty()) {
-                        String base64String = profilePicResponse.getImage();
-                        String base64Image = base64String.split(",")[1];
-                        byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
-                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        if (profilePicResponse.getImage() != null &&
+                                !profilePicResponse.getImage().equalsIgnoreCase("") &&
+                                !profilePicResponse.getImage().isEmpty()) {
+                            String base64String = profilePicResponse.getImage();
+                            String base64Image = base64String.split(",")[1];
+                            byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+                            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
-                        binding.ivEditPrifle.setImageBitmap(decodedByte);
+                            binding.ivEditPrifle.setImageBitmap(decodedByte);
+                        }
                     }
+
+
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
                 }
 
+                @Override
+                public void onFailure(Call<ProfilePicResponse> call, Throwable t) {
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
 
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-
-            }
-
-            @Override
-            public void onFailure(Call<ProfilePicResponse> call, Throwable t) {
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        }else {
+        } else {
             Utils.toastMessage(EditProfileActivity.this, getResources().getString(R.string.enable_internet));
         }
     }
@@ -1007,30 +1006,29 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
         if (Utils.isNetworkAvailable(EditProfileActivity.this)) {
             binding.locateProgressBar.setVisibility(View.VISIBLE);
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-        ProfilePicResponse profilePicResponse=new ProfilePicResponse();
-        profilePicResponse.setImage(bast64InString);
+            ProfilePicResponse profilePicResponse = new ProfilePicResponse();
+            profilePicResponse.setImage(bast64InString);
 
-        Call<BaseResponse> call = apiService.updateProfilePicture(profilePicResponse);
-        call.enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                getProfilePicture();
+            Call<BaseResponse> call = apiService.updateProfilePicture(profilePicResponse);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    getProfilePicture();
 
-            }
+                }
 
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
 
-        }else {
+        } else {
             Utils.toastMessage(EditProfileActivity.this, getResources().getString(R.string.enable_internet));
         }
-
 
 
     }
@@ -1038,38 +1036,38 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
     private void callProfileUpdate() {
         if (Utils.isNetworkAvailable(EditProfileActivity.this)) {
-        binding.locateProgressBar.setVisibility(View.VISIBLE);
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<BaseResponse> call = apiService.updateSetting(profileData);
-        call.enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call = apiService.updateSetting(profileData);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
-                //ProgressDialog.dismisProgressBar(getContext(),dialog);
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                binding.profileUpdate.setVisibility(View.GONE);
-                binding.profileEdit.setVisibility(View.GONE);
+                    //ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    binding.profileUpdate.setVisibility(View.GONE);
+                    binding.profileEdit.setVisibility(View.GONE);
 
 
-                updateProfileValue();
-                //makeDisable();
+                    updateProfileValue();
+                    //makeDisable();
 
-            }
+                }
 
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
 
-                closeKeyboard();
-                updateProfileValue();
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                binding.profileUpdate.setVisibility(View.GONE);
-                binding.profileEdit.setVisibility(View.GONE);
-                //makeDisable();
+                    closeKeyboard();
+                    updateProfileValue();
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    binding.profileUpdate.setVisibility(View.GONE);
+                    binding.profileEdit.setVisibility(View.GONE);
+                    //makeDisable();
 
-            }
-        });
+                }
+            });
 
-        }else {
+        } else {
             Utils.toastMessage(EditProfileActivity.this, getResources().getString(R.string.enable_internet));
         }
 
@@ -1077,45 +1075,44 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
     private void closeKeyboard() {
         try {
-            InputMethodManager inputManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            if(inputManager!=null){
+            InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (inputManager != null) {
                 inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
 
         }
 
 
     }
 
-    public void updateProfileValue(){
+    public void updateProfileValue() {
         Gson gson = new Gson();
         String json = gson.toJson(profileData);
-        SessionHandler.getInstance().save(EditProfileActivity.this,AppConstants.LOGIN_RESPONSE,json);
+        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.LOGIN_RESPONSE, json);
 //        Toast.makeText(EditProfileActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
-        SessionHandler.getInstance().saveInt(EditProfileActivity.this,AppConstants.PARENT_ID_CHECK,floorParentID);
-        SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.FLOOR_POSITION_CHECK,floorPositon);
+        SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.PARENT_ID_CHECK, floorParentID);
+        SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.FLOOR_POSITION_CHECK, floorPositon);
 
         //New...
-        SessionHandler.getInstance().saveInt(EditProfileActivity.this,AppConstants.PARENT_ID,floorParentID);
-        SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.FLOOR_POSITION,floorPositon);
+        SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.PARENT_ID, floorParentID);
+        SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.FLOOR_POSITION, floorPositon);
 
         Log.d("floorParentID", String.valueOf(floorParentID));
         Log.d("floorPositon", String.valueOf(floorPositon));
 
 
         //To load Default location
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.COUNTRY_NAME_CHECK,CountryName);
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.BUILDING_CHECK,buildingName);
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FLOOR_CHECK,floorName);
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FULLPATHLOCATION_CHECK,fullPathLocation);
+        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.COUNTRY_NAME_CHECK, CountryName);
+        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.BUILDING_CHECK, buildingName);
+        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FLOOR_CHECK, floorName);
+        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FULLPATHLOCATION_CHECK, fullPathLocation);
 
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.COUNTRY_NAME,CountryName);
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.BUILDING,buildingName);
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FLOOR,floorName);
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FULLPATHLOCATION,fullPathLocation);
+        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.COUNTRY_NAME, CountryName);
+        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.BUILDING, buildingName);
+        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FLOOR, floorName);
+        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FULLPATHLOCATION, fullPathLocation);
 
     }
 
@@ -1139,41 +1136,35 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         //basedOnRoleEnableDisable();
 
 
-
-
-
-
-        binding.editRoomChange.setTextColor(getResources().getColor(R.color.figmaBlueText,getTheme()));
+        binding.editRoomChange.setTextColor(getResources().getColor(R.color.figmaBlueText, getTheme()));
         //binding.editDeskChange.setTextColor(getResources().getColor(R.color.figmaBlue,getTheme()));
-        binding.editParkChange.setTextColor(getResources().getColor(R.color.figmaBlueText,getTheme()));
-        binding.editStartTime.setTextColor(getResources().getColor(R.color.figmaBlueText,getTheme()));
-        binding.editEndTime.setTextColor(getResources().getColor(R.color.figmaBlueText,getTheme()));
-        binding.changeCountry.setTextColor(getResources().getColor(R.color.figmaBlueText,getTheme()));
+        binding.editParkChange.setTextColor(getResources().getColor(R.color.figmaBlueText, getTheme()));
+        binding.editStartTime.setTextColor(getResources().getColor(R.color.figmaBlueText, getTheme()));
+        binding.editEndTime.setTextColor(getResources().getColor(R.color.figmaBlueText, getTheme()));
+        binding.changeCountry.setTextColor(getResources().getColor(R.color.figmaBlueText, getTheme()));
 
     }
 
     private void basedOnRoleEnableDisable() {
 
 
-        if (profileData!=null && profileData.getHighestRole()!=null){
+        if (profileData != null && profileData.getHighestRole() != null) {
 
             if (profileData.getHighestRole().equalsIgnoreCase(AppConstants.Administrator)
-                    ||profileData.getHighestRole().equalsIgnoreCase(AppConstants.FacilityManager)
-                    ||profileData.getHighestRole().equalsIgnoreCase(AppConstants.TeamManager)
-                    ||profileData.getHighestRole().equalsIgnoreCase(AppConstants.MeetingManager)) {
+                    || profileData.getHighestRole().equalsIgnoreCase(AppConstants.FacilityManager)
+                    || profileData.getHighestRole().equalsIgnoreCase(AppConstants.TeamManager)
+                    || profileData.getHighestRole().equalsIgnoreCase(AppConstants.MeetingManager)) {
 
                 binding.editDisplayName.setEnabled(false);
                 binding.editName.setEnabled(true);
 
 
-
-
-            }else {
+            } else {
                 binding.editDisplayName.setEnabled(false);
                 binding.editName.setEnabled(false);
             }
 
-        }else {
+        } else {
             binding.editDisplayName.setEnabled(false);
             binding.editName.setEnabled(false);
         }
@@ -1197,12 +1188,12 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.tvEditTel.setEnabled(false);
         binding.changeCountry.setEnabled(false);
 
-        binding.editRoomChange.setTextColor(getResources().getColor(R.color.grey,getTheme()));
+        binding.editRoomChange.setTextColor(getResources().getColor(R.color.grey, getTheme()));
         //binding.editDeskChange.setTextColor(getResources().getColor(R.color.grey,getTheme()));
-        binding.editParkChange.setTextColor(getResources().getColor(R.color.grey,getTheme()));
-        binding.editStartTime.setTextColor(getResources().getColor(R.color.grey,getTheme()));
-        binding.editEndTime.setTextColor(getResources().getColor(R.color.grey,getTheme()));
-        binding.changeCountry.setTextColor(getResources().getColor(R.color.grey,getTheme()));
+        binding.editParkChange.setTextColor(getResources().getColor(R.color.grey, getTheme()));
+        binding.editStartTime.setTextColor(getResources().getColor(R.color.grey, getTheme()));
+        binding.editEndTime.setTextColor(getResources().getColor(R.color.grey, getTheme()));
+        binding.changeCountry.setTextColor(getResources().getColor(R.color.grey, getTheme()));
 
     }
 
@@ -1231,15 +1222,14 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         });
 
 
-
-        List<DefaultAssetResponse> defaultAssetResponseList=new ArrayList<>();
-        for (int i = 0; i <teamDeskResponseList.size() ; i++) {
-            DefaultAssetResponse defaultAssetResponse=new DefaultAssetResponse(teamDeskResponseList.get(i).getId(),teamDeskResponseList.get(i).getDeskId(),teamDeskResponseList.get(i).getTeamId(),teamDeskResponseList.get(i).getDesk().getCode());
+        List<DefaultAssetResponse> defaultAssetResponseList = new ArrayList<>();
+        for (int i = 0; i < teamDeskResponseList.size(); i++) {
+            DefaultAssetResponse defaultAssetResponse = new DefaultAssetResponse(teamDeskResponseList.get(i).getId(), teamDeskResponseList.get(i).getDeskId(), teamDeskResponseList.get(i).getTeamId(), teamDeskResponseList.get(i).getDesk().getCode());
             defaultAssetResponseList.add(defaultAssetResponse);
 
         }
 
-        editDefaultAssetAdapter = new EditDefaultAssetAdapter(EditProfileActivity.this, defaultAssetResponseList,bottomSheetDialog,this);
+        editDefaultAssetAdapter = new EditDefaultAssetAdapter(EditProfileActivity.this, defaultAssetResponseList, bottomSheetDialog, this);
         rvDeskRecycler.setAdapter(editDefaultAssetAdapter);
 
         bottomSheetDialog.show();
@@ -1251,15 +1241,15 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     public void onDefaultAssetSelect(int deskId, String code) {
         binding.editDesk.setText(code);
 
-        System.out.println("SlectedCodeAndId "+code+" "+deskId);
+        System.out.println("SlectedCodeAndId " + code + " " + deskId);
 
-        UserDetailsResponse userDetailsResponse=new UserDetailsResponse();
-        UserDetailsResponse.PreferredDesk preferredDesk=userDetailsResponse.new PreferredDesk();
+        UserDetailsResponse userDetailsResponse = new UserDetailsResponse();
+        UserDetailsResponse.PreferredDesk preferredDesk = userDetailsResponse.new PreferredDesk();
         preferredDesk.setId(deskId);
         preferredDesk.setCode(code);
         preferredDesk.setDescription("");
 
-       profileData.setPreferredDesk(preferredDesk);
+        profileData.setPreferredDesk(preferredDesk);
 
         //profileData.getPreferredDesk().setId(deskId);
         //profileData.getPreferredDesk().setCode(code);
@@ -1272,15 +1262,15 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     protected void onResume() {
         super.onResume();
 
-        if (SessionHandler.getInstance().get(EditProfileActivity.this,AppConstants.SELECTED_COUNTRY)!=null){
+        if (SessionHandler.getInstance().get(EditProfileActivity.this, AppConstants.SELECTED_COUNTRY) != null) {
 
-            binding.editCountry.setText(SessionHandler.getInstance().get(EditProfileActivity.this,AppConstants.SELECTED_COUNTRY));
+            binding.editCountry.setText(SessionHandler.getInstance().get(EditProfileActivity.this, AppConstants.SELECTED_COUNTRY));
 
-            int id = SessionHandler.getInstance().getInt(EditProfileActivity.this,AppConstants.SELECTED_COUNTRY_ID);
+            int id = SessionHandler.getInstance().getInt(EditProfileActivity.this, AppConstants.SELECTED_COUNTRY_ID);
             profileData.setCountryId(id);
 
-            SessionHandler.getInstance().remove(EditProfileActivity.this,AppConstants.SELECTED_COUNTRY);
-            SessionHandler.getInstance().remove(EditProfileActivity.this,AppConstants.SELECTED_COUNTRY_ID);
+            SessionHandler.getInstance().remove(EditProfileActivity.this, AppConstants.SELECTED_COUNTRY);
+            SessionHandler.getInstance().remove(EditProfileActivity.this, AppConstants.SELECTED_COUNTRY_ID);
 
             validateData();
         }
@@ -1291,70 +1281,68 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         if (Utils.isNetworkAvailable(EditProfileActivity.this)) {
             binding.locateProgressBar.setVisibility(View.VISIBLE);
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ArrayList<DAOCountryList>> call = apiService.getCountryList();
-        call.enqueue(new Callback<ArrayList<DAOCountryList>>() {
-            @Override
-            public void onResponse(Call<ArrayList<DAOCountryList>> call, Response<ArrayList<DAOCountryList>> response) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<ArrayList<DAOCountryList>> call = apiService.getCountryList();
+            call.enqueue(new Callback<ArrayList<DAOCountryList>>() {
+                @Override
+                public void onResponse(Call<ArrayList<DAOCountryList>> call, Response<ArrayList<DAOCountryList>> response) {
 
-                //binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    //binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
-                if (response.body()!=null){
+                    if (response.body() != null) {
 
-                    if (response.code() == 200) {
+                        if (response.code() == 200) {
 
-                        countryList = new ArrayList<>();
-                        countryList = response.body();
+                            countryList = new ArrayList<>();
+                            countryList = response.body();
 
-                        if (profileData!=null && countryList.size()>0){
+                            if (profileData != null && countryList.size() > 0) {
 
-                            for (int i=0;i<countryList.size();i++){
-                                if (profileData.getCountryId() == countryList.get(i).getId()){
-                                    binding.editCountry.setText(countryList.get(i).getName());
-                                    break;
+                                for (int i = 0; i < countryList.size(); i++) {
+                                    if (profileData.getCountryId() == countryList.get(i).getId()) {
+                                        binding.editCountry.setText(countryList.get(i).getName());
+                                        break;
+                                    }
                                 }
+
                             }
 
+                        } else if (response.code() == 401) {
+                            Utils.showCustomTokenExpiredDialog(EditProfileActivity.this, "Token Expired");
+                            SessionHandler.getInstance().saveBoolean(EditProfileActivity.this, AppConstants.LOGIN_CHECK, false);
+
+                        } else {
+                            //Toast.makeText(EditProfileActivity.this, "No Response", Toast.LENGTH_SHORT).show();
                         }
 
-                    }else if(response.code() == 401){
-                        Utils.showCustomTokenExpiredDialog(EditProfileActivity.this,"Token Expired");
-                        SessionHandler.getInstance().saveBoolean(EditProfileActivity.this, AppConstants.LOGIN_CHECK,false);
-
-                    }else {
-                        //Toast.makeText(EditProfileActivity.this, "No Response", Toast.LENGTH_SHORT).show();
                     }
+
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
 
                 }
 
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                @Override
+                public void onFailure(Call<ArrayList<DAOCountryList>> call, Throwable t) {
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
+                }
+            });
 
-
-
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<DAOCountryList>> call, Throwable t) {
-                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-
-            }
-        });
-
-        }else {
+        } else {
             Utils.toastMessage(EditProfileActivity.this, getResources().getString(R.string.enable_internet));
         }
 
     }
 
-    public void setLanguage(){
+    public void setLanguage() {
 
         logoinPage = Utils.getLoginScreenData(EditProfileActivity.this);
         appKeysPage = Utils.getAppKeysPageScreenData(EditProfileActivity.this);
         resetPage = Utils.getResetPasswordPageScreencreenData(EditProfileActivity.this);
         actionOverLays = Utils.getActionOverLaysPageScreenData(EditProfileActivity.this);
         bookindata = Utils.getBookingPageScreenData(EditProfileActivity.this);
-        global=Utils.getGlobalScreenData(EditProfileActivity.this);
+        global = Utils.getGlobalScreenData(EditProfileActivity.this);
 
         binding.tvTitle.setText(appKeysPage.getProfile());
         binding.tvUpdateImage.setText(appKeysPage.getUploadPhoto());
@@ -1437,7 +1425,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             public void onClick(DialogInterface dialog, int item) {
                 boolean result = Utils.checkPermission(EditProfileActivity.this);
                 if (items[item].equals("Take Photo")) {
-                    if (checkPermission()){
+                    if (checkPermission()) {
 //                    userChoosenTask = commonStrings.getTxt_take_photo().getName();
                         if (result)
                             cameraIntent();
@@ -1465,6 +1453,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 //                .setMinCropWindowSize(400, 400)
 //                .start(this);
     }
+
     private void cameraIntent() {
         try {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -1481,6 +1470,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             e.printStackTrace();
         }
     }
+
     private void galleryIntent() {
         try {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -1529,6 +1519,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         currentPhotoPath = "file:" + file.getAbsolutePath();
         return file;
     }
+
     private void onCaptureImageResult(Intent data) {
         thumbnail = (Bitmap) data.getExtras().get("data");
         bytes = new ByteArrayOutputStream();
@@ -1553,7 +1544,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         super.onActivityResult(requestCode, resultCode, data);
         Uri uri = null;
         String destinationFileName = SAMPLE_CROPPED_IMAGE_NAME;
-        destinationFileName+=".jpg";
+        destinationFileName += ".jpg";
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == SELECT_FILE) {
                 Uri sourceUri = data.getData(); // 1
@@ -1570,8 +1561,8 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         if (requestCode == UCrop.REQUEST_CROP && resultCode == RESULT_OK) {
             onCaptureImageResult(data);
             uri = UCrop.getOutput(data);
-            System.out.println("print uri"+uri);
-            System.out.println("print uri"+new File(uri.getPath()).getAbsolutePath());
+            System.out.println("print uri" + uri);
+            System.out.println("print uri" + new File(uri.getPath()).getAbsolutePath());
 
             thumbnail = null;
             try {
@@ -1590,14 +1581,14 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
                 getStringImage(bitmap);
-                String bast64InString= String.valueOf("data:image/png;base64," + encodedImage);
+                String bast64InString = String.valueOf("data:image/png;base64," + encodedImage);
                 //base64Img = RequestBody.create(MediaType.parse("text/plain"), "data:image/png;base64," + encodedImage);
                 //New...
                 BitmapFactory.Options options = Utils.getImageSize(uri);
-                if (options.outWidth>=250 && options.outHeight>=250){
+                if (options.outWidth >= 250 && options.outHeight >= 250) {
                     updateProfilePicture(bast64InString);
-                }else {
-                    Utils.toastMessage(EditProfileActivity.this,"Please Select Image more than 250X250 ");
+                } else {
+                    Utils.toastMessage(EditProfileActivity.this, "Please Select Image more than 250X250 ");
                 }
 
             } catch (IOException e) {
@@ -1628,14 +1619,14 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                     getStringImage(bitmap);
-                    String bast64InString= String.valueOf("data:image/png;base64," + encodedImage);
+                    String bast64InString = String.valueOf("data:image/png;base64," + encodedImage);
                     //base64Img = RequestBody.create(MediaType.parse("text/plain"), "data:image/png;base64," + encodedImage);
                     //New...
                     BitmapFactory.Options options = Utils.getImageSize(selectedImage);
-                    if (options.outWidth>=250 && options.outHeight>=250){
+                    if (options.outWidth >= 250 && options.outHeight >= 250) {
                         updateProfilePicture(encodedImage);
-                    }else {
-                        Utils.toastMessage(EditProfileActivity.this,"Please Select Image more than 250X250 ");
+                    } else {
+                        Utils.toastMessage(EditProfileActivity.this, "Please Select Image more than 250X250 ");
                     }
 
                 } catch (IOException e) {

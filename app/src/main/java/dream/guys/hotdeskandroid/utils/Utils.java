@@ -29,24 +29,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
-import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CalendarView;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -64,7 +57,6 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.gson.Gson;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -79,13 +71,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.listener.QuestionListEditListener;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
-import dream.guys.hotdeskandroid.ui.home.EditProfileActivity;
-import dream.guys.hotdeskandroid.ui.locate.LocateFragment;
 import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.login.SignInActivity;
 
@@ -130,13 +119,14 @@ public class Utils {
     }
 
     public static String checkStringParms(String text) {
-        if (text!=null)
+        if (text != null)
             return text;
         else
             return "";
     }
+
     public static Integer checkStringParms(Integer text) {
-        if (text!=null)
+        if (text != null)
             return text;
         else
             return 0;
@@ -146,17 +136,18 @@ public class Utils {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    public static boolean isValiedCompanyName(String text){
+    public static boolean isValiedCompanyName(String text) {
         return !TextUtils.isEmpty(text) && !text.equals("");
     }
 
-    public static boolean isValiedText(String text){
-        return !TextUtils.isEmpty(text) && !text.equals("") && text!=null;
+    public static boolean isValiedText(String text) {
+        return !TextUtils.isEmpty(text) && !text.equals("") && text != null;
     }
 
     public static void toastMessage(Context mContext, String message) {
         Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
     }
+
     public static void toastShortMessage(Context mContext, String message) {
         Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
     }
@@ -174,7 +165,7 @@ public class Utils {
     }
 
     //Locate Booking TimerPicker BottomSheet
-    public static void bottomSheetTimePickerInBooking(Context mContext, Activity activity,TextView tv, String title, String date) {
+    public static void bottomSheetTimePickerInBooking(Context mContext, Activity activity, TextView tv, String title, String date) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet,
                 new RelativeLayout(activity)));
@@ -187,19 +178,19 @@ public class Utils {
         TextView backTv = bottomSheetDialog.findViewById(R.id.tv_back);
         titleTv.setText(title);
         //New...
-        if (!(date.equalsIgnoreCase(""))){
+        if (!(date.equalsIgnoreCase(""))) {
             String dateTime = Utils.dateWithDayString(date);
-            if (dateTime.equalsIgnoreCase("")){
+            if (dateTime.equalsIgnoreCase("")) {
                 dateTv.setText(date);
-            }else {
+            } else {
                 dateTv.setText(dateTime);
             }
-        }else {
+        } else {
             dateTv.setText(date);
         }
         //keText(mContext, "tv.ge"+tv.getText(), Toast.LENGTH_SHORT).show();
         //Toast.makeText(mContext, "tv.ge"+tv.getText(), Toast.LENGTH_SHORT).show();
-        String[] parts =tv.getText().toString().split(":");
+        String[] parts = tv.getText().toString().split(":");
         simpleTimePicker24Hours.setHour(Integer.parseInt(parts[0]));
         simpleTimePicker24Hours.setMinute(Integer.parseInt(parts[1]));
 
@@ -224,26 +215,26 @@ public class Utils {
 
                 //setData(simpleTimePicker24Hours,tv);
 
-                String hour=null,minute=null;
-                String getHHour=String.valueOf(simpleTimePicker24Hours.getHour());
-                String getMMinute=String.valueOf(simpleTimePicker24Hours.getMinute());
+                String hour = null, minute = null;
+                String getHHour = String.valueOf(simpleTimePicker24Hours.getHour());
+                String getMMinute = String.valueOf(simpleTimePicker24Hours.getMinute());
 
-                if(getHHour.length()==1){
-                    hour="0"+getHHour;
-                }else {
-                    hour=getHHour;
+                if (getHHour.length() == 1) {
+                    hour = "0" + getHHour;
+                } else {
+                    hour = getHHour;
                 }
 
 
-                if(getMMinute.length()==1){
-                    minute="0"+getMMinute;
-                }else {
-                    minute=getMMinute;
+                if (getMMinute.length() == 1) {
+                    minute = "0" + getMMinute;
+                } else {
+                    minute = getMMinute;
                 }
 
-                System.out.println("GETDATATATATA"+hour+" "+minute);
+                System.out.println("GETDATATATATA" + hour + " " + minute);
 
-                tv.setText(hour+":"+minute);
+                tv.setText(hour + ":" + minute);
 
                 bottomSheetDialog.dismiss();
             }
@@ -253,30 +244,30 @@ public class Utils {
 
     }
 
-    public static String setData(TimePicker simpleTimePicker24Hours, TextView tv){
+    public static String setData(TimePicker simpleTimePicker24Hours, TextView tv) {
 
-        String hour=null,minute=null;
-        String getHHour=String.valueOf(simpleTimePicker24Hours.getHour());
-        String getMMinute=String.valueOf(simpleTimePicker24Hours.getMinute());
+        String hour = null, minute = null;
+        String getHHour = String.valueOf(simpleTimePicker24Hours.getHour());
+        String getMMinute = String.valueOf(simpleTimePicker24Hours.getMinute());
 
-        if(getHHour.length()==1){
-            hour="0"+getHHour;
-        }else {
-            hour=getHHour;
+        if (getHHour.length() == 1) {
+            hour = "0" + getHHour;
+        } else {
+            hour = getHHour;
         }
 
 
-        if(getMMinute.length()==1){
-            minute="0"+getMMinute;
-        }else {
-            minute=getMMinute;
+        if (getMMinute.length() == 1) {
+            minute = "0" + getMMinute;
+        } else {
+            minute = getMMinute;
         }
 
-        System.out.println("GETDATATATATA"+hour+" "+minute);
+        System.out.println("GETDATATATATA" + hour + " " + minute);
 
-        tv.setText(hour+":"+minute);
+        tv.setText(hour + ":" + minute);
 
-        return hour+":"+minute;
+        return hour + ":" + minute;
     }
 
     public static void tokenExpiryAlert(final Context mContext, String msg) {
@@ -302,9 +293,9 @@ public class Utils {
     }
 
 
-    public static void bottomSheetTimePickerMeetingRoom(Context mContext, Activity activity,TextView st,
-                                                          TextView et, String title, String date,
-                                                          Boolean isrequested) {
+    public static void bottomSheetTimePickerMeetingRoom(Context mContext, Activity activity, TextView st,
+                                                        TextView et, String title, String date,
+                                                        Boolean isrequested) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet,
                 new RelativeLayout(activity)));
@@ -316,18 +307,18 @@ public class Utils {
         TextView backTv = bottomSheetDialog.findViewById(R.id.tv_back);
         titleTv.setText(title);
         //New...
-        if (!(date.equalsIgnoreCase(""))){
+        if (!(date.equalsIgnoreCase(""))) {
             String dateTime = Utils.dateWithDayString(date);
-            if (dateTime.equalsIgnoreCase("")){
+            if (dateTime.equalsIgnoreCase("")) {
                 dateTv.setText(date);
-            }else {
+            } else {
                 dateTv.setText(dateTime);
             }
-        }else {
+        } else {
             dateTv.setText(date);
         }
 
-        String[] parts =st.getText().toString().split(":");
+        String[] parts = st.getText().toString().split(":");
         simpleTimePicker.setHour(Integer.parseInt(parts[0]));
         simpleTimePicker.setMinute(Integer.parseInt(parts[1]));
 
@@ -351,27 +342,27 @@ public class Utils {
         continueTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hour=simpleTimePicker.getHour();
-                minutes=simpleTimePicker.getMinute();
+                hour = simpleTimePicker.getHour();
+                minutes = simpleTimePicker.getMinute();
 //                Toast.makeText(mContext, "ih"+isrequested+title, Toast.LENGTH_SHORT).show();
 
 
-                String time=hour+":"+minutes;
+                String time = hour + ":" + minutes;
 
-                SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
+                SimpleDateFormat f24hours = new SimpleDateFormat("HH:mm");
                 try {
-                    Date date=f24hours.parse(time);
-                    SimpleDateFormat f12hours=new SimpleDateFormat("hh:mm aa");
+                    Date date = f24hours.parse(time);
+                    SimpleDateFormat f12hours = new SimpleDateFormat("hh:mm aa");
 
-                    Calendar cal =Calendar.getInstance();
+                    Calendar cal = Calendar.getInstance();
                     cal.setTime(date);
-                    cal.add(Calendar.MINUTE,30);
-                    String endTime=Utils.setStartNearestFiveMinToMeeting(f24hours.format(cal.getTime()));
+                    cal.add(Calendar.MINUTE, 30);
+                    String endTime = Utils.setStartNearestFiveMinToMeeting(f24hours.format(cal.getTime()));
 
 //                            return String.valueOf(f12hours.format(date));
-                    st.setText(""+f24hours.format(date));
-                    et.setText(""+f24hours.format(f24hours.parse(endTime)));
-                    System.out.println("ReceivedDate"+f12hours.format(date));
+                    st.setText("" + f24hours.format(date));
+                    et.setText("" + f24hours.format(f24hours.parse(endTime)));
+                    System.out.println("ReceivedDate" + f12hours.format(date));
                     bottomSheetDialog.dismiss();
 
                 } catch (ParseException e) {
@@ -385,7 +376,7 @@ public class Utils {
     }
 
     //Bottom Sheet TimePicker
-    public static void bottomSheetTimePicker(Context mContext, Activity activity,TextView tv, String title, String date, Boolean isrequested) {
+    public static void bottomSheetTimePicker(Context mContext, Activity activity, TextView tv, String title, String date, Boolean isrequested) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet,
                 new RelativeLayout(activity)));
@@ -397,18 +388,18 @@ public class Utils {
         TextView backTv = bottomSheetDialog.findViewById(R.id.tv_back);
         titleTv.setText(title);
         //New...
-        if (!(date.equalsIgnoreCase(""))){
+        if (!(date.equalsIgnoreCase(""))) {
             String dateTime = Utils.dateWithDayString(date);
-            if (dateTime.equalsIgnoreCase("")){
+            if (dateTime.equalsIgnoreCase("")) {
                 dateTv.setText(date);
-            }else {
+            } else {
                 dateTv.setText(dateTime);
             }
-        }else {
+        } else {
             dateTv.setText(date);
         }
 
-        String[] parts =tv.getText().toString().split(":");
+        String[] parts = tv.getText().toString().split(":");
         simpleTimePicker.setHour(Integer.parseInt(parts[0]));
         simpleTimePicker.setMinute(Integer.parseInt(parts[1]));
 
@@ -432,34 +423,34 @@ public class Utils {
         continueTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hour=simpleTimePicker.getHour();
-                minutes=simpleTimePicker.getMinute();
+                hour = simpleTimePicker.getHour();
+                minutes = simpleTimePicker.getMinute();
 //                Toast.makeText(mContext, "ih"+isrequested+title, Toast.LENGTH_SHORT).show();
-                if (title.equalsIgnoreCase("end time") && isrequested){
-                    if (hour > oldHour || (hour==oldHour && minutes >oldMinutes)){
+                if (title.equalsIgnoreCase("end time") && isrequested) {
+                    if (hour > oldHour || (hour == oldHour && minutes > oldMinutes)) {
                         Toast.makeText(mContext, "For Request end time cant be more that approved hours", Toast.LENGTH_SHORT).show();
-                        hour= oldHour;
+                        hour = oldHour;
                         minutes = oldMinutes;
                     }
-                } else if(title.equalsIgnoreCase("start time") && isrequested){
-                    if (hour < oldHour || (hour==oldHour && minutes < oldMinutes)){
+                } else if (title.equalsIgnoreCase("start time") && isrequested) {
+                    if (hour < oldHour || (hour == oldHour && minutes < oldMinutes)) {
                         Toast.makeText(mContext, "For Request start time cant be less that approved hours", Toast.LENGTH_SHORT).show();
-                        hour= oldHour;
+                        hour = oldHour;
                         minutes = oldMinutes;
                     }
                 }
 
 
-                String time=hour+":"+minutes;
+                String time = hour + ":" + minutes;
 
-                SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
+                SimpleDateFormat f24hours = new SimpleDateFormat("HH:mm");
 
                 try {
-                    Date date=f24hours.parse(time);
-                    SimpleDateFormat f12hours=new SimpleDateFormat("hh:mm aa");
+                    Date date = f24hours.parse(time);
+                    SimpleDateFormat f12hours = new SimpleDateFormat("hh:mm aa");
 //                            return String.valueOf(f12hours.format(date));
-                    tv.setText(""+f24hours.format(date));
-                    System.out.println("ReceivedDate"+f12hours.format(date));
+                    tv.setText("" + f24hours.format(date));
+                    System.out.println("ReceivedDate" + f12hours.format(date));
                     bottomSheetDialog.dismiss();
 
                 } catch (ParseException e) {
@@ -474,7 +465,7 @@ public class Utils {
 
     //BotomSheet DatePicker
     public static void bottomSheetDatePicker(Context mContext, Activity activity, String title, String date,
-                                             TextView locateCheckInDate,TextView showLocateCheckInDate){
+                                             TextView locateCheckInDate, TextView showLocateCheckInDate) {
 
         BottomSheetDialog bottomSheetDatePicker = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
         bottomSheetDatePicker.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_date_picker,
@@ -482,7 +473,7 @@ public class Utils {
 
         TextView calContinue = bottomSheetDatePicker.findViewById(R.id.calenderContinue);
         TextView calBack = bottomSheetDatePicker.findViewById(R.id.calenderBack);
-        CalendarView calendarView=bottomSheetDatePicker.findViewById(R.id.datePicker);
+        CalendarView calendarView = bottomSheetDatePicker.findViewById(R.id.datePicker);
 
         Calendar c = Calendar.getInstance();
         calendarView.setMinDate(c.getTimeInMillis() - 1000);
@@ -491,32 +482,32 @@ public class Utils {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
 
-                String yearInString=String.valueOf(year);
+                String yearInString = String.valueOf(year);
 
-                int actualMonth=month+1;
-                String monthInStringFormat,dateInStringFormat;
+                int actualMonth = month + 1;
+                String monthInStringFormat, dateInStringFormat;
 
-                if(actualMonth>=10){
-                    monthInStringFormat=String.valueOf(actualMonth);
-                }else {
-                    String monthInString=String.valueOf(actualMonth);
-                    monthInStringFormat="0"+monthInString;
+                if (actualMonth >= 10) {
+                    monthInStringFormat = String.valueOf(actualMonth);
+                } else {
+                    String monthInString = String.valueOf(actualMonth);
+                    monthInStringFormat = "0" + monthInString;
                 }
 
                 //New...
-                if(dayOfMonth>=10){
-                    dateInStringFormat=String.valueOf(dayOfMonth);
-                }else {
-                    String monthInString=String.valueOf(dayOfMonth);
-                    dateInStringFormat="0"+dayOfMonth;
+                if (dayOfMonth >= 10) {
+                    dateInStringFormat = String.valueOf(dayOfMonth);
+                } else {
+                    String monthInString = String.valueOf(dayOfMonth);
+                    dateInStringFormat = "0" + dayOfMonth;
                 }
 
-                String dayInString=String.valueOf(dayOfMonth);
-                String dateInString= yearInString+"-"+monthInStringFormat+"-"+dateInStringFormat;
-                System.out.println("PickedDate"+dateInString);
+                String dayInString = String.valueOf(dayOfMonth);
+                String dateInString = yearInString + "-" + monthInStringFormat + "-" + dateInStringFormat;
+                System.out.println("PickedDate" + dateInString);
                 //locateCheckInDate.setText(dateInString+"T"+getCurrentTimeIn24HourFormat()+".000"+"Z");
                 //locateCheckInDate.setText(dateInString+"T"+"00:00:00.000"+"Z");
-                locateCheckInDate.setText(""+dateInString);
+                locateCheckInDate.setText("" + dateInString);
 
                 showLocateCheckInDate.setText(showBottomSheetDate(dateInString));
 
@@ -548,15 +539,16 @@ public class Utils {
     }
 
 
-    public long addHoursToTime(String time,int hours) throws ParseException {
+    public long addHoursToTime(String time, int hours) throws ParseException {
         SimpleDateFormat parser = new SimpleDateFormat("HH:mm");
         Date myDate = parser.parse(time);
-        Calendar cal =Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
         cal.setTime(myDate);
-        cal.add(Calendar.HOUR_OF_DAY,hours); // this will add two hours
+        cal.add(Calendar.HOUR_OF_DAY, hours); // this will add two hours
         myDate = cal.getTime();
         return myDate.getTime();
     }
+
     public static void showCustomAlertDialog(final Activity mContext, String aMessage) {
         final Dialog dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -623,10 +615,6 @@ public class Utils {
     }
 
 
-
-
-
-
     public static void bottomSheetEditYourBooking(Context mContext, Activity activity, String title, String date) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_booking,
@@ -635,10 +623,10 @@ public class Utils {
         TextView startTime = bottomSheetDialog.findViewById(R.id.start_time);
         TextView endTime = bottomSheetDialog.findViewById(R.id.end_time);
         ChipGroup chipGroup = bottomSheetDialog.findViewById(R.id.list_item);
-        for (int i=0; i<5; i++){
+        for (int i = 0; i < 5; i++) {
             Chip chip = new Chip(activity);
             chip.setId(i);
-            chip.setText("ABC "+i);
+            chip.setText("ABC " + i);
             chip.setChipBackgroundColorResource(R.color.figmaGrey);
             chip.setCloseIconVisible(false);
             chip.setTextColor(activity.getResources().getColor(R.color.white));
@@ -649,29 +637,29 @@ public class Utils {
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popUpTimePicker(activity,startTime,"");
+                popUpTimePicker(activity, startTime, "");
             }
         });
 
         endTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popUpTimePicker(activity,endTime,"");
+                popUpTimePicker(activity, endTime, "");
             }
         });
         bottomSheetDialog.show();
     }
 
     public static String convert24HrsTO12Hrs(String time) {
-        time.replace(".",":");
-        SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
-        SimpleDateFormat f12hours=new SimpleDateFormat("hh:mm aa");
+        time.replace(".", ":");
+        SimpleDateFormat f24hours = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat f12hours = new SimpleDateFormat("hh:mm aa");
         try {
-            Date date=f24hours.parse(time);
+            Date date = f24hours.parse(time);
 //                            return String.valueOf(f12hours.format(date));
 //            v.setText(""+f12hours.format(date));
-            System.out.println("ReceivedDate Bala"+f12hours.format(date));
-            return ""+f12hours.format(date);
+            System.out.println("ReceivedDate Bala" + f12hours.format(date));
+            return "" + f12hours.format(date);
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -679,16 +667,17 @@ public class Utils {
         }
 
     }
+
     public static String convert12HrsTO24Hrs(String time) {
-        time.replace(".",":");
-        SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
-        SimpleDateFormat f12hours=new SimpleDateFormat("hh:mm aa");
+        time.replace(".", ":");
+        SimpleDateFormat f24hours = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat f12hours = new SimpleDateFormat("hh:mm aa");
         try {
-            Date date=f12hours.parse(time);
+            Date date = f12hours.parse(time);
 //                            return String.valueOf(f12hours.format(date));
 //            v.setText(""+f12hours.format(date));
-            System.out.println("ReceivedDate Bala"+f24hours.format(date));
-            return ""+f24hours.format(date);
+            System.out.println("ReceivedDate Bala" + f24hours.format(date));
+            return "" + f24hours.format(date);
 
 
         } catch (ParseException e) {
@@ -697,26 +686,27 @@ public class Utils {
         }
 
     }
+
     public static void popUpTimePicker(Activity activity, TextView v, String tilte) {
 //        TextView startTime = v;
-        TimePickerDialog timePickerDialog=new TimePickerDialog(activity,
+        TimePickerDialog timePickerDialog = new TimePickerDialog(activity,
                 android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-                        hour=hourOfDay;
-                        minutes=minute;
-                        String time=hourOfDay+":"+minute;
+                        hour = hourOfDay;
+                        minutes = minute;
+                        String time = hourOfDay + ":" + minute;
 
-                        SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
+                        SimpleDateFormat f24hours = new SimpleDateFormat("HH:mm");
 
                         try {
-                            Date date=f24hours.parse(time);
-                            SimpleDateFormat f12hours=new SimpleDateFormat("hh:mm aa");
+                            Date date = f24hours.parse(time);
+                            SimpleDateFormat f12hours = new SimpleDateFormat("hh:mm aa");
 //                            return String.valueOf(f12hours.format(date));
-                            v.setText(""+f12hours.format(date));
-                            System.out.println("ReceivedDate"+f12hours.format(date));
+                            v.setText("" + f12hours.format(date));
+                            System.out.println("ReceivedDate" + f12hours.format(date));
 
 
                         } catch (ParseException e) {
@@ -724,85 +714,90 @@ public class Utils {
                         }
 
                     }
-                },12,0,false);
+                }, 12, 0, false);
 
 
-        timePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE,"Continue",timePickerDialog);
-        timePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE,"Back",timePickerDialog);
+        timePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Continue", timePickerDialog);
+        timePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Back", timePickerDialog);
 
         //timePickerDialog.setContentView(R.layout.layout_sso);
 
-        timePickerDialog.setTitle(HtmlCompat.fromHtml("Start <br>"+tilte,HtmlCompat.FROM_HTML_MODE_LEGACY));
+        timePickerDialog.setTitle(HtmlCompat.fromHtml("Start <br>" + tilte, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
 
         timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        timePickerDialog.updateTime(hour,minutes);
+        timePickerDialog.updateTime(hour, minutes);
         timePickerDialog.show();
 
     }
 
-    public static String getDayFromDate(Date date){
+    public static String getDayFromDate(Date date) {
         DateFormat df = new SimpleDateFormat("EEE");
         return df.format(date);
     }
-    public static String getDateFromDate(Date date){
+
+    public static String getDateFromDate(Date date) {
         DateFormat df = new SimpleDateFormat("d");
         return df.format(date);
     }
-    public static String getDayAndDate(Date date){
+
+    public static String getDayAndDate(Date date) {
         DateFormat df = new SimpleDateFormat("EEE,d");
         return df.format(date);
     }
-    public static String dayDateMonthFormat(Date date){
+
+    public static String dayDateMonthFormat(Date date) {
         DateFormat df = new SimpleDateFormat("EEE,d MMMM yyyy");
         return df.format(date);
     }
-    public static String getISO8601format(Date date){
+
+    public static String getISO8601format(Date date) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
 
         return df.format(date);
     }
-    public static String getISO8601formatSss(Date date){
+
+    public static String getISO8601formatSss(Date date) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm.sss'Z'");
 
         return df.format(date);
     }
 
-    public static String getYearMonthDateFormat(Date date){
+    public static String getYearMonthDateFormat(Date date) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         return df.format(date);
     }
 
-    public static String getCurrentDate(){
-         String date= null;
+    public static String getCurrentDate() {
+        String date = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDateTime now = LocalDateTime.now();
             //System.out.println(dtf.format(now));
-            date=dtf.format(now);
+            date = dtf.format(now);
 
         }
         return date;
     }
 
-    public static String getCurrentTimeIn24HourFormat(){
+    public static String getCurrentTimeIn24HourFormat() {
         //SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         String str = sdf.format(new Date());
-        System.out.println("sout"+str);
+        System.out.println("sout" + str);
         return str;
 
     }
 
-    public static String getCurrentTime(){
-         String time= null;
+    public static String getCurrentTime() {
+        String time = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
             LocalDateTime now = LocalDateTime.now();
             //System.out.println(dtf.format(now));
-            time=dtf.format(now);
+            time = dtf.format(now);
         }
         return time;
     }
@@ -810,9 +805,9 @@ public class Utils {
     public static boolean checkTokenExpiry() {
 
         boolean tokenExpiryStatus = false;
-        String date=SessionHandler.getInstance().get(MyApp.getContext(), AppConstants.EXPIRY_TOKEN_DATE);
+        String date = SessionHandler.getInstance().get(MyApp.getContext(), AppConstants.EXPIRY_TOKEN_DATE);
 
-        if (getToken() != null && date!=null) {
+        if (getToken() != null && date != null) {
             //if (date.equals(getCurrentDate()))
             if (date.equals(getCurrentDate())) {
 
@@ -824,89 +819,90 @@ public class Utils {
         }
 
 
-        return  tokenExpiryStatus;
+        return tokenExpiryStatus;
 
     }
 
-    public static void saveTokenDateAndTimeInPreference(String token){
+    public static void saveTokenDateAndTimeInPreference(String token) {
 
-        String expiryTokenDate="",expiryTokenTime="",expiryTokenTimeWithZ="";
-        String[] words=token.split("T");
+        String expiryTokenDate = "", expiryTokenTime = "", expiryTokenTimeWithZ = "";
+        String[] words = token.split("T");
 
-        for (int i = 0; i <words.length ; i++) {
+        for (int i = 0; i < words.length; i++) {
 
-            if(i==0){
-                expiryTokenDate=words[i];
+            if (i == 0) {
+                expiryTokenDate = words[i];
             }
 
-            if(i==1){
-                expiryTokenTimeWithZ=words[i];
+            if (i == 1) {
+                expiryTokenTimeWithZ = words[i];
             }
 
-            String[] tokenTime=expiryTokenTimeWithZ.split("Z");
+            String[] tokenTime = expiryTokenTimeWithZ.split("Z");
 //            System.out.println("TokenSplitData"+tokenTime[0]);
 
         }
 
-        System.out.println("FinalTokenDateAndTime"+expiryTokenDate+" "+expiryTokenTime);
+        System.out.println("FinalTokenDateAndTime" + expiryTokenDate + " " + expiryTokenTime);
 
-        SessionHandler.getInstance().save(MyApp.getContext(),AppConstants.EXPIRY_TOKEN_DATE,expiryTokenDate);
-        SessionHandler.getInstance().save(MyApp.getContext(),AppConstants.EXPIRY_TOKEN_TIME,expiryTokenTime);
+        SessionHandler.getInstance().save(MyApp.getContext(), AppConstants.EXPIRY_TOKEN_DATE, expiryTokenDate);
+        SessionHandler.getInstance().save(MyApp.getContext(), AppConstants.EXPIRY_TOKEN_TIME, expiryTokenTime);
 
     }
 
 
-    public static String getDayAndDateFromDateFormat(Date date){
+    public static String getDayAndDateFromDateFormat(Date date) {
 
-        String dayInTextWithComma=""; String dayInText=""; String dayInNumber="";
+        String dayInTextWithComma = "";
+        String dayInText = "";
+        String dayInNumber = "";
 
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         String strDate = formatter.format(date);
 
         formatter = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z");
         strDate = formatter.format(date);
-        System.out.println("Date Format with E, dd MMM yyyy HH:mm:ss z : "+strDate);
+        System.out.println("Date Format with E, dd MMM yyyy HH:mm:ss z : " + strDate);
 
-        String[] words=strDate.split(" ");
+        String[] words = strDate.split(" ");
 
-        for (int i = 0; i <words.length ; i++) {
+        for (int i = 0; i < words.length; i++) {
 
-            if(i==0){
-                dayInTextWithComma=words[i];
+            if (i == 0) {
+                dayInTextWithComma = words[i];
             }
 
-            if(i==1){
-                dayInNumber=words[i];
+            if (i == 1) {
+                dayInNumber = words[i];
             }
 
         }
 
-        String[] day=dayInTextWithComma.split(",");
+        String[] day = dayInTextWithComma.split(",");
 
-           dayInText=day[0];
+        dayInText = day[0];
 
-        return dayInText+" "+dayInNumber;
+        return dayInText + " " + dayInNumber;
 
     }
 
 
+    public static boolean compareTimeIfCheckInEnable(String startTime, String endTime) {
+        startTime = startTime.replace(":", ".");
+        endTime = endTime.replace(":", ".");
 
-    public static boolean compareTimeIfCheckInEnable(String startTime, String endTime){
-        startTime = startTime.replace(":",".");
-        endTime = endTime.replace(":",".");
-
-        System.out.println(startTime+" balas "+endTime);
+        System.out.println(startTime + " balas " + endTime);
         if (Double.parseDouble(startTime) >= Double.parseDouble(endTime))
             return true;
         else
             return false;
     }
 
-    public static String splitDate(String dateWithTandZ){
-        String date="";
-        String[] words=dateWithTandZ.split("T");
+    public static String splitDate(String dateWithTandZ) {
+        String date = "";
+        String[] words = dateWithTandZ.split("T");
 
-        for (int i = 0; i <words.length ; i++) {
+        for (int i = 0; i < words.length; i++) {
 
             if (i == 0) {
                 date = words[i];
@@ -914,59 +910,61 @@ public class Utils {
 
         }
 
-        return  date;
+        return date;
 
     }
 
-    public static String splitTime(String dateWithTandZ){
+    public static String splitTime(String dateWithTandZ) {
 
-        Date date=null;
-        String timeWithZ="";
-        String time="";
+        Date date = null;
+        String timeWithZ = "";
+        String time = "";
 
-        String[] words=dateWithTandZ.split("T");
+        String[] words = dateWithTandZ.split("T");
 
-        for (int i = 0; i <words.length ; i++) {
-            if(i==1){
-                timeWithZ=words[i];
+        for (int i = 0; i < words.length; i++) {
+            if (i == 1) {
+                timeWithZ = words[i];
             }
 
-            String[] tokenTime=timeWithZ.split("Z");
-            time=tokenTime[0];
+            String[] tokenTime = timeWithZ.split("Z");
+            time = tokenTime[0];
 //            System.out.println("TokenSplitData"+tokenTime[0]);
 
         }
 
-        String[] timeWithColon=time.split(":");
+        String[] timeWithColon = time.split(":");
 
-        String hour="";String min="";String hourMinFormet="";
-        for (int i = 0; i <timeWithColon.length ; i++) {
+        String hour = "";
+        String min = "";
+        String hourMinFormet = "";
+        for (int i = 0; i < timeWithColon.length; i++) {
 
-            if(i==0){
-                hour=timeWithColon[i];
+            if (i == 0) {
+                hour = timeWithColon[i];
             }
-            if(i==1){
-                min=timeWithColon[i];
+            if (i == 1) {
+                min = timeWithColon[i];
             }
         }
 
-        hourMinFormet=hour+":"+min;
+        hourMinFormet = hour + ":" + min;
         return hourMinFormet;
 
     }
 
-    public static void finishAllActivity(Context context){
+    public static void finishAllActivity(Context context) {
         Intent i = new Intent(context, SignInActivity.class);
         context.startActivity(i);
         //finishAllActivity(context);
     }
 
-    public static String getCurrentDateInDateFormet(){
+    public static String getCurrentDateInDateFormet() {
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
 
-        System.out.println("UtilDateFormat"+formatter.format(date));
+        System.out.println("UtilDateFormat" + formatter.format(date));
 
 
         return formatter.format(date);
@@ -974,10 +972,10 @@ public class Utils {
     }
 
 
-    public static Date convertStringToDateFormet(String dateInString){
+    public static Date convertStringToDateFormet(String dateInString) {
 
         //String sDate1="31/12/1998";
-        Date date1= null;
+        Date date1 = null;
         try {
             date1 = new SimpleDateFormat("yyyy-MM-dd").parse(dateInString);
         } catch (ParseException e) {
@@ -997,18 +995,18 @@ public class Utils {
             Date d = formatter.parse(formatter.format(date));
             Date d1 = formatter.parse(currentDate);
 
-            if(d1.compareTo(d) <0){// not expired
+            if (d1.compareTo(d) < 0) {// not expired
                 return 3;
-            }else if(d.compareTo(d1)==0){// both date are same
-                if(d.getTime() < d1.getTime()){// not expired
+            } else if (d.compareTo(d1) == 0) {// both date are same
+                if (d.getTime() < d1.getTime()) {// not expired
                     return 1;
-                }else if(d.getTime() == d1.getTime()){//expired
+                } else if (d.getTime() == d1.getTime()) {//expired
                     return 2;
-                }else{//expired
+                } else {//expired
                     return 3
                             ;
                 }
-            }else{//expired
+            } else {//expired
                 return 1;
             }
         } catch (ParseException e) {
@@ -1019,37 +1017,36 @@ public class Utils {
     }
 
 
-    public static String removeTandZInDate(String date){
+    public static String removeTandZInDate(String date) {
 
         String result = date.replace("T", " ");
-        String finalResult=result.replace("Z","");
+        String finalResult = result.replace("Z", "");
 
         return finalResult;
 
     }
 
-    public static int compareTwoDatesandTime(String date1,String date2){
-        int dateCompare=-1;
+    public static int compareTwoDatesandTime(String date1, String date2) {
+        int dateCompare = -1;
 
         SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         try {
             Date d1 = sdformat.parse(date1);
             Date d2 = sdformat.parse(date2);
-            System.out.println("check compare String date bala"+d1.compareTo(d2));
-            if(d1.compareTo(d2)<0){
-                dateCompare=1;
+            System.out.println("check compare String date bala" + d1.compareTo(d2));
+            if (d1.compareTo(d2) < 0) {
+                dateCompare = 1;
                 System.out.println("CurrentTimeLessAddedTimeHigh");
-            }else if(d1.compareTo(d2)>0){
-                dateCompare=2;
+            } else if (d1.compareTo(d2) > 0) {
+                dateCompare = 2;
                 System.out.println("CurrentTimeHihgAddedTimeLess");
-            }else if(d1.compareTo(d2)==0){
-                dateCompare=0;
+            } else if (d1.compareTo(d2) == 0) {
+                dateCompare = 0;
                 System.out.println("CurrentTimeAndAddedTimeEqual");
             }/*else if(d1.compareTo(d2)<=0){
                 System.out.println("CurrentTimeIsLessOrEqual");
                 dateCompare=3;
             }*/
-
 
 
         } catch (ParseException e) {
@@ -1060,28 +1057,28 @@ public class Utils {
 
 
     }
-    public static int compareTwoDates(String date1,String date2){
-        int dateCompare=-1;
+
+    public static int compareTwoDates(String date1, String date2) {
+        int dateCompare = -1;
 
         SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             Date d1 = sdformat.parse(date1);
             Date d2 = sdformat.parse(date2);
-            System.out.println("check compare String date bala"+d1.compareTo(d2));
-            if(d1.compareTo(d2)<0){
-                dateCompare=1;
+            System.out.println("check compare String date bala" + d1.compareTo(d2));
+            if (d1.compareTo(d2) < 0) {
+                dateCompare = 1;
                 System.out.println("CurrentTimeLessAddedTimeHigh");
-            }else if(d1.compareTo(d2)>0){
-                dateCompare=2;
+            } else if (d1.compareTo(d2) > 0) {
+                dateCompare = 2;
                 System.out.println("CurrentTimeHihgAddedTimeLess");
-            }else if(d1.compareTo(d2)==0){
-                dateCompare=0;
+            } else if (d1.compareTo(d2) == 0) {
+                dateCompare = 0;
                 System.out.println("CurrentTimeAndAddedTimeEqual");
             }/*else if(d1.compareTo(d2)<=0){
                 System.out.println("CurrentTimeIsLessOrEqual");
                 dateCompare=3;
             }*/
-
 
 
         } catch (ParseException e) {
@@ -1091,20 +1088,19 @@ public class Utils {
         return dateCompare;
 
 
-
     }
 
-    public static String addMinuteWithCurrentTime(int id,int addMin){
-        String newTime="";
+    public static String addMinuteWithCurrentTime(int id, int addMin) {
+        String newTime = "";
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         Date d = null;
         try {
             d = df.parse(Utils.getCurrentTimeIn24HourFormat());
             Calendar cal = Calendar.getInstance();
             cal.setTime(d);
-            if(id==1){
+            if (id == 1) {
                 cal.add(Calendar.MINUTE, addMin);
-            }else if(id==2){
+            } else if (id == 2) {
                 cal.add(Calendar.HOUR, addMin);
             }
             newTime = df.format(cal.getTime());
@@ -1112,11 +1108,11 @@ public class Utils {
             e.printStackTrace();
         }
 
-        return  newTime;
+        return newTime;
     }
 
 
-    public static String addingHoursToCurrentDate(int currentTimeZoneOffset){
+    public static String addingHoursToCurrentDate(int currentTimeZoneOffset) {
         //Should add seconds
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -1131,9 +1127,10 @@ public class Utils {
         cal.add(Calendar.SECOND, currentTimeZoneOffset);
         String newTime = df.format(cal.getTime());
 
-        return  newTime;
+        return newTime;
     }
-    public static String addHoursToDate(int currentTimeZoneOffset){
+
+    public static String addHoursToDate(int currentTimeZoneOffset) {
         //Should add seconds
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -1148,10 +1145,10 @@ public class Utils {
         cal.add(Calendar.HOUR, currentTimeZoneOffset);
         String newTime = df.format(cal.getTime());
 
-        return  newTime;
+        return newTime;
     }
 
-    public static String addingHoursToCurrentDateWithTZ(int currentTimeZoneOffset){
+    public static String addingHoursToCurrentDateWithTZ(int currentTimeZoneOffset) {
         //Should add seconds
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
@@ -1166,12 +1163,12 @@ public class Utils {
         cal.add(Calendar.SECOND, currentTimeZoneOffset);
         String newTime = df.format(cal.getTime());
 
-        return  newTime;
+        return newTime;
 
 
     }
 
-    public static String addingHoursToDate(String date,int currentTimeZoneOffset){
+    public static String addingHoursToDate(String date, int currentTimeZoneOffset) {
         //Should add seconds
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -1186,44 +1183,43 @@ public class Utils {
         cal.add(Calendar.SECOND, currentTimeZoneOffset);
         String newTime = df.format(cal.getTime());
 
-        return  newTime;
+        return newTime;
     }
 
 
-
-    public static  String splitGetDate(String dateWithTime){
+    public static String splitGetDate(String dateWithTime) {
 
         //Split key to get id and code
         String[] result = dateWithTime.split(" ");
-        String dateAlone= result[0];
+        String dateAlone = result[0];
 
         return dateAlone;
 
     }
 
 
-    public static int doCompareDateAlone(String strDate1,String strDate2){
+    public static int doCompareDateAlone(String strDate1, String strDate2) {
 
-        int dateSelectedStatus=0;
-        Date date1=null,date2=null;
+        int dateSelectedStatus = 0;
+        Date date1 = null, date2 = null;
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
         try {
             date1 = formatter.parse(strDate1);
-            date2=formatter.parse(strDate2);
+            date2 = formatter.parse(strDate2);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        if(date1.getDate()==date2.getDate()){
+        if (date1.getDate() == date2.getDate()) {
             System.out.println("BothDateEqual");
-            dateSelectedStatus=1;
-        }else if(date1.getDate()<date2.getDate()){
+            dateSelectedStatus = 1;
+        } else if (date1.getDate() < date2.getDate()) {
             System.out.println("SelecctedDateIsHigh");
-            dateSelectedStatus=2;
-        }else if(date1.getDate()>date2.getDate()){
+            dateSelectedStatus = 2;
+        } else if (date1.getDate() > date2.getDate()) {
             System.out.println("SelecctedDateIsLow");
-            dateSelectedStatus=0;
+            dateSelectedStatus = 0;
 
         }
 
@@ -1231,47 +1227,46 @@ public class Utils {
 
     }
 
-    public static int doDateCompareHere(String selectDate){
+    public static int doDateCompareHere(String selectDate) {
 
-        int dateSelectedStatus=0;
+        int dateSelectedStatus = 0;
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
-        Date currrentDate=null,selectedDate=null;
+        Date currrentDate = null, selectedDate = null;
         try {
-            currrentDate=formatter.parse(formatter.format(date));
-            String dateInString=selectDate;
+            currrentDate = formatter.parse(formatter.format(date));
+            String dateInString = selectDate;
             selectedDate = formatter.parse(dateInString);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        if(currrentDate.getDate()==selectedDate.getDate()){
+        if (currrentDate.getDate() == selectedDate.getDate()) {
             System.out.println("BothDateEqual");
-            dateSelectedStatus=1;
-        }else if(currrentDate.getDate()<selectedDate.getDate()){
+            dateSelectedStatus = 1;
+        } else if (currrentDate.getDate() < selectedDate.getDate()) {
             System.out.println("SelecctedDateIsHigh");
-            dateSelectedStatus=2;
-        }else if(currrentDate.getDate()>selectedDate.getDate()){
+            dateSelectedStatus = 2;
+        } else if (currrentDate.getDate() > selectedDate.getDate()) {
             System.out.println("SelecctedDateIsLow");
-            dateSelectedStatus=0;
+            dateSelectedStatus = 0;
 
         }
 
         return dateSelectedStatus;
 
 
-
     }
 
     //New...
-    public static String dateWithDayString(String d){
-        String date="";
-        SimpleDateFormat spf=new SimpleDateFormat("yyyy-MM-dd");
-        Date newDate= null;
+    public static String dateWithDayString(String d) {
+        String date = "";
+        SimpleDateFormat spf = new SimpleDateFormat("yyyy-MM-dd");
+        Date newDate = null;
         try {
             newDate = spf.parse(d);
-            spf= new SimpleDateFormat("E, dd'th' MMMM, yyyy");
+            spf = new SimpleDateFormat("E, dd'th' MMMM, yyyy");
             if (newDate != null) {
                 date = spf.format(newDate);
             }
@@ -1282,27 +1277,27 @@ public class Utils {
         return date;
     }
 
-    public static int compareCurrentDateWithSelectedDate(String startDate){
+    public static int compareCurrentDateWithSelectedDate(String startDate) {
         SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date calDate,currrentDate=null;
-        int dateComparsionResult=-1;
+        Date calDate, currrentDate = null;
+        int dateComparsionResult = -1;
         try {
             calDate = sdformat.parse(startDate);
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date date = new Date();
-            currrentDate=formatter.parse(formatter.format(date));
+            currrentDate = formatter.parse(formatter.format(date));
 
-            System.out.println("DateFormatInDate"+calDate+" "+currrentDate);
-            System.out.println("GetDateAlsoeInDeskChecking"+calDate.getDate()+" "+currrentDate.getDate());
+            System.out.println("DateFormatInDate" + calDate + " " + currrentDate);
+            System.out.println("GetDateAlsoeInDeskChecking" + calDate.getDate() + " " + currrentDate.getDate());
 
-            if(calDate.compareTo(currrentDate)<0){
+            if (calDate.compareTo(currrentDate) < 0) {
                 System.out.println("D1IsLess");
-                dateComparsionResult=1;
-            }else if(calDate.compareTo(currrentDate)>0){
+                dateComparsionResult = 1;
+            } else if (calDate.compareTo(currrentDate) > 0) {
                 System.out.println("D2IsLess");
-            }else if(calDate.compareTo(currrentDate)==0){
-                dateComparsionResult=2;
+            } else if (calDate.compareTo(currrentDate) == 0) {
+                dateComparsionResult = 2;
             }
 
         } catch (ParseException e) {
@@ -1370,6 +1365,7 @@ public class Utils {
             return true;
         }
     }
+
     public static boolean checkExtPermission(final Context context) {
         int currentAPIVersion = Build.VERSION.SDK_INT;
         if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
@@ -1403,13 +1399,13 @@ public class Utils {
     }
 
     //New...
-    public static String getCurrentDateWithDay(){
-        String date= null;
+    public static String getCurrentDateWithDay() {
+        String date = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("E dd MMM");
             LocalDateTime now = LocalDateTime.now();
             //System.out.println(dtf.format(now));
-            date=dtf.format(now);
+            date = dtf.format(now);
 
         }
         return date;
@@ -1417,7 +1413,7 @@ public class Utils {
 
     public synchronized static void setLangInPref(LanguagePOJO myRes, Context mContext) {
         LanguagePOJO langData = myRes;
-        if (langData != null ) {
+        if (langData != null) {
             try {
                 if (langData.getGlobal() != null) {
                     String localeData = new Gson().toJson(langData.getGlobal());
@@ -1575,7 +1571,7 @@ public class Utils {
                     SessionHandler.getInstance().save(mContext, AppConstants.APPKEYS_PAGE, localeData);
                 }
             } catch (Exception e) {
-                System.out.println("lang check util"+e.getMessage());
+                System.out.println("lang check util" + e.getMessage());
             }
 
 
@@ -1593,7 +1589,6 @@ public class Utils {
                 }
             } catch (Exception e) {
             }
-
 
 
         }
@@ -1665,14 +1660,17 @@ public class Utils {
         LanguagePOJO.AccountSettings AccountSettingsPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.ACCOUNTSETTINGS_PAGE), LanguagePOJO.AccountSettings.class);
         return AccountSettingsPage;
     }
+
     public static LanguagePOJO.Search getSearchPageScreenData(Context mContext) {
         LanguagePOJO.Search SearchPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.SEARCH_PAGE), LanguagePOJO.Search.class);
         return SearchPage;
     }
+
     public static LanguagePOJO.AppFeedback getAppFeedbackPageScreenData(Context mContext) {
         LanguagePOJO.AppFeedback wellBeingPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.APP_FEEDBACK_PAGE), LanguagePOJO.AppFeedback.class);
         return wellBeingPage;
     }
+
     public static LanguagePOJO.ActionOverLays getActionOverLaysPageScreenData(Context mContext) {
         LanguagePOJO.ActionOverLays wellBeingPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.ACTION_OVERLAYS_PAGE), LanguagePOJO.ActionOverLays.class);
         return wellBeingPage;
@@ -1685,7 +1683,7 @@ public class Utils {
 
     public static LanguagePOJO.AppKeys getAppKeysPageScreenData(Context mContext) {
         LanguagePOJO.AppKeys AppKeysPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.APPKEYS_PAGE), LanguagePOJO.AppKeys.class);
-        System.out.println("lang check util"+AppKeysPage);
+        System.out.println("lang check util" + AppKeysPage);
         return AppKeysPage;
     }
 
@@ -1694,20 +1692,20 @@ public class Utils {
         UserDetailsResponse profileData = null; //= new UserDetailsResponse();
         Gson gson = new Gson();
         String json = SessionHandler.getInstance().get(context, AppConstants.LOGIN_RESPONSE);
-        if (json!=null){
+        if (json != null) {
             profileData = gson.fromJson(json, UserDetailsResponse.class);
         }
 
         return profileData;
     }
 
-    public static String showCalendarDate(String d){
-        String date=d;
-        SimpleDateFormat spf=new SimpleDateFormat("yyyy-MM-dd");
-        Date newDate= null;
+    public static String showCalendarDate(String d) {
+        String date = d;
+        SimpleDateFormat spf = new SimpleDateFormat("yyyy-MM-dd");
+        Date newDate = null;
         try {
             newDate = spf.parse(d);
-            spf= new SimpleDateFormat("E dd MMM");
+            spf = new SimpleDateFormat("E dd MMM");
             if (newDate != null) {
                 date = spf.format(newDate);
             }
@@ -1718,29 +1716,13 @@ public class Utils {
         return date;
     }
 
-    public static String showBottomSheetDate(String d){
-        String date=d;
-        SimpleDateFormat spf=new SimpleDateFormat("yyyy-MM-dd");
-        Date newDate= null;
+    public static String showBottomSheetDate(String d) {
+        String date = d;
+        SimpleDateFormat spf = new SimpleDateFormat("yyyy-MM-dd");
+        Date newDate = null;
         try {
             newDate = spf.parse(d);
-            spf= new SimpleDateFormat("dd MMM");
-            if (newDate != null) {
-                date = spf.format(newDate);
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return date;
-    }
-    public static String showBottomSheetDateTime(String d){
-        String date=d;
-        SimpleDateFormat spf=new SimpleDateFormat("yyyy-MM-dd");
-        Date newDate= null;
-        try {
-            newDate = spf.parse(d);
-            spf= new SimpleDateFormat("dd'th' MMM");
+            spf = new SimpleDateFormat("dd MMM");
             if (newDate != null) {
                 date = spf.format(newDate);
             }
@@ -1751,7 +1733,24 @@ public class Utils {
         return date;
     }
 
-    public static void bottomSheetDatePickerWorkSpaceSurveyAsement(Context mContext, Activity activity, String title, String date,TextView showLocateCheckInDate){
+    public static String showBottomSheetDateTime(String d) {
+        String date = d;
+        SimpleDateFormat spf = new SimpleDateFormat("yyyy-MM-dd");
+        Date newDate = null;
+        try {
+            newDate = spf.parse(d);
+            spf = new SimpleDateFormat("dd'th' MMM");
+            if (newDate != null) {
+                date = spf.format(newDate);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return date;
+    }
+
+    public static void bottomSheetDatePickerWorkSpaceSurveyAsement(Context mContext, Activity activity, String title, String date, TextView showLocateCheckInDate) {
 
         BottomSheetDialog bottomSheetDatePicker = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
         bottomSheetDatePicker.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_date_picker,
@@ -1759,32 +1758,32 @@ public class Utils {
 
         TextView calContinue = bottomSheetDatePicker.findViewById(R.id.calenderContinue);
         TextView calBack = bottomSheetDatePicker.findViewById(R.id.calenderBack);
-        CalendarView calendarView=bottomSheetDatePicker.findViewById(R.id.datePicker);
+        CalendarView calendarView = bottomSheetDatePicker.findViewById(R.id.datePicker);
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
 
-                String yearInString=String.valueOf(year);
+                String yearInString = String.valueOf(year);
 
-                int actualMonth=month+1;
+                int actualMonth = month + 1;
                 String monthInStringFormat;
 
-                if(actualMonth>=10){
-                    monthInStringFormat=String.valueOf(actualMonth);
-                }else {
-                    String monthInString=String.valueOf(actualMonth);
-                    monthInStringFormat="0"+monthInString;
+                if (actualMonth >= 10) {
+                    monthInStringFormat = String.valueOf(actualMonth);
+                } else {
+                    String monthInString = String.valueOf(actualMonth);
+                    monthInStringFormat = "0" + monthInString;
                 }
 
-                String dayInString=String.valueOf(dayOfMonth);
-                String dateInString= yearInString+"-"+monthInStringFormat+"-"+dayInString;
-                System.out.println("PickedDate"+dateInString);
+                String dayInString = String.valueOf(dayOfMonth);
+                String dateInString = yearInString + "-" + monthInStringFormat + "-" + dayInString;
+                System.out.println("PickedDate" + dateInString);
                 //locateCheckInDate.setText(dateInString+"T"+getCurrentTimeIn24HourFormat()+".000"+"Z");
                 //locateCheckInDate.setText(dateInString+"T"+"00:00:00.000"+"Z");
 //                locateCheckInDate.setText(""+dateInString);
 
-                showLocateCheckInDate.setText(""+dateInString);
+                showLocateCheckInDate.setText("" + dateInString);
 
 
             }
@@ -1794,7 +1793,7 @@ public class Utils {
             @Override
             public void onClick(View v) {
 
-                System.out.println("ContinuPrintHere"+showLocateCheckInDate.getText());
+                System.out.println("ContinuPrintHere" + showLocateCheckInDate.getText());
                 //Utils.dayDateMonthFormat();
 
                 bottomSheetDatePicker.dismiss();
@@ -1814,7 +1813,7 @@ public class Utils {
     }
 
     //New...
-    public static BitmapFactory.Options getImageSize(Uri uri){
+    public static BitmapFactory.Options getImageSize(Uri uri) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(new File(uri.getPath()).getAbsolutePath(), options);
@@ -1825,13 +1824,13 @@ public class Utils {
     }
 
     //New...
-    public static String MonthAndDateString(String d){
-        String date="";
-        SimpleDateFormat spf=new SimpleDateFormat("yyyy-MM-dd");
-        Date newDate= null;
+    public static String MonthAndDateString(String d) {
+        String date = "";
+        SimpleDateFormat spf = new SimpleDateFormat("yyyy-MM-dd");
+        Date newDate = null;
         try {
             newDate = spf.parse(d);
-            spf= new SimpleDateFormat("MMM, dd");
+            spf = new SimpleDateFormat("MMM, dd");
             if (newDate != null) {
                 date = spf.format(newDate);
             }
@@ -1843,16 +1842,16 @@ public class Utils {
     }
 
 
-    public static String MonthAndDateAndTwithZString(String d){
-        String date="";
+    public static String MonthAndDateAndTwithZString(String d) {
+        String date = "";
 
         System.out.println("2000-01-01T18:00:00Z");
         System.out.println("\"2000-01-01T18:00:00.000Z\",");
-        SimpleDateFormat spf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        Date newDate= null;
+        SimpleDateFormat spf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        Date newDate = null;
         try {
             newDate = spf.parse(d);
-            spf= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            spf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
             if (newDate != null) {
                 date = spf.format(newDate);
             }
@@ -1864,14 +1863,14 @@ public class Utils {
     }
 
 
-    public static Date getCurrentWeekEndDate(){
+    public static Date getCurrentWeekEndDate() {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
         c.add(Calendar.DATE, 1);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date weekendDate=null;
+        Date weekendDate = null;
         try {
-             weekendDate = sdf.parse(sdf.format(c.getTime()));
+            weekendDate = sdf.parse(sdf.format(c.getTime()));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -1879,26 +1878,26 @@ public class Utils {
         return weekendDate;
     }
 
-    public static String getDateFormatToSetInRepeat(Date date){
+    public static String getDateFormatToSetInRepeat(Date date) {
 
-        System.out.println("DateInStringFormat "+String.valueOf(date));
+        System.out.println("DateInStringFormat " + String.valueOf(date));
         String strDate = String.valueOf(date);
         //Received Date Format
         //Sun Sep 18 00:00:00 GMT+05:30 2022
-        String[] word=strDate.split(" ");
+        String[] word = strDate.split(" ");
 
-        String dayTxt=word[0];
-        String month=word[1];
-        String day=word[2];
+        String dayTxt = word[0];
+        String month = word[1];
+        String day = word[2];
 
-        String dateFormats=dayTxt+" "+day+" "+month;
+        String dateFormats = dayTxt + " " + day + " " + month;
 
         return dateFormats;
 
 
     }
 
-    public static int getDifferenceBetweenTwoDates(String selectedDateInLocate){
+    public static int getDifferenceBetweenTwoDates(String selectedDateInLocate) {
 
         //selected Date In Locate
         //String[] words=selectedDateInLocate.split("-");
@@ -1906,21 +1905,21 @@ public class Utils {
         Date date = new Date();
         SimpleDateFormat formatterMonth = new SimpleDateFormat("MM");
         String str = formatterMonth.format(date);
-        int currentDate_Month=Integer.parseInt(str);
+        int currentDate_Month = Integer.parseInt(str);
 
         SimpleDateFormat formatterDate = new SimpleDateFormat("dd");
         String strDate = formatterDate.format(date);
-        int currentDate_Date=Integer.parseInt(strDate);
+        int currentDate_Date = Integer.parseInt(strDate);
 
-        int selectedYear=c.getWeekYear();
-        int selectedMonth=currentDate_Month;
-        int selectedDay=currentDate_Date;
+        int selectedYear = c.getWeekYear();
+        int selectedMonth = currentDate_Month;
+        int selectedDay = currentDate_Date;
 
         //WeekEnd Date
         c.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
         c.add(Calendar.DATE, 1);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date weekendDate=null;
+        Date weekendDate = null;
         try {
             weekendDate = sdf.parse(sdf.format(c.getTime()));
 
@@ -1929,38 +1928,38 @@ public class Utils {
         }
 
         //Coming WeekendDate
-        int Month=weekendDate.getMonth()+1;
-        LocalDate weekEndDate = LocalDate.of( c.getWeekYear(), Month, weekendDate.getDate());
+        int Month = weekendDate.getMonth() + 1;
+        LocalDate weekEndDate = LocalDate.of(c.getWeekYear(), Month, weekendDate.getDate());
 
         //Selected Date
-        LocalDate currentSelectedDate = LocalDate.of( selectedYear, selectedMonth, selectedDay);
+        LocalDate currentSelectedDate = LocalDate.of(selectedYear, selectedMonth, selectedDay);
 
         //Find Difference between 2 date
-        Period difference = Period.between(currentSelectedDate,weekEndDate);
+        Period difference = Period.between(currentSelectedDate, weekEndDate);
 
 
         return difference.getDays();
 
     }
 
-    public static List<String> getCurrentWeekDateList(String selectedDate, int enableCurrentWeek){
-        List<String> dateList=new ArrayList<>();
+    public static List<String> getCurrentWeekDateList(String selectedDate, int enableCurrentWeek) {
+        List<String> dateList = new ArrayList<>();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
-        try{
+        try {
             cal.setTime(sdf.parse(selectedDate));
             //Add Current Date
             String dateAfter1 = sdf.format(cal.getTime());
             dateList.add(dateAfter1);
 
-            for (int i = 0; i <enableCurrentWeek;i++) {
+            for (int i = 0; i < enableCurrentWeek; i++) {
                 //It will add next day until end of the week
                 cal.add(Calendar.DAY_OF_MONTH, 1);
                 String dateAfter = sdf.format(cal.getTime());
                 dateList.add(dateAfter);
             }
-        }catch(ParseException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 
@@ -1983,7 +1982,7 @@ public class Utils {
     }*/
 
 
-    public static boolean checkEditTime(String originalStartTime,String originalEndTime,String selectedTime) {
+    public static boolean checkEditTime(String originalStartTime, String originalEndTime, String selectedTime) {
 
         //New...
         boolean valid;
@@ -1993,8 +1992,8 @@ public class Utils {
         Date inTime = null;
         Calendar calendar1 = Calendar.getInstance();
         try {
-            inTime = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(originalStartTime);
-            if (inTime!=null){
+            inTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(originalStartTime);
+            if (inTime != null) {
                 calendar1.setTime(inTime);
             }
         } catch (ParseException e) {
@@ -2005,8 +2004,8 @@ public class Utils {
         Date checkTime = null;
         Calendar calendar3 = Calendar.getInstance();
         try {
-            checkTime = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(selectedTime);
-            if (checkTime!=null){
+            checkTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(selectedTime);
+            if (checkTime != null) {
                 calendar3.setTime(checkTime);
             }
         } catch (ParseException e) {
@@ -2018,21 +2017,20 @@ public class Utils {
         Date finTime = null;
         Calendar calendar2 = Calendar.getInstance();
         try {
-            finTime = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(originalEndTime);
-            if (finTime!=null){
+            finTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(originalEndTime);
+            if (finTime != null) {
                 calendar2.setTime(finTime);
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        if (originalEndTime.compareTo(originalStartTime) < 0)
-        {
+        if (originalEndTime.compareTo(originalStartTime) < 0) {
             calendar2.add(Calendar.DATE, 1);
             calendar3.add(Calendar.DATE, 1);
         }
 
-        try{
+        try {
 
             Date actualTime = calendar3.getTime();
 
@@ -2046,7 +2044,7 @@ public class Utils {
                 valid = false;
                 return valid;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             valid = false;
             return valid;
         }
@@ -2087,7 +2085,7 @@ public class Utils {
 
     }
 
-    public static boolean compareStartEndTime(String originalStartTime,String originalEndTime) {
+    public static boolean compareStartEndTime(String originalStartTime, String originalEndTime) {
 
         //New...
         boolean valid;
@@ -2095,8 +2093,8 @@ public class Utils {
         Date inTime = null;
         Calendar calendar1 = Calendar.getInstance();
         try {
-            inTime = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(originalStartTime);
-            if (inTime!=null){
+            inTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(originalStartTime);
+            if (inTime != null) {
                 calendar1.setTime(inTime);
             }
         } catch (ParseException e) {
@@ -2106,8 +2104,8 @@ public class Utils {
         Date checkTime = null;
         Calendar calendar3 = Calendar.getInstance();
         try {
-            checkTime = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(originalEndTime);
-            if (checkTime!=null){
+            checkTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(originalEndTime);
+            if (checkTime != null) {
                 calendar3.setTime(checkTime);
             }
         } catch (ParseException e) {
@@ -2120,7 +2118,7 @@ public class Utils {
             calendar3.add(Calendar.DATE, 1);
         }*/
 
-        try{
+        try {
 
             Date endTime = calendar3.getTime();
 
@@ -2132,7 +2130,7 @@ public class Utils {
                 valid = false;
                 return valid;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             valid = false;
             return valid;
         }
@@ -2141,8 +2139,8 @@ public class Utils {
 
     public static boolean checkSelTimeWithCurrentTime(boolean isCurrentDate, String selTime) {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
-        SimpleDateFormat cTimeFormat = new SimpleDateFormat("HH:mm",Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat cTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         Date c = Calendar.getInstance().getTime();
         Date date = Calendar.getInstance().getTime();
 
@@ -2156,8 +2154,8 @@ public class Utils {
             Date inTime = null;
             Calendar calendar1 = Calendar.getInstance();
             try {
-                inTime = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(cTime);
-                if (inTime!=null){
+                inTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(cTime);
+                if (inTime != null) {
                     calendar1.setTime(inTime);
                 }
             } catch (ParseException e) {
@@ -2167,39 +2165,39 @@ public class Utils {
             Date outTime = null;
             Calendar calendar2 = Calendar.getInstance();
             try {
-                outTime = new SimpleDateFormat("HH:mm",Locale.getDefault()).parse(selTime);
-                if (outTime!=null){
+                outTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).parse(selTime);
+                if (outTime != null) {
                     calendar2.setTime(outTime);
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
 
-            try{
+            try {
                 if ((calendar2.getTime().after(calendar1.getTime()) ||
                         calendar2.getTime().compareTo(calendar1.getTime()) == 0)) {
                     return true;
-                }else {
+                } else {
                     return false;
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 return false;
             }
 
-        }else {
+        } else {
             return true;
         }
 
     }
 
     public static boolean checkIsCurrentDate(String sDate) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Date c = Calendar.getInstance().getTime();
         String formattedDate = sdf.format(c);
 
         if (sDate.equals(formattedDate)) {
             return true;
-        }else {
+        } else {
             return false;
         }
 
@@ -2207,11 +2205,12 @@ public class Utils {
 
     public static String currentTimeWithExtraMins(int minutes) {
 
-        SimpleDateFormat tFormat = new SimpleDateFormat("HH:mm",Locale.getDefault());
+        SimpleDateFormat tFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         Date currentTime = Calendar.getInstance().getTime();
         String time = tFormat.format(currentTime);
 
-        Date d = null;String newTime = "";
+        Date d = null;
+        String newTime = "";
 
         try {
             d = tFormat.parse(time);
@@ -2225,7 +2224,7 @@ public class Utils {
 
                 return newTime;
 
-            }else {
+            } else {
                 return newTime;
             }
         } catch (ParseException e) {
@@ -2235,7 +2234,7 @@ public class Utils {
     }
 
     public static String setStartNearestFiveMinToMeeting(String cTime) {
-        String time = Utils.getCurrentDate()+"T"+cTime+":00.000";
+        String time = Utils.getCurrentDate() + "T" + cTime + ":00.000";
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss'Z'");
         LocalDateTime ldt = LocalDateTime.parse(time).truncatedTo(ChronoUnit.MINUTES);
         int minute = ldt.getMinute();
@@ -2244,37 +2243,38 @@ public class Utils {
             ldt = ldt.withMinute(minute - remainder);
         }
 
-        return ""+Utils.splitTime(ldt.format(dtf));
+        return "" + Utils.splitTime(ldt.format(dtf));
     }
+
     public static String setStartNearestThirtyMinToMeeting(String cTime) {
 //        System.out.println("cTime bala"+ cTime);
 
         String fTime = "";
         String[] orgSTime = cTime.split(":");
 
-        if (orgSTime.length>0){
+        if (orgSTime.length > 0) {
 
             int min = Integer.parseInt(orgSTime[1]);
 
-            if (min>=0 && min<20){
+            if (min >= 0 && min < 20) {
 
-                fTime = cTime.replace(orgSTime[1],"30");
+                fTime = cTime.replace(orgSTime[1], "30");
 
-            }else if (min>=20 && min<35){
+            } else if (min >= 20 && min < 35) {
 
-                fTime = cTime.replace(orgSTime[1],"45");
+                fTime = cTime.replace(orgSTime[1], "45");
 
-            }else if (min>=35 && min<45){
+            } else if (min >= 35 && min < 45) {
 
-                fTime =  roundOffHour(cTime.replace(orgSTime[1],"00"));
+                fTime = roundOffHour(cTime.replace(orgSTime[1], "00"));
 
-            }else {
+            } else {
 
-                fTime = roundOffHour(cTime.replace(orgSTime[1],"15"));
+                fTime = roundOffHour(cTime.replace(orgSTime[1], "15"));
 
             }
 
-        }else {
+        } else {
             fTime = cTime;
         }
 
@@ -2287,29 +2287,29 @@ public class Utils {
         String fTime = "";
         String[] orgSTime = cTime.split(":");
 
-        if (orgSTime.length>0){
+        if (orgSTime.length > 0) {
 
             int min = Integer.parseInt(orgSTime[1]);
 
-            if (min>=0 && min<=15){
+            if (min >= 0 && min <= 15) {
 
-                fTime = cTime.replace(orgSTime[1],"45");
+                fTime = cTime.replace(orgSTime[1], "45");
 
-            }else if (min>15 && min<=30){
+            } else if (min > 15 && min <= 30) {
 
-                fTime = roundOffHour(cTime.replace(orgSTime[1],"00"));
+                fTime = roundOffHour(cTime.replace(orgSTime[1], "00"));
 
-            }else if (min>30 && min<=45){
+            } else if (min > 30 && min <= 45) {
 
-                fTime =  roundOffHour(cTime.replace(orgSTime[1],"15"));
+                fTime = roundOffHour(cTime.replace(orgSTime[1], "15"));
 
-            }else if (min>45 && min<=59) {
+            } else if (min > 45 && min <= 59) {
 
-                fTime = roundOffHour(cTime.replace(orgSTime[1],"30"));
+                fTime = roundOffHour(cTime.replace(orgSTime[1], "30"));
 
             }
 
-        }else {
+        } else {
             fTime = cTime;
         }
 
@@ -2318,11 +2318,12 @@ public class Utils {
 
     public static String roundOffHour(String selectedTime) {
 
-        SimpleDateFormat tFormat = new SimpleDateFormat("HH:mm",Locale.getDefault());
+        SimpleDateFormat tFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         //Date currentTime = Calendar.getInstance().getTime();
         String time = selectedTime; //tFormat.format(currentTime);
 
-        Date d = null;String newTime = "";
+        Date d = null;
+        String newTime = "";
 
         try {
             d = tFormat.parse(time);
@@ -2336,7 +2337,7 @@ public class Utils {
 
                 return newTime;
 
-            }else {
+            } else {
                 return newTime;
             }
         } catch (ParseException e) {
@@ -2345,13 +2346,14 @@ public class Utils {
 
     }
 
-    public static String selectedTimeWithExtraMins(String selTime,int minutes) {
+    public static String selectedTimeWithExtraMins(String selTime, int minutes) {
 
-        SimpleDateFormat tFormat = new SimpleDateFormat("HH:mm",Locale.getDefault());
+        SimpleDateFormat tFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         //Date currentTime = Calendar.getInstance().getTime();
         String time = selTime; //tFormat.format(currentTime);
 
-        Date d = null;String newTime = "";
+        Date d = null;
+        String newTime = "";
 
         try {
             d = tFormat.parse(time);
@@ -2365,7 +2367,7 @@ public class Utils {
 
                 return newTime;
 
-            }else {
+            } else {
                 return newTime;
             }
         } catch (ParseException e) {
@@ -2374,9 +2376,9 @@ public class Utils {
 
     }
 
-    public static String addHoursToSelectedTime(String selTime,int hr) {
+    public static String addHoursToSelectedTime(String selTime, int hr) {
 
-        SimpleDateFormat tFormat = new SimpleDateFormat("HH:mm",Locale.getDefault());
+        SimpleDateFormat tFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         //Date currentTime = Calendar.getInstance().getTime();
         String time = selTime; //tFormat.format(currentTime);
 
@@ -2395,7 +2397,7 @@ public class Utils {
 
                 return newTime;
 
-            }else {
+            } else {
                 return newTime;
             }
         } catch (ParseException e) {
@@ -2403,9 +2405,10 @@ public class Utils {
         }
 
     }
-    public static String addHoursToSelectedTimeWithMinutes(String selTime,int minutes) {
 
-        SimpleDateFormat tFormat = new SimpleDateFormat("HH:mm",Locale.getDefault());
+    public static String addHoursToSelectedTimeWithMinutes(String selTime, int minutes) {
+
+        SimpleDateFormat tFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         //Date currentTime = Calendar.getInstance().getTime();
         String time = selTime; //tFormat.format(currentTime);
 
@@ -2424,7 +2427,7 @@ public class Utils {
 
                 return newTime;
 
-            }else {
+            } else {
                 return newTime;
             }
         } catch (ParseException e) {
@@ -2433,18 +2436,18 @@ public class Utils {
 
     }
 
-    public static String selectDateWithCurrentTimeTZFormat(String d){
+    public static String selectDateWithCurrentTimeTZFormat(String d) {
 
         //Current Time...
         String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
 
-        String dateWithTime="",currentDateTime = d + " " + currentTime;
+        String dateWithTime = "", currentDateTime = d + " " + currentTime;
 
-        SimpleDateFormat spf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date newDate= null;
+        SimpleDateFormat spf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date newDate = null;
         try {
             newDate = spf.parse(currentDateTime);
-            spf= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            spf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
             if (newDate != null) {
                 dateWithTime = spf.format(newDate);
             }
@@ -2455,4 +2458,11 @@ public class Utils {
         return dateWithTime;
     }
 
+
+    public static void openMail(Activity activity, String toAddress) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri data = Uri.parse("mailto:" + toAddress);
+        intent.setData(data);
+        activity.startActivity(intent);
+    }
 }

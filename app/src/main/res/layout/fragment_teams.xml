@@ -104,6 +104,7 @@
                         android:layout_toRightOf="@+id/search_ic"
                         android:backgroundTint="@color/white"
                         android:hint="Search"
+                        android:theme="@style/TextRegular"
                         android:inputType="text" />
 
                     <ImageView

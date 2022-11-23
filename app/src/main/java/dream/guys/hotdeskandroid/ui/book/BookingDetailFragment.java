@@ -6,15 +6,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +14,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 
@@ -91,6 +90,7 @@ public class BookingDetailFragment extends Fragment {
 
 
     View view;
+
     public BookingDetailFragment() {
         // Required empty public constructor
     }
@@ -106,37 +106,37 @@ public class BookingDetailFragment extends Fragment {
         fragmentBookingDetailBinding.bookDetailUserName.setText(
                 SessionHandler.getInstance().get(getContext(), AppConstants.USERNAME));
 
-        if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null && SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked in")){
+        if (SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS) != null && SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked in")) {
             userCurrentStatus.setText("Checked In");
-        }else if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null && SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked out")){
+        } else if (SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS) != null && SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked out")) {
             userCurrentStatus.setText("Checked Out");
             userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
 //            holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
-        }else {
-            if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null){
-                fragmentBookingDetailBinding.userCurrentStatus.setText(SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS));
+        } else {
+            if (SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS) != null) {
+                fragmentBookingDetailBinding.userCurrentStatus.setText(SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS));
                 fragmentBookingDetailBinding.userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
-            }else {
+            } else {
                 fragmentBookingDetailBinding.userCurrentStatus.setText("In Office");
                 fragmentBookingDetailBinding.userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaBlueText), android.graphics.PorterDuff.Mode.MULTIPLY);
             }
         }
 
-        if (SessionHandler.getInstance().getBoolean(getActivity(), AppConstants.SHOWNOTIFICATION)){
+        if (SessionHandler.getInstance().getBoolean(getActivity(), AppConstants.SHOWNOTIFICATION)) {
             fragmentBookingDetailBinding.notiIcon.setVisibility(View.VISIBLE);
         }
 
         fragmentBookingDetailBinding.tvSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavController navController= Navigation.findNavController(view);
+                NavController navController = Navigation.findNavController(view);
                 navController.navigate(R.id.navigation_home);
             }
         });
         fragmentBookingDetailBinding.tvChangeSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavController navController= Navigation.findNavController(view);
+                NavController navController = Navigation.findNavController(view);
                 navController.navigate(R.id.action_change_schedule);
             }
         });
@@ -150,9 +150,9 @@ public class BookingDetailFragment extends Fragment {
 
             teamId = bundle.getInt("TEAM_ID", 0);
             deskId = bundle.getInt("DESK_ID", 0);
-            teamMembershipId = bundle.getInt("TEAM_MEMBERSHIP_ID",0);
-            calendarId = bundle.getInt("ID",0);
-            date = bundle.getString("DATE","");
+            teamMembershipId = bundle.getInt("TEAM_MEMBERSHIP_ID", 0);
+            calendarId = bundle.getInt("ID", 0);
+            date = bundle.getString("DATE", "");
 
         }
 
@@ -181,7 +181,7 @@ public class BookingDetailFragment extends Fragment {
             fragmentBookingDetailBinding.ivNotWorking.setVisibility(View.GONE);
             fragmentBookingDetailBinding.bookingDetailsBlock.setVisibility(View.INVISIBLE);
 
-            switch (bookName){
+            switch (bookName) {
                 case "RQ":
                     fragmentBookingDetailBinding.remoteText.setText("Request for Desk In Progress");
                     Glide.with(this)
@@ -190,11 +190,12 @@ public class BookingDetailFragment extends Fragment {
                             .into(fragmentBookingDetailBinding.ivWorkingRemote);
                     break;
                 case "WFH":
-                    fragmentBookingDetailBinding.remoteText.setText("You're Working Remotely");
+                    fragmentBookingDetailBinding.remoteText.setText("You're Working Remotely today");
                     Glide.with(this)
                             .load(R.drawable.working_remote)
                             .placeholder(R.drawable.working_remote)
                             .into(fragmentBookingDetailBinding.ivWorkingRemote);
+                    fragmentBookingDetailBinding.tvSkip.setText("Close");
                     break;
                 case "WOO":
                     fragmentBookingDetailBinding.remoteText.setText("You're Working in alternative office");
@@ -237,11 +238,10 @@ public class BookingDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
 //                changeCheckIn();
-                if (checkPermission()){
-                    NavController navController= Navigation.findNavController(view);
-                    navController.navigate(R.id.action_qrFragment,bundle);
-                }
-                else
+                if (checkPermission()) {
+                    NavController navController = Navigation.findNavController(view);
+                    navController.navigate(R.id.action_qrFragment, bundle);
+                } else
                     requestPermission();
             }
         });
@@ -252,12 +252,12 @@ public class BookingDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.view =view;
+        this.view = view;
     }
 
     public void changeCheckIn() {
         if (Utils.isNetworkAvailable(getActivity())) {
-            dialog= ProgressDialog.showProgressBar(getContext());
+            dialog = ProgressDialog.showProgressBar(getContext());
 
             BookingStatusRequest bookingsRequest = new BookingStatusRequest();
             bookingsRequest.setCalendarEntryId(calendarId);
@@ -271,13 +271,12 @@ public class BookingDetailFragment extends Fragment {
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 //                    Toast.makeText(getActivity(), ""+response.body().getResultCode(), Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
-                    if (response.code()==200 && response.body().getResultCode().equalsIgnoreCase("ok")){
-                        SessionHandler.getInstance().save(getActivity(),AppConstants.USER_CURRENT_STATUS,"Checked IN");
+                    if (response.code() == 200 && response.body().getResultCode().equalsIgnoreCase("ok")) {
+                        SessionHandler.getInstance().save(getActivity(), AppConstants.USER_CURRENT_STATUS, "Checked IN");
                         openCheckoutDialog();
-                    } else
-                    {
+                    } else {
                         if (response.code() == 200)
-                            Toast.makeText(getActivity(), ""+response.body().getResultCode(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "" + response.body().getResultCode(), Toast.LENGTH_SHORT).show();
                         else
                             Toast.makeText(getActivity(), "Error Check In", Toast.LENGTH_SHORT).show();
 
@@ -286,7 +285,7 @@ public class BookingDetailFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<BaseResponse> call, Throwable t) {
-                    Toast.makeText(getActivity(), "fail "+t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "fail " + t.getMessage(), Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 }
             });
@@ -300,10 +299,12 @@ public class BookingDetailFragment extends Fragment {
 
         dialog.setContentView(R.layout.layout_checkin_success);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        NavController navController= Navigation.findNavController(view);
+        NavController navController = Navigation.findNavController(view);
 
         TextView checkDialogClose = dialog.findViewById(R.id.checkDialogClose);
+        TextView title = dialog.findViewById(R.id.title);
 
+        title.setText("Check-in successful");
         checkDialogClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -313,6 +314,7 @@ public class BookingDetailFragment extends Fragment {
         });
         dialog.show();
     }
+
     private boolean checkPermission() {
         int result = ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.CAMERA);
@@ -325,6 +327,7 @@ public class BookingDetailFragment extends Fragment {
             return false;
         }
     }
+
     private void requestPermission() {
 
         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CODE);
