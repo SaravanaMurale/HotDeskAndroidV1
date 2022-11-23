@@ -252,7 +252,7 @@
             android:textColor="@color/blue"
             android:textSize="@dimen/_13sdp"
             android:textStyle="bold"
-            android:visibility="gone"
+            android:visibility="visible"
 
             />
 

@@ -25,6 +25,7 @@
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
             android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_2sdp"
             android:layout_toRightOf="@id/edit_outLine"
             android:src="@drawable/car_edit" />
 

@@ -667,6 +667,10 @@ public class LoginActivity extends AppCompatActivity {
                                 SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.TEAM_ID, userDetailsResponse.getCurrentTeam().getCurrentTeamId());
                             }
 
+                            //Vehicle Number
+                            if(userDetailsResponse.getVehicleRegNumber()!=null){
+                                SessionHandler.getInstance().save(LoginActivity.this,AppConstants.VEHICLE_NUMBER,userDetailsResponse.getVehicleRegNumber());
+                            }
 
                             if (userDetailsResponse.getDefaultLocation() != null) {
                                 SessionHandler.getInstance().save(LoginActivity.this, AppConstants.DEFAULT_TIME_ZONE_ID, Utils.checkStringParms(userDetailsResponse.getDefaultLocation().getTimeZoneId()));
