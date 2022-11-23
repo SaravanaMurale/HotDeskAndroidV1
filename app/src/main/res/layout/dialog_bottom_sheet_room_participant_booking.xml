@@ -49,6 +49,7 @@
                 <ImageView
                     android:layout_width="@dimen/_5sdp"
                     android:layout_height="@dimen/_5sdp"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/dot" />
 
@@ -315,7 +316,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
-                android:hint="Comments"
+                android:hint="Comments optional"
                 android:paddingHorizontal="@dimen/_15sdp"
                 android:paddingVertical="@dimen/_10sdp" />
 

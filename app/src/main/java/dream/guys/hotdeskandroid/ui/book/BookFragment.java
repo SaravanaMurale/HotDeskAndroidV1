@@ -2027,7 +2027,7 @@ public class BookFragment extends Fragment implements
                 repeatBlock.setVisibility(View.GONE);
                 commentBlock.setVisibility(View.VISIBLE);
             }else {
-                commentBlock.setVisibility(View.GONE);
+                commentBlock.setVisibility(View.VISIBLE);
                 if(Utils.compareTwoDate(editDeskBookingDetails.getDate(),Utils.getCurrentDate())==2){
                     repeatBlock.setVisibility(View.VISIBLE);
                 } else {
