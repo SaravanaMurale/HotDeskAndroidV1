@@ -41,6 +41,7 @@
             android:text="@string/fire_wardens"
             android:layout_marginLeft="@dimen/_10sdp"
             android:textColor="@color/black"
+            android:theme="@style/TextBold"
             android:textSize="@dimen/_15sdp"
             android:textStyle="bold"
 
@@ -71,6 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:padding="@dimen/_5sdp"
+                android:theme="@style/TextRegular"
                 android:text="@string/report_hazard"
                 android:textColor="@color/black"
                 android:textSize="14dp" />
@@ -102,6 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:padding="@dimen/_5sdp"
+                android:theme="@style/TextRegular"
                 android:text="@string/eva_plan"
                 android:textColor="@color/black"
                 android:textSize="14dp" />
@@ -127,16 +130,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/your_fire_warden"
+        android:theme="@style/TextRegular"
         />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:theme="@style/TextRegular"
             android:text="@string/today"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:theme="@style/TextRegular"
             android:text="Wed,6 June"
             />
 
