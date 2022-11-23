@@ -716,7 +716,6 @@
                     android:enabled="true"
                     android:background="@drawable/edittext_bg"
                     android:padding="@dimen/_5sdp"
-                    android:textColor="@color/figmaBlueText"
                     android:inputType="text"
                     android:theme="@style/TextBold"
                     android:textSize="@dimen/_10sdp"

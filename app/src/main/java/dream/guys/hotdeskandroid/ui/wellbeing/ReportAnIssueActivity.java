@@ -73,10 +73,10 @@ public class ReportAnIssueActivity extends AppCompatActivity implements AdapterV
 
     EditText reportDescr;
     ImageView ReportBack;
-    TextView reportFromDate, reportToDate,  reportPastBooking;
+    TextView reportFromDate, reportToDate,  reportPastBooking,reportCancel;
     CalendarView calendar_view;
     CheckBox cb_anonymous;
-    Button reportCancel, reportSubmit;
+    Button reportSubmit;
 
     Calendar c = Calendar.getInstance();
     int deskId=0;

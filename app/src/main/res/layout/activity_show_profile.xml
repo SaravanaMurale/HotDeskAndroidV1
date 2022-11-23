@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/profile_back"
-                android:text="Profile"
+
                 android:textColor="@color/figmaBlack"
                 android:textSize="@dimen/_14sdp"
                 android:theme="@style/TextBold" />

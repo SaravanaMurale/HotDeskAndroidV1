@@ -784,7 +784,7 @@ public class LoginActivity extends AppCompatActivity {
         if (logoinPage != null) {
 
             etTenantName.setHint(appKeysPage.getTenantName());
-            etCompanyName.setHint(resetPage.getCompany());
+          //  etCompanyName.setHint(resetPage.getCompany());
           //  etEmail.setHint(appKeysPage.getEmail());
             etPassword.setHint(appKeysPage.getPassword());
             tvForgotPassword.setText(appKeysPage.getForgotPassword() + "?");

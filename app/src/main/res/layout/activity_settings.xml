@@ -543,9 +543,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_2sdp"
                         android:layout_centerInParent="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_toStartOf="@id/about"
-                        android:textColor="@color/figmaBlueText"
-                        android:textSize="@dimen/_12sdp"
+                        style="@style/TextRegular"
                         android:theme="@style/TextRegular"
                         />
 
@@ -557,6 +557,7 @@
                         android:layout_marginHorizontal="@dimen/_2sdp"
                         android:src="@drawable/ic_baseline_arrow_forward_ios_24"
                         app:tint="@color/figmaBlueText"
+                        android:visibility="gone"
                         />
                 </RelativeLayout>
                 <RelativeLayout

@@ -9,6 +9,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+
+import com.bumptech.glide.Glide;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,6 +19,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import dream.guys.hotdeskandroid.MainActivity;
+import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.FireWardensAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityFireWardensBinding;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
@@ -71,9 +75,14 @@ public class FireWardensActivity extends AppCompatActivity implements FireWarden
         }else if(receivedActivity.equals("FIRST_AID")){
             //binding.activityTitle.setText("First aid");
             binding.activityTitle.setText(appKeysPage.getFirstAid());
+            Glide.with(this)
+                    .load(R.drawable.plus)
+                    .into(binding.profileUpdate);
+
             binding.tvEvacuation.setText("First aid guide");
             //binding.headFire.setText("First Aid");
-            binding.headFire.setText(appKeysPage.getFirstAid());
+           // binding.headFire.setText(appKeysPage.getFirstAid());
+            binding.headFire.setText("Your First aiders");
             binding.titleFire.setText("Adminss");
             binding.subTitleFire.setText("Persons");
             getFirstAidPersonsDetails("Adminss");

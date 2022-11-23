@@ -109,8 +109,8 @@ public class SettingsActivity extends AppCompatActivity {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             String version = pInfo.versionName;
             //int num = pInfo.versionCode;
-            // binding.helpIcon.setText("Version" + String.valueOf(version));
-            binding.helpIcon.setText(String.valueOf(version));
+             binding.helpIcon.setText("Version " + String.valueOf(version));
+//            binding.helpIcon.setText(String.valueOf(version));
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -584,7 +584,7 @@ public class SettingsActivity extends AppCompatActivity {
             binding.tvLang.setText(wellBeingPage.getLanguage());
             binding.tvNoti.setText(wellBeingPage.getNotifications());
             binding.tvApp.setText(wellBeingPage.getApp());
-            binding.tvPin.setText(wellBeingPage.getSetUpPin());
+            //binding.tvPin.setText(wellBeingPage.getSetUpPin());
             binding.tvBio.setText(wellBeingPage.getSetUpBiometric());
             binding.tvReset.setText(wellBeingPage.getResetPassword());
             binding.tvReport.setText(wellBeingPage.getHelp());
