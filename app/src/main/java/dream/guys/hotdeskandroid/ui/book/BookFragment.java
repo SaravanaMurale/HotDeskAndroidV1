@@ -4203,8 +4203,8 @@ public class BookFragment extends Fragment implements
         m.setDate(Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + "T" + "00:00:00.000" + "Z");
 
         MeetingRoomRequest.Changeset.Changes changes = m.new Changes();
-        changes.setFrom(getCurrentDate() + "" + "T" + Utils.convert12HrsTO24Hrs(startRoomTime) + ":" + "00" + "." + "000" + "Z");
-        changes.setMyto(getCurrentDate() + "" + "T" + Utils.convert12HrsTO24Hrs(endRoomTime) + ":" + "00" + "." + "000" + "Z");
+        changes.setFrom(getCurrentDate() + "" + "T" + startRoomTime + ":" + "00" + "." + "000" + "Z");
+        changes.setMyto(getCurrentDate() + "" + "T" + endRoomTime + ":" + "00" + "." + "000" + "Z");
         changes.setComments(comment);
         changes.setSubject(subject);
         changes.setRequest(isRequest);

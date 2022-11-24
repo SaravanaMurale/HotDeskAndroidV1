@@ -1503,10 +1503,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 //                        jsonObject.put("teamDeskId",selectedDeskId);
                 }
                 if (!Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()).equalsIgnoreCase(startTime.getText().toString())){
-                    jsonChangesObject.addProperty("from", "2000-01-01T"+Utils.convert12HrsTO24Hrs(startTime.getText().toString())+":00.000Z");
+                    jsonChangesObject.addProperty("from", "2000-01-01T"+startTime.getText().toString()+":00.000Z");
 
                 }if (!Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditEndTime()).equalsIgnoreCase(endTime.getText().toString())){
-                    jsonChangesObject.addProperty("to","2000-01-01T"+Utils.convert12HrsTO24Hrs(endTime.getText().toString())+":00.000Z");
+                    jsonChangesObject.addProperty("to","2000-01-01T"+endTime.getText().toString()+":00.000Z");
                 }
 
                 jsonInnerObject.add("changes",jsonChangesObject);
