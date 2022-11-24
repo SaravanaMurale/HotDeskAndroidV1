@@ -103,6 +103,7 @@
                 android:layout_height="@dimen/_18sdp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:visibility="gone"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:src="@drawable/close_circle" />
         </RelativeLayout>
