@@ -1745,7 +1745,7 @@ public class Utils {
         Date newDate = null;
         try {
             newDate = spf.parse(d);
-            spf = new SimpleDateFormat("E dd MMM");
+            spf = new SimpleDateFormat("E, dd'th' MMM");
             if (newDate != null) {
                 date = spf.format(newDate);
             }
@@ -1780,6 +1780,24 @@ public class Utils {
         try {
             newDate = spf.parse(d);
             spf = new SimpleDateFormat("dd'th' MMM");
+            if (newDate != null) {
+                date = spf.format(newDate);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return date;
+    }
+
+
+    public static String showBottomSheetDateTimeAMPM(String d) {
+        String date = d;
+        SimpleDateFormat spf = new SimpleDateFormat("HH:mm");
+        Date newDate = null;
+        try {
+            newDate = spf.parse(d);
+            spf = new SimpleDateFormat("hh:mm aa");
             if (newDate != null) {
                 date = spf.format(newDate);
             }

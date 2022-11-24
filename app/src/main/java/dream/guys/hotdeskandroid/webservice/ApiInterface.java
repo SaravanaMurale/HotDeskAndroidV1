@@ -420,8 +420,11 @@ public interface ApiInterface {
     Call<List<FirstAidResponse>> getFirstAidResponse();
 
 
+    //Now Working
     @GET("api/mywork/myteammemberstatus")
-    Call<ArrayList<DAOTeamMember>> getTeamMembers(@Query("date") String date);
+    Call<ArrayList<DAOTeamMember>> getTeamMembers(@Query("date") String date,@Query("teamId") String t,
+                                                  @Query("returnProfilePhotoUrls") boolean b1,
+                                                  @Query("returnProfilePhotos") boolean b2);
     @GET("api/mywork/teammemberstatus")
     Call<ArrayList<DAOTeamMember>> getTeamMembersWithImage(
             @Query("date") String date,

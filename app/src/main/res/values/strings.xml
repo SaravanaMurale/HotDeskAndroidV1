@@ -40,10 +40,12 @@
     <string name="repeat">Repeat</string>
 
     <string name="comment">Comments</string>
+    <string name="comment_opt">Comments optional</string>
+
     <string name="subject">Subject</string>
     <string name="spaceadd">(To add external users type their email address and press space)</string>
+    <string name="attendeesInternal">Participants optional</string>
     <string name="attendeesExternal">Attendees-external</string>
-    <string name="attendeesInternal">Attendees-internal</string>
 
     <string name="select_date">Select date</string>
 

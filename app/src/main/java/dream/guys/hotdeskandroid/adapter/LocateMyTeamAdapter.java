@@ -1,6 +1,9 @@
 package dream.guys.hotdeskandroid.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +80,41 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
 
             if(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getBooking()!=null){
                 setVivisbleItems(holder);
+
+                try {
+                    /*holder.myTeamProfileImage.setVisibility(View.VISIBLE);
+                    byte[] imageByteArray = Base64.decode(daoTeamMemberList.get(position).getProfileImage(), Base64.DEFAULT);
+                    Glide.with(context)
+                            .load(imageByteArray)
+                            .placeholder(R.drawable.avatar)
+                            .into(holder.myTeamProfileImage);*/
+
+                    byte[] decodedString = Base64.decode(daoTeamMemberList.get(position).getProfileImage(), Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    holder.myTeamProfileImage.setImageBitmap(decodedByte);
+
+                }catch (Exception e){
+
+                }
+
+
+
+               /* if(daoTeamMemberList.get(position).getProfileImage()!=null && !daoTeamMemberList.get(position).getProfileImage().isEmpty()) {
+
+                    System.out.println("ImageSetHere ");
+
+                    *//*holder.myTeamProfileImage.setVisibility(View.VISIBLE);
+                    String base64String = daoTeamMemberList.get(position).getProfileImage();
+                    String base64Image = base64String.split(",")[1];
+                    byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    holder.myTeamProfileImage.setImageBitmap(decodedByte);*//*
+
+
+
+
+                }*/
+
 
                 holder.locateMyTeamDeskName.setText(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getBooking().getDeskCode());
                 holder.locateMyTeamCheckInTime.setText(Utils.splitTime(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getFrom()));
@@ -185,7 +225,7 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
 
     class LocateMyTeamViewHolder extends RecyclerView.ViewHolder{
 
-        @BindView(R.id.locateMyTeamProfile)
+        @BindView(R.id.locateMyTeamProfiles)
         CircleImageView myTeamProfileImage;
         @BindView(R.id.locateMyTeamName)
         TextView locateMyTeamName;

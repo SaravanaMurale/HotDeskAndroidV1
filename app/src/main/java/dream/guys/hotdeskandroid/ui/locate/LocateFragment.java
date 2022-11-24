@@ -578,7 +578,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         //2022-09-20T10:51:17.830Z
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<ArrayList<DAOTeamMember>> call = apiService.getTeamMembers(dateWithTime);
+        int tenandiId=SessionHandler.getInstance().getInt(getContext(),AppConstants.TEAM_ID);
+        Call<ArrayList<DAOTeamMember>> call = apiService.getTeamMembersWithImage(dateWithTime,""+tenandiId,true,true);
         call.enqueue(new Callback<ArrayList<DAOTeamMember>>() {
             @Override
             public void onResponse(Call<ArrayList<DAOTeamMember>> call, Response<ArrayList<DAOTeamMember>> response) {
@@ -2781,7 +2782,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         ChipGroup chipGroup, externalAttendeesChipGroup;
 
         //Language
-        TextView tvRoomStart, tvRoomEnd, tv_teams_room, tv_repeat_room;
+        TextView tvRoomStart, tvRoomEnd, tv_teams_room, tv_repeat_room,showTvRoomEndTime;
 
         CheckBox teams_check_box_room;
         ImageView tv_user_status_room;
@@ -2794,6 +2795,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         startRoomTime = bottomSheetDialog.findViewById(R.id.tvRoomStartTime);
         endTRoomime = bottomSheetDialog.findViewById(R.id.tvRoomEndTime);
         showtvRoomStartTime = bottomSheetDialog.findViewById(R.id.showtvRoomStartTime);
+        showTvRoomEndTime=bottomSheetDialog.findViewById(R.id.showTvRoomEndTime);
         amenitiesBlock = bottomSheetDialog.findViewById(R.id.amenitiesBlock);
 
         //Teams
@@ -2865,10 +2867,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         tvRoomEnd.setText(appKeysPage.getEnd());
         tv_teams_room.setText(appKeysPage.getTeams());
         tv_repeat_room.setText(appKeysPage.getRepeat());
-        editRoomBookingContinue.setText(appKeysPage.getBook());
+        editRoomBookingContinue.setText(appKeysPage.getContinue());
         editRoomBookingBack.setText(appKeysPage.getCancel());
         //tvMeetingRoomDescription.setText(appKeysPage.getDescription());
-        etComments.setHint(appKeysPage.getComments());
+        //etComments.setHint(appKeysPage.getComments());
         etSubject.setHint(meetingRoomsLanguage.getSubject());
 
         if(isRequest){
@@ -3066,17 +3068,44 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             @Override
             public void afterTextChanged(Editable editable) {
-                showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " " + startRoomTime.getText().toString());
+
+                showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " • " + Utils.showBottomSheetDateTimeAMPM(startRoomTime.getText().toString()));
+
 
                 boolean b = Utils.checkIsCurrentDate(binding.locateCalendearView.getText().toString());
 
                 if (b){
                     //endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
                     endTRoomime.setText(Utils.setNearestThirtyMinToMeeting(startRoomTime.getText().toString()));
+                    showTvRoomEndTime.setText(Utils.showBottomSheetDateTimeAMPM(Utils.setNearestThirtyMinToMeeting(startRoomTime.getText().toString())));
+
                     //endTRoomime.setText(Utils.setStartNearestFiveMinToMeeting(startRoomTime.getText().toString()));
                 }else {
 
                 }
+
+            }
+        });
+
+
+
+        endTRoomime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                showTvRoomEndTime.setText(Utils.showBottomSheetDateTime(Utils.showBottomSheetDateTimeAMPM(endTRoomime.getText().toString())));
+
+
 
             }
         });
@@ -3095,6 +3124,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 if (page == 1) {
                     bottomSheetDialog.dismiss();
                 } else {
+                    editRoomBookingContinue.setText(appKeysPage.getContinue());
+                    editRoomBookingBack.setText(appKeysPage.getCancel());
                     subCmtLay.setVisibility(View.GONE);
                     child_layout.setVisibility(View.VISIBLE);
                     roomDate.setText(buildingName + "," + floorName);
@@ -3109,6 +3140,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             public void onClick(View v) {
 
                 if (page == 1) {
+                    editRoomBookingContinue.setText(appKeysPage.getContinue());
                     boolean status = true;
                     if (startRoomTime.getText().toString().equals("")) {
                         Toast.makeText(getContext(), "Please Select Start Time", Toast.LENGTH_LONG).show();
@@ -3131,14 +3163,23 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     subCmtLay.setVisibility(View.VISIBLE);
                     child_layout.setVisibility(View.GONE);
+
+                    String startTime=showtvRoomStartTime.getText().toString();
+                    System.out.println("StartRoomFormat "+startTime);
+                    String[] startTimeToSplit=startTime.split("•");
+                    String startWithAMOrPM=startTimeToSplit[1];
+
+
                     roomDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString())+" • "+
-                            startRoomTime.getText().toString() + " to " + endTRoomime.getText().toString());
+                            startWithAMOrPM + " to " + showTvRoomEndTime.getText().toString());
 
                     page = 2;
+                    editRoomBookingContinue.setText(appKeysPage.getBook());
+                    editRoomBookingBack.setText(appKeysPage.getBack());
 
                 } else {
                     boolean status = true;
-
+                    editRoomBookingContinue.setText(appKeysPage.getBook());
                     if (startRoomTime.getText().toString().equals("")) {
                         Toast.makeText(getContext(), "Please Select Start Time", Toast.LENGTH_LONG).show();
                         status = false;
@@ -3209,14 +3250,15 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             if (b) {
 
                 startRoomTime.setText(Utils.setStartNearestThirtyMinToMeeting(getCurrentTime()));
-                showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " " + startRoomTime.getText().toString());
+                showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " • " + Utils.showBottomSheetDateTimeAMPM(startRoomTime.getText().toString()));
 
             } else {
                 if (profileData != null) {
 
                     startRoomTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
                     endTRoomime.setText(Utils.splitTime(profileData.getWorkHoursTo()));
-                    showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " " + startRoomTime.getText().toString());
+                    showTvRoomEndTime.setText(Utils.showBottomSheetDateTimeAMPM(Utils.splitTime(profileData.getWorkHoursTo())));
+                    showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " • " + Utils.showBottomSheetDateTimeAMPM(startRoomTime.getText().toString()));
                 }
             }
 
@@ -3226,7 +3268,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             startRoomTime.setText(editLastEndTime);
             if (!(startRoomTime.getText().toString().isEmpty())) {
-                showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " " + startRoomTime.getText().toString());
+                showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " • " + Utils.showBottomSheetDateTimeAMPM(startRoomTime.getText().toString()));
 
                 //Add 4Hour...
                 String[] time = startRoomTime.getText().toString().split(":");
@@ -3536,6 +3578,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         //editDate.setVisibility(View.GONE);
         //editBookingContinue.setVisibility(View.GONE);
+
+        editClose.setText("Close");
 
         //New...
         String sDate = binding.locateCalendearView.getText().toString();
@@ -7696,7 +7740,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //participantChipGroupInEdit
 
         //Language
-        TextView tvRoomStart, tvRoomEnd;
+        TextView tvRoomStart, tvRoomEnd,showTvRoomEndTime;
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_room_booking,
@@ -7714,11 +7758,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         roomTitle.setText("Edit your booking");
 
-        tvRoomCapacityCount=bottomSheetDialog.findViewById(R.id.tvRoomCapacityCount);
-        tvRoomCapacityCount.setText(""+capacity);
+
 
         startRoomTime = bottomSheetDialog.findViewById(R.id.tvRoomStartTime);
         endTRoomime = bottomSheetDialog.findViewById(R.id.tvRoomEndTime);
+        showTvRoomEndTime=bottomSheetDialog.findViewById(R.id.showTvRoomEndTime);
 
         selectMeetingRoomLayout = bottomSheetDialog.findViewById(R.id.selectMeetingRoomLayout);
         selectMeetingRoomLayout.setVisibility(View.VISIBLE);
@@ -7731,7 +7775,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         meetingRoomLocation = bottomSheetDialog.findViewById(R.id.meetingRoomLocation);
 
         capacityBlock = bottomSheetDialog.findViewById(R.id.capacityBlock);
-        capacityBlock.setVisibility(View.GONE);
+        capacityBlock.setVisibility(View.VISIBLE);
+        tvRoomCapacityCount=bottomSheetDialog.findViewById(R.id.tvRoomCapacityCount);
+        tvRoomCapacityCount.setText(""+capacity);
 
         chipGroupListItem = bottomSheetDialog.findViewById(R.id.list_item);
         chipGroupListItem.setVisibility(View.GONE);
@@ -7775,6 +7821,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         startRoomTime.setText(Utils.splitTime(meetingListToEditResponse.getFrom()));
         endTRoomime.setText(Utils.splitTime(meetingListToEditResponse.getTo()));
+        showTvRoomEndTime.setText(Utils.splitTime(meetingListToEditResponse.getTo()));
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvParticipant.setLayoutManager(linearLayoutManager);
@@ -7791,7 +7838,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         meetingAvaliable.setText(global.getAvailable());
 
 
-        showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " " + startRoomTime.getText().toString());
+        showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " • " + startRoomTime.getText().toString());
 
 
         //Language
@@ -8105,6 +8152,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 if (!b) {
                                     Toast.makeText(getActivity(), "You can't exceed approved booking time period", Toast.LENGTH_SHORT).show();
                                     endTRoomime.setText(orgETime);
+
                                 }
 
                             }
@@ -8137,7 +8185,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             public void onClick(View v) {
                 if (page == 1) {
                     bottomSheetDialog.dismiss();
+
                 } else {
+
                     subCmtLay.setVisibility(View.GONE);
                     child_layout.setVisibility(View.VISIBLE);
                     roomDate.setText(buildingName + "," + floorName);
@@ -8183,8 +8233,15 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     subCmtLay.setVisibility(View.VISIBLE);
                     child_layout.setVisibility(View.GONE);
+
+
+                    String startTime=showtvRoomStartTime.getText().toString();
+                    System.out.println("StartRoomFormat "+startTime);
+                    String[] startTimeToSplit=startTime.split("•");
+                    String startWithAMOrPM=startTimeToSplit[1];
+
                     roomDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()) +
-                            startRoomTime.getText().toString() + "to" + endTRoomime.getText().toString());
+                            startWithAMOrPM + "to" + showTvRoomEndTime.getText().toString());
 
                     page = 2;
 

@@ -17,7 +17,7 @@
             android:padding="@dimen/_5sdp">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/locateMyTeamProfile"
+                android:id="@+id/locateMyTeamProfiles"
                 android:layout_width="@dimen/_45sdp"
                 android:layout_height="@dimen/_45sdp"
                 android:layout_centerVertical="true"
@@ -27,8 +27,8 @@
             <ImageView
                 android:layout_width="@dimen/_10sdp"
                 android:layout_height="@dimen/_10sdp"
-                android:layout_alignRight="@+id/locateMyTeamProfile"
-                android:layout_alignBottom="@+id/locateMyTeamProfile"
+                android:layout_alignRight="@+id/locateMyTeamProfiles"
+                android:layout_alignBottom="@+id/locateMyTeamProfiles"
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:src="@drawable/online" />
 
@@ -38,7 +38,7 @@
                 android:layout_width="@dimen/_18sdp"
                 android:layout_height="@dimen/_18sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_toRightOf="@+id/locateMyTeamProfile"
+                android:layout_toRightOf="@+id/locateMyTeamProfiles"
                 android:src="@drawable/fire" />
 
 
@@ -70,7 +70,7 @@
                 android:layout_below="@+id/locateMyTeamName"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:layout_toRightOf="@+id/locateMyTeamProfile"
+                android:layout_toRightOf="@+id/locateMyTeamProfiles"
                 android:text=""
                 android:textSize="@dimen/_13sdp"
                 android:textColor="@color/figmaBlack" />
@@ -91,7 +91,7 @@
                 android:layout_below="@+id/locateMyTeamDeskName"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:layout_toRightOf="@+id/locateMyTeamProfile"
+                android:layout_toRightOf="@+id/locateMyTeamProfiles"
                 android:src="@drawable/checkin"
                 app:tint="@color/figmaBlack" />
 
