@@ -1504,6 +1504,7 @@ public class BookFragment extends Fragment implements
         }
 
         bookingName.setText("Book a room");
+        editClose.setText("Cancel");
 
 
         editClose.setOnClickListener(new View.OnClickListener() {
@@ -2024,12 +2025,17 @@ public class BookFragment extends Fragment implements
 
         if (dskRoomParkStatus == 1) {
             if (newEditStatus.equalsIgnoreCase("edit")){
+                if (editDeskBookingDetails.getDate()!=null)
+                    date.setText(""+Utils.calendarDay10thMonthYearformat(editDeskBookingDetails.getDate()));
                 if (editDeskBookingDetails.getRequestedTeamId()!=0)
                     select.setVisibility(View.VISIBLE);
                 repeatBlock.setVisibility(View.GONE);
                 commentBlock.setVisibility(View.VISIBLE);
                 select.setText("Select");
             }else {
+                if (editDeskBookingDetails.getDate()!=null)
+                    date.setText(""+Utils.calendarDay10thMonthformat(editDeskBookingDetails.getDate()));
+
                 commentBlock.setVisibility(View.VISIBLE);
                 if(Utils.compareTwoDate(editDeskBookingDetails.getDate(),Utils.getCurrentDate())==2){
                     repeatBlock.setVisibility(View.VISIBLE);
@@ -2058,10 +2064,10 @@ public class BookFragment extends Fragment implements
             deskRoomName.setText(editDeskBookingDetails.getDeskCode());
             selectedDeskId=editDeskBookingDetails.getDesktId();
             if(newEditStatus.equalsIgnoreCase("new") || newEditStatus.equalsIgnoreCase("new_deep_link")
-                    || newEditStatus.equalsIgnoreCase("request")){
+                    || newEditStatus.equalsIgnoreCase("request")) {
                 title.setText("Book a workspace");
                 continueEditBook.setText("Book");
-                back.setText("Cancel");
+                back.setText("Close");
             } else {
                 if (editDeskBookingDetails.getComments() != null &&
                         !editDeskBookingDetails.getComments().equalsIgnoreCase("")&&
@@ -2107,7 +2113,7 @@ public class BookFragment extends Fragment implements
             }
             if(newEditStatus.equalsIgnoreCase("new") || newEditStatus.equalsIgnoreCase("new_deep_link")
                     || newEditStatus.equalsIgnoreCase("request")){
-                title.setText("Book Meeting Room");
+                title.setText("Book a room");
                 continueEditBook.setText("Continue");
                 back.setText("Cancel");
             } else {
@@ -2116,7 +2122,7 @@ public class BookFragment extends Fragment implements
                         !editDeskBookingDetails.getComments().isEmpty())
                     edComments.setText(editDeskBookingDetails.getComments());
                 continueEditBook.setText("Continue");
-                back.setText("Back");
+                back.setText("Cancel");
             }
         }else {
             if (newEditStatus.equalsIgnoreCase("edit")){
@@ -2145,14 +2151,16 @@ public class BookFragment extends Fragment implements
             capacitylayout.setVisibility(View.GONE);
             if(newEditStatus.equalsIgnoreCase("new") ||newEditStatus.equalsIgnoreCase("new_deep_link")
                     || newEditStatus.equalsIgnoreCase("request")){
-                title.setText("Book Parking Slot");
+                title.setText("Book Parking");
                 continueEditBook.setText("Book");
-                back.setText("Cancel");
+                back.setText("Close");
             } else {
+
                 if (editDeskBookingDetails.getComments() != null &&
                         !editDeskBookingDetails.getComments().equalsIgnoreCase("")&&
                         !editDeskBookingDetails.getComments().isEmpty())
                     edComments.setText(editDeskBookingDetails.getComments());
+                title.setText("Edit your booking");
                 continueEditBook.setText("Continue");
                 back.setText("Back");
             }
@@ -2165,7 +2173,7 @@ public class BookFragment extends Fragment implements
                 locationAddress.setText(""+parkingSpotModelList.get(0).getLocation().getName());
             } else {
                 select.setVisibility(View.GONE);
-                title.setText("Edit Parking Details");
+//                title.setText("Edit Parking Details");
                 deskRoomName.setText(""+editDeskBookingDetails.getParkingSlotCode());
                 selectedDeskId = editDeskBookingDetails.getParkingSlotId();
                 locationAddress.setText(""+editDeskBookingDetails.getLocationAddress());
@@ -2244,8 +2252,6 @@ public class BookFragment extends Fragment implements
             }
         }
 
-        if (editDeskBookingDetails.getDate()!=null)
-            date.setText(""+Utils.calendarDay10thMonthformat(editDeskBookingDetails.getDate()));
 
         if (editDeskBookingDetails.getAmenities()!=null)
             System.out.println("chip check"+editDeskBookingDetails.getAmenities().size());
@@ -2326,6 +2332,8 @@ public class BookFragment extends Fragment implements
             @Override
             public void onClick(View v) {
                 editDeskBookingDetails.setDisplayTime(startTime.getText()+" to "+endTime.getText());
+                if(locationAddress!=null)
+                    editDeskBookingDetails.setLocationAddress(locationAddress.getText().toString());
                 /*
                 //New...
                 if (isVehicleReg) {
@@ -3328,7 +3336,7 @@ public class BookFragment extends Fragment implements
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvDeskRecycler.setLayoutManager(linearLayoutManager);
         rvDeskRecycler.setHasFixedSize(true);
-        sheetDate.setText(Utils.dateWithDayString(calSelectedDate));
+        sheetDate.setText(Utils.calendarDay10thMonthformat(Utils.convertStringToDateFormet(calSelectedDate)));
         sheetTime.setText(""+startTime.getText()+" to "+endTime.getText());
 
         if (selectedicon == 2){
@@ -3765,7 +3773,8 @@ public class BookFragment extends Fragment implements
 
         }
 
-        TextView startRoomTime, endTRoomime, editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle,sheetDate,sheetTime,capacityNo;
+        TextView startRoomTime, endTRoomime, editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription,
+                roomTitle,sheetDate,sheetTime,capacityNo,locationAddress;
         EditText etParticipants, externalAttendees, etSubject, etComments;
         ChipGroup chipGroup, externalAttendeesChipGroup;
 
@@ -3787,6 +3796,7 @@ public class BookFragment extends Fragment implements
         editRoomBookingBack = bottomSheetDialog.findViewById(R.id.editRoomBookingBack);
         roomTitle = bottomSheetDialog.findViewById(R.id.roomTitle);
         sheetDate = bottomSheetDialog.findViewById(R.id.sheet_date);
+        locationAddress = bottomSheetDialog.findViewById(R.id.locationAddress);
         sheetTime = bottomSheetDialog.findViewById(R.id.sheet_time);
         rvParticipant = bottomSheetDialog.findViewById(R.id.rvParticipant);
         participantChipGroup = bottomSheetDialog.findViewById(R.id.participantChipGroup);
@@ -3825,9 +3835,12 @@ public class BookFragment extends Fragment implements
 */
 
         //Language
-        editRoomBookingContinue.setText(appKeysPage.getContinue());
-        editRoomBookingBack.setText(appKeysPage.getBack());
-        etComments.setHint(appKeysPage.getComments());
+//        editRoomBookingContinue.setText(appKeysPage.getContinue());
+        editRoomBookingContinue.setText("Book");
+//        editRoomBookingBack.setText(appKeysPage.getBack());
+        editRoomBookingBack.setText("Back");
+//        etComments.setHint(appKeysPage.getComments());
+        etComments.setHint("Comments optional");
         etSubject.setHint(meetingRoomsLanguage.getSubject());
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -3838,7 +3851,8 @@ public class BookFragment extends Fragment implements
         roomTitle.setText(meetingRoomName);
         capacityNo.setText(editDeskBookingDetails.getCapacity());
         sheetTime.setText(editDeskBookingDetails.getDisplayTime());
-        sheetDate.setText(Utils.dateWithDayString(calSelectedDate));
+        locationAddress.setText(editDeskBookingDetails.getLocationAddress());
+        sheetDate.setText(Utils.calendarDay10thMonthformat(Utils.convertStringToDateFormet(calSelectedDate)));
 
         etParticipants.addTextChangedListener(new TextWatcher() {
             @Override
