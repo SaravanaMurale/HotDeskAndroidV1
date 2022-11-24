@@ -48,6 +48,7 @@
             android:id="@+id/editRefreshIcon"
             android:layout_width="@dimen/_12sdp"
             android:layout_height="@dimen/_15sdp"
+            android:visibility="invisible"
             android:layout_alignParentRight="true"
             android:layout_marginTop="@dimen/_3sdp"
             android:layout_marginRight="@dimen/_10sdp"

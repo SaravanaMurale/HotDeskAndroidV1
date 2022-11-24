@@ -141,25 +141,35 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
         holder.select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (deskList.get(holder.getAbsoluteAdapterPosition()).getTeamId() != SessionHandler.getInstance()
-                        .getInt(context, AppConstants.TEAM_ID)
-                        && fragment.selectedTeamAutoApproveStatus != 2)
-                {
-                    System.out.println("check reues");
+                if (holder.deskStatus.getText().toString().equalsIgnoreCase("Available For Request")){
                     onChangeSelected.onChangeDesk(deskList.get(holder.getAbsoluteAdapterPosition()).getTeamDeskId(),
                             deskList.get(holder.getAbsoluteAdapterPosition()).getDeskCode(),"request"+ holder.deskStatus.getText()
                             , deskList.get(holder.getAbsoluteAdapterPosition()).getTimeZones().get(0).getTimeZoneId(),
                             typeId,editBookingDetails,newEditStatus);
-                } else {
-                    System.out.println("check reues new");
-
+                } else if(holder.deskStatus.getText().toString().equalsIgnoreCase("Available")){
                     onChangeSelected.onChangeDesk(deskList.get(holder.getAbsoluteAdapterPosition()).getTeamDeskId(),
                             deskList.get(holder.getAbsoluteAdapterPosition()).getDeskCode(),"new"+ holder.deskStatus.getText()
                             , deskList.get(holder.getAbsoluteAdapterPosition()).getTimeZones().get(0).getTimeZoneId(),
                             typeId,editBookingDetails,newEditStatus);
-                }
+                } else {
+                    if (deskList.get(holder.getAbsoluteAdapterPosition()).getTeamId() != SessionHandler.getInstance()
+                            .getInt(context, AppConstants.TEAM_ID)
+                            && fragment.selectedTeamAutoApproveStatus != 2)
+                    {
+                        System.out.println("check reues");
+                        onChangeSelected.onChangeDesk(deskList.get(holder.getAbsoluteAdapterPosition()).getTeamDeskId(),
+                                deskList.get(holder.getAbsoluteAdapterPosition()).getDeskCode(),"request"+ holder.deskStatus.getText()
+                                , deskList.get(holder.getAbsoluteAdapterPosition()).getTimeZones().get(0).getTimeZoneId(),
+                                typeId,editBookingDetails,newEditStatus);
+                    } else {
+                        System.out.println("check reues new");
 
+                        onChangeSelected.onChangeDesk(deskList.get(holder.getAbsoluteAdapterPosition()).getTeamDeskId(),
+                                deskList.get(holder.getAbsoluteAdapterPosition()).getDeskCode(),"new"+ holder.deskStatus.getText()
+                                , deskList.get(holder.getAbsoluteAdapterPosition()).getTimeZones().get(0).getTimeZoneId(),
+                                typeId,editBookingDetails,newEditStatus);
+                    }
+                }
                 bottomSheetDialog.dismiss();
             }
         });

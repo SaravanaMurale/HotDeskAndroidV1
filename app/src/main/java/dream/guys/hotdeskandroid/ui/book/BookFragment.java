@@ -3325,9 +3325,10 @@ public class BookFragment extends Fragment implements
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_select_desk,
                 new RelativeLayout(getContext()))));
 
-        TextView bsRepeatBack, selectDesk,sheetDate,sheetTime;
+        TextView bsRepeatBack, selectDesk,sheetDate,sheetTime,tvCapacityFilter;
         rvDeskRecycler= bottomSheetDialog.findViewById(R.id.desk_list_select_recycler);
-        selectDesk= bottomSheetDialog.findViewById(R.id.select_desk);
+        tvCapacityFilter = bottomSheetDialog.findViewById(R.id.capa_tv);
+        selectDesk = bottomSheetDialog.findViewById(R.id.select_desk);
         sheetDate = bottomSheetDialog.findViewById(R.id.sheet_date);
         sheetTime = bottomSheetDialog.findViewById(R.id.sheet_time);
         bsGeneralSearch = bottomSheetDialog.findViewById(R.id.bsGeneralSearch);
@@ -3339,12 +3340,14 @@ public class BookFragment extends Fragment implements
         sheetDate.setText(Utils.calendarDay10thMonthformat(Utils.convertStringToDateFormet(calSelectedDate)));
         sheetTime.setText(""+startTime.getText()+" to "+endTime.getText());
 
-        if (selectedicon == 2){
+        if (selectedicon == 2) {
             selectDesk.setText("Book parking");
+            tvCapacityFilter.setVisibility(View.GONE);
             parkingSpotListRecyclerAdapter =new ParkingSpotListRecyclerAdapter(getContext(),this,getActivity(),parkingSpotModelList,getContext(),bottomSheetDialog);
             rvDeskRecycler.setAdapter(parkingSpotListRecyclerAdapter);
-        }else if (selectedicon==1){
+        }else if (selectedicon==1) {
             selectDesk.setText("Book a room");
+            tvCapacityFilter.setVisibility(View.VISIBLE);
             roomListRecyclerAdapter =new RoomListRecyclerAdapter(getContext(),this,getActivity(),userAllowedMeetingResponseListUpdated,getContext(),bottomSheetDialog);
             rvDeskRecycler.setAdapter(roomListRecyclerAdapter);
         }else {
@@ -6501,6 +6504,7 @@ public class BookFragment extends Fragment implements
     @Override
     public void onChangeDesk(int deskId, String deskName, String request,
                              String timeZone,int typeId,EditBookingDetails editBookingDetails,String newEditStatus) {
+        System.out.println("cahngedeskCall back"+typeId+"   "+request);
         if (typeId == 0) {
             editBookingDetailsGlobal.setDeskCode(deskName);
             editBookingDetailsGlobal.setDesktId(deskId);
@@ -6515,15 +6519,23 @@ public class BookFragment extends Fragment implements
                 editBookingDetailsGlobal.setRequestedTeamId(0);
             }
             selectedDeskId=deskId;
+            if(request.equalsIgnoreCase("new"))
+                editBookingUsingBottomSheet(editBookingDetails,
+                        1,0,"new");
+            else
+                editBookingUsingBottomSheet(editBookingDetails,
+                        1,0,"request");
+            /*
             if(selectedTeamId == SessionHandler.getInstance().getInt(context, AppConstants.TEAM_ID)
                 && selectedTeamAutoApproveStatus!=2 && selectedTeamAutoApproveStatus!=3)
                 editBookingUsingBottomSheet(editBookingDetailsGlobal,
                         1,0,"new");
             else
                 editBookingUsingBottomSheet(editBookingDetailsGlobal,
-                        1,0,"request");
+                        1,0,"request");*/
         } else {
-            if (newEditStatus.equalsIgnoreCase("edit") || newEditStatus.equalsIgnoreCase(request)){
+            if (newEditStatus.equalsIgnoreCase("edit")
+                    || newEditStatus.equalsIgnoreCase(request)){
                 selectedDeskId = deskId;
                 deskRoomName.setText(deskName);
                 if (editBookingDetails!=null){
