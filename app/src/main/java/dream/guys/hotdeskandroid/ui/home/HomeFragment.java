@@ -1389,8 +1389,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
             repeatBlock.setVisibility(View.GONE);
             teamsBlock.setVisibility(View.GONE);
+            //tvComments.setVisibility(View.GONE);
             //commentRegistration.setHint("Comments");
-            commentRegistration.setHint(appKeysPage.getComments());
+            commentRegistration.setHint("None");
             tvComments.setText("Comments");
             chipGroup.setVisibility(View.GONE);
             deskRoomName.setText(editDeskBookingDetails.getDeskCode());
