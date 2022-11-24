@@ -133,6 +133,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingIvLocation.setVisibility(View.VISIBLE);
         }
 
+        
         if (list.get(position).getCalDeskStatus() ==1 &&
                 list.get(position).getCalendarEntriesModel()
                         .getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
