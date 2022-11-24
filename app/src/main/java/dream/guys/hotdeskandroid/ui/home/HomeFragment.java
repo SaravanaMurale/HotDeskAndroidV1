@@ -100,6 +100,7 @@ import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
+import okhttp3.internal.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -163,6 +164,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     Activity activityContext;
 //    protected static final String TAG = "MonitoringActivity";
 //    private BeaconManager beaconManager;
+
+    boolean startDisabled = false;
+    boolean endDisabled = false;
+    boolean selectDisabled = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -690,7 +695,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                             openCheckoutDialog("Booking Updated");
                             loadHomeList();
 //                            openCheckoutDialog("Booking Updated");
-                        }else {
+                        } else {
                             if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
                                 resultString = "Invalid booking start time";
                             } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
@@ -710,13 +715,12 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                             }
                             Utils.showCustomAlertDialog(getActivity(), resultString);
                         }
-                    }else if (response.code() == 500){
-                        Utils.showCustomAlertDialog(getActivity(),"500 Response");
-                    }else if (response.code() == 401){
+                    } else if (response.code() == 500){
+                        Utils.showCustomAlertDialog(getActivity(),"error_code: 1999");
+                    } else if (response.code() == 401){
                         Utils.showCustomTokenExpiredDialog(getActivity(),"401 Error Response");
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                    }
-                    else {
+                    } else {
                         Toast.makeText(getActivity(), "Response Failure", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -1353,6 +1357,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
+            startDisabled=true;
+            endDisabled=true;
+            selectDisabled=true;
             statusCheckLayout.setVisibility(View.GONE);
             llCapacityLayout.setVisibility(View.GONE);
 //            chipGroup.setVisibility(View.GONE);
@@ -1360,12 +1367,18 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlueText));
             select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
+            boolean startDisabled = true;
+            boolean endDisabled = false;
+            boolean selectDisabled = true;
             statusCheckLayout.setVisibility(View.VISIBLE);
             llCapacityLayout.setVisibility(View.VISIBLE);
 //            chipGroup.setVisibility(View.VISIBLE);
         } else {
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlueText));
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlueText));
+            boolean startDisabled = false;
+            boolean endDisabled = false;
+
             statusCheckLayout.setVisibility(View.GONE);
             llCapacityLayout.setVisibility(View.GONE);
 //            chipGroup.setVisibility(View.GONE);
@@ -1376,6 +1389,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 )){
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
+            boolean startDisabled = true;
+            boolean selectDisabled = true;
+
         }
         if (Utils.compareTwoDate(editDeskBookingDetails.getDate(), Utils.getCurrentDate())==2
                 && Utils.compareTimeIfCheckInEnable(Utils.getCurrentTime(),
@@ -1383,6 +1399,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 )){
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
+            boolean endDisabled = true;
+            boolean selectDisabled = true;
+
         }
 
         if (dskRoomParkStatus == 1) {
@@ -1445,20 +1464,26 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (editDeskBookingDetails.getDeskStatus() != 1 && editDeskBookingDetails.getDeskStatus() != 2)
-                    Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",
-                            Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),isRequestedDesk);
+                if (!startDisabled){
+
+                    if (editDeskBookingDetails.getDeskStatus() != 1 && editDeskBookingDetails.getDeskStatus() != 2)
+                        Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",
+                                Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),isRequestedDesk);
 //                    Utils.popUpTimePicker(getActivity(),startTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
+                }
             }
         });
 
         endTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (editDeskBookingDetails.getDeskStatus() != 1)
-                    Utils.bottomSheetTimePicker(getContext(),getActivity(),
-                            endTime,"End Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()), isRequestedDesk);
+                if (!endDisabled){
+
+                    if (editDeskBookingDetails.getDeskStatus() != 1)
+                        Utils.bottomSheetTimePicker(getContext(),getActivity(),
+                                endTime,"End Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()), isRequestedDesk);
 //                    Utils.popUpTimePicker(getActivity(),endTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
+                }
             }
         });
         continueEditBook.setOnClickListener(new View.OnClickListener() {
@@ -1502,11 +1527,12 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     jsonChangesObject.addProperty("teamDeskId",selectedDeskId);
 //                        jsonObject.put("teamDeskId",selectedDeskId);
                 }
-                if (!Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()).equalsIgnoreCase(startTime.getText().toString())){
-                    jsonChangesObject.addProperty("from", "2000-01-01T"+startTime.getText().toString()+":00.000Z");
+                if (!editDeskBookingDetails.getEditStartTTime().equalsIgnoreCase(startTime.getText().toString())){
+                    jsonChangesObject.addProperty("from", Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())
+                            +"T"+startTime.getText().toString()+":00.000Z");
 
-                }if (!Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditEndTime()).equalsIgnoreCase(endTime.getText().toString())){
-                    jsonChangesObject.addProperty("to","2000-01-01T"+endTime.getText().toString()+":00.000Z");
+                }if (!editDeskBookingDetails.getEditEndTime().equalsIgnoreCase(endTime.getText().toString())){
+                    jsonChangesObject.addProperty("to", Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate()) +"T"+endTime.getText().toString()+":00.000Z");
                 }
 
                 jsonInnerObject.add("changes",jsonChangesObject);
@@ -1527,8 +1553,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (editDeskBookingDetails.getDeskStatus()!=1 && editDeskBookingDetails.getDeskStatus()!=2)
-                    callDeskBottomSheetDialog();
+                if (!selectDisabled){
+                    if (editDeskBookingDetails.getDeskStatus()!=1 && editDeskBookingDetails.getDeskStatus()!=2)
+                        callDeskBottomSheetDialog();
+                }
             }
         });
         repeatBlock.setOnClickListener(new View.OnClickListener() {

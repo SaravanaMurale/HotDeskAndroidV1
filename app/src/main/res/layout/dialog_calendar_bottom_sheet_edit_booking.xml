@@ -264,7 +264,7 @@
                     android:gravity="end"
                     android:hint="None"
                     android:textColorHint="@color/figmaBlueDisabled"
-                    android:textColor="@color/figmaBlue"
+                    android:textColor="@color/figmaBlueDisabled"
                     android:textSize="18sp"
                     android:theme="@style/TextBold" />
             </RelativeLayout>

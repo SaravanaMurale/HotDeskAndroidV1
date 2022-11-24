@@ -250,6 +250,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                 !list.get(position).getCalendarEntriesModel()
                 .getUsageTypeAbbreviation().equalsIgnoreCase("IO")) {
             holder.rlBookingRemoteBlock.setVisibility(View.VISIBLE);
+            holder.tv_change.setVisibility(View.VISIBLE);
             holder.rlInOffice.setVisibility(View.GONE);
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
@@ -431,8 +432,10 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingDeskName.setText(""+list.get(position).getCarParkBookingsModel().getParkingSlotCode());
             holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getCarParkBookingsModel().getFrom()));
             holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getCarParkBookingsModel().getMyto()));
-        } else if(list.get(position).getCalDeskStatus() == 3) {
+        }
+        else if (list.get(position).getCalDeskStatus() == 3) {
             holder.rlBookingRemoteBlock.setVisibility(View.VISIBLE);
+            holder.tv_change.setVisibility(View.GONE);
             holder.rlInOffice.setVisibility(View.GONE);
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
@@ -447,8 +450,6 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     .load(R.drawable.car)
                     .placeholder(R.drawable.car)
                     .into(holder.bookingRemoteHome);
-
-
         }
 
         //CheckOut Button Click

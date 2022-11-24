@@ -298,7 +298,7 @@
                     android:backgroundTint="@color/bg_grey"
                     android:gravity="end"
                     android:hint="None"
-                    android:textColor="@color/figmaBlue"
+                    android:textColor="@color/figmaBlueDisabled"
                     android:textColorHint="@color/figmaBlueDisabled"
                     android:textSize="18sp"
                     android:theme="@style/TextBold" />

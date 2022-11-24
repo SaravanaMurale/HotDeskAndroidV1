@@ -301,6 +301,10 @@ public class BookFragment extends Fragment implements
 
     int defaultLocationcheck=0;
 
+    boolean startDisabled = false;
+    boolean endDisabled = false;
+    boolean selectDisabled = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -1903,6 +1907,9 @@ public class BookFragment extends Fragment implements
     }
 
     private void editBookingUsingBottomSheet(EditBookingDetails editDeskBookingDetails, int dskRoomParkStatus, int position,String newEditStatus) {
+        endDisabled=false;
+        startDisabled=false;
+        selectDisabled=false;
 
         roomBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         roomBottomSheet.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_booking,
@@ -1966,17 +1973,25 @@ public class BookFragment extends Fragment implements
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             statusCheckLayout.setVisibility(View.VISIBLE);
+            startDisabled=true;
+            endDisabled=true;
+            selectDisabled=true;
 //            chipGroup.setVisibility(View.GONE);
         }else if (editDeskBookingDetails.getDeskStatus() == 2){
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlueText));
             select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             statusCheckLayout.setVisibility(View.VISIBLE);
+            startDisabled=true;
+            endDisabled=false;
+            selectDisabled=true;
 //            chipGroup.setVisibility(View.VISIBLE);
         } else {
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlueText));
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlueText));
             statusCheckLayout.setVisibility(View.VISIBLE);
+            startDisabled=false;
+            endDisabled=false;
 //            chipGroup.setVisibility(View.GONE);
         }
         if (Utils.compareTwoDate(editDeskBookingDetails.getDate(), Utils.getCurrentDate())==2
@@ -1985,6 +2000,8 @@ public class BookFragment extends Fragment implements
         ) && newEditStatus.equalsIgnoreCase("edit")) {
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
+            startDisabled=true;
+            selectDisabled=true;
         }
         if (Utils.compareTwoDate(editDeskBookingDetails.getDate(), Utils.getCurrentDate())==2
                 && Utils.compareTimeIfCheckInEnable(Utils.getCurrentTime(),
@@ -1992,6 +2009,8 @@ public class BookFragment extends Fragment implements
         ) && newEditStatus.equalsIgnoreCase("edit")) {
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
+            endDisabled=true;
+            selectDisabled=true;
         }
 
 
@@ -2278,19 +2297,24 @@ public class BookFragment extends Fragment implements
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(dskRoomParkStatus==2){
-                    Utils.bottomSheetTimePickerMeetingRoom(getContext(),
-                            getActivity(),startTime,endTime,"Start Time",
-                            Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
-                } else {
-                    if (editDeskBookingDetails.getDeskStatus() != 1
-                            && editDeskBookingDetails.getDeskStatus() != 2
-                            && editDeskBookingDetails.getRequestedTeamId() > 0)
-                        Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
-                    else if (editDeskBookingDetails.getDeskStatus() != 1
-                            && editDeskBookingDetails.getDeskStatus() != 2)
-                        Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
+                if (!startDisabled){
+                    if(dskRoomParkStatus==2){
+                        Utils.bottomSheetTimePickerMeetingRoom(getContext(),
+                                getActivity(),startTime,endTime,"Start Time",
+                                Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
+                    } else {
+                        if (editDeskBookingDetails.getDeskStatus() != 1
+                                && editDeskBookingDetails.getDeskStatus() != 2
+                                && editDeskBookingDetails.getRequestedTeamId() > 0)
+                            Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",
+                                    Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
+                        else if (editDeskBookingDetails.getDeskStatus() != 1
+                                && editDeskBookingDetails.getDeskStatus() != 2)
+                            Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",
+                                    Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
+                    }
                 }
+
 //                Toast.makeText(context, "fsf"+editDeskBookingDetails.getRequestedTeamDeskId(), Toast.LENGTH_SHORT).show();
 
 //                    Utils.popUpTimePicker(getActivity(),startTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
@@ -2300,11 +2324,13 @@ public class BookFragment extends Fragment implements
         endTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (editDeskBookingDetails.getDeskStatus() != 1
-                        && editDeskBookingDetails.getRequestedTeamId() > 0)
-                    Utils.bottomSheetTimePicker(getContext(),getActivity(),endTime,"End Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
-                else if(editDeskBookingDetails.getDeskStatus() != 1)
-                    Utils.bottomSheetTimePicker(getContext(),getActivity(),endTime,"End Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
+                if(!endDisabled){
+                    if (editDeskBookingDetails.getDeskStatus() != 1
+                            && editDeskBookingDetails.getRequestedTeamId() > 0)
+                        Utils.bottomSheetTimePicker(getContext(),getActivity(),endTime,"End Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
+                    else if(editDeskBookingDetails.getDeskStatus() != 1)
+                        Utils.bottomSheetTimePicker(getContext(),getActivity(),endTime,"End Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
+                }
 //                    Utils.popUpTimePicker(getActivity(),endTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
             }
         });
@@ -2396,8 +2422,7 @@ public class BookFragment extends Fragment implements
                                         !commentRegistration.getText().toString().equalsIgnoreCase(""))
                                     jsonChangesObject.addProperty("comments",commentRegistration.getText().toString());
                                 if (selectedDeskId!=0 && dskRoomParkStatus==1
-                                        && selectedDeskId != editDeskBookingDetails.getDesktId()){
-//                                    Toast.makeText(context, "ds"+selectedDeskId, Toast.LENGTH_SHORT).show();
+                                        && selectedDeskId != editDeskBookingDetails.getDesktId()) {
                                     jsonChangesObject.addProperty("teamDeskId",selectedDeskId);
                                 }
                                 if (newEditStatus.equalsIgnoreCase("request") ||
@@ -2495,22 +2520,22 @@ public class BookFragment extends Fragment implements
         select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editDeskBookingDetails.setDisplayTime(startTime.getText().toString()+" to "+endTime.getText().toString());
-                if (dskRoomParkStatus==1){
-                    if (editDeskBookingDetails.getRequestedTeamId()>0)
-                        selectedDeskList(editDeskBookingDetails.getRequestedTeamId(),
-                                Utils.getISO8601format(editDeskBookingDetails.getDate()),
-                                editDeskBookingDetails,newEditStatus);
-                    else
-                        selectedDeskList(selectedTeamId,
-                                Utils.getISO8601format(editDeskBookingDetails.getDate()),editDeskBookingDetails,newEditStatus);
-                } else {
-
-                if (editDeskBookingDetails.getDeskStatus()!=1 && editDeskBookingDetails.getDeskStatus()!=2)
-                    callDeskBottomSheetDialog();
+                if(!selectDisabled){
+                    editDeskBookingDetails.setDisplayTime(startTime.getText().toString()+" to "+endTime.getText().toString());
+                    if (dskRoomParkStatus==1){
+                        if (editDeskBookingDetails.getRequestedTeamId()>0)
+                            selectedDeskList(editDeskBookingDetails.getRequestedTeamId(),
+                                    Utils.getISO8601format(editDeskBookingDetails.getDate()),
+                                    editDeskBookingDetails,newEditStatus);
+                        else
+                            selectedDeskList(selectedTeamId,
+                                    Utils.getISO8601format(editDeskBookingDetails.getDate())
+                                    ,editDeskBookingDetails,newEditStatus);
+                    } else {
+                        if (editDeskBookingDetails.getDeskStatus()!=1 && editDeskBookingDetails.getDeskStatus()!=2)
+                            callDeskBottomSheetDialog();
+                    }
                 }
-//                if (editDeskBookingDetails.getDeskStatus()!=1 && editDeskBookingDetails.getDeskStatus()!=2)
-//                    callDeskBottomSheetDialog();
 
             }
         });
@@ -3425,7 +3450,7 @@ public class BookFragment extends Fragment implements
                             else if (newEditDelete.equalsIgnoreCase("edit"))
                                 openCheckoutDialog("Booking Updated",dskRoomStatus);
                             else if (newEditDelete.equalsIgnoreCase("request"))
-                                openCheckoutDialog("Booking Requested Successfully",dskRoomStatus);
+                                openCheckoutDialog("Booking Created",dskRoomStatus);
                             else
                                 openCheckoutDeleteDialog("Booking Deleted",dskRoomStatus);
 
@@ -6545,12 +6570,17 @@ public class BookFragment extends Fragment implements
                     editBookingDetails.setTimeZone(timeZone);
                 }
                 if(request.equalsIgnoreCase("request")){
-                    editBookingDetailsGlobal.setRequestedTeamDeskId(deskId);
-                    editBookingDetailsGlobal.setRequestedTeamId(selectedTeamId);
+                    deskStatusText.setText("Available For Request");
+                    deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figma_orange));
+                    editBookingDetails.setRequestedTeamDeskId(deskId);
+                    editBookingDetails.setRequestedTeamId(selectedTeamId);
                 } else {
-                    editBookingDetailsGlobal.setRequestedTeamDeskId(0);
-                    editBookingDetailsGlobal.setRequestedTeamId(0);
+                    deskStatusText.setText("Available");
+                    deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaLiteGreen));
+                    editBookingDetails.setRequestedTeamDeskId(0);
+                    editBookingDetails.setRequestedTeamId(0);
                 }
+
             } else {
                 selectedDeskId = deskId;
                 deskRoomName.setText(deskName);
