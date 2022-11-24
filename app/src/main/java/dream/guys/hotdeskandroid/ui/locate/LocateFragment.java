@@ -569,6 +569,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void getMyTeamMemberData() {
 
+
+        binding.locateProgressBar.setVisibility(View.VISIBLE);
+
         binding.tvPMOOffice.setText(SessionHandler.getInstance().get(getContext(),AppConstants.CURRENT_TEAM));
 
         String startTime = binding.locateStartTime.getText().toString() + ":00.000Z";
@@ -602,7 +605,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             @Override
             public void onFailure(Call<ArrayList<DAOTeamMember>> call, Throwable t) {
-
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -706,6 +709,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         locateMyTeamAdapter = new LocateMyTeamAdapter(getContext(), locateMyTeamMemberStatusList, this);
         binding.rvLocateMyTeam.setAdapter(locateMyTeamAdapter);
 
+        binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
         binding.myTeamClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -729,9 +734,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                if (s.toString().length() >= 2) {
+
+                locateMyTeamAdapter.getFilter().filter(s.toString());
+               /* if (s.toString().length() >= 2) {
                     locateMyTeamAdapter.getFilter().filter(s.toString());
-                }
+                }*/
 
             }
 
@@ -1005,6 +1012,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     private void getTimeZoneForBooking(int defaultTeamId) {
 
         if (Utils.isNetworkAvailable(getContext())) {
+
+            //binding.locateProgressBar.setVisibility(View.VISIBLE);
+
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
             Call<List<BookingForEditResponse.TeamDeskAvailabilities>> call = apiService.
@@ -1017,6 +1027,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 public void onResponse(Call<List<BookingForEditResponse.TeamDeskAvailabilities>> call, Response<List<BookingForEditResponse.TeamDeskAvailabilities>> response) {
                     System.out.println("SuccessPrintHere ");
                      teamDeskAvailabilitiesList=response.body();
+
+                    //binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
                      //String timeZoneId=teamDeskAvailabilitiesList.get(0).getTimeZones().get(0).getTimeZoneId();
                     //System.out.println("MyTimeZoneId "+timeZoneId);
@@ -2822,6 +2834,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             System.out.println("RoomAmenitiesList " + amenitiesList.get(i));
             Chip chip = new Chip(getContext());
             chip.setText(amenitiesList.get(i));
+
+            //chip.setTextSize(10);
+            //chip.setPadding(1,1,1,1);
             chip.setCheckable(false);
             chip.setClickable(false);
             chipGroup.addView(chip);

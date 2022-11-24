@@ -90,7 +90,12 @@
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/meetingAmenitiesChipGroup"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/_5sdp"
+                    app:chipSpacingVertical="-13dp"
+                    app:chipSpacingHorizontal="@dimen/_1sdp"
+
+                    />
 
             </RelativeLayout>
 
