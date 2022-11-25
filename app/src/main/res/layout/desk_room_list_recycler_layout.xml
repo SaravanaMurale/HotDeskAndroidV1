@@ -40,34 +40,81 @@
             android:text="Select"
             android:textColor="@color/figmaBlueText"
             android:theme="@style/TextBold" />
-
         <LinearLayout
-            android:id="@+id/status_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_toLeftOf="@id/tv_select"
+            android:orientation="vertical"
             android:layout_below="@id/tv_desk_name"
+            android:layout_toLeftOf="@id/tv_select"
             android:layout_toRightOf="@id/info_layout"
-            android:gravity="center_vertical"
-            android:visibility="invisible"
             >
-            <ImageView
-                android:id="@+id/desk_icon_status"
-                android:layout_width="@dimen/_10sdp"
-                android:layout_height="@dimen/_10sdp"
-                android:src="@drawable/bg_circle_vector"
-                app:tint="@color/figmaBlueText" />
             <TextView
-                android:id="@+id/desk_status"
+                android:id="@+id/tv_location_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:theme="@style/TextRegular"
-                android:text="Available"
-                android:layout_marginStart="@dimen/_3sdp"
-                android:textColor="@color/black"
+                android:layout_marginVertical="@dimen/_3sdp"
+                android:text="location1, location 2"
+                android:textColor="@color/figmaBlack"
+                android:textSize="14sp"
+                android:visibility="gone"
                 />
 
+            <LinearLayout
+                android:id="@+id/capacity_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Capacity"
+                    android:textSize="14sp"
+                    android:theme="@style/TextRegular" />
+
+                <TextView
+                    android:layout_width="@dimen/_6sdp"
+                    android:layout_height="@dimen/_6sdp"
+                    android:layout_marginHorizontal="@dimen/_3sdp"
+                    android:background="@drawable/bg_circle_vector"
+                    android:backgroundTint="@color/figmaGrey" />
+
+                <TextView
+                    android:id="@+id/tv_capacity_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5"
+                    android:textSize="14sp"
+                    android:theme="@style/TextRegular" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/status_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:visibility="invisible"
+                >
+                <ImageView
+                    android:id="@+id/desk_icon_status"
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:src="@drawable/bg_circle_vector"
+                    app:tint="@color/figmaBlueText" />
+                <TextView
+                    android:id="@+id/desk_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/TextRegular"
+                    android:text="Available"
+                    android:layout_marginStart="@dimen/_3sdp"
+                    android:textColor="@color/black"
+                    />
+
+            </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/info_layout"

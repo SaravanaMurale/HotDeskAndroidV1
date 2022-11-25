@@ -215,7 +215,7 @@ public class QrFragment extends Fragment {
                             Utils.showCustomAlertDialog(getActivity(), resultString);
                         }
                     } else if (response.code() == 500){
-                        Utils.showCustomAlertDialog(getActivity(),"500 Response");
+                        Utils.showCustomAlertDialog(getActivity(),""+response.message());
                     }else if (response.code() == 401){
                         Utils.showCustomTokenExpiredDialog(getActivity(),"401 Error Response");
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);

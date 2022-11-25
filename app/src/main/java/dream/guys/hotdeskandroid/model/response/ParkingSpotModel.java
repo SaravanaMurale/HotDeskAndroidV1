@@ -12,7 +12,7 @@ public class ParkingSpotModel {
     private Location location;
     private ArrayList<Assignees> assignees;
     private int parkingSlotAvailability;
-
+    // 1-
     public ArrayList<Assignees> getAssignees() {
         return assignees;
     }

@@ -260,7 +260,33 @@ public class UserAllowedMeetingResponse {
         }
     }
     public class Teams {
+        private int id;
+        private boolean isDeleted;
+        private boolean isLeafTeam;
 
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public boolean isDeleted() {
+            return isDeleted;
+        }
+
+        public void setDeleted(boolean deleted) {
+            isDeleted = deleted;
+        }
+
+        public boolean isLeafTeam() {
+            return isLeafTeam;
+        }
+
+        public void setLeafTeam(boolean leafTeam) {
+            isLeafTeam = leafTeam;
+        }
     }
     public class Amenity {
         private int id;

@@ -7,9 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +28,7 @@ import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
+import dream.guys.hotdeskandroid.utils.Utils;
 
 public class ParkingSpotListRecyclerAdapter extends RecyclerView.Adapter<ParkingSpotListRecyclerAdapter.Viewholder> implements Filterable {
     // HomeFragment homeFragment;
@@ -104,6 +109,45 @@ public class ParkingSpotListRecyclerAdapter extends RecyclerView.Adapter<Parking
     @Override
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
         holder.parking_name.setText(""+parkingSpots.get(position).getCode());
+        holder.capacityLayout.setVisibility(View.GONE);
+        holder.locationDetails.setVisibility(View.VISIBLE);
+        holder.statusLayout.setVisibility(View.VISIBLE);
+        if (!parkingSpots.get(position).isActive()){
+            holder.card.setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
+            holder.select.setVisibility(View.GONE);
+            if (parkingSpots.get(position).getLocation()!=null)
+                holder.locationDetails.setText(Utils.checkStringParms(parkingSpots.get(position).getLocation().getName()));
+            else
+                holder.locationDetails.setVisibility(View.GONE);
+
+            holder.deskStatus.setText("Not Available For Request");
+            holder.deskIconStatus.setColorFilter(context.getColor(R.color.figma_red));
+        } else if (parkingSpots.get(position).getParkingSlotAvailability() == 2
+                && parkingSpots.get(position).isActive()) {
+
+            if (parkingSpots.get(position).getLocation()!=null)
+                holder.locationDetails.setText(Utils.checkStringParms(parkingSpots.get(position).getLocation().getName()));
+            else
+                holder.locationDetails.setVisibility(View.GONE);
+
+            holder.card.setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
+            holder.select.setVisibility(View.VISIBLE);
+
+            holder.deskStatus.setText("Available For Request");
+            holder.deskIconStatus.setColorFilter(context.getColor(R.color.figma_orange));
+        } else {
+            if (parkingSpots.get(position).getLocation()!=null)
+                holder.locationDetails.setText(Utils.checkStringParms(parkingSpots.get(position).getLocation().getName()));
+            else
+                holder.locationDetails.setVisibility(View.GONE);
+
+
+            holder.card.setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
+            holder.select.setVisibility(View.VISIBLE);
+
+            holder.deskStatus.setText("Available");
+            holder.deskIconStatus.setColorFilter(context.getColor(R.color.figmaLiteGreen));
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +167,22 @@ public class ParkingSpotListRecyclerAdapter extends RecyclerView.Adapter<Parking
     public class Viewholder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_desk_name)
         TextView parking_name;
+        @BindView(R.id.desk_status)
+        TextView deskStatus;
+        @BindView(R.id.tv_select)
+        TextView select;
+        @BindView(R.id.tv_location_details)
+        TextView locationDetails;
+        @BindView(R.id.tv_capacity_no)
+        TextView capacityNo;
+        @BindView(R.id.capacity_layout)
+        LinearLayout capacityLayout;
+        @BindView(R.id.status_layout)
+        LinearLayout statusLayout;
+        @BindView(R.id.desk_icon_status)
+        ImageView deskIconStatus;
+        @BindView(R.id.card)
+        CardView card;
 
         public Viewholder(@NonNull View itemView) {
             super(itemView);

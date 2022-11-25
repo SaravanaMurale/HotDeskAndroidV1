@@ -1367,17 +1367,17 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlueText));
             select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
-            boolean startDisabled = true;
-            boolean endDisabled = false;
-            boolean selectDisabled = true;
+            startDisabled = true;
+            endDisabled = false;
+            selectDisabled = true;
             statusCheckLayout.setVisibility(View.VISIBLE);
             llCapacityLayout.setVisibility(View.VISIBLE);
 //            chipGroup.setVisibility(View.VISIBLE);
         } else {
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlueText));
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlueText));
-            boolean startDisabled = false;
-            boolean endDisabled = false;
+            startDisabled = false;
+            endDisabled = false;
 
             statusCheckLayout.setVisibility(View.GONE);
             llCapacityLayout.setVisibility(View.GONE);
@@ -1389,8 +1389,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 )){
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
-            boolean startDisabled = true;
-            boolean selectDisabled = true;
+            startDisabled = true;
+            selectDisabled = true;
 
         }
         if (Utils.compareTwoDate(editDeskBookingDetails.getDate(), Utils.getCurrentDate())==2
@@ -1399,8 +1399,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 )){
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
-            boolean endDisabled = true;
-            boolean selectDisabled = true;
+            endDisabled = true;
+            selectDisabled = true;
 
         }
 
@@ -1465,7 +1465,6 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             @Override
             public void onClick(View v) {
                 if (!startDisabled){
-
                     if (editDeskBookingDetails.getDeskStatus() != 1 && editDeskBookingDetails.getDeskStatus() != 2)
                         Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",
                                 Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),isRequestedDesk);
@@ -1478,7 +1477,6 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             @Override
             public void onClick(View v) {
                 if (!endDisabled){
-
                     if (editDeskBookingDetails.getDeskStatus() != 1)
                         Utils.bottomSheetTimePicker(getContext(),getActivity(),
                                 endTime,"End Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()), isRequestedDesk);

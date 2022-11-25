@@ -538,7 +538,7 @@ public class MainActivity extends AppCompatActivity implements
             selectDesk.setText("Select Meeting Room");
             roomListRecyclerAdapter =new RoomListRecyclerAdapter(getContext(),
                     this,this,userAllowedMeetingResponseListUpdated,getContext(),
-                    deskListBottomSheet);
+                    deskListBottomSheet,null);
             rvDeskRecycler.setAdapter(roomListRecyclerAdapter);
         }else {
             selectDesk.setText("Book a Workspace");

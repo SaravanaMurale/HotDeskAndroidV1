@@ -48,6 +48,44 @@ public class BookingForEditResponse {
         this.bookings = bookings;
     }
 
+    public class Location {
+        private int floorID;
+        private String fLoorName;
+        private int buildingID;
+        private String buildingName;
+
+        public int getFloorID() {
+            return floorID;
+        }
+
+        public void setFloorID(int floorID) {
+            this.floorID = floorID;
+        }
+
+        public String getfLoorName() {
+            return fLoorName;
+        }
+
+        public void setfLoorName(String fLoorName) {
+            this.fLoorName = fLoorName;
+        }
+
+        public int getBuildingID() {
+            return buildingID;
+        }
+
+        public void setBuildingID(int buildingID) {
+            this.buildingID = buildingID;
+        }
+
+        public String getBuildingName() {
+            return buildingName;
+        }
+
+        public void setBuildingName(String buildingName) {
+            this.buildingName = buildingName;
+        }
+    }
     public class TeamDeskAvailabilities {
         @SerializedName("teamDeskId")
         private int teamDeskId;
@@ -297,6 +335,7 @@ public class BookingForEditResponse {
         public int teamDeskId;
         public int parkingSlotId;
         public String timeZoneId;
+        public boolean isPendingRequest;
         public String from;
         @SerializedName("to")
         public String myto;
@@ -311,6 +350,32 @@ public class BookingForEditResponse {
         public int teamMembershipId;
         public String bookedByUserName;
         public Status status;
+        public Location requestedDeskLocation;
+        public Location deskLocation;
+
+        public boolean isPendingRequest() {
+            return isPendingRequest;
+        }
+
+        public void setPendingRequest(boolean pendingRequest) {
+            isPendingRequest = pendingRequest;
+        }
+
+        public Location getRequestedDeskLocation() {
+            return requestedDeskLocation;
+        }
+
+        public void setRequestedDeskLocation(Location requestedDeskLocation) {
+            this.requestedDeskLocation = requestedDeskLocation;
+        }
+
+        public Location getDeskLocation() {
+            return deskLocation;
+        }
+
+        public void setDeskLocation(Location deskLocation) {
+            this.deskLocation = deskLocation;
+        }
 
         public int getParkingSlotId() {
             return parkingSlotId;

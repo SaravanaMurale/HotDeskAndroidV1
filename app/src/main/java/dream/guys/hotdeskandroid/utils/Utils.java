@@ -752,7 +752,7 @@ public class Utils {
         //2nd of march 2015
         int day=cal.get(Calendar.DATE);
 
-        if(!((day>10) && (day<19)))
+        if(!((day>10) && (day<19))) {
             switch (day % 10) {
                 case 1:
                     return new SimpleDateFormat("EEE, d'st' MMMM, yyyy").format(date);
@@ -762,7 +762,9 @@ public class Utils {
                     return new SimpleDateFormat("EEE, d'rd'  MMMM, yyyy").format(date);
                 default:
                     return new SimpleDateFormat("EEE, d'th' MMMM, yyyy").format(date);
+
             }
+        }
         return new SimpleDateFormat("EEE, d'th' MMMM, yyyy").format(date);
 
     }
@@ -772,17 +774,18 @@ public class Utils {
         //2nd of march 2015
         int day=cal.get(Calendar.DATE);
 
-        if(!((day>10) && (day<19)))
+        if(!((day>10) && (day<19))){
             switch (day % 10) {
                 case 1:
                     return new SimpleDateFormat("EEE, d'st' MMMM").format(date);
                 case 2:
                     return new SimpleDateFormat("EEE, d'nd' MMMM").format(date);
                 case 3:
-                    return new SimpleDateFormat("EEE, d'rd'  MMMM").format(date);
+                    return new SimpleDateFormat("EEE, d'rd' MMMM").format(date);
                 default:
                     return new SimpleDateFormat("EEE, d'th' MMMM").format(date);
             }
+        }
         return new SimpleDateFormat("EEE, d'th' MMMM").format(date);
 
     }

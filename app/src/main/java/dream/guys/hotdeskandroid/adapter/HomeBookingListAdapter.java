@@ -133,7 +133,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingIvLocation.setVisibility(View.VISIBLE);
         }
 
-        
+
         if (list.get(position).getCalDeskStatus() ==1 &&
                 list.get(position).getCalendarEntriesModel()
                         .getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
@@ -276,6 +276,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             .placeholder(R.drawable.chair)
                             .into(holder.bookingRemoteHome);
 
+                    holder.tv_change.setVisibility(View.GONE);
                     holder.tvBookingWorkingRemote.setText("Request for Desk In Progress");
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("Request for Desk In Progress");
                     if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){

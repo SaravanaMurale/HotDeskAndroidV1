@@ -30,7 +30,9 @@ public class EditBookingDetails {
     int meetingRoomtId=0;
     int deskStatus=0;
     int noOfPeople=0;
+    int meetingRoomStatus =0;
     int usageTypeId=0;
+    private String meetingRoomBookingType;
     Date date;
     String abbrevation;
     List<String> amenities;
@@ -38,6 +40,22 @@ public class EditBookingDetails {
     public int requestedTeamId;
     public int requestedTeamDeskId;
     public Status status;
+
+    public String getMeetingRoomBookingType() {
+        return meetingRoomBookingType;
+    }
+
+    public void setMeetingRoomBookingType(String meetingRoomBookingType) {
+        this.meetingRoomBookingType = meetingRoomBookingType;
+    }
+
+    public int getMeetingRoomStatus() {
+        return meetingRoomStatus;
+    }
+
+    public void setMeetingRoomStatus(int meetingRoomStatus) {
+        this.meetingRoomStatus = meetingRoomStatus;
+    }
 
     public String getCapacity() {
         return capacity;
