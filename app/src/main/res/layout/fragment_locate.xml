@@ -522,6 +522,7 @@
                 android:drawableLeft="@drawable/search_1px"
                 android:hint="   Search"
                 android:paddingLeft="@dimen/_10sdp"
+                android:drawablePadding="@dimen/_5sdp"
                 android:paddingTop="@dimen/_7sdp"
                 android:paddingBottom="@dimen/_5sdp" />
 
