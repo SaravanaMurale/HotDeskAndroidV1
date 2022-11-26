@@ -1238,6 +1238,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
                 List<LocateCountryRespose> locateCountryResposeList=response.body();
 
+                locatebook:
                 for (int i = 0; i <locateCountryResposeList.size() ; i++) {
 
                     if(desk.equals(AppConstants.DESK)){
@@ -1254,6 +1255,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                                 SessionHandler.getInstance().saveInt(getContext(),AppConstants.FLOOR_ICON_BLINK,identifierId);
 
                                 ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
+                                break locatebook;
 //                                navController.navigate(R.id.action_navigation_home_to_navigation_locate);
 
                             }
@@ -1275,6 +1277,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                                 SessionHandler.getInstance().saveInt(getContext(),AppConstants.FLOOR_ICON_BLINK,identifierId);
 
                                 ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
+                                break locatebook;
 //                                navController.navigate(R.id.navigation_locate);
                             }
 
@@ -1294,6 +1297,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                                 SessionHandler.getInstance().saveInt(getContext(),AppConstants.FLOOR_ICON_BLINK,identifierId);
 
                                 ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
+                                break locatebook;
 //                                navController.navigate(R.id.navigation_locate);
                             }
                         }

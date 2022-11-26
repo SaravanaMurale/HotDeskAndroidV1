@@ -1649,6 +1649,8 @@ public class MainActivity extends AppCompatActivity implements
 
     }
     public void callLocateFragmentFromHomeFragment(){
+        //To save selected location id
+        SessionHandler.getInstance().saveInt(getContext(), AppConstants.SELECTED_LOCATION_FROM_HOME,1);
         binding.navView.setSelectedItemId(R.id.navigation_locate);
     }
     @Override
