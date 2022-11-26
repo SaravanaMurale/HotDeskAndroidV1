@@ -1,5 +1,6 @@
 package dream.guys.hotdeskandroid.ui.locate;
 
+import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
 import static dream.guys.hotdeskandroid.utils.Utils.currentTimeWithExtraMins;
 import static dream.guys.hotdeskandroid.utils.Utils.getActionOverLaysPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
@@ -945,8 +946,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         //To load default location-saved in login Activity
+        //defaultLocationcheck-0-loaded from other fragment
+        //defaultLocationcheck-1-loaded within fragment
+
         int parentIdCheck =SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID_CHECK);
-        if(parentIdCheck>0 && defaultLocationcheck==0){
+        int selecctedFloorFromHome=SessionHandler.getInstance().getInt(getContext(),AppConstants.SELECTED_LOCATION_FROM_HOME);
+        if(parentIdCheck>0 && defaultLocationcheck==0 && selecctedFloorFromHome==0){
             int floorPositionCheck=SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION_CHECK);
 
             SessionHandler.getInstance().saveInt(getContext(),AppConstants.PARENT_ID,parentIdCheck);
@@ -966,6 +971,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             SessionHandler.getInstance().save(getContext(), AppConstants.FULLPATHLOCATION,fullPathCheck);
 
         }
+
+        //Disable selected location id
+        SessionHandler.getInstance().saveInt(getContext(), AppConstants.SELECTED_LOCATION_FROM_HOME,0);
 
         int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
         ProgressDialog.clearTouchLock(getContext(), getActivity());
@@ -2448,6 +2456,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         //binding.firstLayout.setPadding(0,0,50,0);
 
+        //TO Set Desk,Meeting and Car Icon Blink
         int floorIconBlick = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_ICON_BLINK);
         System.out.println("FloorIconBlinkStatus " + floorIconBlick);
         if (floorIconBlick > 0) {
