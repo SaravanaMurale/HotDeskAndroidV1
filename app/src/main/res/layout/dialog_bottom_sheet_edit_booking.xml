@@ -155,7 +155,7 @@
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 
-            <!--Teams-->
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -163,7 +163,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
                 android:orientation="horizontal"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:padding="@dimen/_3sdp">
 
                 <TextView
@@ -182,20 +182,21 @@
                     android:id="@+id/ed_registration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rectangle_greybg_with_corner"
-                    android:backgroundTint="@color/bg_grey"
                     android:layout_alignParentEnd="true"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:layout_toEndOf="@+id/tv_comments"
+                    android:background="@drawable/rectangle_greybg_with_corner"
+                    android:backgroundTint="@color/bg_grey"
                     android:gravity="end"
                     android:hint="None"
-                    android:textColorHint="@color/figmaBlueDisabled"
                     android:textColor="@color/figmaBlue"
+                    android:textColorHint="@color/figmaBlueDisabled"
                     android:textSize="18sp"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 
+            <!--Teams-->
             <RelativeLayout
                 android:id="@+id/rl_teams_layout"
                 android:layout_width="match_parent"
@@ -473,7 +474,7 @@
                 android:paddingVertical="@dimen/_10sdp"
                 android:visibility="gone" />
 
-            <!--<TextView
+            <!--<TextViewczfkd
                 android:id="@+id/tv_comments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

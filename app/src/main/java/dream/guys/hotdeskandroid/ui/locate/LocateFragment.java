@@ -99,6 +99,7 @@ import dream.guys.hotdeskandroid.model.request.DeskStatusModel;
 import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkEditRequest;
+import dream.guys.hotdeskandroid.model.request.LocateDeskBookEditFromRequest;
 import dream.guys.hotdeskandroid.model.request.LocateDeskBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateDeskDeleteRequest;
 import dream.guys.hotdeskandroid.model.request.LocationMR_Request;
@@ -1596,7 +1597,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void addDottedLine() {
  
-        /* View dottView = getLayoutInflater().inflate(R.layout.layout_dotted_line, null, false);
+         View dottView = getLayoutInflater().inflate(R.layout.layout_dotted_line, null, false);
          ImageView ivDesk = dottView.findViewById(R.id.dottedImage);
          RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
  
@@ -1604,10 +1605,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
          relativeLayout.topMargin = 500;
          ivDesk.setLayoutParams(relativeLayout);
 
-         binding.firstLayout.addView(dottView);*/
+         binding.firstLayout.addView(dottView);
 
-        //MyCanvasDraw myCanvasDraw = new MyCanvasDraw(getContext(), pointList);
-        //binding.secondLayout.addView(myCanvasDraw);
+        MyCanvasDraw myCanvasDraw = new MyCanvasDraw(getContext(), pointList);
+        binding.secondLayout.addView(myCanvasDraw);
 
 
     }
@@ -6631,7 +6632,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 if (status) {
                     bottomSheetDialog.dismiss();
                     //Edit DeskBooking
-                    doEditDeskBooking(bookings, startTime.getText().toString(), endTime.getText().toString());
+                    doEditDeskBooking(bookings, startTime.getText().toString(), endTime.getText().toString(),et_comment_desk.getText().toString());
                 }
 
 
@@ -6690,55 +6691,86 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
-    private void doEditDeskBooking(BookingForEditResponse.Bookings bookings, String startTime, String endTime) {
+    private void doEditDeskBooking(BookingForEditResponse.Bookings bookings, String startTime, String endTime,String comment) {
+
+
+        //System.out.println("OriginalStartAndEndTime "+bookings.getFrom()+" "+bookings.getMyto());
+        //System.out.println("SplitTime "+Utils.splitTime(bookings.getFrom())+" "+Utils.splitTime(bookings.getMyto()));
+        //System.out.println("ChangedStartAndEndTime "+startTime+" "+endTime);
+
 
         if (Utils.isNetworkAvailable(getActivity())) {
             binding.locateProgressBar.setVisibility(View.VISIBLE);
 
-            LocateBookingRequest locateBookingRequest = new LocateBookingRequest();
+            LocateDeskBookEditFromRequest locateBookingRequest = new LocateDeskBookEditFromRequest();
             locateBookingRequest.setTeamId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID));
             locateBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID));
 
-            LocateBookingRequest.ChangeSets changeSets = locateBookingRequest.new ChangeSets();
+            LocateDeskBookEditFromRequest.ChangeSets changeSets = locateBookingRequest.new ChangeSets();
             changeSets.setChangeSetId(bookings.getId());
 
             //changeSets.setChangeSetDate(startTim+ "T" + "00:00:00.000" + "Z");
             changeSets.setChangeSetDate(Utils.splitDate(bookings.getDate()) + "T" + "00:00:00.000" + "Z");
 
-            LocateBookingRequest.ChangeSets.Changes changes = changeSets.new Changes();
-            changes.setUsageTypeId(2);
+            LocateDeskBookEditFromRequest.ChangeSets.Changes changes = changeSets.new Changes();
+            changes.setUsageTypeId(null);
 
-            changes.setFrom(getCurrentDate() + "" + "T" + startTime + ":" + "00" + "." + "000" + "Z");
-            changes.setTo(getCurrentDate() + "" + "T" + endTime + ":" + "00" + "." + "000" + "Z");
+            if(comment!=null && !comment.isEmpty()){
+                changes.setComments(comment);
+            }
 
+            boolean nochange=false;
 
+           if(Utils.splitTime(bookings.getFrom()).equalsIgnoreCase(startTime) && !Utils.splitTime(bookings.getMyto()).equalsIgnoreCase(endTime)){
+               changes.setFrom(null);
+               changes.setTo(getCurrentDate() + "" + "T" + endTime + ":" + "00" + "." + "000" + "Z");
+           }else if(Utils.splitTime(bookings.getMyto()).equalsIgnoreCase(endTime) && !Utils.splitTime(bookings.getFrom()).equalsIgnoreCase(startTime)){
+               changes.setTo(null);
+               changes.setFrom(getCurrentDate() + "" + "T" + startTime + ":" + "00" + "." + "000" + "Z");
+           }else if(!Utils.splitTime(bookings.getFrom()).equalsIgnoreCase(startTime) && !Utils.splitTime(bookings.getFrom()).equalsIgnoreCase(startTime)){
+               changes.setFrom(getCurrentDate() + "" + "T" + startTime + ":" + "00" + "." + "000" + "Z");
+               changes.setTo(getCurrentDate() + "" + "T" + endTime + ":" + "00" + "." + "000" + "Z");
+           }else {
+              // nochange=true;
+               changes.setFrom(null);
+               changes.setTo(null);
+           }
+           //changes.setTo(getCurrentDate() + "" + "T" + endTime + ":" + "00" + "." + "000" + "Z");
 
             // changes.setTimeZoneId("India Standard Time");
-            changes.setTimeZoneId(bookings.getTimeZoneId());
+            changes.setTimeZoneId(null);
 
 
             if (selectedDeskId > 0) {
-                changes.setTeamDeskId(selectedDeskId);
+                changes.setTeamDeskId(null);
             } else {
-                changes.setTeamDeskId(bookings.teamDeskId);
+                changes.setTeamDeskId(null);
             }
 
-            changes.setTypeOfCheckIn(1);
+            changes.setTypeOfCheckIn(null);
 
             changeSets.setChanges(changes);
 
-            List<LocateBookingRequest.ChangeSets> changeSetsList = new ArrayList<>();
-            changeSetsList.add(changeSets);
+            List<LocateDeskBookEditFromRequest.ChangeSets> changeSetsList = new ArrayList<>();
+
+            if(Utils.splitTime(bookings.getFrom()).equalsIgnoreCase(startTime) && Utils.splitTime(bookings.getMyto()).equalsIgnoreCase(endTime)){
+
+            }else {
+                changeSetsList.add(changeSets);
+            }
+
+
+
             locateBookingRequest.setChangeSetsList(changeSetsList);
 
-            LocateBookingRequest.DeleteIds deleteIds = locateBookingRequest.new DeleteIds();
-            List<LocateBookingRequest.DeleteIds> deleteIdsList = new ArrayList<>();
+            LocateDeskBookEditFromRequest.DeleteIds deleteIds = locateBookingRequest.new DeleteIds();
+            List<LocateDeskBookEditFromRequest.DeleteIds> deleteIdsList = new ArrayList<>();
             //deleteIdsList.add(deleteIds);
 
             locateBookingRequest.setDeleteIdsList(deleteIdsList);
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<BaseResponse> call = apiService.doDeskBooking(locateBookingRequest);
+            Call<BaseResponse> call = apiService.doEditDeskBooking(locateBookingRequest);
 
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
@@ -6762,6 +6794,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
+
 
 
     }
