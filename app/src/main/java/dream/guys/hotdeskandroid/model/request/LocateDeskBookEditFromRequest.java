@@ -4,32 +4,32 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class LocateBookingRequest {
+public class LocateDeskBookEditFromRequest {
 
     @SerializedName("teamId")
-    int teamId;
+    Integer teamId;
     @SerializedName("teamMembershipId")
-    int teamMembershipId;
+    Integer teamMembershipId;
 
     @SerializedName("changesets")
-    List<ChangeSets> changeSetsList;
+    List<LocateDeskBookEditFromRequest.ChangeSets> changeSetsList;
 
     @SerializedName("deletedIds")
     List<DeleteIds> deleteIdsList;
 
-    public int getTeamId() {
+    public Integer getTeamId() {
         return teamId;
     }
 
-    public void setTeamId(int teamId) {
+    public void setTeamId(Integer teamId) {
         this.teamId = teamId;
     }
 
-    public int getTeamMembershipId() {
+    public Integer getTeamMembershipId() {
         return teamMembershipId;
     }
 
-    public void setTeamMembershipId(int teamMembershipId) {
+    public void setTeamMembershipId(Integer teamMembershipId) {
         this.teamMembershipId = teamMembershipId;
     }
 
@@ -49,21 +49,21 @@ public class LocateBookingRequest {
         this.deleteIdsList = deleteIdsList;
     }
 
-    public class ChangeSets{
+    public class ChangeSets {
 
         @SerializedName("id")
-        int changeSetId;
+        Integer changeSetId;
         @SerializedName("date")
         String changeSetDate;
 
         @SerializedName("changes")
-        Changes changes;
+        LocateDeskBookEditFromRequest.ChangeSets.Changes changes;
 
-        public int getChangeSetId() {
+        public Integer getChangeSetId() {
             return changeSetId;
         }
 
-        public void setChangeSetId(int changeSetId) {
+        public void setChangeSetId(Integer changeSetId) {
             this.changeSetId = changeSetId;
         }
 
@@ -83,7 +83,7 @@ public class LocateBookingRequest {
             this.changes = changes;
         }
 
-        public  class Changes{
+        public class Changes {
             @SerializedName("usageTypeId")
             Integer usageTypeId;
 
@@ -106,29 +106,24 @@ public class LocateBookingRequest {
             Integer requestedTeamDeskId;
 
             @SerializedName("typeOfCheckIn")
-            int typeOfCheckIn;
+            Integer typeOfCheckIn;
 
-            public Integer getRequestedTeamId() {
-                return requestedTeamId;
+            @SerializedName("comments")
+            String comments;
+
+            public String getComments() {
+                return comments;
             }
 
-            public void setRequestedTeamId(Integer requestedTeamId) {
-                this.requestedTeamId = requestedTeamId;
+            public void setComments(String comments) {
+                this.comments = comments;
             }
 
-            public Integer getRequestedTeamDeskId() {
-                return requestedTeamDeskId;
-            }
-
-            public void setRequestedTeamDeskId(Integer requestedTeamDeskId) {
-                this.requestedTeamDeskId = requestedTeamDeskId;
-            }
-
-            public int getUsageTypeId() {
+            public Integer getUsageTypeId() {
                 return usageTypeId;
             }
 
-            public void setUsageTypeId(int usageTypeId) {
+            public void setUsageTypeId(Integer usageTypeId) {
                 this.usageTypeId = usageTypeId;
             }
 
@@ -160,25 +155,39 @@ public class LocateBookingRequest {
                 return teamDeskId;
             }
 
-            public void setTeamDeskId(int teamDeskId) {
+            public void setTeamDeskId(Integer teamDeskId) {
                 this.teamDeskId = teamDeskId;
+            }
+
+            public Integer getRequestedTeamId() {
+                return requestedTeamId;
+            }
+
+            public void setRequestedTeamId(Integer requestedTeamId) {
+                this.requestedTeamId = requestedTeamId;
+            }
+
+            public Integer getRequestedTeamDeskId() {
+                return requestedTeamDeskId;
+            }
+
+            public void setRequestedTeamDeskId(Integer requestedTeamDeskId) {
+                this.requestedTeamDeskId = requestedTeamDeskId;
             }
 
             public Integer getTypeOfCheckIn() {
                 return typeOfCheckIn;
             }
 
-            public void setTypeOfCheckIn(int typeOfCheckIn) {
+            public void setTypeOfCheckIn(Integer typeOfCheckIn) {
                 this.typeOfCheckIn = typeOfCheckIn;
             }
         }
-
     }
 
     public class DeleteIds{
 
 
     }
-
 
 }

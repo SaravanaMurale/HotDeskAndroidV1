@@ -20,6 +20,8 @@ import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
 import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateCarParkEditRequest;
+import dream.guys.hotdeskandroid.model.request.LocateDeskBookEditFromAndToRequest;
+import dream.guys.hotdeskandroid.model.request.LocateDeskBookEditFromRequest;
 import dream.guys.hotdeskandroid.model.request.LocateDeskBookingRequest;
 import dream.guys.hotdeskandroid.model.request.LocateDeskDeleteRequest;
 import dream.guys.hotdeskandroid.model.request.LocationMR_Request;
@@ -271,6 +273,11 @@ public interface ApiInterface {
     //DeskBooking
     @PUT("api/booking/bookings")
     Call<BaseResponse> doDeskBooking(@Body LocateBookingRequest locateBookingRequest);
+
+
+    //DeskBooking
+    @PUT("api/booking/bookings")
+    Call<BaseResponse> doEditDeskBooking(@Body LocateDeskBookEditFromRequest locateBookingRequest);
 
     //DeskBookingRequest
     @PUT("api/booking/bookings")
