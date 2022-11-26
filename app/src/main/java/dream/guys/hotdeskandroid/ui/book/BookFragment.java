@@ -1002,6 +1002,7 @@ public class BookFragment extends Fragment implements
                         if (events.size()>0){
                             binding.calendarView.updateCalendar(events, -1);
                         }
+                        binding.calendarView.
                     } else if(response.code()==401){
                         //Handle if token got expired
 //                        ProgressDialog.dismisProgressBar(getContext(),dialog);
@@ -1853,9 +1854,9 @@ public class BookFragment extends Fragment implements
             public void onClick(View v) {
                 editBookingDetailsGlobal = new EditBookingDetails();
                 loop:
-                for (int i=0; i<bookingForEditResponseDesk.size();i++){
+                for (int i=0; i<bookingForEditResponseDesk.size();i++) {
                     if (bookingForEditResponse.getUserPreferences().getTeamDeskId()
-                            == bookingForEditResponseDesk.get(i).getTeamDeskId()){
+                            == bookingForEditResponseDesk.get(i).getTeamDeskId()) {
 //                        Toast.makeText(getContext(), " "+bookingForEditResponseDesk.get(i).getDeskCode(), Toast.LENGTH_SHORT).show();
                         if (bookingForEditResponse.getBookings().size() > 0){
                             editBookingDetailsGlobal.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
@@ -1893,7 +1894,7 @@ public class BookFragment extends Fragment implements
                             .getMyto(),2)));
                 }
 
-                if (bookingForEditResponse.getBookings().size()==0){
+                if (bookingForEditResponse.getBookings().size()==0) {
                     editBookingDetailsGlobal.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursFrom()));
                     editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
 
@@ -1901,9 +1902,8 @@ public class BookFragment extends Fragment implements
                     editBookingDetailsGlobal.setCalId(0);
                     editBookingDetailsGlobal.setDeskStatus(0);
                 }
-                Toast.makeText(activityContext, ""+editBookingDetailsGlobal.getDate(), Toast.LENGTH_SHORT).show();
 
-                if(isGlobalLocationSetUP){
+                if(isGlobalLocationSetUP) {
                     if(selectedTeamId != SessionHandler.getInstance().getInt(activityContext, AppConstants.TEAM_ID)
                             && selectedTeamAutoApproveStatus == 1)
                         editBookingUsingBottomSheet(editBookingDetailsGlobal,
@@ -1912,11 +1912,10 @@ public class BookFragment extends Fragment implements
                             && selectedTeamAutoApproveStatus == 2)
                         editBookingUsingBottomSheet(editBookingDetailsGlobal,
                                 1,0,"request");
-                } else
+                } else {
                     editBookingUsingBottomSheet(editBookingDetailsGlobal,
-                            1,0,"new");
-//                editBookingDetailsGlobal = editBookingDetails;
-//                getDeskList("3", calSelectedDate,"new");
+                            1, 0, "new");
+                }
             }
         });
         editClose.setOnClickListener(new View.OnClickListener() {
