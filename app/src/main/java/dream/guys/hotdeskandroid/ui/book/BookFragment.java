@@ -966,8 +966,13 @@ public class BookFragment extends Fragment implements
                         String toTime = calSelectedDate + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
                         call = apiService.getDailyDeskCountLocation(month, locationId, fromTime, toTime);
                     }
-                    else
-                        call = apiService.getDailyDeskCountLocation(month, locationId,"","");
+                    else    {
+                        String toDate = binding.locateCalendearView.getText().toString() + "T00:00:00Z";
+                        String fromTime = calSelectedDate + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
+                        String toTime = calSelectedDate + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
+                        call = apiService.getDailyDeskCountLocation(month, locationId, fromTime, toTime);
+//                        call = apiService.getDailyDeskCountLocation(month, locationId,"","");
+                    }
                     break;
                 case 1:
                     if (drawStatus == 2){
@@ -1002,7 +1007,6 @@ public class BookFragment extends Fragment implements
                         if (events.size()>0){
                             binding.calendarView.updateCalendar(events, -1);
                         }
-                        binding.calendarView.
                     } else if(response.code()==401){
                         //Handle if token got expired
 //                        ProgressDialog.dismisProgressBar(getContext(),dialog);
@@ -2068,8 +2072,6 @@ public class BookFragment extends Fragment implements
             if (newEditStatus.equalsIgnoreCase("edit")){
                 if (editDeskBookingDetails.getDate()!=null)
                     date.setText(""+Utils.calendarDay10thMonthYearformat(editDeskBookingDetails.getDate()));
-                if (editDeskBookingDetails.getRequestedTeamId()!=0)
-                    select.setVisibility(View.VISIBLE);
                 repeatBlock.setVisibility(View.GONE);
                 commentBlock.setVisibility(View.VISIBLE);
                 select.setText("Select");

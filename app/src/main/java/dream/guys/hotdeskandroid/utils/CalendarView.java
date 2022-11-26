@@ -206,7 +206,7 @@ public class CalendarView extends LinearLayout
 //        int season = monthSeason[month];
 //        int color = rainbow[season];
 
-        //   header.setBackgroundColor(getResources().getColor(color));
+           header.setBackgroundColor(getResources().getColor(R.color.white));
     }
 
 
@@ -274,23 +274,27 @@ public class CalendarView extends LinearLayout
                             Utils.getCurrentDate())==1){
                         if (count!=null && dateBox!=null){
                             ((TextView) count).setVisibility(GONE);
+                            ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
                             ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGrey));
                         }
                     } else if (Utils.compareTwoDate(Utils.convertStringToDateFormet(eventDate.getDate()),
                             Utils.getCurrentDate())==2){
                         if (count!=null && dateBox!=null) {
                             ((TextView) count).setVisibility(VISIBLE);
+                            ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
                             ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
                         }
                     }else if (Utils.compareTwoDate(Utils.convertStringToDateFormet(eventDate.getDate()),
                             Utils.getCurrentDate())==3){
                         if (count!=null && dateBox!=null) {
                             ((TextView) count).setVisibility(VISIBLE);
+                            ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
                             ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
                         }
                     } else {
                         if (count!=null && dateBox!=null) {
                             ((TextView) count).setVisibility(GONE);
+                            ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
                             ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGrey));
                         }
                     }
@@ -314,13 +318,12 @@ public class CalendarView extends LinearLayout
                             if (count!=null && dateBox!=null) {
                                 ((TextView) count).setVisibility(GONE);
                                 ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGrey));
+                                ((TextView) count).setText(" ");
                             }
                         }
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-
-
                 }
             }
 
