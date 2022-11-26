@@ -120,23 +120,9 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
         for (int i=0; i < getAllRooms.size(); i++) {
             if (getAllRooms.get(i).getId() == rooms.get(position).getId()) {
                 team:
-                for (int x=0; x<getAllRooms.get(i).getTeams().size(); x++){
+                for (int x=0; x<getAllRooms.get(i).getTeams().size(); x++) {
                     if(getAllRooms.get(i).getTeams().get(x).getId() ==
                             SessionHandler.getInstance().getInt(context,AppConstants.TEAM_ID)){
-                        if (!rooms.get(position).isActive()
-                                || rooms.get(position).getAutomaticApprovalStatus()== 3){
-                            holder.card.setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
-                            holder.select.setVisibility(View.GONE);
-                            holder.capacityNo.setText(""+rooms.get(position).getNoOfPeople());
-                            if (rooms.get(position).getLocationMeeting()!=null)
-                                holder.locationDetails.setText(Utils.checkStringParms(rooms.get(position).getLocationMeeting().getName()));
-                            else
-                                holder.locationDetails.setVisibility(View.GONE);
-
-                            holder.deskStatus.setText("Not Available For Request");
-                            holder.deskIconStatus.setColorFilter(context.getColor(R.color.figma_red));
-                            break team;
-                        } else {
                             holder.capacityNo.setText(""+Utils.checkStringParms(rooms.get(position).getNoOfPeople()));
                             if (rooms.get(position).getLocationMeeting()!=null)
                                 holder.locationDetails.setText(Utils.checkStringParms(rooms.get(position).getLocationMeeting().getName()));
@@ -149,7 +135,6 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
                             holder.deskStatus.setText("Available");
                             holder.deskIconStatus.setColorFilter(context.getColor(R.color.figmaLiteGreen));
                             break team;
-                        }
 
                     } else {
                         if (!rooms.get(position).isActive()

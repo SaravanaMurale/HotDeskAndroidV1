@@ -29,6 +29,7 @@ public class EditBookingDetails {
     int parkingSlotId=0;
     int meetingRoomtId=0;
     int deskStatus=0;
+    String deskBookingType;
     int noOfPeople=0;
     int meetingRoomStatus =0;
     int usageTypeId=0;
@@ -40,6 +41,14 @@ public class EditBookingDetails {
     public int requestedTeamId;
     public int requestedTeamDeskId;
     public Status status;
+
+    public String getDeskBookingType() {
+        return deskBookingType;
+    }
+
+    public void setDeskBookingType(String deskBookingType) {
+        this.deskBookingType = deskBookingType;
+    }
 
     public String getMeetingRoomBookingType() {
         return meetingRoomBookingType;
