@@ -106,7 +106,7 @@ public class AdapterNotificationCenter extends RecyclerView.Adapter<AdapterNotif
             @Override
             public void onClick(View view) {
 
-                ArrayList<IncomingRequestResponse.Result> notyManageList = new ArrayList<>();
+                /*ArrayList<IncomingRequestResponse.Result> notyManageList = new ArrayList<>();
                 int cIncoming = 0,cOutGoing = 0;
 
                 if (outgoing!=null && outgoing.size()>0){
@@ -124,14 +124,14 @@ public class AdapterNotificationCenter extends RecyclerView.Adapter<AdapterNotif
                     IncomingRequestResponse.Result result = new IncomingRequestResponse.Result(0);
 
                     cIncoming = Collections.frequency(incoming, result); //incoming.size();
-                }
+                }*/
 
                 Intent intent = new Intent(context, NotificationsListActivity.class);
-                intent.putExtra(AppConstants.SHOWNOTIFICATION,notyManageList);
+                /*intent.putExtra(AppConstants.SHOWNOTIFICATION,notyManageList);
                 intent.putExtra("IncomingList",incoming);
                 intent.putExtra("OutGoingList",outgoing);
                 intent.putExtra(AppConstants.OUTGOING,cOutGoing);
-                intent.putExtra(AppConstants.INCOMING,cIncoming);
+                intent.putExtra(AppConstants.INCOMING,cIncoming);*/
                 context.startActivity(intent);
             }
         });
