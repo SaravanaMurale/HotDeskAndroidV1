@@ -7262,6 +7262,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         locateFilterMainRV.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
+
+
+
         locateFilterCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -7354,36 +7357,22 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         locateFilterMainRV.setAdapter(adapter);
 
 
-     /*   filterSearch.addTextChangedListener(new TextWatcher() {
+        filterSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                if(s.toString().length()>=2){
-
-
-                    for (int i = 0; i <nestedList2.size() ; i++) {
-                       if( nestedList2.get(i).getValues().contains(s.toString())){
-
-                       }
-
-                    }
-
-
-
-                }
 
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                adapter.getFilter().filter(s);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
 
             }
-        });*/
+        });
 
         bottomSheetDialog.show();
 
@@ -8176,7 +8165,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         }
                     } else {
 
-                        showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " " + startRoomTime.getText().toString());
+                        showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " • " + startRoomTime.getText().toString());
 
                     }
                 }
@@ -8210,11 +8199,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                     Toast.makeText(getActivity(), "You can't exceed approved booking time period", Toast.LENGTH_SHORT).show();
                                     endTRoomime.setText(orgETime);
 
+
                                 }
 
                             }
 
                         }
+                    }else {
+                        showTvRoomEndTime.setText(endTRoomime.getText().toString());
                     }
                 }
             }
