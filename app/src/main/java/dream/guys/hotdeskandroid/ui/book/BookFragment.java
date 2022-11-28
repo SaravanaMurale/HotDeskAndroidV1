@@ -2359,7 +2359,8 @@ public class BookFragment extends Fragment implements
                                 getActivity(),startTime,endTime,"Start Time",
                                 Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
                     } else {
-                        if (editDeskBookingDetails.getDeskStatus() != 1
+                        if (editDeskBookingDetails.getDeskBookingType()!=null
+                                && editDeskBookingDetails.getDeskStatus() != 1
                                 && editDeskBookingDetails.getDeskStatus() != 2
                                 && editDeskBookingDetails.getDeskBookingType().equalsIgnoreCase("req"))
                             Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",
@@ -2381,7 +2382,8 @@ public class BookFragment extends Fragment implements
             @Override
             public void onClick(View v) {
                 if(!endDisabled){
-                    if (editDeskBookingDetails.getDeskStatus() != 1
+                    if (editDeskBookingDetails.getDeskBookingType()!=null
+                            && editDeskBookingDetails.getDeskStatus() != 1
                             && editDeskBookingDetails.getDeskBookingType().equalsIgnoreCase("req"))
                         Utils.bottomSheetTimePicker(getContext(),getActivity(),endTime,"End Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
                     else if(editDeskBookingDetails.getDeskStatus() != 1)
@@ -3658,6 +3660,8 @@ public class BookFragment extends Fragment implements
             editDeskBookingDetails.setDeskStatus(0);
         if (bookings.getStatus()!=null)
             editDeskBookingDetails.setDeskBookingType(bookings.getStatus().getBookingType());
+        else
+            editDeskBookingDetails.setDeskBookingType("");
 
             editDeskBookingDetails.setDesktId(bookings.getTeamDeskId());
         editDeskBookingDetails.setTimeStatus(bookings.getStatus().getTimeStatus());
