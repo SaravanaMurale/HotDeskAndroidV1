@@ -97,9 +97,17 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
                     String base64Image = base64String.split(",")[1];
                     byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                    holder.myTeamProfileImage.setImageBitmap(decodedByte);
 
-                }
+               Glide.with(context)
+                       .load(decodedByte)
+                       .placeholder(R.drawable.avatar)
+                       .into(holder.myTeamProfileImage);
+                }else{
+               Glide.with(context)
+                       .load(R.drawable.avatar)
+                       .placeholder(R.drawable.avatar)
+                       .into(holder.myTeamProfileImage);
+           }
 
 
         if (daoTeamMemberList.get(position).getDayGroups().isEmpty() || daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().size() == 0) {
@@ -113,27 +121,6 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
 
             if (daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getBooking() != null) {
                 setVivisbleItems(holder);
-
-                try {
-                    /*holder.myTeamProfileImage.setVisibility(View.VISIBLE);
-                    byte[] imageByteArray = Base64.decode(daoTeamMemberList.get(position).getProfileImage(), Base64.DEFAULT);
-                    Glide.with(context)
-                            .load(imageByteArray)
-                            .placeholder(R.drawable.avatar)
-                            .into(holder.myTeamProfileImage);*/
-
-                    byte[] decodedString = Base64.decode(daoTeamMemberList.get(position).getProfileImage(), Base64.DEFAULT);
-                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                    holder.myTeamProfileImage.setImageBitmap(decodedByte);
-
-                } catch (Exception e) {
-
-                }
-
-
-
-
-
 
                 holder.locateMyTeamDeskName.setText(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getBooking().getDeskCode());
                 holder.locateMyTeamCheckInTime.setText(Utils.splitTime(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getFrom()));
