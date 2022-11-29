@@ -779,6 +779,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         }
 
+        binding.rvLocateMyTeam.setHasFixedSize(true);
         locateMyTeamAdapter = new LocateMyTeamAdapter(getContext(), locateMyTeamMemberStatusList, this,firstAidList,firewardenList);
         binding.rvLocateMyTeam.setAdapter(locateMyTeamAdapter);
 
