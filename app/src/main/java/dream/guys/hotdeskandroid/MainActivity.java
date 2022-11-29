@@ -1669,11 +1669,14 @@ public class MainActivity extends AppCompatActivity implements
                 for (int i = 0; i < firstAidResponseList.size(); i++) {
                     if (firstAidResponseList.get(i).getPersonsList().size()>0) {
 
+                        //Firewardenss
                         if(firstAidResponseList.get(i).getType()==4){
                             for (int j = 0; j <firstAidResponseList.get(i).getPersonsList().size() ; j++) {
                                 personsList.add(firstAidResponseList.get(i).getPersonsList().get(j));
                             }
                         }
+
+                        //FirstAid
                         if(firstAidResponseList.get(i).getType()==5){
                             for (int j = 0; j <firstAidResponseList.get(i).getPersonsList().size() ; j++) {
                                 personsListfirstAid.add(firstAidResponseList.get(i).getPersonsList().get(j));

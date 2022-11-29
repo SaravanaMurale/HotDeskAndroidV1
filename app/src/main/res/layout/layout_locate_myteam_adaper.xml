@@ -39,7 +39,9 @@
                 android:layout_height="@dimen/_18sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_toRightOf="@+id/locateMyTeamProfiles"
-                android:src="@drawable/fire" />
+                android:src="@drawable/fire"
+                android:visibility="gone"
+                />
 
 
             <TextView
@@ -60,6 +62,7 @@
                 android:layout_marginTop="1dp"
                 android:layout_toRightOf="@id/locateMyTeamName"
                 android:src="@drawable/plus"
+                android:visibility="gone"
 
                 />
 

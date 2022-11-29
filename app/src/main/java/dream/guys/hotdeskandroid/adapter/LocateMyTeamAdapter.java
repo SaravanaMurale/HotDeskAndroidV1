@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -36,22 +37,24 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
     //ForFilter
     List<DAOTeamMember> daoTeamMemberListAll;
 
+    public List<Integer> firstAidList, firewardenList;
 
 
-
-    public interface ShowMyTeamLocationClickable{
+    public interface ShowMyTeamLocationClickable {
         public void showMyTeamLocation(DAOTeamMember.DayGroup.CalendarEntry dayGroups, String name);
+
         public void loadMyTeamLocation(int id, int floorID);
     }
 
 
+    public LocateMyTeamAdapter(Context context, List<DAOTeamMember> stringName, ShowMyTeamLocationClickable showMyTeamLocationClickable, List<Integer> firstAidList, List<Integer> firewardenList) {
+        this.context = context;
+        this.daoTeamMemberList = stringName;
+        this.showMyTeamLocationClickable = showMyTeamLocationClickable;
+        this.daoTeamMemberListAll = new ArrayList<>(daoTeamMemberList);
 
-    public LocateMyTeamAdapter(Context context, List<DAOTeamMember> stringName, ShowMyTeamLocationClickable showMyTeamLocationClickable) {
-        this.context=context;
-        this.daoTeamMemberList=stringName;
-        this.showMyTeamLocationClickable=showMyTeamLocationClickable;
-
-        this.daoTeamMemberListAll=new ArrayList<>(daoTeamMemberList);
+        this.firstAidList = firstAidList;
+        this.firewardenList = firewardenList;
 
 
     }
@@ -61,24 +64,54 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
     public LocateMyTeamViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_locate_myteam_adaper, parent, false);
-        return  new LocateMyTeamViewHolder(itemView);
+        return new LocateMyTeamViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull LocateMyTeamViewHolder holder, int position) {
 
-        holder.locateMyTeamName.setText(daoTeamMemberList.get(position).getFirstName()+" "+daoTeamMemberList.get(position).getLastName());
+        holder.locateMyTeamName.setText(daoTeamMemberList.get(position).getFirstName() + " " + daoTeamMemberList.get(position).getLastName());
 
-        if(daoTeamMemberList.get(position).getDayGroups().isEmpty() || daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().size()==0){
+        //To make visible firstAid
+        for (int i = 0; i < firstAidList.size(); i++) {
+
+            if (daoTeamMemberList.get(position).getUserId() == firstAidList.get(i)) {
+                holder.locateMyTeamPlusIv.setVisibility(View.VISIBLE);
+            }
+
+        }
+
+        //To make visisble firewardness
+        for (int i = 0; i <firewardenList.size() ; i++) {
+            if (daoTeamMemberList.get(position).getUserId() == firewardenList.get(i)) {
+                holder.locateMyTeamFireIv.setVisibility(View.VISIBLE);
+            }
+        }
+
+        //To set Image here
+           if(daoTeamMemberList.get(position).getProfileImage()!=null && !daoTeamMemberList.get(position).getProfileImage().isEmpty()) {
+
+                    System.out.println("ImageSetHere ");
+                    holder.myTeamProfileImage.setVisibility(View.VISIBLE);
+                    String base64String = daoTeamMemberList.get(position).getProfileImage();
+                    String base64Image = base64String.split(",")[1];
+                    byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    holder.myTeamProfileImage.setImageBitmap(decodedByte);
+
+                }
+
+
+        if (daoTeamMemberList.get(position).getDayGroups().isEmpty() || daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().size() == 0) {
             //holder.locateMyTeamDeskName.setText("No Booking Avaliable");
             holder.locateMyTeamCheckInTime.setVisibility(View.GONE);
             holder.locateMyTeamCheckOutTime.setVisibility(View.GONE);
             holder.locateMyTeamLocation.setVisibility(View.GONE);
             holder.locateMyTeamNameCheckInIcon.setVisibility(View.GONE);
             holder.locateMyTeamCheckOutIcon.setVisibility(View.GONE);
-        }else {
+        } else {
 
-            if(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getBooking()!=null){
+            if (daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getBooking() != null) {
                 setVivisbleItems(holder);
 
                 try {
@@ -93,34 +126,20 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     holder.myTeamProfileImage.setImageBitmap(decodedByte);
 
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
 
 
 
-               /* if(daoTeamMemberList.get(position).getProfileImage()!=null && !daoTeamMemberList.get(position).getProfileImage().isEmpty()) {
 
-                    System.out.println("ImageSetHere ");
-
-                    *//*holder.myTeamProfileImage.setVisibility(View.VISIBLE);
-                    String base64String = daoTeamMemberList.get(position).getProfileImage();
-                    String base64Image = base64String.split(",")[1];
-                    byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
-                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                    holder.myTeamProfileImage.setImageBitmap(decodedByte);*//*
-
-
-
-
-                }*/
 
 
                 holder.locateMyTeamDeskName.setText(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getBooking().getDeskCode());
                 holder.locateMyTeamCheckInTime.setText(Utils.splitTime(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getFrom()));
                 holder.locateMyTeamCheckOutTime.setText(Utils.splitTime(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getMyto()));
 
-            }else if(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getBooking()==null){
+            } else if (daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getBooking() == null) {
                 //holder.locateMyTeamDeskName.setText("No Booking Avaliable");
                 holder.locateMyTeamCheckInTime.setVisibility(View.GONE);
                 holder.locateMyTeamCheckOutTime.setVisibility(View.GONE);
@@ -135,7 +154,7 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
             @Override
             public void onClick(View v) {
 
-                showMyTeamLocationClickable.loadMyTeamLocation(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getFloorID(),daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel().getBooking().getDeskId());
+                showMyTeamLocationClickable.loadMyTeamLocation(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getFloorID(), daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel().getBooking().getDeskId());
 
 
             }
@@ -146,17 +165,17 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
             @Override
             public void onClick(View v) {
 
-                if(!daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().isEmpty()) {
+                if (!daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().isEmpty()) {
 
-                    if(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel()!=null) {
+                    if (daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel() != null) {
                         //showMyTeamLocationClickable.showMyTeamLocation(175,273,bottomSheetDialog,bottomSheetBehavior);
-                        String name=daoTeamMemberList.get(position).getFirstName()+" "+daoTeamMemberList.get(position).getLastName();
-                        showMyTeamLocationClickable.showMyTeamLocation(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel(),name);
-                    }else{
-                        Utils.toastMessage(context,"No Booking Avaliable");
+                        String name = daoTeamMemberList.get(position).getFirstName() + " " + daoTeamMemberList.get(position).getLastName();
+                        showMyTeamLocationClickable.showMyTeamLocation(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel(), name);
+                    } else {
+                        Utils.toastMessage(context, "No Booking Avaliable");
                     }
-                }else{
-                    Utils.toastMessage(context,"No Booking Avaliable");
+                } else {
+                    Utils.toastMessage(context, "No Booking Avaliable");
                 }
             }
         });
@@ -183,20 +202,20 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
     }
 
 
-    Filter filter=new Filter() {
+    Filter filter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
 
-            List<DAOTeamMember> filteredList=new ArrayList<>();
+            List<DAOTeamMember> filteredList = new ArrayList<>();
 
-            if(constraint==null || constraint.toString().isEmpty() || constraint.length()==0){
+            if (constraint == null || constraint.toString().isEmpty() || constraint.length() == 0) {
                 filteredList.addAll(daoTeamMemberListAll);
-            }else {
-                String filterPattern=constraint.toString().toLowerCase().trim();
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for (DAOTeamMember daoTeamMember:daoTeamMemberListAll){
+                for (DAOTeamMember daoTeamMember : daoTeamMemberListAll) {
 
-                    if(daoTeamMember.getFirstName().toLowerCase().contains(filterPattern)){
+                    if (daoTeamMember.getFirstName().toLowerCase().contains(filterPattern)) {
 
                         filteredList.add(daoTeamMember);
 
@@ -206,8 +225,8 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
 
             }
 
-            FilterResults results=new FilterResults();
-            results.values=filteredList;
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
 
             return results;
         }
@@ -216,14 +235,14 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
         protected void publishResults(CharSequence constraint, FilterResults results) {
 
             daoTeamMemberList.clear();
-            daoTeamMemberList.addAll((List)results.values);
+            daoTeamMemberList.addAll((List) results.values);
             notifyDataSetChanged();
 
         }
     };
 
 
-    class LocateMyTeamViewHolder extends RecyclerView.ViewHolder{
+    class LocateMyTeamViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.locateMyTeamProfiles)
         CircleImageView myTeamProfileImage;
@@ -241,6 +260,11 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
         ImageView locateMyTeamNameCheckInIcon;
         @BindView(R.id.locateMyTeamCheckOutIcon)
         ImageView locateMyTeamCheckOutIcon;
+
+        @BindView(R.id.locateMyTeamPlusIv)
+        ImageView locateMyTeamPlusIv;
+        @BindView(R.id.locateMyTeamFireIv)
+        ImageView locateMyTeamFireIv;
 
         public LocateMyTeamViewHolder(@NonNull View itemView) {
             super(itemView);
