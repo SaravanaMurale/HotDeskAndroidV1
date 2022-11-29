@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -38,7 +39,8 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
     ArrayList<DAOTeamMember> teamMembersListAll;
     OnProfileClickable  onProfileClickable;
     TeamsFragment fragment;
-
+    HashMap<Integer, Boolean> fireWarden;
+    HashMap<Integer, Boolean> firstAid;
     @Override
     public Filter getFilter() {
         return filter;
@@ -92,6 +94,7 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
         this.teamMembersListAll = new ArrayList<>(teamMembersList);
         this.onProfileClickable=onProfileClickable;
         this.fragment = (TeamsFragment) fragment;
+
     }
 
     @NonNull
@@ -169,6 +172,26 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                 String fName = teamMembersList.get(position).getFirstName();
                 String lName = teamMembersList.get(position).getLastName();
+                if (fragment.firewardenList!=null){
+                    if (fragment.firewardenList.containsKey(teamMembersList.get(position).getUserId())){
+                        holderList.fireWardenIcon.setVisibility(View.VISIBLE);
+                    } else {
+                        holderList.fireWardenIcon.setVisibility(View.GONE);
+                    }
+                } else {
+                    holderList.fireWardenIcon.setVisibility(View.GONE);
+                }
+
+                if (fragment.firstAidList!=null){
+                    if (fragment.firstAidList.containsKey(teamMembersList.get(position).getUserId())){
+                        holderList.firstAidWardenIcon.setVisibility(View.VISIBLE);
+                    } else {
+                        holderList.firstAidWardenIcon.setVisibility(View.GONE);
+                    }
+
+                } else {
+                    holderList.firstAidWardenIcon.setVisibility(View.GONE);
+                }
 
                 holderList.mTxtName.setText(fName + " " + lName);
                 if (teamMembersList.get(position).getDayGroups().size()>0
@@ -195,11 +218,11 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                     holderList.mbookingCheckInTime.setText(Utils.splitTime(teamMembersList.get(position).getDayGroups().get(0)
                             .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
-                                    .getCalendarEntries().size()-1).getMyto()));
+                                    .getCalendarEntries().size()-1).getFrom()));
 
                     holderList.mbookingCheckOutTime.setText(Utils.splitTime(teamMembersList.get(position).getDayGroups().get(0)
                             .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
-                                    .getCalendarEntries().size()-1).getFrom()));
+                                    .getCalendarEntries().size()-1).getMyto()));
                 } else {
                     holderList.mbookingAddress.setText("");
                     holderList.mbookingCheckInTime.setVisibility(View.GONE);
@@ -261,7 +284,7 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
     public class viewHolderList extends RecyclerView.ViewHolder{
 
         TextView mTxtName, mbookingAddress,mbookingCheckOutTime,mbookingCheckInTime;
-        ImageView ivCheckOut,ivCheckIn;
+        ImageView ivCheckOut,ivCheckIn, fireWardenIcon,firstAidWardenIcon;
         CircleImageView teamMemberImage;
 
         public viewHolderList(@NonNull View itemView) {
@@ -275,6 +298,8 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
             mTxtName = itemView.findViewById(R.id.bookingDeskName);
             mbookingAddress = itemView.findViewById(R.id.bookingAddress);
             teamMemberImage = itemView.findViewById(R.id.bookingIvIcon);
+            fireWardenIcon = itemView.findViewById(R.id.fireWardenIcon);
+            firstAidWardenIcon = itemView.findViewById(R.id.firstAidIcon);
 
         }
     }

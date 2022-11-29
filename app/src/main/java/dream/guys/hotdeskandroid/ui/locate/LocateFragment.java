@@ -7365,7 +7365,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                adapter.getFilter().filter(s);
+//                adapter.getFilter().filter(s);
             }
 
             @Override

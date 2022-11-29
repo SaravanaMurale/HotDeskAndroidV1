@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -53,6 +55,11 @@ public class FireWardensAdapter extends RecyclerView.Adapter<FireWardensAdapter.
 
 
         holder.firewandensName.setText(firstAidResponseList.get(position).getFullName());
+
+        Glide.with(context)
+                .load(R.drawable.fire)
+                .placeholder(R.drawable.fire)
+                .into(holder.firewardensImage);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

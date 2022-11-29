@@ -59,31 +59,45 @@
             android:orientation="horizontal"
             android:gravity="center_vertical"
             >
-            <ImageView
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
-                android:src="@drawable/plus"
-                />
-            <TextView
+            <LinearLayout
+                android:id="@+id/ll_first_aid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="First Aider"
-                android:layout_marginStart="@dimen/_3sdp"
-                android:theme="@style/TextSmall"
-                />
-            <ImageView
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
-                android:src="@drawable/fire"
-                android:layout_marginStart="@dimen/_3sdp"
-                />
-            <TextView
+                android:visibility="gone"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:src="@drawable/plus"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="First Aider"
+                    android:layout_marginStart="@dimen/_3sdp"
+                    android:theme="@style/TextSmall"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_fire_warden"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Fire Warden"
-                android:layout_marginStart="@dimen/_3sdp"
-                android:theme="@style/TextSmall"
-                />
+                android:visibility="gone"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:src="@drawable/fire"
+                    android:layout_marginStart="@dimen/_3sdp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fire Warden"
+                    android:layout_marginStart="@dimen/_3sdp"
+                    android:theme="@style/TextSmall"
+                    />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

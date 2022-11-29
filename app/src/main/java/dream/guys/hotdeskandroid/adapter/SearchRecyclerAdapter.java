@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 
@@ -38,7 +40,9 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         public void onClickGlobalSearch(GlobalSearchResponse.Results results, View v);
     }
 
-    public SearchRecyclerAdapter(Context context, Activity activity, List<GlobalSearchResponse.Results> list,GlobalSearchOnClickable globalSearchOnClickable) {
+    public SearchRecyclerAdapter(Context context, Activity activity,
+                                 List<GlobalSearchResponse.Results> list,
+                                 GlobalSearchOnClickable globalSearchOnClickable) {
         this.context = context;
         this.activity = activity;
         this.list = list;
@@ -72,6 +76,25 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 ViewholderPeople viewholderPeople = (ViewholderPeople) holder;
                 viewholderPeople.username.setText(""+list.get(position).getName());
                 viewholderPeople.profileTeamName.setText(""+list.get(position).getTeam());
+                if (((MainActivity) activity).firewardenList !=null){
+                    if (((MainActivity) activity).firewardenList.containsKey(list.get(position).getId())){
+                        viewholderPeople.fireWarden.setVisibility(View.VISIBLE);
+                    } else {
+                        viewholderPeople.fireWarden.setVisibility(View.GONE);
+                    }
+                } else {
+                    viewholderPeople.fireWarden.setVisibility(View.GONE);
+                }
+
+                if (((MainActivity) activity).firstAidList !=null){
+                    if (((MainActivity) activity).firstAidList.containsKey(list.get(position).getId())){
+                        viewholderPeople.firstAid.setVisibility(View.VISIBLE);
+                    } else {
+                        viewholderPeople.firstAid.setVisibility(View.GONE);
+                    }
+                }else {
+                    viewholderPeople.firstAid.setVisibility(View.GONE);
+                }
                 break;
             case 1:
                 ViewholderDesk viewholderDesk = (ViewholderDesk) holder;
@@ -88,19 +111,15 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 }
                 break;
             case 2:
-
                 break;
             default:
-
                 break;
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 globalSearchOnClickable.onClickGlobalSearch(list.get(holder.getAbsoluteAdapterPosition()),v);
-
             }
         });
     }
@@ -109,7 +128,9 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public int getItemViewType(int position) {
         if (list.get(position).getEntityType()==1)
             return 0;
-        else if (list.get(position).getEntityType()==3||list.get(position).getEntityType()==4||list.get(position).getEntityType()==5)
+        else if (list.get(position).getEntityType()==3
+                || list.get(position).getEntityType()==4
+                || list.get(position).getEntityType()==5)
             return 1;
         else
             return 2;
@@ -127,6 +148,10 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         TextView username;
         @BindView(R.id.profileTeamName)
         TextView profileTeamName;
+        @BindView(R.id.ll_fire_warden)
+        LinearLayout fireWarden;
+        @BindView(R.id.ll_first_aid)
+        LinearLayout firstAid;
         public ViewholderPeople(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

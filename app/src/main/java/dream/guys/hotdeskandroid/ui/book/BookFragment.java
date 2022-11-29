@@ -395,7 +395,7 @@ public class BookFragment extends Fragment implements
                 boolean countCheck = false;
                 loo:
                 for (int i=0; i<events.size();i++){
-//                    System.out.println("avail assigned COunt"+Utils.getYearMonthDateFormat(date) +" : "+events.get(i).getDate());
+//                    //System.out.println("avail assigned COunt"+Utils.getYearMonthDateFormat(date) +" : "+events.get(i).getDate());
                     if (events.get(i).getDate().equalsIgnoreCase(Utils.getYearMonthDateFormat(date)+"T00:00:00Z")){
                         if (events.get(i).getAvailableCount()>0
                                 || (events.get(i).getAssignedCount()
@@ -650,7 +650,7 @@ public class BookFragment extends Fragment implements
 
                     } else {
 
-                        System.out.println("date con"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+"Z");
+                        //System.out.println("date con"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+"Z");
                         editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
                         editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z",2)));
                     }
@@ -661,7 +661,7 @@ public class BookFragment extends Fragment implements
 /*
                 if (bookingForEditResponseDesk.size()==0){
                     editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
-                    System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
+                    //System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
                     editBookingDetails.setEditEndTime(Utils.addingHoursToCurrentDate(2));
 
                 }*/
@@ -687,7 +687,7 @@ public class BookFragment extends Fragment implements
                         }
                     }
                 }
-                System.out.println("cajec vava"+bookingDeskList.size() +"  "+checkIsRequest);
+                //System.out.println("cajec vava"+bookingDeskList.size() +"  "+checkIsRequest);
                 if (checkIsRequest)
                     editBookingUsingBottomSheet(editBookingDetails,1,0,"new_deep_link");
                 else if (Integer.parseInt(requestedTeamId) == SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID)) {
@@ -704,7 +704,7 @@ public class BookFragment extends Fragment implements
                 EditBookingDetails editBookingDetails= new EditBookingDetails();
 
                 editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
-                System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
+                //System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
                 editBookingDetails.setEditEndTime(Utils.addHoursToDate(2));
 
                 calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
@@ -723,7 +723,7 @@ public class BookFragment extends Fragment implements
                 EditBookingDetails editBookingDetails= new EditBookingDetails();
 
                 editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
-                System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
+                //System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
                 editBookingDetails.setEditEndTime(Utils.addHoursToDate(2));
 
                 calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
@@ -743,7 +743,7 @@ public class BookFragment extends Fragment implements
 //            AppConstants.REFERALID = params.get(params.size() - 1);
 //            AppConstants.REFERALCODEE = params.get(params.size() - 2);
 //
-//            System.out.println("Referal id =" + AppConstants.REFERALID + " Referall Code = " + AppConstants.REFERALCODEE);
+//            //System.out.println("Referal id =" + AppConstants.REFERALID + " Referall Code = " + AppConstants.REFERALCODEE);
 //            Toast.makeText(this, "Referal id =" + AppConstants.REFERALID + " Referall Code = " + AppConstants.REFERALCODEE, Toast.LENGTH_LONG).show();
         }
 
@@ -957,7 +957,7 @@ public class BookFragment extends Fragment implements
     private void getDeskCountLocation(String month, String locationId,int drawStatus) {
         if (Utils.isNetworkAvailable(getActivity()) && Integer.parseInt(locationId)!=0) {
             dialog= ProgressDialog.showProgressBar(getContext());
-            System.out.println("check sub parent Id  :  "+locationId);
+            //System.out.println("check sub parent Id  :  "+locationId);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<List<DeskRoomCountResponse>> call = null;
             switch (selectedicon){
@@ -1073,14 +1073,14 @@ public class BookFragment extends Fragment implements
                     List<MeetingListToEditResponse> meetingListToEditList  =new ArrayList<>();
 
                     for(int i=0; i<meetingListToEditResponseList.size(); i++){
-                        System.out.println("meting userId"+meetingListToEditResponseList.get(i).getBookedByUserId()
-                                +" : " +SessionHandler.getInstance().getInt(getActivity(),AppConstants.USER_ID));
+                        //System.out.println("meting userId"+meetingListToEditResponseList.get(i).getBookedByUserId()
+//                                +" : " +SessionHandler.getInstance().getInt(getActivity(),AppConstants.USER_ID));
                         if (meetingListToEditResponseList.get(i).getBookedByUserId()
                                 == SessionHandler.getInstance().getInt(getActivity(),AppConstants.USER_ID)){
                             meetingListToEditList.add(meetingListToEditResponseList.get(i));
                         }
 
-                        System.out.println("recycler bala for"+meetingListToEditResponseList.size());
+                        //System.out.println("recycler bala for"+meetingListToEditResponseList.size());
                     }
                     ProgressDialog.dismisProgressBar(context,dialog);
 //                    dialog.dismiss();
@@ -1097,8 +1097,8 @@ public class BookFragment extends Fragment implements
                                     1800)));
                         } else {
                             editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
-                            System.out.println("tim else" +" "+Utils.getCurrentDate()+"T"
-                                    +Utils.getCurrentTime()+"Z");
+                            //System.out.println("tim else" +" "+Utils.getCurrentDate()+"T"
+//                                    +Utils.getCurrentTime()+"Z");
                             editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(Utils.getCurrentDate()+"T"
                                     +Utils.getCurrentTime()+":00Z",1800)));
 
@@ -1252,7 +1252,7 @@ public class BookFragment extends Fragment implements
     }
     private void getRoomlist(EditBookingDetails editBookingDetails, String newEditStatus) {
         if (Utils.isNetworkAvailable(getActivity())) {
-            System.out.println("ame list vala getroom list enter");
+            //System.out.println("ame list vala getroom list enter");
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<List<UserAllowedMeetingResponse>> call = apiService.userAllowedMeetings();
@@ -1283,21 +1283,21 @@ public class BookFragment extends Fragment implements
                             soo:
                             for (int j=0;j<filterAmenitiesList.size();j++){
                                 boolean amenityCheck=false;
-                                System.out.println("ame list check of"+i+" : "+filterAmenitiesList.get(j));
+                                //System.out.println("ame list check of"+i+" : "+filterAmenitiesList.get(j));
                                 ooo:
                                 for(int x=0; x<userAllowedMeetingResponseList.get(i).getAmenities().size(); x++){
                                     if (filterAmenitiesList.get(j) == userAllowedMeetingResponseList.get(i)
                                             .getAmenities().get(x).getId()){
-                                        System.out.println("ame list check of true"+
-                                                userAllowedMeetingResponseList.get(i).getName());
+                                        //System.out.println("ame list check of true"+
+//                                                userAllowedMeetingResponseList.get(i).getName());
 //                                        userAllowedMeetingResponseList.remove(i);
-                                        System.out.println("ame list check of"+i+" : "+filterAmenitiesList.get(j));
+                                        //System.out.println("ame list check of"+i+" : "+filterAmenitiesList.get(j));
                                         amenityCheck=true;
                                     }
                                 }
                                 if (!amenityCheck) {
-                                    System.out.println("ame list check of remove"+
-                                            userAllowedMeetingResponseList.get(i).getName());
+                                    //System.out.println("ame list check of remove"+
+//                                            userAllowedMeetingResponseList.get(i).getName());
 //                                    userAllowedMeetingResponseFilterList.remove(i);
                                     check=false;
                                     break soo;
@@ -1450,14 +1450,14 @@ public class BookFragment extends Fragment implements
 //                        showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " " + startRoomTime.getText().toString());
                     } else {
                         editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
-                        System.out.println("tim else" +" "+Utils.getCurrentDate()+"T"
-                                +Utils.getCurrentTime()+"Z");
+                        //System.out.println("tim else" +" "+Utils.getCurrentDate()+"T"
+//                                +Utils.getCurrentTime()+"Z");
                         editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(Utils.getCurrentDate()+"T"
                                 +Utils.getCurrentTime()+":00Z",1800)));
 
                     }
                     /*editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
-                    System.out.println("tim else" +" "+Utils.getCurrentDate()+"T"
+                    //System.out.println("tim else" +" "+Utils.getCurrentDate()+"T"
                             +Utils.getCurrentTime()+"Z");
                     editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(Utils.getCurrentDate()+"T"
                             +Utils.getCurrentTime()+":00Z",12000)));*/
@@ -1506,7 +1506,7 @@ public class BookFragment extends Fragment implements
         MeetingListToEditAdapter meetingListToEditAdapter=new MeetingListToEditAdapter(getContext(),meetingListToEditResponseList,this);
         rvMeeingEditList.setAdapter(meetingListToEditAdapter);
         meetingListToEditAdapter.notifyDataSetChanged();
-        System.out.println("recycler bala"+meetingListToEditResponseList.size());
+        //System.out.println("recycler bala"+meetingListToEditResponseList.size());
 
         addNew.setText(appKeysPage.getAddNew());
 //        editClose.setText(appKeysPage.getBack());
@@ -1620,7 +1620,7 @@ public class BookFragment extends Fragment implements
         jsonOuterObject.add("changesets", jsonChangesetArray);
         jsonOuterObject.add("deletedIds", jsonDeletedIdsArray);
 
-        System.out.println("json un"+jsonOuterObject.toString());
+        //System.out.println("json un"+jsonOuterObject.toString());
 
         editBookingCall(jsonOuterObject,0,2,"delete");
 
@@ -1673,7 +1673,7 @@ public class BookFragment extends Fragment implements
                         for (int i=0; i<amenitiesIntList.size();i++) {
                             for (int j=0;j<amenitiesList.size();j++) {
                                 if (amenitiesIntList.get(i) == amenitiesList.get(j).getId()){
-                                    System.out.println("ame list vala"+amenitiesList.get(j).getName());
+                                    //System.out.println("ame list vala"+amenitiesList.get(j).getName());
                                     amenitiesStringList.add(amenitiesList.get(j).getName());
                                 }
                             }
@@ -1798,11 +1798,11 @@ public class BookFragment extends Fragment implements
         LinearLayoutManager linearLayoutManager;
         bookingForEditResponseDesk.clear();
         if (isGlobalLocationSetUP && bookingDeskList.size()>0){
-            System.out.println(" data in");
+            //System.out.println(" data in");
             for (int i=0; i < bookingDeskList.size(); i++){
                 if(!bookingDeskList.get(i).isBookedByElse()){
                     bookingForEditResponseDesk.add(bookingDeskList.get(i));
-                    //System.out.println("check data bala"+bookingForEditResponseDesk.get(i).getDeskCode());
+                    ////System.out.println("check data bala"+bookingForEditResponseDesk.get(i).getDeskCode());
                 }
             }
         } else {
@@ -2171,7 +2171,7 @@ public class BookFragment extends Fragment implements
             capacitylayout.setVisibility(View.VISIBLE);
             tvcapacityCount.setText(editDeskBookingDetails.getCapacity());
             if (userAllowedMeetingResponseListUpdated.size() > 0) {
-//                System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
+//                //System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
                 deskRoomName.setText(""+userAllowedMeetingResponseListUpdated.get(0).getName());
                 selectedDeskId = userAllowedMeetingResponseListUpdated.get(0).getId();
                 locationAddress.setText(""+userAllowedMeetingResponseListUpdated.get(0).getLocationMeeting().getName());
@@ -2239,9 +2239,9 @@ public class BookFragment extends Fragment implements
                 continueEditBook.setText("Continue");
                 back.setText("Back");
             }
-//            System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
+//            //System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
             if (parkingSpotModelList.size() > 0 && !newEditStatus.equalsIgnoreCase("edit")){
-//                System.out.println("tim else"+
+//                //System.out.println("tim else"+
                 select.setVisibility(View.VISIBLE);
                 deskRoomName.setText(""+parkingSpotModelList.get(0).getCode());
                 selectedDeskId = parkingSpotModelList.get(0).getId();
@@ -2329,7 +2329,7 @@ public class BookFragment extends Fragment implements
 
 
         if (editDeskBookingDetails.getAmenities()!=null)
-            System.out.println("chip check"+editDeskBookingDetails.getAmenities().size());
+            //System.out.println("chip check"+editDeskBookingDetails.getAmenities().size());
         if (editDeskBookingDetails.getAmenities()!=null){
             for (int i=0; i<editDeskBookingDetails.getAmenities().size(); i++){
                 Chip chip = new Chip(getContext());
@@ -2563,7 +2563,7 @@ public class BookFragment extends Fragment implements
                         jsonOuterObject.add("changesets", jsonChangesetArray);
                         jsonOuterObject.add("deletedIds", jsonDeletedIdsArray);
 
-                        System.out.println("json un" + jsonOuterObject.toString());
+                        //System.out.println("json un" + jsonOuterObject.toString());
 
                         if (dskRoomParkStatus==3 && isVehicleReg
                                 && (edRegistration.getText().toString().isEmpty()
@@ -2830,14 +2830,14 @@ public class BookFragment extends Fragment implements
         tv_forever.setText(Utils.getDateFormatToSetInRepeat(date)+"(end of Week)");
 
 
-        //System.out.println("LocateDateHere "+binding.locateCalendearView.getText().toString()+" "+binding.locateStartTime.getText().toString()+" "+ binding.locateEndTime.getText().toString());
+        ////System.out.println("LocateDateHere "+binding.locateCalendearView.getText().toString()+" "+binding.locateStartTime.getText().toString()+" "+ binding.locateEndTime.getText().toString());
         //2022-09-14 15:46 23:59
 
         //Get Date Difference Between current date and weekend date
         String selectedDate=binding.locateCalendearView.getText().toString();
         enableCurrentWeek=Utils.getDifferenceBetweenTwoDates(selectedDate);
 
-        //System.out.println("enableCurrentWeek "+enableCurrentWeek);
+        ////System.out.println("enableCurrentWeek "+enableCurrentWeek);
 
         calendar_view.setMinDate(System.currentTimeMillis() - 1000);
         calendar_view.setMaxDate(System.currentTimeMillis() + enableCurrentWeek * 24 * 60 * 60 * 1000);
@@ -3569,7 +3569,7 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onFailure(Call<BaseResponse> call, Throwable t) {
 //                    Toast.makeText(getActivity(), "fail Bala"+t.getMessage(), Toast.LENGTH_SHORT).show();
-                    System.out.println("resps"+t.getMessage());
+                    //System.out.println("resps"+t.getMessage());
                     dialog.dismiss();
                 }
             });
@@ -3779,7 +3779,7 @@ public class BookFragment extends Fragment implements
         jsonOuterObject.add("changesets", jsonChangesetArray);
         jsonOuterObject.add("deletedIds", jsonDeletedIdsArray);
 
-        System.out.println("json un"+jsonOuterObject.toString());
+        //System.out.println("json un"+jsonOuterObject.toString());
 
             editBookingCall(jsonOuterObject,0,1,"delete");
 
@@ -3826,7 +3826,7 @@ public class BookFragment extends Fragment implements
         jsonOuterObject.add("changesets", jsonChangesetArray);
         jsonOuterObject.add("deletedIds", jsonDeletedIdsArray);
 
-        System.out.println("json un"+jsonOuterObject.toString());
+        //System.out.println("json un"+jsonOuterObject.toString());
 
         editBookingCall(jsonOuterObject,0,3,"delete");
 
@@ -3859,13 +3859,13 @@ public class BookFragment extends Fragment implements
             if (meetingRoomId == userAllowedMeetingResponseList.get(i).getId()) {
 
                 for (int j = 0; j < userAllowedMeetingResponseList.get(i).getAmenities().size(); j++) {
-                    System.out.println("MeetingAmenities " + userAllowedMeetingResponseList.get(i).getAmenities().get(j).getId());
+                    //System.out.println("MeetingAmenities " + userAllowedMeetingResponseList.get(i).getAmenities().get(j).getId());
 
                     for (int k = 0; k < amenitiesListToShowInMeetingRoomList.size(); k++) {
 
                         if (userAllowedMeetingResponseList.get(i).getAmenities().get(j).getId() == amenitiesListToShowInMeetingRoomList.get(k).getId()) {
                             amenitiesList.add(amenitiesListToShowInMeetingRoomList.get(k).getName());
-                            System.out.println("TotalAmenitiesForThisRoom " + amenitiesListToShowInMeetingRoomList.get(k).getName());
+                            //System.out.println("TotalAmenitiesForThisRoom " + amenitiesListToShowInMeetingRoomList.get(k).getName());
 
                         }
 
@@ -3928,7 +3928,7 @@ public class BookFragment extends Fragment implements
 /*
         for (int i = 0; i < amenitiesList.size(); i++) {
 
-            System.out.println("RoomAmenitiesList " + amenitiesList.get(i));
+            //System.out.println("RoomAmenitiesList " + amenitiesList.get(i));
             Chip chip = new Chip(getContext());
             chip.setText(amenitiesList.get(i));
             chip.setCheckable(false);
@@ -4052,7 +4052,7 @@ public class BookFragment extends Fragment implements
             }
 
             for (int i = 0; i < editDeskBookingDetails.getExternalAttendeesList().size(); i++) {
-                System.out.println("ExternalAttendeesListInLoop " + editDeskBookingDetails.getExternalAttendeesList().get(i));
+                //System.out.println("ExternalAttendeesListInLoop " + editDeskBookingDetails.getExternalAttendeesList().get(i));
 
                 Chip chip = new Chip(getContext());
                 chip.setText(editDeskBookingDetails.getExternalAttendeesList().get(i));
@@ -4096,7 +4096,7 @@ public class BookFragment extends Fragment implements
 
         try {
             for (int i = 0; i < attendeesListForEdit.size(); i++) {
-                //System.out.println("ExternalAttendeesListInLoop " + editDeskBookingDetails.getExternalAttendeesList().get(i));
+                ////System.out.println("ExternalAttendeesListInLoop " + editDeskBookingDetails.getExternalAttendeesList().get(i));
 
                 ParticipantDetsilResponse participantDetsilResponse = new ParticipantDetsilResponse(editDeskBookingDetails.getAttendeesList().get(i).getId(), editDeskBookingDetails.getAttendeesList().get(i).getFirstName(), editDeskBookingDetails.getAttendeesList().get(i).getLastName(), editDeskBookingDetails.getAttendeesList().get(i).getFullName(), editDeskBookingDetails.getAttendeesList().get(i).getEmail(), editDeskBookingDetails.getAttendeesList().get(i).isActive());
                 chipList.add(participantDetsilResponse);
@@ -4130,7 +4130,7 @@ public class BookFragment extends Fragment implements
                             }
                         }
 
-                        //System.out.println("RemoveChipGroupName"+chip.getText().toString());
+                        ////System.out.println("RemoveChipGroupName"+chip.getText().toString());
 
 
 
@@ -4251,7 +4251,7 @@ public class BookFragment extends Fragment implements
                 //dialog.dismiss();
                 if (participantDetsilResponseList != null) {
 
-                    //System.out.println("ParticipantNameList" + participantDetsilResponseList.get(0).getFirstName());
+                    ////System.out.println("ParticipantNameList" + participantDetsilResponseList.get(0).getFirstName());
 
                     showParticipantNameInRecyclerView(participantDetsilResponseList, rvParticipant);
 
@@ -4329,7 +4329,7 @@ public class BookFragment extends Fragment implements
             /*if (chipList != null) {
                 //MeetingRoomEditRequest.Changesets.Changes.Attendees attendees = changes.new Attendees();
                 for (int i = 0; i < chipList.size(); i++) {
-                    System.out.println("EditedAndAddedParticipants "+chipList.get(i).getId());
+                    //System.out.println("EditedAndAddedParticipants "+chipList.get(i).getId());
                     attendeesList.add(chipList.get(i).getId());
                 }
             }*/
@@ -4337,7 +4337,7 @@ public class BookFragment extends Fragment implements
         if (attendeesListForEdit!=null && attendeesListForEdit.size()>0){
             //Edit flow....
             List<Integer> addedList= LogicHandler.getNewlyAdded(attendeesListForEdit,chipList);
-            System.out.println("NewellyAddedParticipant "+addedList);
+            //System.out.println("NewellyAddedParticipant "+addedList);
 
             if(addedList!=null && addedList.size()>0){
 
@@ -4348,7 +4348,7 @@ public class BookFragment extends Fragment implements
             }
 
             List<Integer> removedList=LogicHandler.getRemoved(attendeesListForEdit,chipList);
-            System.out.println("RemovedParticipant "+removedList);
+            //System.out.println("RemovedParticipant "+removedList);
             if(removedList!=null && removedList.size()>0){
                 for (int i = 0; i <removedList.size() ; i++) {
                     attendeesList.add(removedList.get(i));
@@ -4375,7 +4375,7 @@ public class BookFragment extends Fragment implements
         List<MeetingRoomRequest.DeleteIds> deleteIdsList = new ArrayList<>();
         meetingRoomRequest.setDeletedIds(deleteIdsList);
 
-        System.out.println("BookingMeetingRoom" + meetingRoomRequest);
+        //System.out.println("BookingMeetingRoom" + meetingRoomRequest);
 
         //dialog = ProgressDialog.showProgressBar(getContext());
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -4501,7 +4501,7 @@ public class BookFragment extends Fragment implements
                         }
                     }
                 }
-                System.out.println("RemoveChipGroupName"+chip.getText().toString());
+//                //System.out.println("RemoveChipGroupName"+chip.getText().toString());
                 participantChipGroup.removeView(chip);
             }
         });
@@ -4558,7 +4558,7 @@ public class BookFragment extends Fragment implements
 
                     List<LocateCountryRespose> locateCountryResposes = response.body();
 
-                    System.out.println("LocateCountryList" + locateCountryResposes.size());
+//                    //System.out.println("LocateCountryList" + locateCountryResposes.size());
 
                     CallFloorBottomSheet(locateCountryResposes);
 
@@ -4787,7 +4787,7 @@ public class BookFragment extends Fragment implements
                 List<LocateCountryRespose> locateCountryResposes = response.body();
 
                 for (int i = 0; i < locateCountryResposes.size(); i++) {
-                    System.out.println("CountrychildName" + locateCountryResposes.get(i).getName());
+                    //System.out.println("CountrychildName" + locateCountryResposes.get(i).getName());
                 }
 
                 rvCountry.setVisibility(View.GONE);
@@ -4881,13 +4881,13 @@ public class BookFragment extends Fragment implements
 
         for (int i = 0; i < supportZoneLayoutItemsList.size(); i++) {
 
-            System.out.println("supportZoneLayoutItemsSize" + supportZoneLayoutItemsList.size());
-            System.out.println("supportZoneLayoutItemsSize" + supportZoneLayoutItemsList.get(i).getTitle());
-            System.out.println("CorrrdnateSize" + supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().size());
+            //System.out.println("supportZoneLayoutItemsSize" + supportZoneLayoutItemsList.size());
+            //System.out.println("supportZoneLayoutItemsSize" + supportZoneLayoutItemsList.get(i).getTitle());
+            //System.out.println("CorrrdnateSize" + supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().size());
 
             for (int j = 0; j < supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().size(); j++) {
 
-                System.out.println("DATAATATA" + supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(0) + " " + supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(1));
+                //System.out.println("DATAATATA" + supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(0) + " " + supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(1));
 
                 Point point = new Point(supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(0),
                         supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(1));
@@ -4898,7 +4898,7 @@ public class BookFragment extends Fragment implements
         }
 
        /* for (int i = 0; i <pointList.size() ; i++) {
-            System.out.println("PointListDate "+pointList.get(i).getX()+" "+pointList.get(i).getY());
+            //System.out.println("PointListDate "+pointList.get(i).getX()+" "+pointList.get(i).getY());
         }*/
 
         //ProgressDialog.dismisProgressBar(getContext(), dialog);
@@ -4919,10 +4919,10 @@ public class BookFragment extends Fragment implements
 
                 List<LocateCountryRespose> locateCountryResposeList = response.body();
 
-                System.out.println("InsideFloorDetails bala"+locateCountryResposeList.size());
+                //System.out.println("InsideFloorDetails bala"+locateCountryResposeList.size());
 
                 for (int j = 0; j < locateCountryResposeList.size(); j++) {
-                    System.out.println("InsideFloorName" + locateCountryResposeList.get(j).getName());
+                    //System.out.println("InsideFloorName" + locateCountryResposeList.get(j).getName());
                 }
 
                 showFloorImageAndNameInAdapter(locateCountryResposeList);
@@ -4950,7 +4950,7 @@ public class BookFragment extends Fragment implements
         rvFloor.setLayoutManager(linearLayoutManager);
         rvFloor.setHasFixedSize(true);
 
-        System.out.println("locate data check"+locateCountryResposeList.size());
+        //System.out.println("locate data check"+locateCountryResposeList.size());
 
         floorAdapter = new FloorAdapter(getContext(), locateCountryResposeList, this, "FLOOR_NAME");
         rvFloor.setAdapter(floorAdapter);
@@ -5020,7 +5020,7 @@ public class BookFragment extends Fragment implements
 //        String fromTime = date + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
 //        String toTime = date + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
 
-        //System.out.println("DateAndStatTimeAndEndTime"+toDate+" "+fromTime+" "+toTime);
+        ////System.out.println("DateAndStatTimeAndEndTime"+toDate+" "+fromTime+" "+toTime);
 
         int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
         Call<List<BookingForEditResponse.TeamDeskAvailabilities>> call = apiService.getAvaliableDeskDetailsForDeskList(parentId, toDate, fromTime, toTime);
@@ -5034,7 +5034,7 @@ public class BookFragment extends Fragment implements
             }
             @Override
             public void onFailure(Call<List<BookingForEditResponse.TeamDeskAvailabilities>> call, Throwable t) {
-                System.out.println("Failure" + t.getMessage().toString());
+                //System.out.println("Failure" + t.getMessage().toString());
 //                binding.locateProgressBar.setVisibility(View.INVISIBLE);
             }
         });
@@ -5056,7 +5056,7 @@ public class BookFragment extends Fragment implements
                 public void onResponse(Call<List<BookingForEditResponse.TeamDeskAvailabilities>> call, Response<List<BookingForEditResponse.TeamDeskAvailabilities>> response) {
                     bookingDeskList.clear();
                     bookingDeskList = response.body();
-//                    System.out.println("Selecrt id"+selectedTeamId + bookingDeskList.get(0).getDeskCode());
+//                    //System.out.println("Selecrt id"+selectedTeamId + bookingDeskList.get(0).getDeskCode());
                     callDeskListBottomSheetDialog(0,null,newEditStatus);
 
                 }
@@ -5089,7 +5089,7 @@ public class BookFragment extends Fragment implements
                 public void onResponse(Call<List<BookingForEditResponse.TeamDeskAvailabilities>> call, Response<List<BookingForEditResponse.TeamDeskAvailabilities>> response) {
                     bookingDeskList.clear();
                     bookingDeskList = response.body();
-//                    System.out.println("Selecrt id"+selectedTeamId + bookingDeskList.get(0).getDeskCode());
+//                    //System.out.println("Selecrt id"+selectedTeamId + bookingDeskList.get(0).getDeskCode());
 //                    callDeskListBottomSheetDialog(0,null);
 
                 }
@@ -5122,7 +5122,7 @@ public class BookFragment extends Fragment implements
                 public void onResponse(Call<List<BookingForEditResponse.TeamDeskAvailabilities>> call, Response<List<BookingForEditResponse.TeamDeskAvailabilities>> response) {
                     bookingDeskList.clear();
                     bookingDeskList = response.body();
-//                    System.out.println("Selecrt id"+selectedTeamId + bookingDeskList.get(0).getDeskCode());
+//                    //System.out.println("Selecrt id"+selectedTeamId + bookingDeskList.get(0).getDeskCode());
                     callDeskListBottomSheetDialog(1,editBookingDetails,newEditStatus);
 
                 }
@@ -5171,7 +5171,7 @@ public class BookFragment extends Fragment implements
 //                    Toast.makeText(getContext(), "fa"+bookingDeskList.size(), Toast.LENGTH_SHORT).show();
 //                    getAddEditDesk("3",Utils.getISO8601format(date));
 
-                    System.out.println("Failure" + t.getMessage().toString());
+                    //System.out.println("Failure" + t.getMessage().toString());
 //                binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 }
             });
@@ -5180,7 +5180,7 @@ public class BookFragment extends Fragment implements
     }
     private void getAvaliableRoomDetails(String code, String date, EditBookingDetails editBookingDetails,String newEditStatus) {
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-//        System.out.println("check cala"+horizontalCalendar.getSelectedDate().getTime());
+//        //System.out.println("check cala"+horizontalCalendar.getSelectedDate().getTime());
 
             String toDate = date;
             String fromTime = "2022-09-23T00:00:00Z";
@@ -5229,13 +5229,13 @@ public class BookFragment extends Fragment implements
                                 }
                             }
 
-//                            System.out.println("chek dat no of people"+userAllowedMeetingResponseList.get(i).getNoOfPeople());
+//                            //System.out.println("chek dat no of people"+userAllowedMeetingResponseList.get(i).getNoOfPeople());
 
                         }
                         loo:
                         for (int i=0; i<userAllowedMeetingResponseList.size();i++){
                             if (participants <= userAllowedMeetingResponseList.get(i).getNoOfPeople()){
-                                System.out.println("chek dat in loop"+userAllowedMeetingResponseList.get(i).getName());
+                                //System.out.println("chek dat in loop"+userAllowedMeetingResponseList.get(i).getName());
 
                                 userAllowedMeetingResponseListUpdated.add(userAllowedMeetingResponseList.get(i));
                             }
@@ -5266,7 +5266,7 @@ public class BookFragment extends Fragment implements
                                     0,"request");
 
                     }else {
-                        System.out.println("ame list vala else size"+userAllowedMeetingResponseListUpdated.size());
+                        //System.out.println("ame list vala else size"+userAllowedMeetingResponseListUpdated.size());
 
                         if (userAllowedMeetingResponseListUpdated.size()>0 && checkIsRequest)
                             callAmenitiesListForMeetingRoom(editBookingDetails,
@@ -5294,7 +5294,7 @@ public class BookFragment extends Fragment implements
 //                    Toast.makeText(getContext(), "fa"+bookingDeskList.size(), Toast.LENGTH_SHORT).show();
 //                    getAddEditDesk("3",Utils.getISO8601format(date));
 
-                    System.out.println("Failure" + t.getMessage().toString());
+                    //System.out.println("Failure" + t.getMessage().toString());
 //                binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 }
             });
@@ -5330,7 +5330,7 @@ public class BookFragment extends Fragment implements
                 getFloorDetails(locateCountryRespose.getLocateCountryId(), false);
 
 
-                System.out.println("SubParentIdAndItsPosition" + locateCountryRespose.getLocateCountryId() + " ");
+                //System.out.println("SubParentIdAndItsPosition" + locateCountryRespose.getLocateCountryId() + " ");
 
                 break;
 
@@ -5426,7 +5426,7 @@ public class BookFragment extends Fragment implements
                     minute = getMMinute;
                 }
 
-                //System.out.println("GETDATATATATA" + hour + " " + minute);
+                ////System.out.println("GETDATATATATA" + hour + " " + minute);
 
                 tv.setText(hour + ":" + minute);
 
@@ -5719,7 +5719,7 @@ public class BookFragment extends Fragment implements
         meetingRoomRequest.setDeletedIds(deleteIdsList);
 
 
-        System.out.println("RepeatMeetingRoom "+meetingRoomRequest);
+        //System.out.println("RepeatMeetingRoom "+meetingRoomRequest);
 
         if (Utils.isNetworkAvailable(getActivity())) {
 //            binding.locateProgressBar.setVisibility(View.VISIBLE);
@@ -5798,7 +5798,7 @@ public class BookFragment extends Fragment implements
 
 
         for (int i = 0; i <dateList.size() ; i++) {
-            //System.out.println("AddedDateList "+dateList.get(i));
+            ////System.out.println("AddedDateList "+dateList.get(i));
 
             LocateBookingRequest.ChangeSets changeSets = locateBookingRequest.new ChangeSets();
 
@@ -5834,7 +5834,7 @@ public class BookFragment extends Fragment implements
         List<LocateBookingRequest.DeleteIds> deleteIdsList = new ArrayList<>();
         locateBookingRequest.setDeleteIdsList(deleteIdsList);
 
-        System.out.println("RepeatModuleRequestData "+locateBookingRequest);
+        //System.out.println("RepeatModuleRequestData "+locateBookingRequest);
 
         if (Utils.isNetworkAvailable(getActivity())) {
 //            binding.locateProgressBar.setVisibility(View.VISIBLE);
@@ -5894,7 +5894,7 @@ public class BookFragment extends Fragment implements
         List<LocateCarParkBookingRequest.CarParkingDeleteIds> deleteIdsList = new ArrayList<>();
         locateCarParkBookingRequest.setDeleteIdsList(deleteIdsList);
 
-        System.out.println("RepeatModuleCarRequestData "+locateCarParkBookingRequest);
+        //System.out.println("RepeatModuleCarRequestData "+locateCarParkBookingRequest);
 
         if (Utils.isNetworkAvailable(getActivity())) {
             dialog = ProgressDialog.showProgressBar(getContext());
@@ -6345,11 +6345,11 @@ public class BookFragment extends Fragment implements
 
         //binding.tvPMOOffice.setText(appKeysPage);
         //binding.searchGlobal.setText(appKeysPage.getChooseLocation());
-        System.out.println("lang check global" + global);
-        System.out.println("lang check bookindata" + bookindata);
-        System.out.println("lang check" + appKeysPage);
-        System.out.println("lang check" + appKeysPage.getStart());
-        System.out.println("lang check" + binding.tvStartLocate);
+        //System.out.println("lang check global" + global);
+        //System.out.println("lang check bookindata" + bookindata);
+        //System.out.println("lang check" + appKeysPage);
+        //System.out.println("lang check" + appKeysPage.getStart());
+        //System.out.println("lang check" + binding.tvStartLocate);
         binding.tvStartLocate.setText(appKeysPage.getStart());
         binding.tvLocateEndTime.setText(appKeysPage.getEnd());
 
@@ -6425,7 +6425,7 @@ public class BookFragment extends Fragment implements
         List<MeetingRoomRecurrence.DeleteIds> deleteIdsList=new ArrayList<>();
         meetingRoomRecurrence.setDeletedIds(deleteIdsList);
 
-        System.out.println("MeetingRoomRecurrence "+meetingRoomRecurrence);
+        //System.out.println("MeetingRoomRecurrence "+meetingRoomRecurrence);
 
         if (Utils.isNetworkAvailable(getActivity())) {
 //            binding.locateProgressBar.setVisibility(View.VISIBLE);
@@ -6505,7 +6505,7 @@ public class BookFragment extends Fragment implements
         meetingRoomRequest.setDeletedIds(deleteIdsList);
 
 
-        System.out.println("RepeatMeetingRoom " + meetingRoomRequest);*/
+        //System.out.println("RepeatMeetingRoom " + meetingRoomRequest);*/
 
 
 
@@ -6539,10 +6539,10 @@ public class BookFragment extends Fragment implements
         }
 
         if(amenitiesMatchCount==userSelectedTrueCount){
-            System.out.println("AllUserSelectedAmenitiesAvaliableHInThisRoom "+meetingStatusModel.getId());
+            //System.out.println("AllUserSelectedAmenitiesAvaliableHInThisRoom "+meetingStatusModel.getId());
 
         }else {
-            System.out.println("UserSelectedAmenityIsNotAvaliableHInThisRoom "+meetingStatusModel.getId());
+            //System.out.println("UserSelectedAmenityIsNotAvaliableHInThisRoom "+meetingStatusModel.getId());
             MeetingAmenityStatus meetingAmenityStatus=new MeetingAmenityStatus(meetingStatusModel.getId());
             meetingAmenityStatusList.add(meetingAmenityStatus);
         }
@@ -6609,7 +6609,7 @@ public class BookFragment extends Fragment implements
     @Override
     public void onChangeDesk(int deskId, String deskName, String request,
                              String timeZone,int typeId,EditBookingDetails editBookingDetails,String newEditStatus) {
-        System.out.println("cahngedeskCall back"+typeId+"   "+request);
+        //System.out.println("cahngedeskCall back"+typeId+"   "+request);
         if (typeId == 0) {
             editBookingDetailsGlobal.setDeskCode(deskName);
             editBookingDetailsGlobal.setDesktId(deskId);

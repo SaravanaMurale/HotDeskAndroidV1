@@ -130,7 +130,7 @@
                         android:theme="@style/TextBold" />
 
                     <ImageView
-                        android:id="@+id/bookingIvLocation"
+                        android:id="@+id/fireWardenIcon"
                         android:layout_width="@dimen/_10sdp"
                         android:layout_height="@dimen/_11sdp"
                         android:layout_marginLeft="@dimen/_10sdp"
@@ -141,12 +141,12 @@
                         />
 
                     <ImageView
-                        android:id="@+id/addImg"
+                        android:id="@+id/firstAidIcon"
                         android:layout_width="@dimen/_10sdp"
                         android:layout_height="@dimen/_11sdp"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginTop="1dp"
-                        android:layout_toRightOf="@id/bookingIvLocation"
+                        android:layout_toRightOf="@id/fireWardenIcon"
                         android:src="@drawable/plus"
 
                         />

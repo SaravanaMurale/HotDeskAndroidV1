@@ -17,10 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
+import dream.guys.hotdeskandroid.ui.teams.TeamsFragment;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
@@ -30,11 +32,15 @@ public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.viewHolder> 
     Context context;
     ArrayList<DAOTeamMember> teamMembersList;
     TeamMemberInterface teamMemberInterface;
-
-    public TeamsAdapter(Context context, ArrayList<DAOTeamMember> teamMembersList,TeamMemberInterface teamMemberInterface) {
+    HashMap<Integer, Boolean> firstAidList;
+    HashMap<Integer, Boolean> fireWardenList;
+    public TeamsAdapter(Context context, ArrayList<DAOTeamMember> teamMembersList,
+                        TeamMemberInterface teamMemberInterface,HashMap<Integer, Boolean> firstAid,HashMap<Integer, Boolean> fireWarden) {
         this.context = context;
         this.teamMembersList = teamMembersList;
         this.teamMemberInterface = teamMemberInterface;
+        this.firstAidList = firstAid;
+        this.fireWardenList = fireWarden;
 
     }
 
@@ -50,7 +56,24 @@ public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.viewHolder> 
 
         String fName = teamMembersList.get(position).getFirstName();
         String lName = teamMembersList.get(position).getLastName();
-
+        if (firstAidList!=null){
+            if (fireWardenList.containsKey(teamMembersList.get(position).getUserId())){
+                holder.fireWardenIcon.setVisibility(View.VISIBLE);
+            } else {
+                holder.fireWardenIcon.setVisibility(View.GONE);
+            }
+        } else {
+            holder.fireWardenIcon.setVisibility(View.GONE);
+        }
+        if (firstAidList!=null){
+            if (firstAidList.containsKey(teamMembersList.get(position).getUserId())){
+                holder.firstAidWardenIcon.setVisibility(View.VISIBLE);
+            } else {
+                holder.firstAidWardenIcon.setVisibility(View.GONE);
+            }
+        } else {
+            holder.firstAidWardenIcon.setVisibility(View.GONE);
+        }
         holder.mTxtName.setText(fName + " " + lName);
         if (teamMembersList.get(position).getDayGroups().size()>0
                 && teamMembersList.get(position).getDayGroups().get(0).getCalendarEntries().size()>0
@@ -117,7 +140,7 @@ public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.viewHolder> 
     public class viewHolder extends RecyclerView.ViewHolder{
 
         TextView mTxtName, mbookingAddress,mbookingCheckOutTime,mbookingCheckInTime;
-        ImageView ivCheckOut,ivCheckIn;
+        ImageView ivCheckOut,ivCheckIn,fireWardenIcon,firstAidWardenIcon;
         CircleImageView teamMemberImage;
 
         public viewHolder(@NonNull View itemView) {
@@ -131,6 +154,8 @@ public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.viewHolder> 
             mTxtName = itemView.findViewById(R.id.bookingDeskName);
             mbookingAddress = itemView.findViewById(R.id.bookingAddress);
             teamMemberImage = itemView.findViewById(R.id.bookingIvIcon);
+            fireWardenIcon = itemView.findViewById(R.id.fireWardenIcon);
+            firstAidWardenIcon = itemView.findViewById(R.id.firstAidIcon);
 
         }
     }

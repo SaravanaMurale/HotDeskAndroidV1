@@ -152,7 +152,7 @@
                             android:layout_height="@dimen/_45sdp"
                             android:layout_centerInParent="true"
                             android:background="@drawable/bg_circle_vector"
-                            android:src="@drawable/mygirl" />
+                            android:src="@drawable/avatar" />
                     </RelativeLayout>
 
                     <LinearLayout

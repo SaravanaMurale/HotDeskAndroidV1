@@ -8,7 +8,7 @@
         android:id="@+id/ivUserImageMyTeam"
         android:layout_width="@dimen/_100sdp"
         android:layout_height="@dimen/_100sdp"
-        android:src="@drawable/mygirl"
+        android:src="@drawable/avatar"
         android:padding="@dimen/_7sdp"
         android:layout_centerInParent="true"
         />

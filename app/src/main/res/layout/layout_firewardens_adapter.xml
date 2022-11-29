@@ -20,7 +20,7 @@
                 android:layout_width="@dimen/_50sdp"
                 android:layout_height="@dimen/_50sdp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/mygirl"
+                android:src="@drawable/avatar"
                 app:tint="@color/figmaBlack" />
 
             <ImageView
@@ -29,6 +29,7 @@
                 android:layout_alignRight="@+id/firewardensProfilePic"
                 android:layout_alignBottom="@+id/firewardensProfilePic"
                 android:layout_marginBottom="@dimen/_2sdp"
+                android:visibility="gone"
                 android:src="@drawable/online" />
 
 
@@ -59,6 +60,7 @@
                 android:layout_below="@+id/firewandensName"
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_8sdp"
+                android:visibility="gone"
                 android:layout_toRightOf="@+id/firewardensProfilePic"
                 android:src="@drawable/online" />
 

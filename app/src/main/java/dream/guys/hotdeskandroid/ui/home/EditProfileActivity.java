@@ -903,7 +903,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
                     Utils.toastMessage(EditProfileActivity.this, "Image Removed Successfully");
 
-                    Glide.with(EditProfileActivity.this).load(R.drawable.mygirl)
+                    Glide.with(EditProfileActivity.this).load(R.drawable.avatar)
                             .into(binding.ivEditPrifle);
 
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);

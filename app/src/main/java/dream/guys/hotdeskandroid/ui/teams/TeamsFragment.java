@@ -56,9 +56,11 @@ import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.DAOUpcomingBooking;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
+import dream.guys.hotdeskandroid.model.response.FirstAidResponse;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.UsageTypeResponse;
+import dream.guys.hotdeskandroid.model.response.WellbeingConfigResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.MyApp;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -98,6 +100,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     LinearLayoutManager linearLayoutManager,contactUnknownLinearLayout,contactLinearLayout,
             contactHolidayLinearLayout,contactOutOfOfficeLinearLayout,contactRemoteLinearLayout;
 
+    public HashMap<Integer, Boolean> firewardenList;
+    public HashMap<Integer, Boolean> firstAidList;
     int selID = 0;
 
     //New...
@@ -125,7 +129,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         uiInit(root);
 
         setLanguage();
-
+        getFirstAidPersonsDetails("firewarden");
         binding.tvExapnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -297,6 +301,54 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             Utils.toastMessage(getActivity(), "Please Enable Internet");
         }
     }
+
+    private void getFirstAidPersonsDetails(String description) {
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<FirstAidResponse>> call = apiService.getFirstAidResponse();
+        call.enqueue(new Callback<List<FirstAidResponse>>() {
+            @Override
+            public void onResponse(Call<List<FirstAidResponse>> call, Response<List<FirstAidResponse>> response) {
+                List<FirstAidResponse> firstAidResponseList=response.body();
+                List<FirstAidResponse.Persons> personsList=new ArrayList<>();
+                List<FirstAidResponse.Persons> personsListfirstAid=new ArrayList<>();
+                firstAidList= new HashMap<>();
+                firewardenList = new HashMap<>();
+
+                for (int i = 0; i < firstAidResponseList.size(); i++) {
+                    if (firstAidResponseList.get(i).getPersonsList().size()>0) {
+
+                        if(firstAidResponseList.get(i).getType()==4){
+                            for (int j = 0; j <firstAidResponseList.get(i).getPersonsList().size() ; j++) {
+                                personsList.add(firstAidResponseList.get(i).getPersonsList().get(j));
+                            }
+                        }
+                        if(firstAidResponseList.get(i).getType()==5){
+                            for (int j = 0; j <firstAidResponseList.get(i).getPersonsList().size() ; j++) {
+                                personsListfirstAid.add(firstAidResponseList.get(i).getPersonsList().get(j));
+                            }
+                        }
+
+                    }
+                }
+
+                for (int i = 0; i <personsList.size() ; i++) {
+                    firewardenList.put(personsList.get(i).getId(),personsList.get(i).isActive());
+                }
+                for (int i = 0; i <personsListfirstAid.size() ; i++) {
+                    firstAidList.put(personsListfirstAid.get(i).getId(),personsListfirstAid.get(i).isActive());
+                }
+
+            }
+
+                    @Override
+                    public void onFailure(Call<List<FirstAidResponse>> call, Throwable t) {
+
+                    }
+                });
+
+            }
+
 
     private void getCalendarEntryTeam() {
 
@@ -704,7 +756,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     }
 
     private void setDataToExpandAdapter(ArrayList<DAOTeamMember> teamMembersList) {
-        teamsAdapter = new TeamsAdapter(getActivity(),teamMembersList,this);
+        teamsAdapter = new TeamsAdapter(getActivity(),teamMembersList,this,firstAidList,firewardenList);
         binding.expandRecyclerView.setAdapter(teamsAdapter);
     }
 

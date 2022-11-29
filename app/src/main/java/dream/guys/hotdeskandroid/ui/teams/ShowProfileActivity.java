@@ -16,6 +16,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
@@ -24,6 +25,7 @@ import dream.guys.hotdeskandroid.databinding.ActivityShowProfileBinding;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
+import dream.guys.hotdeskandroid.model.response.FirstAidResponse;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
 import dream.guys.hotdeskandroid.ui.home.ViewTeamsActivity;
@@ -64,6 +66,8 @@ public class ShowProfileActivity extends AppCompatActivity {
     LanguagePOJO.Global global;
 
 
+    HashMap<Integer, Boolean> firstAidList;
+    HashMap<Integer, Boolean> firewardenList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +78,7 @@ public class ShowProfileActivity extends AppCompatActivity {
         context = ShowProfileActivity.this;
 
         setLanguage();
-
+        getFirstAidPersonsDetails("");
 
 
         binding.ivEditEmailIcon.setOnClickListener(new View.OnClickListener() {
@@ -307,6 +311,84 @@ private void callSearchRecyclerData(String searchText,int selID) {
             Utils.toastMessage(this, "Please Enable Internet");
         }
     }
+    private void getFirstAidPersonsDetails(String description) {
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<FirstAidResponse>> call = apiService.getFirstAidResponse();
+        call.enqueue(new Callback<List<FirstAidResponse>>() {
+            @Override
+            public void onResponse(Call<List<FirstAidResponse>> call, Response<List<FirstAidResponse>> response) {
+                List<FirstAidResponse> firstAidResponseList=response.body();
+                List<FirstAidResponse.Persons> personsList=new ArrayList<>();
+                List<FirstAidResponse.Persons> personsListfirstAid=new ArrayList<>();
+                firstAidList= new HashMap<>();
+                firewardenList = new HashMap<>();
+
+                for (int i = 0; i < firstAidResponseList.size(); i++) {
+                    if (firstAidResponseList.get(i).getPersonsList().size()>0) {
+
+                        if(firstAidResponseList.get(i).getType()==4){
+                            for (int j = 0; j <firstAidResponseList.get(i).getPersonsList().size() ; j++) {
+                                personsList.add(firstAidResponseList.get(i).getPersonsList().get(j));
+                            }
+                        }
+                        if(firstAidResponseList.get(i).getType()==5){
+                            for (int j = 0; j <firstAidResponseList.get(i).getPersonsList().size() ; j++) {
+                                personsListfirstAid.add(firstAidResponseList.get(i).getPersonsList().get(j));
+                            }
+                        }
+
+                    }
+                }
+
+                for (int i = 0; i <personsList.size() ; i++) {
+                    firewardenList.put(personsList.get(i).getId(),personsList.get(i).isActive());
+                }
+                for (int i = 0; i <personsListfirstAid.size() ; i++) {
+                    firstAidList.put(personsListfirstAid.get(i).getId(),personsListfirstAid.get(i).isActive());
+                }
+                updateFireStatus();
+            }
+
+            @Override
+            public void onFailure(Call<List<FirstAidResponse>> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    private void updateFireStatus() {
+        if (firewardenList!=null){
+            if (firewardenList.containsKey(userID)){
+                binding.locateMyTeamName.setVisibility(View.VISIBLE);
+                binding.locateMyTeamFireIv.setVisibility(View.VISIBLE);
+            } else {
+                binding.locateMyTeamName.setVisibility(View.GONE);
+                binding.locateMyTeamFireIv.setVisibility(View.GONE);
+            }
+        }else {
+            binding.locateMyTeamName.setVisibility(View.GONE);
+            binding.locateMyTeamFireIv.setVisibility(View.GONE);
+        }
+
+        if (firstAidList!=null){
+            if (firstAidList.containsKey(userID)){
+                binding.txtFire.setVisibility(View.VISIBLE);
+                binding.locateMyTeamPlusIv.setVisibility(View.VISIBLE);
+            } else {
+
+                binding.txtFire.setVisibility(View.GONE);
+                binding.locateMyTeamPlusIv.setVisibility(View.GONE);
+            }
+
+        } else {
+
+            binding.txtFire.setVisibility(View.GONE);
+            binding.locateMyTeamPlusIv.setVisibility(View.GONE);
+        }
+
+    }
 
     private void setResults(GlobalSearchResponse.Results results) {
         LocalDate today = LocalDate.now();
@@ -343,7 +425,7 @@ private void callSearchRecyclerData(String searchText,int selID) {
                 ||results.getDeskPhoneNumber().isEmpty())
             binding.tvEditPhone.setText("Phone");
         else
-            binding.tvEditPhone.setText(results.getDeskPhoneNumber());
+            binding.tvEditPhone.setText(results.getMobile());
 
         binding.txtTname.setText(results.getTeam());
         //binding.tvEditPhone.setText(results.getMobile());
