@@ -125,7 +125,8 @@ public class SignInActivity extends AppCompatActivity {
         //Already loggedin user
         System.out.println("login chec"+SessionHandler.getInstance().getBoolean(SignInActivity.this, AppConstants.PIN_SETUP_DONE));
 //        System.out.println("login chec"+SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.AppConstants.LOGIN_CHECK));
-        if(tokenStatus &&!SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.LOGIN_CHECK)
+        if(tokenStatus
+                &&!SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.LOGIN_CHECK)
                 && SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.PIN_SETUP_DONE)){
             btnPinSignIn.setVisibility(View.VISIBLE);
             //If token expired enable fingerprint
