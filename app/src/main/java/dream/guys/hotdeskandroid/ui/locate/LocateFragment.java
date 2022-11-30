@@ -372,6 +372,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     //For Displaying the count
     TextView filterTotalSize;
 
+    List<DAOTeamMember> locateMyTeamMemberStatusList;
+
 
 
     @Override
@@ -498,6 +500,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         binding.searchLocate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //List<DAOTeamMember> locateMyTeamMemberStatusList=new ArrayList<>();
+                //locateMyTeamMemberStatusList.set(0,null);
+                //If my team layout opens when floor selecting bottomsheet open below method will close
+                closeAndClearMyTeamList(locateMyTeamMemberStatusList);
 
                 getLocateCountryList();
 
@@ -694,7 +701,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         binding.rvLocateMyTeam.setHasFixedSize(true);*/
 
 
-        List<DAOTeamMember> locateMyTeamMemberStatusList = new ArrayList<>();
+        locateMyTeamMemberStatusList = new ArrayList<>();
         for (int i = 0; i < daoTeamMemberList.size(); i++) {
 
             if (daoTeamMemberList.get(i).getDayGroups().isEmpty()) {
@@ -789,11 +796,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                locateMyTeamMemberStatusList.clear();
-                //visible BottomNavigation Bar
-                ((MainActivity) getActivity()).getNav().setVisibility(View.VISIBLE);
 
-                binding.locateMyTeamList.setVisibility(View.GONE);
+
+                closeAndClearMyTeamList(locateMyTeamMemberStatusList);
 
 
             }
@@ -833,6 +838,19 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             }
         });*/
+
+
+    }
+
+    private void closeAndClearMyTeamList(List<DAOTeamMember> locateMyTeamMemberStatusList) {
+
+        if(locateMyTeamMemberStatusList!=null && locateMyTeamMemberStatusList.size()>0 && binding.locateMyTeamList.getVisibility()==View.VISIBLE) {
+            locateMyTeamMemberStatusList.clear();
+            //visible BottomNavigation Bar
+            ((MainActivity) getActivity()).getNav().setVisibility(View.VISIBLE);
+            binding.locateMyTeamList.setVisibility(View.GONE);
+        }
+
 
 
     }

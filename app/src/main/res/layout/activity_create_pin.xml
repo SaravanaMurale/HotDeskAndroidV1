@@ -186,13 +186,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:background="@drawable/button_round_corner"
+            android:gravity="center"
             android:text="@string/set"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:gravity="center"
-            android:theme="@style/TextBoldButton"
-            android:layout_centerVertical="true"/>
+            android:theme="@style/TextBoldButton" />
 
         <TextView
             android:id="@+id/tv_back_to_home"
