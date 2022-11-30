@@ -198,12 +198,20 @@ public class SettingsActivity extends AppCompatActivity {
                 SessionHandler.getInstance().remove(context, AppConstants.FLOOR_CHECK);
                 SessionHandler.getInstance().remove(context, AppConstants.FULLPATHLOCATION_CHECK);
 
+                SessionHandler.getInstance().remove(context,AppConstants.PIN_SETUP_DONE);
+
+
+
             }
         });
         binding.btnResetPin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkPinPopUp();
+
+                Intent intent = new Intent(context, CreatePinActivity.class);
+                context.startActivity(intent);
+
+                //checkPinPopUp();
 
             }
         });

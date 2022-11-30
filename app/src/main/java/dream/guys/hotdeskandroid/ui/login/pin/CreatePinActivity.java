@@ -159,6 +159,8 @@ public class CreatePinActivity extends AppCompatActivity {
             }
         });
 
+        getUserDetailsUsingToken();
+
 
     }
 
@@ -260,6 +262,7 @@ public class CreatePinActivity extends AppCompatActivity {
                                 break;
                             case "OK":
                                 Utils.toastMessage(CreatePinActivity.this,"Pin Setup Successfull");
+                                SessionHandler.getInstance().saveBoolean(CreatePinActivity.this,AppConstants.PIN_SETUP_DONE,true);
                                 finish();
                                 break;
                         }

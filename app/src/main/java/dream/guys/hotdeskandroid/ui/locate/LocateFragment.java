@@ -70,6 +70,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -121,6 +122,7 @@ import dream.guys.hotdeskandroid.model.response.CarParkingslotsResponse;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.DeskDescriptionResponse;
+import dream.guys.hotdeskandroid.model.response.FirstAidResponse;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
@@ -370,6 +372,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     //For Displaying the count
     TextView filterTotalSize;
 
+    List<DAOTeamMember> locateMyTeamMemberStatusList;
+
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -495,6 +501,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
+                //List<DAOTeamMember> locateMyTeamMemberStatusList=new ArrayList<>();
+                //locateMyTeamMemberStatusList.set(0,null);
+                //If my team layout opens when floor selecting bottomsheet open below method will close
+                closeAndClearMyTeamList(locateMyTeamMemberStatusList);
+
                 getLocateCountryList();
 
             }
@@ -509,7 +520,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
 
                 if (parentId > 0) {
-                    getMyTeamMemberData();
+                    
+                    getFirAidAndFirwarndsReport();
+                    
+                    //getMyTeamMemberData();
                 } else {
                     Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
                 }
@@ -568,8 +582,72 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         return root;
     }
 
+    private void getFirAidAndFirwarndsReport() {
 
-    private void getMyTeamMemberData() {
+        binding.locateProgressBar.setVisibility(View.VISIBLE);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<FirstAidResponse>> call = apiService.getFirstAidResponse();
+        call.enqueue(new Callback<List<FirstAidResponse>>() {
+            @Override
+            public void onResponse(Call<List<FirstAidResponse>> call, Response<List<FirstAidResponse>> response) {
+                List<FirstAidResponse> firstAidResponseList=response.body();
+
+                //Get Whole List
+                List<FirstAidResponse.Persons> personFirewardenssList=new ArrayList<>();
+                List<FirstAidResponse.Persons> personFirstAidList=new ArrayList<>();
+                //firstAidList= new HashMap<>();
+                //firewardenList = new HashMap<>();
+
+
+                //Get userId Alone
+                List<Integer> firstAidList=new ArrayList<>();
+                List<Integer> firewardenList=new ArrayList<>();
+
+                for (int i = 0; i < firstAidResponseList.size(); i++) {
+                    if (firstAidResponseList.get(i).getPersonsList().size()>0) {
+
+                        //Firewardenss
+                        if(firstAidResponseList.get(i).getType()==4){
+                            for (int j = 0; j <firstAidResponseList.get(i).getPersonsList().size() ; j++) {
+                                personFirewardenssList.add(firstAidResponseList.get(i).getPersonsList().get(j));
+                            }
+                        }
+
+                        //FirstAid
+                        if(firstAidResponseList.get(i).getType()==5){
+                            for (int j = 0; j <firstAidResponseList.get(i).getPersonsList().size() ; j++) {
+                                personFirstAidList.add(firstAidResponseList.get(i).getPersonsList().get(j));
+                            }
+                        }
+
+                    }
+                }
+
+                //Get UserId alone
+                for (int i = 0; i <personFirewardenssList.size() ; i++) {
+                    firewardenList.add(personFirewardenssList.get(i).getId());
+                }
+                for (int i = 0; i <personFirstAidList.size() ; i++) {
+                    firstAidList.add(personFirstAidList.get(i).getId());
+                }
+
+                binding.locateProgressBar.setVisibility(View.GONE);
+
+                getMyTeamMemberData(firstAidList,firewardenList);
+
+            }
+
+            @Override
+            public void onFailure(Call<List<FirstAidResponse>> call, Throwable t) {
+                binding.locateProgressBar.setVisibility(View.GONE);
+            }
+        });
+
+
+    }
+
+
+    private void getMyTeamMemberData(List<Integer> firstAidList, List<Integer> firewardenList) {
 
 
         binding.locateProgressBar.setVisibility(View.VISIBLE);
@@ -597,7 +675,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     binding.locateMyTeamList.setVisibility(View.VISIBLE);
                     binding.bookNearByBlock.setVisibility(View.GONE);
 
-                    callMyTeamLayout(daoTeamMemberList);
+                    callMyTeamLayout(daoTeamMemberList,firstAidList,firewardenList);
                 }
 
                 //Hide BottomNavigation Bar
@@ -614,7 +692,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
 
-    private void callMyTeamLayout(List<DAOTeamMember> daoTeamMemberList) {
+    private void callMyTeamLayout(List<DAOTeamMember> daoTeamMemberList, List<Integer> firstAidList, List<Integer> firewardenList) {
 
         //rvMyTeam = myTeamBottomSheet.findViewById(R.id.rvLocateMyTeam);
 
@@ -623,7 +701,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         binding.rvLocateMyTeam.setHasFixedSize(true);*/
 
 
-        List<DAOTeamMember> locateMyTeamMemberStatusList = new ArrayList<>();
+        locateMyTeamMemberStatusList = new ArrayList<>();
         for (int i = 0; i < daoTeamMemberList.size(); i++) {
 
             if (daoTeamMemberList.get(i).getDayGroups().isEmpty()) {
@@ -708,7 +786,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         }
 
-        locateMyTeamAdapter = new LocateMyTeamAdapter(getContext(), locateMyTeamMemberStatusList, this);
+        binding.rvLocateMyTeam.setHasFixedSize(true);
+        locateMyTeamAdapter = new LocateMyTeamAdapter(getContext(), locateMyTeamMemberStatusList, this,firstAidList,firewardenList);
         binding.rvLocateMyTeam.setAdapter(locateMyTeamAdapter);
 
         binding.locateProgressBar.setVisibility(View.INVISIBLE);
@@ -717,11 +796,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                locateMyTeamMemberStatusList.clear();
-                //visible BottomNavigation Bar
-                ((MainActivity) getActivity()).getNav().setVisibility(View.VISIBLE);
 
-                binding.locateMyTeamList.setVisibility(View.GONE);
+
+                closeAndClearMyTeamList(locateMyTeamMemberStatusList);
 
 
             }
@@ -761,6 +838,19 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             }
         });*/
+
+
+    }
+
+    private void closeAndClearMyTeamList(List<DAOTeamMember> locateMyTeamMemberStatusList) {
+
+        if(locateMyTeamMemberStatusList!=null && locateMyTeamMemberStatusList.size()>0 && binding.locateMyTeamList.getVisibility()==View.VISIBLE) {
+            locateMyTeamMemberStatusList.clear();
+            //visible BottomNavigation Bar
+            ((MainActivity) getActivity()).getNav().setVisibility(View.VISIBLE);
+            binding.locateMyTeamList.setVisibility(View.GONE);
+        }
+
 
 
     }
@@ -4050,7 +4140,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         //Global Location
-        /*country.setOnClickListener(new View.OnClickListener() {
+        country.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -4068,7 +4158,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 //getLocateCountryList();
             }
-        });*/
+        });
 
         //City
         state.setOnClickListener(new View.OnClickListener() {

@@ -260,10 +260,19 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         });
 */
 //        doTokenExpiryHere();
-        if (!SessionHandler.getInstance().getBoolean(getActivity(),AppConstants.PIN_SETUP_DONE)
+        /*if (!SessionHandler.getInstance().getBoolean(getActivity(),AppConstants.PIN_SETUP_DONE)
                 && !AppConstants.CHECKINPOPUPSTATUS){
             AppConstants.CHECKINPOPUPSTATUS=true;
             checkPinPopUp();
+        }*/
+
+        if (!SessionHandler.getInstance().getBoolean(getActivity(),AppConstants.PIN_SETUP_DONE)) {
+            SessionHandler.getInstance().saveBoolean(getActivity(),AppConstants.PIN_SETUP_DONE,true);
+
+            Intent intent = new Intent(getActivity(), CreatePinActivity.class);
+            getActivity().startActivity(intent);
+
+            //checkPinPopUp();
         }
 
         getAmenities();

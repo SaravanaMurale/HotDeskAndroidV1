@@ -456,7 +456,7 @@
     <RelativeLayout
         android:id="@+id/locateMyTeamList"
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="420dp"
         android:visibility="gone"
         android:layout_alignParentBottom="true"
         android:background="@color/white">
@@ -534,7 +534,8 @@
                 android:layout_above="@+id/myTeamClose"
                 android:layout_below="@id/locateMyTeamSearch"
                 android:layout_marginTop="@dimen/_8sdp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                />
 
             <TextView
                 android:id="@+id/myTeamClose"

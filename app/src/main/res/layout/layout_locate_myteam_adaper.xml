@@ -33,24 +33,24 @@
                 android:src="@drawable/online" />
 
 
-            <ImageView
-                android:id="@+id/locateMyTeamFireIv"
-                android:layout_width="@dimen/_18sdp"
-                android:layout_height="@dimen/_18sdp"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_toRightOf="@+id/locateMyTeamProfiles"
-                android:src="@drawable/fire" />
-
-
             <TextView
                 android:id="@+id/locateMyTeamName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_toRightOf="@+id/locateMyTeamFireIv"
                 android:text="Space-001"
+                android:layout_toRightOf="@+id/locateMyTeamProfiles"
                 android:textColor="@color/figma_dark_black"
                 android:textSize="@dimen/_13sdp" />
+
+            <ImageView
+                android:id="@+id/locateMyTeamFireIv"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_toRightOf="@+id/locateMyTeamName"
+                android:src="@drawable/fire"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/locateMyTeamPlusIv"
@@ -58,8 +58,9 @@
                 android:layout_height="@dimen/_18sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginTop="1dp"
-                android:layout_toRightOf="@id/locateMyTeamName"
+                android:layout_toRightOf="@id/locateMyTeamFireIv"
                 android:src="@drawable/plus"
+                android:visibility="gone"
 
                 />
 
