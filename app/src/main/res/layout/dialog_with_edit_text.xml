@@ -20,7 +20,7 @@
             android:layout_height="@dimen/_35sdp"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_10sdp"
-            android:src="@drawable/logo_splash"
+            android:src="@drawable/hybrid_hero_icon"
             android:visibility="visible" />
 
         <TextView

@@ -284,12 +284,12 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     }
                     break;
                 case "WFH":
-                    holder.tvBookingWorkingRemote.setText("You're Working Remotely");
+                    holder.tvBookingWorkingRemote.setText("You’re working remotely");
                     holder.tvSubBookingWorkingRemote.setText(""
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom())
                             +" - "
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
-                    list.get(position).getCalendarEntriesModel().setUsageTypeName("You're Working Remotely");
+                    list.get(position).getCalendarEntriesModel().setUsageTypeName("You’re working remotely");
                     if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
                         SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Working remotely");
                     }

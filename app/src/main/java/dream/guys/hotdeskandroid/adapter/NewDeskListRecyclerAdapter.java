@@ -61,7 +61,9 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
         this.newEditStatus=newEditStatus;
     }
     public interface OnChangeSelected{
-        public void onChangeDesk(int deskId, String deskName, String request, String timeZone,int typeId,EditBookingDetails editBookingDetails,String newEditStatus);
+        public void onChangeDesk(int deskId, String deskName, String request,
+                                 String timeZone,int typeId,
+                                 EditBookingDetails editBookingDetails,String newEditStatus,int teamId);
 
     }
 
@@ -145,12 +147,12 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
                     onChangeSelected.onChangeDesk(deskList.get(holder.getAbsoluteAdapterPosition()).getTeamDeskId(),
                             deskList.get(holder.getAbsoluteAdapterPosition()).getDeskCode(),"request"
                             ,deskList.get(holder.getAbsoluteAdapterPosition()).getTimeZones().get(0).getTimeZoneId(),
-                            typeId,editBookingDetails,newEditStatus);
+                            typeId,editBookingDetails,newEditStatus,deskList.get(holder.getAbsoluteAdapterPosition()).getTeamId());
                 } else if(holder.deskStatus.getText().toString().equalsIgnoreCase("Available")){
                     onChangeSelected.onChangeDesk(deskList.get(holder.getAbsoluteAdapterPosition()).getTeamDeskId(),
                             deskList.get(holder.getAbsoluteAdapterPosition()).getDeskCode(),"new"
                             , deskList.get(holder.getAbsoluteAdapterPosition()).getTimeZones().get(0).getTimeZoneId(),
-                            typeId,editBookingDetails,newEditStatus);
+                            typeId,editBookingDetails,newEditStatus,deskList.get(holder.getAbsoluteAdapterPosition()).getTeamId());
                 } else {
                     if (deskList.get(holder.getAbsoluteAdapterPosition()).getTeamId() != SessionHandler.getInstance()
                             .getInt(context, AppConstants.TEAM_ID)
@@ -159,12 +161,12 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
                         onChangeSelected.onChangeDesk(deskList.get(holder.getAbsoluteAdapterPosition()).getTeamDeskId(),
                                 deskList.get(holder.getAbsoluteAdapterPosition()).getDeskCode(),"request"
                                 , deskList.get(holder.getAbsoluteAdapterPosition()).getTimeZones().get(0).getTimeZoneId(),
-                                typeId,editBookingDetails,newEditStatus);
+                                typeId,editBookingDetails,newEditStatus,deskList.get(holder.getAbsoluteAdapterPosition()).getTeamId());
                     } else {
                         onChangeSelected.onChangeDesk(deskList.get(holder.getAbsoluteAdapterPosition()).getTeamDeskId(),
                                 deskList.get(holder.getAbsoluteAdapterPosition()).getDeskCode(),"new",
                                 deskList.get(holder.getAbsoluteAdapterPosition()).getTimeZones().get(0).getTimeZoneId(),
-                                typeId,editBookingDetails,newEditStatus);
+                                typeId,editBookingDetails,newEditStatus,deskList.get(holder.getAbsoluteAdapterPosition()).getTeamId());
                     }
                 }
                 bottomSheetDialog.dismiss();

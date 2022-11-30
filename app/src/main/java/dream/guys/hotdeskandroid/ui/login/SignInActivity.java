@@ -123,7 +123,7 @@ public class SignInActivity extends AppCompatActivity {
 //        checkForPinLogin();
 
         //Already loggedin user
-        System.out.println("login chec"+SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.PIN_SETUP_DONE));
+        System.out.println("login chec"+SessionHandler.getInstance().getBoolean(SignInActivity.this, AppConstants.PIN_SETUP_DONE));
 //        System.out.println("login chec"+SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.AppConstants.LOGIN_CHECK));
         if(tokenStatus &&!SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.LOGIN_CHECK)
                 && SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.PIN_SETUP_DONE)){
@@ -356,7 +356,7 @@ public class SignInActivity extends AppCompatActivity {
             Type listUserType = new TypeToken<LanguagePOJO>() { }.getType();
             LanguagePOJO langPOJO = gson.fromJson(json, listUserType);
             Utils.setLangInPref(langPOJO,SignInActivity.this);
-        }else {
+        } else {
 
         }
 

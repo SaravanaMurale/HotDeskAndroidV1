@@ -15,7 +15,7 @@
         android:layout_height="@dimen/_130sdp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_130sdp"
-        android:src="@drawable/logo_splash" />
+        android:src="@drawable/hybrid_hero_icon" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

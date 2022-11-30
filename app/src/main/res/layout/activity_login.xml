@@ -19,7 +19,7 @@
             android:layout_marginTop="@dimen/_30sdp"
             android:maxHeight="@dimen/_130sdp"
             android:minHeight="@dimen/_60sdp"
-            android:src="@drawable/logo_splash" />
+            android:src="@drawable/hybrid_hero_icon" />
 
         <RelativeLayout
             android:id="@+id/login_layout"

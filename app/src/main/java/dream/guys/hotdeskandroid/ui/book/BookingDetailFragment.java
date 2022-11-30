@@ -190,7 +190,7 @@ public class BookingDetailFragment extends Fragment {
                             .into(fragmentBookingDetailBinding.ivWorkingRemote);
                     break;
                 case "WFH":
-                    fragmentBookingDetailBinding.remoteText.setText("You're Working Remotely today");
+                    fragmentBookingDetailBinding.remoteText.setText("You’re working remotely today");
                     Glide.with(this)
                             .load(R.drawable.working_remote)
                             .placeholder(R.drawable.working_remote)

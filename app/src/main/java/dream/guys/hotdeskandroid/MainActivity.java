@@ -1474,7 +1474,8 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onChangeDesk(int deskId, String deskName, String request,
-                             String timeZone,int typeId,EditBookingDetails editBookingDetails,String newEditStatus) {
+                             String timeZone,int typeId,
+                             EditBookingDetails editBookingDetails,String newEditStatus,int teamId) {
         editBookingDetailsGlobal.setDeskCode(deskName);
         editBookingDetailsGlobal.setDesktId(deskId);
         editBookingDetailsGlobal.setDeskTeamId(selectedTeamId);
@@ -1663,31 +1664,36 @@ public class MainActivity extends AppCompatActivity implements
                 List<FirstAidResponse> firstAidResponseList=response.body();
                 List<FirstAidResponse.Persons> personsList=new ArrayList<>();
                 List<FirstAidResponse.Persons> personsListfirstAid=new ArrayList<>();
+
                 firstAidList= new HashMap<>();
                 firewardenList = new HashMap<>();
+                try {
+                    for (int i = 0; i < firstAidResponseList.size(); i++) {
+                        if (firstAidResponseList.get(i).getPersonsList().size()>0) {
 
-                for (int i = 0; i < firstAidResponseList.size(); i++) {
-                    if (firstAidResponseList.get(i).getPersonsList().size()>0) {
-
-                        if(firstAidResponseList.get(i).getType()==4){
-                            for (int j = 0; j <firstAidResponseList.get(i).getPersonsList().size() ; j++) {
-                                personsList.add(firstAidResponseList.get(i).getPersonsList().get(j));
+                            if(firstAidResponseList.get(i).getType()==4){
+                                for (int j = 0; j <firstAidResponseList.get(i).getPersonsList().size() ; j++) {
+                                    personsList.add(firstAidResponseList.get(i).getPersonsList().get(j));
+                                }
                             }
-                        }
-                        if(firstAidResponseList.get(i).getType()==5){
-                            for (int j = 0; j <firstAidResponseList.get(i).getPersonsList().size() ; j++) {
-                                personsListfirstAid.add(firstAidResponseList.get(i).getPersonsList().get(j));
+                            if(firstAidResponseList.get(i).getType()==5){
+                                for (int j = 0; j <firstAidResponseList.get(i).getPersonsList().size() ; j++) {
+                                    personsListfirstAid.add(firstAidResponseList.get(i).getPersonsList().get(j));
+                                }
                             }
-                        }
 
+                        }
                     }
-                }
 
-                for (int i = 0; i <personsList.size() ; i++) {
-                    firewardenList.put(personsList.get(i).getId(),personsList.get(i).isActive());
-                }
-                for (int i = 0; i <personsListfirstAid.size() ; i++) {
-                    firstAidList.put(personsListfirstAid.get(i).getId(),personsListfirstAid.get(i).isActive());
+                    for (int i = 0; i <personsList.size() ; i++) {
+                        firewardenList.put(personsList.get(i).getId(),personsList.get(i).isActive());
+                    }
+                    for (int i = 0; i <personsListfirstAid.size() ; i++) {
+                        firstAidList.put(personsListfirstAid.get(i).getId(),personsListfirstAid.get(i).isActive());
+                    }
+
+                }catch (Exception exception){
+                    Log.d("Wellbeing error", exception.getMessage());
                 }
 
             }

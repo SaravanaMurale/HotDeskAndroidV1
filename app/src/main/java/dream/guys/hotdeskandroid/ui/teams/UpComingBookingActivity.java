@@ -32,6 +32,7 @@ import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.DAOUpcomingBooking;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
@@ -67,7 +68,7 @@ public class UpComingBookingActivity extends AppCompatActivity {
     UpComingMonthlyBookingAdapter upComingBookingAdapter;
     ArrayList<TeamMembersResponse.DayGroup> recyclerModelArrayList = new ArrayList();
     ArrayList<DAOUpcomingBooking.PersonDayViewEntry.CalendarEntry> upcomingArrayList = new ArrayList();
-
+    int getUserID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +95,7 @@ public class UpComingBookingActivity extends AppCompatActivity {
                     fName = daoTeamMember.getFirstName();
                     lName = daoTeamMember.getLastName();
                     userID = daoTeamMember.getUserId();
-
+//                    Toast.makeText(context, ""+daoTeamMember.getUserId(), Toast.LENGTH_SHORT).show();
                     callTeamMemberStatus(Utils.splitDate(date),daoTeamMember.getTeamId());
 
                 }
@@ -385,9 +386,16 @@ public class UpComingBookingActivity extends AppCompatActivity {
                         teamMembersResponses = response.body();
                         if (teamMembersResponses!=null &&
                                 teamMembersResponses.size()>0){
-
-                            recyclerModelArrayList = new ArrayList<>();
-                            createUpcomingRecyclerList(teamMembersResponses.get(0).getPersonDayViewEntries());
+                            for (int i=0; i < teamMembersResponses.size(); i++) {
+                                if (teamMembersResponses.get(i).getUser().getId()
+                                        == userID) {
+                                    Toast.makeText(UpComingBookingActivity.this, ""+daoTeamMember.getUserId(), Toast.LENGTH_SHORT).show();
+                                    recyclerModelArrayList = new ArrayList<>();
+                                    createUpcomingRecyclerList(teamMembersResponses.get(i).getPersonDayViewEntries());
+                                }
+                            }
+/*                            recyclerModelArrayList = new ArrayList<>();
+                            createUpcomingRecyclerList(teamMembersResponses.get(0).getPersonDayViewEntries());*/
 
                             /*for (int i=0;i<teamMembersResponses.size();i++){
 

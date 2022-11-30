@@ -190,7 +190,7 @@ public class UpComingBookingAdapter extends RecyclerView.Adapter<UpComingBooking
                     }
                     break;
                 case "WFH":
-                    holder.tvBookingWorkingRemote.setText("You're Working Remotely");
+                    holder.tvBookingWorkingRemote.setText("You’re working remotely");
                     holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom()));
                     holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
 

@@ -70,7 +70,7 @@ public class AppConstants {
     public static final String SELECTED_LOCATION_FROM_HOME="SELECTED_LOCATION_FROM_HOME";
 
     public static final String OFFICE_TODAY="You are in the office today";
-    public static final String WORKING_REMOTE="You are working remotely today";
+    public static final String WORKING_REMOTE="You’re working remotely today";
     public static final String PIN_SETUP_DONE="PIN_SETUP_DONE";
     public static final String DEFAULT_CAR_PARK_LOCATION_ID="DEFAULT_CAR_PARK_LOCATION_ID";
     public static final String DEFAULT_CAR_PARK_TIMEZONE_ID="DEFAULT_CAR_PARK_TIMEZONE_ID";

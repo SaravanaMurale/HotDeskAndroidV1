@@ -122,7 +122,8 @@ public class SettingsActivity extends AppCompatActivity {
         if (SessionHandler.getInstance().get(context, AppConstants.LANGUAGE) != null) {
             binding.txtLang.setText(SessionHandler.getInstance().get(context, AppConstants.LANGUAGE));
         }
-// Creates a PublicClientApplication object with res/raw/auth_config_single_account.json
+
+        // Creates a PublicClientApplication object with res/raw/auth_config_single_account.json
         PublicClientApplication.createMultipleAccountPublicClientApplication(this,
                 R.raw.auth_config_b2c,
                 new IPublicClientApplication.IMultipleAccountApplicationCreatedListener() {
@@ -174,12 +175,8 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                SessionHandler.getInstance().removeAll(getContext());
-                System.out.println("sso out" + SessionHandler.getInstance().getInt(SettingsActivity.this,
-                        AppConstants.TYPE_OF_LOGIN));
                 if (SessionHandler.getInstance().getInt(SettingsActivity.this,
                         AppConstants.TYPE_OF_LOGIN) != 1) {
-                    System.out.println("sso out" + SessionHandler.getInstance().getInt(SettingsActivity.this,
-                            AppConstants.TYPE_OF_LOGIN));
                     signOutAccounts();
                 }
 

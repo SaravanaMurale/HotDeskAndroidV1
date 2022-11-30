@@ -77,17 +77,21 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
             holder.editTextEdit.setVisibility(View.VISIBLE);
         } else if (bookingsListToEdit.get(position).getStatus().getTimeStatus()
                 .equalsIgnoreCase("ongoing")) {
-            holder.editDelete.setVisibility(View.GONE);
+            holder.editDelete.setVisibility(View.VISIBLE);
             holder.editTextEdit.setVisibility(View.VISIBLE);
+
+            if (bookingsListToEdit.get(position).getStatus().getBookingStatus()
+                    .equalsIgnoreCase("None")) {
+                holder.editDelete.setVisibility(View.VISIBLE);
+            } else {
+                holder.editDelete.setVisibility(View.GONE);
+            }
         } else if (bookingsListToEdit.get(position).getStatus().getTimeStatus()
                 .equalsIgnoreCase("past")) {
             holder.editDelete.setVisibility(View.GONE);
             holder.editTextEdit.setVisibility(View.GONE);
         }
 
-        if (bookingsListToEdit.get(position).getStatus().getBookingStatus()
-                .equalsIgnoreCase("None"))
-            holder.editDelete.setVisibility(View.VISIBLE);
 
 
         if(code.equals("3")){
@@ -102,10 +106,10 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
             case 7:
                 holder.editCode.setText("Request for Desk");
                 for (int i=0;i<teamDeskAvailabilities.size();i++){
-                    if (bookingsListToEdit.get(position).getRequestedTeamDeskId() == teamDeskAvailabilities.get(i).getTeamDeskId()){
+                    if (bookingsListToEdit.get(position).getRequestedTeamDeskId()
+                            == teamDeskAvailabilities.get(i).getTeamDeskId()){
                         System.out.println("teamdeskIF"+teamDeskAvailabilities.get(i).getDeskCode());
-                        holder.editCode.setText(teamDeskAvailabilities.get(i).getDeskCode()
-                                +"Request for Desk");
+                        holder.editCode.setText("Request for Desk");
                     }
                 }
                 makeVisible(holder,position);
@@ -207,8 +211,18 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
         }else if (bookingsListToEdit.get(position).getStatus()!=null &&
                 bookingsListToEdit.get(position).getStatus().getTimeStatus().equalsIgnoreCase("ONGOING")) {
             holder.editTextEdit.setVisibility(View.VISIBLE);
-            holder.editDelete.setVisibility(View.GONE);
+            holder.editDelete.setVisibility(View.VISIBLE);
+
+            if (bookingsListToEdit.get(position).getStatus().getBookingStatus()
+                    .equalsIgnoreCase("None")) {
+                holder.editDelete.setVisibility(View.VISIBLE);
+            } else {
+                holder.editDelete.setVisibility(View.GONE);
+            }
+
         }
+
+
 
         holder.editCheckInIcon.setVisibility(View.VISIBLE);
         holder.editCheckOutIcon.setVisibility(View.VISIBLE);
