@@ -129,6 +129,10 @@ public class LoginPinActivity extends AppCompatActivity {
                             SessionHandler.getInstance().saveBoolean(LoginPinActivity.this, AppConstants.LOGIN_CHECK,true);
                             getUserDetailsUsingToken(SessionHandler.getInstance().get(LoginPinActivity.this,AppConstants.USERTOKEN));
 /*
+
+                            //New M
+                            SessionHandler.getInstance().saveBoolean(LoginPinActivity.this,AppConstants.PIN_SETUP_DONE,true);
+
                             Intent intent=new Intent(LoginPinActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();*/
@@ -268,7 +272,7 @@ public class LoginPinActivity extends AppCompatActivity {
             Utils.toastMessage(this, "Please Enable Internet");
         }
     }
-    
+
     private void sendFCMToken() {
         String tokenInSharedPreference = SessionHandler.getInstance().get(getApplicationContext(), AppConstants.SAVETOKEN);
         if (tokenInSharedPreference != null) {

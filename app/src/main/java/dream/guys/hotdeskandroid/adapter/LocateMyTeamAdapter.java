@@ -37,7 +37,6 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
     //ForFilter
     List<DAOTeamMember> daoTeamMemberListAll;
 
-    public List<Integer> firstAidList, firewardenList;
 
 
     public interface ShowMyTeamLocationClickable {
@@ -47,14 +46,11 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
     }
 
 
-    public LocateMyTeamAdapter(Context context, List<DAOTeamMember> stringName, ShowMyTeamLocationClickable showMyTeamLocationClickable, List<Integer> firstAidList, List<Integer> firewardenList) {
+    public LocateMyTeamAdapter(Context context, List<DAOTeamMember> stringName, ShowMyTeamLocationClickable showMyTeamLocationClickable) {
         this.context = context;
         this.daoTeamMemberList = stringName;
         this.showMyTeamLocationClickable = showMyTeamLocationClickable;
         this.daoTeamMemberListAll = new ArrayList<>(daoTeamMemberList);
-
-        this.firstAidList = firstAidList;
-        this.firewardenList = firewardenList;
 
 
     }
@@ -72,21 +68,21 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
 
         holder.locateMyTeamName.setText(daoTeamMemberList.get(position).getFirstName() + " " + daoTeamMemberList.get(position).getLastName());
 
-        //To make visible firstAid
-        for (int i = 0; i < firstAidList.size(); i++) {
 
-            if (daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getUserId() == firstAidList.get(i)) {
-                holder.locateMyTeamPlusIv.setVisibility(View.VISIBLE);
-            }
-
+        //Enable FirstAid
+        if(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).isIfFirstAidStatus()){
+            holder.locateMyTeamPlusIv.setVisibility(View.VISIBLE);
+        }else {
+            holder.locateMyTeamPlusIv.setVisibility(View.GONE);
         }
 
-        //To make visisble firewardness
-        for (int i = 0; i <firewardenList.size() ; i++) {
-            if (daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getUserId() == firewardenList.get(i)) {
-                holder.locateMyTeamFireIv.setVisibility(View.VISIBLE);
-            }
+        //Enable FireWarnds
+        if(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).isFireStatus()){
+            holder.locateMyTeamFireIv.setVisibility(View.VISIBLE);
+        }else {
+            holder.locateMyTeamFireIv.setVisibility(View.GONE);
         }
+
 
         //To set Image here
            if(daoTeamMemberList.get(position).getProfileImage()!=null && !daoTeamMemberList.get(position).getProfileImage().isEmpty()) {

@@ -9,6 +9,10 @@ import java.util.Date;
 
 public class DAOTeamMember implements Serializable {
 
+
+    private boolean isFireStatus;
+    private boolean ifFirstAidStatus;
+
     @SerializedName("userId")
     @Expose
     private Integer userId;
@@ -34,6 +38,22 @@ public class DAOTeamMember implements Serializable {
     @SerializedName("dayGroups")
     @Expose
     private ArrayList<DayGroup> dayGroups;
+
+    public boolean isFireStatus() {
+        return isFireStatus;
+    }
+
+    public void setFireStatus(boolean fireStatus) {
+        isFireStatus = fireStatus;
+    }
+
+    public boolean isIfFirstAidStatus() {
+        return ifFirstAidStatus;
+    }
+
+    public void setIfFirstAidStatus(boolean ifFirstAidStatus) {
+        this.ifFirstAidStatus = ifFirstAidStatus;
+    }
 
     public String getProfileImageUrl() {
         return profileImageUrl;

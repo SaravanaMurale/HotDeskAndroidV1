@@ -44,7 +44,7 @@
                 <RelativeLayout
                     android:id="@+id/firstLayout"
                     android:layout_width="1000dp"
-                    android:layout_height="1000dp"
+                    android:layout_height="1500dp"
                     android:layout_marginTop="@dimen/_80sdp">
 
 
