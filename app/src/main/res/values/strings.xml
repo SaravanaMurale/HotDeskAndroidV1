@@ -51,7 +51,7 @@
 
     <!--New...-->
     <string name="set_pin_title">Set up and edit a pin</string>
-    <string name="set_pin_content">A pin will allow you to quickly sign in to Hybrid Hero using a unique four character pin.</string>
+    <string name="set_pin_content">A pin will allow you to quickly sign in to Hybrid Hero using a unique six character pin.</string>
     <string name="enter_your_pin">Enter your pin</string>
     <string name="reenter_your_pin">Re-enter your pin</string>
     <string name="enter_your_old_pin">Enter your old pin</string>

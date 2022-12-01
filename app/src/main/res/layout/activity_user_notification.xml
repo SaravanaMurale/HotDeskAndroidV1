@@ -82,7 +82,7 @@
             android:id="@+id/txt_outgoing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Outgoing"
+            android:text="Pending"
             android:textColor="@color/figmaBlack"
             android:textSize="@dimen/_12sdp"
             android:theme="@style/TextRegular" />

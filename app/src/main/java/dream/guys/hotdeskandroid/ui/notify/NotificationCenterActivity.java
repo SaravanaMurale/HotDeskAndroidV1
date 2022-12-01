@@ -101,7 +101,7 @@ public class NotificationCenterActivity extends AppCompatActivity {
                         outGoingNotificationList.addAll(response.body().getResults());
 
                         outGoingNotificationList.replaceAll(val ->{
-                            val.setIncoming("outgoing");
+                            val.setIncoming("Pending");
                             return val;
                         });
 

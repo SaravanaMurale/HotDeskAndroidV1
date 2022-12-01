@@ -46,10 +46,8 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
 
             saveTokenInserver(token);
         }
-
-
-
     }
+
 
 
 

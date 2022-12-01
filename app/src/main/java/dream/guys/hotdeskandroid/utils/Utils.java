@@ -357,7 +357,8 @@ public class Utils {
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(date);
                     cal.add(Calendar.MINUTE, 30);
-                    String endTime = Utils.setStartNearestFiveMinToMeeting(f24hours.format(cal.getTime()));
+//                    String endTime = Utils.setStartNearestFiveMinToMeeting(f24hours.format(cal.getTime()));
+                    String endTime = Utils.setStartNearestThirtyMinToMeeting(f24hours.format(cal.getTime()));
 
 //                            return String.valueOf(f12hours.format(date));
                     st.setText("" + f24hours.format(date));
@@ -2317,21 +2318,21 @@ public class Utils {
 
             int min = Integer.parseInt(orgSTime[1]);
 
-            if (min >= 0 && min < 20) {
-
-                fTime = cTime.replace(orgSTime[1], "30");
-
-            } else if (min >= 20 && min < 35) {
+            if (min >= 0 && min <= 15) {
 
                 fTime = cTime.replace(orgSTime[1], "45");
 
-            } else if (min >= 35 && min < 45) {
+            } else if (min > 15 && min <= 30) {
 
                 fTime = roundOffHour(cTime.replace(orgSTime[1], "00"));
 
-            } else {
+            } else if (min > 30 && min <= 45) {
 
                 fTime = roundOffHour(cTime.replace(orgSTime[1], "15"));
+
+            } else if (min > 45 && min <= 59) {
+
+                fTime = roundOffHour(cTime.replace(orgSTime[1], "30"));
 
             }
 

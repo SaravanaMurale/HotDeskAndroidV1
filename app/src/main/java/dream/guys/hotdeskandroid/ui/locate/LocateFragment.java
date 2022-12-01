@@ -2846,7 +2846,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }
     }
 
-    private void callMeetingRoomBookingBottomSheet(int meetingRoomId, String meetingRoomName, boolean isRequest, String action) {
+    private void callMeetingRoomBookingBottomSheet(int meetingRoomId, String meetingRoomName,
+                                                   boolean isRequest, String action) {
 
         System.out.println("MeetingIsRequetStatus "+isRequest);
 
@@ -3192,7 +3193,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 if (b){
                     //endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
                     endTRoomime.setText(Utils.setNearestThirtyMinToMeeting(startRoomTime.getText().toString()));
-                    showTvRoomEndTime.setText(Utils.showBottomSheetDateTimeAMPM(Utils.setNearestThirtyMinToMeeting(startRoomTime.getText().toString())));
+                    showTvRoomEndTime.setText(Utils.showBottomSheetDateTimeAMPM(
+                            Utils.setNearestThirtyMinToMeeting(startRoomTime.getText().toString())));
 
                     //endTRoomime.setText(Utils.setStartNearestFiveMinToMeeting(startRoomTime.getText().toString()));
                 }else {

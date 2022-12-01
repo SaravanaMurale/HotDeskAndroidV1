@@ -107,7 +107,8 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
         }
 
         if (deskList.get(position).isBookedByElse()) {
-            if(Utils.compareTwoDatesandTime(Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z",deskList.get(position).getAvailableTimeSlots()
+            if(Utils.compareTwoDatesandTime(Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z",
+                    deskList.get(position).getAvailableTimeSlots()
                     .get(deskList.get(position).getAvailableTimeSlots().size() - 1)
                     .getFrom())==1){
                 holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
