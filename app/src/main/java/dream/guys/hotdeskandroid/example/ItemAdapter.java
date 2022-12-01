@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -15,10 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import dream.guys.hotdeskandroid.R;
 
-public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
+public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> implements Filterable {
 
     public static ArrayList<DataModel> mList;
     private ArrayList<ValuesPOJO> list = new ArrayList<>();
@@ -161,6 +164,51 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     public int getItemCount() {
         return mList.size();
     }
+
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    Filter filter=new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            List<DataModel> filteredList=new ArrayList<>();
+
+            if(constraint==null || constraint.toString().isEmpty() || constraint.length()==0){
+                filteredList.addAll(mList);
+            }else {
+                String filterPattern=constraint.toString().toLowerCase().trim();
+
+                for (DataModel daoTeamMember:mList){
+
+                    for (ValuesPOJO valuesPOJO:list){
+                        if(valuesPOJO.getValues().toLowerCase().contains(filterPattern)){
+                            filteredList.add(daoTeamMember);
+                        }
+                    }
+
+                }
+
+            }
+
+            FilterResults results=new FilterResults();
+            results.values=filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+            mList.clear();
+            mList.addAll((List)results.values);
+            notifyDataSetChanged();
+
+        }
+    };
 
     public class ItemViewHolder extends RecyclerView.ViewHolder{
         private LinearLayout linearLayout;

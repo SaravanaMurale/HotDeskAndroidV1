@@ -2800,7 +2800,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 @Override
                 public void onResponse(Call<MeetingRoomDescriptionResponse> call, Response<MeetingRoomDescriptionResponse> response) {
                     MeetingRoomDescriptionResponse meetingRoomDescriptionResponse = response.body();
-                    meetingRoomDescription = meetingRoomDescriptionResponse.getDescription();
+                    if(meetingRoomDescriptionResponse.getDescription()!=null) {
+                        meetingRoomDescription = meetingRoomDescriptionResponse.getDescription();
+                    }
 
                     //New...
                     callMeetingRoomBookingBottomSheet(meetingRoomId, meetingRoomName, isReqduest, action);
@@ -7567,7 +7569,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                adapter.getFilter().filter(s);
+               adapter.getFilter().filter(s);
             }
 
             @Override

@@ -276,6 +276,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
 
         //Vehicle Number Change
+        binding.editVehicleNum.setImeOptions(EditorInfo.IME_ACTION_DONE);
         binding.editVehicleNum.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
