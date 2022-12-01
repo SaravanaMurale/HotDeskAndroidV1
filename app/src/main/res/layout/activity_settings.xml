@@ -36,8 +36,8 @@
                 android:layout_toEndOf="@id/profile_back"
                 android:text="Settings"
                 android:textColor="@color/figmaBlack"
-                android:textSize="@dimen/_14sdp"
-                android:theme="@style/TextBold" />
+                android:textSize="26sp"
+                android:theme="@style/TextRegular" />
 
 
         </RelativeLayout>

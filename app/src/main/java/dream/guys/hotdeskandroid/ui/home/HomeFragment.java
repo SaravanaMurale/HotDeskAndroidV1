@@ -699,12 +699,12 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     dialog.dismiss();
                     String resultString="";
-                    if (response.code()==200){
-                        if (response.body().getResultCode()!=null && response.body().getResultCode().equalsIgnoreCase("ok")) {
+                    if (response.code()==200 && response.body().getResultCode()!=null){
+                        if (response.body().getResultCode().equalsIgnoreCase("ok")) {
                             openCheckoutDialog("Booking Updated");
                             loadHomeList();
 //                            openCheckoutDialog("Booking Updated");
-                        } else {
+                        } else if(response.body().getResultCode()!=null){
                             if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
                                 resultString = "Invalid booking start time";
                             } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
@@ -760,7 +760,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                    Toast.makeText(getActivity(), ""+response.body().getResultCode(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(), ""+response.body().getResultCode(), Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                     BookingListResponse.DayGroup.CalendarEntry.Booking.Status calendarEntry = recyclerModelArrayList.get(pos).getCalendarEntriesModel().getBooking().getStatus();
                     calendarEntry.setId(1);

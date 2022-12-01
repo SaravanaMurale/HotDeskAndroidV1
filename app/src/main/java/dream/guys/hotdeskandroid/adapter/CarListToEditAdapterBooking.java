@@ -42,13 +42,13 @@ public class CarListToEditAdapterBooking extends RecyclerView.Adapter<CarListToE
     }
 
 
-    public CarListToEditAdapterBooking(Context context, List<CarParkListToEditResponse> carParkBookings, CarEditClickableBooking carEditClickable, String code) {
-
+    public CarListToEditAdapterBooking(Context context,
+                                       List<CarParkListToEditResponse> carParkBookings,
+                                       CarEditClickableBooking carEditClickable, String code) {
         this.context=context;
         this.carParkBookings=carParkBookings;
         this.carEditClickable=carEditClickable;
         this.code=code;
-
     }
 
     @NonNull
@@ -69,18 +69,21 @@ public class CarListToEditAdapterBooking extends RecyclerView.Adapter<CarListToE
             holder.editTextEdit.setVisibility(View.VISIBLE);
         } else if (carParkBookings.get(position).getStatus().getTimeStatus()
                 .equalsIgnoreCase("ongoing")) {
-            holder.editDelete.setVisibility(View.GONE);
+            holder.editDelete.setVisibility(View.VISIBLE);
             holder.editTextEdit.setVisibility(View.VISIBLE);
+
+            if (carParkBookings.get(position).getStatus().getBookingStatus()
+                    .equalsIgnoreCase("None")) {
+                holder.editDelete.setVisibility(View.VISIBLE);
+            } else {
+                holder.editDelete.setVisibility(View.GONE);
+            }
         } else if (carParkBookings.get(position).getStatus().getTimeStatus()
                 .equalsIgnoreCase("past")) {
             holder.editDelete.setVisibility(View.GONE);
             holder.editTextEdit.setVisibility(View.GONE);
         }
 
-        if (carParkBookings.get(position).getStatus().getBookingStatus()
-                .equalsIgnoreCase("None")){
-            holder.editDelete.setVisibility(View.VISIBLE);
-        }
 
         if(code.equals("5")){
             holder.editBookingImage.setImageDrawable(context.getDrawable(R.drawable.car));

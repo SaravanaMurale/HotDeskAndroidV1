@@ -42,7 +42,6 @@ public class MeetingListToEditAdapter extends RecyclerView.Adapter<MeetingListTo
         this.context=context;
         this.meetingListToEditResponseList=meetingListToEditResponseList;
         this.onMeetingEditClickable=onMeetingEditClickable;
-
     }
 
     @NonNull
@@ -62,8 +61,16 @@ public class MeetingListToEditAdapter extends RecyclerView.Adapter<MeetingListTo
             holder.editTextEdit.setVisibility(View.VISIBLE);
         } else if (meetingListToEditResponseList.get(position).getStatus().getTimeStatus()
                 .equalsIgnoreCase("ongoing")) {
-            holder.editDelete.setVisibility(View.GONE);
+            holder.editDelete.setVisibility(View.VISIBLE);
             holder.editTextEdit.setVisibility(View.VISIBLE);
+
+            if (meetingListToEditResponseList.get(position)
+                    .getStatus().getBookingStatus()
+                    .equalsIgnoreCase("None")) {
+                holder.editDelete.setVisibility(View.VISIBLE);
+            } else {
+                holder.editDelete.setVisibility(View.GONE);
+            }
         } else if (meetingListToEditResponseList.get(position).getStatus().getTimeStatus()
                 .equalsIgnoreCase("past")) {
             holder.editDelete.setVisibility(View.GONE);

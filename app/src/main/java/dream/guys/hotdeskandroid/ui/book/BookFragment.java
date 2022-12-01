@@ -335,6 +335,7 @@ public class BookFragment extends Fragment implements
 
         selectedTeamId = SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID);
         myTeamId = SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID);
+        calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
 //        loadDefaultLocation();
         setLanguage();
 
@@ -418,12 +419,13 @@ public class BookFragment extends Fragment implements
                 if (countCheck) {
                     if (!(Utils.compareTwoDate(date,Utils.getCurrentDate()) == 1)){
                         if (selectedicon==0){
-                            /*if (isGlobalLocationSetUP)
-                                getAvaliableDeskDetails("3",Utils.getISO8601format(date));
-                            else*/
-//                            ((MainActivity) getActivity()).getAddEditDesk("3",Utils.getISO8601format(date));
+//                            if (isGlobalLocationSetUP)
+//                                getAvaliableDeskDetails("3",Utils.getISO8601format(date));
                             getAddEditDesk("3",Utils.getISO8601format(date));
                             calSelectedDate=Utils.getISO8601format(date);
+
+//                            else
+//                            ((MainActivity) getActivity()).getAddEditDesk("3",Utils.getISO8601format(date));
                         } else if (selectedicon==1) {
                             getMeetingBookingListToEdit("" + Utils.getYearMonthDateFormat(date)+"T00:00:00.000Z", "new");
                             calSelectedDate=Utils.getISO8601format(date);
@@ -540,7 +542,7 @@ public class BookFragment extends Fragment implements
 
 
             initLoadFloorDetails(canvasss);
-            getAvaliableDeskDetails("3",calSelectedDate);
+//            getAvaliableDeskDetails("3",calSelectedDate);
             /*
             //Used For Desk Avaliability Checking
             getAvaliableDeskDetails(null, 0);
@@ -601,13 +603,18 @@ public class BookFragment extends Fragment implements
             call.enqueue(new Callback<List<AmenitiesResponse>>() {
                 @Override
                 public void onResponse(Call<List<AmenitiesResponse>> call, Response<List<AmenitiesResponse>> response) {
-                    if(response.code()==200){
-                        if(response.body().size() > 0)
-                            amenitiesList = response.body();
-                    }else if(response.code()==401){
-                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
-                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                    try {
+                        if(response.code()==200){
+                            if(response.body().size() > 0)
+                                amenitiesList = response.body();
+                        }else if(response.code()==401){
+                            Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+                            SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                        }
+                    } catch (Exception exception){
+
                     }
+
                 }
                 @Override
                 public void onFailure(Call<List<AmenitiesResponse>> call, Throwable t) {
@@ -932,24 +939,29 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onResponse(Call<List<DeskRoomCountResponse>> call, Response<List<DeskRoomCountResponse>> response) {
                     dialog.dismiss();
-                    if (response.code()==200 && response.body().size()>0){
-                        events.clear();
-                        List<DeskRoomCountResponse> dsk = response.body();
-                        int firstLocationId = dsk.get(0).getLocationId();
-                        for (int i=0; i<dsk.size();i++){
-                            if (firstLocationId == dsk.get(i).getLocationId()){
-                                events.add(dsk.get(i));
+                    try {
+
+                        if (response.code()==200 && response.body().size()>0){
+                            events.clear();
+                            List<DeskRoomCountResponse> dsk = response.body();
+                            int firstLocationId = dsk.get(0).getLocationId();
+                            for (int i=0; i<dsk.size();i++){
+                                if (firstLocationId == dsk.get(i).getLocationId()){
+                                    events.add(dsk.get(i));
+                                }
                             }
-                        }
-                        if (events.size()>0){
-                            binding.calendarView.updateCalendar(events, -1);
-                        }
-                    } else if(response.code()==401){
-                        //Handle if token got expired
+                            if (events.size()>0){
+                                binding.calendarView.updateCalendar(events, -1);
+                            }
+                        } else if(response.code()==401){
+                            //Handle if token got expired
 //                        ProgressDialog.dismisProgressBar(getContext(),dialog);
-                        SessionHandler.getInstance().saveBoolean(getActivity(),
-                                AppConstants.LOGIN_CHECK,false);
-                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+                            SessionHandler.getInstance().saveBoolean(getActivity(),
+                                    AppConstants.LOGIN_CHECK,false);
+                            Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+                        }
+                    } catch (Exception exception){
+
                     }
                 }
 
@@ -1013,18 +1025,23 @@ public class BookFragment extends Fragment implements
                 public void onResponse(Call<List<DeskRoomCountResponse>> call, Response<List<DeskRoomCountResponse>> response) {
                     dialog.dismiss();
                     isGlobalLocationSetUP = true;
-                    if (response.code()==200 && response.body().size()>0){
-                        globalSelectedTeamId = response.body().get(0).getTeamId();
-                        events.clear();
-                        events.addAll(response.body());
-                        if (events.size()>0){
-                            binding.calendarView.updateCalendar(events, -1);
-                        }
-                    } else if(response.code()==401){
-                        //Handle if token got expired
+                    try{
+
+                        if (response.code()==200 && response.body().size()>0){
+                            events.clear();
+                            events.addAll(response.body());
+                            if (events.size()>0){
+                                binding.calendarView.updateCalendar(events, -1);
+                            }
+
+                        } else if(response.code()==401){
+                            //Handle if token got expired
 //                        ProgressDialog.dismisProgressBar(getContext(),dialog);
-                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+                            SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                            Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+                        }
+                    } catch(Exception exception){
+
                     }
                 }
 
@@ -1178,10 +1195,15 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onResponse(Call<List<CarParkLocationsModel>> call, Response<List<CarParkLocationsModel>> response) {
 //                    ProgressDialog.dismisProgressBar(getContext(),dialog);
-                    if (response.code()==200 && response.body().size()>0){
-                        getParkingSpotList(""+response.body().get(0).getId(),editBookingDetails,status);
-                    } else {
-                        Toast.makeText(getContext(), "No parking locations Aavilable", Toast.LENGTH_SHORT).show();
+                    try {
+
+                        if (response.code()==200 && response.body().size()>0){
+                            getParkingSpotList(""+response.body().get(0).getId(),editBookingDetails,status);
+                        } else {
+                            Toast.makeText(getContext(), "No parking locations Aavilable", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception exception){
+
                     }
 
                 }
@@ -1210,40 +1232,45 @@ public class BookFragment extends Fragment implements
 //                    ProgressDialog.dismisProgressBar(getContext(),dialog);
 
                     parkingSpotModelList.clear();
-                    if(response.code()==200 && response.body()!=null && response.body().size()>0){
-                        for(int i=0;i<response.body().size();i++){
-                            if(response.body().get(i).isActive()){
-                                parkingSpotModelList.add(response.body().get(i));
-                            }
-                        }
-                        boolean checkIsRequest=false;
-                        if (parkingSpotModelList!=null && parkingSpotModelList.size()>0){
-                            loo :
-                            for (int i=0;i<parkingSpotModelList.size();i++){
-                                if (editBookingDetails.getParkingSlotId()==parkingSpotModelList.get(i).getId()){
-                                    editBookingDetails.setLocationAddress(parkingSpotModelList.get(i).getLocation().getName());
-                                    checkIsRequest=true;
-                                    break loo;
+                    try {
+                        if(response.code()==200 && response.body()!=null && response.body().size()>0){
+                            for(int i=0;i<response.body().size();i++){
+                                if(response.body().get(i).isActive()){
+                                    parkingSpotModelList.add(response.body().get(i));
                                 }
                             }
+                            boolean checkIsRequest=false;
+                            if (parkingSpotModelList!=null && parkingSpotModelList.size()>0){
+                                loo :
+                                for (int i=0;i<parkingSpotModelList.size();i++){
+                                    if (editBookingDetails.getParkingSlotId()==parkingSpotModelList.get(i).getId()){
+                                        editBookingDetails.setLocationAddress(parkingSpotModelList.get(i).getLocation().getName());
+                                        checkIsRequest=true;
+                                        break loo;
+                                    }
+                                }
+                            }
+
+                            if (newEdit.equalsIgnoreCase("new"))
+                                if (parkingSpotModelList.size()>0 && parkingSpotModelList.get(0).getParkingSlotAvailability()==2)
+                                    editBookingUsingBottomSheet(editBookingDetails,3,0,"request");
+                                else
+                                    editBookingUsingBottomSheet(editBookingDetails,3,0,"request");
+                            else if (newEdit.equalsIgnoreCase("new_deep_link")){
+                                if (checkIsRequest)
+                                    editBookingUsingBottomSheet(editBookingDetails,3,0,"new_deep_link");
+                                else
+                                    editBookingUsingBottomSheet(editBookingDetails,3,0,"request");
+                            }else
+                                editBookingUsingBottomSheet(editBookingDetails,3,0,"edit");
+
+
+                        } else {
+                            getCarParkLocationsList(editBookingDetails,"new");
                         }
 
-                        if (newEdit.equalsIgnoreCase("new"))
-                            if (parkingSpotModelList.size()>0 && parkingSpotModelList.get(0).getParkingSlotAvailability()==2)
-                                editBookingUsingBottomSheet(editBookingDetails,3,0,"request");
-                            else
-                                editBookingUsingBottomSheet(editBookingDetails,3,0,"request");
-                        else if (newEdit.equalsIgnoreCase("new_deep_link")){
-                            if (checkIsRequest)
-                                editBookingUsingBottomSheet(editBookingDetails,3,0,"new_deep_link");
-                            else
-                                editBookingUsingBottomSheet(editBookingDetails,3,0,"request");
-                        }else
-                            editBookingUsingBottomSheet(editBookingDetails,3,0,"edit");
+                    } catch (Exception exception){
 
-
-                    } else {
-                        getCarParkLocationsList(editBookingDetails,"new");
                     }
 
                 }
@@ -1436,7 +1463,7 @@ public class BookFragment extends Fragment implements
         //CarListToEditAdapter carListToEditAdapter = new CarListToEditAdapter(getContext(), carParkingForEditResponse, this, code);
         //rvCarEditList.setAdapter(carListToEditAdapter);
 
-        CarListToEditAdapterBooking carListToEditAdapter=new CarListToEditAdapterBooking(getContext(),carParkingForEditResponse,this,code);
+        CarListToEditAdapterBooking carListToEditAdapter = new CarListToEditAdapterBooking(getContext(),carParkingForEditResponse,this,code);
         rvCarEditList.setAdapter(carListToEditAdapter);
 
         addNew.setOnClickListener(new View.OnClickListener() {
@@ -1481,9 +1508,9 @@ public class BookFragment extends Fragment implements
                     getParkingSpotList(""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID),editBookingDetails,"new");
                 else
                     getCarParkLocationsList(editBookingDetails,"new");
-
             }
         });
+
         editClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1649,62 +1676,66 @@ public class BookFragment extends Fragment implements
             call.enqueue(new Callback<List<UserAllowedMeetingResponse>>() {
                 @Override
                 public void onResponse(Call<List<UserAllowedMeetingResponse>> call, Response<List<UserAllowedMeetingResponse>> response) {
-                    if (response.code()==200) {
-                        if (allMeetingRoomList!=null)
-                            allMeetingRoomList.clear();
-                        else
-                            allMeetingRoomList = new ArrayList<>();
+                    try{
+                        if (response.code()==200) {
+                            if (allMeetingRoomList!=null)
+                                allMeetingRoomList.clear();
+                            else
+                                allMeetingRoomList = new ArrayList<>();
 
-                        allMeetingRoomList = response.body();
-                        List<Integer> amenitiesIntList =new ArrayList<>();
-                        List<String> amenitiesStringList =new ArrayList<>();
-                        goo:
-                        for (int i=0; i < allMeetingRoomList.size(); i++) {
-                            if (allMeetingRoomList.get(i).getId() == calId) {
-                                editDeskBookingDetails.setCapacity(""+allMeetingRoomList.get(i).getNoOfPeople());
-                                editDeskBookingDetails.setLocationAddress(""+allMeetingRoomList.get(i).getLocationMeeting().getName());
+                            allMeetingRoomList = response.body();
+                            List<Integer> amenitiesIntList =new ArrayList<>();
+                            List<String> amenitiesStringList =new ArrayList<>();
+                            goo:
+                            for (int i=0; i < allMeetingRoomList.size(); i++) {
+                                if (allMeetingRoomList.get(i).getId() == calId) {
+                                    editDeskBookingDetails.setCapacity(""+allMeetingRoomList.get(i).getNoOfPeople());
+                                    editDeskBookingDetails.setLocationAddress(""+allMeetingRoomList.get(i).getLocationMeeting().getName());
 
-                                team:
-                                for (int x=0; x<allMeetingRoomList.get(i).getTeams().size(); x++){
-                                    if(allMeetingRoomList.get(i).getTeams().get(x).getId() == myTeamId){
-                                        editDeskBookingDetails.setMeetingRoomStatus(1);
-                                        break team;
-                                    } else {
-                                        editDeskBookingDetails.setMeetingRoomStatus(2);
+                                    team:
+                                    for (int x=0; x<allMeetingRoomList.get(i).getTeams().size(); x++){
+                                        if(allMeetingRoomList.get(i).getTeams().get(x).getId() == myTeamId){
+                                            editDeskBookingDetails.setMeetingRoomStatus(1);
+                                            break team;
+                                        } else {
+                                            editDeskBookingDetails.setMeetingRoomStatus(2);
+                                        }
+                                    }
+                                    if (allMeetingRoomList.get(i).getAmenities()!=null){
+                                        for (int j=0;j<allMeetingRoomList.get(i).getAmenities().size();j++){
+                                            amenitiesIntList.add(allMeetingRoomList.get(i).getAmenities().get(j).getId());
+                                        }
+                                        break goo;
                                     }
                                 }
-                                if (allMeetingRoomList.get(i).getAmenities()!=null){
-                                    for (int j=0;j<allMeetingRoomList.get(i).getAmenities().size();j++){
-                                        amenitiesIntList.add(allMeetingRoomList.get(i).getAmenities().get(j).getId());
-                                    }
-                                    break goo;
-                                }
                             }
-                        }
 
-                        for (int i=0; i<amenitiesIntList.size();i++) {
-                            for (int j=0;j<amenitiesList.size();j++) {
-                                if (amenitiesIntList.get(i) == amenitiesList.get(j).getId()){
-                                    //System.out.println("ame list vala"+amenitiesList.get(j).getName());
-                                    amenitiesStringList.add(amenitiesList.get(j).getName());
+                            for (int i=0; i<amenitiesIntList.size();i++) {
+                                for (int j=0;j<amenitiesList.size();j++) {
+                                    if (amenitiesIntList.get(i) == amenitiesList.get(j).getId()){
+                                        //System.out.println("ame list vala"+amenitiesList.get(j).getName());
+                                        amenitiesStringList.add(amenitiesList.get(j).getName());
+                                    }
                                 }
                             }
-                        }
 
 
 //                        Utils.toastMessage(getActivity(),"welcom bala "+amenitiesStringList.size());
-                        editDeskBookingDetails.setAmenities(amenitiesStringList);
+                            editDeskBookingDetails.setAmenities(amenitiesStringList);
 //                        Log.d(TAG, "onResponse: amenitySize"+editDeskBookingDetails.getAmenities().size());
 
-                        editBookingUsingBottomSheet(editDeskBookingDetails,2,position,newEditStatus);
+                            editBookingUsingBottomSheet(editDeskBookingDetails,2,position,newEditStatus);
 
-                    } else if(response.code()==401){
-                        //Handle if token got expired
+                        } else if(response.code()==401){
+                            //Handle if token got expired
 //                        ProgressDialog.dismisProgressBar(getContext(),dialog);
-                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
-                    } else {
-                        Toast.makeText(getActivity(), "elseeee", Toast.LENGTH_SHORT).show();
+                            SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                            Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+                        } else {
+//                            Toast.makeText(getActivity(), "elseeee", Toast.LENGTH_SHORT).show();
+                        }
+                    }catch (Exception exception){
+
                     }
                 }
 
@@ -1886,6 +1917,10 @@ public class BookFragment extends Fragment implements
 
     private void newDeskBookingSheet(BookingForEditResponse bookingForEditResponse, String code) {
         bookingForEditResponseDesk.clear();
+        changedTeamId=0;
+        changedDeskId=0;
+        selectedDeskId=0;
+
         if (isGlobalLocationSetUP && bookingDeskList.size()>0){
             //System.out.println(" data in");
             for (int i=0; i < bookingDeskList.size(); i++){
@@ -1923,6 +1958,7 @@ public class BookFragment extends Fragment implements
                 editBookingDetailsGlobal.setCalId(0);
                 editBookingDetailsGlobal.setDeskCode(bookingForEditResponseDesk.get(i).getDeskCode());
                 editBookingDetailsGlobal.setDesktId(bookingForEditResponseDesk.get(i).getTeamDeskId());
+                editBookingDetailsGlobal.setTimeZone(bookingForEditResponseDesk.get(i).getTimeZones().get(0).getTimeZoneId());
                 editBookingDetailsGlobal.setDeskTeamId(bookingForEditResponseDesk.get(i).getTeamId());
                 selectedDeskId = bookingForEditResponseDesk.get(i).getTeamDeskId();
                 editBookingDetailsGlobal.setDeskStatus(0);
@@ -1934,6 +1970,7 @@ public class BookFragment extends Fragment implements
                 editBookingDetailsGlobal.setDeskCode(bookingForEditResponseDesk.get(0).getDeskCode());
                 editBookingDetailsGlobal.setDesktId(bookingForEditResponseDesk.get(0).getTeamDeskId());
                 editBookingDetailsGlobal.setDeskTeamId(bookingForEditResponseDesk.get(0).getTeamId());
+                editBookingDetailsGlobal.setTimeZone(bookingForEditResponseDesk.get(i).getTimeZones().get(0).getTimeZoneId());
                 selectedDeskId = bookingForEditResponseDesk.get(0).getTeamDeskId();
                 editBookingDetailsGlobal.setDate(Utils.convertStringToDateFormet(calSelectedDate));
                 editBookingDetailsGlobal.setCalId(0);
@@ -1961,12 +1998,10 @@ public class BookFragment extends Fragment implements
         }
 
 
-        changedTeamId=0;
-        changedDeskId=0;
-        selectedDeskId=0;
 
         if(isGlobalLocationSetUP) {
             selectedTeamId = globalSelectedTeamId;
+            Toast.makeText(context, ""+selectedTeamId, Toast.LENGTH_SHORT).show();
             for (int i=0; i<activeTeamsList.size(); i++) {
                 if (selectedTeamId==activeTeamsList.get(i).getId()) {
                     selectedTeamName = activeTeamsList.get(i).getName();
@@ -2754,14 +2789,20 @@ public class BookFragment extends Fragment implements
                 if(!selectDisabled){
                     editDeskBookingDetails.setDisplayTime(startTime.getText().toString()+" to "+endTime.getText().toString());
                     if (dskRoomParkStatus==1){
-                        if (editDeskBookingDetails.getRequestedTeamId()>0)
-                            selectedDeskList(editDeskBookingDetails.getRequestedTeamId(),
+                        if (isGlobalLocationSetUP){
+                            selectedDeskList(selectedTeamId,
                                     Utils.getISO8601format(editDeskBookingDetails.getDate()),
                                     editDeskBookingDetails,newEditStatus);
-                        else
-                            selectedDeskList(selectedTeamId,
-                                    Utils.getISO8601format(editDeskBookingDetails.getDate())
-                                    ,editDeskBookingDetails,newEditStatus);
+                        } else {
+                            if (editDeskBookingDetails.getRequestedTeamId()>0)
+                                selectedDeskList(editDeskBookingDetails.getRequestedTeamId(),
+                                        Utils.getISO8601format(editDeskBookingDetails.getDate()),
+                                        editDeskBookingDetails,newEditStatus);
+                            else
+                                selectedDeskList(selectedTeamId,
+                                        Utils.getISO8601format(editDeskBookingDetails.getDate())
+                                        ,editDeskBookingDetails,newEditStatus);
+                        }
                     } else {
                         if (editDeskBookingDetails.getDeskStatus()!=1 && editDeskBookingDetails.getDeskStatus()!=2)
                             callDeskBottomSheetDialog();
@@ -2852,6 +2893,8 @@ public class BookFragment extends Fragment implements
 
     }
     private void newBookingCallForDesk(EditBookingDetails editDeskBookingDetails,EditText edComments) {
+        Log.d(TAG,"new booking enter");
+
         JsonObject jsonOuterObject = new JsonObject();
         JsonObject jsonInnerObject = new JsonObject();
         JsonObject jsonChangesObject = new JsonObject();
@@ -2920,6 +2963,7 @@ public class BookFragment extends Fragment implements
 
     }
     private void requestBookingCallForDesk(EditBookingDetails editDeskBookingDetails,EditText edComments) {
+        Log.d(TAG,"request booking enter");
         JsonObject jsonOuterObject = new JsonObject();
         JsonObject jsonInnerObject = new JsonObject();
         JsonObject jsonChangesObject = new JsonObject();
@@ -2932,6 +2976,7 @@ public class BookFragment extends Fragment implements
         jsonOuterObject.addProperty("teamMembershipId",SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAMMEMBERSHIP_ID));
         if (!edComments.getText().toString().trim().equalsIgnoreCase("") || !edComments.getText().toString().trim().isEmpty())
             jsonChangesObject.addProperty("comments",edComments.getText().toString());
+
         jsonChangesObject.addProperty("timeZoneId", editDeskBookingDetails.getTimeZone());
         jsonChangesObject.addProperty("from", "2000-01-01T"+startTime.getText().toString()+":00.000Z");
         jsonChangesObject.addProperty("to", "2000-01-01T"+endTime.getText().toString()+":00.000Z");
@@ -3891,65 +3936,68 @@ public class BookFragment extends Fragment implements
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     dialog.dismiss();
                     String resultString="";
-                    if (response.code()==200){
+                    try {
+                        if (response.code()==200 && response.body().getResultCode()!=null){
 //                        Utils.showCustomAlertDialog(getActivity(),"Update Success");
 //                        Toast.makeText(getActivity(), "Success Bala", Toast.LENGTH_SHORT).show();
-                        if (response.body().getResultCode()!=null
-                                && response.body().getResultCode().equalsIgnoreCase("ok")){
-                            if (newEditDelete.equalsIgnoreCase("new")
-                                    || newEditDelete.equalsIgnoreCase("new_deep_link"))
-                                openCheckoutDialog("Booking Created",dskRoomStatus);
-                            else if (newEditDelete.equalsIgnoreCase("edit"))
-                                openCheckoutDialog("Booking Updated",dskRoomStatus);
-                            else if (newEditDelete.equalsIgnoreCase("request"))
-                                openCheckoutDialog("Booking Created",dskRoomStatus);
-                            else
-                                openCheckoutDeleteDialog("Booking Deleted",dskRoomStatus);
+                            if (response.body().getResultCode().equalsIgnoreCase("ok")){
+                                if (newEditDelete.equalsIgnoreCase("new")
+                                        || newEditDelete.equalsIgnoreCase("new_deep_link"))
+                                    openCheckoutDialog("Booking Created",dskRoomStatus);
+                                else if (newEditDelete.equalsIgnoreCase("edit"))
+                                    openCheckoutDialog("Booking Updated",dskRoomStatus);
+                                else if (newEditDelete.equalsIgnoreCase("request"))
+                                    openCheckoutDialog("Booking Created",dskRoomStatus);
+                                else
+                                    openCheckoutDeleteDialog("Booking Deleted",dskRoomStatus);
 
-                            switch (dskRoomStatus){
-                                case 1:
-                                    tabToggleViewClicked(0);
-                                    break;
-                                case 2:
-                                    tabToggleViewClicked(1);
-                                    break;
-                                case 3:
-                                    tabToggleViewClicked(2);
-                                    break;
-                                default:
-                                    break;
-                            }
+                                switch (dskRoomStatus){
+                                    case 1:
+                                        tabToggleViewClicked(0);
+                                        break;
+                                    case 2:
+                                        tabToggleViewClicked(1);
+                                        break;
+                                    case 3:
+                                        tabToggleViewClicked(2);
+                                        break;
+                                    default:
+                                        break;
+                                }
 
 //                            openCheckoutDialog("Booking Updated");
-                        }else {
-                            if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
-                                resultString = "Invalid booking start time";
-                            } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
-                                resultString = "Invalid booking end time";
-                            } else if (response.body().getResultCode().toString().equals("INVALID_TIMEZONE_ID")) {
-                                resultString = "Invalid timezone";
-                            } else if (response.body().getResultCode().toString().equals("INVALID_TIMEPERIOD")) {
-                                resultString = "Invalid timeperiod";
-                            } else if (response.body().getResultCode().toString().equals("USER_TIME_OVERLAP")) {
-                                resultString = "Time overlaps with another booking";
-                            } else if(response.body().getResultCode().toString().equals("COVID_SYMPTOMS")){
-                                resultString = "COVID_SYMPTOMS";
-                            }else if(response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")){
-                                resultString = "Desk is Unavailable";
                             }else {
-                                resultString = response.body().getResultCode().toString();
+                                if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
+                                    resultString = "Invalid booking start time";
+                                } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
+                                    resultString = "Invalid booking end time";
+                                } else if (response.body().getResultCode().toString().equals("INVALID_TIMEZONE_ID")) {
+                                    resultString = "Invalid timezone";
+                                } else if (response.body().getResultCode().toString().equals("INVALID_TIMEPERIOD")) {
+                                    resultString = "Invalid timeperiod";
+                                } else if (response.body().getResultCode().toString().equals("USER_TIME_OVERLAP")) {
+                                    resultString = "Time overlaps with another booking";
+                                } else if(response.body().getResultCode().toString().equals("COVID_SYMPTOMS")){
+                                    resultString = "COVID_SYMPTOMS";
+                                }else if(response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")){
+                                    resultString = "Desk is Unavailable";
+                                }else {
+                                    resultString = response.body().getResultCode().toString();
+                                }
+                                Utils.showCustomAlertDialog(getActivity(), resultString);
                             }
-                            Utils.showCustomAlertDialog(getActivity(), resultString);
-                        }
-                    }else if (response.code() == 500){
-                        Utils.showCustomAlertDialog(getActivity(),""+response.message());
-                    }else if (response.code() == 401){
-                        Utils.showCustomTokenExpiredDialog(getActivity(),"401 Error Response");
-                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                        }else if (response.code() == 500){
+                            Utils.showCustomAlertDialog(getActivity(),""+response.message());
+                        }else if (response.code() == 401){
+                            Utils.showCustomTokenExpiredDialog(getActivity(),"401 Error Response");
+                            SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
 //                        Utils.finishAllActivity(getContext());
-                    }
-                    else {
-                        Toast.makeText(getActivity(), "Response Failure", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(getActivity(), "Response Failure", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception exception){
+                        Log.e(TAG,exception.getMessage());
                     }
                 }
 
@@ -4577,6 +4625,27 @@ public class BookFragment extends Fragment implements
                 if (s.toString().contains(" ")) {
 
                     Chip chip = new Chip(getContext());
+                    if( Utils.isValidEmail(s.toString().trim())){
+
+                        chip.setText(s.toString());
+                        chip.setCheckable(false);
+                        chip.setClickable(false);
+                        chip.setTextAppearance(R.style.chipText);
+                        chip.setCloseIconVisible(true);
+                        externalAttendeesChipGroup.setVisibility(View.VISIBLE);
+                        externalAttendeesChipGroup.addView(chip);
+
+                        //Add In List
+                        externalAttendeesEmail.add(s.toString());
+
+                        externalAttendees.clearFocus();
+                        externalAttendees.setText("");
+                    }else {
+                        Utils.toastMessage(getContext(), "Pls Enter Valid Email");
+                    }
+
+/*
+
                     chip.setText(s.toString());
                     chip.setCheckable(false);
                     chip.setTextAppearance(R.style.chipText);
@@ -4591,6 +4660,7 @@ public class BookFragment extends Fragment implements
                     externalAttendees.clearFocus();
                     externalAttendees.setText("");
 
+*/
 
                     chip.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -4780,35 +4850,39 @@ public class BookFragment extends Fragment implements
 
                 chipList.clear();
                 String resultString = "";
-                if (response.code()==200 && response.body().getResultCode().equalsIgnoreCase("ok")){
-                    if(newEditStatus.equalsIgnoreCase("new") ||
-                            newEditStatus.equalsIgnoreCase("request"))
-                        openCheckoutDialog("Booking Created",2);
-                    else
-                        openCheckoutDialog("Booking Updated",2);
-                }else if(response.code()==500){
-                    resultString = response.body().toString();
-                    Utils.showCustomAlertDialog(getActivity(), resultString);
-                } else {
-                    if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
-                        resultString = "Invalid booking start time";
-                    } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
-                        resultString = "Invalid booking end time";
-                    } else if (response.body().getResultCode().toString().equals("INVALID_TIMEZONE_ID")) {
-                        resultString = "Invalid timezone";
-                    } else if (response.body().getResultCode().toString().equals("INVALID_TIMEPERIOD")) {
-                        resultString = "Invalid timeperiod";
-                    }else if(response.body().getResultCode().toString().equals("USER_TIME_OVERLAP")){
-                        resultString = "Time overlaps with another booking";
-                    }else if(response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")){
-                        resultString = "Desk is Unavailable";
+                try {
+                    if (response.code()==200 &&response.body().getResultCode()!=null && response.body().getResultCode().equalsIgnoreCase("ok")){
+                        if(newEditStatus.equalsIgnoreCase("new") ||
+                                newEditStatus.equalsIgnoreCase("request"))
+                            openCheckoutDialog("Booking Created",2);
+                        else
+                            openCheckoutDialog("Booking Updated",2);
+                    }else if(response.code()==500){
+                        resultString = response.body().toString();
+                        Utils.showCustomAlertDialog(getActivity(), resultString);
                     } else {
-                        resultString = response.body().getResultCode().toString();
+                        if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
+                            resultString = "Invalid booking start time";
+                        } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
+                            resultString = "Invalid booking end time";
+                        } else if (response.body().getResultCode().toString().equals("INVALID_TIMEZONE_ID")) {
+                            resultString = "Invalid timezone";
+                        } else if (response.body().getResultCode().toString().equals("INVALID_TIMEPERIOD")) {
+                            resultString = "Invalid timeperiod";
+                        }else if(response.body().getResultCode().toString().equals("USER_TIME_OVERLAP")){
+                            resultString = "Time overlaps with another booking";
+                        }else if(response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")){
+                            resultString = "Desk is Unavailable";
+                        } else {
+                            resultString = response.body().getResultCode().toString();
+                        }
+                        roomBottomSheet.dismiss();
+                        Utils.showCustomAlertDialog(getActivity(), resultString);
                     }
-                    roomBottomSheet.dismiss();
-                    Utils.showCustomAlertDialog(getActivity(), resultString);
-                }
 
+                } catch (Exception exception){
+                    Log.e(TAG,exception.getMessage());
+                }
                 ProgressDialog.dismisProgressBar(getContext(),dialog);
 //                binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
@@ -5381,9 +5455,9 @@ public class BookFragment extends Fragment implements
 
             //Used For Desk Avaliability Checking
             if (!calSelectedDate.isEmpty() || !calSelectedDate.equalsIgnoreCase(""))
-                getDeskCountLocation(calSelectedMont, ""+SessionHandler.getInstance().getInt(getContext(),AppConstants.LOCATION_ID),canvasDrawStatus);
-            else if (!calSelectedMont.isEmpty() || !calSelectedMont.equalsIgnoreCase(""))
                 getDeskCountLocation(calSelectedDate, ""+SessionHandler.getInstance().getInt(getContext(),AppConstants.LOCATION_ID),canvasDrawStatus);
+            else if (!calSelectedMont.isEmpty() || !calSelectedMont.equalsIgnoreCase(""))
+                getDeskCountLocation(calSelectedMont, ""+SessionHandler.getInstance().getInt(getContext(),AppConstants.LOCATION_ID),canvasDrawStatus);
             else
                 getDeskCountLocation(Utils.getCurrentDate(), ""+SessionHandler.getInstance().getInt(getContext(),AppConstants.LOCATION_ID),canvasDrawStatus);
 
@@ -5550,14 +5624,20 @@ public class BookFragment extends Fragment implements
         call.enqueue(new Callback<BookingForEditResponse>() {
             @Override
             public void onResponse(Call<BookingForEditResponse> call, Response<BookingForEditResponse> response) {
-                if(response.code()==200){
-                    bookingDeskList.clear();
-                    if(response.body().getTeamDeskAvailability() != null)
-                        bookingDeskList = response.body().getTeamDeskAvailability();
-                    if(bookingDeskList!=null && bookingDeskList.size() > 0)
-                        selectedTeamId = bookingDeskList.get(0).getTeamId();
-                }
+                try{
+                    if(response.code()==200){
+                        bookingDeskList.clear();
+                        if(response.body().getTeamDeskAvailability() != null)
+                            bookingDeskList = response.body().getTeamDeskAvailability();
+                        if(bookingDeskList!=null && bookingDeskList.size() > 0){
+                            selectedTeamId = bookingDeskList.get(0).getTeamId();
+                            globalSelectedTeamId = bookingDeskList.get(0).getTeamId();
+                        }
+                    }
 
+                }catch (Exception exception){
+                    Log.e(TAG,exception.getMessage());
+                }
             }
 
             @Override
@@ -6945,17 +7025,22 @@ public class BookFragment extends Fragment implements
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    if (response.code()==200){
-                        if (response.body().equalsIgnoreCase("true")){
-                            teamsCheckBoxStatus = true;
-                        } else {
+                    try {
+                        if (response.code()==200){
+                            if (response.body().equalsIgnoreCase("true")){
+                                teamsCheckBoxStatus = true;
+                            } else {
+                                teamsCheckBoxStatus = false;
+                            }
+                        }else if (response.code() == 403){
+                            teamsCheckBoxStatus = false;
+                        }else {
                             teamsCheckBoxStatus = false;
                         }
-                    }else if (response.code() == 403){
-                        teamsCheckBoxStatus = false;
-                    }else {
-                        teamsCheckBoxStatus = false;
+                    } catch (Exception exception){
+
                     }
+
                 }
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {

@@ -138,7 +138,7 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
 
                     } else {
                         if (!rooms.get(position).isActive()
-                                || rooms.get(position).getAutomaticApprovalStatus()== 3){
+                                || rooms.get(position).getAutomaticApprovalStatus() == 3){
                             holder.card.setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
                             holder.select.setVisibility(View.GONE);
                             holder.capacityNo.setText(""+rooms.get(position).getNoOfPeople());
