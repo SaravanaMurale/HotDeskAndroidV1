@@ -48,6 +48,7 @@ import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
 import dream.guys.hotdeskandroid.model.response.TypeOfLoginResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
+import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
 import dream.guys.hotdeskandroid.ui.login.sso.B2CConfiguration;
 import dream.guys.hotdeskandroid.ui.login.sso.B2CUser;
 import dream.guys.hotdeskandroid.utils.AppConstants;
@@ -656,6 +657,11 @@ public class LoginActivity extends AppCompatActivity {
                             SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.TEAMMEMBERSHIP_ID, Utils.checkStringParms(userDetailsResponse.getTeamMembershipId()));
 
                             SessionHandler.getInstance().saveBoolean(LoginActivity.this, AppConstants.PIN_SETUP_DONE, userDetailsResponse.isHasPinSetup());
+
+                            if(userDetailsResponse.isHasPinSetup()){
+                                SessionHandler.getInstance().saveBoolean(LoginActivity.this,AppConstants.PIN_ACTIVE_STATUS_AFTER_LOGOUT,true);
+                            }
+
                             //Log.d(TAG, "onResponse: "+userDetailsResponse.getDefaultLocation().getParentLocationId());
                             if (userDetailsResponse.getDefaultCarParkLocation() != null) {
                                 SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.DEFAULT_CAR_PARK_LOCATION_ID,

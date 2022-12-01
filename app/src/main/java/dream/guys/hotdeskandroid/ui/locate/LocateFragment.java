@@ -787,7 +787,40 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }
 
         binding.rvLocateMyTeam.setHasFixedSize(true);
-        locateMyTeamAdapter = new LocateMyTeamAdapter(getContext(), locateMyTeamMemberStatusList, this,firstAidList,firewardenList);
+
+
+        //For FirstAid
+        for (int i = 0; i < firstAidList .size() ; i++) {
+
+            for (int j = 0; j < locateMyTeamMemberStatusList.size(); j++) {
+
+               if(firstAidList.get(i)==locateMyTeamMemberStatusList.get(j).getUserId()){
+                   locateMyTeamMemberStatusList.get(j).setIfFirstAidStatus(true);
+                   break;
+               }
+
+            }
+
+        }
+
+        //For Firewarnds
+
+        for (int i = 0; i < firewardenList.size(); i++) {
+
+            for (int j = 0; j <locateMyTeamMemberStatusList.size() ; j++) {
+
+                if(firewardenList.get(i)==locateMyTeamMemberStatusList.get(j).getUserId()){
+                    locateMyTeamMemberStatusList.get(j).setFireStatus(true);
+                    break;
+                }
+
+            }
+
+        }
+
+
+
+        locateMyTeamAdapter = new LocateMyTeamAdapter(getContext(), locateMyTeamMemberStatusList, this);
         binding.rvLocateMyTeam.setAdapter(locateMyTeamAdapter);
 
         binding.locateProgressBar.setVisibility(View.INVISIBLE);
@@ -797,6 +830,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             public void onClick(View v) {
 
 
+                binding.locateMyTeamSearch.setText("");
 
                 closeAndClearMyTeamList(locateMyTeamMemberStatusList);
 
@@ -2571,6 +2605,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void getMeetingBookingListToEdit(int meetingRoomId, String meetingRoomName, boolean isReqduest) {
 
+
+        //close when myteam bottom sheet open
+        closeAndClearMyTeamList(locateMyTeamMemberStatusList);
+
         //String startDate=binding.locateCalendearView.getText().toString()+"T00:00:00.000Z";
         //String endDate=binding.locateCalendearView.getText().toString()+"T00:00:00.000Z";
         //String startDate = binding.locateCalendearView.getText().toString();
@@ -2710,6 +2748,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void callDeskUnavaliable(String selctedCode, String key, int id, String code, int requestTeamId, int requestTeamDeskId) {
 
+        //close when myteam bottom sheet open
+        closeAndClearMyTeamList(locateMyTeamMemberStatusList);
+
         TextView unAvalibaleDeskName, tvUnavaliableBack, unAvaliableLocate, tvDescriptionUnAvaliable, unAvailableDesc;
 
         BottomSheetDialog locateCheckInBottomSheet = new BottomSheetDialog(getContext());
@@ -2848,6 +2889,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void callMeetingRoomBookingBottomSheet(int meetingRoomId, String meetingRoomName,
                                                    boolean isRequest, String action) {
+
+
+        //close when myteam bottom sheet open
+        closeAndClearMyTeamList(locateMyTeamMemberStatusList);
 
         System.out.println("MeetingIsRequetStatus "+isRequest);
 
@@ -3631,6 +3676,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void getCarBookingEditList(String selectedCode, String key, int id, String code, int requestTeamId, int requestTeamDeskId, int i) {
 
+
+        //close when myteam bottom sheet open
+        closeAndClearMyTeamList(locateMyTeamMemberStatusList);
+
         if (Utils.isNetworkAvailable(getActivity())) {
 
             //String startDate="2022-07-25T00:00:00.000Z";
@@ -3831,6 +3880,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
     private void getBookingListToEdit(String selctedCode, String key, int id, String code, int requestTeamId, int requestTeamDeskId, int i) {
+
+
+        //close when myteam bottom sheet open
+        closeAndClearMyTeamList(locateMyTeamMemberStatusList);
+
+
         if (Utils.isNetworkAvailable(getActivity())) {
             binding.locateProgressBar.setVisibility(View.VISIBLE);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -4532,6 +4587,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     //BookBottomSheet
     private void callDeskBookingnBottomSheet(String selctedCode, String key, int id, String code, int requestTeamId, int requestTeamDeskId, int statusCode, int getAutoApproveStatus) {
+
+        //close when myteam bottom sheet open
+        closeAndClearMyTeamList(locateMyTeamMemberStatusList);
 
         if(code.equals("3")) {
             //Get Time Zone Id

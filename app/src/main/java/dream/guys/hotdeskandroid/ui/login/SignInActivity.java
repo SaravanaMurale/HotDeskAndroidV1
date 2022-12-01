@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
 import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
 
@@ -74,12 +75,13 @@ public class SignInActivity extends AppCompatActivity {
     Dialog dialog;
 
     MyApp myApp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
         ButterKnife.bind(this);
-        dialog= new Dialog(this);
+        dialog = new Dialog(this);
 
         setLang();
 
@@ -123,21 +125,24 @@ public class SignInActivity extends AppCompatActivity {
 //        checkForPinLogin();
 
         //Already loggedin user
+        System.out.println("login chec" + SessionHandler.getInstance().getBoolean(SignInActivity.this, AppConstants.PIN_SETUP_DONE));
+//
+
+        //Bala Flow
+        /*if(tokenStatus &&!SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.LOGIN_CHECK)
         System.out.println("login chec"+SessionHandler.getInstance().getBoolean(SignInActivity.this, AppConstants.PIN_SETUP_DONE));
 //        System.out.println("login chec"+SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.AppConstants.LOGIN_CHECK));
         if(tokenStatus
                 &&!SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.LOGIN_CHECK)
                 && SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.PIN_SETUP_DONE)){
             btnPinSignIn.setVisibility(View.VISIBLE);
-            //If token expired enable fingerprint
-//            enableBioMetricAccessHere();
         } else if (!SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.LOGIN_CHECK)
                 && SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.PIN_SETUP_DONE)){
             btnPinSignIn.setVisibility(View.VISIBLE);
-            /*
+
             Intent intent=new Intent(SignInActivity.this, LoginPinActivity.class);
             startActivity(intent);
-            finish();*/
+            finish();
         }else {
             btnPinSignIn.setVisibility(View.GONE);
 
@@ -148,13 +153,69 @@ public class SignInActivity extends AppCompatActivity {
             }else {
                 visibleSignInButton();
             }
+        }*/
+        //End Bala Flow
+
+        boolean logicCheck=SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.LOGIN_CHECK);
+        boolean pinActiveStatusAfterLogout=SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.PIN_ACTIVE_STATUS_AFTER_LOGOUT);
+
+        if(!logicCheck && !pinActiveStatusAfterLogout){
+            //FirstTime Login
+            btnPinSignIn.setVisibility(View.INVISIBLE);
+
+
+        } else if (logicCheck && pinActiveStatusAfterLogout){
+
+            btnSignIn.setVisibility(View.INVISIBLE);
+            btnPinSignIn.setVisibility(View.INVISIBLE);
+            launchHomeActivity();
+        }else if (logicCheck && !pinActiveStatusAfterLogout){
+
+            btnPinSignIn.setVisibility(View.GONE);
+            launchHomeActivity();
+        }else if (!logicCheck && pinActiveStatusAfterLogout){
+
+            btnPinSignIn.setVisibility(View.VISIBLE);
+            visibleSignInButton();
+
+        }/*else {
+            btnPinSignIn.setVisibility(View.GONE);
+
+            //NormalFlow
+            int userId=SessionHandler.getInstance().getInt(SignInActivity.this, AppConstants.USER_ID);
+            if(SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.LOGIN_CHECK)){
+                launchHomeActivity();
+            }else {
+                visibleSignInButton();
+            }
+        }*/
+
+
+
+
+        //New My
+        /*int userId = SessionHandler.getInstance().getInt(SignInActivity.this, AppConstants.USER_ID);
+        boolean pinActiveStatusAfterLogout = SessionHandler.getInstance().getBoolean(SignInActivity.this, AppConstants.PIN_ACTIVE_STATUS_AFTER_LOGOUT);
+
+        if (userId > 0 && pinActiveStatusAfterLogout) {
+            btnPinSignIn.setVisibility(View.VISIBLE);
+            visibleSignInButton();
         }
+
+        if( userId>0 && SessionHandler.getInstance().getBoolean(SignInActivity.this, AppConstants.LOGIN_CHECK)){
+            Intent intent=new Intent(SignInActivity.this, LoginPinActivity.class);
+            startActivity(intent);
+            finish();
+        }else if (!SessionHandler.getInstance().getBoolean(SignInActivity.this, AppConstants.LOGIN_CHECK)) {
+            launchHomeActivity();
+        }*/
+
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                checkForPinLogin();
-                Intent intent=new Intent(SignInActivity.this,LoginActivity.class);
+                Intent intent = new Intent(SignInActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -163,7 +224,7 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                checkForPinLogin();
-                Intent intent=new Intent(SignInActivity.this, LoginPinActivity.class);
+                Intent intent = new Intent(SignInActivity.this, LoginPinActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -178,20 +239,20 @@ public class SignInActivity extends AppCompatActivity {
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             CreatePinRequest createPinRequest = new CreatePinRequest();
             createPinRequest.setTenantName(SessionHandler.getInstance().get(this, AppConstants.COMPANY_NAME));
-            createPinRequest.setUserId(""+SessionHandler.getInstance().getInt(this,AppConstants.USER_ID));
+            createPinRequest.setUserId("" + SessionHandler.getInstance().getInt(this, AppConstants.USER_ID));
             Call<CheckPinLoginResponse> call = apiService.checkPinLoginAvailable(createPinRequest);
             call.enqueue(new Callback<CheckPinLoginResponse>() {
                 @Override
                 public void onResponse(Call<CheckPinLoginResponse> call, Response<CheckPinLoginResponse> response) {
-                    if(response.code()==200){
+                    if (response.code() == 200) {
                         //ProgressDialog.dismisProgressBar(SignInActivity.this,dialog);
-                        if (response.body().isHasPinSetup()){
+                        if (response.body().isHasPinSetup()) {
 //                            btnPinSignIn.setVisibility(View.VISIBLE);
 //                            btnSignIn.setVisibility(View.VISIBLE);
                             /*Intent intent=new Intent(SignInActivity.this,LoginActivity.class);
                             startActivity(intent);
                             finish();*/
-                        }else {
+                        } else {
 //                            btnSignIn.setVisibility(View.VISIBLE);
 //                            btnPinSignIn.setVisibility(View.GONE);
 /*
@@ -200,13 +261,12 @@ public class SignInActivity extends AppCompatActivity {
                             finish();*/
                         }
 
-                    }else if(response.code() == 401){
-                        ProgressDialog.dismisProgressBar(SignInActivity.this,dialog);
-                    }
-                    else {
-                        ProgressDialog.dismisProgressBar(SignInActivity.this,dialog);
+                    } else if (response.code() == 401) {
+                        ProgressDialog.dismisProgressBar(SignInActivity.this, dialog);
+                    } else {
+                        ProgressDialog.dismisProgressBar(SignInActivity.this, dialog);
 //                        Utils.toastMessage(SignInActivity.this, "Error updating Pin. Please enter again");
-                        Intent intent=new Intent(SignInActivity.this,LoginActivity.class);
+                        Intent intent = new Intent(SignInActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
                     }
@@ -214,8 +274,8 @@ public class SignInActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<CheckPinLoginResponse> call, Throwable t) {
-                    ProgressDialog.dismisProgressBar(SignInActivity.this,dialog);
-                    Intent intent=new Intent(SignInActivity.this,LoginActivity.class);
+                    ProgressDialog.dismisProgressBar(SignInActivity.this, dialog);
+                    Intent intent = new Intent(SignInActivity.this, LoginActivity.class);
                     startActivity(intent);
                     finish();
 
@@ -234,9 +294,9 @@ public class SignInActivity extends AppCompatActivity {
 
         //signInRoot.setBackgroundColor(R.color.biometric_bg);
 
-        BiometricManager biometricManager= BiometricManager.from(this);
+        BiometricManager biometricManager = BiometricManager.from(this);
 
-        switch (biometricManager.canAuthenticate()){
+        switch (biometricManager.canAuthenticate()) {
 
             case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
                 Toast.makeText(this, "No HardWare Found", Toast.LENGTH_SHORT).show();
@@ -251,9 +311,9 @@ public class SignInActivity extends AppCompatActivity {
                 break;
         }
 
-        Executor executor= ContextCompat.getMainExecutor(this);
+        Executor executor = ContextCompat.getMainExecutor(this);
 
-        biometricPrompt=new BiometricPrompt(SignInActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
+        biometricPrompt = new BiometricPrompt(SignInActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
             @Override
             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
@@ -273,7 +333,7 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
-        promptInfo=new BiometricPrompt.PromptInfo.Builder().setTitle("HotDesk").setDescription("Use Fingerprint To Login").setDeviceCredentialAllowed(true).build();
+        promptInfo = new BiometricPrompt.PromptInfo.Builder().setTitle("HotDesk").setDescription("Use Fingerprint To Login").setDeviceCredentialAllowed(true).build();
 
         biometricPrompt.authenticate(promptInfo);
 
@@ -282,9 +342,9 @@ public class SignInActivity extends AppCompatActivity {
     private void sendSavedLoginCredentialToServer() {
 
         if (Utils.isNetworkAvailable(this)) {
-            String companyName=SessionHandler.getInstance().get(SignInActivity.this,AppConstants.COMPANY_NAME);
-            String email=SessionHandler.getInstance().get(SignInActivity.this,AppConstants.EMAIL);
-            String password=SessionHandler.getInstance().get(SignInActivity.this,AppConstants.PASSWORD);
+            String companyName = SessionHandler.getInstance().get(SignInActivity.this, AppConstants.COMPANY_NAME);
+            String email = SessionHandler.getInstance().get(SignInActivity.this, AppConstants.EMAIL);
+            String password = SessionHandler.getInstance().get(SignInActivity.this, AppConstants.PASSWORD);
 
             GetTokenRequest getTokenRequest = new GetTokenRequest(companyName, email, password);
 
@@ -303,7 +363,7 @@ public class SignInActivity extends AppCompatActivity {
                         //getUserDetailsUsingToken(getTokenResponse.getToken());
 
                         //Token is updated so Set Token Expiry Status false here
-                        SessionHandler.getInstance().saveBoolean(SignInActivity.this,AppConstants.TOKEN_EXPIRY_STATUS,false);
+                        SessionHandler.getInstance().saveBoolean(SignInActivity.this, AppConstants.TOKEN_EXPIRY_STATUS, false);
                         launchHomeActivity();
 
                     } else {
@@ -313,7 +373,7 @@ public class SignInActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<GetTokenResponse> call, Throwable t) {
-                    System.out.println("WrongDataReceived"+t.getMessage().toString());
+                    System.out.println("WrongDataReceived" + t.getMessage().toString());
                     Utils.toastMessage(SignInActivity.this, "You have entered wrong username or password");
                 }
             });
@@ -331,11 +391,11 @@ public class SignInActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent=new Intent(SignInActivity.this, MainActivity.class);
+                Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             }
-        },1000);
+        }, 1000);
 
     }
 
@@ -345,18 +405,19 @@ public class SignInActivity extends AppCompatActivity {
         finish();
     }
 
-    public void setLang(){
+    public void setLang() {
         String key = SessionHandler.getInstance().get(SignInActivity.this, AppConstants.LANGUAGE_KEY); //= key+".json";
 
-        if (key == null){
-            SessionHandler.getInstance().save(SignInActivity.this, AppConstants.LANGUAGE_KEY,"en");
-            SessionHandler.getInstance().save(SignInActivity.this, AppConstants.LANGUAGE,"English");
+        if (key == null) {
+            SessionHandler.getInstance().save(SignInActivity.this, AppConstants.LANGUAGE_KEY, "en");
+            SessionHandler.getInstance().save(SignInActivity.this, AppConstants.LANGUAGE, "English");
 
-            String json = LoadJsonFromAsset("en"+".json");
+            String json = LoadJsonFromAsset("en" + ".json");
             Gson gson = new Gson();
-            Type listUserType = new TypeToken<LanguagePOJO>() { }.getType();
+            Type listUserType = new TypeToken<LanguagePOJO>() {
+            }.getType();
             LanguagePOJO langPOJO = gson.fromJson(json, listUserType);
-            Utils.setLangInPref(langPOJO,SignInActivity.this);
+            Utils.setLangInPref(langPOJO, SignInActivity.this);
         } else {
 
         }
@@ -379,7 +440,6 @@ public class SignInActivity extends AppCompatActivity {
         }
         return json;
     }
-
 
 
 }

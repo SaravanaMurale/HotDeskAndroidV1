@@ -263,6 +263,9 @@ public class CreatePinActivity extends AppCompatActivity {
                             case "OK":
                                 Utils.toastMessage(CreatePinActivity.this,"Pin Setup Successfull");
                                 SessionHandler.getInstance().saveBoolean(CreatePinActivity.this,AppConstants.PIN_SETUP_DONE,true);
+
+                                SessionHandler.getInstance().saveBoolean(CreatePinActivity.this,AppConstants.PIN_ACTIVE_STATUS_AFTER_LOGOUT,true);
+
                                 finish();
                                 break;
                         }
