@@ -3232,17 +3232,65 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " • " + Utils.showBottomSheetDateTimeAMPM(startRoomTime.getText().toString()));
 
-
                 boolean b = Utils.checkIsCurrentDate(binding.locateCalendearView.getText().toString());
 
-                if (b){
-                    //endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
-                    endTRoomime.setText(Utils.setNearestThirtyMinToMeeting(startRoomTime.getText().toString()));
-                    showTvRoomEndTime.setText(Utils.showBottomSheetDateTimeAMPM(
-                            Utils.setNearestThirtyMinToMeeting(startRoomTime.getText().toString())));
+                String defaultToWorkHours = startRoomTime.getText().toString();
+                String[] strDefaultWork = defaultToWorkHours.split(":");
+                int workHour=Integer.parseInt(strDefaultWork[0]);
+                int workMinute=Integer.parseInt(strDefaultWork[1]);
 
-                    //endTRoomime.setText(Utils.setStartNearestFiveMinToMeeting(startRoomTime.getText().toString()));
+                if (b){
+
+                    //endTRoomime.setText(Utils.setNearestThirtyMinToMeeting(startRoomTime.getText().toString()));
+
+                    if(workHour==23){
+
+                        if(workMinute>=30){
+
+                            endTRoomime.setText("23:59");
+                            showTvRoomEndTime.setText("23:59");
+
+                        }else {
+
+                            //New Logic For set Near 30 min and end time +30 from start Time...
+                            endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
+                            showTvRoomEndTime.setText(Utils.showBottomSheetDateTimeAMPM(
+                                    Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(),30)));
+
+                            //endTRoomime.setText(Utils.setStartNearestFiveMinToMeeting(startRoomTime.getText().toString()));
+                        }
+
+                    }else {
+
+                        //New Logic For set Near 30 min and end time +30 from start Time...
+                        endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
+                        showTvRoomEndTime.setText(Utils.showBottomSheetDateTimeAMPM(
+                                Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(),30)));
+
+                        //endTRoomime.setText(Utils.setStartNearestFiveMinToMeeting(startRoomTime.getText().toString()));
+
+                    }
+
+
                 }else {
+
+                    if(workHour==23){
+
+                        if(workMinute>=30){
+
+                            endTRoomime.setText("23:59");
+
+                        }else {
+
+                            //For Not Current Day...
+                            endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(),30));
+
+                        }
+
+                    }else {
+                        //For Not Current Day...
+                        endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(),30));
+                    }
 
                 }
 
@@ -3411,15 +3459,19 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             if (b) {
 
-                startRoomTime.setText(Utils.setStartNearestThirtyMinToMeeting(getCurrentTime()));
+                startRoomTime.setText(Utils.setNearestThirtyMinToMeeting(getCurrentTime()));
                 showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " • " + Utils.showBottomSheetDateTimeAMPM(startRoomTime.getText().toString()));
 
             } else {
                 if (profileData != null) {
 
                     startRoomTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
-                    endTRoomime.setText(Utils.splitTime(profileData.getWorkHoursTo()));
-                    showTvRoomEndTime.setText(Utils.showBottomSheetDateTimeAMPM(Utils.splitTime(profileData.getWorkHoursTo())));
+
+                    //Old logic...
+                    //endTRoomime.setText(Utils.splitTime(profileData.getWorkHoursTo()));
+                    endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(),30));
+
+                    showTvRoomEndTime.setText(Utils.showBottomSheetDateTimeAMPM(endTRoomime.getText().toString()));
                     showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " • " + Utils.showBottomSheetDateTimeAMPM(startRoomTime.getText().toString()));
                 }
             }
