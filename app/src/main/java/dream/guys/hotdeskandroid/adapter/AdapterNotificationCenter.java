@@ -154,6 +154,12 @@ public class AdapterNotificationCenter extends RecyclerView.Adapter<AdapterNotif
                 break;
         }
 
+        if (position == 1) {
+            holder.hdr_lay.setVisibility(View.VISIBLE);
+        }else {
+            holder.hdr_lay.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -167,6 +173,7 @@ public class AdapterNotificationCenter extends RecyclerView.Adapter<AdapterNotif
         CardView cardBookingNotify,cardCovidNotify;
         RelativeLayout pending_count_lay,date_time_lay,req_lay,rel_status;
         ImageView imgEntity;
+        RelativeLayout hdr_lay;
 
         public viewholder(@NonNull View itemView) {
             super(itemView);
@@ -186,6 +193,7 @@ public class AdapterNotificationCenter extends RecyclerView.Adapter<AdapterNotif
             tvDesk = itemView.findViewById(R.id.tvDesk);
             tvAddress = itemView.findViewById(R.id.tvAddress);
             imgEntity = itemView.findViewById(R.id.ivMeeting);
+            hdr_lay = itemView.findViewById(R.id.hdr_lay);
 
         }
     }

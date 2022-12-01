@@ -119,7 +119,13 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
                 holder.hdr_lay.setVisibility(View.GONE);
             }
 
-            holder.txt_title.setText("Outgoing ");
+            if (Utils.isAdminOrNot(context)) {
+                holder.txt_title.setText("Outgoing ");
+
+            }else {
+                holder.txt_title.setText("Pending ");
+            }
+
             holder.txt_title_count.setText("(" + String.valueOf(cOutGoing) + ")");
         }else {
             if (notiList.get(pos).getIncoming().equalsIgnoreCase("incoming") &&
