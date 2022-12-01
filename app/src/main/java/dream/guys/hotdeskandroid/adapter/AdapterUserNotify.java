@@ -149,6 +149,13 @@ public class AdapterUserNotify extends RecyclerView.Adapter<AdapterUserNotify.vi
                 holder.tvAddress.setText(Utils.checkStringParms(notiList.get(position).getLocationName()));
                 break;
         }
+
+        if (position == 1) {
+            holder.hdr_lay.setVisibility(View.VISIBLE);
+        }else {
+            holder.hdr_lay.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -162,6 +169,7 @@ public class AdapterUserNotify extends RecyclerView.Adapter<AdapterUserNotify.vi
         CardView cardBookingNotify,cardCovidNotify;
         RelativeLayout pending_count_lay,date_time_lay,req_lay,rel_status;
         ImageView imgEntity;
+        RelativeLayout hdr_lay;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
@@ -182,6 +190,7 @@ public class AdapterUserNotify extends RecyclerView.Adapter<AdapterUserNotify.vi
             tvAddress = itemView.findViewById(R.id.tvAddress);
             imgEntity = itemView.findViewById(R.id.ivMeeting);
             txt_status = itemView.findViewById(R.id.txt_status);
+            hdr_lay = itemView.findViewById(R.id.hdr_lay);
 
         }
     }

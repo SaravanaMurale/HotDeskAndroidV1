@@ -139,7 +139,7 @@
             android:background="@drawable/rectangle_bg_with_corner"
             android:drawableRight="@drawable/locate_calender"
             android:paddingLeft="@dimen/_8sdp"
-            android:paddingTop="@dimen/_3sdp"
+            android:paddingTop="@dimen/_5sdp"
             android:paddingRight="@dimen/_9sdp"
             android:paddingBottom="@dimen/_3sdp"
             android:text=""

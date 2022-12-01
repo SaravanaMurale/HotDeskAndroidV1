@@ -2528,4 +2528,20 @@ public class Utils {
         intent.setData(data);
         activity.startActivity(intent);
     }
+
+    public static boolean isAdminOrNot(Context context) {
+
+        if (SessionHandler.getInstance().get(context,AppConstants.ROLE)!=null &&
+                SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.Administrator)
+                ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.FacilityManager)
+                ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.TeamManager)
+                ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.MeetingManager)){
+            return true;
+        }else {
+            return false;
+        }
+
+    }
+
+
 }

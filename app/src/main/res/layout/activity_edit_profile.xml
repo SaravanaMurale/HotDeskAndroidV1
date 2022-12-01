@@ -718,6 +718,7 @@
                     android:padding="@dimen/_5sdp"
                     android:inputType="text"
                     android:theme="@style/TextBold"
+                    android:maxLines="1"
                     android:textSize="@dimen/_10sdp"
                     android:imeOptions="actionDone"
                     />
