@@ -1795,6 +1795,7 @@ public class Utils {
     }
 
 
+
     public static String showBottomSheetDateTimeAMPM(String d) {
         String date = d;
         SimpleDateFormat spf = new SimpleDateFormat("HH:mm");
@@ -2353,21 +2354,21 @@ public class Utils {
 
             int min = Integer.parseInt(orgSTime[1]);
 
-            if (min >= 0 && min <= 15) {
+            if (min >= 0 && min <= 10) {
+
+                fTime = cTime.replace(orgSTime[1], "30");
+
+            } else if (min > 10 && min <= 29) {
 
                 fTime = cTime.replace(orgSTime[1], "45");
 
-            } else if (min > 15 && min <= 30) {
+            } else if (min > 29 && min <= 44) {
 
                 fTime = roundOffHour(cTime.replace(orgSTime[1], "00"));
 
-            } else if (min > 30 && min <= 45) {
+            } else if (min > 44 && min <= 59) {
 
                 fTime = roundOffHour(cTime.replace(orgSTime[1], "15"));
-
-            } else if (min > 45 && min <= 59) {
-
-                fTime = roundOffHour(cTime.replace(orgSTime[1], "30"));
 
             }
 
