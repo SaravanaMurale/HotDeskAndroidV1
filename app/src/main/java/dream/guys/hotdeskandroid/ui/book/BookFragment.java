@@ -61,6 +61,7 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import butterknife.BindView;
@@ -568,17 +569,22 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onResponse(Call<List<ActiveTeamsResponse>> call, Response<List<ActiveTeamsResponse>> response) {
 //                    activeTeamsList = response.body();
-                    for (int i=0;i<response.body().size();i++) {
-                        if (response.body().get(i).isLeafTeam()){
-                            activeTeamsList.add(response.body().get(i));
-                        }
-                    }
+                    try {
 
-                    for (int i=0; i<activeTeamsList.size(); i++) {
-                        if (selectedTeamId==activeTeamsList.get(i).getId()) {
-                            selectedTeamName = activeTeamsList.get(i).getName();
-                            selectedTeamAutoApproveStatus = activeTeamsList.get(i).getAutomaticApprovalStatus();
+                        for (int i=0;i<response.body().size();i++) {
+                            if (response.body().get(i).isLeafTeam()){
+                                activeTeamsList.add(response.body().get(i));
+                            }
                         }
+
+                        for (int i=0; i<activeTeamsList.size(); i++) {
+                            if (selectedTeamId==activeTeamsList.get(i).getId()) {
+                                selectedTeamName = activeTeamsList.get(i).getName();
+                                selectedTeamAutoApproveStatus = activeTeamsList.get(i).getAutomaticApprovalStatus();
+                            }
+                        }
+                    } catch (Exception exception){
+                        Toast.makeText(context, ""+exception.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -1766,26 +1772,31 @@ public class BookFragment extends Fragment implements
             call.enqueue(new Callback<BookingForEditResponse>() {
                 @Override
                 public void onResponse(Call<BookingForEditResponse> call, Response<BookingForEditResponse> response) {
-                    bookingForEditResponse = response.body();
-                    if(bookingDeskList==null)
-                        bookingDeskList= new ArrayList<>();
+                    try {
+                        bookingForEditResponse = response.body();
+                        if(bookingDeskList==null)
+                            bookingDeskList= new ArrayList<>();
 
-                    if (!isGlobalLocationSetUP) {
-                        bookingDeskList.clear();
-                        if(response.body().getTeamDeskAvailabilities()!=null)
-                            bookingDeskList = response.body().getTeamDeskAvailabilities();
-                    }
+                        if (!isGlobalLocationSetUP) {
+                            bookingDeskList.clear();
+                            if(response.body().getTeamDeskAvailabilities()!=null)
+                                bookingDeskList = response.body().getTeamDeskAvailabilities();
+                        }
 //                    ProgressDialog.dismisProgressBar(getContext(),dialog);
-                    if (code.equalsIgnoreCase("3")){
-                        if(bookingForEditResponse.getBookings()!=null && bookingForEditResponse.getBookings().size()>0)
-                            callBottomSheetToEdit(bookingForEditResponse, code);
-                        else
-                            newDeskBookingSheet(bookingForEditResponse, code);
-                    } else{
-                        if(SessionHandler.getInstance().getBoolean(getContext(),AppConstants.LOGIN_CHECK))
-                            deepLinking();
-                        else
-                            deeplinkLoginPopUP();
+                        if (code.equalsIgnoreCase("3")){
+                            if(bookingForEditResponse.getBookings()!=null && bookingForEditResponse.getBookings().size()>0)
+                                callBottomSheetToEdit(bookingForEditResponse, code);
+                            else
+                                newDeskBookingSheet(bookingForEditResponse, code);
+                        } else{
+                            if(SessionHandler.getInstance().getBoolean(getContext(),AppConstants.LOGIN_CHECK))
+                                deepLinking();
+                            else
+                                deeplinkLoginPopUP();
+                        }
+
+                    } catch (Exception exception){
+
                     }
 
                 }
@@ -5125,20 +5136,24 @@ public class BookFragment extends Fragment implements
         bsApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(floorAdapter.getSelectedPositionCheck()>=0){
-                    floorSearchStatus=false;
-                    int floorPosition = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION);
-                    boolean floorSelectedStatus = SessionHandler.getInstance().getBoolean(getContext(), AppConstants.FLOOR_SELECTED_STATUS);
-                    canvasss = 1;
-                    //removes desk in layout
+                if(floorAdapter!=null){
+                    if(floorAdapter.getSelectedPositionCheck()>=0){
+                        floorSearchStatus=false;
+                        int floorPosition = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION);
+                        boolean floorSelectedStatus = SessionHandler.getInstance().getBoolean(getContext(), AppConstants.FLOOR_SELECTED_STATUS);
+                        canvasss = 1;
+                        //removes desk in layout
 //                    binding.firstLayout.removeAllViews();
 
-                    defaultLocationcheck = 1;
-                    initLoadFloorDetails(canvasss);
-                    getAvaliableDeskDetails("3",calSelectedDate);
-                    bottomSheetDialog.dismiss();
-                }else {
-                    Utils.toastMessage(getContext(),"Please Select Floor");
+                        defaultLocationcheck = 1;
+                        initLoadFloorDetails(canvasss);
+                        getAvaliableDeskDetails("3",calSelectedDate);
+                        bottomSheetDialog.dismiss();
+                    }else {
+                        Utils.toastMessage(getContext(),"Please Select Floor");
+                    }
+                } else {
+                    Utils.toastMessage(getContext(), "Please Select Floor");
                 }
 
             }
