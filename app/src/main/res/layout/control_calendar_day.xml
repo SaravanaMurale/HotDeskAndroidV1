@@ -10,8 +10,8 @@
 
 	<TextView
 		android:id="@+id/cal_text_view"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
+		android:layout_width="@dimen/_20sdp"
+		android:layout_height="@dimen/_20sdp"
 		app:layout_constraintTop_toTopOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
@@ -19,8 +19,8 @@
 		android:background="@drawable/circle_date_calender"
 		android:backgroundTint="@color/white"
 		android:padding="@dimen/_3sdp"
-		android:textSize="@dimen/_9sdp"
-		android:textColor="@color/figmaGrey"
+		android:textSize="14sp"
+		android:textColor="@color/figmaGreyCalDisable"
 		android:theme="@style/TextRegular"
 		android:textAlignment="center"
 		android:text="00" />
@@ -33,7 +33,8 @@
 		app:layout_constraintStart_toStartOf="@id/cal_text_view"
 		app:layout_constraintEnd_toEndOf="@id/cal_text_view"
 		android:gravity="center"
-		android:textSize="@dimen/_7sdp"
+		android:textSize="9sp"
+		android:theme="@style/TextRegular"
 		android:layout_marginTop="@dimen/_1sdp"
 		android:textAppearance="@android:style/TextAppearance.Small"
 		android:textAlignment="center"

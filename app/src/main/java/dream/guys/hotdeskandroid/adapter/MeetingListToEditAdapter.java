@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -59,11 +60,12 @@ public class MeetingListToEditAdapter extends RecyclerView.Adapter<MeetingListTo
                 .equalsIgnoreCase("future")){
             holder.editDelete.setVisibility(View.VISIBLE);
             holder.editTextEdit.setVisibility(View.VISIBLE);
+            holder.rlBottonm.setVisibility(View.VISIBLE);
         } else if (meetingListToEditResponseList.get(position).getStatus().getTimeStatus()
                 .equalsIgnoreCase("ongoing")) {
             holder.editDelete.setVisibility(View.VISIBLE);
             holder.editTextEdit.setVisibility(View.VISIBLE);
-
+            holder.rlBottonm.setVisibility(View.VISIBLE);
             if (meetingListToEditResponseList.get(position)
                     .getStatus().getBookingStatus()
                     .equalsIgnoreCase("None")) {
@@ -75,6 +77,7 @@ public class MeetingListToEditAdapter extends RecyclerView.Adapter<MeetingListTo
                 .equalsIgnoreCase("past")) {
             holder.editDelete.setVisibility(View.GONE);
             holder.editTextEdit.setVisibility(View.GONE);
+            holder.rlBottonm.setVisibility(View.GONE);
         }
 
         holder.editCode.setText((meetingListToEditResponseList.get(position).getMeetingRoomName()));
@@ -119,6 +122,8 @@ public class MeetingListToEditAdapter extends RecyclerView.Adapter<MeetingListTo
         TextView editDelete;
         @BindView(R.id.editTextEdit)
         TextView editTextEdit;
+        @BindView(R.id.bottom)
+        RelativeLayout rlBottonm;
 
 
         public MeetingListViewHolder(@NonNull View itemView) {

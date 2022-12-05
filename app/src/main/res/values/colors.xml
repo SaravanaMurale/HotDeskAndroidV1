@@ -19,6 +19,7 @@
 
     //Figma
     <color name="figmaGrey">#777777</color>
+    <color name="figmaGreyCalDisable">#C8C8C8</color>
     <color name="figmaGrey80">#cc777777</color>
     <color name="figmaGrey05">#66777777</color>
     <color name="figmaBgGrey">#F2F2F2</color>
@@ -29,6 +30,7 @@
     <color name="figmaBlueDisabled">#65A2D9</color>
     <color name="figmaBlueText">#0F62AB</color>
     <color name="figmaBackground">#fafafa</color>
+    <color name="figmaBorder">#EEEEEE</color>
 
     <color name="bg_grey">#fafafa</color>
     <color name="line_gray">#dcdcdc</color>

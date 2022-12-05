@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -75,10 +76,12 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
                 .equalsIgnoreCase("future")){
             holder.editDelete.setVisibility(View.VISIBLE);
             holder.editTextEdit.setVisibility(View.VISIBLE);
+            holder.rlBottonm.setVisibility(View.VISIBLE);
         } else if (bookingsListToEdit.get(position).getStatus().getTimeStatus()
                 .equalsIgnoreCase("ongoing")) {
             holder.editDelete.setVisibility(View.VISIBLE);
             holder.editTextEdit.setVisibility(View.VISIBLE);
+            holder.rlBottonm.setVisibility(View.VISIBLE);
 
             if (bookingsListToEdit.get(position).getStatus().getBookingStatus()
                     .equalsIgnoreCase("None")) {
@@ -90,9 +93,8 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
                 .equalsIgnoreCase("past")) {
             holder.editDelete.setVisibility(View.GONE);
             holder.editTextEdit.setVisibility(View.GONE);
+            holder.rlBottonm.setVisibility(View.GONE);
         }
-
-
 
         if(code.equals("3")){
             holder.editBookingImage.setImageDrawable(context.getDrawable(R.drawable.chair));
@@ -260,6 +262,8 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
         TextView editTextEdit;
         @BindView(R.id.editRefreshIcon)
         ImageView editRefreshIcon;
+        @BindView(R.id.bottom)
+        RelativeLayout rlBottonm;
 
 
         public BookingListToEditViewHolder(@NonNull View itemView) {

@@ -41,7 +41,6 @@ import dream.guys.hotdeskandroid.ui.home.HomeFragment;
 
 public class CalendarView extends LinearLayout
 {
-
     private static final String TAG = "CalendarView";
     private static final String LOGTAG = "Calendar View";
     private static final int DAYS_COUNT = 42;
@@ -275,7 +274,7 @@ public class CalendarView extends LinearLayout
                         if (count!=null && dateBox!=null){
                             ((TextView) count).setVisibility(GONE);
                             ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
-                            ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGrey));
+                            ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGreyCalDisable));
                         }
                     } else if (Utils.compareTwoDate(Utils.convertStringToDateFormet(eventDate.getDate()),
                             Utils.getCurrentDate())==2){
@@ -295,7 +294,7 @@ public class CalendarView extends LinearLayout
                         if (count!=null && dateBox!=null) {
                             ((TextView) count).setVisibility(GONE);
                             ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
-                            ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGrey));
+                            ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGreyCalDisable));
                         }
                     }
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -317,7 +316,7 @@ public class CalendarView extends LinearLayout
                         } else {
                             if (count!=null && dateBox!=null) {
                                 ((TextView) count).setVisibility(GONE);
-                                ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGrey));
+                                ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGreyCalDisable));
                                 ((TextView) count).setText(" ");
                             }
                         }
@@ -331,11 +330,11 @@ public class CalendarView extends LinearLayout
 //            ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
 
 //            if (month !=  currentDate.get(Calendar.MONTH) || year !=  currentDate.get(Calendar.YEAR)) {
-//                ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGrey));
+//                ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGreyCalDisable));
 //            }
 //            System.out.println("mont check"+month+" "+today.getMonth());
             if (day == today.getDate() && month==today.getMonth()) {
-                ((TextView) dateBox).setTypeface(null, Typeface.BOLD);
+//                ((TextView) dateBox).setTypeface(null, Typeface.BOLD);
                 ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.figmaBlack));
             } else {
                 ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.figmaBackground));

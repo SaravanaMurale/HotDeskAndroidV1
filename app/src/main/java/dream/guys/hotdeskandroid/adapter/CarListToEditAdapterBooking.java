@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -67,10 +68,12 @@ public class CarListToEditAdapterBooking extends RecyclerView.Adapter<CarListToE
                 .equalsIgnoreCase("future")){
             holder.editDelete.setVisibility(View.VISIBLE);
             holder.editTextEdit.setVisibility(View.VISIBLE);
+            holder.rlBottonm.setVisibility(View.VISIBLE);
         } else if (carParkBookings.get(position).getStatus().getTimeStatus()
                 .equalsIgnoreCase("ongoing")) {
             holder.editDelete.setVisibility(View.VISIBLE);
             holder.editTextEdit.setVisibility(View.VISIBLE);
+            holder.rlBottonm.setVisibility(View.VISIBLE);
 
             if (carParkBookings.get(position).getStatus().getBookingStatus()
                     .equalsIgnoreCase("None")) {
@@ -82,11 +85,14 @@ public class CarListToEditAdapterBooking extends RecyclerView.Adapter<CarListToE
                 .equalsIgnoreCase("past")) {
             holder.editDelete.setVisibility(View.GONE);
             holder.editTextEdit.setVisibility(View.GONE);
+            holder.rlBottonm.setVisibility(View.GONE);
+            
         }
         if (carParkBookings.get(position).getStatus().getBookingType()!=null
                 && carParkBookings.get(position).getStatus().getBookingType().equalsIgnoreCase("req")) {
             holder.editDelete.setVisibility(View.GONE);
             holder.editTextEdit.setVisibility(View.GONE);
+            holder.rlBottonm.setVisibility(View.GONE);
         }
 
 
@@ -132,6 +138,8 @@ public class CarListToEditAdapterBooking extends RecyclerView.Adapter<CarListToE
         TextView editDelete;
         @BindView(R.id.editTextEdit)
         TextView editTextEdit;
+        @BindView(R.id.bottom)
+        RelativeLayout rlBottonm;
 
 
         public CarListToEditViewHolder(@NonNull View itemView) {

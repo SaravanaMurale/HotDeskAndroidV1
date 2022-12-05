@@ -26,10 +26,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/_30sdp"
-                android:theme="@style/TextBold"
                 android:text="@string/check_out_success"
                 android:textSize="@dimen/_15sdp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:theme="@style/TextBold" />
 
             <ImageView
                 android:id="@+id/ivCheckoutSuccess"
@@ -47,10 +47,10 @@
                 android:layout_marginTop="@dimen/_70sdp"
                 android:layout_marginBottom="@dimen/_20sdp"
                 android:text="@string/close"
-                android:theme="@style/TextBold"
-                android:textColor="@color/figmaBlueText"
+                android:textColor="@color/figmaBlack"
                 android:textSize="@dimen/_15sdp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:theme="@style/TextBold" />
 
         </RelativeLayout>
 

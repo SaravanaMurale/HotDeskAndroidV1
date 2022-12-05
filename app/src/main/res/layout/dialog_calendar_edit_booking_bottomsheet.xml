@@ -43,6 +43,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/_5sdp"
             >
 
             <TextView
@@ -61,8 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvactive"
-                android:minHeight="@dimen/_200sdp"
-                android:paddingLeft="@dimen/_10sdp" />
+                android:minHeight="@dimen/_200sdp" />
 
             <view
                 class="android.widget.TextView"

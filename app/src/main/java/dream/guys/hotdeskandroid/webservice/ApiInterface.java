@@ -44,6 +44,7 @@ import dream.guys.hotdeskandroid.model.response.CarParkingDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkingslotsResponse;
 import dream.guys.hotdeskandroid.model.response.CheckPinLoginResponse;
+import dream.guys.hotdeskandroid.model.response.CompanyDefaultResponse;
 import dream.guys.hotdeskandroid.model.response.CovidQuestionsResponse;
 import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
 import dream.guys.hotdeskandroid.model.response.DAOCountryList;
@@ -99,6 +100,8 @@ public interface ApiInterface {
 
     @GET("api/settings/setting")
     Call<String> getSettingData(@Query("name") String name);
+    @GET("/api/Settings/CompanyDefaultSettings")
+    Call<CompanyDefaultResponse> getCompanyDefaultSettings();
 
 
     @POST("api/account/TypeOfLogin")
