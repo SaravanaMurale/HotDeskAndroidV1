@@ -3,34 +3,25 @@ package dream.guys.hotdeskandroid.ui.teams;
 import static dream.guys.hotdeskandroid.utils.Utils.getActionOverLaysPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getBookingPageScreenData;
-import static dream.guys.hotdeskandroid.utils.Utils.getLoginScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getMeScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getResetPasswordPageScreencreenData;
 
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.gson.Gson;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -60,9 +51,8 @@ import dream.guys.hotdeskandroid.model.response.FirstAidResponse;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.UsageTypeResponse;
-import dream.guys.hotdeskandroid.model.response.WellbeingConfigResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
-import dream.guys.hotdeskandroid.utils.MyApp;
+import dream.guys.hotdeskandroid.utils.ExtendedDataHolder;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
@@ -73,15 +63,14 @@ import retrofit2.Response;
 
 public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberInterface,
         TeamsContactsAdapter.OnProfileClickable,
-        TeamsFloorListAdapter.FloorListener
-        {
+        TeamsFloorListAdapter.FloorListener {
 
     FragmentTeamsBinding binding;
     int day, month, year;
     HorizontalCalendar horizontalCalendar;
-    String currendate = "",selectedDate="";
+    String currendate = "", selectedDate = "";
     HorizontalCalendarView calendarView;
-    HashMap<Integer,String> floorList = new HashMap<>();
+    HashMap<Integer, String> floorList = new HashMap<>();
     ArrayList<DAOTeamMember> teamMembersList = new ArrayList<>();
     ArrayList<DAOTeamMember> teamMembersInOfficeList = new ArrayList<>();
     ArrayList<DAOTeamMember> teamMembersRemoteList = new ArrayList<>();
@@ -90,15 +79,15 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     ArrayList<DAOTeamMember> teamMembersOutOfOffice = new ArrayList<>();
     ArrayList<DAOTeamMember> copyTeamMembersList = new ArrayList<>();
     ArrayList<TeamsContactsAdapter> dynamicAdapters = new ArrayList<>();
-    TeamsContactsAdapter teamsContactsAdapter,teamsContactsRemoteAdapter,teamsContactsHolidaysAdapter,
+    TeamsContactsAdapter teamsContactsAdapter, teamsContactsRemoteAdapter, teamsContactsHolidaysAdapter,
             teamsContactsOutOfOfficeAdapter, teamsContactsUnknownAdapter;
     TeamsAdapter teamsAdapter;
     TeamsFloorListAdapter teamsFloorListAdapter;
 
     List<GlobalSearchResponse.Results> list = new ArrayList<>();
     SearchRecyclerAdapter searchRecyclerAdapter;
-    LinearLayoutManager linearLayoutManager,contactUnknownLinearLayout,contactLinearLayout,
-            contactHolidayLinearLayout,contactOutOfOfficeLinearLayout,contactRemoteLinearLayout;
+    LinearLayoutManager linearLayoutManager, contactUnknownLinearLayout, contactLinearLayout,
+            contactHolidayLinearLayout, contactOutOfOfficeLinearLayout, contactRemoteLinearLayout;
 
     public HashMap<Integer, Boolean> firewardenList;
     public HashMap<Integer, Boolean> firstAidList;
@@ -111,7 +100,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     LanguagePOJO.ResetPassword resetPage;
     LanguagePOJO.Booking bookindata;
 
-    public boolean expandStatus=false;
+    public boolean expandStatus = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -195,7 +185,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         binding.txtAllteam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),TeamsUserActivity.class);
+                Intent intent = new Intent(getActivity(), TeamsUserActivity.class);
                 startActivity(intent);
             }
         });
@@ -209,17 +199,17 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                if(teamsContactsRemoteAdapter != null)
+                if (teamsContactsRemoteAdapter != null)
                     teamsContactsRemoteAdapter.getFilter().filter(s.toString());
-                if(teamsContactsHolidaysAdapter != null)
+                if (teamsContactsHolidaysAdapter != null)
                     teamsContactsHolidaysAdapter.getFilter().filter(s.toString());
-                if(teamsContactsOutOfOfficeAdapter != null)
+                if (teamsContactsOutOfOfficeAdapter != null)
                     teamsContactsOutOfOfficeAdapter.getFilter().filter(s.toString());
-                if(teamsContactsUnknownAdapter != null)
+                if (teamsContactsUnknownAdapter != null)
                     teamsContactsUnknownAdapter.getFilter().filter(s.toString());
 
-                if (dynamicAdapters!=null)
-                    for (int i =0; i<dynamicAdapters.size(); i++){
+                if (dynamicAdapters != null)
+                    for (int i = 0; i < dynamicAdapters.size(); i++) {
                         dynamicAdapters.get(i).getFilter().filter(s.toString());
                     }
 
@@ -267,37 +257,37 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         getCalendarEntryTeam();
 
 
-
         //New...
         linearLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
         binding.searchRecycler.setLayoutManager(linearLayoutManager);
         binding.searchRecycler.setHasFixedSize(true);
-        searchRecyclerAdapter=new SearchRecyclerAdapter(getActivity(),list);
+        searchRecyclerAdapter = new SearchRecyclerAdapter(getActivity(), list);
         binding.searchRecycler.setAdapter(searchRecyclerAdapter);
 
         return root;
     }
+
     private void getBookingUsageTypes() {
 
         if (Utils.isNetworkAvailable(getActivity())) {
 
             binding.locateProgressBar.setVisibility(View.VISIBLE);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-           Call<List<UsageTypeResponse>> call= apiService.getBookingUsageTypes();
-           call.enqueue(new Callback<List<UsageTypeResponse>>() {
-               @Override
-               public void onResponse(Call<List<UsageTypeResponse>> call, Response<List<UsageTypeResponse>> response) {
+            Call<List<UsageTypeResponse>> call = apiService.getBookingUsageTypes();
+            call.enqueue(new Callback<List<UsageTypeResponse>>() {
+                @Override
+                public void onResponse(Call<List<UsageTypeResponse>> call, Response<List<UsageTypeResponse>> response) {
 
-               }
+                }
 
-               @Override
-               public void onFailure(Call<List<UsageTypeResponse>> call, Throwable t) {
+                @Override
+                public void onFailure(Call<List<UsageTypeResponse>> call, Throwable t) {
 
-               }
-           });
+                }
+            });
 
-        }else {
+        } else {
             Utils.toastMessage(getActivity(), "Please Enable Internet");
         }
     }
@@ -309,22 +299,22 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         call.enqueue(new Callback<List<FirstAidResponse>>() {
             @Override
             public void onResponse(Call<List<FirstAidResponse>> call, Response<List<FirstAidResponse>> response) {
-                List<FirstAidResponse> firstAidResponseList=response.body();
-                List<FirstAidResponse.Persons> personsList=new ArrayList<>();
-                List<FirstAidResponse.Persons> personsListfirstAid=new ArrayList<>();
-                firstAidList= new HashMap<>();
+                List<FirstAidResponse> firstAidResponseList = response.body();
+                List<FirstAidResponse.Persons> personsList = new ArrayList<>();
+                List<FirstAidResponse.Persons> personsListfirstAid = new ArrayList<>();
+                firstAidList = new HashMap<>();
                 firewardenList = new HashMap<>();
 
                 for (int i = 0; i < firstAidResponseList.size(); i++) {
-                    if (firstAidResponseList.get(i).getPersonsList().size()>0) {
+                    if (firstAidResponseList.get(i).getPersonsList().size() > 0) {
 
-                        if(firstAidResponseList.get(i).getType()==4){
-                            for (int j = 0; j <firstAidResponseList.get(i).getPersonsList().size() ; j++) {
+                        if (firstAidResponseList.get(i).getType() == 4) {
+                            for (int j = 0; j < firstAidResponseList.get(i).getPersonsList().size(); j++) {
                                 personsList.add(firstAidResponseList.get(i).getPersonsList().get(j));
                             }
                         }
-                        if(firstAidResponseList.get(i).getType()==5){
-                            for (int j = 0; j <firstAidResponseList.get(i).getPersonsList().size() ; j++) {
+                        if (firstAidResponseList.get(i).getType() == 5) {
+                            for (int j = 0; j < firstAidResponseList.get(i).getPersonsList().size(); j++) {
                                 personsListfirstAid.add(firstAidResponseList.get(i).getPersonsList().get(j));
                             }
                         }
@@ -332,22 +322,22 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                     }
                 }
 
-                for (int i = 0; i <personsList.size() ; i++) {
-                    firewardenList.put(personsList.get(i).getId(),personsList.get(i).isActive());
+                for (int i = 0; i < personsList.size(); i++) {
+                    firewardenList.put(personsList.get(i).getId(), personsList.get(i).isActive());
                 }
-                for (int i = 0; i <personsListfirstAid.size() ; i++) {
-                    firstAidList.put(personsListfirstAid.get(i).getId(),personsListfirstAid.get(i).isActive());
+                for (int i = 0; i < personsListfirstAid.size(); i++) {
+                    firstAidList.put(personsListfirstAid.get(i).getId(), personsListfirstAid.get(i).isActive());
                 }
 
             }
 
-                    @Override
-                    public void onFailure(Call<List<FirstAidResponse>> call, Throwable t) {
-
-                    }
-                });
+            @Override
+            public void onFailure(Call<List<FirstAidResponse>> call, Throwable t) {
 
             }
+        });
+
+    }
 
 
     private void getCalendarEntryTeam() {
@@ -357,15 +347,15 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             binding.locateProgressBar.setVisibility(View.VISIBLE);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-            int userID=SessionHandler.getInstance().getInt(getContext(),AppConstants.USER_ID);
-            int teamID=SessionHandler.getInstance().getInt(getContext(),AppConstants.TEAM_ID);
+            int userID = SessionHandler.getInstance().getInt(getContext(), AppConstants.USER_ID);
+            int teamID = SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID);
 
-            Call<ArrayList<DAOUpcomingBooking>> call = apiService.getMonthBookings(selectedDate,userID,teamID);
+            Call<ArrayList<DAOUpcomingBooking>> call = apiService.getMonthBookings(selectedDate, userID, teamID);
             call.enqueue(new Callback<ArrayList<DAOUpcomingBooking>>() {
                 @Override
                 public void onResponse(Call<ArrayList<DAOUpcomingBooking>> call, Response<ArrayList<DAOUpcomingBooking>> response) {
 
-                    if (response.body()!=null) {
+                    if (response.body() != null) {
                         ArrayList<DAOUpcomingBooking> daoUpcomingBookingArrayList = response.body();
 
                         for (int i = 0; i < daoUpcomingBookingArrayList.size(); i++) {
@@ -386,7 +376,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                 }
             });
 
-        }else {
+        } else {
             Utils.toastMessage(getActivity(), "Please Enable Internet");
         }
     }
@@ -400,7 +390,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<ArrayList<DAOTeamMember>> call = apiService.getTeamMembersWithImage(selectedDate,
-                    ""+SessionHandler.getInstance().getInt(getContext(),AppConstants.TEAM_ID),
+                    "" + SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID),
                     true, true);
             call.enqueue(new Callback<ArrayList<DAOTeamMember>>() {
                 @Override
@@ -408,8 +398,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                                        Response<ArrayList<DAOTeamMember>> response) {
 
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                    if (response.body()!=null){
-                        if(response.code()==200){
+                    if (response.body() != null) {
+                        if (response.code() == 200) {
 //                            binding.tvExapnd.setVisibility(View.VISIBLE);
                             binding.expandRecyclerView.setVisibility(View.GONE);
                             teamMembersUnknownList.clear();
@@ -420,28 +410,28 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                             teamMembersList = response.body();
                             copyTeamMembersList = response.body();
                             floorList.clear();
-                            System.out.println("bala check team outer"+teamMembersList.size());
-                            for (int i=0; i < teamMembersList.size(); i++) {
+                            System.out.println("bala check team outer" + teamMembersList.size());
+                            for (int i = 0; i < teamMembersList.size(); i++) {
                                 if (teamMembersList.get(i).getDayGroups().size() > 0
-                                && teamMembersList.get(i).getDayGroups().get(0)
-                                        .getCalendarEntries().size()>0){
-                                    for (int x=0; x<teamMembersList.get(i).getDayGroups().get(0)
-                                            .getCalendarEntries().size(); x++){
+                                        && teamMembersList.get(i).getDayGroups().get(0)
+                                        .getCalendarEntries().size() > 0) {
+                                    for (int x = 0; x < teamMembersList.get(i).getDayGroups().get(0)
+                                            .getCalendarEntries().size(); x++) {
                                         switch (teamMembersList.get(i).getDayGroups().get(0)
                                                 .getCalendarEntries().get(x)
-                                                .getUsageTypeAbbreviation()){
+                                                .getUsageTypeAbbreviation()) {
                                             case "IO":
                                                 teamMembersInOfficeList.add(teamMembersList.get(i));
 //                                                for (int j=0; j<teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries().size();j++){
-                                                    if (teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
-                                                            .get(x).getBooking() != null
-                                                            && !floorList.containsKey(teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
-                                                            .get(x).getBooking().getLocationBuildingFloor().getFloorID())) {
-                                                        floorList.put(teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
-                                                                        .get(x).getBooking().getLocationBuildingFloor().getFloorID(),
-                                                                teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
-                                                                        .get(x).getBooking().getLocationBuildingFloor().getfLoorName());
-                                                    }
+                                                if (teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
+                                                        .get(x).getBooking() != null
+                                                        && !floorList.containsKey(teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
+                                                        .get(x).getBooking().getLocationBuildingFloor().getFloorID())) {
+                                                    floorList.put(teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
+                                                                    .get(x).getBooking().getLocationBuildingFloor().getFloorID(),
+                                                            teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
+                                                                    .get(x).getBooking().getLocationBuildingFloor().getfLoorName());
+                                                }
 //                                                }
                                                 break;
                                             case "WFH":
@@ -465,10 +455,10 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                                     teamMembersUnknownList.add(teamMembersList.get(i));
                             }
 
-                            if (teamMembersList!=null && teamMembersList.size()>0){
-                                if (teamMembersInOfficeList.size()>0){
-                                    System.out.println("check cala"+floorList.size());
-                                    if (floorList.size() > 1){
+                            if (teamMembersList != null && teamMembersList.size() > 0) {
+                                if (teamMembersInOfficeList.size() > 0) {
+                                    System.out.println("check cala" + floorList.size());
+                                    if (floorList.size() > 1) {
                                         createMultipleFloorRecyler();
                                     } else {
                                         createMultipleFloorRecyler();
@@ -479,28 +469,29 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                                 setValueToAdapter(teamMembersList);
 
                             }
-                        }else if(response.code()==401){
+                        } else if (response.code() == 401) {
                             //Handle if token got expired
                             binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                            Utils.tokenExpiryAlert(getActivity(),"");
+                            Utils.tokenExpiryAlert(getActivity(), "");
 
                         } else {
                             binding.locateProgressBar.setVisibility(View.INVISIBLE);
                             Log.d("Search", "onResponse: else");
-                            Utils.showCustomAlertDialog(getActivity(),"Api Issue Code: "+response.code());
+                            Utils.showCustomAlertDialog(getActivity(), "Api Issue Code: " + response.code());
                         }
-                    }else {
+                    } else {
                         binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                        Utils.showCustomAlertDialog(getActivity(),"No Response");
+                        Utils.showCustomAlertDialog(getActivity(), "No Response");
                     }
 
                 }
+
                 @Override
                 public void onFailure(Call<ArrayList<DAOTeamMember>> call, Throwable t) {
 //                    Toast.makeText(getActivity(), "on fail", Toast.LENGTH_SHORT).show();
-                    Utils.showCustomAlertDialog(getActivity(),"Response Failure: "+t.getMessage());
+                    Utils.showCustomAlertDialog(getActivity(), "Response Failure: " + t.getMessage());
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                    Log.d("Search", "onResponse: fail"+t.getMessage());
+                    Log.d("Search", "onResponse: fail" + t.getMessage());
                 }
             });
 
@@ -511,29 +502,29 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     }
 
     private void createMultipleFloorRecyler() {
-        ArrayList<FloorListModel> floorListModels= new ArrayList<>();
+        ArrayList<FloorListModel> floorListModels = new ArrayList<>();
         Iterator entries = floorList.entrySet().iterator();
         while (entries.hasNext()) {
             FloorListModel floorListModel = new FloorListModel();
-            Map.Entry<Integer,String> thisEntry = (Map.Entry) entries.next();
+            Map.Entry<Integer, String> thisEntry = (Map.Entry) entries.next();
             Integer key = thisEntry.getKey();
             String value = thisEntry.getValue();
 
             // TODO: 16-09-2022
-            System.out.println("check hash"+value);
+            System.out.println("check hash" + value);
 
             ArrayList<DAOTeamMember> teamMembersFloorList = new ArrayList<>();
-            for (int i=0; i<teamMembersInOfficeList.size(); i++){
+            for (int i = 0; i < teamMembersInOfficeList.size(); i++) {
                 loopu:
-                for (int j=0; j<teamMembersInOfficeList.get(i).getDayGroups().get(0)
-                        .getCalendarEntries().size(); j++){
+                for (int j = 0; j < teamMembersInOfficeList.get(i).getDayGroups().get(0)
+                        .getCalendarEntries().size(); j++) {
                     if (teamMembersInOfficeList.get(i).getDayGroups().get(0).getCalendarEntries()
-                            .get(j).getBooking()!=null
+                            .get(j).getBooking() != null
                             &&
                             key.equals(teamMembersInOfficeList.get(i).getDayGroups().get(0).getCalendarEntries()
-                            .get(j).getBooking().getLocationBuildingFloor()
-                            .getFloorID())) {
-                        System.out.println("team add"+teamMembersInOfficeList.get(i).getDayGroups().get(0).getCalendarEntries().size());
+                                    .get(j).getBooking().getLocationBuildingFloor()
+                                    .getFloorID())) {
+                        System.out.println("team add" + teamMembersInOfficeList.get(i).getDayGroups().get(0).getCalendarEntries().size());
                         teamMembersFloorList.add(teamMembersInOfficeList.get(i));
                         break loopu;
                     }
@@ -574,7 +565,6 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 */
 
 
-
 //            binding.floorLinearLayout.addView();
 //            RelativeLayout relativeLayout = new RelativeLayout();
             // ...
@@ -585,36 +575,36 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     }
 
     private void setValueToAdapter(ArrayList<DAOTeamMember> teamMembersList) {
-        if (teamMembersRemoteList.size()>0){
+        if (teamMembersRemoteList.size() > 0) {
             binding.tvWorkRemote.setVisibility(View.VISIBLE);
             binding.recyclerViewRemote.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             binding.tvWorkRemote.setVisibility(View.GONE);
             binding.recyclerViewRemote.setVisibility(View.GONE);
         }
-        if (teamMembersUnknownList.size()>0){
+        if (teamMembersUnknownList.size() > 0) {
             binding.tvUnknown.setVisibility(View.VISIBLE);
             binding.recyclerViewUnkown.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             binding.tvUnknown.setVisibility(View.GONE);
             binding.recyclerViewUnkown.setVisibility(View.GONE);
         }
-        if (teamMembersOutOfOffice.size()>0){
+        if (teamMembersOutOfOffice.size() > 0) {
             binding.tvOutOfOffice.setVisibility(View.VISIBLE);
             binding.recyclerViewOutOfOffice.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             binding.tvOutOfOffice.setVisibility(View.GONE);
             binding.recyclerViewOutOfOffice.setVisibility(View.GONE);
         }
 
-        if (teamMembersHolidayList.size()>0){
+        if (teamMembersHolidayList.size() > 0) {
             binding.tvHoliday.setVisibility(View.VISIBLE);
             binding.recyclerViewHoliday.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             binding.tvHoliday.setVisibility(View.GONE);
             binding.recyclerViewHoliday.setVisibility(View.GONE);
         }
-        if (teamMembersInOfficeList.size()>0){
+        if (teamMembersInOfficeList.size() > 0) {
 //            binding.tvFloorName.setVisibility(View.VISIBLE);
             binding.tvAdddress.setVisibility(View.VISIBLE);
             binding.listTitle.setVisibility(View.VISIBLE);
@@ -627,10 +617,10 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             if (teamMembersInOfficeList.get(0).getDayGroups()
                     .get(0).getCalendarEntries()
                     .get(0).getBooking() != null)
-                binding.tvAdddress.setText(""+teamMembersInOfficeList.get(0).getDayGroups()
-                    .get(0).getCalendarEntries()
-                    .get(0).getBooking().getLocationBuildingFloor().getBuildingName());
-        }else{
+                binding.tvAdddress.setText("" + teamMembersInOfficeList.get(0).getDayGroups()
+                        .get(0).getCalendarEntries()
+                        .get(0).getBooking().getLocationBuildingFloor().getBuildingName());
+        } else {
 //            binding.tvFloorName.setVisibility(View.GONE);
             binding.tvAdddress.setVisibility(View.GONE);
             binding.listTitle.setVisibility(View.GONE);
@@ -644,49 +634,49 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
         if (expandStatus)
             binding.recyclerViewRemote.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.VERTICAL,false));
+                    LinearLayoutManager.VERTICAL, false));
         else
             binding.recyclerViewRemote.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.HORIZONTAL,false));
-        teamsContactsRemoteAdapter = new TeamsContactsAdapter(getActivity(),teamMembersRemoteList, this, this);
+                    LinearLayoutManager.HORIZONTAL, false));
+        teamsContactsRemoteAdapter = new TeamsContactsAdapter(getActivity(), teamMembersRemoteList, this, this);
         binding.recyclerViewRemote.setAdapter(teamsContactsRemoteAdapter);
 
 
         if (expandStatus)
             binding.recyclerViewOutOfOffice.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.VERTICAL,false));
+                    LinearLayoutManager.VERTICAL, false));
         else
             binding.recyclerViewOutOfOffice.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.HORIZONTAL,false));
-        teamsContactsOutOfOfficeAdapter = new TeamsContactsAdapter(getActivity(),teamMembersOutOfOffice,
-                this,this);
+                    LinearLayoutManager.HORIZONTAL, false));
+        teamsContactsOutOfOfficeAdapter = new TeamsContactsAdapter(getActivity(), teamMembersOutOfOffice,
+                this, this);
         binding.recyclerViewOutOfOffice.setAdapter(teamsContactsOutOfOfficeAdapter);
 
         if (expandStatus)
             binding.recyclerViewHoliday.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.VERTICAL,false));
+                    LinearLayoutManager.VERTICAL, false));
         else
             binding.recyclerViewHoliday.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.HORIZONTAL,false));
-        teamsContactsHolidaysAdapter = new TeamsContactsAdapter(getActivity(),teamMembersHolidayList, this,this);
+                    LinearLayoutManager.HORIZONTAL, false));
+        teamsContactsHolidaysAdapter = new TeamsContactsAdapter(getActivity(), teamMembersHolidayList, this, this);
         binding.recyclerViewHoliday.setAdapter(teamsContactsHolidaysAdapter);
 
         if (expandStatus)
             binding.recyclerViewUnkown.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.VERTICAL,false));
+                    LinearLayoutManager.VERTICAL, false));
         else
             binding.recyclerViewUnkown.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.HORIZONTAL,false));
-        teamsContactsUnknownAdapter = new TeamsContactsAdapter(getActivity(),teamMembersUnknownList, this,this);
+                    LinearLayoutManager.HORIZONTAL, false));
+        teamsContactsUnknownAdapter = new TeamsContactsAdapter(getActivity(), teamMembersUnknownList, this, this);
         binding.recyclerViewUnkown.setAdapter(teamsContactsUnknownAdapter);
     }
 
     @Override
     public void clickEvent(DAOTeamMember daoTeamMember) {
         selID = daoTeamMember.getUserId();
-        Intent intent = new Intent(getActivity(),ShowProfileActivity.class);
-        intent.putExtra(AppConstants.USER_CURRENT_STATUS,daoTeamMember);
-        intent.putExtra("DATE",currendate);
+        Intent intent = new Intent(getActivity(), ShowProfileActivity.class);
+        intent.putExtra(AppConstants.USER_CURRENT_STATUS, daoTeamMember);
+        intent.putExtra("DATE", currendate);
         startActivity(intent);
 
         /*callSearchRecyclerData(fName + " " + lName);
@@ -695,12 +685,18 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
     @Override
     public void onProfileClick(DAOTeamMember daoTeamMember) {
-        if (daoTeamMember!=null){
-            Intent intent = new Intent(getActivity(),ShowProfileActivity.class);
-            intent.putExtra(AppConstants.USER_CURRENT_STATUS,daoTeamMember);
-            intent.putExtra("DATE",currendate);
+        if (daoTeamMember != null) {
+
+            Intent intent = new Intent(getActivity(), ShowProfileActivity.class);
+            String personJsonString = new Gson().toJson(daoTeamMember);
+
+            ExtendedDataHolder extras = ExtendedDataHolder.getInstance();
+            extras.putExtra(AppConstants.USER_CURRENT_STATUS, personJsonString);
+
+            //intent.putExtra(AppConstants.USER_CURRENT_STATUS,daoTeamMember);
+            intent.putExtra("DATE", currendate);
             startActivity(intent);
-        }else {
+        } else {
             expandStatus = true;
             binding.tvExapnd.setVisibility(View.GONE);
             getTeamMembers();
@@ -727,20 +723,20 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
     }
 
-            @Override
-            public void floorListenerClick(int parentLocationId, int identifierId, String desk) {
-                onLocationIconClick(parentLocationId, identifierId, desk);
-            }
+    @Override
+    public void floorListenerClick(int parentLocationId, int identifierId, String desk) {
+        onLocationIconClick(parentLocationId, identifierId, desk);
+    }
 
-            @Override
-            public void updateAdapterList(TeamsContactsAdapter teamsContactsAdapter) {
-                if (dynamicAdapters==null)
-                    dynamicAdapters = new ArrayList<>();
-                else
-                    dynamicAdapters.add(teamsContactsAdapter);
-            }
+    @Override
+    public void updateAdapterList(TeamsContactsAdapter teamsContactsAdapter) {
+        if (dynamicAdapters == null)
+            dynamicAdapters = new ArrayList<>();
+        else
+            dynamicAdapters.add(teamsContactsAdapter);
+    }
 
-            public static class OverlapDecoration extends RecyclerView.ItemDecoration {
+    public static class OverlapDecoration extends RecyclerView.ItemDecoration {
 
         private final static int vertOverlap = -20;
 
@@ -756,7 +752,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     }
 
     private void setDataToExpandAdapter(ArrayList<DAOTeamMember> teamMembersList) {
-        teamsAdapter = new TeamsAdapter(getActivity(),teamMembersList,this,firstAidList,firewardenList);
+        teamsAdapter = new TeamsAdapter(getActivity(), teamMembersList, this, firstAidList, firewardenList);
         binding.expandRecyclerView.setAdapter(teamsAdapter);
     }
 
@@ -764,15 +760,15 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     private void uiInit(View root) {
 
         contactLinearLayout = new LinearLayoutManager(getActivity(),
-                LinearLayoutManager.VERTICAL,false);
+                LinearLayoutManager.VERTICAL, false);
         contactUnknownLinearLayout = new LinearLayoutManager(getActivity(),
-                LinearLayoutManager.HORIZONTAL,false);
+                LinearLayoutManager.HORIZONTAL, false);
         contactRemoteLinearLayout = new LinearLayoutManager(getActivity(),
-                LinearLayoutManager.HORIZONTAL,false);
+                LinearLayoutManager.HORIZONTAL, false);
         contactOutOfOfficeLinearLayout = new LinearLayoutManager(getActivity(),
-                LinearLayoutManager.HORIZONTAL,false);
+                LinearLayoutManager.HORIZONTAL, false);
         contactHolidayLinearLayout = new LinearLayoutManager(getActivity(),
-                LinearLayoutManager.HORIZONTAL,false);
+                LinearLayoutManager.HORIZONTAL, false);
         binding.recyclerView.setLayoutManager(contactLinearLayout);
         binding.recyclerViewRemote.setLayoutManager(contactRemoteLinearLayout);
         binding.recyclerViewOutOfOffice.setLayoutManager(contactOutOfOfficeLinearLayout);
@@ -792,16 +788,16 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 //        teamsContactsAdapter = new TeamsContactsAdapter(getActivity(),teamMembersInOfficeList, this);
 //        binding.recyclerView.setAdapter(teamsContactsAdapter);
 
-        teamsContactsRemoteAdapter = new TeamsContactsAdapter(getActivity(),teamMembersRemoteList, this,this);
+        teamsContactsRemoteAdapter = new TeamsContactsAdapter(getActivity(), teamMembersRemoteList, this, this);
         binding.recyclerViewRemote.setAdapter(teamsContactsRemoteAdapter);
 
-        teamsContactsOutOfOfficeAdapter = new TeamsContactsAdapter(getActivity(),teamMembersOutOfOffice, this,this);
+        teamsContactsOutOfOfficeAdapter = new TeamsContactsAdapter(getActivity(), teamMembersOutOfOffice, this, this);
         binding.recyclerViewOutOfOffice.setAdapter(teamsContactsOutOfOfficeAdapter);
 
-        teamsContactsHolidaysAdapter = new TeamsContactsAdapter(getActivity(),teamMembersHolidayList, this,this);
+        teamsContactsHolidaysAdapter = new TeamsContactsAdapter(getActivity(), teamMembersHolidayList, this, this);
         binding.recyclerViewHoliday.setAdapter(teamsContactsHolidaysAdapter);
 
-        teamsContactsUnknownAdapter = new TeamsContactsAdapter(getActivity(),teamMembersUnknownList, this,this);
+        teamsContactsUnknownAdapter = new TeamsContactsAdapter(getActivity(), teamMembersUnknownList, this, this);
         binding.recyclerViewHoliday.setAdapter(teamsContactsUnknownAdapter);
 
         Calendar startDate = Calendar.getInstance();
@@ -847,14 +843,14 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                 currendate = date.get(Calendar.YEAR) + "-" +
                         (date.get(Calendar.MONTH) + 1) + "-" + date.get(Calendar.DATE);
 //2022-08-13T10:51:17.830Z
-                int  a = horizontalCalendar.getSelectedDatePosition();
+                int a = horizontalCalendar.getSelectedDatePosition();
 
                 try {
                     currendate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new SimpleDateFormat("yyyy-M-d").parse(currendate));
                     selectedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new SimpleDateFormat("yyyy-M-d").parse(currendate));
                     binding.tvExapnd.setVisibility(View.VISIBLE);
                     expandStatus = false;
-                    if (dynamicAdapters!=null)
+                    if (dynamicAdapters != null)
                         dynamicAdapters.clear();
                     getTeamMembers();
                 } catch (ParseException e) {
@@ -884,9 +880,9 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
         teamMembersList = new ArrayList<>();
 
-        for(DAOTeamMember staff: copyTeamMembersList){
+        for (DAOTeamMember staff : copyTeamMembersList) {
             if (staff.getFirstName().toLowerCase().contains(text) ||
-                    staff.getLastName().toLowerCase().contains(text)){
+                    staff.getLastName().toLowerCase().contains(text)) {
                 teamMembersList.add(staff);
             }
         }
@@ -1015,37 +1011,37 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         SessionHandler.getInstance().saveInt(getContext(), AppConstants.PARENT_ID, parentLocationId);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<LocateCountryRespose>> call=apiService.getCountrysChild(parentLocationId);
+        Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(parentLocationId);
         call.enqueue(new Callback<List<LocateCountryRespose>>() {
             @Override
             public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
 
-                List<LocateCountryRespose> locateCountryResposeList=response.body();
+                List<LocateCountryRespose> locateCountryResposeList = response.body();
 
-                for (int i = 0; i <locateCountryResposeList.size() ; i++) {
+                for (int i = 0; i < locateCountryResposeList.size(); i++) {
 
-                    if(desk.equals(AppConstants.DESK)){
+                    if (desk.equals(AppConstants.DESK)) {
 
-                        for (int j = 0; j <locateCountryResposeList.get(i).getLocationItemLayout().getDesks().size() ; j++) {
+                        for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getDesks().size(); j++) {
 
-                            if(identifierId==locateCountryResposeList.get(i).getLocationItemLayout().getDesks().get(j).getDesksId()){
-                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION,i);
+                            if (identifierId == locateCountryResposeList.get(i).getLocationItemLayout().getDesks().get(j).getDesksId()) {
+                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
 
 
-                                System.out.println("SelectedDeskFloorInLocate "+i+" "+desk+" ");
+                                System.out.println("SelectedDeskFloorInLocate " + i + " " + desk + " ");
 
                                 ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
 //                                navController.navigate(R.id.action_navigation_home_to_navigation_locate);
                             }
                         }
-                    }else if(desk.equals(AppConstants.MEETING)){
+                    } else if (desk.equals(AppConstants.MEETING)) {
 
-                        for (int j = 0; j <locateCountryResposeList.get(i).getLocationItemLayout().getMeetingRoomsList().size() ; j++) {
+                        for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getMeetingRoomsList().size(); j++) {
 
-                            if(identifierId==locateCountryResposeList.get(i).getLocationItemLayout().getMeetingRoomsList().get(j).getMeetingRoomId()){
-                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION,i);
+                            if (identifierId == locateCountryResposeList.get(i).getLocationItemLayout().getMeetingRoomsList().get(j).getMeetingRoomId()) {
+                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
 
-                                System.out.println("SelectedMeetingFloorInLocate "+i+" "+desk+" ");
+                                System.out.println("SelectedMeetingFloorInLocate " + i + " " + desk + " ");
 
                                 ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
 //                                navController.navigate(R.id.navigation_locate);
@@ -1054,14 +1050,14 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                         }
 
 
-                    }else if(desk.equals(AppConstants.CAR_PARKING)){
+                    } else if (desk.equals(AppConstants.CAR_PARKING)) {
 
-                        for (int j = 0; j <locateCountryResposeList.get(i).getLocationItemLayout().getParkingSlotsList().size() ; j++) {
+                        for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getParkingSlotsList().size(); j++) {
 
-                            if(identifierId==locateCountryResposeList.get(i).getLocationItemLayout().getParkingSlotsList().get(j).getId()){
-                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION,i);
+                            if (identifierId == locateCountryResposeList.get(i).getLocationItemLayout().getParkingSlotsList().get(j).getId()) {
+                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
 
-                                System.out.println("SelectedCarFloorInLocate "+i+" "+desk+" ");
+                                System.out.println("SelectedCarFloorInLocate " + i + " " + desk + " ");
                                 ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
 //                                navController.navigate(R.id.navigation_locate);
                             }
@@ -1079,20 +1075,19 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     }
 
     private void getAvaliableDeskDetails(ArrayList<FloorListModel> floorListModelArrayList) {
-        ArrayList<FloorListModel> list =floorListModelArrayList;
-        for (int i=0; i< floorListModelArrayList.size(); i++)
-        {
+        ArrayList<FloorListModel> list = floorListModelArrayList;
+        for (int i = 0; i < floorListModelArrayList.size(); i++) {
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 //        System.out.println("check cala"+horizontalCalendar.getSelectedDate().getTime());
 
             String toDate = Utils.getYearMonthDateFormat(horizontalCalendar.getSelectedDate().getTime())
                     + "T00:00:00Z";
             String fromTime = Utils.getYearMonthDateFormat(horizontalCalendar.getSelectedDate().getTime())
-                    + "T"+Utils.getCurrentTime()+":00Z";
+                    + "T" + Utils.getCurrentTime() + ":00Z";
             String toTime = Utils.getYearMonthDateFormat(horizontalCalendar.getSelectedDate().getTime())
                     + "T23:59:00Z";
 
-        int parentId = floorListModelArrayList.get(i).getFloorId();
+            int parentId = floorListModelArrayList.get(i).getFloorId();
 
 //        System.out.println("parent Booking cje"+parentId);
             //Call<DeskAvaliabilityResponse> call = apiService.getAvaliableDeskDetails(parentId, now, now, now);
@@ -1109,22 +1104,22 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                     DeskAvaliabilityResponse deskAvaliabilityResponseList = response.body();
                     int teamAvailableCount = 0;
                     if (deskAvaliabilityResponseList != null) {
-                        for (int i=0; i<deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size();i++){
+                        for (int i = 0; i < deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size(); i++) {
                             if (!deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).isBookedByElse()
-                                    && !deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).isBookedByUser()){
+                                    && !deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).isBookedByUser()) {
                                 teamAvailableCount++;
                             }
                         }
-                        System.out.println("tets vals"+teamAvailableCount+"/"
-                                +deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size()
-                                +" desks available");
-                        list.get(finalI).setDeskAvailability(teamAvailableCount+"/"
-                                +deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size()
-                                +" desks available");
-                        System.out.println("tets vals : ij"+list.get(finalI).getDeskAvailability()+finalI);
+                        System.out.println("tets vals" + teamAvailableCount + "/"
+                                + deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size()
+                                + " desks available");
+                        list.get(finalI).setDeskAvailability(teamAvailableCount + "/"
+                                + deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size()
+                                + " desks available");
+                        System.out.println("tets vals : ij" + list.get(finalI).getDeskAvailability() + finalI);
 
-                        if (teamsFloorListAdapter !=null){
-                            System.out.println("tets vals : ad"+list.get(0).getDeskAvailability());
+                        if (teamsFloorListAdapter != null) {
+                            System.out.println("tets vals : ad" + list.get(0).getDeskAvailability());
                             teamsFloorListAdapter.notifyDataSetChanged();
                         }
                     }
@@ -1134,8 +1129,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                 @Override
                 public void onFailure(Call<DeskAvaliabilityResponse> call, Throwable t) {
 
-                    floorListModelArrayList.get(finalI).setDeskAvailability(0+"/"
-                            +"0 desks available");
+                    floorListModelArrayList.get(finalI).setDeskAvailability(0 + "/"
+                            + "0 desks available");
                     System.out.println("Failure" + t.getMessage().toString());
 //                binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 }
@@ -1144,13 +1139,13 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
 //        System.out.println("tets vals : bj"+list.get(0).getDeskAvailability());
 //        System.out.println("tets vals : bj"+list.get(1).getDeskAvailability());
-        teamsFloorListAdapter = new TeamsFloorListAdapter(getActivity(),list, this, this,this);
+        teamsFloorListAdapter = new TeamsFloorListAdapter(getActivity(), list, this, this, this);
         binding.recyclerView.setAdapter(teamsFloorListAdapter);
 
     }
 
 
-    public void setLanguage(){
+    public void setLanguage() {
         mePage = getMeScreenData(getActivity());
         appKeysPage = getAppKeysPageScreenData(getActivity());
         resetPage = getResetPasswordPageScreencreenData(getActivity());
@@ -1158,8 +1153,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
         bookindata = getBookingPageScreenData(getActivity());
 
-        System.out.println("null pointer"+mePage);
-        System.out.println("null pointer"+mePage.getMyTeam());
+        System.out.println("null pointer" + mePage);
+        System.out.println("null pointer" + mePage.getMyTeam());
         binding.title.setText(mePage.getMyTeam());
         binding.txtAllteam.setText(appKeysPage.getAllTeams());
         binding.serachBar.setHint(appKeysPage.getSearch());
