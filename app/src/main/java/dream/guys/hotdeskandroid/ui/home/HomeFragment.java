@@ -1131,7 +1131,19 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             NavController navController = Navigation.findNavController(view);
             Bundle bundle = new Bundle();
             bundle.putString("BOOK_NAME", meetingEntriesModel.getMeetingRoomName());
-            bundle.putString("BOOK_ADDRESS", "Address");
+
+            String address = "-";
+
+            try {
+                address = meetingEntriesModel.getLocationBuildingFloor().getfLoorName().isEmpty()
+                        ? "-" : meetingEntriesModel.getLocationBuildingFloor().getBuildingName() +
+                        " - " + meetingEntriesModel.getLocationBuildingFloor().getfLoorName();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            bundle.putString("BOOK_ADDRESS", address);
             bundle.putString("CHECK_IN_TIME", Utils.splitTime(meetingEntriesModel.getFrom()));
             bundle.putString("CHECK_OUT_TIME", Utils.splitTime(meetingEntriesModel.getMyto()));
             navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment, bundle);
@@ -1226,7 +1238,19 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             NavController navController = Navigation.findNavController(view);
             Bundle bundle = new Bundle();
             bundle.putString("BOOK_NAME", carParkingEntriesModel.getParkingSlotCode());
-            bundle.putString("BOOK_ADDRESS", "Addresss");
+
+            String address = "-";
+
+            try {
+                address = carParkingEntriesModel.getLocationBuildingFloor().getfLoorName().isEmpty()
+                        ? "-" : carParkingEntriesModel.getLocationBuildingFloor().getBuildingName() +
+                        " - " + carParkingEntriesModel.getLocationBuildingFloor().getfLoorName();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            bundle.putString("BOOK_ADDRESS", address);
             bundle.putString("CHECK_IN_TIME", Utils.splitTime(carParkingEntriesModel.getFrom()));
             bundle.putString("CHECK_OUT_TIME", Utils.splitTime(carParkingEntriesModel.getMyto()));
             navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment, bundle);
