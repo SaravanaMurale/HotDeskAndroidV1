@@ -20,21 +20,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.os.Handler;
 import android.util.Base64;
 import android.util.Log;
@@ -50,17 +35,25 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
-/*
-import org.altbeacon.beacon.BeaconManager;
-import org.altbeacon.beacon.MonitorNotifier;
-import org.altbeacon.beacon.Region;
-*/
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -73,8 +66,6 @@ import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
-
-
 import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
@@ -100,13 +91,12 @@ import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
-import okhttp3.internal.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnCheckInClickable, DeskListRecyclerAdapter.OnSelectSelected, SwipeRefreshLayout.OnRefreshListener {
-    String TAG="HomeFragment";
+    String TAG = "HomeFragment";
     FragmentHomeBinding binding;
     TextView text;
     TextView userCurrentStatus;
@@ -114,7 +104,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     ImageView profile;
     ImageView tenantProfile;
     Toolbar toolbar;
-    LinearLayout headBlock,homeLayout,searchLayout;
+    LinearLayout headBlock, homeLayout, searchLayout;
     FrameLayout qrLayout;
 
     LanguagePOJO.AppKeys appKeysPage;
@@ -125,11 +115,11 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     LanguagePOJO.Global global;
 
     //Header
-    ImageView notiIcon,closeSearch,homeNotificationIcon;
+    ImageView notiIcon, closeSearch, homeNotificationIcon;
     ImageView userStatus;
 
     //HomeBooking
-    RecyclerView rvHomeBooking,rvDeskRecycler;
+    RecyclerView rvHomeBooking, rvDeskRecycler;
     HomeBookingListAdapter homeBookingListAdapter;
     DeskListRecyclerAdapter deskListRecyclerAdapter;
     LinearLayoutManager linearLayoutManager;
@@ -138,16 +128,16 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     List<BookingListResponse> bookingListResponseList;
 
     //EditBooking
-    TextView startTime,endTime,repeat,date,deskRoomName;
-    String repeatValue="None";
+    TextView startTime, endTime, repeat, date, deskRoomName;
+    String repeatValue = "None";
 
     View view;
     Dialog dialog;
-    int teamId=0,teamMembershipId=0,selectedDeskId=0;
+    int teamId = 0, teamMembershipId = 0, selectedDeskId = 0;
     ArrayList<BookingListResponse.DayGroup> recyclerModelArrayList;
     ArrayList<IncomingRequestResponse.Result> notiList;
-    List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse=new ArrayList<>();
-    HashMap<Integer,String> meetingRecurenceMap = new HashMap<Integer, String>();
+    List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse = new ArrayList<>();
+    HashMap<Integer, String> meetingRecurenceMap = new HashMap<Integer, String>();
     public boolean qrEnabled = false;
     private static final int PERMISSION_REQUEST_CODE = 1;
 
@@ -158,9 +148,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     //New...
     UserDetailsResponse profileData;
 
-    public static int earlyCheckInTime=0;
-    public static int expiryCheckInTime=0;
-    public boolean showPastStatus=false;
+    public static int earlyCheckInTime = 0;
+    public static int expiryCheckInTime = 0;
+    public boolean showPastStatus = false;
     Activity activityContext;
 //    protected static final String TAG = "MonitoringActivity";
 //    private BeaconManager beaconManager;
@@ -176,11 +166,11 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         toolbar = root.findViewById(R.id.toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
 
         dialog = new Dialog(getContext());
-        setNightMode(getContext(),false);
+        setNightMode(getContext(), false);
         setLanguage();
         earlyCheckInTime();
         bookingExpiryGraceTimeInMinutes();
@@ -192,12 +182,12 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         headBlock = root.findViewById(R.id.HeadBlock);
         nestedScrollView = root.findViewById(R.id.nestedView);
         qrLayout = root.findViewById(R.id.nestedView);
-        userStatus=root.findViewById(R.id.user_status);
-        tenantProfile=root.findViewById(R.id.tentant_image_view);
-        rvHomeBooking=root.findViewById(R.id.rvHomeBooking);
-        homeLayout=root.findViewById(R.id.home_layout);
-        searchLayout=root.findViewById(R.id.search_layout);
-        closeSearch=root.findViewById(R.id.close);
+        userStatus = root.findViewById(R.id.user_status);
+        tenantProfile = root.findViewById(R.id.tentant_image_view);
+        rvHomeBooking = root.findViewById(R.id.rvHomeBooking);
+        homeLayout = root.findViewById(R.id.home_layout);
+        searchLayout = root.findViewById(R.id.search_layout);
+        closeSearch = root.findViewById(R.id.close);
         mSwipeRefreshLayout = root.findViewById(R.id.swipe_refresh);
         mSwipeRefreshLayout.setOnRefreshListener(HomeFragment.this);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.figmaBlueText,
@@ -205,15 +195,15 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
 
-        if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null
-                && SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked in")){
+        if (SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS) != null
+                && SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked in")) {
             userCurrentStatus.setText("Checked In");
             userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.teal_200), android.graphics.PorterDuff.Mode.MULTIPLY);
-        }else if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null && SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked out")){
+        } else if (SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS) != null && SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked out")) {
             userCurrentStatus.setText("Checked Out");
             userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
 //            holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
-        }else {
+        } else {
             userStatus.setVisibility(View.GONE);
             userCurrentStatus.setVisibility(View.GONE);
 
@@ -226,13 +216,13 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             }*/
         }
 
-       binding.searchIcon.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               ((MainActivity) getActivity()).showSearch();
-           }
-       });
-       userProfile.setOnClickListener(new View.OnClickListener() {
+        binding.searchIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).showSearch();
+            }
+        });
+        userProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Utils.bottomSheetEditYourBooking(getContext(),getActivity(),"message","dad");
@@ -249,8 +239,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             }
         });
 
-        binding.homeUserName.setText(SessionHandler.getInstance().get(getContext(),AppConstants.USERNAME));
-        binding.homeTeamName.setText(SessionHandler.getInstance().get(getContext(),AppConstants.CURRENT_TEAM));
+        binding.homeUserName.setText(SessionHandler.getInstance().get(getContext(), AppConstants.USERNAME));
+        binding.homeTeamName.setText(SessionHandler.getInstance().get(getContext(), AppConstants.CURRENT_TEAM));
 /*
         text.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -266,8 +256,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             checkPinPopUp();
         }*/
 
-        if (!SessionHandler.getInstance().getBoolean(getActivity(),AppConstants.PIN_SETUP_DONE)) {
-            SessionHandler.getInstance().saveBoolean(getActivity(),AppConstants.PIN_SETUP_DONE,true);
+        if (!SessionHandler.getInstance().getBoolean(getActivity(), AppConstants.PIN_SETUP_DONE)) {
+            SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.PIN_SETUP_DONE, true);
 
             Intent intent = new Intent(getActivity(), CreatePinActivity.class);
             getActivity().startActivity(intent);
@@ -281,13 +271,13 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         //loadUserImage();
         //loadNotification();
 
-        if (SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE)!=null &&
-                SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE).equalsIgnoreCase(AppConstants.Administrator)
-                ||SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE).equalsIgnoreCase(AppConstants.FacilityManager)
-                ||SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE).equalsIgnoreCase(AppConstants.TeamManager)
-                ||SessionHandler.getInstance().get(getActivity(),AppConstants.ROLE).equalsIgnoreCase(AppConstants.MeetingManager)){
+        if (SessionHandler.getInstance().get(getActivity(), AppConstants.ROLE) != null &&
+                SessionHandler.getInstance().get(getActivity(), AppConstants.ROLE).equalsIgnoreCase(AppConstants.Administrator)
+                || SessionHandler.getInstance().get(getActivity(), AppConstants.ROLE).equalsIgnoreCase(AppConstants.FacilityManager)
+                || SessionHandler.getInstance().get(getActivity(), AppConstants.ROLE).equalsIgnoreCase(AppConstants.TeamManager)
+                || SessionHandler.getInstance().get(getActivity(), AppConstants.ROLE).equalsIgnoreCase(AppConstants.MeetingManager)) {
             loadNotification();
-        }else {
+        } else {
             callOutGoingNotification();
         }
 
@@ -315,25 +305,25 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             public void onClick(View view) {
                 //if (notiList!=null && notiList.size()>0){
 
-                    if (profileData!=null) {
+                if (profileData != null) {
 
-                        Intent intent;
-                        if (profileData.getHighestRole().equalsIgnoreCase(AppConstants.Administrator)
-                        || profileData.getHighestRole().equalsIgnoreCase(AppConstants.FacilityManager)
-                                ||profileData.getHighestRole().equalsIgnoreCase(AppConstants.TeamManager)
-                                ||profileData.getHighestRole().equalsIgnoreCase(AppConstants.MeetingManager)) {
-                            intent = new Intent(getActivity(), NotificationCenterActivity.class);
-                        }else {
-                            intent = new Intent(getActivity(), UserNotificationActivity.class);
-                        }
-                        intent.putExtra(AppConstants.SHOWNOTIFICATION,notiList);
-                        startActivity(intent);
-
-                    }else {
-                        Intent intent = new Intent(getActivity(), UserNotificationActivity.class);
-                        intent.putExtra(AppConstants.SHOWNOTIFICATION,notiList);
-                        startActivity(intent);
+                    Intent intent;
+                    if (profileData.getHighestRole().equalsIgnoreCase(AppConstants.Administrator)
+                            || profileData.getHighestRole().equalsIgnoreCase(AppConstants.FacilityManager)
+                            || profileData.getHighestRole().equalsIgnoreCase(AppConstants.TeamManager)
+                            || profileData.getHighestRole().equalsIgnoreCase(AppConstants.MeetingManager)) {
+                        intent = new Intent(getActivity(), NotificationCenterActivity.class);
+                    } else {
+                        intent = new Intent(getActivity(), UserNotificationActivity.class);
                     }
+                    intent.putExtra(AppConstants.SHOWNOTIFICATION, notiList);
+                    startActivity(intent);
+
+                } else {
+                    Intent intent = new Intent(getActivity(), UserNotificationActivity.class);
+                    intent.putExtra(AppConstants.SHOWNOTIFICATION, notiList);
+                    startActivity(intent);
+                }
 
                 //}
             }
@@ -350,14 +340,15 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             call.enqueue(new Callback<List<AmenitiesResponse>>() {
                 @Override
                 public void onResponse(Call<List<AmenitiesResponse>> call, Response<List<AmenitiesResponse>> response) {
-                    if(response.code()==200){
-                        if(response.body().size() > 0)
+                    if (response.code() == 200) {
+                        if (response.body().size() > 0)
                             amenitiesList = response.body();
-                    }else if(response.code()==401){
-                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
-                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                    } else if (response.code() == 401) {
+                        Utils.showCustomTokenExpiredDialog(getActivity(), "Token Expired");
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK, false);
                     }
                 }
+
                 @Override
                 public void onFailure(Call<List<AmenitiesResponse>> call, Throwable t) {
 
@@ -389,33 +380,34 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             System.out.println("Sunday of the Week: " + sunday);
 //            binding.wee
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<List<MeetingListToEditResponse>> call = apiService.getMeetingListToEdit(monday+"T00:00:00.000Z",sunday+"T00:00:00.000Z");
+            Call<List<MeetingListToEditResponse>> call = apiService.getMeetingListToEdit(monday + "T00:00:00.000Z", sunday + "T00:00:00.000Z");
             call.enqueue(new Callback<List<MeetingListToEditResponse>>() {
                 @Override
                 public void onResponse(Call<List<MeetingListToEditResponse>> call, Response<List<MeetingListToEditResponse>> response) {
-                    if(response.code()==200){
+                    if (response.code() == 200) {
 //                        ProgressDialog.dismisProgressBar(getContext(),dialog);
-                        List<MeetingListToEditResponse> list= response.body();
-                        for (int i=0; i<list.size(); i++){
-                            if (list.get(i).getRecurrence()!=null){
-                                meetingRecurenceMap.put(list.get(i).getId(),list.get(i).getMeetingRoomName());
+                        List<MeetingListToEditResponse> list = response.body();
+                        for (int i = 0; i < list.size(); i++) {
+                            if (list.get(i).getRecurrence() != null) {
+                                meetingRecurenceMap.put(list.get(i).getId(), list.get(i).getMeetingRoomName());
                             }
                         }
-                    }else if(response.code()==401){
+                    } else if (response.code() == 401) {
                         //Handle if token got expired
 //                        ProgressDialog.dismisProgressBar(getContext(),dialog);
-                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK, false);
+                        Utils.showCustomTokenExpiredDialog(getActivity(), "Token Expired");
 //                        Utils.finishAllActivity(getContext());
 //                        redirectToBioMetricAccess();
 
-                        Log.d(TAG, "onResponse: else" );
+                        Log.d(TAG, "onResponse: else");
                     }
                 }
+
                 @Override
                 public void onFailure(Call<List<MeetingListToEditResponse>> call, Throwable t) {
 //                    ProgressDialog.dismisProgressBar(getContext(),dialog);
-                    Log.d(TAG, "onFailure: "+t.getMessage());
+                    Log.d(TAG, "onFailure: " + t.getMessage());
 //                    Utils.toastMessage(getActivity(),"failure: "+t.getMessage());
                 }
             });
@@ -436,15 +428,16 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             call.enqueue(new Callback<Boolean>() {
                 @Override
                 public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                    if(response.code()==200){
+                    if (response.code() == 200) {
                         qrEnabled = response.body();
 //                        qrEnabled = true;
-                    }else if(response.code()==401){
-                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
-                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                    } else if (response.code() == 401) {
+                        Utils.showCustomTokenExpiredDialog(getActivity(), "Token Expired");
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK, false);
 //                        Utils.finishAllActivity(getContext());
                     }
                 }
+
                 @Override
                 public void onFailure(Call<Boolean> call, Throwable t) {
 
@@ -457,33 +450,33 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     }
 
     private void checkPinPopUp() {
-            final Dialog dialog = new Dialog(getActivity());
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            int width = (int) (getActivity().getResources().getDisplayMetrics().widthPixels * 0.80);
-            int height = (int) (getActivity().getResources().getDisplayMetrics().heightPixels * 0.20);
-            dialog.setCancelable(false);
-            dialog.setContentView(R.layout.dialog_pin_pop_up);
-            dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            TextView text = dialog.findViewById(R.id.tv_err_msg);
-            text.setText("The option to login using a pin is now available. \n To enable please select continue");
-            TextView dialogButton = dialog.findViewById(R.id.tv_ok);
-            TextView dialogButtonCancel = dialog.findViewById(R.id.tv_cancel);
-            dialogButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), CreatePinActivity.class);
-                    getActivity().startActivity(intent);
-                    dialog.dismiss();
-                }
-            });
-            dialogButtonCancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-            dialog.show();
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        int width = (int) (getActivity().getResources().getDisplayMetrics().widthPixels * 0.80);
+        int height = (int) (getActivity().getResources().getDisplayMetrics().heightPixels * 0.20);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog_pin_pop_up);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        TextView text = dialog.findViewById(R.id.tv_err_msg);
+        text.setText("The option to login using a pin is now available. \n To enable please select continue");
+        TextView dialogButton = dialog.findViewById(R.id.tv_ok);
+        TextView dialogButtonCancel = dialog.findViewById(R.id.tv_cancel);
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CreatePinActivity.class);
+                getActivity().startActivity(intent);
+                dialog.dismiss();
+            }
+        });
+        dialogButtonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
     }
 
@@ -497,26 +490,27 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             call.enqueue(new Callback<IncomingRequestResponse>() {
                 @Override
                 public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {
-                    if(response.code()==200){
+                    if (response.code() == 200) {
                         notiList = new ArrayList<>();
-                        if (response.body()!=null && response.body().getResults()!=null){
+                        if (response.body() != null && response.body().getResults() != null) {
                             notiList.addAll(response.body().getResults());
-                            loo :
-                            for (int i=0;i<notiList.size();i++){
-                                if (notiList.get(i).getStatus()==0){
-                                    SessionHandler.getInstance().saveBoolean(activityContext, AppConstants.SHOWNOTIFICATION,true);
+                            loo:
+                            for (int i = 0; i < notiList.size(); i++) {
+                                if (notiList.get(i).getStatus() == 0) {
+                                    SessionHandler.getInstance().saveBoolean(activityContext, AppConstants.SHOWNOTIFICATION, true);
                                     notiIcon.setVisibility(View.VISIBLE);
                                     break loo;
                                 }
-                                SessionHandler.getInstance().saveBoolean(activityContext, AppConstants.SHOWNOTIFICATION,false);
+                                SessionHandler.getInstance().saveBoolean(activityContext, AppConstants.SHOWNOTIFICATION, false);
                             }
                         }
-                    }else if(response.code()==401){
-                        Utils.showCustomTokenExpiredDialog(activityContext,"Token Expired");
-                        SessionHandler.getInstance().saveBoolean(activityContext, AppConstants.LOGIN_CHECK,false);
+                    } else if (response.code() == 401) {
+                        Utils.showCustomTokenExpiredDialog(activityContext, "Token Expired");
+                        SessionHandler.getInstance().saveBoolean(activityContext, AppConstants.LOGIN_CHECK, false);
 //                        Utils.finishAllActivity(getContext());
                     }
                 }
+
                 @Override
                 public void onFailure(Call<IncomingRequestResponse> call, Throwable t) {
 
@@ -535,29 +529,30 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         call.enqueue(new Callback<IncomingRequestResponse>() {
             @Override
             public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {
-                if(response.code()==200){
+                if (response.code() == 200) {
 
                     notiList = new ArrayList<>();
-                    if (response.body()!=null && response.body().getResults()!=null){
+                    if (response.body() != null && response.body().getResults() != null) {
 
                         notiList.addAll(response.body().getResults());
-                        loo :
-                        for (int i=0;i<notiList.size();i++){
-                            if (notiList.get(i).getStatus()==0){
-                                SessionHandler.getInstance().saveBoolean(activityContext, AppConstants.SHOWNOTIFICATION,true);
+                        loo:
+                        for (int i = 0; i < notiList.size(); i++) {
+                            if (notiList.get(i).getStatus() == 0) {
+                                SessionHandler.getInstance().saveBoolean(activityContext, AppConstants.SHOWNOTIFICATION, true);
                                 notiIcon.setVisibility(View.VISIBLE);
                                 break loo;
                             }
-                            SessionHandler.getInstance().saveBoolean(activityContext, AppConstants.SHOWNOTIFICATION,false);
+                            SessionHandler.getInstance().saveBoolean(activityContext, AppConstants.SHOWNOTIFICATION, false);
                         }
 
-                    }else {
+                    } else {
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<IncomingRequestResponse> call, Throwable t) {
-                
+
             }
         });
     }
@@ -572,28 +567,29 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             call.enqueue(new Callback<ImageResponse>() {
                 @Override
                 public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
-                    if(response.code()==200){
+                    if (response.code() == 200) {
                         ImageResponse imageResponse = response.body();
-                        if (imageResponse.getMessage()!=null && !imageResponse.isStatus()){
+                        if (imageResponse.getMessage() != null && !imageResponse.isStatus()) {
 //                            Utils.toastMessage(getContext(),imageResponse.getMessage().getCode());
                             tenantProfile.setImageDrawable(ContextCompat.getDrawable(getContext(),
                                     R.drawable.default_company_logo));
                         }
-                        if (imageResponse.getImage()!=null){
-                            String cleanImage = imageResponse.getImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");
+                        if (imageResponse.getImage() != null) {
+                            String cleanImage = imageResponse.getImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,", "");
                             SessionHandler.getInstance().save(activityContext, AppConstants.TENANTIMAGE
                                     , cleanImage);
                             byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
                             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                             tenantProfile.setImageBitmap(decodedByte);
                         }
-                    }else if(response.code()==401){
+                    } else if (response.code() == 401) {
 //                        Utils.toastMessage(getActivity(),"Token Expired");
-                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK, false);
+                        Utils.showCustomTokenExpiredDialog(getActivity(), "Token Expired");
 //                        Utils.finishAllActivity(getContext());
                     }
                 }
+
                 @Override
                 public void onFailure(Call<ImageResponse> call, Throwable t) {
 
@@ -615,16 +611,16 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             call.enqueue(new Callback<ImageResponse>() {
                 @Override
                 public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
-                    if(response.code()==200){
+                    if (response.code() == 200) {
                         ImageResponse imageResponse = response.body();
-                        if (imageResponse.getMessage()!=null && !imageResponse.isStatus()){
+                        if (imageResponse.getMessage() != null && !imageResponse.isStatus()) {
 //                            Utils.toastMessage(getContext(),imageResponse.getMessage().getCode());
-                            userProfile.setImageDrawable(ContextCompat.getDrawable(activityContext,R.drawable.avatar));
+                            userProfile.setImageDrawable(ContextCompat.getDrawable(activityContext, R.drawable.avatar));
                         }
 
                         try {
-                            if (imageResponse.getImage()!=null && !imageResponse.getImage().equalsIgnoreCase("") && !imageResponse.getImage().isEmpty()){
-                                String cleanImage = imageResponse.getImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");
+                            if (imageResponse.getImage() != null && !imageResponse.getImage().equalsIgnoreCase("") && !imageResponse.getImage().isEmpty()) {
+                                String cleanImage = imageResponse.getImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,", "");
                                 SessionHandler.getInstance().save(activityContext, AppConstants.USERIMAGE
                                         , cleanImage);
                                 byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
@@ -633,16 +629,17 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                             } else {
                                 userProfile.setImageDrawable(activityContext.getResources().getDrawable(R.drawable.avatar));
                             }
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             userProfile.setImageDrawable(activityContext.getResources().getDrawable(R.drawable.avatar));
                         }
 
-                    }else if(response.code()==401){
-                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
-                        SessionHandler.getInstance().saveBoolean(activityContext, AppConstants.LOGIN_CHECK,false);
+                    } else if (response.code() == 401) {
+                        Utils.showCustomTokenExpiredDialog(getActivity(), "Token Expired");
+                        SessionHandler.getInstance().saveBoolean(activityContext, AppConstants.LOGIN_CHECK, false);
 //                        Utils.finishAllActivity(getContext());
                     }
                 }
+
                 @Override
                 public void onFailure(Call<ImageResponse> call, Throwable t) {
 
@@ -658,32 +655,33 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //loadHomeList();
-        this.view=view;
-        activityContext=getActivity();
+        this.view = view;
+        activityContext = getActivity();
         loadTenantImage();
         loadHomeList();
 
 
     }
+
     private void doTokenExpiryHere() {
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                SessionHandler.getInstance().saveBoolean(getContext(),AppConstants.TOKEN_EXPIRY_STATUS,true);
+                SessionHandler.getInstance().saveBoolean(getContext(), AppConstants.TOKEN_EXPIRY_STATUS, true);
                 Utils.finishAllActivity(getContext());
             }
-        },5000);
+        }, 5000);
     }
 
-    public void editBookingCall(JsonObject data,int position,int dskRoomStatus) {
+    public void editBookingCall(JsonObject data, int position, int dskRoomStatus) {
         if (Utils.isNetworkAvailable(getActivity())) {
-            dialog= ProgressDialog.showProgressBar(getContext());
+            dialog = ProgressDialog.showProgressBar(getContext());
             // TODO: 06-07-2022
-            String json ="{'teamId':6,'teamMembershipId':21,'changesets':[{'id':1178,'date':'2022-07-11T00:00:00.000Z','changes':{'teamDeskId':64,'from':'2000-01-01T14:24:00.000Z','to':'2000-01-01T17:50:00.000Z'}}],'deletedIds':[]}";
+            String json = "{'teamId':6,'teamMembershipId':21,'changesets':[{'id':1178,'date':'2022-07-11T00:00:00.000Z','changes':{'teamDeskId':64,'from':'2000-01-01T14:24:00.000Z','to':'2000-01-01T17:50:00.000Z'}}],'deletedIds':[]}";
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<BaseResponse> call=null;
-            switch (dskRoomStatus){
+            Call<BaseResponse> call = null;
+            switch (dskRoomStatus) {
                 case 1:
                     call = apiService.bookingBookings(data);
                     break;
@@ -698,13 +696,13 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     dialog.dismiss();
-                    String resultString="";
-                    if (response.code()==200 && response.body().getResultCode()!=null){
+                    String resultString = "";
+                    if (response.code() == 200 && response.body().getResultCode() != null) {
                         if (response.body().getResultCode().equalsIgnoreCase("ok")) {
                             openCheckoutDialog("Booking Updated");
                             loadHomeList();
 //                            openCheckoutDialog("Booking Updated");
-                        } else if(response.body().getResultCode()!=null){
+                        } else if (response.body().getResultCode() != null) {
                             if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
                                 resultString = "Invalid booking start time";
                             } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
@@ -715,20 +713,20 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                                 resultString = "Invalid timeperiod";
                             } else if (response.body().getResultCode().toString().equals("USER_TIME_OVERLAP")) {
                                 resultString = "Time overlaps with another booking";
-                            } else if(response.body().getResultCode().toString().equals("COVID_SYMPTOMS")){
+                            } else if (response.body().getResultCode().toString().equals("COVID_SYMPTOMS")) {
                                 resultString = "COVID_SYMPTOMS";
-                            }else if(response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")){
+                            } else if (response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")) {
                                 resultString = "Desk is Unavailable";
-                            }else {
+                            } else {
                                 resultString = response.body().getResultCode().toString();
                             }
                             Utils.showCustomAlertDialog(getActivity(), resultString);
                         }
-                    } else if (response.code() == 500){
-                        Utils.showCustomAlertDialog(getActivity(),"error_code: 1999");
-                    } else if (response.code() == 401){
-                        Utils.showCustomTokenExpiredDialog(getActivity(),"401 Error Response");
-                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                    } else if (response.code() == 500) {
+                        Utils.showCustomAlertDialog(getActivity(), "error_code: 1999");
+                    } else if (response.code() == 401) {
+                        Utils.showCustomTokenExpiredDialog(getActivity(), "401 Error Response");
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK, false);
                     } else {
                         Toast.makeText(getActivity(), "Response Failure", Toast.LENGTH_SHORT).show();
                     }
@@ -736,8 +734,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
                 @Override
                 public void onFailure(Call<BaseResponse> call, Throwable t) {
-                    Toast.makeText(getActivity(), "fail Bala"+t.getMessage(), Toast.LENGTH_SHORT).show();
-                    System.out.println("resps"+t.getMessage());
+                    Toast.makeText(getActivity(), "fail Bala" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    System.out.println("resps" + t.getMessage());
                     dialog.dismiss();
                 }
             });
@@ -749,7 +747,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
     public void changeCheckOut(BookingListResponse.DayGroup data, int pos) {
         if (Utils.isNetworkAvailable(getActivity())) {
-            dialog= ProgressDialog.showProgressBar(getContext());
+            dialog = ProgressDialog.showProgressBar(getContext());
 
             BookingStatusRequest bookingsRequest = new BookingStatusRequest();
             bookingsRequest.setCalendarEntryId(data.getCalendarEntriesModel().getId());
@@ -765,7 +763,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     BookingListResponse.DayGroup.CalendarEntry.Booking.Status calendarEntry = recyclerModelArrayList.get(pos).getCalendarEntriesModel().getBooking().getStatus();
                     calendarEntry.setId(1);
                     homeBookingListAdapter.notifyItemChanged(pos);
-                    SessionHandler.getInstance().save(getActivity(),AppConstants.USER_CURRENT_STATUS,"Checked Out");
+                    SessionHandler.getInstance().save(getActivity(), AppConstants.USER_CURRENT_STATUS, "Checked Out");
                     userCurrentStatus.setText("Checked Out");
                     userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
 
@@ -774,7 +772,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
                 @Override
                 public void onFailure(Call<BaseResponse> call, Throwable t) {
-                    Toast.makeText(getActivity(), "fail "+t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "fail " + t.getMessage(), Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 }
             });
@@ -788,11 +786,11 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         Dialog popDialog = new Dialog(getActivity());
         popDialog.setContentView(R.layout.layout_checkout_success);
         popDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        NavController navController= Navigation.findNavController(view);
+        NavController navController = Navigation.findNavController(view);
 
         TextView checkDialogClose = popDialog.findViewById(R.id.checkDialogClose);
         TextView dialogMsg = popDialog.findViewById(R.id.dialog_text);
-        dialogMsg.setText(""+mesg);
+        dialogMsg.setText("" + mesg);
 
         checkDialogClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -802,19 +800,20 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         });
         popDialog.show();
     }
-    private void loadHomeList(){
+
+    private void loadHomeList() {
         if (Utils.isNetworkAvailable(getActivity())) {
             mSwipeRefreshLayout.setRefreshing(true);
 //            dialog= ProgressDialog.showProgressBar(getContext());
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<BookingListResponse> call = apiService.getUserMyWorkDetails(Utils.getCurrentDate(),true);
+            Call<BookingListResponse> call = apiService.getUserMyWorkDetails(Utils.getCurrentDate(), true);
 //            Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-07-18",true);
             //Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-07-04",true);
             call.enqueue(new Callback<BookingListResponse>() {
                 @Override
                 public void onResponse(Call<BookingListResponse> call, Response<BookingListResponse> response) {
-                    if(response.code()==200) {
-                        BookingListResponse bookingListResponse  =response.body();
+                    if (response.code() == 200) {
+                        BookingListResponse bookingListResponse = response.body();
                         teamId = bookingListResponse.getTeamId();
                         teamMembershipId = bookingListResponse.getTeamMembershipId();
                         createRecyclerList(bookingListResponse);
@@ -823,24 +822,25 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 //                        ProgressDialog.dismisProgressBar(getContext(),dialog);
                         Log.d(TAG, "onResponse: if");
 
-                    }else if(response.code()==401){
+                    } else if (response.code() == 401) {
                         //Handle if token got expired
 //                        ProgressDialog.dismisProgressBar(getContext(),dialog);
-                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK, false);
+                        Utils.showCustomTokenExpiredDialog(getActivity(), "Token Expired");
 //                        Utils.finishAllActivity(getContext());
 //                        redirectToBioMetricAccess();
 
-                        Log.d(TAG, "onResponse: else" );
+                        Log.d(TAG, "onResponse: else");
                     }
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
+
                 @Override
                 public void onFailure(Call<BookingListResponse> call, Throwable t) {
                     mSwipeRefreshLayout.setRefreshing(false);
 
 //                    ProgressDialog.dismisProgressBar(getContext(),dialog);
-                    Log.d(TAG, "onFailure: "+t.getMessage());
+                    Log.d(TAG, "onFailure: " + t.getMessage());
 //                    Utils.toastMessage(getActivity(),"failure: "+t.getMessage());
                 }
             });
@@ -854,40 +854,40 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                                           EditBookingDetails editDeskBookingDetails,
                                           int dskRoomStatus, int position) {
         if (Utils.isNetworkAvailable(getActivity())) {
-            isRequestedDesk=false;
+            isRequestedDesk = false;
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<BookingForEditResponse> call = apiService.getBookingsForEdit(teamId,teamMembershipId,
-                    date,date);
+            Call<BookingForEditResponse> call = apiService.getBookingsForEdit(teamId, teamMembershipId,
+                    date, date);
             call.enqueue(new Callback<BookingForEditResponse>() {
                 @Override
                 public void onResponse(Call<BookingForEditResponse> call, Response<BookingForEditResponse> response) {
-                    if (response.code()==200){
-                        for (int i=0; i<response.body().getBookings().size(); i++){
-                            if (response.body().getBookings().get(i).getId() ==id
-                                    && response.body().getBookings().get(i).getRequestedTeamDeskId() != null){
-                                isRequestedDesk =true;
+                    if (response.code() == 200) {
+                        for (int i = 0; i < response.body().getBookings().size(); i++) {
+                            if (response.body().getBookings().get(i).getId() == id
+                                    && response.body().getBookings().get(i).getRequestedTeamDeskId() != null) {
+                                isRequestedDesk = true;
                             }
-                            if(response.body().getBookings().get(i).getId() ==id){
+                            if (response.body().getBookings().get(i).getId() == id) {
                                 editDeskBookingDetails.setComments(Utils.checkStringParms(response.body().getBookings().get(i).getComments()));
                             }
 
                         }
 
-                    }else if(response.code()==401){
-                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
-                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                    } else if (response.code() == 401) {
+                        Utils.showCustomTokenExpiredDialog(getActivity(), "Token Expired");
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK, false);
 //                        Utils.finishAllActivity(getContext());
                     }
-                    editBookingUsingBottomSheet(editDeskBookingDetails,1,position);
+                    editBookingUsingBottomSheet(editDeskBookingDetails, 1, position);
 
-                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    ProgressDialog.dismisProgressBar(getContext(), dialog);
 //                    createRecyclerDeskList(response.body().getTeamDeskAvailabilities());
                 }
 
                 @Override
                 public void onFailure(Call<BookingForEditResponse> call, Throwable t) {
-                    ProgressDialog.dismisProgressBar(getContext(),dialog);
-                    editBookingUsingBottomSheet(editDeskBookingDetails,1,position);
+                    ProgressDialog.dismisProgressBar(getContext(), dialog);
+                    editBookingUsingBottomSheet(editDeskBookingDetails, 1, position);
 
                 }
             });
@@ -896,40 +896,41 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             Utils.toastMessage(getActivity(), "Please Enable Internet");
         }
     }
+
     private void loadDeskList() {
         System.out.println("desk Code enter");
         if (Utils.isNetworkAvailable(activityContext)) {
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<BookingForEditResponse> call = apiService.getBookingsForEdit(teamId,teamMembershipId,
-                    Utils.getCurrentDate(),Utils.getCurrentDate());
+            Call<BookingForEditResponse> call = apiService.getBookingsForEdit(teamId, teamMembershipId,
+                    Utils.getCurrentDate(), Utils.getCurrentDate());
             call.enqueue(new Callback<BookingForEditResponse>() {
                 @Override
                 public void onResponse(Call<BookingForEditResponse> call, Response<BookingForEditResponse> response) {
-                    if (response.code()==200){
+                    if (response.code() == 200) {
                         bookingForEditResponse.clear();
-                        for (int i=0; i<response.body().getTeamDeskAvailabilities().size(); i++){
-                            if(!response.body().getTeamDeskAvailabilities().get(i).isBookedByElse()){
+                        for (int i = 0; i < response.body().getTeamDeskAvailabilities().size(); i++) {
+                            if (!response.body().getTeamDeskAvailabilities().get(i).isBookedByElse()) {
                                 bookingForEditResponse.add(response.body().getTeamDeskAvailabilities().get(i));
                             }
                         }
 //                        bookingForEditResponse = response.body().getTeamDeskAvailabilities();
-                        for (int i=0;i<bookingForEditResponse.size();i++){
-                            System.out.println("desk Code Check"+bookingForEditResponse.get(i).getDeskCode());
+                        for (int i = 0; i < bookingForEditResponse.size(); i++) {
+                            System.out.println("desk Code Check" + bookingForEditResponse.get(i).getDeskCode());
 
                         }
-                    }else if(response.code()==401){
-                        Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
-                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
+                    } else if (response.code() == 401) {
+                        Utils.showCustomTokenExpiredDialog(getActivity(), "Token Expired");
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK, false);
 //                        Utils.finishAllActivity(getContext());
                     }
-                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    ProgressDialog.dismisProgressBar(getContext(), dialog);
 //                    createRecyclerDeskList(response.body().getTeamDeskAvailabilities());
                 }
 
                 @Override
                 public void onFailure(Call<BookingForEditResponse> call, Throwable t) {
-                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                    ProgressDialog.dismisProgressBar(getContext(), dialog);
                 }
             });
 
@@ -946,44 +947,45 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 //        ProgressDialog.dismisProgressBar(getContext(),dialog);
 
     }
+
     private void createRecyclerList(BookingListResponse body) {
         BookingListResponse bookingListResponses = body;
         recyclerModelArrayList = new ArrayList<>();
 //        ArrayList<BookingListResponse> recyclerModelArrayList = new ArrayList<>();
-        if (bookingListResponses.getDayGroups()!=null){
+        if (bookingListResponses.getDayGroups() != null) {
 
-            for (int i=0; i<bookingListResponses.getDayGroups().size(); i++){
-                boolean dateCheck =true;
-                System.out.println("bala time format"+bookingListResponses.getDayGroups().get(i).getDate());
+            for (int i = 0; i < bookingListResponses.getDayGroups().size(); i++) {
+                boolean dateCheck = true;
+                System.out.println("bala time format" + bookingListResponses.getDayGroups().get(i).getDate());
                 Date date = bookingListResponses.getDayGroups().get(i).getDate();
-                System.out.println("bala time format"+date);
+                System.out.println("bala time format" + date);
                 ArrayList<BookingListResponse.DayGroup.CalendarEntry> calendarEntries = null;
                 ArrayList<BookingListResponse.DayGroup.MeetingBooking> meetingEntries = null;
                 ArrayList<BookingListResponse.DayGroup.CarParkBooking> carParkEntries = null;
 
-                if (bookingListResponses.getDayGroups().get(i).getCalendarEntries()!=null){
+                if (bookingListResponses.getDayGroups().get(i).getCalendarEntries() != null) {
                     calendarEntries =
                             bookingListResponses.getDayGroups().get(i).getCalendarEntries();
                 }
-                if (bookingListResponses.getDayGroups().get(i).getMeetingBookings()!=null){
+                if (bookingListResponses.getDayGroups().get(i).getMeetingBookings() != null) {
                     meetingEntries =
                             bookingListResponses.getDayGroups().get(i).getMeetingBookings();
                 }
-                if (bookingListResponses.getDayGroups().get(i).getCarParkBookings()!=null){
+                if (bookingListResponses.getDayGroups().get(i).getCarParkBookings() != null) {
                     carParkEntries =
                             bookingListResponses.getDayGroups().get(i).getCarParkBookings();
                 }
-                if (Utils.compareTwoDate(bookingListResponses.getDayGroups().get(i).getDate(),Utils.getCurrentDate()) != 1 || showPastStatus){
-                    if (calendarEntries!=null){
-                        for (int j=0; j < calendarEntries.size(); j++){
+                if (Utils.compareTwoDate(bookingListResponses.getDayGroups().get(i).getDate(), Utils.getCurrentDate()) != 1 || showPastStatus) {
+                    if (calendarEntries != null) {
+                        for (int j = 0; j < calendarEntries.size(); j++) {
                             BookingListResponse.DayGroup momdel = new BookingListResponse.DayGroup();
-                            if (dateCheck){
+                            if (dateCheck) {
                                 momdel.setDateStatus(true);
                                 momdel.setCalDeskStatus(1);
                                 momdel.setDate(date);
                                 momdel.setCalendarEntriesModel(calendarEntries.get(j));
-                                dateCheck=false;
-                            }else {
+                                dateCheck = false;
+                            } else {
                                 momdel.setDateStatus(false);
                                 momdel.setCalDeskStatus(1);
                                 momdel.setDate(date);
@@ -992,16 +994,16 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                             recyclerModelArrayList.add(momdel);
                         }
                     }
-                    if (meetingEntries!=null){
-                        for (int j=0; j < meetingEntries.size(); j++){
+                    if (meetingEntries != null) {
+                        for (int j = 0; j < meetingEntries.size(); j++) {
                             BookingListResponse.DayGroup momdel = new BookingListResponse.DayGroup();
-                            if (dateCheck){
+                            if (dateCheck) {
                                 momdel.setDateStatus(true);
                                 momdel.setCalDeskStatus(2);
                                 momdel.setDate(date);
                                 momdel.setMeetingBookingsModel(meetingEntries.get(j));
-                                dateCheck=false;
-                            }else {
+                                dateCheck = false;
+                            } else {
                                 momdel.setDateStatus(false);
                                 momdel.setCalDeskStatus(2);
                                 momdel.setDate(date);
@@ -1010,16 +1012,16 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                             recyclerModelArrayList.add(momdel);
                         }
                     }
-                    if (carParkEntries!=null){
-                        for (int j=0; j < carParkEntries.size(); j++){
+                    if (carParkEntries != null) {
+                        for (int j = 0; j < carParkEntries.size(); j++) {
                             BookingListResponse.DayGroup momdel = new BookingListResponse.DayGroup();
-                            if (dateCheck){
+                            if (dateCheck) {
                                 momdel.setDateStatus(true);
                                 momdel.setCalDeskStatus(3);
                                 momdel.setDate(date);
                                 momdel.setCarParkBookingsModel(carParkEntries.get(j));
-                                dateCheck=false;
-                            }else {
+                                dateCheck = false;
+                            } else {
                                 momdel.setDateStatus(false);
                                 momdel.setCalDeskStatus(3);
                                 momdel.setDate(date);
@@ -1038,60 +1040,72 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         rvHomeBooking.setLayoutManager(linearLayoutManager);
         rvHomeBooking.setHasFixedSize(true);
 
-       // homeBookingListAdapter=new HomeBookingListAdapter(getContext(), getActivity(), recyclerModelArrayList);
-        homeBookingListAdapter=new HomeBookingListAdapter(getContext(),this,recyclerModelArrayList,getActivity(),this,meetingRecurenceMap);
+        // homeBookingListAdapter=new HomeBookingListAdapter(getContext(), getActivity(), recyclerModelArrayList);
+        homeBookingListAdapter = new HomeBookingListAdapter(getContext(), this, recyclerModelArrayList, getActivity(), this, meetingRecurenceMap);
         rvHomeBooking.setAdapter(homeBookingListAdapter);
 
-        ProgressDialog.dismisProgressBar(getContext(),dialog);
+        ProgressDialog.dismisProgressBar(getContext(), dialog);
 
     }
 
 
     private void redirectToBioMetricAccess() {
-        SessionHandler.getInstance().saveBoolean(getContext(),AppConstants.TOKEN_EXPIRY_STATUS,true);
+        SessionHandler.getInstance().saveBoolean(getContext(), AppConstants.TOKEN_EXPIRY_STATUS, true);
         Utils.finishAllActivity(getContext());
     }
 
     @Override
-    public void onCheckInDeskClick(BookingListResponse.DayGroup.CalendarEntry calendarEntriesModel, String click, Date date,int position) {
-        if(click.equals(AppConstants.CHECKIN) || click.equals(AppConstants.REMOTE)){
+    public void onCheckInDeskClick(BookingListResponse.DayGroup.CalendarEntry calendarEntriesModel, String click, Date date, int position) {
+        if (click.equals(AppConstants.CHECKIN) || click.equals(AppConstants.REMOTE)) {
             //Checkin
-            System.out.println("BookingNameDest"+calendarEntriesModel.getUsageTypeName());
-            NavController navController= Navigation.findNavController(view);
-            Bundle bundle=new Bundle();
-            if(click.equals(AppConstants.CHECKIN)){
-                bundle.putString("ACTION",AppConstants.CHECKIN);
-                bundle.putString("BOOK_NAME",calendarEntriesModel.getBooking().getDeskCode());
-                bundle.putString("BOOK_ADDRESS","address");
-                bundle.putString("CHECK_IN_TIME",Utils.splitTime(calendarEntriesModel.getFrom()));
-                bundle.putString("CHECK_OUT_TIME",Utils.splitTime(calendarEntriesModel.getMyto()));
+            System.out.println("BookingNameDest" + calendarEntriesModel.getUsageTypeName());
+            NavController navController = Navigation.findNavController(view);
+            Bundle bundle = new Bundle();
+            if (click.equals(AppConstants.CHECKIN)) {
+                bundle.putString("ACTION", AppConstants.CHECKIN);
+                bundle.putString("BOOK_NAME", calendarEntriesModel.getBooking().getDeskCode());
 
-                bundle.putInt("TEAM_ID",teamId);
-                bundle.putInt("TEAM_MEMBERSHIP_ID",teamMembershipId);
-                bundle.putString("DATE",""+Utils.getISO8601format(date));
-                bundle.putInt("ID",calendarEntriesModel.getId());
-                bundle.putInt("DESK_ID",calendarEntriesModel.getBooking().getDeskId());
+                String address = "-";
 
-                if (qrEnabled){
+                try {
+                    address = calendarEntriesModel.getBooking().getLocationBuildingFloor().getfLoorName().isEmpty()
+                            ? "-" : calendarEntriesModel.getBooking().getLocationBuildingFloor().getBuildingName() +
+                            " - " + calendarEntriesModel.getBooking().getLocationBuildingFloor().getfLoorName();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                bundle.putString("BOOK_ADDRESS", address);
+                bundle.putString("CHECK_IN_TIME", Utils.splitTime(calendarEntriesModel.getFrom()));
+                bundle.putString("CHECK_OUT_TIME", Utils.splitTime(calendarEntriesModel.getMyto()));
+
+                bundle.putInt("TEAM_ID", teamId);
+                bundle.putInt("TEAM_MEMBERSHIP_ID", teamMembershipId);
+                bundle.putString("DATE", "" + Utils.getISO8601format(date));
+                bundle.putInt("ID", calendarEntriesModel.getId());
+                bundle.putInt("DESK_ID", calendarEntriesModel.getBooking().getDeskId());
+
+                if (qrEnabled) {
                     if (checkPermission())
-                        navController.navigate(R.id.action_qrFragment,bundle);
+                        navController.navigate(R.id.action_qrFragment, bundle);
                     else
                         requestPermission();
-                } else{
-                    navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment,bundle);
+                } else {
+                    navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment, bundle);
                 }
-            } else if(click.equals(AppConstants.REMOTE)){
+            } else if (click.equals(AppConstants.REMOTE)) {
 
-                bundle.putString("ACTION",AppConstants.REMOTE);
-                bundle.putString("BOOK_NAME",calendarEntriesModel.getUsageTypeAbbreviation());
+                bundle.putString("ACTION", AppConstants.REMOTE);
+                bundle.putString("BOOK_NAME", calendarEntriesModel.getUsageTypeAbbreviation());
 
-                navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment,bundle);
+                navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment, bundle);
             }
 
-        } else if(click.equals(AppConstants.EDIT)){
+        } else if (click.equals(AppConstants.EDIT)) {
             //Edit
             System.out.println("BookingEditClicked");
-            EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
+            EditBookingDetails editDeskBookingDetails = new EditBookingDetails();
             editDeskBookingDetails.setEditStartTTime(Utils.splitTime(calendarEntriesModel.getFrom()));
             editDeskBookingDetails.setEditEndTime(Utils.splitTime(calendarEntriesModel.getMyto()));
             editDeskBookingDetails.setDate(date);
@@ -1101,8 +1115,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             editDeskBookingDetails.setLocationAddress(new StringBuilder().append("")
                     .append(calendarEntriesModel.getBooking().getLocationBuildingFloor().getBuildingName())
                     .append(" - ").append(calendarEntriesModel.getBooking().getLocationBuildingFloor().getfLoorName()).toString()
-                );
-            loadDeskListCheckRequest(calendarEntriesModel.getId(), Utils.getYearMonthDateFormat(date), editDeskBookingDetails, 1,position);
+            );
+            loadDeskListCheckRequest(calendarEntriesModel.getId(), Utils.getYearMonthDateFormat(date), editDeskBookingDetails, 1, position);
 //            editBookingUsingBottomSheet(editDeskBookingDetails,1,position);
 
         }
@@ -1111,7 +1125,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     @Override
     public void onCheckInMeetingRoomClick(BookingListResponse.DayGroup.MeetingBooking meetingEntriesModel, String click, Date date, int position) {
 
-        if(click.equals(AppConstants.CHECKIN)) {
+        if (click.equals(AppConstants.CHECKIN)) {
             //Checkin
             System.out.println("BookingNameMeeting" + meetingEntriesModel.getMeetingRoomName());
             NavController navController = Navigation.findNavController(view);
@@ -1122,11 +1136,11 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             bundle.putString("CHECK_OUT_TIME", Utils.splitTime(meetingEntriesModel.getMyto()));
             navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment, bundle);
 
-        }else if(click.equals(AppConstants.EDIT)){
+        } else if (click.equals(AppConstants.EDIT)) {
             //Edit
             System.out.println("MeetingEditClicked");
 
-            EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
+            EditBookingDetails editDeskBookingDetails = new EditBookingDetails();
             editDeskBookingDetails.setEditStartTTime(Utils.splitTime(meetingEntriesModel.getFrom()));
             editDeskBookingDetails.setEditEndTime(Utils.splitTime(meetingEntriesModel.getMyto()));
             editDeskBookingDetails.setDate(date);
@@ -1155,24 +1169,24 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             call.enqueue(new Callback<List<UserAllowedMeetingResponse>>() {
                 @Override
                 public void onResponse(Call<List<UserAllowedMeetingResponse>> call, Response<List<UserAllowedMeetingResponse>> response) {
-                    if (response.code()==200){
+                    if (response.code() == 200) {
 
-                        List<Integer> amenitiesIntList =new ArrayList<>();
-                        List<String> amenitiesStringList =new ArrayList<>();
+                        List<Integer> amenitiesIntList = new ArrayList<>();
+                        List<String> amenitiesStringList = new ArrayList<>();
                         goo:
-                        for (int i=0; i < response.body().size(); i++) {
-                            if (response.body().get(i).getId() == calId && response.body().get(i).getAmenities()!=null) {
+                        for (int i = 0; i < response.body().size(); i++) {
+                            if (response.body().get(i).getId() == calId && response.body().get(i).getAmenities() != null) {
                                 editDeskBookingDetails.setNoOfPeople(response.body().get(i).getNoOfPeople());
-                                for (int j=0;j<response.body().get(i).getAmenities().size();j++){
+                                for (int j = 0; j < response.body().get(i).getAmenities().size(); j++) {
                                     amenitiesIntList.add(response.body().get(i).getAmenities().get(j).getId());
                                 }
                                 break goo;
                             }
                         }
 
-                        for (int i=0; i<amenitiesIntList.size();i++) {
-                            for (int j=0;j<amenitiesList.size();j++) {
-                                if (amenitiesIntList.get(i) == amenitiesList.get(j).getId()){
+                        for (int i = 0; i < amenitiesIntList.size(); i++) {
+                            for (int j = 0; j < amenitiesList.size(); j++) {
+                                if (amenitiesIntList.get(i) == amenitiesList.get(j).getId()) {
                                     amenitiesStringList.add(amenitiesList.get(j).getName());
                                 }
                             }
@@ -1180,21 +1194,21 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 //                        Utils.toastMessage(getActivity(),"welcom bala "+amenitiesStringList.size());
                         editDeskBookingDetails.setAmenities(amenitiesStringList);
                         editDeskBookingDetails.setAmenities(amenitiesStringList);
-                        Log.d(TAG, "onResponse: amenitySize"+editDeskBookingDetails.getAmenities().size());
-                        editBookingUsingBottomSheet(editDeskBookingDetails,2,position);
+                        Log.d(TAG, "onResponse: amenitySize" + editDeskBookingDetails.getAmenities().size());
+                        editBookingUsingBottomSheet(editDeskBookingDetails, 2, position);
 
-                    } else if(response.code()==401){
-                    //Handle if token got expired
+                    } else if (response.code() == 401) {
+                        //Handle if token got expired
 //                        ProgressDialog.dismisProgressBar(getContext(),dialog);
-                    SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
-                    Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK, false);
+                        Utils.showCustomTokenExpiredDialog(getActivity(), "Token Expired");
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<UserAllowedMeetingResponse>> call, Throwable t) {
-                    Log.d(TAG, "onFailure: amen"+t.getMessage());
-                    editBookingUsingBottomSheet(editDeskBookingDetails,2,position);
+                    Log.d(TAG, "onFailure: amen" + t.getMessage());
+                    editBookingUsingBottomSheet(editDeskBookingDetails, 2, position);
                 }
             });
 
@@ -1204,9 +1218,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     }
 
     @Override
-    public void onCheckInCarParkingClick(BookingListResponse.DayGroup.CarParkBooking carParkingEntriesModel, String click, Date date,int position) {
+    public void onCheckInCarParkingClick(BookingListResponse.DayGroup.CarParkBooking carParkingEntriesModel, String click, Date date, int position) {
 
-        if(click.equals(AppConstants.CHECKIN)) {
+        if (click.equals(AppConstants.CHECKIN)) {
             //Checkin
             System.out.println("BookingNameCar" + carParkingEntriesModel.getParkingSlotCode());
             NavController navController = Navigation.findNavController(view);
@@ -1217,10 +1231,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             bundle.putString("CHECK_OUT_TIME", Utils.splitTime(carParkingEntriesModel.getMyto()));
             navController.navigate(R.id.action_navigation_home_to_bookingDetailFragment, bundle);
 
-        }else if(click.equals(AppConstants.EDIT)){
+        } else if (click.equals(AppConstants.EDIT)) {
             //Edit
             System.out.println("CarParkingEditClicked");
-            EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
+            EditBookingDetails editDeskBookingDetails = new EditBookingDetails();
             editDeskBookingDetails.setCalId(carParkingEntriesModel.getId());
             editDeskBookingDetails.setParkingSlotId(carParkingEntriesModel.getParkingSlotId());
             editDeskBookingDetails.setEditStartTTime(Utils.splitTime(carParkingEntriesModel.getFrom()));
@@ -1228,7 +1242,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             editDeskBookingDetails.setDate(date);
             editDeskBookingDetails.setVehicleRegNumber(carParkingEntriesModel.getVehicleRegNumber());
             editDeskBookingDetails.setParkingSlotCode(carParkingEntriesModel.getParkingSlotCode());
-            editBookingUsingBottomSheet(editDeskBookingDetails,3,position);
+            editBookingUsingBottomSheet(editDeskBookingDetails, 3, position);
         }
     }
 
@@ -1240,28 +1254,28 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         SessionHandler.getInstance().saveInt(getContext(), AppConstants.PARENT_ID, parentLocationId);
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<LocateCountryRespose>> call=apiService.getCountrysChild(parentLocationId);
+        Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(parentLocationId);
         call.enqueue(new Callback<List<LocateCountryRespose>>() {
             @Override
             public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
 
-                List<LocateCountryRespose> locateCountryResposeList=response.body();
+                List<LocateCountryRespose> locateCountryResposeList = response.body();
 
                 locatebook:
-                for (int i = 0; i <locateCountryResposeList.size() ; i++) {
+                for (int i = 0; i < locateCountryResposeList.size(); i++) {
 
-                    if(desk.equals(AppConstants.DESK)){
+                    if (desk.equals(AppConstants.DESK)) {
 
-                        for (int j = 0; j <locateCountryResposeList.get(i).getLocationItemLayout().getDesks().size() ; j++) {
+                        for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getDesks().size(); j++) {
 
-                            if(identifierId==locateCountryResposeList.get(i).getLocationItemLayout().getDesks().get(j).getDesksId()){
-                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION,i);
+                            if (identifierId == locateCountryResposeList.get(i).getLocationItemLayout().getDesks().get(j).getDesksId()) {
+                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
 
 
-                                System.out.println("SelectedDeskFloorInLocate "+i+" "+desk+" "+identifierId);
+                                System.out.println("SelectedDeskFloorInLocate " + i + " " + desk + " " + identifierId);
 
                                 //For Desk Blink and Highlighting
-                                SessionHandler.getInstance().saveInt(getContext(),AppConstants.FLOOR_ICON_BLINK,identifierId);
+                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_ICON_BLINK, identifierId);
 
                                 ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
                                 break locatebook;
@@ -1272,18 +1286,17 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         }
 
 
+                    } else if (desk.equals(AppConstants.MEETING)) {
 
-                    }else if(desk.equals(AppConstants.MEETING)){
+                        for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getMeetingRoomsList().size(); j++) {
 
-                        for (int j = 0; j <locateCountryResposeList.get(i).getLocationItemLayout().getMeetingRoomsList().size() ; j++) {
+                            if (identifierId == locateCountryResposeList.get(i).getLocationItemLayout().getMeetingRoomsList().get(j).getMeetingRoomId()) {
+                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
 
-                            if(identifierId==locateCountryResposeList.get(i).getLocationItemLayout().getMeetingRoomsList().get(j).getMeetingRoomId()){
-                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION,i);
-
-                                System.out.println("SelectedMeetingFloorInLocate "+i+" "+desk+" "+identifierId);
+                                System.out.println("SelectedMeetingFloorInLocate " + i + " " + desk + " " + identifierId);
 
                                 //For Meeting Blink and Highlighting
-                                SessionHandler.getInstance().saveInt(getContext(),AppConstants.FLOOR_ICON_BLINK,identifierId);
+                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_ICON_BLINK, identifierId);
 
                                 ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
                                 break locatebook;
@@ -1293,17 +1306,17 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         }
 
 
-                    }else if(desk.equals(AppConstants.CAR_PARKING)){
+                    } else if (desk.equals(AppConstants.CAR_PARKING)) {
 
-                        for (int j = 0; j <locateCountryResposeList.get(i).getLocationItemLayout().getParkingSlotsList().size() ; j++) {
+                        for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getParkingSlotsList().size(); j++) {
 
-                            if(identifierId==locateCountryResposeList.get(i).getLocationItemLayout().getParkingSlotsList().get(j).getId()){
-                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION,i);
+                            if (identifierId == locateCountryResposeList.get(i).getLocationItemLayout().getParkingSlotsList().get(j).getId()) {
+                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
 
-                                System.out.println("SelectedCarFloorInLocate "+i+" "+desk+" "+identifierId);
+                                System.out.println("SelectedCarFloorInLocate " + i + " " + desk + " " + identifierId);
 
                                 //For Car Blink and Highlighting
-                                SessionHandler.getInstance().saveInt(getContext(),AppConstants.FLOOR_ICON_BLINK,identifierId);
+                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_ICON_BLINK, identifierId);
 
                                 ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
                                 break locatebook;
@@ -1322,7 +1335,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
     }
 
-    private void editBookingUsingBottomSheet(EditBookingDetails editDeskBookingDetails,int dskRoomParkStatus,int position) {
+    private void editBookingUsingBottomSheet(EditBookingDetails editDeskBookingDetails, int dskRoomParkStatus, int position) {
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_booking,
@@ -1331,31 +1344,30 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
         startTime = bottomSheetDialog.findViewById(R.id.start_time);
         endTime = bottomSheetDialog.findViewById(R.id.end_time);
-        repeat=bottomSheetDialog.findViewById(R.id.repeat);
-        deskRoomName=bottomSheetDialog.findViewById(R.id.tv_desk_room_name);
-        date=bottomSheetDialog.findViewById(R.id.date);
+        repeat = bottomSheetDialog.findViewById(R.id.repeat);
+        deskRoomName = bottomSheetDialog.findViewById(R.id.tv_desk_room_name);
+        date = bottomSheetDialog.findViewById(R.id.date);
 
 
-
-        TextView tvLocationAddress=bottomSheetDialog.findViewById(R.id.tv_location_details);
-        TextView back=bottomSheetDialog.findViewById(R.id.editBookingBack);
-        TextView select=bottomSheetDialog.findViewById(R.id.select_desk_room);
-        TextView continueEditBook=bottomSheetDialog.findViewById(R.id.editBookingContinue);
-        TextView tvComments=bottomSheetDialog.findViewById(R.id.tv_comments);
-        TextView tvCapacityNo=bottomSheetDialog.findViewById(R.id.tv_capacity_no);
-        EditText commentRegistration=bottomSheetDialog.findViewById(R.id.ed_registration);
-        RelativeLayout repeatBlock=bottomSheetDialog.findViewById(R.id.rl_repeat_block);
-        RelativeLayout teamsBlock=bottomSheetDialog.findViewById(R.id.rl_teams_layout);
-        RelativeLayout dateBlock=bottomSheetDialog.findViewById(R.id.bookingDateBlock);
-        LinearLayout statusCheckLayout=bottomSheetDialog.findViewById(R.id.status_check_layout);
-        LinearLayout llDeskLayout=bottomSheetDialog.findViewById(R.id.ll_desk_layout);
-        LinearLayout llCapacityLayout=bottomSheetDialog.findViewById(R.id.capacity_layout);
+        TextView tvLocationAddress = bottomSheetDialog.findViewById(R.id.tv_location_details);
+        TextView back = bottomSheetDialog.findViewById(R.id.editBookingBack);
+        TextView select = bottomSheetDialog.findViewById(R.id.select_desk_room);
+        TextView continueEditBook = bottomSheetDialog.findViewById(R.id.editBookingContinue);
+        TextView tvComments = bottomSheetDialog.findViewById(R.id.tv_comments);
+        TextView tvCapacityNo = bottomSheetDialog.findViewById(R.id.tv_capacity_no);
+        EditText commentRegistration = bottomSheetDialog.findViewById(R.id.ed_registration);
+        RelativeLayout repeatBlock = bottomSheetDialog.findViewById(R.id.rl_repeat_block);
+        RelativeLayout teamsBlock = bottomSheetDialog.findViewById(R.id.rl_teams_layout);
+        RelativeLayout dateBlock = bottomSheetDialog.findViewById(R.id.bookingDateBlock);
+        LinearLayout statusCheckLayout = bottomSheetDialog.findViewById(R.id.status_check_layout);
+        LinearLayout llDeskLayout = bottomSheetDialog.findViewById(R.id.ll_desk_layout);
+        LinearLayout llCapacityLayout = bottomSheetDialog.findViewById(R.id.capacity_layout);
         dateBlock.setVisibility(View.GONE);
         ChipGroup chipGroup = bottomSheetDialog.findViewById(R.id.list_item);
 
         //For Language
-        TextView tv_start=bottomSheetDialog.findViewById(R.id.tv_start);
-        TextView tv_end=bottomSheetDialog.findViewById(R.id.tv_end);
+        TextView tv_start = bottomSheetDialog.findViewById(R.id.tv_start);
+        TextView tv_end = bottomSheetDialog.findViewById(R.id.tv_end);
 
         tv_start.setText(appKeysPage.getStart());
         tv_end.setText(appKeysPage.getEnd());
@@ -1366,17 +1378,17 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         back.setText(appKeysPage.getBack());
         select.setText(appKeysPage.getSelect());
 
-        if (editDeskBookingDetails.getDeskStatus() == 1){
+        if (editDeskBookingDetails.getDeskStatus() == 1) {
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
-            startDisabled=true;
-            endDisabled=true;
-            selectDisabled=true;
+            startDisabled = true;
+            endDisabled = true;
+            selectDisabled = true;
             statusCheckLayout.setVisibility(View.GONE);
             llCapacityLayout.setVisibility(View.GONE);
 //            chipGroup.setVisibility(View.GONE);
-        }else if (editDeskBookingDetails.getDeskStatus() == 2){
+        } else if (editDeskBookingDetails.getDeskStatus() == 2) {
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaBlueText));
             select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
@@ -1396,20 +1408,20 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             llCapacityLayout.setVisibility(View.GONE);
 //            chipGroup.setVisibility(View.GONE);
         }
-        if (Utils.compareTwoDate(editDeskBookingDetails.getDate(), Utils.getCurrentDate())==2
+        if (Utils.compareTwoDate(editDeskBookingDetails.getDate(), Utils.getCurrentDate()) == 2
                 && Utils.compareTimeIfCheckInEnable(Utils.getCurrentTime(),
                 editDeskBookingDetails.getEditStartTTime()
-                )){
+        )) {
             startTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             startDisabled = true;
             selectDisabled = true;
 
         }
-        if (Utils.compareTwoDate(editDeskBookingDetails.getDate(), Utils.getCurrentDate())==2
+        if (Utils.compareTwoDate(editDeskBookingDetails.getDate(), Utils.getCurrentDate()) == 2
                 && Utils.compareTimeIfCheckInEnable(Utils.getCurrentTime(),
                 editDeskBookingDetails.getEditEndTime()
-                )){
+        )) {
             endTime.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             select.setTextColor(getActivity().getResources().getColor(R.color.figmaGrey));
             endDisabled = true;
@@ -1430,7 +1442,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             commentRegistration.setText(editDeskBookingDetails.getComments());
             tvLocationAddress.setText(editDeskBookingDetails.getLocationAddress());
 
-        }else if (dskRoomParkStatus==2) {
+        } else if (dskRoomParkStatus == 2) {
             llDeskLayout.setVisibility(View.VISIBLE);
             commentRegistration.setVisibility(View.GONE);
             tvComments.setVisibility(View.GONE);
@@ -1438,11 +1450,11 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             teamsBlock.setVisibility(View.GONE);
             chipGroup.setVisibility(View.VISIBLE);
             deskRoomName.setText(editDeskBookingDetails.getRoomName());
-            if (editDeskBookingDetails.getNoOfPeople()>0)
-                tvCapacityNo.setText(""+editDeskBookingDetails.getNoOfPeople());
+            if (editDeskBookingDetails.getNoOfPeople() > 0)
+                tvCapacityNo.setText("" + editDeskBookingDetails.getNoOfPeople());
             else
                 llCapacityLayout.setVisibility(View.GONE);
-        }else {
+        } else {
             llDeskLayout.setVisibility(View.GONE);
             repeatBlock.setVisibility(View.GONE);
             teamsBlock.setVisibility(View.GONE);
@@ -1456,16 +1468,16 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
         startTime.setText(editDeskBookingDetails.getEditStartTTime());
         endTime.setText(editDeskBookingDetails.getEditEndTime());
-        date.setText(""+Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
+        date.setText("" + Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
 //        deskRoomName.setText(editDeskBookingDetails.getDeskCode());
 
 //        System.out.println("chip check"+editDeskBookingDetails.getAmenities().size());
 //        Log.d(TAG, "editBookingUsingBottomSheet: chip"+editDeskBookingDetails.getAmenities().size());
-        if (editDeskBookingDetails.getAmenities()!=null){
-            for (int i=0; i<editDeskBookingDetails.getAmenities().size(); i++){
+        if (editDeskBookingDetails.getAmenities() != null) {
+            for (int i = 0; i < editDeskBookingDetails.getAmenities().size(); i++) {
                 Chip chip = new Chip(getContext());
                 chip.setId(i);
-                chip.setText(""+editDeskBookingDetails.getAmenities().get(i));
+                chip.setText("" + editDeskBookingDetails.getAmenities().get(i));
                 chip.setChipBackgroundColorResource(R.color.figmaGrey);
                 chip.setCloseIconVisible(false);
                 chip.setTextColor(getContext().getResources().getColor(R.color.white));
@@ -1477,10 +1489,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!startDisabled){
+                if (!startDisabled) {
                     if (editDeskBookingDetails.getDeskStatus() != 1 && editDeskBookingDetails.getDeskStatus() != 2)
-                        Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",
-                                Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),isRequestedDesk);
+                        Utils.bottomSheetTimePicker(getContext(), getActivity(), startTime, "Start Time",
+                                Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()), isRequestedDesk);
 //                    Utils.popUpTimePicker(getActivity(),startTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
                 }
             }
@@ -1489,10 +1501,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         endTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!endDisabled){
+                if (!endDisabled) {
                     if (editDeskBookingDetails.getDeskStatus() != 1)
-                        Utils.bottomSheetTimePicker(getContext(),getActivity(),
-                                endTime,"End Time",Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()), isRequestedDesk);
+                        Utils.bottomSheetTimePicker(getContext(), getActivity(),
+                                endTime, "End Time", Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()), isRequestedDesk);
 //                    Utils.popUpTimePicker(getActivity(),endTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
                 }
             }
@@ -1505,67 +1517,68 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 JsonObject jsonChangesObject = new JsonObject();
                 JsonArray jsonChangesetArray = new JsonArray();
                 JsonArray jsonDeletedIdsArray = new JsonArray();
-                jsonInnerObject.addProperty("id",editDeskBookingDetails.getCalId());
-                jsonInnerObject.addProperty("date",""+Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+"T00:00:00.000Z");
-                switch (dskRoomParkStatus){
+                jsonInnerObject.addProperty("id", editDeskBookingDetails.getCalId());
+                jsonInnerObject.addProperty("date", "" + Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate()) + "T00:00:00.000Z");
+                switch (dskRoomParkStatus) {
                     case 1:
-                        jsonOuterObject.addProperty("teamId",teamId);
-                        jsonOuterObject.addProperty("teamMembershipId",teamMembershipId);
+                        jsonOuterObject.addProperty("teamId", teamId);
+                        jsonOuterObject.addProperty("teamMembershipId", teamMembershipId);
                         if (!commentRegistration.getText().toString().isEmpty() &&
                                 !commentRegistration.getText().toString().equalsIgnoreCase(""))
-                            jsonChangesObject.addProperty("comments",commentRegistration.getText().toString());
-                            break;
+                            jsonChangesObject.addProperty("comments", commentRegistration.getText().toString());
+                        break;
                     case 2:
-                        jsonOuterObject.addProperty("meetingRoomId",editDeskBookingDetails.getMeetingRoomtId());
+                        jsonOuterObject.addProperty("meetingRoomId", editDeskBookingDetails.getMeetingRoomtId());
                         break;
                     case 3:
-                        jsonOuterObject.addProperty("parkingSlotId",editDeskBookingDetails.getParkingSlotId());
+                        jsonOuterObject.addProperty("parkingSlotId", editDeskBookingDetails.getParkingSlotId());
                         if (!commentRegistration.getText().toString().isEmpty() &&
                                 !commentRegistration.getText().toString().equalsIgnoreCase(""))
-                            jsonChangesObject.addProperty("vehicleRegNumber",commentRegistration.getText().toString());
+                            jsonChangesObject.addProperty("vehicleRegNumber", commentRegistration.getText().toString());
                         break;
                 }
 
                 BookingsRequest bookingsRequest = new BookingsRequest();
-                ArrayList<BookingsRequest.ChangeSets> list =new ArrayList<>();
-                ArrayList<Integer> list1 =new ArrayList<>();
+                ArrayList<BookingsRequest.ChangeSets> list = new ArrayList<>();
+                ArrayList<Integer> list1 = new ArrayList<>();
 
                 BookingsRequest.ChangeSets changeSets = new BookingsRequest.ChangeSets();
                 changeSets.setId(editDeskBookingDetails.getCalId());
-                changeSets.setDate(""+Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())+"T00:00:00.000Z");
+                changeSets.setDate("" + Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate()) + "T00:00:00.000Z");
                 JsonObject jsonObject = new JsonObject();
-                if (selectedDeskId!=0){
-                    jsonChangesObject.addProperty("teamDeskId",selectedDeskId);
+                if (selectedDeskId != 0) {
+                    jsonChangesObject.addProperty("teamDeskId", selectedDeskId);
 //                        jsonObject.put("teamDeskId",selectedDeskId);
                 }
-                if (!editDeskBookingDetails.getEditStartTTime().equalsIgnoreCase(startTime.getText().toString())){
+                if (!editDeskBookingDetails.getEditStartTTime().equalsIgnoreCase(startTime.getText().toString())) {
                     jsonChangesObject.addProperty("from", Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate())
-                            +"T"+startTime.getText().toString()+":00.000Z");
+                            + "T" + startTime.getText().toString() + ":00.000Z");
 
-                }if (!editDeskBookingDetails.getEditEndTime().equalsIgnoreCase(endTime.getText().toString())){
-                    jsonChangesObject.addProperty("to", Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate()) +"T"+endTime.getText().toString()+":00.000Z");
+                }
+                if (!editDeskBookingDetails.getEditEndTime().equalsIgnoreCase(endTime.getText().toString())) {
+                    jsonChangesObject.addProperty("to", Utils.getYearMonthDateFormat(editDeskBookingDetails.getDate()) + "T" + endTime.getText().toString() + ":00.000Z");
                 }
 
-                jsonInnerObject.add("changes",jsonChangesObject);
+                jsonInnerObject.add("changes", jsonChangesObject);
                 jsonChangesetArray.add(jsonInnerObject);
 
                 jsonOuterObject.add("changesets", jsonChangesetArray);
                 jsonOuterObject.add("deletedIds", jsonDeletedIdsArray);
 
-                System.out.println("json un"+jsonOuterObject.toString());
+                System.out.println("json un" + jsonOuterObject.toString());
 
-                if (jsonChangesObject.size() > 0){
-                    editBookingCall(jsonOuterObject,position,dskRoomParkStatus);
+                if (jsonChangesObject.size() > 0) {
+                    editBookingCall(jsonOuterObject, position, dskRoomParkStatus);
                 }
-                selectedDeskId=0;
+                selectedDeskId = 0;
                 bottomSheetDialog.dismiss();
             }
         });
         select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!selectDisabled){
-                    if (editDeskBookingDetails.getDeskStatus()!=1 && editDeskBookingDetails.getDeskStatus()!=2)
+                if (!selectDisabled) {
+                    if (editDeskBookingDetails.getDeskStatus() != 1 && editDeskBookingDetails.getDeskStatus() != 2)
                         callDeskBottomSheetDialog();
                 }
             }
@@ -1592,7 +1605,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         System.out.println("ceck Perm");
         int result = ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.CAMERA);
-        System.out.println("ceck Perm"+result);
+        System.out.println("ceck Perm" + result);
         if (result != PackageManager.PERMISSION_GRANTED) {
             return false;
         } else {
@@ -1614,14 +1627,14 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 new RelativeLayout(getContext()))));
 
         TextView bsRepeatBack;
-        rvDeskRecycler= bottomSheetDialog.findViewById(R.id.desk_list_select_recycler);
-        bsRepeatBack=bottomSheetDialog.findViewById(R.id.bsDeskBack);
+        rvDeskRecycler = bottomSheetDialog.findViewById(R.id.desk_list_select_recycler);
+        bsRepeatBack = bottomSheetDialog.findViewById(R.id.bsDeskBack);
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvDeskRecycler.setLayoutManager(linearLayoutManager);
         rvDeskRecycler.setHasFixedSize(true);
 
-        deskListRecyclerAdapter =new DeskListRecyclerAdapter(getContext(),this,getActivity(),bookingForEditResponse,getContext(),bottomSheetDialog);
+        deskListRecyclerAdapter = new DeskListRecyclerAdapter(getContext(), this, getActivity(), bookingForEditResponse, getContext(), bottomSheetDialog);
         rvDeskRecycler.setAdapter(deskListRecyclerAdapter);
 
         bsRepeatBack.setOnClickListener(new View.OnClickListener() {
@@ -1635,29 +1648,30 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
 
     }
+
     private void callRepeatBottomSheetDialog() {
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_repeat_booking,
                 new RelativeLayout(getContext()))));
 
-        RelativeLayout repeatNoneBlock,repeatDailyBlock,repeatWeeklyBlock,repeatMonthlyBlock,repeatYearlyBlock;
-        ImageView noneTickIv,dailyTickIv,weeklyTickIv,monthlyTickIv,yearlyTickIv;
+        RelativeLayout repeatNoneBlock, repeatDailyBlock, repeatWeeklyBlock, repeatMonthlyBlock, repeatYearlyBlock;
+        ImageView noneTickIv, dailyTickIv, weeklyTickIv, monthlyTickIv, yearlyTickIv;
         TextView bsRepeatBack;
 
-        repeatNoneBlock=bottomSheetDialog.findViewById(R.id.repeatNoneBlock);
-        repeatDailyBlock=bottomSheetDialog.findViewById(R.id.repeatDailyBlock);
-        repeatWeeklyBlock=bottomSheetDialog.findViewById(R.id.repeatWeeklyBlock);
-        repeatMonthlyBlock=bottomSheetDialog.findViewById(R.id.repeatMonthlyBlock);
-        repeatYearlyBlock=bottomSheetDialog.findViewById(R.id.repeatYearlyBlock);
+        repeatNoneBlock = bottomSheetDialog.findViewById(R.id.repeatNoneBlock);
+        repeatDailyBlock = bottomSheetDialog.findViewById(R.id.repeatDailyBlock);
+        repeatWeeklyBlock = bottomSheetDialog.findViewById(R.id.repeatWeeklyBlock);
+        repeatMonthlyBlock = bottomSheetDialog.findViewById(R.id.repeatMonthlyBlock);
+        repeatYearlyBlock = bottomSheetDialog.findViewById(R.id.repeatYearlyBlock);
 
-        noneTickIv=bottomSheetDialog.findViewById(R.id.noneTickIv);
-        dailyTickIv=bottomSheetDialog.findViewById(R.id.dailyTickIv);
-        weeklyTickIv=bottomSheetDialog.findViewById(R.id.weeklyTickIv);
-        monthlyTickIv=bottomSheetDialog.findViewById(R.id.monthlyTickIv);
-        yearlyTickIv=bottomSheetDialog.findViewById(R.id.yearlyTickIv);
+        noneTickIv = bottomSheetDialog.findViewById(R.id.noneTickIv);
+        dailyTickIv = bottomSheetDialog.findViewById(R.id.dailyTickIv);
+        weeklyTickIv = bottomSheetDialog.findViewById(R.id.weeklyTickIv);
+        monthlyTickIv = bottomSheetDialog.findViewById(R.id.monthlyTickIv);
+        yearlyTickIv = bottomSheetDialog.findViewById(R.id.yearlyTickIv);
 
-        bsRepeatBack=bottomSheetDialog.findViewById(R.id.bsRepeatBack);
+        bsRepeatBack = bottomSheetDialog.findViewById(R.id.bsRepeatBack);
 
         repeatNoneBlock.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1748,8 +1762,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
     @Override
     public void onSelectDesk(int deskId, String deskName) {
-        deskRoomName.setText(""+deskName);
-        selectedDeskId= deskId;
+        deskRoomName.setText("" + deskName);
+        selectedDeskId = deskId;
     }
 
 
@@ -1790,7 +1804,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     @Override
     public void onRefresh() {
         System.out.println("pull refresh");
-        showPastStatus=true;
+        showPastStatus = true;
         loadHomeList();
     }
 
@@ -1801,22 +1815,22 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
         //binding.homeUserName.setText(SessionHandler.getInstance().get(getContext(),AppConstants.USERNAME));
         profileData = Utils.getLoginData(getActivity());
-        if (profileData!=null) {
+        if (profileData != null) {
             binding.homeUserName.setText(profileData.getFullName());
         }
 
     }
 
-    public void setLanguage(){
+    public void setLanguage() {
         logoinPage = getLoginScreenData(getActivity());
         appKeysPage = getAppKeysPageScreenData(getActivity());
         resetPage = getResetPasswordPageScreencreenData(getActivity());
         actionOverLays = getActionOverLaysPageScreenData(getActivity());
         bookindata = getBookingPageScreenData(getActivity());
-        global=getGlobalScreenData(getContext());
+        global = getGlobalScreenData(getContext());
     }
 
-    public static void setNightMode(Context target , boolean state){
+    public static void setNightMode(Context target, boolean state) {
 
         UiModeManager uiManager = (UiModeManager) target.getSystemService(Context.UI_MODE_SERVICE);
 
@@ -1832,25 +1846,26 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         }
     }
 
-    public void earlyCheckInTime(){
+    public void earlyCheckInTime() {
         if (Utils.isNetworkAvailable(getContext())) {
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<String> call = apiService.getSettingData("EarlyCheckInGraceTimeInMinutes");
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    if (response.code()==200){
+                    if (response.code() == 200) {
                         try {
                             earlyCheckInTime = Integer.parseInt(response.body());
-                        } catch (Exception e){
-                            System.out.println("exception bal"+e.getMessage());
+                        } catch (Exception e) {
+                            System.out.println("exception bal" + e.getMessage());
                         }
-                    }else if (response.code() == 403){
+                    } else if (response.code() == 403) {
 //                        teamsCheckBoxStatus = false;
-                    }else {
+                    } else {
 //                        teamsCheckBoxStatus = false;
                     }
                 }
+
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
                 }
@@ -1860,25 +1875,27 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             Utils.toastMessage(getContext(), "Please Enable Internet");
         }
     }
-    public void bookingExpiryGraceTimeInMinutes(){
+
+    public void bookingExpiryGraceTimeInMinutes() {
         if (Utils.isNetworkAvailable(getContext())) {
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<String> call = apiService.getSettingData("bookingExpiryGraceTimeInMinutes");
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    if (response.code()==200){
+                    if (response.code() == 200) {
                         try {
                             expiryCheckInTime = Integer.parseInt(response.body());
-                        } catch (Exception e){
-                            System.out.println("exception bal"+e.getMessage());
+                        } catch (Exception e) {
+                            System.out.println("exception bal" + e.getMessage());
                         }
-                    }else if (response.code() == 403){
+                    } else if (response.code() == 403) {
 //                        teamsCheckBoxStatus = false;
-                    }else {
+                    } else {
 //                        teamsCheckBoxStatus = false;
                     }
                 }
+
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
                 }
