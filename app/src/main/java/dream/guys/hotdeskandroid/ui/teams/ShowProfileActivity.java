@@ -1,17 +1,22 @@
 package dream.guys.hotdeskandroid.ui.teams;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import java.io.Serializable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,19 +24,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
+import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.UpComingBookingAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityShowProfileBinding;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
-import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.FirstAidResponse;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
 import dream.guys.hotdeskandroid.ui.home.ViewTeamsActivity;
-import dream.guys.hotdeskandroid.ui.settings.SettingsActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
-import dream.guys.hotdeskandroid.utils.ProgressDialog;
+import dream.guys.hotdeskandroid.utils.ExtendedDataHolder;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
@@ -43,16 +46,16 @@ import retrofit2.Response;
 public class ShowProfileActivity extends AppCompatActivity {
 
 
-
     ActivityShowProfileBinding binding;
     List<GlobalSearchResponse.Results> resultsList = new ArrayList<>();
     List<GlobalSearchResponse.Results> list = new ArrayList<>();
     List<TeamMembersResponse> teamMembersResponses = new ArrayList<>();
-    List<String> arrayString= new ArrayList<>();
+    List<String> arrayString = new ArrayList<>();
     DAOTeamMember daoTeamMember;
     Context context;
 
-    String date = "",fName = "",lName ="";int userID,teamId;
+    String date = "", fName = "", lName = "";
+    int userID, teamId;
     LinearLayoutManager linearLayoutManager;
     UpComingBookingAdapter upComingBookingAdapter;
     ArrayList<TeamMembersResponse.DayGroup> recyclerModelArrayList = new ArrayList();
@@ -60,14 +63,15 @@ public class ShowProfileActivity extends AppCompatActivity {
     //ForLanguage
     LanguagePOJO.Login logoinPage;
     LanguagePOJO.AppKeys appKeysPage;
-    LanguagePOJO.ResetPassword resetPage ;
+    LanguagePOJO.ResetPassword resetPage;
     LanguagePOJO.ActionOverLays actionOverLays;
-    LanguagePOJO.Booking bookindata ;
+    LanguagePOJO.Booking bookindata;
     LanguagePOJO.Global global;
 
 
     HashMap<Integer, Boolean> firstAidList;
     HashMap<Integer, Boolean> firewardenList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,8 +88,8 @@ public class ShowProfileActivity extends AppCompatActivity {
         binding.ivEditEmailIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (binding.tvEditEmail !=null && !binding.tvEditEmail.getText().toString().equalsIgnoreCase("email")){
-                    Intent intent = new Intent (Intent.ACTION_VIEW , Uri.parse("mailto:" + binding.tvEditEmail.getText().toString()));
+                if (binding.tvEditEmail != null && !binding.tvEditEmail.getText().toString().equalsIgnoreCase("email")) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + binding.tvEditEmail.getText().toString()));
                     intent.putExtra(Intent.EXTRA_SUBJECT, "Team member");
                     intent.putExtra(Intent.EXTRA_TEXT, "your_text");
                     startActivity(intent);
@@ -109,9 +113,9 @@ public class ShowProfileActivity extends AppCompatActivity {
         binding.tvEditPhoneIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (binding.tvEditEmail !=null && !binding.tvEditPhone.getText().toString().equalsIgnoreCase("phone")) {
+                if (binding.tvEditEmail != null && !binding.tvEditPhone.getText().toString().equalsIgnoreCase("phone")) {
                     Intent intent = new Intent(Intent.ACTION_DIAL);
-                    intent.setData(Uri.parse("tel:"+binding.tvEditPhone.getText().toString()));
+                    intent.setData(Uri.parse("tel:" + binding.tvEditPhone.getText().toString()));
                     startActivity(intent);
                 }
             }
@@ -120,7 +124,7 @@ public class ShowProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent=new Intent(ShowProfileActivity.this, ViewTeamsActivity.class);
+                Intent intent = new Intent(ShowProfileActivity.this, ViewTeamsActivity.class);
                 startActivity(intent);
             }
         });
@@ -130,11 +134,32 @@ public class ShowProfileActivity extends AppCompatActivity {
             Intent intent = getIntent();
 
             if (intent != null) {
+                String personJsonString = "";
+                ExtendedDataHolder extras = ExtendedDataHolder.getInstance();
+                if (extras.hasExtra(AppConstants.USER_CURRENT_STATUS)) {
+                    personJsonString = (String) extras.getExtra(AppConstants.USER_CURRENT_STATUS);
+                }
+                extras.clear();
+                daoTeamMember = new Gson().fromJson(personJsonString, DAOTeamMember.class);
 
-                daoTeamMember = (DAOTeamMember) intent.getSerializableExtra(AppConstants.USER_CURRENT_STATUS);
+                //  daoTeamMember = (DAOTeamMember) intent.getSerializableExtra(AppConstants.USER_CURRENT_STATUS);
                 date = intent.getStringExtra("DATE");
 
                 if (daoTeamMember != null) {
+
+                    if (daoTeamMember.getProfileImage() != null
+                            && !daoTeamMember.getProfileImage().equalsIgnoreCase("")) {
+                        String cleanImage = daoTeamMember.getProfileImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,", "");
+                        byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
+                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        Glide.with(context).load(decodedByte)
+                                .placeholder(R.drawable.avatar)
+                                .error(R.drawable.avatar)
+                                .into(binding.ivViewPrifle);
+                    } else {
+                        Glide.with(context).load(R.drawable.avatar)
+                                .into(binding.ivViewPrifle);
+                    }
 
                     if (daoTeamMember.getLastName() != null) {
                         fName = daoTeamMember.getFirstName() + " " + daoTeamMember.getLastName();
@@ -148,16 +173,15 @@ public class ShowProfileActivity extends AppCompatActivity {
                     //teamId = daoTeamMember.getTeamId();
 
 
-
                     //Show Person Profile Only
                     callSearchRecyclerData(fName, userID);
                     //Shows upcoming data
 
-                    if (daoTeamMember.getTeamId()!=null){
+                    if (daoTeamMember.getTeamId() != null) {
                         binding.upcomingBookingRel.setVisibility(View.VISIBLE);
                         teamId = daoTeamMember.getTeamId();
                         callTeamMemberStatus(date, daoTeamMember.getTeamId());
-                    }else {
+                    } else {
                         binding.upcomingBookingRel.setVisibility(View.GONE);
                     }
 
@@ -189,32 +213,30 @@ public class ShowProfileActivity extends AppCompatActivity {
         });
 
 
-
-
     }
 
 
-private void callSearchRecyclerData(String searchText,int selID) {
+    private void callSearchRecyclerData(String searchText, int selID) {
         if (Utils.isNetworkAvailable(context)) {
 
             binding.locateProgressBar.setVisibility(View.VISIBLE);
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<GlobalSearchResponse> call = apiService.getGlobalSearchData(40,searchText);
+            Call<GlobalSearchResponse> call = apiService.getGlobalSearchData(40, searchText);
             call.enqueue(new Callback<GlobalSearchResponse>() {
                 @Override
                 public void onResponse(Call<GlobalSearchResponse> call, Response<GlobalSearchResponse> response) {
 
-                    if(response.code()==200){
+                    if (response.code() == 200) {
                         binding.locateProgressBar.setVisibility(View.INVISIBLE);
                         list.clear();
-                        if (response.body().getResults()!=null)
+                        if (response.body().getResults() != null)
                             list.addAll(response.body().getResults());
 
 
-                        if (list!=null && list.size()>0){
+                        if (list != null && list.size() > 0) {
 
-                            for (int i=0;i<list.size();i++){
+                            for (int i = 0; i < list.size(); i++) {
 
                                 if (selID == list.get(i).getId()) {
 
@@ -229,10 +251,10 @@ private void callSearchRecyclerData(String searchText,int selID) {
                         //binding.searchRecycler.setVisibility(View.VISIBLE);
                         //searchRecyclerAdapter.notifyDataSetChanged();
 
-                    }else if(response.code()==401){
+                    } else if (response.code() == 401) {
                         binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                        Utils.showCustomTokenExpiredDialog(ShowProfileActivity.this,"Token Expired");
-                        SessionHandler.getInstance().saveBoolean(context, AppConstants.LOGIN_CHECK,false);
+                        Utils.showCustomTokenExpiredDialog(ShowProfileActivity.this, "Token Expired");
+                        SessionHandler.getInstance().saveBoolean(context, AppConstants.LOGIN_CHECK, false);
 
                     } else {
                         binding.locateProgressBar.setVisibility(View.INVISIBLE);
@@ -240,12 +262,13 @@ private void callSearchRecyclerData(String searchText,int selID) {
                     }
 
                 }
+
                 @Override
                 public void onFailure(Call<GlobalSearchResponse> call, Throwable t) {
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
                     Toast.makeText(context, "on fail", Toast.LENGTH_SHORT).show();
 //                    ProgressDialog.dismisProgressBar(context,dialog);
-                    Log.d("Search", "onResponse: fail"+t.getMessage());
+                    Log.d("Search", "onResponse: fail" + t.getMessage());
                 }
             });
 
@@ -254,29 +277,29 @@ private void callSearchRecyclerData(String searchText,int selID) {
         }
     }
 
-    private void callTeamMemberStatus(String date,int teamID) {
+    private void callTeamMemberStatus(String date, int teamID) {
         if (Utils.isNetworkAvailable(context)) {
 
             binding.locateProgressBar.setVisibility(View.VISIBLE);
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<List<TeamMembersResponse>> call = apiService.getTeamMembers(date,teamID);
+            Call<List<TeamMembersResponse>> call = apiService.getTeamMembers(date, teamID);
             call.enqueue(new Callback<List<TeamMembersResponse>>() {
                 @Override
                 public void onResponse(Call<List<TeamMembersResponse>> call, Response<List<TeamMembersResponse>> response) {
 //                    Toast.makeText(MainActivity.this, "on res", Toast.LENGTH_SHORT).show();
-                    if(response.code()==200){
+                    if (response.code() == 200) {
 
                         teamMembersResponses = response.body();
-                        if (teamMembersResponses!=null &&
-                                teamMembersResponses.size()>0){
-                            for (int i=0;i<teamMembersResponses.size();i++){
+                        if (teamMembersResponses != null &&
+                                teamMembersResponses.size() > 0) {
+                            for (int i = 0; i < teamMembersResponses.size(); i++) {
 
                                 if (userID == teamMembersResponses.get(i).getUserId()) {
                                     TeamMembersResponse body = teamMembersResponses.get(i);
                                     createRecyclerList(body);
                                     break;
-                                    
+
                                 }
 
                                 /*arrayString.add(" "+teamMembersResponses.get(i).getFirstName()+" "+
@@ -285,23 +308,24 @@ private void callSearchRecyclerData(String searchText,int selID) {
 
                         }
 
-                    }else if(response.code()==401){
+                    } else if (response.code() == 401) {
                         //Handle if token got expired
-                        Utils.tokenExpiryAlert(context,"");
+                        Utils.tokenExpiryAlert(context, "");
 
                     } else {
                         Log.d("Search", "onResponse: else");
-                        Utils.showCustomAlertDialog(ShowProfileActivity.this,"Api Issue Code: "+response.code());
+                        Utils.showCustomAlertDialog(ShowProfileActivity.this, "Api Issue Code: " + response.code());
                     }
 
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
                 }
+
                 @Override
                 public void onFailure(Call<List<TeamMembersResponse>> call, Throwable t) {
 //                    Toast.makeText(context, "on fail", Toast.LENGTH_SHORT).show();
-                    Utils.showCustomAlertDialog(ShowProfileActivity.this,"Response Failure: "+t.getMessage());
-                    Log.d("Search", "onResponse: fail"+t.getMessage());
+                    Utils.showCustomAlertDialog(ShowProfileActivity.this, "Response Failure: " + t.getMessage());
+                    Log.d("Search", "onResponse: fail" + t.getMessage());
 
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 }
@@ -311,6 +335,7 @@ private void callSearchRecyclerData(String searchText,int selID) {
             Utils.toastMessage(this, "Please Enable Internet");
         }
     }
+
     private void getFirstAidPersonsDetails(String description) {
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -318,22 +343,22 @@ private void callSearchRecyclerData(String searchText,int selID) {
         call.enqueue(new Callback<List<FirstAidResponse>>() {
             @Override
             public void onResponse(Call<List<FirstAidResponse>> call, Response<List<FirstAidResponse>> response) {
-                List<FirstAidResponse> firstAidResponseList=response.body();
-                List<FirstAidResponse.Persons> personsList=new ArrayList<>();
-                List<FirstAidResponse.Persons> personsListfirstAid=new ArrayList<>();
-                firstAidList= new HashMap<>();
+                List<FirstAidResponse> firstAidResponseList = response.body();
+                List<FirstAidResponse.Persons> personsList = new ArrayList<>();
+                List<FirstAidResponse.Persons> personsListfirstAid = new ArrayList<>();
+                firstAidList = new HashMap<>();
                 firewardenList = new HashMap<>();
 
                 for (int i = 0; i < firstAidResponseList.size(); i++) {
-                    if (firstAidResponseList.get(i).getPersonsList().size()>0) {
+                    if (firstAidResponseList.get(i).getPersonsList().size() > 0) {
 
-                        if(firstAidResponseList.get(i).getType()==4){
-                            for (int j = 0; j <firstAidResponseList.get(i).getPersonsList().size() ; j++) {
+                        if (firstAidResponseList.get(i).getType() == 4) {
+                            for (int j = 0; j < firstAidResponseList.get(i).getPersonsList().size(); j++) {
                                 personsList.add(firstAidResponseList.get(i).getPersonsList().get(j));
                             }
                         }
-                        if(firstAidResponseList.get(i).getType()==5){
-                            for (int j = 0; j <firstAidResponseList.get(i).getPersonsList().size() ; j++) {
+                        if (firstAidResponseList.get(i).getType() == 5) {
+                            for (int j = 0; j < firstAidResponseList.get(i).getPersonsList().size(); j++) {
                                 personsListfirstAid.add(firstAidResponseList.get(i).getPersonsList().get(j));
                             }
                         }
@@ -341,11 +366,11 @@ private void callSearchRecyclerData(String searchText,int selID) {
                     }
                 }
 
-                for (int i = 0; i <personsList.size() ; i++) {
-                    firewardenList.put(personsList.get(i).getId(),personsList.get(i).isActive());
+                for (int i = 0; i < personsList.size(); i++) {
+                    firewardenList.put(personsList.get(i).getId(), personsList.get(i).isActive());
                 }
-                for (int i = 0; i <personsListfirstAid.size() ; i++) {
-                    firstAidList.put(personsListfirstAid.get(i).getId(),personsListfirstAid.get(i).isActive());
+                for (int i = 0; i < personsListfirstAid.size(); i++) {
+                    firstAidList.put(personsListfirstAid.get(i).getId(), personsListfirstAid.get(i).isActive());
                 }
                 updateFireStatus();
             }
@@ -359,21 +384,21 @@ private void callSearchRecyclerData(String searchText,int selID) {
     }
 
     private void updateFireStatus() {
-        if (firewardenList!=null){
-            if (firewardenList.containsKey(userID)){
+        if (firewardenList != null) {
+            if (firewardenList.containsKey(userID)) {
                 binding.locateMyTeamName.setVisibility(View.VISIBLE);
                 binding.locateMyTeamFireIv.setVisibility(View.VISIBLE);
             } else {
                 binding.locateMyTeamName.setVisibility(View.GONE);
                 binding.locateMyTeamFireIv.setVisibility(View.GONE);
             }
-        }else {
+        } else {
             binding.locateMyTeamName.setVisibility(View.GONE);
             binding.locateMyTeamFireIv.setVisibility(View.GONE);
         }
 
-        if (firstAidList!=null){
-            if (firstAidList.containsKey(userID)){
+        if (firstAidList != null) {
+            if (firstAidList.containsKey(userID)) {
                 binding.txtFire.setVisibility(View.VISIBLE);
                 binding.locateMyTeamPlusIv.setVisibility(View.VISIBLE);
             } else {
@@ -407,9 +432,9 @@ private void callSearchRecyclerData(String searchText,int selID) {
         System.out.println("Monday of the Week: " + monday);
         System.out.println("Sunday of the Week: " + sunday);
 
-        binding.weekStartEnd.setText(Utils.showBottomSheetDate(""+monday)+
-                " - "+
-                Utils.showBottomSheetDate(""+sunday));
+        binding.weekStartEnd.setText(Utils.showBottomSheetDate("" + monday) +
+                " - " +
+                Utils.showBottomSheetDate("" + sunday));
 
         binding.tvViewProfileName.setText(results.getName());
         binding.txtTeam.setText(results.getTeam());
@@ -422,7 +447,7 @@ private void callSearchRecyclerData(String searchText,int selID) {
             binding.tvEditEmail.setText(results.getEmail());
         if (results.getDeskPhoneNumber() == null
                 || results.getDeskPhoneNumber().equalsIgnoreCase("")
-                ||results.getDeskPhoneNumber().isEmpty())
+                || results.getDeskPhoneNumber().isEmpty())
             binding.tvEditPhone.setText("Phone");
         else
             binding.tvEditPhone.setText(results.getMobile());
@@ -434,38 +459,38 @@ private void callSearchRecyclerData(String searchText,int selID) {
 
     private void createRecyclerList(TeamMembersResponse bookingListResponses) {
 
-        for (int i=0; i<bookingListResponses.getDayGroups().size(); i++){
-            boolean dateCheck =true;
-            System.out.println("bala time format"+bookingListResponses.getDayGroups().get(i).getDate());
+        for (int i = 0; i < bookingListResponses.getDayGroups().size(); i++) {
+            boolean dateCheck = true;
+            System.out.println("bala time format" + bookingListResponses.getDayGroups().get(i).getDate());
             Date date = bookingListResponses.getDayGroups().get(i).getDate();
-            System.out.println("bala time format"+date);
+            System.out.println("bala time format" + date);
             ArrayList<TeamMembersResponse.DayGroup.CalendarEntry> calendarEntries = null;
             ArrayList<TeamMembersResponse.DayGroup.MeetingBooking> meetingEntries = null;
             ArrayList<TeamMembersResponse.DayGroup.CarParkBooking> carParkEntries = null;
 
-            if (bookingListResponses.getDayGroups().get(i).getCalendarEntries()!=null){
+            if (bookingListResponses.getDayGroups().get(i).getCalendarEntries() != null) {
                 calendarEntries =
                         bookingListResponses.getDayGroups().get(i).getCalendarEntries();
             }
-            if (bookingListResponses.getDayGroups().get(i).getMeetingBookings()!=null){
+            if (bookingListResponses.getDayGroups().get(i).getMeetingBookings() != null) {
                 meetingEntries =
                         bookingListResponses.getDayGroups().get(i).getMeetingBookings();
             }
-            if (bookingListResponses.getDayGroups().get(i).getCarParkBookings()!=null){
+            if (bookingListResponses.getDayGroups().get(i).getCarParkBookings() != null) {
                 carParkEntries =
                         bookingListResponses.getDayGroups().get(i).getCarParkBookings();
             }
 
-            if (calendarEntries!=null){
-                for (int j=0; j < calendarEntries.size(); j++){
+            if (calendarEntries != null) {
+                for (int j = 0; j < calendarEntries.size(); j++) {
                     TeamMembersResponse.DayGroup momdel = new TeamMembersResponse.DayGroup();
-                    if (dateCheck){
+                    if (dateCheck) {
                         momdel.setDateStatus(true);
                         momdel.setCalDeskStatus(1);
                         momdel.setDate(date);
                         momdel.setCalendarEntriesModel(calendarEntries.get(j));
-                        dateCheck=false;
-                    }else {
+                        dateCheck = false;
+                    } else {
                         momdel.setDateStatus(false);
                         momdel.setCalDeskStatus(1);
                         momdel.setDate(date);
@@ -474,16 +499,16 @@ private void callSearchRecyclerData(String searchText,int selID) {
                     recyclerModelArrayList.add(momdel);
                 }
             }
-            if (meetingEntries!=null){
-                for (int j=0; j < meetingEntries.size(); j++){
+            if (meetingEntries != null) {
+                for (int j = 0; j < meetingEntries.size(); j++) {
                     TeamMembersResponse.DayGroup momdel = new TeamMembersResponse.DayGroup();
-                    if (dateCheck){
+                    if (dateCheck) {
                         momdel.setDateStatus(true);
                         momdel.setCalDeskStatus(2);
                         momdel.setDate(date);
                         momdel.setMeetingBookingsModel(meetingEntries.get(j));
-                        dateCheck=false;
-                    }else {
+                        dateCheck = false;
+                    } else {
                         momdel.setDateStatus(false);
                         momdel.setCalDeskStatus(2);
                         momdel.setDate(date);
@@ -492,16 +517,16 @@ private void callSearchRecyclerData(String searchText,int selID) {
                     recyclerModelArrayList.add(momdel);
                 }
             }
-            if (carParkEntries!=null){
-                for (int j=0; j < carParkEntries.size(); j++){
+            if (carParkEntries != null) {
+                for (int j = 0; j < carParkEntries.size(); j++) {
                     TeamMembersResponse.DayGroup momdel = new TeamMembersResponse.DayGroup();
-                    if (dateCheck){
+                    if (dateCheck) {
                         momdel.setDateStatus(true);
                         momdel.setCalDeskStatus(3);
                         momdel.setDate(date);
                         momdel.setCarParkBookingsModel(carParkEntries.get(j));
-                        dateCheck=false;
-                    }else {
+                        dateCheck = false;
+                    } else {
                         momdel.setDateStatus(false);
                         momdel.setCalDeskStatus(3);
                         momdel.setDate(date);
@@ -513,30 +538,30 @@ private void callSearchRecyclerData(String searchText,int selID) {
 
         }
 
-        if (recyclerModelArrayList!=null && recyclerModelArrayList.size()>0){
+        if (recyclerModelArrayList != null && recyclerModelArrayList.size() > 0) {
             binding.notAvailable.setVisibility(View.GONE);
             binding.samUpcomingRecycler.setVisibility(View.VISIBLE);
             linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
             binding.samUpcomingRecycler.setLayoutManager(linearLayoutManager);
             binding.samUpcomingRecycler.setHasFixedSize(true);
 
-            upComingBookingAdapter=new UpComingBookingAdapter(context,recyclerModelArrayList,"Sample");
+            upComingBookingAdapter = new UpComingBookingAdapter(context, recyclerModelArrayList, "Sample");
             binding.samUpcomingRecycler.setAdapter(upComingBookingAdapter);
-        }else {
+        } else {
             binding.notAvailable.setVisibility(View.VISIBLE);
             binding.samUpcomingRecycler.setVisibility(View.GONE);
         }
-        
+
     }
 
-    public void setLanguage(){
+    public void setLanguage() {
 
         logoinPage = Utils.getLoginScreenData(ShowProfileActivity.this);
         appKeysPage = Utils.getAppKeysPageScreenData(ShowProfileActivity.this);
         resetPage = Utils.getResetPasswordPageScreencreenData(ShowProfileActivity.this);
         actionOverLays = Utils.getActionOverLaysPageScreenData(ShowProfileActivity.this);
         bookindata = Utils.getBookingPageScreenData(ShowProfileActivity.this);
-        global=Utils.getGlobalScreenData(ShowProfileActivity.this);
+        global = Utils.getGlobalScreenData(ShowProfileActivity.this);
 
         //binding.tvTitle.setText(appKeysPage.getProfile());
         binding.titleTeam.setText(appKeysPage.getTeam());
@@ -545,7 +570,6 @@ private void callSearchRecyclerData(String searchText,int selID) {
         binding.tvViewTeam.setText(appKeysPage.getViewTeam());
         binding.txtViewAll.setText(appKeysPage.getViewAll());
         binding.tvEditContact.setText(appKeysPage.getContact());
-
 
 
     }
