@@ -2690,12 +2690,20 @@ public class BookFragment extends Fragment implements
                         }
                     }
                 }else if(selectedicon==0){
-                    if (newEditStatus.equalsIgnoreCase("edit"))
-                        editBookingCallForDesk(editDeskBookingDetails,edComments);
-                    else if (newEditStatus.equalsIgnoreCase("new"))
-                        newBookingCallForDesk(editDeskBookingDetails,edComments);
-                    else
-                        requestBookingCallForDesk(editDeskBookingDetails,edComments);
+                    if (repeatActvieStatus) {
+                        if (dskRoomParkStatus==1)
+                            doRepeatDeskBookingForAWeek(editDeskBookingDetails);
+                        else if (dskRoomParkStatus==3)
+                            doRepeatCarBookingForAWeek(edRegistration.getText().toString());
+
+                    } else {
+                        if (newEditStatus.equalsIgnoreCase("edit"))
+                            editBookingCallForDesk(editDeskBookingDetails,edComments);
+                        else if (newEditStatus.equalsIgnoreCase("new"))
+                            newBookingCallForDesk(editDeskBookingDetails,edComments);
+                        else
+                            requestBookingCallForDesk(editDeskBookingDetails,edComments);
+                    }
                 } else {
                     if (repeatActvieStatus) {
                         if (dskRoomParkStatus==1)
