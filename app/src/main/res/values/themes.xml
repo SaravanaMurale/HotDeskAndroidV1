@@ -49,7 +49,7 @@
         <!-- Alternatively, reference this font with the name "aspergit" -->
         <!-- Note that only our own TextView's will use the font attribute -->
         <item name="fontFamily">@font/avenir_ltstd_book</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:fontWeight">500</item>
         <item name="android:textSize">@dimen/_12sdp</item>
         <item name="android:textColor">@color/figmaBlack</item>
     </style>
