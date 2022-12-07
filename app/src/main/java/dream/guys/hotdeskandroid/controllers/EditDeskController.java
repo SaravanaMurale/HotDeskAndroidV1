@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
@@ -32,12 +33,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.adapter.ActiveTeamsAdapter;
+import dream.guys.hotdeskandroid.adapter.DeskListBookAdapter;
 import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
+import dream.guys.hotdeskandroid.adapter.NewDeskListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.ParkingSpotListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.RoomListRecyclerAdapter;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
+import dream.guys.hotdeskandroid.model.response.ActiveTeamsResponse;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
@@ -50,7 +55,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EditDeskController {
+public class EditDeskController implements DeskListBookAdapter.OnChangeSelected {
     String TAG="DeskController";
     Activity activityContext;
     Context context;
@@ -72,8 +77,21 @@ public class EditDeskController {
     TextView startTime,endTime,repeat,date,deskRoomName,locationAddress,continueEditBook;
     TextView country, state, street, floor, back, bsApply,deskStatusText,deskStatusDot;
     TextView tvRepeat, tvTeamName,tvcapacityCount;
+    EditText bsGeneralSearch;
+    LinearLayoutManager linearLayoutManager;
 
     BottomSheetDialog deskBottomSheet;
+    BottomSheetDialog deskListBottomSheet;
+    BottomSheetDialog activeTeamsBottomSheet;
+
+    List<BookingForEditResponse.TeamDeskAvailabilities> bookingDeskList = new ArrayList<>();
+    //teams list and Desk List
+    List<ActiveTeamsResponse> activeTeamsList = new ArrayList<>();
+    String selectedTeamName="";
+    RecyclerView rvDeskRecycler, rvActiveTeams;
+    DeskListBookAdapter newdeskListRecyclerAdapter;
+    ActiveTeamsAdapter activeTeamsAdapter;
+
 
     LanguagePOJO.Login logoinPage;
     LanguagePOJO.AppKeys appKeysPage;
@@ -88,9 +106,49 @@ public class EditDeskController {
         this.context = context;
 
         setLanguage();
+        getActiveTeams();
         editDeskBooking(editDeskBookingDetails);
     }
+    private void getActiveTeams() {
 
+        if (Utils.isNetworkAvailable(activityContext)) {
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<ActiveTeamsResponse>> call = apiService.getActiveTeams();
+            call.enqueue(new Callback<List<ActiveTeamsResponse>>() {
+                @Override
+                public void onResponse(Call<List<ActiveTeamsResponse>> call, Response<List<ActiveTeamsResponse>> response) {
+//                    activeTeamsList = response.body();
+                    try {
+
+                        for (int i=0;i<response.body().size();i++) {
+                            if (response.body().get(i).isLeafTeam()){
+                                activeTeamsList.add(response.body().get(i));
+                            }
+                        }
+
+                        for (int i=0; i<activeTeamsList.size(); i++) {
+                            if (selectedTeamId==activeTeamsList.get(i).getId()) {
+                                selectedTeamName = activeTeamsList.get(i).getName();
+                                selectedTeamAutoApproveStatus = activeTeamsList.get(i).getAutomaticApprovalStatus();
+                            }
+                        }
+                    } catch (Exception exception){
+                        Toast.makeText(context, ""+exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<ActiveTeamsResponse>> call, Throwable t) {
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(activityContext, activityContext.getResources().getString(R.string.enable_internet));
+        }
+
+    }
     public void editDeskBooking(EditBookingDetails editDeskBookingDetails){
         dialog= new Dialog(activityContext);
 
@@ -725,7 +783,8 @@ public class EditDeskController {
                                     Utils.getISO8601format(editDeskBookingDetails.getDate()),
                                     editDeskBookingDetails,newEditStatus);
                         } else {
-                            if (editDeskBookingDetails.getRequestedTeamId()>0)
+                            if (editDeskBookingDetails.getRequestedTeamId()!=null
+                                    && editDeskBookingDetails.getRequestedTeamId()>0)
                                 selectedDeskList(editDeskBookingDetails.getRequestedTeamId(),
                                         Utils.getISO8601format(editDeskBookingDetails.getDate()),
                                         editDeskBookingDetails,newEditStatus);
@@ -1143,10 +1202,10 @@ public class EditDeskController {
             call.enqueue(new Callback<List<BookingForEditResponse.TeamDeskAvailabilities>>() {
                 @Override
                 public void onResponse(Call<List<BookingForEditResponse.TeamDeskAvailabilities>> call, Response<List<BookingForEditResponse.TeamDeskAvailabilities>> response) {
-//                    bookingDeskList.clear();
-//                    bookingDeskList = response.body();
-//                    //System.out.println("Selecrt id"+selectedTeamId + bookingDeskList.get(0).getDeskCode());
-//                    callDeskListBottomSheetDialog(1,editBookingDetails,newEditStatus);
+                    bookingDeskList.clear();
+                    bookingDeskList = response.body();
+                    //System.out.println("Selecrt id"+selectedTeamId + bookingDeskList.get(0).getDeskCode());
+                    deskListBottomSheet(1,editBookingDetails,newEditStatus);
 
                 }
 
@@ -1162,47 +1221,70 @@ public class EditDeskController {
             Utils.toastMessage(context, "Please Enable Internet");
         }
 
-    }/*
-    private void callDeskBottomSheetDialog() {
-
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme);
-        bottomSheetDialog.setContentView((activityContext.getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_select_desk,
-                new RelativeLayout(context))));
-
-        TextView bsRepeatBack, selectDesk,sheetDate,sheetTime,tvCapacityFilter;
-        rvDeskRecycler= bottomSheetDialog.findViewById(R.id.desk_list_select_recycler);
-        tvCapacityFilter = bottomSheetDialog.findViewById(R.id.capa_tv);
-        selectDesk = bottomSheetDialog.findViewById(R.id.select_desk);
-        sheetDate = bottomSheetDialog.findViewById(R.id.sheet_date);
-        sheetTime = bottomSheetDialog.findViewById(R.id.sheet_time);
-        bsGeneralSearch = bottomSheetDialog.findViewById(R.id.bsGeneralSearch);
-        bsRepeatBack=bottomSheetDialog.findViewById(R.id.bsDeskBack);
-
-        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvDeskRecycler.setLayoutManager(linearLayoutManager);
-        rvDeskRecycler.setHasFixedSize(true);
-        sheetDate.setText(Utils.calendarDay10thMonthformat(Utils.convertStringToDateFormet(calSelectedDate)));
-        sheetTime.setText(""+startTime.getText()+" to "+endTime.getText());
-
-        if (selectedicon == 2) {
-            selectDesk.setText("Book parking");
-            tvCapacityFilter.setVisibility(View.GONE);
-            parkingSpotListRecyclerAdapter =new ParkingSpotListRecyclerAdapter(context,this,getActivity(),parkingSpotModelList,context,bottomSheetDialog);
-            rvDeskRecycler.setAdapter(parkingSpotListRecyclerAdapter);
-        }else if (selectedicon==1) {
-            selectDesk.setText("Book a room");
-            tvCapacityFilter.setVisibility(View.VISIBLE);
-            roomListRecyclerAdapter =new RoomListRecyclerAdapter(context,this,getActivity(),userAllowedMeetingResponseListUpdated,
-                    context,bottomSheetDialog,allMeetingRoomList);
-            rvDeskRecycler.setAdapter(roomListRecyclerAdapter);
-        }else {
-            selectDesk.setText("Book a workspace");
-            deskListRecyclerAdapter =new DeskListRecyclerAdapter(context,this,
-                    getActivity(),bookingForEditResponseDesk,context,bottomSheetDialog);
-            rvDeskRecycler.setAdapter(deskListRecyclerAdapter);
-
+    }
+    private void deskListBottomSheet(int id,EditBookingDetails editBookingDetails,String newEditStatus) {
+        for (int i=0; i<activeTeamsList.size(); i++) {
+            if (selectedTeamId==activeTeamsList.get(i).getId()) {
+                selectedTeamName = activeTeamsList.get(i).getName();
+                selectedTeamAutoApproveStatus = activeTeamsList.get(i).getAutomaticApprovalStatus();
+            }
         }
 
+        deskListBottomSheet = new BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme);
+        deskListBottomSheet.setContentView((activityContext.getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_select_desk_new,
+                new RelativeLayout(context))));
+
+        TextView bsRepeatBack, selectDesk, sheetDate, sheetTime;
+        bsGeneralSearch = deskListBottomSheet.findViewById(R.id.bsGeneralSearch);
+        rvDeskRecycler= deskListBottomSheet.findViewById(R.id.desk_list_select_recycler);
+        selectDesk= deskListBottomSheet.findViewById(R.id.sheet_name);
+        sheetDate= deskListBottomSheet.findViewById(R.id.sheet_date);
+        sheetTime= deskListBottomSheet.findViewById(R.id.sheet_time);
+        tvTeamName= deskListBottomSheet.findViewById(R.id.tv_team_name);
+        bsRepeatBack=deskListBottomSheet.findViewById(R.id.bsDeskBack);
+
+        linearLayoutManager = new LinearLayoutManager(activityContext, LinearLayoutManager.VERTICAL, false);
+        rvDeskRecycler.setLayoutManager(linearLayoutManager);
+        rvDeskRecycler.setHasFixedSize(true);
+//        sheetDate.setText(Utils.calendarDay10thMonthformat(Utils.convertStringToDateFormet(calSelectedDate)));
+
+        if(editBookingDetails.getDisplayTime()!=null)
+            sheetTime.setText(""+editBookingDetails.getDisplayTime());
+
+        selectDesk.setText("Book a Workspace");
+        tvTeamName.setText(selectedTeamName);
+
+        if (newEditStatus.equalsIgnoreCase("edit")){
+            if (editBookingDetails.getUsageTypeId()==2){
+                tvTeamName.setTextColor(context.getResources().getColor(R.color.figmaGrey));
+                tvTeamNameDisabled=true;
+            } else if(editBookingDetails.getUsageTypeId() == 7){
+                tvTeamName.setTextColor(context.getResources().getColor(R.color.figmaBlueText));
+                tvTeamNameDisabled=false;
+            }
+        }else {
+            tvTeamName.setTextColor(context.getResources().getColor(R.color.figmaBlueText));
+            tvTeamNameDisabled=false;
+        }
+        newdeskListRecyclerAdapter = new DeskListBookAdapter(context,this,
+                activityContext,bookingDeskList,this,deskListBottomSheet,
+                id,editBookingDetails,newEditStatus);
+        rvDeskRecycler.setAdapter(newdeskListRecyclerAdapter);
+
+        tvTeamName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!tvTeamNameDisabled){
+                    /*if (newEditStatus.equalsIgnoreCase("edit")){
+                        callActiveTeamsBottomSheet(id,editBookingDetails,newEditStatus);
+                    }else {
+//                        if(newEditStatus.equalsIgnoreCase("new")
+//                                || newEditStatus.equalsIgnoreCase("request"))
+                        callActiveTeamsBottomSheet(id,editBookingDetails,newEditStatus);
+                    }*/
+                }
+            }
+        });
         bsGeneralSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1210,13 +1292,7 @@ public class EditDeskController {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (selectedicon == 2){
-                    parkingSpotListRecyclerAdapter.getFilter().filter(s.toString());
-                }else if (selectedicon==1){
-                    roomListRecyclerAdapter.getFilter().filter(s.toString());
-                }else {
-                }
-
+                newdeskListRecyclerAdapter.getFilter().filter(s.toString());
             }
 
             @Override
@@ -1228,13 +1304,49 @@ public class EditDeskController {
         bsRepeatBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bottomSheetDialog.dismiss();
+                deskListBottomSheet.dismiss();
             }
         });
 
-        bottomSheetDialog.show();
+        deskListBottomSheet.show();
+    }
+
+    @Override
+    public void onChangeDesk(int deskId, String deskName, String request, String timeZone, int typeId, EditBookingDetails editBookingDetails, String newEditStatus, int teamId) {
+
+    }
+/*
+    private void callActiveTeamsBottomSheet(int id, EditBookingDetails editBookingDetails, String newEditStatus) {
+        activeTeamsBottomSheet = new BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme);
+        activeTeamsBottomSheet.setContentView((activityContext.getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_active_teams,
+                new RelativeLayout(context))));
+
+        TextView bsRepeatBack, selectDesk;
+        rvActiveTeams= activeTeamsBottomSheet.findViewById(R.id.desk_list_select_recycler);
+        selectDesk= activeTeamsBottomSheet.findViewById(R.id.sheet_name);
+        bsRepeatBack=activeTeamsBottomSheet.findViewById(R.id.bsDeskBack);
+
+        linearLayoutManager = new LinearLayoutManager(activityContext, LinearLayoutManager.VERTICAL, false);
+        rvActiveTeams.setLayoutManager(linearLayoutManager);
+        rvActiveTeams.setHasFixedSize(true);
+        selectDesk.setText("Book from another team");
+
+        activeTeamsAdapter =new ActiveTeamsAdapter(context,this,
+                activityContext,activeTeamsList,this,activeTeamsBottomSheet,id,
+                editBookingDetails,newEditStatus);
+        rvActiveTeams.setAdapter(activeTeamsAdapter);
 
 
-    }*/
+
+        bsRepeatBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activeTeamsBottomSheet.dismiss();
+            }
+        });
+
+        activeTeamsBottomSheet.show();
+    }
+*/
 
 }

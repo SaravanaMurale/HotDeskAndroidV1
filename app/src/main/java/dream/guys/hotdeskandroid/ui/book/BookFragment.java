@@ -482,7 +482,6 @@ public class BookFragment extends Fragment implements
                 tabToggleViewClicked(3);
             }
         });
-
         return root;
     }
 
