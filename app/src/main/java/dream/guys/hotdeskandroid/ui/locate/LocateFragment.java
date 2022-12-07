@@ -140,7 +140,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSelectListener, BookingListToEditAdapter.OnEditClickable, DeskListRecyclerAdapter.OnSelectSelected, CarListToEditAdapter.CarEditClickable, MeetingListToEditAdapter.OnMeetingEditClickable, DeskSelectListAdapter.OnDeskSelectClickable, ParticipantNameShowAdapter.OnParticipantSelectable,
-        RepeateDataAdapter.repeatInterface, LocateMyTeamAdapter.ShowMyTeamLocationClickable, ItemAdapter.selectItemInterface, LocateDeskSelectAdapter.OnDeskSelectListener {
+        RepeateDataAdapter.repeatInterface, LocateMyTeamAdapter.ShowMyTeamLocationClickable, ItemAdapter.selectItemInterface, LocateDeskSelectAdapter.OnDeskSelectListener, LocateCarSelectAdapter.OnCarSelectListener {
 
     @BindView(R.id.locateProgressBar)
     ProgressBar progressBar;
@@ -372,6 +372,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     boolean selectAndChangeDeskStatus=false;
     int deskSelectAndChangeId=0;
     int deskSelectAndChangeStatus=-1;
+
+    //Selecct Car And Change
+    BottomSheetDialog selectCarAndChangeBottomSheet;
 
 
 
@@ -5080,27 +5083,32 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 }else if(code.equals(AppConstants.CAR_PARKING)){
 
 
+                    List<CarStatusChangeAndSelect> carStatusChangeAndSelectList=new ArrayList<>();
+
                     for (int j = 0; j <codeList.size() ; j++) {
 
 
                         System.out.println("CarCodeList "+codeList.get(j).getId()+" "+codeList.get(j).getCode());
 
+                        for (int i = 0; i <carParkingStatusModelList.size() ; i++) {
 
-                    }
+                            if(codeList.get(j).getId()==carParkingStatusModelList.get(i).getId()){
 
-                    for (int i = 0; i <carParkingStatusModelList.size() ; i++) {
-
-                           /* if(codeList.get(j).getId()==carParkingStatusModelList.get(i).getId()){
-
-                                CarStatusChangeAndSelect carStatusChangeAndSelect=new CarStatusChangeAndSelect(codeList.get(j).getId(),codeList.get(j).getCode(),carParkingStatusModelList.get(i).g)
-
+                                CarStatusChangeAndSelect carStatusChangeAndSelect=new CarStatusChangeAndSelect(codeList.get(j).getId(),codeList.get(j).getCode(),carParkingStatusModelList.get(i).getStatus());
+                                carStatusChangeAndSelectList.add(carStatusChangeAndSelect);
 
                             }
-*/
 
-                        System.out.println("CarParkStatusModel "+carParkingStatusModelList.get(i).getId()+" "+carParkingStatusModelList.get(i).getKey()+" "+carParkingStatusModelList.get(i).getStatus());
+                            //System.out.println("CarParkStatusModel "+carParkingStatusModelList.get(i).getId()+" "+carParkingStatusModelList.get(i).getKey()+" "+carParkingStatusModelList.get(i).getStatus());
+
+                        }
+
 
                     }
+                    //Call Selecct Car and change Flow
+                    callCarSelecctAndChangeStatus(carStatusChangeAndSelectList);
+
+
 
 
                 }
@@ -5365,6 +5373,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
 
+                    //Car
                     if (code.equals("5")) {
 
                         System.out.println("carParkBookingActivatedHere");
@@ -5445,9 +5454,48 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         locateCheckInBottomSheet.show();
     }
 
+    private void callCarSelecctAndChangeStatus(List<CarStatusChangeAndSelect> carStatusChangeAndSelectList) {
+
+        RecyclerView rvCarSelect;
+        TextView  bsRepeatBackS;
+        ProgressBar bsProgressBar;
+
+        //Car Change
+
+        selectCarAndChangeBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        selectCarAndChangeBottomSheet.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_select_desk,
+                new RelativeLayout(getContext()))));
+
+        rvCarSelect = selectCarAndChangeBottomSheet.findViewById(R.id.desk_list_select_recycler);
+        bsRepeatBackS = selectCarAndChangeBottomSheet.findViewById(R.id.bsDeskBack);
+
+        bsProgressBar=selectCarAndChangeBottomSheet.findViewById(R.id.locateProgressBarInBs);
+
+        bsProgressBar.setVisibility(View.VISIBLE);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvCarSelect.setLayoutManager(linearLayoutManager);
+        rvCarSelect.setHasFixedSize(true);
+
+        LocateCarSelectAdapter locateCarSelectAdapter=new LocateCarSelectAdapter(getContext(),carStatusChangeAndSelectList,this);
+        rvCarSelect.setAdapter(locateCarSelectAdapter);
+
+        bsProgressBar.setVisibility(View.INVISIBLE);
+
+        bsRepeatBackS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectCarAndChangeBottomSheet.dismiss();
+            }
+        });
+
+        selectCarAndChangeBottomSheet.show();
+
+
+    }
+
     private void callDeskSelectAndChangeBottomSheet(List<DeskStatusChangeAndSelect> deskStatusChangeAndSelectList) {
 
-
+        //Desk
         RecyclerView rvDeskSelect;
         TextView  bsRepeatBackS;
         ProgressBar bsProgressBar;
@@ -9647,6 +9695,18 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         }
 
+
+    }
+
+    @Override
+    public void onCarSelectAndChange(CarStatusChangeAndSelect carStatusChangeAndSelect) {
+
+
+        selectCarAndChangeBottomSheet.dismiss();
+
+        System.out.println("SelectedCarAndToChange "+carStatusChangeAndSelect.getId()+" "+carStatusChangeAndSelect.getCarName()+" "+carStatusChangeAndSelect.getStatus());
+        tv_desk_room_name.setText(carStatusChangeAndSelect.getCarName());
+        selectedCarParkingSlotId=carStatusChangeAndSelect.getId();
 
     }
 }

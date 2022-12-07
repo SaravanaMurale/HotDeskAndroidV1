@@ -4,13 +4,11 @@ public class CarStatusChangeAndSelect {
 
     int id;
     String carName;
-    String code;
     int status;
 
-    public CarStatusChangeAndSelect(int id, String carName, String code, int status) {
+    public CarStatusChangeAndSelect(int id, String carName, int status) {
         this.id = id;
         this.carName = carName;
-        this.code = code;
         this.status = status;
     }
 
@@ -28,14 +26,6 @@ public class CarStatusChangeAndSelect {
 
     public void setCarName(String carName) {
         this.carName = carName;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public int getStatus() {
