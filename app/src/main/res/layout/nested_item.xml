@@ -12,21 +12,22 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/nestedItemTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/nestedItemTv"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/_9sdp"
+
             android:text="Grocery and Stationary"
             android:textColor="@color/figmaBlack"
-            android:textSize="15sp"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:layout_centerVertical="true" />
+            android:textSize="14dp" />
 
         <CheckBox
             android:id="@+id/check_box"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:theme="@style/BlueCheck"/>
+            android:theme="@style/BlueCheck" />
 
     </RelativeLayout>
 

@@ -420,8 +420,11 @@
                 android:id="@+id/list_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:layout_marginVertical="@dimen/_5sdp"
+                android:minHeight="@dimen/_5sdp"
+                app:chipSpacingVertical="-13dp"
+                android:layout_marginLeft="@dimen/_8sdp"
+                app:chipSpacingHorizontal="@dimen/_1sdp"
+
                 android:layout_below="@id/ll_desk_layout_room">
 
                 <!-- Chips can be declared here, or added dynamically. -->
