@@ -1428,7 +1428,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         final CharSequence[] items = {"Take Photo", "Gallery",
                 "Cancel"};
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(EditProfileActivity.this);
-        builder.setTitle("Selct Photo");
+        builder.setTitle("Select Photo");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
