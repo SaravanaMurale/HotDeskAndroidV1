@@ -13,13 +13,13 @@
 
         <ImageView
             android:id="@+id/loginLogo"
-            android:layout_width="@dimen/_110sdp"
-            android:layout_height="@dimen/_110sdp"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_150sdp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_30sdp"
-            android:maxHeight="@dimen/_130sdp"
+            android:maxHeight="@dimen/_150sdp"
             android:minHeight="@dimen/_60sdp"
-            android:src="@drawable/hybrid_hero_icon" />
+            android:src="@drawable/logo_splash" />
 
         <RelativeLayout
             android:id="@+id/login_layout"
@@ -39,60 +39,72 @@
 
                 <EditText
                     android:id="@+id/etCompanyName"
+                    style="@style/TextRegular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/company_name"
                     android:inputType="text"
-                    style="@style/TextRegular"
-                    android:text="" />
+                    android:text=""
+                    android:textColorHighlight="@color/red"
+                    android:outlineAmbientShadowColor="@color/red"
+
+                    />
 
                 <EditText
                     android:id="@+id/etEmail"
+                    style="@style/TextRegular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/etCompanyName"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:hint="Email address"
-                    style="@style/TextRegular"
                     android:inputType="textEmailAddress"
                     android:text="" />
 
                 <EditText
                     android:id="@+id/etPassword"
+                    style="@style/TextRegular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/etEmail"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:hint="@string/password"
-                    style="@style/TextRegular"
                     android:inputType="textPassword"
                     android:text="" />
-
-                <Button
-                    android:id="@+id/btnSignInLogin"
+                <LinearLayout
+                    android:id="@+id/buton_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/etPassword"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:background="@drawable/button_round_corner"
-                    android:paddingLeft="@dimen/_20sdp"
-                    android:paddingRight="@dimen/_20sdp"
-                    android:text="@string/signin"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:theme="@style/TextBoldButton" />
+                    android:orientation="vertical"
+                    >
+                    <Button
+                        android:id="@+id/btnSignInLogin"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:background="@drawable/button_round_corner"
+                        android:paddingLeft="@dimen/_20sdp"
+                        android:paddingRight="@dimen/_20sdp"
+                        android:text="@string/signin"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:theme="@style/TextBoldButton" />
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tvForgetPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/btnSignInLogin"
+                    android:layout_below="@id/buton_layout"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:text="@string/forget_password"
                     android:textColor="@color/grey"
-                    android:theme="@style/TextRegular"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_12sdp"
+                    android:theme="@style/TextRegular" />
 
             </RelativeLayout>
 
@@ -120,11 +132,9 @@
                     android:id="@+id/tvSignInWith"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
+                    android:layout_centerInParent="true"
                     android:text="@string/signinwith"
-                    android:theme="@style/TextRegular"
-                    />
+                    android:theme="@style/TextRegular" />
 
                 <View
                     android:layout_width="match_parent"
@@ -140,7 +150,7 @@
             <Button
                 android:id="@+id/btnSsoLogin"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_35sdp"
                 android:layout_below="@id/tvBlock"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_15sdp"
@@ -151,6 +161,7 @@
                 android:text="@string/signinsso"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
+                android:textSize="18sp"
                 android:theme="@style/TextBoldButton" />
 
             <!--Social icon-->

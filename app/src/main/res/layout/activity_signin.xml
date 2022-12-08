@@ -11,11 +11,11 @@
 
 
     <ImageView
-        android:layout_width="@dimen/_130sdp"
-        android:layout_height="@dimen/_130sdp"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_150sdp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_130sdp"
-        android:src="@drawable/hybrid_hero_icon" />
+        android:src="@drawable/logo_splash" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +25,8 @@
         <Button
             android:id="@+id/btnSignIn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_35sdp"
+            android:maxHeight="@dimen/_35sdp"
             android:layout_above="@id/btnPinSignIn"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_10sdp"
@@ -33,6 +34,7 @@
             android:background="@drawable/button_round_corner"
             android:text="@string/signin"
             android:theme="@style/TextBoldButton"
+            android:textSize="18sp"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:visibility="visible"
@@ -40,7 +42,7 @@
         <Button
             android:id="@+id/btnPinSignIn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_35sdp"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_10sdp"
@@ -48,6 +50,7 @@
             android:background="@drawable/button_round_corner"
             android:text="Pin Login"
             android:theme="@style/TextBoldButton"
+            android:textSize="18sp"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:visibility="invisible"

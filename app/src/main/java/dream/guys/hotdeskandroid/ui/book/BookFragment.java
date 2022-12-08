@@ -341,7 +341,6 @@ public class BookFragment extends Fragment implements
         selectedTeamId = SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID);
         myTeamId = SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID);
         calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
-//        loadDefaultLocation();
         setLanguage();
 
         checkVeichleReg();
@@ -494,6 +493,76 @@ public class BookFragment extends Fragment implements
 
         return root;
     }
+
+    /*
+    private void loadDefaultLocation() {
+
+        ProgressDialog.touchLock(getContext(), getActivity());
+
+
+        //To load default location-saved in login Activity
+        int parentIdCheck =SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID_CHECK);
+        if(parentIdCheck>0 && defaultLocationcheck==0){
+            int floorPositionCheck=SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION_CHECK);
+
+            SessionHandler.getInstance().saveInt(getContext(),AppConstants.PARENT_ID,parentIdCheck);
+            SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION,floorPositionCheck);
+
+
+            //To set Default location
+            String countryCheck=SessionHandler.getInstance().get(getContext(),AppConstants.COUNTRY_NAME_CHECK);
+            String buildingCheck=SessionHandler.getInstance().get(getContext(),AppConstants.BUILDING_CHECK);
+            String floorCheck=SessionHandler.getInstance().get(getContext(),AppConstants.FLOOR_CHECK);
+            String fullPathCheck=SessionHandler.getInstance().get(getContext(),AppConstants.FULLPATHLOCATION_CHECK);
+
+
+            SessionHandler.getInstance().save(getContext(), AppConstants.COUNTRY_NAME,countryCheck);
+            SessionHandler.getInstance().save(getContext(), AppConstants.BUILDING,buildingCheck);
+            SessionHandler.getInstance().save(getContext(), AppConstants.FLOOR,floorCheck);
+            SessionHandler.getInstance().save(getContext(), AppConstants.FULLPATHLOCATION,fullPathCheck);
+
+        }
+
+        int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+        ProgressDialog.clearTouchLock(getContext(), getActivity());
+        if (parentId > 0) {
+            //Disable touch Screen
+            ProgressDialog.touchLock(getContext(), getActivity());
+
+            //Set Selected Floor In SearchView
+            String CountryName = SessionHandler.getInstance().get(getContext(), AppConstants.COUNTRY_NAME);
+            String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
+            String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
+            String fullPathLocation = SessionHandler.getInstance().get(getContext(), AppConstants.FULLPATHLOCATION);
+
+            if (CountryName == null && buildingName == null && floorName == null && fullPathLocation == null) {
+                binding.searchGlobal.setHint("choose location from the list");
+            } else {
+                if (fullPathLocation == null) {
+                    binding.searchGlobal.setText(CountryName + "," + buildingName + "," + floorName);
+                } else {
+                    binding.searchGlobal.setText(fullPathLocation);
+                }
+            }
+
+
+            initLoadFloorDetails(canvasss);
+//            getAvaliableDeskDetails("3",calSelectedDate);
+            *//*
+            //Used For Desk Avaliability Checking
+            getAvaliableDeskDetails(null, 0);
+
+            //CarChecking
+            doInitCarAvalibilityHere(parentId);
+
+            //Meeting Checking
+            doInitMeetingAvalibilityHere(parentId, canvasDrawStatus);*//*
+
+        } else {
+            Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
+        }
+    }
+    */
 
     private void loadDefaultLocation() {
 
@@ -785,6 +854,7 @@ public class BookFragment extends Fragment implements
         this.context = getContext();
         this.activityContext=getActivity();
 
+        loadDefaultLocation();
 
 
         tabToggleViewClicked(selectedicon);
@@ -989,7 +1059,9 @@ public class BookFragment extends Fragment implements
 
     private void getDeskCountLocation(String month, String locationId,int drawStatus) {
         if (Utils.isNetworkAvailable(getActivity()) && Integer.parseInt(locationId)!=0) {
-            dialog= ProgressDialog.showProgressBar(getContext());
+            if(dialog.isShowing())
+                dialog.dismiss();
+            dialog= ProgressDialog.showProgressBar(context);
             //System.out.println("check sub parent Id  :  "+locationId);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<List<DeskRoomCountResponse>> call = null;
@@ -1033,6 +1105,7 @@ public class BookFragment extends Fragment implements
             call.enqueue(new Callback<List<DeskRoomCountResponse>>() {
                 @Override
                 public void onResponse(Call<List<DeskRoomCountResponse>> call, Response<List<DeskRoomCountResponse>> response) {
+//                    ProgressDialog.dismisProgressBar(context,dialog);
                     dialog.dismiss();
                     isGlobalLocationSetUP = true;
                     try{
@@ -1057,6 +1130,7 @@ public class BookFragment extends Fragment implements
 
                 @Override
                 public void onFailure(Call<List<DeskRoomCountResponse>> call, Throwable t) {
+//                    ProgressDialog.dismisProgressBar(context,dialog);
                     Toast.makeText(getActivity(), "fail "+t.getMessage(), Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 }
@@ -2578,15 +2652,15 @@ public class BookFragment extends Fragment implements
                                 && newEditStatus.equalsIgnoreCase("edit")){
                             if (editDeskBookingDetails.getUsageTypeId()==2
                                     && editDeskBookingDetails.getRequestedTeamId()>0) {
-                                Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",
+                                Utils.bottomSheetTimePicker24Hrs(getContext(),getActivity(),startTime,"Start Time",
                                         Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
                             } else {
 
-                                Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",
+                                Utils.bottomSheetTimePicker24Hrs(getContext(),getActivity(),startTime,"Start Time",
                                         Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
                             }
                         } else
-                            Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time",
+                            Utils.bottomSheetTimePicker24Hrs(getContext(),getActivity(),startTime,"Start Time",
                                     Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
 
 /*
@@ -2617,15 +2691,15 @@ public class BookFragment extends Fragment implements
                         if (editDeskBookingDetails.getUsageTypeId()==2
                                 && editDeskBookingDetails.getRequestedTeamId()>0) {
 
-                            Utils.bottomSheetTimePicker(getContext(),getActivity(),endTime,"End Time",
+                            Utils.bottomSheetTimePicker24Hrs(getContext(),getActivity(),endTime,"End Time",
                                     Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
                         } else {
 
-                            Utils.bottomSheetTimePicker(getContext(),getActivity(),endTime,"End Time",
+                            Utils.bottomSheetTimePicker24Hrs(getContext(),getActivity(),endTime,"End Time",
                                     Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
                         }
                     } else
-                        Utils.bottomSheetTimePicker(getContext(),getActivity(),endTime,"End Time",
+                        Utils.bottomSheetTimePicker24Hrs(getContext(),getActivity(),endTime,"End Time",
                                 Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
 
                 }
@@ -4549,11 +4623,13 @@ public class BookFragment extends Fragment implements
                     return;
                 }
 
-                if (comment.isEmpty() || comment.equals("") || comment == null) {
+                /*if (comment.isEmpty()
+                        || comment.equals("")
+                        || comment == null) {
                     Toast.makeText(getContext(), "Please Enter Comment", Toast.LENGTH_LONG).show();
                     status = false;
                     return;
-                }
+                }*/
 
                 if (status) {
                     bottomSheetDialog.dismiss();
@@ -5962,7 +6038,7 @@ public class BookFragment extends Fragment implements
                 new RelativeLayout(activity)));
 
         TimePicker simpleTimePicker24Hours = bottomSheetDialog.findViewById(R.id.simpleTimePicker);
-        //simpleTimePicker24Hours.setIs24HourView(false);
+        simpleTimePicker24Hours.setIs24HourView(true);
         TextView titleTv = bottomSheetDialog.findViewById(R.id.title);
         TextView dateTv = bottomSheetDialog.findViewById(R.id.date);
         TextView continueTv = bottomSheetDialog.findViewById(R.id.continue_tv);

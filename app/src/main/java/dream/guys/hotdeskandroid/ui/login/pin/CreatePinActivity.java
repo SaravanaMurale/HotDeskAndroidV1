@@ -128,8 +128,10 @@ public class CreatePinActivity extends AppCompatActivity {
                     if (threePinValidations(oldPin,pin,conPin)){
                         callOldPincheck(oldPin);
                     }else {
-                        Utils.toastMessage(getApplicationContext(),"Please enter Old Pin");
+//                        Utils.toastMessage(getApplicationContext(),"Please enter Old Pin");
                         etOldPin.setOTP("");
+                        newPin.setOTP("");
+                        confirmPin.setOTP("");
                     }
                 }else {
                     if (validateLoginDetails(pin,conPin)){
@@ -283,7 +285,7 @@ public class CreatePinActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<BaseResponse> call, Throwable t) {
                     ProgressDialog.dismisProgressBar(CreatePinActivity.this,dialog);
-                    Utils.toastMessage(CreatePinActivity.this, "You have entered wrong username or password");
+                    Utils.toastMessage(CreatePinActivity.this, "You have entered an incorrect username or password. Please try again.");
 
                 }
             });

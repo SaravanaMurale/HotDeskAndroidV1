@@ -19,7 +19,7 @@
     <string name="password">Password</string>
     <string name="forget_password">Forgot your password\?</string>
     <string name="reg">Registration</string>
-    <string name="signinwith">Or sign in with</string>
+    <string name="signinwith">Or</string>
     <string name="welcome">Welcome</string>
     <string name="logout">Logout</string>
     <string name="covid19">Covid-19 self certification</string>

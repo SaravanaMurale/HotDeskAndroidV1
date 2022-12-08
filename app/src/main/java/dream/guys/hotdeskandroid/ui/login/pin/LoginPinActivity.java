@@ -139,11 +139,11 @@ public class LoginPinActivity extends AppCompatActivity {
                         }
                     } else if(response.code() == 401){
                         ProgressDialog.dismisProgressBar(LoginPinActivity.this,dialog);
-                        Utils.toastMessage(LoginPinActivity.this, "Invalid Pin "+response.code());
+                        Utils.toastMessage(LoginPinActivity.this, "Invalid Pin ");
 
                     }else {
                         ProgressDialog.dismisProgressBar(LoginPinActivity.this,dialog);
-                        Utils.toastMessage(LoginPinActivity.this, "Invalid Pin "+response.code());
+                        Utils.toastMessage(LoginPinActivity.this, "Invalid Pin ");
                     }
 
                 }

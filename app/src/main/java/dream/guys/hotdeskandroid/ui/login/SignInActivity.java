@@ -374,7 +374,7 @@ public class SignInActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<GetTokenResponse> call, Throwable t) {
                     System.out.println("WrongDataReceived" + t.getMessage().toString());
-                    Utils.toastMessage(SignInActivity.this, "You have entered wrong username or password");
+                    Utils.toastMessage(SignInActivity.this, "You have entered an incorrect username or password. Please try again.");
                 }
             });
         } else {

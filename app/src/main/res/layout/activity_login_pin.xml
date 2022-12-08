@@ -8,11 +8,11 @@
 
     <ImageView
         android:id="@+id/loginLogo"
-        android:layout_width="@dimen/_130sdp"
-        android:layout_height="@dimen/_130sdp"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_150sdp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_40sdp"
-        android:src="@drawable/hybrid_hero_icon"
+        android:src="@drawable/logo_splash"
         />
 
     <!--Email and Password-->
