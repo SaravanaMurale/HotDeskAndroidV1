@@ -11,6 +11,7 @@ import android.view.View;
 
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,6 +28,7 @@ import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.FirstAidResponse;
 import dream.guys.hotdeskandroid.ui.teams.ShowProfileActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.ExtendedDataHolder;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
 import dream.guys.hotdeskandroid.webservice.ApiInterface;
 import retrofit2.Call;
@@ -189,7 +191,10 @@ public class FireWardensActivity extends AppCompatActivity implements FireWarden
 
 
         Intent intent = new Intent(FireWardensActivity.this, ShowProfileActivity.class);
-        intent.putExtra(AppConstants.USER_CURRENT_STATUS,daoTeamMember);
+        String personJsonString = new Gson().toJson(daoTeamMember);
+        ExtendedDataHolder extras = ExtendedDataHolder.getInstance();
+        extras.putExtra(AppConstants.USER_CURRENT_STATUS, personJsonString);
+       // intent.putExtra(AppConstants.USER_CURRENT_STATUS,daoTeamMember);
         intent.putExtra("DATE",currendate);
         startActivity(intent);
 

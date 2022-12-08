@@ -46,6 +46,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -87,6 +88,7 @@ import dream.guys.hotdeskandroid.ui.login.SignInActivity;
 import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
 import dream.guys.hotdeskandroid.ui.teams.ShowProfileActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.ExtendedDataHolder;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
@@ -1604,7 +1606,10 @@ public class MainActivity extends AppCompatActivity implements
 
 
             Intent intent = new Intent(MainActivity.this, ShowProfileActivity.class);
-            intent.putExtra(AppConstants.USER_CURRENT_STATUS,daoTeamMember);
+            String personJsonString = new Gson().toJson(daoTeamMember);
+            ExtendedDataHolder extras = ExtendedDataHolder.getInstance();
+            extras.putExtra(AppConstants.USER_CURRENT_STATUS, personJsonString);
+            //intent.putExtra(AppConstants.USER_CURRENT_STATUS,daoTeamMember);
             intent.putExtra("DATE",currendate);
             startActivity(intent);
 

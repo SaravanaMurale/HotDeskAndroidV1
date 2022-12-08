@@ -675,7 +675,10 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     public void clickEvent(DAOTeamMember daoTeamMember) {
         selID = daoTeamMember.getUserId();
         Intent intent = new Intent(getActivity(), ShowProfileActivity.class);
-        intent.putExtra(AppConstants.USER_CURRENT_STATUS, daoTeamMember);
+        String personJsonString = new Gson().toJson(daoTeamMember);
+        ExtendedDataHolder extras = ExtendedDataHolder.getInstance();
+        extras.putExtra(AppConstants.USER_CURRENT_STATUS, personJsonString);
+       // intent.putExtra(AppConstants.USER_CURRENT_STATUS, daoTeamMember);
         intent.putExtra("DATE", currendate);
         startActivity(intent);
 
