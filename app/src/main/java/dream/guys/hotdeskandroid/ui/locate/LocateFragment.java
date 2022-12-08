@@ -3086,7 +3086,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                        externalAttendees.clearFocus();
                        externalAttendees.setText("");
                    }else {
-                        Utils.toastMessage(getContext(), "Pls Enter Valid Email");
+                        Utils.toastMessage(getContext(), "Please Enter Valid Email");
                     }
 
 
@@ -8270,7 +8270,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     externalAttendees.clearFocus();
                     externalAttendees.setText("");
                     }else {
-                        Utils.toastMessage(getContext(), "Pls Enter Valid Email");
+                        Utils.toastMessage(getContext(), "Please Enter Valid Email");
                     }
 
                     chip.setOnClickListener(new View.OnClickListener() {

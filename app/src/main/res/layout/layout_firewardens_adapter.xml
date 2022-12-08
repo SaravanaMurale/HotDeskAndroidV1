@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -39,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_toRightOf="@+id/firewardensProfilePic"
-                android:text="Space-001"
+                tools:text="Space-001"
                 android:textStyle="bold"
                 android:theme="@style/TextBold" />
 

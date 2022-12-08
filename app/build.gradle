@@ -9,7 +9,7 @@ android {
         applicationId "dream.guys.hotdeskandroid"
         minSdk 26
         targetSdk 31
-        versionCode 42
+        versionCode 44
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

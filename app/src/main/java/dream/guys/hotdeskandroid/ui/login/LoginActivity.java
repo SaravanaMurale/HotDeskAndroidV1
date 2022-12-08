@@ -748,13 +748,13 @@ public class LoginActivity extends AppCompatActivity {
                 if (Utils.isValiedText(password)) {
                     userDetailStatus = true;
                 } else {
-                    Utils.toastMessage(LoginActivity.this, "Pls Enter Valid Password");
+                    Utils.toastMessage(LoginActivity.this, "Please Enter Valid Password");
                 }
             } else {
-                Utils.toastMessage(LoginActivity.this, "Pls Enter Valid Email");
+                Utils.toastMessage(LoginActivity.this, "Please Enter Valid Email");
             }
         } else {
-            Utils.toastMessage(LoginActivity.this, "Pls Enter Valid CompanyName");
+            Utils.toastMessage(LoginActivity.this, "Please Enter Valid CompanyName");
         }
 
 

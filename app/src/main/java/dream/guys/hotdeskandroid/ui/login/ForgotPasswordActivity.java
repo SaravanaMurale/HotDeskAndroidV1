@@ -114,10 +114,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             if (Utils.isValidEmail(email)) {
                 userDetailStatus=true;
             } else {
-                Utils.toastMessage(ForgotPasswordActivity.this, "Pls Enter Valid Email");
+                Utils.toastMessage(ForgotPasswordActivity.this, "Please Enter Valid Email");
             }
         } else {
-            Utils.toastMessage(ForgotPasswordActivity.this, "Pls Enter Valid CompanyName");
+            Utils.toastMessage(ForgotPasswordActivity.this, "Please Enter Valid CompanyName");
         }
 
         return userDetailStatus;
