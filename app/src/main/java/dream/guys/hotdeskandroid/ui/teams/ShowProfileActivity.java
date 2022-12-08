@@ -541,6 +541,7 @@ public class ShowProfileActivity extends AppCompatActivity {
         if (recyclerModelArrayList != null && recyclerModelArrayList.size() > 0) {
             binding.notAvailable.setVisibility(View.GONE);
             binding.samUpcomingRecycler.setVisibility(View.VISIBLE);
+            binding.txtViewAll.setVisibility(View.VISIBLE);
             linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
             binding.samUpcomingRecycler.setLayoutManager(linearLayoutManager);
             binding.samUpcomingRecycler.setHasFixedSize(true);
@@ -550,6 +551,7 @@ public class ShowProfileActivity extends AppCompatActivity {
         } else {
             binding.notAvailable.setVisibility(View.VISIBLE);
             binding.samUpcomingRecycler.setVisibility(View.GONE);
+            binding.txtViewAll.setVisibility(View.GONE);
         }
 
     }

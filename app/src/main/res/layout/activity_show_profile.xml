@@ -160,7 +160,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_toRightOf="@+id/ivViewPrifle"
-                        android:text="skm"
+                        tools:text="skm"
                         android:textColor="@color/figmaBlack"
                         android:textSize="@dimen/_13sdp" />
 
@@ -173,7 +173,7 @@
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_toRightOf="@+id/ivViewPrifle"
-                        android:text="Pmo"
+                        tools:text="Pmo"
                         android:textColor="@color/figmaBlack"
                         android:textSize="@dimen/_13sdp" />
 
@@ -266,7 +266,7 @@
                     android:layout_below="@+id/title_team"
                     android:layout_alignParentStart="true"
                     android:layout_marginTop="@dimen/_4sdp"
-                    android:text="Name"
+                    tools:text="Name"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
 
@@ -321,7 +321,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="@dimen/_2sdp"
-                            android:text="12 Jun - 19 Jun"
+                            tools:text="12 Jun - 19 Jun"
                             android:textColor="@color/figmaBlack"
                             android:theme="@style/TextSmall" />
                     </LinearLayout>
