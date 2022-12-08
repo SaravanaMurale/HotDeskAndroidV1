@@ -4220,9 +4220,7 @@ public class BookFragment extends Fragment implements
                 break;
             default:
                 break;
-
         }
-
 
 //        editBookingUsingBottomSheet(editDeskBookingDetails,1,0,"edit");
         changedDeskId=0;
