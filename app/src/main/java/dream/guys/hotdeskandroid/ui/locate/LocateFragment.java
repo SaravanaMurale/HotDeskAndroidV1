@@ -540,13 +540,16 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 if (parentId > 0) {
 
-                    if (filterClickedStatus == 0) {
+                    /*if (filterClickedStatus == 0) {
                         getLocateAmenitiesFilterData(true);
                     } else {
                         //amenitiesResponseList
                         meetingAmenityStatusList.clear();
                         callLocateFilterBottomSheet(null);
-                    }
+                    }*/
+                    meetingAmenityStatusList.clear();
+                    getLocateAmenitiesFilterData(true);
+
 
                 } else {
                     Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
@@ -590,38 +593,51 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         call.enqueue(new Callback<List<FirstAidResponse>>() {
             @Override
             public void onResponse(Call<List<FirstAidResponse>> call, Response<List<FirstAidResponse>> response) {
-                List<FirstAidResponse> firstAidResponseList=response.body();
+                List<FirstAidResponse> firstAidResponseList = response.body();
 
                 //Get Whole List
-                List<FirstAidResponse.Persons> personFirewardenssList=new ArrayList<>();
-                List<FirstAidResponse.Persons> personFirstAidList=new ArrayList<>();
+                List<FirstAidResponse.Persons> personFirewardenssList = new ArrayList<>();
+                List<FirstAidResponse.Persons> personFirstAidList = new ArrayList<>();
                 //firstAidList= new HashMap<>();
                 //firewardenList = new HashMap<>();
 
 
                 //Get userId Alone
-                List<Integer> firstAidList=new ArrayList<>();
-                List<Integer> firewardenList=new ArrayList<>();
+                List<Integer> firstAidList = new ArrayList<>();
+                List<Integer> firewardenList = new ArrayList<>();
+
+                if (firstAidResponseList != null  && firstAidResponseList.size()>0){
 
                 for (int i = 0; i < firstAidResponseList.size(); i++) {
-                    if (firstAidResponseList.get(i).getPersonsList().size()>0) {
+                    if (firstAidResponseList.get(i).getPersonsList().size() > 0) {
 
                         //Firewardenss
-                        if(firstAidResponseList.get(i).getType()==4){
-                            for (int j = 0; j <firstAidResponseList.get(i).getPersonsList().size() ; j++) {
-                                personFirewardenssList.add(firstAidResponseList.get(i).getPersonsList().get(j));
+                        if (firstAidResponseList.get(i).getType() == 4) {
+
+                            if(firstAidResponseList.get(i).getPersonsList()!=null && firstAidResponseList.get(i).getPersonsList().size()>0) {
+
+                                for (int j = 0; j < firstAidResponseList.get(i).getPersonsList().size(); j++) {
+                                    personFirewardenssList.add(firstAidResponseList.get(i).getPersonsList().get(j));
+                                }
                             }
                         }
 
                         //FirstAid
-                        if(firstAidResponseList.get(i).getType()==5){
-                            for (int j = 0; j <firstAidResponseList.get(i).getPersonsList().size() ; j++) {
-                                personFirstAidList.add(firstAidResponseList.get(i).getPersonsList().get(j));
+                        if (firstAidResponseList.get(i).getType() == 5) {
+
+                            if(firstAidResponseList.get(i).getPersonsList()!=null && firstAidResponseList.get(i).getPersonsList().size()>0) {
+
+                                for (int j = 0; j < firstAidResponseList.get(i).getPersonsList().size(); j++) {
+                                    personFirstAidList.add(firstAidResponseList.get(i).getPersonsList().get(j));
+                                }
+
                             }
                         }
 
                     }
                 }
+
+            }
 
                 //Get UserId alone
                 for (int i = 0; i <personFirewardenssList.size() ; i++) {
@@ -675,7 +691,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     binding.locateMyTeamList.setVisibility(View.VISIBLE);
                     binding.bookNearByBlock.setVisibility(View.GONE);
 
-                    callMyTeamLayout(daoTeamMemberList,firstAidList,firewardenList);
+                    if(daoTeamMemberList!=null) {
+
+                        callMyTeamLayout(daoTeamMemberList, firstAidList, firewardenList);
+
+                    }
                 }
 
                 //Hide BottomNavigation Bar
@@ -2983,6 +3003,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             Chip chip = new Chip(getContext());
             chip.setText(amenitiesList.get(i));
 
+            chip.setTextAppearance(R.style.chipText);
+            chip.setChipBackgroundColorResource(R.color.figmaBgGrey);
+            chip.setTextColor(getContext().getResources().getColor(R.color.figmaBlack));
             //chip.setTextSize(10);
             //chip.setPadding(1,1,1,1);
             chip.setCheckable(false);
@@ -3077,6 +3100,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                        chip.setCheckable(false);
                        chip.setClickable(false);
                        chip.setCloseIconVisible(true);
+
+                       chip.setTextAppearance(R.style.chipText);
+                       chip.setChipBackgroundColorResource(R.color.figmaBgGrey);
+                       chip.setTextColor(getContext().getResources().getColor(R.color.figmaBlack));
+
                        externalAttendeesChipGroup.setVisibility(View.VISIBLE);
                        externalAttendeesChipGroup.addView(chip);
 
@@ -3420,11 +3448,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         return;
                     }
 
-                    if (comment.isEmpty() || comment.equals("") || comment == null) {
+                   /* if (comment.isEmpty() || comment.equals("") || comment == null) {
                         Toast.makeText(getContext(), "Please Enter Comment", Toast.LENGTH_LONG).show();
                         status = false;
                         return;
-                    }
+                    }*/
 
                     if (status) {
                         page = 1;
@@ -3584,6 +3612,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 chip.setCheckable(false);
                 chip.setClickable(false);
 
+                chip.setTextAppearance(R.style.chipText);
+                chip.setChipBackgroundColorResource(R.color.figmaBgGrey);
+                chip.setTextColor(getContext().getResources().getColor(R.color.figmaBlack));
+
                 participantChipGroup.addView(chip);
                 participantChipGroup.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
@@ -3597,6 +3629,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             chip.setCloseIconVisible(true);
             chip.setCheckable(false);
             chip.setClickable(false);
+
+            chip.setTextAppearance(R.style.chipText);
+            chip.setChipBackgroundColorResource(R.color.figmaBgGrey);
+            chip.setTextColor(getContext().getResources().getColor(R.color.figmaBlack));
 
             participantChipGroup.addView(chip);
             participantChipGroup.setVisibility(View.VISIBLE);
@@ -7445,9 +7481,20 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         TextView locateFilterCancel, locateFilterApply, tvFilterAmenities;
 
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+       /* BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((this).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_locate_filter,
-                new RelativeLayout(getContext())));
+                new RelativeLayout(getContext())));*/
+
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        View view = View.inflate(getContext(), R.layout.dialog_bottom_sheet_locate_filter, null);
+        bottomSheetDialog.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(500);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+        RelativeLayout layout = bottomSheetDialog.findViewById(R.id.amenitiesViewBlock);
+        layout.setMinimumHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
 
         locateFilterCancel = bottomSheetDialog.findViewById(R.id.locateFilterCancel);
         locateFilterApply = bottomSheetDialog.findViewById(R.id.locateFilterApply);
@@ -7455,26 +7502,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         filterSearch = bottomSheetDialog.findViewById(R.id.filterSearch);
         filterTotalSize = bottomSheetDialog.findViewById(R.id.filterTotalSize);
 
-
         //Language
-        filterSearch.setHint("   "+appKeysPage.getSearch());
+        filterSearch.setHint(" "+appKeysPage.getSearch());
         tvFilterAmenities.setText(appKeysPage.getFilters());
 
 
         locateFilterMainRV = bottomSheetDialog.findViewById(R.id.locateFilterMainRV);
         //locateFilterMainRV.setHasFixedSize(true);
         locateFilterMainRV.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
-
-
-
-        locateFilterCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomSheetDialog.dismiss();
-            }
-        });
 
 
         locateFilterApply.setOnClickListener(new View.OnClickListener() {
@@ -7514,25 +7549,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         //mList = new ArrayList<>();
 
-        //list1
+        //list1L
         ArrayList<ValuesPOJO> nestedList1 = new ArrayList<>();
 
-        valuesPOJO = new ValuesPOJO("Monitor", false);
-        nestedList1.add(valuesPOJO);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Adjustable height", false);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Laptop stand", false);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("USB_C Dock", false);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Charge point", false);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Standing desk", false);
-        nestedList1.add(valuesPOJO);
+        //valuesPOJO = new ValuesPOJO("", false);
+        //nestedList1.add(valuesPOJO);
 
-        if (filterClickedStatus == 0) {
-            filterClickedStatus = 1;
+        //if (filterClickedStatus == 0) {
+            //filterClickedStatus = 1;
             ArrayList<ValuesPOJO> nestedList2 = new ArrayList<>();
 
             for (int i = 0; i < amenitiesResponseList.size(); i++) {
@@ -7541,22 +7565,19 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 valuesPOJO = new ValuesPOJO(amenitiesResponseList.get(i).getId(), amenitiesResponseList.get(i).getName(), false);
                 nestedList2.add(valuesPOJO);
                 //}
-
-
             }
 
-
-            mList.add(new DataModel(nestedList1, "Workspaces"));
+            //mList.add(new DataModel(nestedList1, "Workspaces"));
             mList.add(new DataModel(nestedList2, appKeysPage.getRooms()));
 
-        }
+        //}
 
         for (int i = 0; i < mList.size(); i++) {
 
             mList.get(i).setExpandable(true);
 
         }
-        filterTotalSize.setText("(" + mList.get(1).getNestedList().size() + ")");
+        filterTotalSize.setText("(" + mList.get(0).getNestedList().size() + ")");
         adapter = new ItemAdapter(mList,this);
         locateFilterMainRV.setAdapter(adapter);
 
@@ -7578,6 +7599,17 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         });
 
+
+        locateFilterCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //When we search mList is updated, so clear when close
+                adapter.clearAll();
+                bottomSheetDialog.dismiss();
+            }
+        });
+
         bottomSheetDialog.show();
 
     }
@@ -7589,17 +7621,18 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         ItemAdapter itemAadapter = new ItemAdapter();
+        //Get user selected amenities
         ArrayList<DataModel> userSelectedAmenities = itemAadapter.getUpdatedList();
         int amenitiesMatchCount = 0;
 
         //Checking Here Only With Rooms
-        for (int i = 0; i < userSelectedAmenities.get(1).getNestedList().size(); i++) {
+        for (int i = 0; i < userSelectedAmenities.get(0).getNestedList().size(); i++) {
 
 
             for (int j = 0; j < amenityList.size(); j++) {
 
-                if (userSelectedAmenities.get(1).getNestedList().get(i).isChecked()) {
-                    if (userSelectedAmenities.get(1).getNestedList().get(i).getId() == amenityList.get(j).getId()) {
+                if (userSelectedAmenities.get(0).getNestedList().get(i).isChecked()) {
+                    if (userSelectedAmenities.get(0).getNestedList().get(i).getId() == amenityList.get(j).getId()) {
                         amenitiesMatchCount = amenitiesMatchCount + 1;
                     }
                 }
@@ -7609,9 +7642,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         int userSelectedTrueCount = 0;
-        for (int i = 0; i < userSelectedAmenities.get(1).getNestedList().size(); i++) {
+        for (int i = 0; i < userSelectedAmenities.get(0).getNestedList().size(); i++) {
 
-            if (userSelectedAmenities.get(1).getNestedList().get(i).isChecked()) {
+            if (userSelectedAmenities.get(0).getNestedList().get(i).isChecked()) {
                 userSelectedTrueCount = userSelectedTrueCount + 1;
             }
 
@@ -8118,6 +8151,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 AminitiesChip.setText(amenitiesList.get(i));
                 AminitiesChip.setCheckable(false);
                 AminitiesChip.setClickable(false);
+
+                AminitiesChip.setTextAppearance(R.style.chipText);
+                AminitiesChip.setChipBackgroundColorResource(R.color.figmaBgGrey);
+                AminitiesChip.setTextColor(getContext().getResources().getColor(R.color.figmaBlack));
+
                 list_item.addView(AminitiesChip);
 
 
@@ -8139,6 +8177,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             chip.setCheckable(false);
             chip.setClickable(false);
             chip.setCloseIconVisible(true);
+
+            chip.setTextAppearance(R.style.chipText);
+            chip.setChipBackgroundColorResource(R.color.figmaBgGrey);
+            chip.setTextColor(getContext().getResources().getColor(R.color.figmaBlack));
+
             participantChipGroup.addView(chip);
 
 
@@ -8181,6 +8224,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             chip.setCheckable(false);
             chip.setClickable(false);
             chip.setCloseIconVisible(true);
+
+            chip.setTextAppearance(R.style.chipText);
+            chip.setChipBackgroundColorResource(R.color.figmaBgGrey);
+            chip.setTextColor(getContext().getResources().getColor(R.color.figmaBlack));
+
             externalAttendeesChipGroup.addView(chip);
 
             //Add In List
@@ -8261,6 +8309,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     chip.setCheckable(false);
                     chip.setClickable(false);
                     chip.setCloseIconVisible(true);
+
+                    chip.setTextAppearance(R.style.chipText);
+                    chip.setChipBackgroundColorResource(R.color.figmaBgGrey);
+                    chip.setTextColor(getContext().getResources().getColor(R.color.figmaBlack));
+
                     externalAttendeesChipGroup.setVisibility(View.VISIBLE);
                     externalAttendeesChipGroup.addView(chip);
 
@@ -8522,11 +8575,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         return;
                     }
 
-                    if (comment.isEmpty() || comment.equals("") || comment == null) {
+                   /* if (comment.isEmpty() || comment.equals("") || comment == null) {
                         Toast.makeText(getContext(), "Please Enter Comment", Toast.LENGTH_LONG).show();
                         status = false;
                         return;
-                    }
+                    }*/
 
                     if (status) {
                         //Edit MeeingkBooking
@@ -9322,12 +9375,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 if(inComingList!=null && inComingList.size()>0) {
 
                     if (filterTotalSize!=null){
-                        filterTotalSize.setText(String.valueOf(inComingList.size()));
+                        filterTotalSize.setText("("+String.valueOf(inComingList.size())+")");
                     }
 
                 }else {
                     if (filterTotalSize!=null){
-                        filterTotalSize.setText("0");
+                        filterTotalSize.setText("(0)");
                     }
                 }
 

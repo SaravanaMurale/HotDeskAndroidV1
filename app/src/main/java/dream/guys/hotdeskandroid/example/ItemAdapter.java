@@ -28,6 +28,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     NestedAdapter adapter;
     selectItemInterface selectItemInterface;
 
+    //For Filter
+    public static ArrayList<DataModel> mListAll;
+
     public ArrayList<DataModel> getUpdatedList(){
         return mList;
     }
@@ -44,6 +47,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         this.mList  = mList;
         notifyDataSetChanged();
         this.selectItemInterface = selectItemInterface;
+        this.mListAll=new ArrayList<>(mList);
+
     }
     @NonNull
     @Override
@@ -55,7 +60,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
 
-        if(position!=0) {
+        //if(position!=0) {
 
             DataModel model = mList.get(holder.getAdapterPosition());
             holder.mTextView.setText(model.getItemText());
@@ -128,9 +133,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                 }
             });
 
-        }else {
+        /*}else {
             holder.linearLayout.setVisibility(View.GONE);
-        }
+        }*/
     }
 
     private void setValueToadapter(ItemViewHolder holder,int pos) {
@@ -166,6 +171,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     }
 
 
+    public void clearAll(){
+        mList.clear();
+        mListAll.clear();
+    }
+
     @Override
     public Filter getFilter() {
         return filter;
@@ -177,19 +187,23 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
             List<DataModel> filteredList=new ArrayList<>();
 
+
             if(constraint==null || constraint.toString().isEmpty() || constraint.length()==0){
-                filteredList.addAll(mList);
+                filteredList.addAll(mListAll);
             }else {
                 String filterPattern=constraint.toString().toLowerCase().trim();
 
-                for (DataModel daoTeamMember:mList){
+                for (DataModel daoTeamMember:mListAll){
+                    ArrayList<ValuesPOJO> nestedList2 = new ArrayList<>();
 
-                    for (ValuesPOJO valuesPOJO:list){
-                        if(valuesPOJO.getValues().toLowerCase().contains(filterPattern)){
-                            filteredList.add(daoTeamMember);
+                    for (int i = 0; i < list.size(); i++) {
+
+                        if(list.get(i).getValues().toLowerCase().contains(filterPattern)){
+                            nestedList2.add(list.get(i));
+
                         }
                     }
-
+                    filteredList.add(new DataModel(nestedList2,mList.get(0).getItemText()));
                 }
 
             }
