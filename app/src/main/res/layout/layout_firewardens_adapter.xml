@@ -99,7 +99,7 @@
                 android:layout_marginTop="@dimen/_3sdp"
                 android:theme="@style/TextRegular"
                 android:layout_toRightOf="@+id/firewardensProfilePic"
-                android:text="4oth Bank Street-30th Floor"
+                android:text="40th Bank Street-30th Floor"
                 android:textColor="@color/figmaBlack"
                 android:textSize="@dimen/_10sdp"
                 />

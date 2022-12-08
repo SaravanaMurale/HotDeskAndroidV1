@@ -1,20 +1,10 @@
 package dream.guys.hotdeskandroid.ui.login;
 
 import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
-import static dream.guys.hotdeskandroid.utils.MyApp.setNightMode;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.UiModeManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -22,8 +12,11 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -35,19 +28,16 @@ import java.util.concurrent.Executor;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dream.guys.hotdeskandroid.LanguageListActivity;
 import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.CreatePinRequest;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
-import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.CheckPinLoginResponse;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
-import dream.guys.hotdeskandroid.ui.login.pin.CreatePinActivity;
 import dream.guys.hotdeskandroid.ui.login.pin.LoginPinActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
-import dream.guys.hotdeskandroid.utils.FirebaseNotificationService;
 import dream.guys.hotdeskandroid.utils.MyApp;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -98,7 +88,7 @@ public class SignInActivity extends AppCompatActivity {
 
 
         if (getIntent().getExtras() != null &&
-                getIntent().getExtras().getBoolean("qr_deep_link")){
+                getIntent().getExtras().getBoolean("qr_deep_link")) {
             Utils.showCustomAlertDialog(this, "Please Login then scan the Qr Code for booking.");
         }
         boolean tokenStatus =
@@ -156,24 +146,24 @@ public class SignInActivity extends AppCompatActivity {
         }*/
         //End Bala Flow
 
-        boolean logicCheck=SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.LOGIN_CHECK);
-        boolean pinActiveStatusAfterLogout=SessionHandler.getInstance().getBoolean(SignInActivity.this,AppConstants.PIN_ACTIVE_STATUS_AFTER_LOGOUT);
+        boolean logicCheck = SessionHandler.getInstance().getBoolean(SignInActivity.this, AppConstants.LOGIN_CHECK);
+        boolean pinActiveStatusAfterLogout = SessionHandler.getInstance().getBoolean(SignInActivity.this, AppConstants.PIN_ACTIVE_STATUS_AFTER_LOGOUT);
 
-        if(!logicCheck && !pinActiveStatusAfterLogout){
+        if (!logicCheck && !pinActiveStatusAfterLogout) {
             //FirstTime Login
             btnPinSignIn.setVisibility(View.INVISIBLE);
 
 
-        } else if (logicCheck && pinActiveStatusAfterLogout){
+        } else if (logicCheck && pinActiveStatusAfterLogout) {
 
             btnSignIn.setVisibility(View.INVISIBLE);
             btnPinSignIn.setVisibility(View.INVISIBLE);
             launchHomeActivity();
-        }else if (logicCheck && !pinActiveStatusAfterLogout){
+        } else if (logicCheck && !pinActiveStatusAfterLogout) {
 
             btnPinSignIn.setVisibility(View.GONE);
             launchHomeActivity();
-        }else if (!logicCheck && pinActiveStatusAfterLogout){
+        } else if (!logicCheck && pinActiveStatusAfterLogout) {
 
             btnPinSignIn.setVisibility(View.VISIBLE);
             visibleSignInButton();
@@ -189,8 +179,6 @@ public class SignInActivity extends AppCompatActivity {
                 visibleSignInButton();
             }
         }*/
-
-
 
 
         //New My
@@ -388,14 +376,46 @@ public class SignInActivity extends AppCompatActivity {
 
     private void launchHomeActivity() {
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        }, 1000);
+        if (Utils.isNetworkAvailable(this)) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BookingListResponse> call = apiService.getUserMyWorkDetails(Utils.getCurrentDate(), true);
+            call.enqueue(new Callback<BookingListResponse>() {
+                @Override
+                public void onResponse(Call<BookingListResponse> call, Response<BookingListResponse> response) {
+                    try {
+                        if (response.code() == 200) {
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }, 1000);
+                        } else {
+                            Intent intent = new Intent(SignInActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Intent intent = new Intent(SignInActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<BookingListResponse> call, Throwable t) {
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(SignInActivity.this, "Please Enable Internet");
+        }
+
 
     }
 

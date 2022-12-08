@@ -2,6 +2,7 @@ package dream.guys.hotdeskandroid.ui.home;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,11 +10,13 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -21,8 +24,10 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +36,9 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -558,6 +565,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                     Utils.openMail(EditProfileActivity.this, profileData.getEmail());
             }
         });
+
     }
 
     private void validateData() {
@@ -1420,7 +1428,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         final CharSequence[] items = {"Take Photo", "Gallery",
                 "Cancel"};
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(EditProfileActivity.this);
-        builder.setTitle("Selct Photo");
+        builder.setTitle("Select Photo");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
@@ -1648,19 +1656,49 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     private boolean checkPermission() {
         int result = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA);
-        if (result == PackageManager.PERMISSION_GRANTED) {
-
-            return true;
-
-        } else {
-
-            return false;
-        }
+        return result == PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
+                PERMISSION_REQUEST_CODE);
+    }
 
-        //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CODE);
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        System.out.println("ceck perm result main" + grantResults[0]);
+        if (grantResults[0] == -1) {
+            cameraPopUP();
+        }
+    }
+
+    private void cameraPopUP() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog_pin_pop_up);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        TextView text = dialog.findViewById(R.id.tv_err_msg);
+        text.setText("App require Camera Permission to Take photo");
+        TextView dialogButton = dialog.findViewById(R.id.tv_ok);
+        TextView dialogButtonCancel = dialog.findViewById(R.id.tv_cancel);
+
+        dialogButton.setOnClickListener(v -> {
+            dialog.dismiss();
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            Uri uri = Uri.fromParts("package", getPackageName(), null);
+            intent.setData(uri);
+            startActivity(intent);
+        });
+
+        dialogButtonCancel.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
     }
+
 }
