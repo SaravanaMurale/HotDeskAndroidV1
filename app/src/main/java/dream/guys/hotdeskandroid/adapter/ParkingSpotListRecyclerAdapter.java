@@ -56,6 +56,7 @@ public class ParkingSpotListRecyclerAdapter extends RecyclerView.Adapter<Parking
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.desk_room_list_recycler_layout, parent, false);
         return new ParkingSpotListRecyclerAdapter.Viewholder(itemView);
     }
+
     Filter filter=new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {

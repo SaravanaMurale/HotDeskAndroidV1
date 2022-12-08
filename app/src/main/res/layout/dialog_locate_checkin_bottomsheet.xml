@@ -93,8 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Description"
-                    android:textColor="@color/figma_dark_black"
-                    />
+                    android:textColor="@color/figma_dark_black" />
 
 
             </RelativeLayout>
@@ -280,7 +279,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:background="@drawable/rectangle_bg_with_corner"
                 android:orientation="horizontal"
-                android:visibility="gone"
+                android:visibility="visible"
                 >
 
                 <LinearLayout
@@ -316,17 +315,22 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Room - 001"
-                            android:theme="@style/TextBold" />
+                            android:theme="@style/TextBold"
+                            android:textSize="18dp"
+                            android:textColor="@color/black"
+                            />
 
                         <TextView
                             android:id="@+id/selectedLocation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginVertical="@dimen/_3sdp"
+                            android:layout_marginVertical="@dimen/_5sdp"
                             android:text="location1, location 2"
+                            android:textColor="@color/black"
                             android:theme="@style/TextRegular" />
 
                         <LinearLayout
+                            android:id="@+id/capacityBlockInDesk"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
@@ -367,17 +371,28 @@
                             android:layout_marginEnd="@dimen/_5sdp"
                             android:text="Select"
                             android:textColor="@color/figmaBlueText"
-                            android:theme="@style/TextBold" />
+                            android:textSize="18dp" />
                     </RelativeLayout>
                 </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/tvDescriptionInChangeBlock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ll_selcted_desk_layout"
+                    android:layout_marginLeft="@dimen/_32sdp"
+                    android:text="Description"
+                    android:textColor="@color/figma_dark_black" />
+
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/list_item_selected"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/tvDescriptionInChangeBlock"
                     android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:layout_below="@id/ll_selcted_desk_layout">
+                    android:layout_marginVertical="@dimen/_5sdp">
 
                     <!-- Chips can be declared here, or added dynamically. -->
 
@@ -388,7 +403,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/list_item_selected"
-                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_32sdp"
                     android:gravity="center_vertical"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:orientation="horizontal">
@@ -402,11 +417,14 @@
                         />
 
                     <TextView
+                        android:id="@+id/changeBlockStatus"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Checked In"
-                        android:layout_marginStart="@dimen/_3sdp"
-                        android:theme="@style/TextRegular" />
+                        android:text="Avaliable"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:textSize="14dp"
+                        android:textColor="@color/black"
+                         />
                 </LinearLayout>
             </RelativeLayout>
 

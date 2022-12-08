@@ -22,8 +22,18 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/_3sdp"
         android:text="Desk-001"
-        android:textSize="@dimen/_14sdp"
-        android:theme="@style/TextBold" />
+        android:textSize="26dp"
+        android:textColor="@color/figmaBlack"
+        android:textStyle="bold"
+        />
+
+        <TextView
+            android:id="@+id/unavaliableDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/figmaBlack"
+            />
 
     <TextView
         android:id="@+id/unAvaliableLocate"
@@ -31,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_10sdp"
         android:text="Location1,Location2"
-        android:theme="@style/TextBold"
+        android:textColor="@color/light_black"
         android:layout_marginTop="@dimen/_5sdp"
         />
 
@@ -45,7 +55,9 @@
             android:id="@+id/tvDescriptionUnAvaliable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Description" />
+            android:text="Description"
+            android:textSize="14dp"
+            android:textColor="@color/figma_dark_black" />
 
 
     </RelativeLayout>
@@ -71,7 +83,11 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_toRightOf="@+id/ivOnline"
-            android:text="Unavaliable" />
+            android:text="Unavaliable"
+            android:textSize="14dp"
+            android:textColor="@color/figmaBlack"
+            android:textStyle="bold"
+            />
 
         <TextView
             android:id="@+id/un_available_desc"
@@ -79,7 +95,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvUnaValibale"
             android:layout_marginTop="@dimen/_10sdp"
-            android:text="This desk is unavliable" />
+            android:text="This desk is unavliable"
+            android:textColor="@color/figma_dark_black" />
 
     </RelativeLayout>
 
@@ -99,8 +116,11 @@
                 android:layout_marginHorizontal="@dimen/_5sdp"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:text="Back"
-                android:textSize="@dimen/_14sdp"
-                android:theme="@style/TextBold" />
+                android:textColor="@color/figmaBlack"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_marginBottom="@dimen/_10sdp"
+                />
 
             <TextView
                 android:layout_width="wrap_content"

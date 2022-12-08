@@ -37,6 +37,7 @@ public class ActiveTeamsAdapter extends RecyclerView.Adapter<ActiveTeamsAdapter.
     BottomSheetDialog bottomSheetDialog;
     EditBookingDetails editBookingDetails;
     String newEditStatus;
+
     public ActiveTeamsAdapter(Context context, OnActiveTeamsSelected onSelectSelected, FragmentActivity activity, List<ActiveTeamsResponse> bookingForEditResponse, BookFragment context1, BottomSheetDialog bottomSheetDialog,
                               int typeId,EditBookingDetails editBookingDetails,String newEditStatus) {
         this.fragment=context1;
