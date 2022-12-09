@@ -81,9 +81,6 @@ public class TeamsFloorListAdapter extends RecyclerView.Adapter<TeamsFloorListAd
 
                 }
 
-
-
-
                 String floorName=floorListModels.get(holder.getAbsoluteAdapterPosition()).getDaoTeamMembers()
                         .get(0).getDayGroups()
                         .get(0).getCalendarEntries().get(0).getBooking().getLocationBuildingFloor().getBuildingName()+","+floorListModels.get(holder.getAbsoluteAdapterPosition()).getDaoTeamMembers()
