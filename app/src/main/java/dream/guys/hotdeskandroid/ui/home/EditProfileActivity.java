@@ -1432,18 +1432,19 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                boolean result = Utils.checkPermission(EditProfileActivity.this);
+                //  boolean result = Utils.checkPermission(EditProfileActivity.this);
+
                 if (items[item].equals("Take Photo")) {
                     if (checkPermission()) {
 //                    userChoosenTask = commonStrings.getTxt_take_photo().getName();
-                        if (result)
-                            cameraIntent();
+                        //  if (result)
+                        cameraIntent();
                     } else {
                         requestPermission();
                     }
                 } else if (items[item].equals("Gallery")) {
 //                    userChoosenTask = commonStrings.getTxt_choose_from_gallery().getName();
-                    if (result)
+//                    if (result)
                         galleryIntent();
                 } else if (items[item].equals("Cancel")) {
                     dialog.dismiss();
