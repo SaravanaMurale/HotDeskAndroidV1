@@ -389,7 +389,7 @@ public class UpComingBookingActivity extends AppCompatActivity {
                             for (int i=0; i < teamMembersResponses.size(); i++) {
                                 if (teamMembersResponses.get(i).getUser().getId()
                                         == userID) {
-                                    Toast.makeText(UpComingBookingActivity.this, ""+daoTeamMember.getUserId(), Toast.LENGTH_SHORT).show();
+                                   // Toast.makeText(UpComingBookingActivity.this, ""+daoTeamMember.getUserId(), Toast.LENGTH_SHORT).show();
                                     recyclerModelArrayList = new ArrayList<>();
                                     createUpcomingRecyclerList(teamMembersResponses.get(i).getPersonDayViewEntries());
                                 }
