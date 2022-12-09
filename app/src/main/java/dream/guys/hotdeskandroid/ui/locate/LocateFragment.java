@@ -1,6 +1,5 @@
 package dream.guys.hotdeskandroid.ui.locate;
 
-import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
 import static dream.guys.hotdeskandroid.utils.Utils.currentTimeWithExtraMins;
 import static dream.guys.hotdeskandroid.utils.Utils.getActionOverLaysPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
@@ -26,7 +25,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +32,6 @@ import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -57,7 +54,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.nimbusds.jose.util.Resource;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -66,11 +62,9 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -94,6 +88,7 @@ import dream.guys.hotdeskandroid.example.ItemAdapter;
 import dream.guys.hotdeskandroid.example.MyCanvasDraw;
 import dream.guys.hotdeskandroid.example.ValuesPOJO;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
+import dream.guys.hotdeskandroid.model.request.*;
 import dream.guys.hotdeskandroid.model.request.CarParkingDeleteRequest;
 import dream.guys.hotdeskandroid.model.request.CarParkingStatusModel;
 import dream.guys.hotdeskandroid.model.request.DeleteMeetingRoomRequest;
@@ -124,7 +119,6 @@ import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
 import dream.guys.hotdeskandroid.model.response.DeskDescriptionResponse;
 import dream.guys.hotdeskandroid.model.response.FirstAidResponse;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
-import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.LocationWithMR_Response;
 import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
@@ -133,8 +127,6 @@ import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
 import dream.guys.hotdeskandroid.model.response.TeamsResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
-import dream.guys.hotdeskandroid.ui.login.LoginActivity;
-import dream.guys.hotdeskandroid.ui.wellbeing.NotificationsListActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.LogicHandler;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
@@ -255,7 +247,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     int endTimeSelectedStats = 0;
 
     boolean keyClickedStats = true;
-    List<Point> pointList = new ArrayList<>();
+    //List<Point> pointList = new ArrayList<>();
 
     //CheckInDetails
     TextView locateDeskName, editBookingBack, editBookingContinue;
@@ -374,6 +366,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     List<DAOTeamMember> locateMyTeamMemberStatusList;
 
+
+    //SupportZonelayout canvas
+    List<LocateCountryRespose.SupportZoneLayoutItems> getSupportZoneLayoutForCanvas;
 
 
     @Override
@@ -1085,6 +1080,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         meetingStatusModelList.clear();
 
 
+
+
       /*  if(!amenitiesApplyStatus){
             meetingAmenityStatusList.clear();
         }
@@ -1631,36 +1628,68 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     //ProgressDialog.dismisProgressBar(getContext(), dialog);
                     //getAvaliableDeskDetails(locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks(),0);
 
-                    if (canvasDrawId == 1) {
+                    //if (canvasDrawId == 1) {
+
+                        //List<Point> pointList = new ArrayList<>();
+
+                        List<Point> pointList;
+
+                       //support zone canvas
+                        if(getSupportZoneLayoutForCanvas!=null && getSupportZoneLayoutForCanvas.size()>0){
+
+
+                            for (int i = 0; i <getSupportZoneLayoutForCanvas.size() ; i++) {
+
+                                pointList = new ArrayList<>();
+
+                                for (int j = 0; j <getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().size() ; j++) {
+
+                                    int x=getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(j).get(0);
+                                    int y=getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(j).get(1);
+
+                                    Point point = new Point(x + 40, y + 20);
+                                    pointList.add(point);
+                                }
+
+                                addDottedLine(pointList);
+                            }
+                        }
+
+                        //Final API canvas
                         List<List<Integer>> coordinateList = locateCountryResposeList.get(floorPosition).getCoordinates();
-                        List<Point> pointList = new ArrayList<>();
-                        //System.out.println("CoordinateSize" + coordinateList.size());
 
                         if (coordinateList != null && coordinateList.size() > 0) {
 
-                            for (int i = 0; i < coordinateList.size(); i++) {
+                            pointList = new ArrayList<>();
 
-                                //System.out.println("CoordinateData" + i + "position" + "size " + coordinateList.get(i).size());
+                            for (int i = 0; i < coordinateList.size(); i++) {
+                                System.out.println("CoordinateData" + i + "position" + "size " + coordinateList.get(i).size());
 
                                 Point point = new Point(coordinateList.get(i).get(0) + 40, coordinateList.get(i).get(1) + 20);
                                 pointList.add(point);
 
                             }
 
+                            addDottedLine(pointList);
+
                         }
 
-                        if (pointList.size() > 0) {
+                        //pointList.clear();
+
+                        /*if (pointList.size() > 0) {
                             MyCanvasDraw myCanvasDraw = new MyCanvasDraw(getContext(), pointList);
 
                             binding.secondLayout.addView(myCanvasDraw);
 
-                        }
-                    } else {
+                        }*/
+
+
+                   /* } else {
                         getFloorCoordinates(locateCountryResposeList.get(floorPosition).getCoordinates());
-                    }
+                    }*/
 
 
-                    //addDottedLine();
+
 
 
                     List<String> valueList = new ArrayList<>();
@@ -1755,20 +1784,26 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //System.out.println("OnResumeCalled");
     }
 
-    private void addDottedLine() {
- 
-         View dottView = getLayoutInflater().inflate(R.layout.layout_dotted_line, null, false);
+    private void addDottedLine(List<Point> pointList) {
+
+
+        /* View dottView = getLayoutInflater().inflate(R.layout.layout_dotted_line, null, false);
          ImageView ivDesk = dottView.findViewById(R.id.dottedImage);
          RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
  
          relativeLayout.leftMargin =300;
          relativeLayout.topMargin = 500;
-         ivDesk.setLayoutParams(relativeLayout);
+         ivDesk.setLayoutParams(relativeLayout);*/
 
          //binding.firstLayout.addView(dottView);
 
         MyCanvasDraw myCanvasDraw = new MyCanvasDraw(getContext(), pointList);
+
+        //binding.firstLayout.removeAllViews();
+
         binding.firstLayout.addView(myCanvasDraw);
+
+        //pointList.clear();
 
 
     }
@@ -3122,7 +3157,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                        externalAttendees.clearFocus();
                        externalAttendees.setText("");
                    }else {
-                        Utils.toastMessage(getContext(), "Please Enter Valid Email");
+                        Utils.toastMessage(getContext(), "Please enter a valid email address.");
                     }
 
 
@@ -4464,8 +4499,22 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 rvFloor.setVisibility(View.VISIBLE);
                 SessionHandler.getInstance().saveInt(getContext(), AppConstants.PARENT_ID, locateCountryRespose.getLocateCountryId());
 
-                if (locateCountryRespose.getSupportZoneLayoutItemsList() != null) {
-                    getOtherSubZoneLayoutItems(locateCountryRespose.getSupportZoneLayoutItemsList());
+               /* if (locateCountryRespose.getSupportZoneLayoutItemsList() == null) {
+
+                    if(getSupportZoneLayoutForCanvas!=null && getSupportZoneLayoutForCanvas.size()>0) {
+                        getSupportZoneLayoutForCanvas.clear();
+                    }
+                }*/
+
+                //clear it before get
+                if(getSupportZoneLayoutForCanvas!=null && getSupportZoneLayoutForCanvas.size()>0){
+                    getSupportZoneLayoutForCanvas.clear();
+                }
+                if (locateCountryRespose.getSupportZoneLayoutItemsList() != null && locateCountryRespose.getSupportZoneLayoutItemsList().size()>0 ) {
+                    //get support zone to draw canvas
+                    getSupportZoneLayoutForCanvas=locateCountryRespose.getSupportZoneLayoutItemsList();
+
+                    //getOtherSubZoneLayoutItems(locateCountryRespose.getSupportZoneLayoutItemsList());
                 }
 
                 //Final
@@ -4481,27 +4530,57 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void getOtherSubZoneLayoutItems(List<LocateCountryRespose.SupportZoneLayoutItems> supportZoneLayoutItemsList) {
 
-        //List<Point> pointList=new ArrayList<>();
 
-        pointList.clear();
+        //pointList.clear();
+
+        List<SubZonePoint> subZoneLayoutPointList=null;
 
         for (int i = 0; i < supportZoneLayoutItemsList.size(); i++) {
 
-            //System.out.println("supportZoneLayoutItemsSize" + supportZoneLayoutItemsList.size());
-            //System.out.println("supportZoneLayoutItemsSize" + supportZoneLayoutItemsList.get(i).getTitle());
-            //System.out.println("CorrrdnateSize" + supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().size());
+            subZoneLayoutPointList=new ArrayList<SubZonePoint>();
+            List<SubZonePoint.SubPoint> subPointList=null;
 
             for (int j = 0; j < supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().size(); j++) {
 
-                //System.out.println("DATAATATA" + supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(0) + " " + supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(1));
 
-                Point point = new Point(supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(0),
-                        supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(1));
-                pointList.add(point);
+                SubZonePoint subZone=new SubZonePoint();
+
+                int x=supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(0);
+                int y=supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(1);
+
+                System.out.println("Posotion "+supportZoneLayoutItemsList.get(i).getTitle()+" "+x+" "+y);
+
+                SubZonePoint.SubPoint subPoint=subZone. new SubPoint(x,y);
+
+
+                subPointList=new ArrayList<>();
+                subPointList.add(subPoint);
+
+                SubZonePoint subZonePoint=new SubZonePoint(
+                        supportZoneLayoutItemsList.get(i).getSupportZoneId(),
+                        supportZoneLayoutItemsList.get(i).getTitle(),
+                        subPointList);
+
+                subZoneLayoutPointList.add(subZonePoint);
 
             }
 
         }
+
+
+        for (int i = 0; i <subZoneLayoutPointList.size() ; i++) {
+
+            System.out.println("FinalAllCoordinates "+subZoneLayoutPointList.get(i).getTitle());
+
+            for (int j = 0; j <subZoneLayoutPointList.get(i).getSubPoint().size() ; j++) {
+
+            }
+
+
+
+        }
+
+
 
        /* for (int i = 0; i <pointList.size() ; i++) {
             System.out.println("PointListDate "+pointList.get(i).getX()+" "+pointList.get(i).getY());
@@ -4721,8 +4800,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         CoordinatorLayout layout = locateCheckInBottomSheet.findViewById(R.id.bottomBookCoordinatorLayout);
         layout.setMinimumHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
-
-
 
 
 
@@ -8334,7 +8411,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     externalAttendees.clearFocus();
                     externalAttendees.setText("");
                     }else {
-                        Utils.toastMessage(getContext(), "Please Enter Valid Email");
+                        Utils.toastMessage(getContext(), "Please enter a valid email address.");
                     }
 
                     chip.setOnClickListener(new View.OnClickListener() {

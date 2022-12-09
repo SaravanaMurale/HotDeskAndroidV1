@@ -589,16 +589,16 @@ public class LoginActivity extends AppCompatActivity {
                             getUserDetailsUsingToken(getTokenResponse.getToken());
                         } else {
                             ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
-                            Utils.toastMessage(LoginActivity.this, "You have entered an incorrect username or password. Please try again");
+                            Utils.toastMessage(LoginActivity.this, "You have entered the incorrect password. Please try again.");
 //                            etEmail.requestFocus();
-//                            etEmail.setError("You have entered an incorrect username or password. Please try again");
+//                            etEmail.setError("You have entered the incorrect password. Please try again.");
 
                         }
                     } else if (response.code() == 401) {
                         ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
-                        Utils.toastMessage(LoginActivity.this, "You have entered an incorrect username or password. Please try again.");
+                        Utils.toastMessage(LoginActivity.this, "You have entered the incorrect password. Please try again.");
 //                        etEmail.requestFocus();
-//                        etEmail.setError("You have entered an incorrect username or password. Please try again");
+//                        etEmail.setError("You have entered the incorrect password. Please try again.");
                     } else if (response.code() == 403) {
                         Intent intent = new Intent(getApplicationContext(), GDPRActivity.class);
                         intent.putExtra("tenantName", companyName);
@@ -753,19 +753,19 @@ public class LoginActivity extends AppCompatActivity {
                 if (Utils.isValiedText(password)) {
                     userDetailStatus = true;
                 } else {
-//                    Utils.toastMessage(LoginActivity.this, "Please Enter Valid Password");
+//                    Utils.toastMessage(LoginActivity.this, "Please enter a valid password.");
                     etPassword.requestFocus();
-                    etPassword.setError("Please Enter Valid Password");
+                    etPassword.setError("Please enter a valid password.");
                 }
             } else {
-//                Utils.toastMessage(LoginActivity.this, "Please Enter Valid Email");
+//                Utils.toastMessage(LoginActivity.this, "Please enter a valid email address.");
                 etEmail.requestFocus();
-                etEmail.setError("Please Enter Valid Email");
+                etEmail.setError("Please enter a valid email address.");
             }
         } else {
-//            Utils.toastMessage(LoginActivity.this, "Please Enter Valid CompanyName");
+//            Utils.toastMessage(LoginActivity.this, "Please enter a valid company name.");
             etCompanyName.requestFocus();
-            etCompanyName.setError("Please Enter Valid CompanyName");
+            etCompanyName.setError("Please enter a valid company name.");
         }
 
 

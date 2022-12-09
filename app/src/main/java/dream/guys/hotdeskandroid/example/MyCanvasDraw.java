@@ -27,7 +27,47 @@ public class MyCanvasDraw extends View {
 
     }
 
-    private void drawUsingMethod() {
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
+        this.canvas=canvas;
+        System.out.println("onDrawCalled");
+        setDrawMethod();
+
+    }
+
+    public void setDrawMethod() {
+        Paint paint = new Paint();
+        paint.setColor(Color.GRAY);
+        paint.setPathEffect(new DashPathEffect(new float[] {20,20}, 0));
+        paint.setStrokeWidth(3);
+        paint.setStyle(Paint.Style.STROKE);
+        Path path = new Path();
+
+
+        //moves to the particular position
+        path.moveTo(pointList.get(0).getX(), pointList.get(0).getY());
+
+        for (int i = 1; i < pointList.size(); i++){
+
+            //starts from where it ends
+            path.lineTo(pointList.get(i).getX(), pointList.get(i).getY());
+
+        }
+        path.lineTo(pointList.get(0).getX(), pointList.get(0).getY());
+
+        canvas.drawPath(path, paint);
+    }
+
+
+
+}
+
+
+
+
+/* private void drawUsingMethod() {
         this.canvas=canvas;
 
         System.out.println("DrawUsingMethodCalled");
@@ -52,18 +92,10 @@ public class MyCanvasDraw extends View {
         }
 
         canvas.drawPath(path, paint);
-    }
+    }*/
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
 
-        this.canvas=canvas;
-
-        System.out.println("onDrawCalled");
-        setDrawMethod();
-
-        //DashedLine
+//DashedLine
         /*Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setPathEffect(new DashPathEffect(new float[] {20,20}, 0));
@@ -94,42 +126,11 @@ public class MyCanvasDraw extends View {
 
         canvas.drawPath(path, paint);*/
 
-
-
-    }
-
-    public void setDrawMethod() {
-        Paint paint = new Paint();
-        paint.setColor(Color.GRAY);
-        paint.setPathEffect(new DashPathEffect(new float[] {20,20}, 0));
-        paint.setStrokeWidth(3);
-        paint.setStyle(Paint.Style.STROKE);
-        Path path = new Path();
-
-
-        //moves to the particular position
-        path.moveTo(pointList.get(0).getX(), pointList.get(0).getY());
-
-        for (int i = 1; i < pointList.size(); i++){
-
-            //starts from where it ends
-            path.lineTo(pointList.get(i).getX(), pointList.get(i).getY());
-
-        }
-        path.lineTo(pointList.get(0).getX(), pointList.get(0).getY());
-
-        canvas.drawPath(path, paint);
-    }
-
-    public void  setInvalidate(){
+/* public void  setInvalidate(){
         System.out.println("CanvasInvalidateCalled");
         invalidate();
         postInvalidate();
-    }
-
-}
-
-
+    }*/
 
 
 
