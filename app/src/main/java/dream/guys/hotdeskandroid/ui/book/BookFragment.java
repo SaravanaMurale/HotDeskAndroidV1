@@ -4825,7 +4825,7 @@ public class BookFragment extends Fragment implements
                         externalAttendees.clearFocus();
                         externalAttendees.setText("");
                     }else {
-                        Utils.toastMessage(getContext(), "Please Enter Valid Email");
+                        Utils.toastMessage(getContext(), "Please enter a valid email address.");
                     }
 
 /*

@@ -285,7 +285,7 @@ public class CreatePinActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<BaseResponse> call, Throwable t) {
                     ProgressDialog.dismisProgressBar(CreatePinActivity.this,dialog);
-                    Utils.toastMessage(CreatePinActivity.this, "You have entered an incorrect username or password. Please try again.");
+                    Utils.toastMessage(CreatePinActivity.this, "You have entered the incorrect password. Please try again.");
 
                 }
             });
