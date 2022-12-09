@@ -31,7 +31,9 @@
         <item name="tabTextColor">@color/white</item>
     </style>
 
-
+    <style name="Theme.BlurryDialog" parent="Theme.MaterialComponents.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 
     <style name="TextBoldButton" parent="Widget.MaterialComponents.Button.TextButton">
         <!-- Alternatively, reference this font with the name "aspergit" -->

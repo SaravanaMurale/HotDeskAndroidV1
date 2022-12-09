@@ -42,6 +42,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -141,7 +142,8 @@ public class BookFragment extends Fragment implements
         ParkingSpotListRecyclerAdapter.OnSelectSelected,
         ParticipantNameShowAdapter.OnParticipantSelectable,
         RoomListRecyclerAdapter.OnSelectSelected,
-        ShowCountryAdapter.OnSelectListener{
+        ShowCountryAdapter.OnSelectListener,
+        CustomSpinner.OnSpinnerEventsListener {
     String TAG="BookFragment";
     LanguagePOJO.Login logoinPage;
     LanguagePOJO.AppKeys appKeysPage;
@@ -201,7 +203,8 @@ public class BookFragment extends Fragment implements
     BottomSheetDialog roomBottomSheet;
     public BottomSheetDialog deskListBottomSheet;
     BottomSheetDialog activeTeamsBottomSheet;
-    int selectedicon = 0;
+    public int selectedicon = 1;
+    public boolean isSetup = false;
     String calSelectedDate="";
     String calSelectedMont="";
 
@@ -426,7 +429,7 @@ public class BookFragment extends Fragment implements
 
                 if (countCheck) {
                     if (!(Utils.compareTwoDate(date,Utils.getCurrentDate()) == 1)){
-                        if (selectedicon==0){
+                        if (selectedicon==1){
 //                            if (isGlobalLocationSetUP)
 //                                getAvaliableDeskDetails("3",Utils.getISO8601format(date));
                             getAddEditDesk("3",Utils.getISO8601format(date));
@@ -434,10 +437,10 @@ public class BookFragment extends Fragment implements
 
 //                            else
 //                            ((MainActivity) getActivity()).getAddEditDesk("3",Utils.getISO8601format(date));
-                        } else if (selectedicon==1) {
+                        } else if (selectedicon==2) {
                             getMeetingBookingListToEdit("" + Utils.getYearMonthDateFormat(date)+"T00:00:00.000Z", "new");
                             calSelectedDate=Utils.getISO8601format(date);
-                        } else if(selectedicon==2){
+                        } else if(selectedicon==3){
                             getCarParListToEdit(""+Utils.getISO8601format(date),""+Utils.getISO8601format(date));
                             calSelectedDate=Utils.getISO8601format(date);
                         }else {
@@ -868,6 +871,7 @@ public class BookFragment extends Fragment implements
 
         getAddEditDesk("-1",Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate())));
 
+//        assertSpinner.setBackground(getResources().getDrawable(R.drawable.spinner_outline));
 
     }
 
@@ -2740,7 +2744,7 @@ public class BookFragment extends Fragment implements
                 if(locationAddress!=null)
                     editDeskBookingDetails.setLocationAddress(locationAddress.getText().toString());
 
-                if (selectedicon==1 && newEditStatus.equalsIgnoreCase("new")){
+                if (selectedicon==2 && newEditStatus.equalsIgnoreCase("new")){
                     if (editDeskBookingDetails.getMeetingRoomStatus() == 2) {
                         callMeetingRoomBookingBottomSheet(editDeskBookingDetails,
                                 startTime, endTime, selectedDeskId,
@@ -2750,7 +2754,7 @@ public class BookFragment extends Fragment implements
                                 startTime, endTime, selectedDeskId,
                                 deskRoomName.getText().toString(), false, editDeskBookingDetails.getCalId(), newEditStatus);
                     }
-                } else if (selectedicon==1) {
+                } else if (selectedicon==2) {
                     if (newEditStatus.equalsIgnoreCase("request")) {
                         callMeetingRoomBookingBottomSheet(editDeskBookingDetails,
                                 startTime,
@@ -2770,7 +2774,7 @@ public class BookFragment extends Fragment implements
                                     selectedDeskId, deskRoomName.getText().toString(), false,editDeskBookingDetails.getCalId(),newEditStatus);
                         }
                     }
-                }else if(selectedicon==0){
+                }else if(selectedicon==1){
                    if (repeatActvieStatus) {
                         if (dskRoomParkStatus==1)
                             doRepeatDeskBookingForAWeek(editDeskBookingDetails);
@@ -3904,12 +3908,12 @@ public class BookFragment extends Fragment implements
         if(editBookingDetails.getDisplayTime()!=null)
             sheetTime.setText(""+editBookingDetails.getDisplayTime());
 
-        if (selectedicon == 2){
+        if (selectedicon == 3){
             selectDesk.setText("Select Parking");
             parkingSpotListRecyclerAdapter =new ParkingSpotListRecyclerAdapter(getContext(),
                     this,getActivity(),parkingSpotModelList,getContext(),deskListBottomSheet);
             rvDeskRecycler.setAdapter(parkingSpotListRecyclerAdapter);
-        }else if (selectedicon==1){
+        }else if (selectedicon==2){
             selectDesk.setText("Select a room");
             roomListRecyclerAdapter =new RoomListRecyclerAdapter(getContext(),
                     this,getActivity(),userAllowedMeetingResponseListUpdated,getContext(),
@@ -4046,12 +4050,12 @@ public class BookFragment extends Fragment implements
         sheetDate.setText(Utils.calendarDay10thMonthformat(Utils.convertStringToDateFormet(calSelectedDate)));
         sheetTime.setText(""+startTime.getText()+" to "+endTime.getText());
 
-        if (selectedicon == 2) {
+        if (selectedicon == 3) {
             selectDesk.setText("Book parking");
             tvCapacityFilter.setVisibility(View.GONE);
             parkingSpotListRecyclerAdapter =new ParkingSpotListRecyclerAdapter(getContext(),this,getActivity(),parkingSpotModelList,getContext(),bottomSheetDialog);
             rvDeskRecycler.setAdapter(parkingSpotListRecyclerAdapter);
-        }else if (selectedicon==1) {
+        }else if (selectedicon==2) {
             selectDesk.setText("Book a room");
             tvCapacityFilter.setVisibility(View.VISIBLE);
             roomListRecyclerAdapter =new RoomListRecyclerAdapter(getContext(),this,getActivity(),userAllowedMeetingResponseListUpdated,
@@ -4072,9 +4076,9 @@ public class BookFragment extends Fragment implements
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (selectedicon == 2){
+                if (selectedicon == 3){
                     parkingSpotListRecyclerAdapter.getFilter().filter(s.toString());
-                }else if (selectedicon==1){
+                }else if (selectedicon==2){
                     roomListRecyclerAdapter.getFilter().filter(s.toString());
                 }else {
                 }
@@ -7274,16 +7278,49 @@ public class BookFragment extends Fragment implements
     public void loadAssertSpinner() {
 //        assertSpinner = activityContext.findViewById(R.id.assertSpinner);
 
-//        assertSpinner.setSpinnerEventsListener(BookFragment.this);
-        for (int i=0;i<7;i++){
+//        assertList.clear();
+        assertList = new ArrayList<>();
+        assertSpinner.setSpinnerEventsListener(this);
+        for (int i=1;i<8;i++){
             AssertModel assertModel= new AssertModel();
-            assertModel.setAssertName("Workspace");
-            assertModel.setId(1);
-            assertModel.setImage(R.drawable.chair);
+            assertModel.setId(i);
+            switch (i){
+                case 1:
+                    assertModel.setAssertName("Workspace");
+                    assertModel.setImage(R.drawable.chair);
+                    break;
+                case 2:
+                    assertModel.setAssertName("Room");
+                    assertModel.setImage(R.drawable.room);
+                    break;
+                case 3:
+                    assertModel.setAssertName("Parking");
+                    assertModel.setImage(R.drawable.car);
+                    break;
+                case 4:
+                    assertModel.setAssertName("Remote");
+                    assertModel.setImage(R.drawable.home);
+                    break;
+                case 5:
+                    assertModel.setAssertName("Sick");
+                    assertModel.setImage(R.drawable.sick_plus);
+                    break;
+                case 6:
+                    assertModel.setAssertName("Holiday");
+                    assertModel.setImage(R.drawable.plane);
+                    break;
+                case 7:
+                    assertModel.setAssertName("Training");
+                    assertModel.setImage(R.drawable.training_book);
+                    break;
+                default:
+            }
+
+            assertList.add(assertModel);
         }
-//        assertList.add()
-        assertListAdapter = new AssertListAdapter(context, assertList);
+        assertListAdapter = new AssertListAdapter(context, assertList,this);
         assertSpinner.setAdapter(assertListAdapter);
+
     }
     public void checkVeichleReg() {
 
@@ -7484,6 +7521,45 @@ public class BookFragment extends Fragment implements
 
     @Override
     public void onEDITChangeDesk(int deskId, String deskName, String request, String timeZone, int typeId, EditBookingDetails editBookingDetails, String newEditStatus, int teamId) {
+
+    }
+
+
+    @Override
+    public void onPopupWindowOpened(Spinner spinner) {
+        spinner.setBackground(getResources().getDrawable(R.drawable.spinner_outline_opened));
+        View view = spinner.getSelectedView();
+
+        TextView whiteLine = view.findViewById(R.id.divider);
+        ImageView tick = view.findViewById(R.id.tick);
+        RelativeLayout bg = view.findViewById(R.id.background);
+        whiteLine.setVisibility(View.GONE);
+        tick.setVisibility(View.GONE);
+        bg.setBackgroundColor(Color.TRANSPARENT);
+        int pos = spinner.getSelectedItemPosition();
+
+        assertListAdapter = new AssertListAdapter(context, assertList,this);
+        assertSpinner.setAdapter(assertListAdapter);
+        assertSpinner.setSelection(pos);
+
+
+
+    }
+
+    @Override
+    public void onPopupWindowClosed(Spinner spinner) {
+        View view = spinner.getSelectedView();
+
+        TextView whiteLine = view.findViewById(R.id.divider);
+        ImageView tick = view.findViewById(R.id.tick);
+        RelativeLayout bg = view.findViewById(R.id.background);
+        whiteLine.setVisibility(View.GONE);
+        tick.setVisibility(View.GONE);
+        bg.setBackgroundColor(Color.TRANSPARENT);
+
+        selectedicon = spinner.getSelectedItemPosition()+1;
+        spinner.setBackground(getResources().getDrawable(R.drawable.spinner_outline));
+
 
     }
 }

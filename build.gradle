@@ -5,7 +5,7 @@ buildscript {
 
         mavenCentral()  // Maven Central repository
 
-
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 
     }
     dependencies {

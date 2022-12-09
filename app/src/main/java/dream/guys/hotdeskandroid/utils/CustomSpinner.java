@@ -67,8 +67,7 @@ public class CustomSpinner extends AppCompatSpinner {
     /**
      * Register the listener which will listen for events.
      */
-    public void setSpinnerEventsListener(
-            OnSpinnerEventsListener onSpinnerEventsListener) {
+    public void setSpinnerEventsListener(OnSpinnerEventsListener onSpinnerEventsListener) {
         mListener = onSpinnerEventsListener;
     }
 

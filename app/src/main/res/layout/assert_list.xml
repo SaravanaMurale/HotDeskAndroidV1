@@ -5,11 +5,14 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_marginHorizontal="@dimen/_10sdp"
+    android:paddingVertical="@dimen/_2sdp"
     >
 
     <RelativeLayout
+        android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/_5sdp"
         >
         <ImageView
             android:id="@+id/image"
@@ -24,15 +27,14 @@
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Name"
-            android:layout_toRightOf="@+id/image"
-            android:layout_toLeftOf="@id/tick"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_15sdp"
-            android:textSize="18sp"
+            android:layout_toLeftOf="@id/tick"
+            android:layout_toRightOf="@+id/image"
             android:textColor="@color/figmaBlack"
+            android:textSize="18sp"
             android:theme="@style/TextRegular"
-            />
+            tools:text="Name" />
         <ImageView
             android:id="@+id/tick"
             android:layout_width="@dimen/_20sdp"
@@ -40,15 +42,18 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/_5sdp"
             android:src="@drawable/tick"
-            android:visibility="gone"
+            android:visibility="visible"
             android:paddingStart="@dimen/_10sdp"
             android:layout_marginVertical="@dimen/_5sdp"
             android:layout_marginStart="8dp"/>
     </RelativeLayout>
-    <view class="android.widget.TextView"
+    <view
+        android:id="@+id/divider"
+        class="android.widget.TextView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_2sdp"
+        android:layout_height="@dimen/_1sdp"
         android:layout_marginTop="@dimen/_5sdp"
-        android:background="@color/white"
+        android:background="@color/figmaBackground"
+        android:visibility="gone"
         />
 </LinearLayout>

@@ -54,21 +54,25 @@
             android:layout_marginHorizontal="20dp"
             >
             <dream.guys.hotdeskandroid.utils.CustomSpinner
-
                 android:id="@+id/assertSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/spinner_outline"
+                android:overlapAnchor="false"
+                android:dropDownVerticalOffset="3dp"
+                android:popupBackground="@drawable/spinner_pop_background"
                 android:spinnerMode="dropdown"
                 tools:listitem="@layout/assert_list"
-                android:layout_margin="@dimen/_3sdp"
+                android:theme="@style/Theme.BlurryDialog"
             />
             <LinearLayout
                 android:id="@+id/ll_book"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_5sdp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone"
+                >
 
                 <LinearLayout
                     android:id="@+id/desk_layout"

@@ -31,6 +31,8 @@
     <color name="figmaBlueText">#0F62AB</color>
     <color name="figmaBackground">#fafafa</color>
     <color name="figmaBorder">#EEEEEE</color>
+    <color name="figmaBluryGrey">#E6C8C8C8</color>
+    <color name="figmaBluryBorder">#474747</color>
 
     <color name="bg_grey">#fafafa</color>
     <color name="line_gray">#dcdcdc</color>
