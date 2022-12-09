@@ -383,6 +383,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         ProgressDialog.touchLock(getContext(),getActivity());
         //TimeZoneId
         int defaultTeamId=SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID);
+
+        //Before initLoadFloorDetails need to get timezone
         getTimeZoneForBooking(defaultTeamId);
 
 
@@ -395,17 +397,15 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         super.onViewCreated(view, savedInstanceState);
 
 
-        //Disable touch screen
-        /*ProgressDialog.touchLock(getContext(),getActivity());
+        binding.locateProgressBar.setVisibility(View.VISIBLE);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                //Initally Load Floor Details
-                //initLoadFloorDetails(0);
+                initLoadFloorDetails(0);
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
             }
-        },1500);*/
+        },1000);
 
-        //ProgressDialog.clearTouchLock(getContext(),getActivity());
 
 
     }
@@ -416,6 +416,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         // Inflate the layout for this fragment
         binding = FragmentLocateBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+
 
 
         setLanguage();
@@ -520,7 +522,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
 
                 if (parentId > 0) {
-                    
+
+                    ProgressDialog.touchLock(getContext(),getActivity());
                     getFirAidAndFirwarndsReport();
                     
                     //getMyTeamMemberData();
@@ -843,6 +846,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         locateMyTeamAdapter = new LocateMyTeamAdapter(getContext(), locateMyTeamMemberStatusList, this);
         binding.rvLocateMyTeam.setAdapter(locateMyTeamAdapter);
 
+        ProgressDialog.clearTouchLock(getContext(),getActivity());
+
         binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
         binding.myTeamClose.setOnClickListener(new View.OnClickListener() {
@@ -1095,6 +1100,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         int parentIdCheck =SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID_CHECK);
         int selecctedFloorFromHome=SessionHandler.getInstance().getInt(getContext(),AppConstants.SELECTED_LOCATION_FROM_HOME);
+
+        binding.firstLayout.removeAllViews();
+
         if(parentIdCheck>0 && defaultLocationcheck==0 && selecctedFloorFromHome==0){
             int floorPositionCheck=SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION_CHECK);
 
@@ -1195,7 +1203,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     }*/
 
 
-                    initLoadFloorDetails(0);
+                   // initLoadFloorDetails(0);
 
 
 
@@ -1757,10 +1765,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
          relativeLayout.topMargin = 500;
          ivDesk.setLayoutParams(relativeLayout);
 
-         binding.firstLayout.addView(dottView);
+         //binding.firstLayout.addView(dottView);
 
         MyCanvasDraw myCanvasDraw = new MyCanvasDraw(getContext(), pointList);
-        binding.secondLayout.addView(myCanvasDraw);
+        binding.firstLayout.addView(myCanvasDraw);
 
 
     }
@@ -5092,13 +5100,16 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
         String CountryName = SessionHandler.getInstance().get(getContext(), AppConstants.COUNTRY_NAME);
 
-        if (CountryName == null && buildingName == null && floorName == null) {
+        /*if (CountryName == null && buildingName == null && floorName == null) {
             tvLocateDeskBookLocation.setText(buildingName + "," + floorName);
             selectedLocation.setText(buildingName + "," + floorName);
         } else {
             tvLocateDeskBookLocation.setText(CountryName + "," + buildingName + "," + floorName);
             selectedLocation.setText(CountryName + "," + buildingName + "," + floorName);
-        }
+        }*/
+        tvLocateDeskBookLocation.setText(binding.searchLocate.getText());
+        selectedLocation.setText(binding.searchLocate.getText());
+
 
 
         locateDeskName.setText(selctedCode);
