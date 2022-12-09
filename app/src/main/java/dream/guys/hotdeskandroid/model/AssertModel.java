@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable;
 public class AssertModel {
     private Integer id;
     private String assertName;
-    private Drawable image;
+    private Integer image;
 
     public Integer getId() {
         return id;
@@ -23,11 +23,11 @@ public class AssertModel {
         this.assertName = assertName;
     }
 
-    public Drawable getImage() {
+    public Integer getImage() {
         return image;
     }
 
-    public void setImage(Drawable image) {
+    public void setImage(Integer image) {
         this.image = image;
     }
 }

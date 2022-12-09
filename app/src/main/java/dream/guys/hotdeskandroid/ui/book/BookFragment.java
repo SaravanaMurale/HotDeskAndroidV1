@@ -68,6 +68,7 @@ import butterknife.BindView;
 import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.ActiveTeamsAdapter;
+import dream.guys.hotdeskandroid.adapter.AssertListAdapter;
 import dream.guys.hotdeskandroid.adapter.BookingListToEditAdapter;
 import dream.guys.hotdeskandroid.adapter.CarListToEditAdapterBooking;
 import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
@@ -85,6 +86,7 @@ import dream.guys.hotdeskandroid.databinding.FragmentBookBinding;
 import dream.guys.hotdeskandroid.example.DataModel;
 import dream.guys.hotdeskandroid.example.ItemAdapter;
 import dream.guys.hotdeskandroid.example.ValuesPOJO;
+import dream.guys.hotdeskandroid.model.AssertModel;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
@@ -322,7 +324,8 @@ public class BookFragment extends Fragment implements
     String companyDefaultDeskStartTime="";
     String companyDefaultDeskEndTime="";
     CustomSpinner assertSpinner;
-    ArrayList<String> assertList;
+    ArrayList<AssertModel> assertList;
+    AssertListAdapter assertListAdapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -855,7 +858,7 @@ public class BookFragment extends Fragment implements
         this.context = getContext();
         this.activityContext=getActivity();
 
-//        assertSpinner = view.findViewById(R.id.assertSpinner);
+        assertSpinner = view.findViewById(R.id.assertSpinner);
         loadAssertSpinner();
 
         loadDefaultLocation();
@@ -7271,10 +7274,16 @@ public class BookFragment extends Fragment implements
     public void loadAssertSpinner() {
 //        assertSpinner = activityContext.findViewById(R.id.assertSpinner);
 
-//        assertSpinner.setSpinnerEventsListener(this);
-
-//        adapter = new AssertListAdapter(this, Data.getFruitList());
-//        spinner_fruits.setAdapter(adapter);
+//        assertSpinner.setSpinnerEventsListener(BookFragment.this);
+        for (int i=0;i<7;i++){
+            AssertModel assertModel= new AssertModel();
+            assertModel.setAssertName("Workspace");
+            assertModel.setId(1);
+            assertModel.setImage(R.drawable.chair);
+        }
+//        assertList.add()
+        assertListAdapter = new AssertListAdapter(context, assertList);
+        assertSpinner.setAdapter(assertListAdapter);
     }
     public void checkVeichleReg() {
 
