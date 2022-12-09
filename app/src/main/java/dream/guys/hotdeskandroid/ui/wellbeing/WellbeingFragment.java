@@ -621,15 +621,15 @@ public class WellbeingFragment extends Fragment {
             binding.tvReportIssue.setText(appKeysPage.getReportAnIssue());
             binding.txtPlaces.setText(appKeysPage.getPlaces());
             binding.txtBenefits.setText(appKeysPage.getBenefits());
-            binding.tvTraining.setText(appKeysPage.getTraining());
+            binding.tvTraining.setText(appKeysPage.getBenefits());
             binding.txtEvents.setText(appKeysPage.getEvents());
             binding.tvEvents.setText(appKeysPage.getEvents());
             binding.txtHealtheat.setText(appKeysPage.getHealthEating());
             binding.tvHealth.setText(appKeysPage.getHealthEating());
             binding.txtNotices.setText(appKeysPage.getNotices());
             binding.tvNotification.setText(appKeysPage.getNotices());
-            binding.txtCovid.setText(appKeysPage.getCovid());
-            binding.tvCovid.setText(wellBeingPage.getCovidCertification());
+            binding.tvCovid.setText(appKeysPage.getCovid());
+            binding.txtCovid.setText(wellBeingPage.getCovidCertification());
             binding.txtPHelp.setText(appKeysPage.getPersonalHelp());
             binding.tvPersonal.setText(appKeysPage.getPersonalHelp());
             binding.txtRewards.setText(wellBeingPage.getRewards());

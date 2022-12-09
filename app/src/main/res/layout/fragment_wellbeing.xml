@@ -43,7 +43,7 @@
            android:id="@+id/txt_covid"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:text="@string/covid_txt"
+           android:text="@string/covid"
            android:textColor="@color/black"
            android:layout_marginTop="@dimen/_20sdp"
            style="@style/TextBold"
@@ -71,10 +71,10 @@
                <ImageView
                    android:layout_width="@dimen/_25sdp"
                    android:layout_height="@dimen/_25sdp"
-                   android:layout_marginRight="@dimen/_20sdp"
+                   android:layout_marginRight="@dimen/_10sdp"
                    android:layout_toLeftOf="@+id/tvCovid"
                    android:padding="@dimen/_2sdp"
-                   android:src="@drawable/notification_icon"
+                   android:src="@drawable/icon_covidcert"
 
                    />
 
@@ -83,7 +83,7 @@
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_centerInParent="true"
-                   android:text="@string/covid"
+                   android:text="@string/covid_txt"
                    android:textColor="@color/black"
                    android:textSize="14dp"
                    android:theme="@style/TextRegular" />
@@ -104,7 +104,7 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/fireWardensBlock"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/button_white_bg"
@@ -134,6 +134,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/fire_wardens"
+                        android:textSize="@dimen/_10sdp"
                         android:theme="@style/TextRegular"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="@dimen/_8sdp"
@@ -154,7 +155,7 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/firstAidBlock"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/button_white_bg"
@@ -186,6 +187,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/first_aid"
+                        android:textSize="@dimen/_10sdp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="@dimen/_8sdp"
                         android:textColor="@color/black"
@@ -205,7 +207,7 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/mentalHealthBlock"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/button_white_bg"
@@ -237,6 +239,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/mental_health"
+                        android:textSize="@dimen/_10sdp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="@dimen/_8sdp"
                         android:textColor="@color/black"
@@ -299,14 +302,14 @@
                    android:layout_marginRight="@dimen/_12sdp"
                    android:layout_toLeftOf="@+id/tvTraining"
                    android:padding="@dimen/_2sdp"
-                   android:src="@drawable/training" />
+                   android:src="@drawable/ic_benefits" />
 
                <TextView
                    android:id="@+id/tvTraining"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_centerInParent="true"
-                   android:text="@string/trainging"
+                   android:text="@string/benefits"
                    android:textColor="@color/black"
                    android:textSize="14dp"
                    android:theme="@style/TextRegular" />
@@ -354,7 +357,7 @@
                    android:layout_marginRight="@dimen/_12sdp"
                    android:layout_toLeftOf="@+id/tvEvents"
                    android:padding="@dimen/_2sdp"
-                   android:src="@drawable/training"
+                   android:src="@drawable/icon_events"
 
                    />
 
@@ -465,7 +468,7 @@
                    android:layout_marginRight="@dimen/_12sdp"
                    android:layout_toLeftOf="@+id/tvMenu"
                    android:padding="@dimen/_2sdp"
-                   android:src="@drawable/notification_icon"
+                   android:src="@drawable/icon_menu"
 
                    />
 
@@ -523,7 +526,7 @@
                    android:layout_marginRight="@dimen/_12sdp"
                    android:layout_toLeftOf="@+id/tvNotification"
                    android:padding="@dimen/_2sdp"
-                   android:src="@drawable/notification_icon"
+                   android:src="@drawable/icon_notices"
 
                    />
 
@@ -639,7 +642,7 @@
                    android:id="@+id/imgReportIssue"
                    android:layout_width="@dimen/_25sdp"
                    android:layout_height="@dimen/_25sdp"
-                   android:src="@drawable/report"
+                   android:src="@drawable/icon_reportissue"
                    android:layout_toLeftOf="@+id/tvReportIssue"
                    android:layout_marginRight="@dimen/_12sdp"
                    android:padding="@dimen/_2sdp"
@@ -819,7 +822,7 @@
                    android:layout_marginRight="@dimen/_12sdp"
                    android:layout_toLeftOf="@+id/tvRewards"
                    android:padding="@dimen/_2sdp"
-                   android:src="@drawable/ic_assessment"
+                   android:src="@drawable/icon_rewards"
 
                    />
 
@@ -873,7 +876,7 @@
                     android:layout_marginRight="@dimen/_12sdp"
                     android:layout_toLeftOf="@+id/tvWorkspaceSurvey"
                     android:padding="@dimen/_2sdp"
-                    android:src="@drawable/ic_assessment"
+                    android:src="@drawable/icon_survey"
 
                     />
 
