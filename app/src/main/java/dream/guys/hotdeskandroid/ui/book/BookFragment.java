@@ -117,6 +117,7 @@ import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.wellbeing.NotificationsListActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.CalendarView;
+import dream.guys.hotdeskandroid.utils.CustomSpinner;
 import dream.guys.hotdeskandroid.utils.LogicHandler;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -320,7 +321,8 @@ public class BookFragment extends Fragment implements
 
     String companyDefaultDeskStartTime="";
     String companyDefaultDeskEndTime="";
-
+    CustomSpinner assertSpinner;
+    ArrayList<String> assertList;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -342,7 +344,6 @@ public class BookFragment extends Fragment implements
         myTeamId = SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID);
         calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
         setLanguage();
-
         checkVeichleReg();
 
         dialog= new Dialog(getActivity());
@@ -853,6 +854,9 @@ public class BookFragment extends Fragment implements
         this.view=view;
         this.context = getContext();
         this.activityContext=getActivity();
+
+//        assertSpinner = view.findViewById(R.id.assertSpinner);
+        loadAssertSpinner();
 
         loadDefaultLocation();
 
@@ -4172,7 +4176,7 @@ public class BookFragment extends Fragment implements
 //                        Utils.finishAllActivity(getContext());
                         }
                         else {
-                            Toast.makeText(getActivity(), "Response Failure", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception exception){
                         Log.e(TAG,exception.getMessage());
@@ -5581,8 +5585,6 @@ public class BookFragment extends Fragment implements
 
                 ProgressDialog.dismisProgressBar(getContext(), dialog);
 //                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-
-
             }
 
             @Override
@@ -5591,8 +5593,6 @@ public class BookFragment extends Fragment implements
 //                binding.locateProgressBar.setVisibility(View.INVISIBLE);
             }
         });
-
-
     }
 
     //Final Adapter
@@ -6017,10 +6017,7 @@ public class BookFragment extends Fragment implements
                 //Final
                 getDeskRoomCarParkingDetails(locateCountryRespose.getLocateCountryId());
 
-
                 break;
-
-
         }
 
         if (Utils.isNetworkAvailable(getContext())) {
@@ -6438,7 +6435,7 @@ public class BookFragment extends Fragment implements
         } else if (response.code() == 401) {
             Utils.showCustomTokenExpiredDialog(getActivity(), "401 Error Response");
         } else {
-            Toast.makeText(getActivity(), "Response Failure", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -7271,6 +7268,14 @@ public class BookFragment extends Fragment implements
     }
 
     //New...
+    public void loadAssertSpinner() {
+//        assertSpinner = activityContext.findViewById(R.id.assertSpinner);
+
+//        assertSpinner.setSpinnerEventsListener(this);
+
+//        adapter = new AssertListAdapter(this, Data.getFruitList());
+//        spinner_fruits.setAdapter(adapter);
+    }
     public void checkVeichleReg() {
 
         if (Utils.isNetworkAvailable(getActivity())) {

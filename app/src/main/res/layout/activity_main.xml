@@ -64,7 +64,9 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:src="@drawable/close_circle" />
+                    android:src="@drawable/close_circle"
+                    android:visibility="gone"
+                    />
             </RelativeLayout>
 
 

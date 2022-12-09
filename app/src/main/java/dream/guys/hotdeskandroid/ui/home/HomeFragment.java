@@ -728,7 +728,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         Utils.showCustomTokenExpiredDialog(getActivity(), "401 Error Response");
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK, false);
                     } else {
-                        Toast.makeText(getActivity(), "Response Failure", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
                     }
                 }
 

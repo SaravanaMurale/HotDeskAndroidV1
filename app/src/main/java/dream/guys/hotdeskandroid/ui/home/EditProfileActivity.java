@@ -1668,8 +1668,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        System.out.println("ceck perm result main" + grantResults[0]);
-        if (grantResults[0] == -1) {
+        if (grantResults.length > 0 && grantResults[0] == -1) {
             cameraPopUP();
         }
     }

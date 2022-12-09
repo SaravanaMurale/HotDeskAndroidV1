@@ -50,11 +50,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginHorizontal="20dp"
             >
-
+            <Spinner
+                android:id="@+id/assertSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/spinner_outline"
+                android:spinnerMode="dropdown"
+                tools:listitem="@layout/assert_list"
+                android:layout_margin="@dimen/_3sdp"
+            />
             <LinearLayout
                 android:id="@+id/ll_book"
                 android:layout_width="match_parent"
