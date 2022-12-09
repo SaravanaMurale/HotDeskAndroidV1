@@ -1,5 +1,7 @@
 package dream.guys.hotdeskandroid.adapter;
 
+import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import dream.guys.hotdeskandroid.model.FloorListModel;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.ui.teams.TeamsFragment;
 import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.SessionHandler;
 
 public class TeamsFloorListAdapter extends RecyclerView.Adapter<TeamsFloorListAdapter.viewHolder>{
     Context context;
@@ -75,7 +78,22 @@ public class TeamsFloorListAdapter extends RecyclerView.Adapter<TeamsFloorListAd
             public void onClick(View v) {
                 for(int i=0; i < floorListModels.get(holder.getAbsoluteAdapterPosition()).getDaoTeamMembers().size(); i++){
 
+
                 }
+
+
+
+
+                String floorName=floorListModels.get(holder.getAbsoluteAdapterPosition()).getDaoTeamMembers()
+                        .get(0).getDayGroups()
+                        .get(0).getCalendarEntries().get(0).getBooking().getLocationBuildingFloor().getBuildingName()+","+floorListModels.get(holder.getAbsoluteAdapterPosition()).getDaoTeamMembers()
+                        .get(0).getDayGroups()
+                        .get(0).getCalendarEntries().get(0).getBooking().getLocationBuildingFloor().getfLoorName();
+
+                SessionHandler.getInstance().save(getContext(),AppConstants.FULLPATHLOCATION,floorName);
+
+
+
                 floorListener.floorListenerClick(
                         floorListModels.get(holder.getAbsoluteAdapterPosition()).getFloorId(),
                         floorListModels.get(holder.getAbsoluteAdapterPosition()).getDaoTeamMembers()
@@ -83,6 +101,10 @@ public class TeamsFloorListAdapter extends RecyclerView.Adapter<TeamsFloorListAd
                                 .get(0).getCalendarEntries().get(0).getBooking().getDeskId(),
                         AppConstants.DESK
                         );
+
+
+                //floorListModels.get(position).getDaoTeamMembers().get(position).getDayGroups().get(position).get
+
             }
         });
 
