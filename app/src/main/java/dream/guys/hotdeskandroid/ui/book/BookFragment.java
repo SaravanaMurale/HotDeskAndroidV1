@@ -329,6 +329,7 @@ public class BookFragment extends Fragment implements
     CustomSpinner assertSpinner;
     ArrayList<AssertModel> assertList;
     AssertListAdapter assertListAdapter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -430,8 +431,8 @@ public class BookFragment extends Fragment implements
                 if (countCheck) {
                     if (!(Utils.compareTwoDate(date,Utils.getCurrentDate()) == 1)){
                         if (selectedicon==1){
-//                            if (isGlobalLocationSetUP)
-//                                getAvaliableDeskDetails("3",Utils.getISO8601format(date));
+                            if (isGlobalLocationSetUP)
+                                getAvaliableDeskDetails("3",Utils.getISO8601format(date));
                             getAddEditDesk("3",Utils.getISO8601format(date));
                             calSelectedDate=Utils.getISO8601format(date);
 
@@ -1846,7 +1847,6 @@ public class BookFragment extends Fragment implements
         }
     }
 
-
     private void getAddEditDesk(String code,String date) {
         if (Utils.isNetworkAvailable(getActivity())) {
 
@@ -1871,7 +1871,7 @@ public class BookFragment extends Fragment implements
                             if(response.body().getTeamDeskAvailabilities()!=null)
                                 bookingDeskList = response.body().getTeamDeskAvailabilities();
                         }
-//                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+
                         if (code.equalsIgnoreCase("3")){
                             if(bookingForEditResponse.getBookings()!=null
                                     && bookingForEditResponse.getBookings().size()>0)
@@ -2113,6 +2113,14 @@ public class BookFragment extends Fragment implements
                     editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
                 }
 
+                selectedTeamId = bookingForEditResponseDesk.get(i).getTeamId();
+                globalSelectedTeamId = bookingForEditResponseDesk.get(i).getTeamId();
+                for (int x=0; x<activeTeamsList.size(); x++) {
+                    if (selectedTeamId == activeTeamsList.get(x).getId()) {
+                        selectedTeamName = activeTeamsList.get(x).getName();
+                        selectedTeamAutoApproveStatus = activeTeamsList.get(x).getAutomaticApprovalStatus();
+                    }
+                }
                 editBookingDetailsGlobal.setDate(Utils.convertStringToDateFormet(calSelectedDate));
                 editBookingDetailsGlobal.setCalId(0);
                 editBookingDetailsGlobal.setDeskCode(bookingForEditResponseDesk.get(i).getDeskCode());
@@ -2124,6 +2132,14 @@ public class BookFragment extends Fragment implements
                 Log.d(TAG," desk id check if "+bookingForEditResponseDesk.get(i).getTeamDeskId());
                 break loop;
             } else {
+                selectedTeamId = bookingForEditResponseDesk.get(0).getTeamId();
+                globalSelectedTeamId = bookingForEditResponseDesk.get(0).getTeamId();
+                for (int x=0; x<activeTeamsList.size(); x++) {
+                    if (selectedTeamId == activeTeamsList.get(x).getId()) {
+                        selectedTeamName = activeTeamsList.get(x).getName();
+                        selectedTeamAutoApproveStatus = activeTeamsList.get(x).getAutomaticApprovalStatus();
+                    }
+                }
                 editBookingDetailsGlobal.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursFrom()));
                 editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
                 editBookingDetailsGlobal.setDeskCode(bookingForEditResponseDesk.get(0).getDeskCode());
@@ -2560,7 +2576,6 @@ public class BookFragment extends Fragment implements
 //                endTime.setText(Utils.setStartNearestFiveMinToMeeting(Utils.currentTimeWithExtraMins(32)));
                 endTime.setText(Utils.setStartNearestThirtyMinToMeeting(startTime.getText().toString()));
 //                endTime.setText(Utils.convert24HrsTO12Hrs(Utils.setStartNearestFiveMinToMeeting(Utils.currentTimeWithExtraMins(32))));
-
             } else {
 
                 if (editDeskBookingDetails.getEditStartTTime()!=null) {
@@ -3435,7 +3450,7 @@ public class BookFragment extends Fragment implements
 
         //Get Date Difference Between current date and weekend date
         String selectedDate=binding.locateCalendearView.getText().toString();
-        enableCurrentWeek=Utils.getDifferenceBetweenTwoDates(selectedDate);
+        enableCurrentWeek = Utils.getDifferenceBetweenTwoDates(selectedDate);
 
         ////System.out.println("enableCurrentWeek "+enableCurrentWeek);
 
@@ -5820,14 +5835,15 @@ public class BookFragment extends Fragment implements
                         bookingDeskList.clear();
                         if(response.body().getTeamDeskAvailability() != null)
                             bookingDeskList = response.body().getTeamDeskAvailability();
+
                         if(bookingDeskList!=null && bookingDeskList.size() > 0){
                             selectedTeamId = bookingDeskList.get(0).getTeamId();
                             globalSelectedTeamId = bookingDeskList.get(0).getTeamId();
                         }
-                        for (int i=0; i<activeTeamsList.size(); i++) {
-                            if (selectedTeamId==activeTeamsList.get(i).getId()) {
-                                selectedTeamName = activeTeamsList.get(i).getName();
-                                selectedTeamAutoApproveStatus = activeTeamsList.get(i).getAutomaticApprovalStatus();
+                        for (int x=0; x<activeTeamsList.size(); x++) {
+                            if (selectedTeamId == activeTeamsList.get(x).getId()) {
+                                selectedTeamName = activeTeamsList.get(x).getName();
+                                selectedTeamAutoApproveStatus = activeTeamsList.get(x).getAutomaticApprovalStatus();
                             }
                         }
                     }

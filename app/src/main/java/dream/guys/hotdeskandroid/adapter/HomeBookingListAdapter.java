@@ -76,18 +76,16 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull HomeBookingListViewHolder holder, int position) {
-
         holder.rlBookingRemoteBlock.setVisibility(View.GONE);
         holder.rlInOffice.setVisibility(View.VISIBLE);
         //conditon is to display date and line accordingly
-        if (list.get(position).isDateStatus()){
+        if (list.get(position).isDateStatus()) {
             holder.dateLayout.setVisibility(View.VISIBLE);
-            System.out.println("DateFormatPrintHere"+list.get(position).getDate());
+//            System.out.println("DateFormatPrintHere"+list.get(position).getDate());
 //            System.out.println("DayInTextAndNumber"+Utils.getDayAndDateFromDateFormat(list.get(position).getDate()));
             holder.today_date.setText(""+Utils.getDayAndDateFromDateFormat(list.get(position).getDate()));
             holder.lineLayout.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             holder.dateLayout.setVisibility(View.GONE);
             holder.lineLayout.setVisibility(View.VISIBLE);
         }
@@ -109,12 +107,9 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
             holder.bookingIvEdit.setVisibility(View.GONE);
             holder.bookingIvLocation.setVisibility(View.GONE);
-//            System.out.println("date check Balaaaa"
-//                    +list.get(position).getDate()+
-//                    " : "
-//                    +Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate()));
+            holder.tv_change.setVisibility(View.GONE);
         } else if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
-            System.out.println("check date of today present "+list.get(position).getDate());
+//            System.out.println("check date of today present "+list.get(position).getDate());
             if (!fragment.showPastStatus && !pastCheck)
                 holder.tv_past_event.setVisibility(View.VISIBLE);
             else
@@ -246,8 +241,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     break;
                 default:
             }
-        }
-        else if (list.get(position).getCalDeskStatus() ==1 &&
+        } else if (list.get(position).getCalDeskStatus() ==1 &&
                 !list.get(position).getCalendarEntriesModel()
                 .getUsageTypeAbbreviation().equalsIgnoreCase("IO")) {
             holder.rlBookingRemoteBlock.setVisibility(View.VISIBLE);
@@ -353,9 +347,21 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             .placeholder(R.drawable.sick_plus)
                             .into(holder.bookingRemoteHome);
                     break;
+                default:
+                    holder.tvBookingWorkingRemote.setText(""+list.get(position)
+                            .getCalendarEntriesModel().getUsageTypeName());
+                    list.get(position).getCalendarEntriesModel().setUsageTypeName("Not assigned to Team");
+                    /*
+                    if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2) {
+                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"No Team");
+                    }
+                    */
+                    Glide.with(context)
+                            .load(R.drawable.notification_icon)
+                            .placeholder(R.drawable.notification_icon)
+                            .into(holder.bookingRemoteHome);
             }
-        }
-        else if (list.get(position).getCalDeskStatus() == 2){
+        } else if (list.get(position).getCalDeskStatus() == 2){
             //Meeting Room
             holder.rlBookingRemoteBlock.setVisibility(View.GONE);
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
@@ -452,6 +458,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     .load(R.drawable.car)
                     .placeholder(R.drawable.car)
                     .into(holder.bookingRemoteHome);
+        } else {
+            holder.tv_change.setVisibility(View.GONE);
         }
 
         //CheckOut Button Click
