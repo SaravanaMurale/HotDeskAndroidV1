@@ -589,14 +589,14 @@ public class LoginActivity extends AppCompatActivity {
                             getUserDetailsUsingToken(getTokenResponse.getToken());
                         } else {
                             ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
-                            Utils.toastMessage(LoginActivity.this, "You have entered the incorrect password. Please try again.");
+                            Utils.toastMessage(LoginActivity.this, "You have entered an incorrect username or password.  Please try again.");
 //                            etEmail.requestFocus();
 //                            etEmail.setError("You have entered the incorrect password. Please try again.");
 
                         }
                     } else if (response.code() == 401) {
                         ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
-                        Utils.toastMessage(LoginActivity.this, "You have entered the incorrect password. Please try again.");
+                        Utils.toastMessage(LoginActivity.this, "You have entered an incorrect username or password.  Please try again.");
 //                        etEmail.requestFocus();
 //                        etEmail.setError("You have entered the incorrect password. Please try again.");
                     } else if (response.code() == 403) {
@@ -618,8 +618,6 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             Utils.toastMessage(this, "Please Enable Internet");
         }
-
-
     }
 
     //By Passing Token Get User Details
@@ -743,19 +741,17 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-
     private boolean validateLoginDetails(String companyName, String email, String password) {
-
         boolean userDetailStatus = false;
-
         if (Utils.isValiedCompanyName(companyName)) {
             if (Utils.isValidEmail(email)) {
-                if (Utils.isValiedText(password)) {
+                if (Utils.isValiedText(password)
+                        && Utils.isValidPassword(password)) {
                     userDetailStatus = true;
                 } else {
 //                    Utils.toastMessage(LoginActivity.this, "Please enter a valid password.");
                     etPassword.requestFocus();
-                    etPassword.setError("Please enter a valid password.");
+                    etPassword.setError("You have entered the incorrect  password.  Please try again.");
                 }
             } else {
 //                Utils.toastMessage(LoginActivity.this, "Please enter a valid email address.");

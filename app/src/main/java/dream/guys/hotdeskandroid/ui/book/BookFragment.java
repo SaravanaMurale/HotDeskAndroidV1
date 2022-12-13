@@ -416,7 +416,7 @@ public class BookFragment extends Fragment implements
             public void onDayLongPress(Date date, int pos) {
                 boolean countCheck = false;
                 loo:
-                for (int i=0; i<events.size();i++){
+                for (int i=0; i<events.size();i++) {
 //                    //System.out.println("avail assigned COunt"+Utils.getYearMonthDateFormat(date) +" : "+events.get(i).getDate());
                     if (events.get(i).getDate().equalsIgnoreCase(Utils.getYearMonthDateFormat(date)+"T00:00:00Z")){
                         if (events.get(i).getAvailableCount()>0
@@ -429,8 +429,8 @@ public class BookFragment extends Fragment implements
                 }
 
                 if (countCheck) {
-                    if (!(Utils.compareTwoDate(date,Utils.getCurrentDate()) == 1)){
-                        if (selectedicon==1){
+                    if (!(Utils.compareTwoDate(date,Utils.getCurrentDate()) == 1)) {
+                        if (selectedicon == 1) {
                             if (isGlobalLocationSetUP)
                                 getAvaliableDeskDetails("3",Utils.getISO8601format(date));
                             getAddEditDesk("3",Utils.getISO8601format(date));
@@ -441,10 +441,10 @@ public class BookFragment extends Fragment implements
                         } else if (selectedicon==2) {
                             getMeetingBookingListToEdit("" + Utils.getYearMonthDateFormat(date)+"T00:00:00.000Z", "new");
                             calSelectedDate=Utils.getISO8601format(date);
-                        } else if(selectedicon==3){
+                        } else if(selectedicon==3) {
                             getCarParListToEdit(""+Utils.getISO8601format(date),""+Utils.getISO8601format(date));
                             calSelectedDate=Utils.getISO8601format(date);
-                        }else {
+                        } else {
                         }
                     }else
                         Toast.makeText(getContext(), "Please Select current Date", Toast.LENGTH_SHORT).show();
@@ -472,30 +472,30 @@ public class BookFragment extends Fragment implements
         binding.deskLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedicon=0;
-                tabToggleViewClicked(0);
+                selectedicon=1;
+                tabToggleViewClicked(1);
 
             }
         });
         binding.roomLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedicon=1;
-                tabToggleViewClicked(1);
+                selectedicon=2;
+                tabToggleViewClicked(2);
             }
         });
         binding.parkingLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedicon=2;
-                tabToggleViewClicked(2);
+                selectedicon=3;
+                tabToggleViewClicked(3);
             }
         });
         binding.moreLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedicon = 3;
-                tabToggleViewClicked(3);
+//                selectedicon = 4;
+//                tabToggleViewClicked(4);
             }
         });
 
@@ -880,7 +880,7 @@ public class BookFragment extends Fragment implements
     public void tabToggleViewClicked(int i) {
         resetLayout();
         switch (i){
-            case 0:
+            case 1:
                 binding.profileBack.setText("Book a workspace");
                 binding.rlTime.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
                 binding.deskLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
@@ -894,15 +894,15 @@ public class BookFragment extends Fragment implements
                 deskParams.weight = 1.0f;
                 binding.deskLayout.setLayoutParams(deskParams);
                 binding.calendarView.setVisibility(View.VISIBLE);
-                if (calSelectedMont != "" && !calSelectedMont.isEmpty()){
+                if (calSelectedMont != "" && !calSelectedMont.isEmpty()) {
                     if (binding.searchGlobal.getText()!=null
                             && !binding.searchGlobal.getText().toString().equalsIgnoreCase("")
                             && !binding.searchGlobal.getText().toString().isEmpty())
                         getDeskCountLocation(calSelectedMont,""+SessionHandler.getInstance().getInt(getContext(),AppConstants.LOCATION_ID),1);
                     else
                         getDeskCount(calSelectedMont);
-                }
-                else{
+                } else {
+
                     if (binding.searchGlobal.getText()!=null
                             && !binding.searchGlobal.getText().toString().equalsIgnoreCase("")
                             && !binding.searchGlobal.getText().toString().isEmpty())
@@ -911,7 +911,7 @@ public class BookFragment extends Fragment implements
                         getDeskCount(Utils.getCurrentDate());
                 }
                 break;
-            case 1:
+            case 2:
                 binding.profileBack.setText("Book a Room");
                 binding.rlTime.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
                 binding.roomLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
@@ -952,7 +952,7 @@ public class BookFragment extends Fragment implements
                         getDeskCount(Utils.getCurrentDate());
                 }
                 break;
-            case 2:
+            case 3:
                 binding.profileBack.setText("Book Parking");
                 binding.rlTime.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
                 binding.parkingLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
@@ -991,20 +991,35 @@ public class BookFragment extends Fragment implements
                         getDeskCount(Utils.getCurrentDate());
                 }
                 break;
-            case 3:
-                binding.moreLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
-                binding.ivMore.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
-                binding.tvMore.setVisibility(View.VISIBLE);
-
-                LinearLayout.LayoutParams moreParams = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                moreParams.weight = 1.0f;
-                binding.moreLayout.setLayoutParams(moreParams);
-                binding.calendarView.setVisibility(View.GONE);
-                binding.relativeMore.setVisibility(View.GONE);
-//                getDeskCount(Utils.getCurrentDate());
-                break;
             default:
+                binding.profileBack.setText("Book a workspace");
+                binding.rlTime.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+                binding.deskLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
+                binding.ivDesk.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
+                binding.tvDesk.setVisibility(View.VISIBLE);
+                binding.tvDesk.setText(appKeysPage.getWorkSpace());
+                binding.rlParticipants.setVisibility(View.GONE);
+                binding.rlFilter.setVisibility(View.GONE);
+                LinearLayout.LayoutParams deskParas = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                deskParas.weight = 1.0f;
+                binding.deskLayout.setLayoutParams(deskParas);
+                binding.calendarView.setVisibility(View.VISIBLE);
+                if (calSelectedMont != "" && !calSelectedMont.isEmpty()){
+                    if (binding.searchGlobal.getText()!=null
+                            && !binding.searchGlobal.getText().toString().equalsIgnoreCase("")
+                            && !binding.searchGlobal.getText().toString().isEmpty())
+                        getDeskCountLocation(calSelectedMont,""+SessionHandler.getInstance().getInt(getContext(),AppConstants.LOCATION_ID),1);
+                    else
+                        getDeskCount(calSelectedMont);
+                } else {
+                    if (binding.searchGlobal.getText()!=null
+                            && !binding.searchGlobal.getText().toString().equalsIgnoreCase("")
+                            && !binding.searchGlobal.getText().toString().isEmpty())
+                        getDeskCountLocation(Utils.getCurrentDate(),""+SessionHandler.getInstance().getInt(getContext(),AppConstants.LOCATION_ID),1);
+                    else
+                        getDeskCount(Utils.getCurrentDate());
+                }
                 break;
 
         }
@@ -1017,13 +1032,13 @@ public class BookFragment extends Fragment implements
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<List<DeskRoomCountResponse>> call = null;
             switch (selectedicon){
-                case 0:
+                case 1:
                     call = apiService.getDailyDeskCount(month, ""+SessionHandler.getInstance().getInt(getActivity(), AppConstants.TEAM_ID));
                     break;
-                case 1:
+                case 2:
                     call = apiService.getDailyRoomCount(month, ""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
                     break;
-                case 2:
+                case 3:
                     call = apiService.getDailyParkingCount(month, ""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
                     break;
             }
@@ -1043,7 +1058,7 @@ public class BookFragment extends Fragment implements
                                 }
                             }
                             if (events.size()>0){
-                                binding.calendarView.updateCalendar(events, -1);
+                                binding.calendarView.updateCalendar(events, selectedicon);
                             }
                         } else if(response.code()==401){
                             //Handle if token got expired
@@ -1075,10 +1090,17 @@ public class BookFragment extends Fragment implements
                 dialog.dismiss();
             dialog= ProgressDialog.showProgressBar(context);
             //System.out.println("check sub parent Id  :  "+locationId);
+//            Toast.makeText(context, "else"+locationId, Toast.LENGTH_SHORT).show();
+
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<List<DeskRoomCountResponse>> call = null;
-            switch (selectedicon){
-                case 0:
+            int caseCount =0;
+            if (selectedicon==1 || selectedicon>3)
+                caseCount=1;
+            else
+                caseCount=selectedicon;
+            switch (caseCount) {
+                case 1:
                     if (drawStatus == 2) {
                         String toDate = binding.locateCalendearView.getText().toString() + "T00:00:00Z";
                         String fromTime = calSelectedDate + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
@@ -1093,7 +1115,7 @@ public class BookFragment extends Fragment implements
 //                        call = apiService.getDailyDeskCountLocation(month, locationId,"","");
                     }
                     break;
-                case 1:
+                case 2:
                     if (drawStatus == 2){
                         String toDate = binding.locateCalendearView.getText().toString() + "T00:00:00Z";
                         String fromTime = calSelectedDate + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
@@ -1103,7 +1125,7 @@ public class BookFragment extends Fragment implements
                     else
                         call = apiService.getDailyRoomCountLocation(month, locationId,"","");
                     break;
-                case 2:
+                case 3:
                     if (drawStatus == 2){
                         String toDate = binding.locateCalendearView.getText().toString() + "T00:00:00Z";
                         String fromTime = calSelectedDate + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
@@ -1126,7 +1148,7 @@ public class BookFragment extends Fragment implements
                             events.clear();
                             events.addAll(response.body());
                             if (events.size()>0){
-                                binding.calendarView.updateCalendar(events, -1);
+                                binding.calendarView.updateCalendar(events, selectedicon);
                             }
 
                         } else if(response.code()==401){
@@ -2074,7 +2096,7 @@ public class BookFragment extends Fragment implements
                 }
             }
         } else {
-            for (int i=0; i<bookingForEditResponse.getTeamDeskAvailabilities().size(); i++){
+            for (int i=0; i<bookingForEditResponse.getTeamDeskAvailabilities().size(); i++) {
 //                logic to show booked by else
                 /*if(Utils.compareTwoDate(Utils.convertStringToDateFormet(calSelectedDate),
                         Utils.getCurrentDate())==2 && bookingForEditResponse.getTeamDeskAvailabilities().get(i).isBookedByElse()){
@@ -4157,13 +4179,13 @@ public class BookFragment extends Fragment implements
 
                                 switch (dskRoomStatus){
                                     case 1:
-                                        tabToggleViewClicked(0);
-                                        break;
-                                    case 2:
                                         tabToggleViewClicked(1);
                                         break;
-                                    case 3:
+                                    case 2:
                                         tabToggleViewClicked(2);
+                                        break;
+                                    case 3:
+                                        tabToggleViewClicked(3);
                                         break;
                                     default:
                                         break;
@@ -7575,7 +7597,32 @@ public class BookFragment extends Fragment implements
 
         selectedicon = spinner.getSelectedItemPosition()+1;
         spinner.setBackground(getResources().getDrawable(R.drawable.spinner_outline));
-
+        switch (selectedicon) {
+            case 1:
+                tabToggleViewClicked(1);
+                break;
+            case 2:
+                tabToggleViewClicked(2);
+                break;
+            case 3:
+                tabToggleViewClicked(3);
+                break;
+            case 4:
+                tabToggleViewClicked(1);
+                break;
+            case 5:
+                tabToggleViewClicked(1);
+                break;
+            case 6:
+                tabToggleViewClicked(1);
+                break;
+            case 7:
+                tabToggleViewClicked(1);
+                break;
+            default:
+                tabToggleViewClicked(1);
+        }
+//        tabToggleViewClicked(selectedicon);
 
     }
 }

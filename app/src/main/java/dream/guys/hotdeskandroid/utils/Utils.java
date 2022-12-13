@@ -70,6 +70,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.listener.QuestionListEditListener;
@@ -132,6 +134,28 @@ public class Utils {
             return 0;
     }
 
+    public static boolean isValidPassword(String password) {
+        // Regex to check valid password.
+        String regex = "^(?=.*[0-9])"
+                + "(?=.*[a-z])(?=.*[A-Z])"
+                + "(?=.*[.@#$%^&+=])"
+                + "(?=\\S+$).{6,20}$";
+
+        // Compile the ReGex
+        Pattern p = Pattern.compile(regex);
+        // If the password is empty
+        // return false
+        if (password == null) {
+            return false;
+        }
+        // Pattern class contains matcher() method
+        // to find matching between given password
+        // and regular expression.
+        Matcher m = p.matcher(password);
+        // Return if the password
+        // matched the ReGex
+        return m.matches();
+    }
     public static boolean isValidEmail(String email) {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }

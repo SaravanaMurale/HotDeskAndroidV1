@@ -279,14 +279,22 @@ public class CalendarView extends LinearLayout
                     } else if (Utils.compareTwoDate(Utils.convertStringToDateFormet(eventDate.getDate()),
                             Utils.getCurrentDate())==2){
                         if (count!=null && dateBox!=null) {
-                            ((TextView) count).setVisibility(VISIBLE);
+                            if (selectedPosition>3)
+                                ((TextView) count).setVisibility(GONE);
+                            else
+                                ((TextView) count).setVisibility(VISIBLE);
                             ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
                             ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
                         }
                     }else if (Utils.compareTwoDate(Utils.convertStringToDateFormet(eventDate.getDate()),
                             Utils.getCurrentDate())==3){
                         if (count!=null && dateBox!=null) {
-                            ((TextView) count).setVisibility(VISIBLE);
+
+                            if (selectedPosition>3)
+                                ((TextView) count).setVisibility(GONE);
+                            else
+                                ((TextView) count).setVisibility(VISIBLE);
+//                            ((TextView) count).setVisibility(VISIBLE);
                             ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
                             ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
                         }

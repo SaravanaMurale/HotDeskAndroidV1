@@ -50,6 +50,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 finish();
             }
         });
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
