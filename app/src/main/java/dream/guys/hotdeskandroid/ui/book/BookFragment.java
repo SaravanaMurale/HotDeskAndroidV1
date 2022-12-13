@@ -1103,7 +1103,7 @@ public class BookFragment extends Fragment implements
         if (Utils.isNetworkAvailable(getActivity()) && Integer.parseInt(locationId)!=0) {
             if(dialog.isShowing())
                 dialog.dismiss();
-            dialog= ProgressDialog.showProgressBar(context);
+//            dialog= ProgressDialog.showProgressBar(context);
             //System.out.println("check sub parent Id  :  "+locationId);
 //            Toast.makeText(context, "else"+locationId, Toast.LENGTH_SHORT).show();
 
@@ -1155,7 +1155,7 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onResponse(Call<List<DeskRoomCountResponse>> call, Response<List<DeskRoomCountResponse>> response) {
 //                    ProgressDialog.dismisProgressBar(context,dialog);
-                    dialog.dismiss();
+//                    dialog.dismiss();
                     isGlobalLocationSetUP = true;
                     try{
 
@@ -1181,7 +1181,7 @@ public class BookFragment extends Fragment implements
                 public void onFailure(Call<List<DeskRoomCountResponse>> call, Throwable t) {
 //                    ProgressDialog.dismisProgressBar(context,dialog);
                     Toast.makeText(getActivity(), "fail "+t.getMessage(), Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
+//                    dialog.dismiss();
                 }
             });
 
