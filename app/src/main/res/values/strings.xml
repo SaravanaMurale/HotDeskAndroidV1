@@ -163,5 +163,6 @@
     <string name="car_park_request_success">CarPark Request Success</string>
     <string name="desk_book_deleted">Booking Deleted</string>
     <string name="deleted">Deleted</string>
+    <string name="active_bookings">Active bookings</string>
 
 </resources>

@@ -30,6 +30,14 @@ public class ProgressDialog {
         }
 
     }
+    public static void dismissProgressBar(Dialog dialog) {
+
+        if (dialog.isShowing()) {
+            dialog.dismiss();
+            dialog.cancel();
+        }
+
+    }
 
     public static void touchLock(Context context, Activity activity){
         activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,

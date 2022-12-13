@@ -47,6 +47,17 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -444,6 +455,10 @@ public class BookFragment extends Fragment implements
                         } else if(selectedicon==3) {
                             getCarParListToEdit(""+Utils.getISO8601format(date),""+Utils.getISO8601format(date));
                             calSelectedDate=Utils.getISO8601format(date);
+                        } else if (selectedicon == 4 || selectedicon == 5 || selectedicon == 6 || selectedicon == 7) {
+                            calSelectedDate = Utils.getISO8601format(date);
+                            new OtherBookingController(context, selectedicon, calSelectedDate);
+
                         } else {
                         }
                     }else
