@@ -90,9 +90,9 @@ public class CarListToEditAdapterBooking extends RecyclerView.Adapter<CarListToE
         }
         if (carParkBookings.get(position).getStatus().getBookingType()!=null
                 && carParkBookings.get(position).getStatus().getBookingType().equalsIgnoreCase("req")) {
-            holder.editDelete.setVisibility(View.GONE);
-            holder.editTextEdit.setVisibility(View.GONE);
-            holder.rlBottonm.setVisibility(View.GONE);
+            holder.editDelete.setVisibility(View.VISIBLE);
+            holder.editTextEdit.setVisibility(View.VISIBLE);
+            holder.rlBottonm.setVisibility(View.VISIBLE);
         }
 
 
