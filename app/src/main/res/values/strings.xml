@@ -44,8 +44,8 @@
 
     <string name="subject">Subject</string>
     <string name="spaceadd">(To add external users type their email address and press space)</string>
-    <string name="attendeesInternal">Participants optional</string>
-    <string name="attendeesExternal">Attendees-external</string>
+    <string name="attendeesInternal">Internal participants optional</string>
+    <string name="attendeesExternal">External participants</string>
 
     <string name="select_date">Select date</string>
 

@@ -106,7 +106,7 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
            }
 
 
-        if (daoTeamMemberList.get(position).getDayGroups().isEmpty() || daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().size() == 0) {
+        if (daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups()==null || daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().size() == 0) {
             //holder.locateMyTeamDeskName.setText("No Booking Avaliable");
             holder.locateMyTeamCheckInTime.setVisibility(View.GONE);
             holder.locateMyTeamCheckOutTime.setVisibility(View.GONE);
@@ -123,7 +123,11 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
                 holder.locateMyTeamCheckOutTime.setText(Utils.splitTime(daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getMyto()));
 
             } else if (daoTeamMemberList.get(position).getDayGroups().get(0).getCalendarEntriesModel().getBooking() == null) {
-                holder.locateMyTeamDeskName.setText(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel().getBooking().getDeskCode());
+
+               /* if(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel().getBooking().getDeskCode()!=null && daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel().getBooking().getDeskCode().isEmpty()){
+                    holder.locateMyTeamDeskName.setText(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel().getBooking().getDeskCode());
+                }*/
+
                 holder.locateMyTeamCheckInTime.setText(Utils.splitTime(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel().getFrom()));
                 holder.locateMyTeamCheckOutTime.setText(Utils.splitTime(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel().getMyto()));
 
