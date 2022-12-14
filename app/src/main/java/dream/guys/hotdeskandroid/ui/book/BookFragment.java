@@ -455,7 +455,8 @@ public class BookFragment extends Fragment implements
                         } else if(selectedicon==3) {
                             getCarParListToEdit(""+Utils.getISO8601format(date),""+Utils.getISO8601format(date));
                             calSelectedDate=Utils.getISO8601format(date);
-                        } else if (selectedicon == 4 || selectedicon == 5 || selectedicon == 6 || selectedicon == 7) {
+                        } else if (selectedicon == 4 || selectedicon == 5 || selectedicon == 6 ||
+                                selectedicon == 7) {
                             calSelectedDate = Utils.getISO8601format(date);
                             new OtherBookingController(context, selectedicon, calSelectedDate);
 
@@ -1055,6 +1056,9 @@ public class BookFragment extends Fragment implements
                     break;
                 case 3:
                     call = apiService.getDailyParkingCount(month, ""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
+                    break;
+                default:
+                    call = apiService.getDailyDeskCount(month, ""+SessionHandler.getInstance().getInt(getActivity(), AppConstants.TEAM_ID));
                     break;
             }
             call.enqueue(new Callback<List<DeskRoomCountResponse>>() {

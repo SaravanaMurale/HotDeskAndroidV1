@@ -32,6 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
+import dream.guys.hotdeskandroid.ui.book.OtherBookingController;
 import dream.guys.hotdeskandroid.ui.home.HomeFragment;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -260,9 +261,10 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
             switch (list.get(position).getCalendarEntriesModel().getUsageTypeAbbreviation()){
                 case "RQ":
-                    holder.tvSubBookingWorkingRemote.setText(""
-                            +Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom())
-                            +" - "
+                    holder.startTime.setText(""
+                            +Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom()));
+
+                    holder.endTime.setText(""
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
 
                     Glide.with(context)
@@ -279,9 +281,14 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     break;
                 case "WFH":
                     holder.tvBookingWorkingRemote.setText("You’re working remotely");
-                    holder.tvSubBookingWorkingRemote.setText(""
+                   /* holder.tvSubBookingWorkingRemote.setText(""
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom())
                             +" - "
+                            +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));*/
+                    holder.startTime.setText(""
+                            +Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom()));
+
+                    holder.endTime.setText(""
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("You’re working remotely");
                     if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
@@ -296,9 +303,14 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                 case "WOO":
                     holder.tvBookingWorkingRemote.setText("You're Working in alternative office");
 
-                    holder.tvSubBookingWorkingRemote.setText(""
+                   /* holder.tvSubBookingWorkingRemote.setText(""
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom())
                             +" - "
+                            +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));*/
+                    holder.startTime.setText(""
+                            +Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom()));
+
+                    holder.endTime.setText(""
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("You're Working in alternative office");
                     if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
@@ -311,21 +323,32 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     break;
                 case "TR":
                     holder.tvBookingWorkingRemote.setText("You're in training");
-                    holder.tvSubBookingWorkingRemote.setText(""
+                   /* holder.tvSubBookingWorkingRemote.setText(""
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom())
                             +" - "
+                            +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));*/
+
+                    holder.startTime.setText(""
+                            +Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom()));
+
+                    holder.endTime.setText(""
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
 
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("You're in training");
                     if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
                         SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Training");
                     }
+                    Glide.with(context)
+                            .load(R.drawable.training_book)
+                            .placeholder(R.drawable.training_book)
+                            .into(holder.bookingRemoteHome);
                     break;
                 case "OO":
                     holder.tvBookingWorkingRemote.setText("Out of office");
-                    holder.tvSubBookingWorkingRemote.setText(""
-                            +Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom())
-                            +" - "
+                    holder.startTime.setText(""
+                            +Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom()));
+
+                    holder.endTime.setText(""
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("Out of office");
                     if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
@@ -337,8 +360,13 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             .into(holder.bookingRemoteHome);
                     break;
                 case "SL":
-                    holder.tvBookingWorkingRemote.setText("You're on Sick Leave");
-                    list.get(position).getCalendarEntriesModel().setUsageTypeName("You're on Sick Leave");
+                    holder.tvBookingWorkingRemote.setText("You’re off sick");
+                    holder.startTime.setText(""
+                            +Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom()));
+
+                    holder.endTime.setText(""
+                            +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
+                    list.get(position).getCalendarEntriesModel().setUsageTypeName("You’re off sick");
                     if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
                         SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Sick Leave");
                     }
@@ -449,10 +477,11 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
 
             holder.tvBookingWorkingRemote.setText("Request For Parking - "+list.get(position).getCarParkBookingsModel().getParkingSlotCode());
-            holder.tvSubBookingWorkingRemote.setText(""
-                    +Utils.splitTime(list.get(position).getCarParkBookingsModel().getFrom())
-                    +" - "
-                    +Utils.splitTime(list.get(position).getCarParkBookingsModel().getMyto()));
+            holder.startTime.setText(""
+                    +Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom()));
+
+            holder.endTime.setText(""
+                    +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
 
             Glide.with(context)
                     .load(R.drawable.car)
@@ -516,7 +545,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         holder.tv_change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel()!=null){
+                /*if (list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel()!=null){
                     String clickedStatus="REMOTE";
                     onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(), AppConstants.REMOTE,
                             list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
@@ -529,8 +558,11 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     String clickedStatus="REMOTE";
                     onCheckInClickable.onCheckInCarParkingClick(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel(),AppConstants.REMOTE, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
                     //Toast.makeText(context, "CAR CLICKED", Toast.LENGTH_SHORT).show();
-                }
+                }*/
 
+                new OtherBookingController(context,
+                        list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(),
+                        list.get(holder.getAbsoluteAdapterPosition()).getDate());
             }
         });
 
@@ -613,15 +645,18 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         RelativeLayout dateLayout;
 
         @BindView(R.id.tv_change)
-        TextView tv_change;
+        ImageView tv_change;
         @BindView(R.id.tv_past_event)
         TextView tv_past_event;
         @BindView(R.id.today_date)
         TextView today_date;
         @BindView(R.id.tvBookingWorkingRemote)
         TextView tvBookingWorkingRemote;
-        @BindView(R.id.tvSubBookingWorkingRemote)
-        TextView tvSubBookingWorkingRemote;
+
+        @BindView(R.id.startTime)
+        TextView startTime;
+        @BindView(R.id.endTime)
+        TextView endTime;
 
         @BindView(R.id.all_layout)
         RelativeLayout allLayout;

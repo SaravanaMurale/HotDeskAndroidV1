@@ -745,13 +745,16 @@ public class LoginActivity extends AppCompatActivity {
         boolean userDetailStatus = false;
         if (Utils.isValiedCompanyName(companyName)) {
             if (Utils.isValidEmail(email)) {
-                if (Utils.isValiedText(password)
-                        && Utils.isValidPassword(password)) {
-                    userDetailStatus = true;
+                if (Utils.isValiedText(password)) {
+                    if (Utils.isValidPassword(password)) {
+                        userDetailStatus = true;
+                    } else {
+                        etPassword.requestFocus();
+                        etPassword.setError("You have entered the incorrect password. Please try again.");
+                    }
                 } else {
-//                    Utils.toastMessage(LoginActivity.this, "Please enter a valid password.");
+                    etPassword.setError("Please enter a valid password.");
                     etPassword.requestFocus();
-                    etPassword.setError("You have entered the incorrect  password.  Please try again.");
                 }
             } else {
 //                Utils.toastMessage(LoginActivity.this, "Please enter a valid email address.");
