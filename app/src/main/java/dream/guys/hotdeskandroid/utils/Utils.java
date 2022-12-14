@@ -1504,7 +1504,8 @@ public class Utils {
                     alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                         public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, AppConstants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                                    Manifest.permission.CAMERA}, AppConstants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                         }
                     });
                     androidx.appcompat.app.AlertDialog alert = alertBuilder.create();
