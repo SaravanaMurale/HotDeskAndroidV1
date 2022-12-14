@@ -28,6 +28,7 @@ import dream.guys.hotdeskandroid.model.request.LocationMR_Request;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomEditRequest;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRecurrence;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
+import dream.guys.hotdeskandroid.model.request.OtherBookingRequest;
 import dream.guys.hotdeskandroid.model.request.PersonalHelpRequest;
 import dream.guys.hotdeskandroid.model.request.QuestionListRequest;
 import dream.guys.hotdeskandroid.model.request.ReportIssueRequest;
@@ -523,6 +524,9 @@ public interface ApiInterface {
     @GET("https://dev-api.hotdeskplus.com/api/Download/Help")
     @Streaming
     Call<ResponseBody> downloadPdf();
+
+    @PUT("api/booking/bookings")
+    Call<BaseResponse> otherBookings(@Body OtherBookingRequest otherBookingRequest);
 }
 
 

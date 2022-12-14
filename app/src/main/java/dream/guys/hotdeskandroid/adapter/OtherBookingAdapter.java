@@ -67,7 +67,15 @@ public class OtherBookingAdapter extends RecyclerView.Adapter<OtherBookingAdapte
             holder.editTextEdit.setOnClickListener(view -> {
                 otherBookingController.openNewBookingSheet("Edit",
                         Utils.splitTime(bookingsList.get(position).getFrom()),
-                        Utils.splitTime(bookingsList.get(position).getMyto()));
+                        Utils.splitTime(bookingsList.get(position).getMyto()),
+                        bookingsList.get(position).getId());
+            });
+
+            holder.editDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    otherBookingController.callDeleteBooking(bookingsList.get(holder.getAdapterPosition()).getId());
+                }
             });
         } catch (Exception e) {
             e.printStackTrace();

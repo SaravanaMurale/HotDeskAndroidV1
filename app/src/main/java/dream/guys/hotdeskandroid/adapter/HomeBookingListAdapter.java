@@ -562,7 +562,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
                 new OtherBookingController(context,
                         list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(),
-                        list.get(holder.getAbsoluteAdapterPosition()).getDate());
+                        list.get(holder.getAbsoluteAdapterPosition()).getDate(),"home");
             }
         });
 
