@@ -726,7 +726,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 locateMyTeamMemberStatusList.add(daoTeamMemberList.get(i));
             } else {
 
-                for (int j = 0; j < daoTeamMemberList.get(i).getDayGroups().size(); i++) {
+                for (int j = 0; j < daoTeamMemberList.get(i).getDayGroups().size(); j++) {
 
                     ArrayList<DAOTeamMember.DayGroup.CalendarEntry> calendarEntries = null;
                     ArrayList<DAOTeamMember.DayGroup.MeetingBooking> meetingEntries = null;
