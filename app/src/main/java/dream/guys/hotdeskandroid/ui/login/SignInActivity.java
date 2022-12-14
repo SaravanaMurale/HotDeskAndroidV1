@@ -152,23 +152,20 @@ public class SignInActivity extends AppCompatActivity {
         if (!logicCheck && !pinActiveStatusAfterLogout) {
             //FirstTime Login
             btnPinSignIn.setVisibility(View.INVISIBLE);
-
-
         } else if (logicCheck && pinActiveStatusAfterLogout) {
-
             btnSignIn.setVisibility(View.INVISIBLE);
             btnPinSignIn.setVisibility(View.INVISIBLE);
             launchHomeActivity();
         } else if (logicCheck && !pinActiveStatusAfterLogout) {
-
             btnPinSignIn.setVisibility(View.GONE);
             launchHomeActivity();
         } else if (!logicCheck && pinActiveStatusAfterLogout) {
-
             btnPinSignIn.setVisibility(View.VISIBLE);
             visibleSignInButton();
-
-        }/*else {
+        } else {
+            btnPinSignIn.setVisibility(View.VISIBLE);
+        }
+        /*else {
             btnPinSignIn.setVisibility(View.GONE);
 
             //NormalFlow

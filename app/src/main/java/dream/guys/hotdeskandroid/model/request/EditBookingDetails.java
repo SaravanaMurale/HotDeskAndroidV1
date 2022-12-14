@@ -38,7 +38,7 @@ public class EditBookingDetails {
     String abbrevation;
     List<String> amenities;
     boolean isTeamsChecked;
-    public int requestedTeamId;
+    public Integer requestedTeamId;
     public int requestedTeamDeskId;
     public Status status;
 
@@ -114,11 +114,11 @@ public class EditBookingDetails {
         this.timeZone = timeZone;
     }
 
-    public int getRequestedTeamId() {
+    public Integer getRequestedTeamId() {
         return requestedTeamId;
     }
 
-    public void setRequestedTeamId(int requestedTeamId) {
+    public void setRequestedTeamId(Integer requestedTeamId) {
         this.requestedTeamId = requestedTeamId;
     }
 

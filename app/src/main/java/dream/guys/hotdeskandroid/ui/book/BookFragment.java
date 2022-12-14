@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -58,6 +59,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -154,7 +156,9 @@ public class BookFragment extends Fragment implements
         ParticipantNameShowAdapter.OnParticipantSelectable,
         RoomListRecyclerAdapter.OnSelectSelected,
         ShowCountryAdapter.OnSelectListener,
-        CustomSpinner.OnSpinnerEventsListener {
+        CustomSpinner.OnSpinnerEventsListener,
+        ItemAdapter.selectItemInterface{
+
     String TAG="BookFragment";
     LanguagePOJO.Login logoinPage;
     LanguagePOJO.AppKeys appKeysPage;
@@ -334,6 +338,9 @@ public class BookFragment extends Fragment implements
     boolean endDisabled = false;
     boolean selectDisabled = false;
     boolean tvTeamNameDisabled = false;
+    //New...
+    //For Displaying the count
+    TextView filterTotalSize;
 
     String companyDefaultDeskStartTime="";
     String companyDefaultDeskEndTime="";
@@ -396,6 +403,7 @@ public class BookFragment extends Fragment implements
                     //amenitiesResponseList
                     callLocateFilterBottomSheet(null);
                 }
+
 //                getLocateAmenitiesFilterData(true);
             }
         });
@@ -879,10 +887,11 @@ public class BookFragment extends Fragment implements
         this.activityContext=getActivity();
 
         assertSpinner = view.findViewById(R.id.assertSpinner);
-        loadAssertSpinner();
 
         loadDefaultLocation();
+        loadAssertSpinner();
 
+        Toast.makeText(context, "hit"+selectedicon, Toast.LENGTH_SHORT).show();
 
         tabToggleViewClicked(selectedicon);
 
@@ -6796,6 +6805,157 @@ public class BookFragment extends Fragment implements
         EditText filterSearch;
 
 
+        TextView locateFilterCancel, locateFilterApply, tvFilterAmenities;
+
+       /* BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((this).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_locate_filter,
+                new RelativeLayout(getContext())));*/
+
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        View view = View.inflate(getContext(), R.layout.dialog_bottom_sheet_locate_filter, null);
+        bottomSheetDialog.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(500);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+        RelativeLayout layout = bottomSheetDialog.findViewById(R.id.amenitiesViewBlock);
+        layout.setMinimumHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+
+        locateFilterCancel = bottomSheetDialog.findViewById(R.id.locateFilterCancel);
+        locateFilterApply = bottomSheetDialog.findViewById(R.id.locateFilterApply);
+        tvFilterAmenities = bottomSheetDialog.findViewById(R.id.tvFilter);
+        filterSearch = bottomSheetDialog.findViewById(R.id.filterSearch);
+        filterTotalSize = bottomSheetDialog.findViewById(R.id.filterTotalSize);
+
+        //Language
+        filterSearch.setHint(" "+appKeysPage.getSearch());
+        tvFilterAmenities.setText(appKeysPage.getFilters());
+
+
+        locateFilterMainRV = bottomSheetDialog.findViewById(R.id.locateFilterMainRV);
+        //locateFilterMainRV.setHasFixedSize(true);
+        locateFilterMainRV.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+        locateFilterApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*for (int i = 0; i < userAllowedMeetingResponseList.size(); i++) {
+                    for (int j = 0; j < meetingStatusModelList.size(); j++) {
+                        if (userAllowedMeetingResponseList.get(i).getId() == meetingStatusModelList.get(j).getId()) {
+                            if (meetingStatusModelList.get(j).getStatus() == 1) {
+                                List<UserAllowedMeetingResponse.Amenity> amenityList = userAllowedMeetingResponseList.get(i).getAmenities();
+
+                                doCheckAppliedAminitiesWithMeetingRoom(amenityList, meetingStatusModelList.get(j));
+
+
+                            }
+
+                        }
+
+
+                    }
+
+                }
+*/
+
+//                callInitView();
+
+                filterAmenitiesList.clear();
+                ItemAdapter itemAadapter=new ItemAdapter();
+                ArrayList<DataModel> userSelectedAmenities =itemAadapter.getUpdatedList();
+                int amenitiesMatchCount=0;
+
+                //Checking Here Only With Rooms
+                for (int i = 0; i <userSelectedAmenities.get(0).getNestedList().size() ; i++) {
+                    if(userSelectedAmenities.get(0).getNestedList().get(i).isChecked()) {
+                        filterAmenitiesList.add(userSelectedAmenities.get(0).getNestedList().get(i).getId());
+                    }
+                }
+
+
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        //mList = new ArrayList<>();
+
+        //list1L
+        ArrayList<ValuesPOJO> nestedList1 = new ArrayList<>();
+
+        //valuesPOJO = new ValuesPOJO("", false);
+        //nestedList1.add(valuesPOJO);
+
+        //if (filterClickedStatus == 0) {
+        //filterClickedStatus = 1;
+        ArrayList<ValuesPOJO> nestedList2 = new ArrayList<>();
+
+        for (int i = 0; i < amenitiesResponseList.size(); i++) {
+
+            //if(amenitiesResponseList.get(i).isAvailable()){
+            valuesPOJO = new ValuesPOJO(amenitiesResponseList.get(i).getId(), amenitiesResponseList.get(i).getName(), false);
+            nestedList2.add(valuesPOJO);
+            //}
+        }
+
+        //mList.add(new DataModel(nestedList1, "Workspaces"));
+        mList.add(new DataModel(nestedList2, appKeysPage.getRooms()));
+
+        //}
+
+        for (int i = 0; i < mList.size(); i++) {
+
+            mList.get(i).setExpandable(true);
+
+        }
+        filterTotalSize.setText("(" + mList.get(0).getNestedList().size() + ")");
+        adapter = new ItemAdapter(mList,this);
+        locateFilterMainRV.setAdapter(adapter);
+
+
+        filterSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+        locateFilterCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //When we search mList is updated, so clear when close
+                adapter.clearAll();
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        bottomSheetDialog.show();
+
+    }
+
+/*
+    private void callLocateFilterBottomSheet(List<AmenitiesResponse> amenitiesResponseList) {
+
+        RecyclerView locateFilterMainRV;
+        ValuesPOJO valuesPOJO;
+        //ArrayList<DataModel> mList;
+        ItemAdapter adapter;
+        EditText filterSearch;
+
+
         TextView locateFilterCancel, locateFilterApply,tvFilterAmenities,filterTotalSize;
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -6893,164 +7053,13 @@ public class BookFragment extends Fragment implements
         locateFilterMainRV.setAdapter(adapter);
 
 
-     /*   filterSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                if(s.toString().length()>=2){
-
-
-                    for (int i = 0; i <nestedList2.size() ; i++) {
-                       if( nestedList2.get(i).getValues().contains(s.toString())){
-
-                       }
-
-                    }
-
-
-
-                }
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });*/
 
         bottomSheetDialog.show();
 
     }
+*/
 
 
-/*    private void getLocateAmenitiesFilterData() {
-        if (Utils.isNetworkAvailable(getContext())) {
-            dialog = ProgressDialog.showProgressBar(getContext());
-//            binding.locateProgressBar.setVisibility(View.VISIBLE);
-            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<List<AmenitiesResponse>> call = apiService.getAmenities();
-            call.enqueue(new Callback<List<AmenitiesResponse>>() {
-                @Override
-                public void onResponse(Call<List<AmenitiesResponse>> call, Response<List<AmenitiesResponse>> response) {
-//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                    ProgressDialog.dismisProgressBar(getContext(),dialog);
-
-                    List<AmenitiesResponse> amenitiesResponseList=response.body();
-
-                    meetingAmenityStatusList.clear();
-                    callLocateFilterBottomSheet(amenitiesResponseList);
-
-                }
-
-                @Override
-                public void onFailure(Call<List<AmenitiesResponse>> call, Throwable t) {
-//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                    ProgressDialog.dismisProgressBar(getContext(),dialog);
-
-                }
-            });
-
-        }else {
-            Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
-        }
-    }*/
-    /*
-    private void callLocateFilterBottomSheet(List<AmenitiesResponse> amenitiesResponseList) {
-
-        RecyclerView locateFilterMainRV;
-        ValuesPOJO valuesPOJO;
-        ArrayList<DataModel> mList;
-        ItemAdapter adapter;
-
-        TextView locateFilterCancel, locateFilterApply;
-
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        bottomSheetDialog.setContentView((this).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_locate_filter,
-                new RelativeLayout(getContext())));
-
-        locateFilterCancel = bottomSheetDialog.findViewById(R.id.locateFilterCancel);
-        locateFilterApply = bottomSheetDialog.findViewById(R.id.locateFilterApply);
-
-
-        locateFilterMainRV = bottomSheetDialog.findViewById(R.id.locateFilterMainRV);
-        locateFilterMainRV.setHasFixedSize(true);
-        locateFilterMainRV.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
-        locateFilterCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomSheetDialog.dismiss();
-            }
-        });
-
-        locateFilterApply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                bottomSheetDialog.dismiss();
-            }
-        });
-
-        mList = new ArrayList<>();
-
-        //list1
-        ArrayList<ValuesPOJO> nestedList1 = new ArrayList<>();
-
-        valuesPOJO = new ValuesPOJO("Monitor", false);
-        nestedList1.add(valuesPOJO);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Adjustable height", false);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Laptop stand", false);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("USB_C Dock", false);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Charge point", false);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Standing desk", false);
-        nestedList1.add(valuesPOJO);
-
-        ArrayList<ValuesPOJO> nestedList2 = new ArrayList<>();
-
-
-        for (int i = 0; i <amenitiesResponseList.size() ; i++) {
-
-//            if(amenitiesResponseList.get(i).isAvailable()){
-            valuesPOJO = new ValuesPOJO(amenitiesResponseList.get(i).getId(),amenitiesResponseList.get(i).getName(), false);
-            nestedList2.add(valuesPOJO);
-//            }
-
-
-        }
-
-
-        *//*valuesPOJO = new ValuesPOJO("Single", false);
-        nestedList2.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Double", false);
-        nestedList2.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Ac", false);
-        nestedList2.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Non-AC", false);
-        nestedList2.add(valuesPOJO);*//*
-
-
-        mList.add(new DataModel(nestedList1, "Workspaces"));
-        mList.add(new DataModel(nestedList2, "Rooms"));
-
-        adapter = new ItemAdapter(mList);
-        locateFilterMainRV.setAdapter(adapter);
-
-        bottomSheetDialog.show();
-
-    }*/
 
     public void setLanguage(){
 
@@ -7377,7 +7386,7 @@ public class BookFragment extends Fragment implements
         }
         assertListAdapter = new AssertListAdapter(context, assertList,this);
         assertSpinner.setAdapter(assertListAdapter);
-
+        assertListAdapter.notifyDataSetChanged();
     }
     public void checkVeichleReg() {
 
@@ -7598,7 +7607,7 @@ public class BookFragment extends Fragment implements
         assertListAdapter = new AssertListAdapter(context, assertList,this);
         assertSpinner.setAdapter(assertListAdapter);
         assertSpinner.setSelection(pos);
-
+        assertListAdapter.notifyDataSetChanged();
 
 
     }
@@ -7642,6 +7651,35 @@ public class BookFragment extends Fragment implements
                 tabToggleViewClicked(1);
         }
 //        tabToggleViewClicked(selectedicon);
+
+    }
+
+    @Override
+    public void clickCount(ArrayList<DataModel> mList, int pos) {
+        if (mList!=null && mList.size()>0) {
+
+            ArrayList<ValuesPOJO> nestedList = mList.get(pos).getNestedList();
+
+            if (nestedList!=null && nestedList.size()>0){
+
+                ArrayList<ValuesPOJO> inComingList = new ArrayList<>();
+                inComingList = (ArrayList<ValuesPOJO>) nestedList.stream().filter(val -> val.isChecked()).collect(Collectors.toList());
+
+                if(inComingList!=null && inComingList.size()>0) {
+
+                    if (filterTotalSize!=null){
+                        filterTotalSize.setText("("+String.valueOf(inComingList.size())+")");
+                    }
+
+                }else {
+                    if (filterTotalSize!=null){
+                        filterTotalSize.setText("(0)");
+                    }
+                }
+
+            }
+
+        }
 
     }
 }
