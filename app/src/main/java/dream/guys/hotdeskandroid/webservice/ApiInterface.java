@@ -242,12 +242,14 @@ public interface ApiInterface {
     Call<Response> getCountrysChildResponse(@Query("parentId") int parentId);
 
 
-    @GET("api/deskLayouts/LocationDesksWithUser")
+//    @GET("api/deskLayouts/LocationDesksWithUser")
+    @GET("api/deskLayouts/LocationDesksWithUserV2Mobile")
     Call<DeskAvaliabilityResponse> getAvaliableDeskDetails(@Query("locationId") int parentId,
                                                            @Query("toDate") String toDate,
                                                            @Query("fromTime") String fromTime,
                                                            @Query("toTime") String toTime);
-    @GET("api/deskLayouts/LocationDesksWithUser")
+//    @GET("api/deskLayouts/LocationDesksWithUser")
+    @GET("api/deskLayouts/LocationDesksWithUserV2Mobile")
     Call<BookingForEditResponse> getAvaliableDeskDetailsForDeskList(@Query("locationId") int parentId,
                                                            @Query("toDate") String toDate,
                                                            @Query("fromTime") String fromTime,
@@ -355,7 +357,8 @@ public interface ApiInterface {
     Call<BaseResponse> doDeleteMeetingRoom(@Body DeleteMeetingRoomRequest deleteMeetingRoomRequest);
 
     //MeetingUnavalibilityChecking
-    @GET("api/meetingrooms/userallowedmeetingrooms")
+//    @GET("api/meetingrooms/userallowedmeetingrooms")
+    @GET("api/meetingrooms/UserAllowedMeetingRoomsV2Mobile")
     Call<List<UserAllowedMeetingResponse>> userAllowedMeetings();
 
     //Get All Meetings

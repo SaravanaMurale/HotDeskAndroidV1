@@ -887,11 +887,9 @@ public class BookFragment extends Fragment implements
         this.activityContext=getActivity();
 
         assertSpinner = view.findViewById(R.id.assertSpinner);
-
-        loadDefaultLocation();
         loadAssertSpinner();
-
-        Toast.makeText(context, "hit"+selectedicon, Toast.LENGTH_SHORT).show();
+        loadDefaultLocation();
+//        Toast.makeText(context, "hit"+assertSpinner.getSelectedItemPosition(), Toast.LENGTH_SHORT).show();
 
         tabToggleViewClicked(selectedicon);
 
@@ -1118,7 +1116,6 @@ public class BookFragment extends Fragment implements
                 dialog.dismiss();
 //            dialog= ProgressDialog.showProgressBar(context);
             //System.out.println("check sub parent Id  :  "+locationId);
-//            Toast.makeText(context, "else"+locationId, Toast.LENGTH_SHORT).show();
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<List<DeskRoomCountResponse>> call = null;
@@ -1128,6 +1125,21 @@ public class BookFragment extends Fragment implements
             else
                 caseCount=selectedicon;
             switch (caseCount) {
+                case 0:
+                    if (drawStatus == 2) {
+                        String toDate = binding.locateCalendearView.getText().toString() + "T00:00:00Z";
+                        String fromTime = calSelectedDate + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
+                        String toTime = calSelectedDate + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
+                        call = apiService.getDailyDeskCountLocation(month, locationId, fromTime, toTime);
+                    }
+                    else    {
+                        String toDate = binding.locateCalendearView.getText().toString() + "T00:00:00Z";
+                        String fromTime = calSelectedDate + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
+                        String toTime = calSelectedDate + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
+                        call = apiService.getDailyDeskCountLocation(month, locationId, fromTime, toTime);
+//                        call = apiService.getDailyDeskCountLocation(month, locationId,"","");
+                    }
+                    break;
                 case 1:
                     if (drawStatus == 2) {
                         String toDate = binding.locateCalendearView.getText().toString() + "T00:00:00Z";
@@ -1398,7 +1410,7 @@ public class BookFragment extends Fragment implements
                             }
 
                             if (newEdit.equalsIgnoreCase("new"))
-                                if (parkingSpotModelList.size()>0 && parkingSpotModelList.get(0).getParkingSlotAvailability()==2)
+                                if (parkingSpotModelList!=null && parkingSpotModelList.size()>0 && parkingSpotModelList.get(0).getParkingSlotAvailability()==2)
                                     editBookingUsingBottomSheet(editBookingDetails,3,0,"request");
                                 else
                                     editBookingUsingBottomSheet(editBookingDetails,3,0,"request");
@@ -1459,7 +1471,7 @@ public class BookFragment extends Fragment implements
 
                         for (int i=0; i < userAllowedMeetingResponseList.size(); i++){
                             boolean check=false;
-                            if (filterAmenitiesList.size()>0)
+                            if (filterAmenitiesList!=null && filterAmenitiesList.size()>0)
                                 check = false;
                             else
                                 check = true;
@@ -1527,19 +1539,22 @@ public class BookFragment extends Fragment implements
                                     0,"request");
 
                     } else {
-                        if(userAllowedMeetingResponseListUpdated.size()>0){
+                        if(userAllowedMeetingResponseListUpdated!=null &&
+                                userAllowedMeetingResponseListUpdated.size()>0){
                             editBookingDetails.setCapacity(""+userAllowedMeetingResponseListUpdated.get(0).getNoOfPeople());
                         }
-                        if (userAllowedMeetingResponseFilterList.size()>0)
+                        if (userAllowedMeetingResponseFilterList!=null
+                                &&userAllowedMeetingResponseFilterList.size()>0)
                             editBookingDetails.setCapacity(""+userAllowedMeetingResponseFilterList.get(0).getNoOfPeople());
-                        if (userAllowedMeetingResponseListUpdated.size()>0)
+                        if (userAllowedMeetingResponseListUpdated!=null
+                                && userAllowedMeetingResponseListUpdated.size()>0)
                             callAmenitiesListForMeetingRoom(editBookingDetails,
                                     editBookingDetails.getEditStartTTime(),
                                     editBookingDetails.getEditEndTime(),
                                     editBookingDetails.getDate(),
                                     userAllowedMeetingResponseListUpdated.get(0).getId(),
                                     0,"new");
-                        else if (userAllowedMeetingResponseFilterList.size()>0)
+                        else if (userAllowedMeetingResponseFilterList!=null && userAllowedMeetingResponseFilterList.size()>0)
                             callAmenitiesListForMeetingRoom(editBookingDetails,
                                     editBookingDetails.getEditStartTTime(),
                                     editBookingDetails.getEditEndTime(),
@@ -1995,7 +2010,7 @@ public class BookFragment extends Fragment implements
         LinearLayoutManager linearLayoutManager;
         bookingForEditResponseDesk.clear();
         try {
-            if (isGlobalLocationSetUP && bookingDeskList.size()>0){
+            if (isGlobalLocationSetUP && bookingDeskList!=null && bookingDeskList.size()>0){
                 //System.out.println(" data in");
                 for (int i=0; i < bookingDeskList.size(); i++){
 //                logic to show booked by else
@@ -2103,7 +2118,7 @@ public class BookFragment extends Fragment implements
         changedDeskId=0;
         selectedDeskId=0;
 
-        if (isGlobalLocationSetUP && bookingDeskList.size()>0){
+        if (isGlobalLocationSetUP && bookingDeskList!=null && bookingDeskList.size()>0){
             for (int i=0; i < bookingDeskList.size(); i++){
 //                logic to show booked by else
                 /*if(Utils.compareTwoDate(Utils.convertStringToDateFormet(calSelectedDate),
@@ -5165,7 +5180,7 @@ public class BookFragment extends Fragment implements
         Chip chip = new Chip(getContext());
 
         //Should not add already added user
-        if(chipList.size()>0) {
+        if(chipList!=null && chipList.size()>0) {
 
             boolean alreadyHasId = chipList.stream().anyMatch(m -> m.getId() == participantDetsilResponse.getId());
 
@@ -5250,7 +5265,7 @@ public class BookFragment extends Fragment implements
                 }
             }
         }
-        if (amenityStringList.size()>0){
+        if (amenityStringList!=null && amenityStringList.size()>0){
             chipGroup.removeAllViews();
             for (int i=0; i<amenityStringList.size(); i++){
                 Chip chip = new Chip(getContext());
@@ -5905,7 +5920,8 @@ public class BookFragment extends Fragment implements
 
             @Override
             public void onFailure(Call<BookingForEditResponse> call, Throwable t) {
-
+                Toast.makeText(context, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onFailure: "+t.getMessage());
             }
         });
 
@@ -5979,7 +5995,8 @@ public class BookFragment extends Fragment implements
                         }
                     }
                 }
-                if (userAllowedMeetingResponseListUpdated.size()>0)
+                if (userAllowedMeetingResponseListUpdated!=null
+                        && userAllowedMeetingResponseListUpdated.size()>0)
                     editBookingDetails.setCapacity(""+userAllowedMeetingResponseListUpdated.get(0).getNoOfPeople());
                 if (newEditStatus.equalsIgnoreCase("new_deep_link")){
                     if (checkIsRequest)
@@ -6001,14 +6018,16 @@ public class BookFragment extends Fragment implements
                 }else {
                     //System.out.println("ame list vala else size"+userAllowedMeetingResponseListUpdated.size());
 
-                    if (userAllowedMeetingResponseListUpdated.size()>0 && checkIsRequest)
+                    if (userAllowedMeetingResponseListUpdated!=null
+                            && userAllowedMeetingResponseListUpdated.size()>0 && checkIsRequest)
                         callAmenitiesListForMeetingRoom(editBookingDetails,
                                 editBookingDetails.getEditStartTTime(),
                                 editBookingDetails.getEditEndTime(),
                                 editBookingDetails.getDate(),
                                 userAllowedMeetingResponseListUpdated.get(0).getId(),
                                 0,"request");
-                    else if (userAllowedMeetingResponseListUpdated.size()>0 && !checkIsRequest)
+                    else if (userAllowedMeetingResponseListUpdated!=null
+                            &&userAllowedMeetingResponseListUpdated.size()>0 && !checkIsRequest)
                         callAmenitiesListForMeetingRoom(editBookingDetails,
                                 editBookingDetails.getEditStartTTime(),
                                 editBookingDetails.getEditEndTime(),
@@ -7386,6 +7405,7 @@ public class BookFragment extends Fragment implements
         }
         assertListAdapter = new AssertListAdapter(context, assertList,this);
         assertSpinner.setAdapter(assertListAdapter);
+        assertSpinner.setSelection(0);
         assertListAdapter.notifyDataSetChanged();
     }
     public void checkVeichleReg() {
@@ -7593,8 +7613,9 @@ public class BookFragment extends Fragment implements
 
     @Override
     public void onPopupWindowOpened(Spinner spinner) {
-        spinner.setBackground(getResources().getDrawable(R.drawable.spinner_outline_opened));
-        View view = spinner.getSelectedView();
+        Log.d(TAG, "onPopupWindowOpened: ");
+        assertSpinner.setBackground(getResources().getDrawable(R.drawable.spinner_outline_opened));
+        View view = assertSpinner.getSelectedView();
 
         TextView whiteLine = view.findViewById(R.id.divider);
         ImageView tick = view.findViewById(R.id.tick);
@@ -7602,7 +7623,7 @@ public class BookFragment extends Fragment implements
         whiteLine.setVisibility(View.GONE);
         tick.setVisibility(View.GONE);
         bg.setBackgroundColor(Color.TRANSPARENT);
-        int pos = spinner.getSelectedItemPosition();
+        int pos = assertSpinner.getSelectedItemPosition();
 
         assertListAdapter = new AssertListAdapter(context, assertList,this);
         assertSpinner.setAdapter(assertListAdapter);
@@ -7614,7 +7635,7 @@ public class BookFragment extends Fragment implements
 
     @Override
     public void onPopupWindowClosed(Spinner spinner) {
-        View view = spinner.getSelectedView();
+        View view = assertSpinner.getSelectedView();
 
         TextView whiteLine = view.findViewById(R.id.divider);
         ImageView tick = view.findViewById(R.id.tick);
@@ -7623,8 +7644,8 @@ public class BookFragment extends Fragment implements
         tick.setVisibility(View.GONE);
         bg.setBackgroundColor(Color.TRANSPARENT);
 
-        selectedicon = spinner.getSelectedItemPosition()+1;
-        spinner.setBackground(getResources().getDrawable(R.drawable.spinner_outline));
+        selectedicon = assertSpinner.getSelectedItemPosition()+1;
+        assertSpinner.setBackground(getResources().getDrawable(R.drawable.spinner_outline));
         switch (selectedicon) {
             case 1:
                 tabToggleViewClicked(1);

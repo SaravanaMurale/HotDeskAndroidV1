@@ -152,7 +152,7 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
     public void editDeskBooking(EditBookingDetails editDeskBookingDetails){
         dialog= new Dialog(activityContext);
 
-        if (editDeskBookingDetails.getRequestedTeamId() != null && editDeskBookingDetails.getRequestedTeamId()>0){
+        if (editDeskBookingDetails.getRequestedTeamId()>0){
             selectedTeamId=editDeskBookingDetails.getRequestedTeamId();
             editDeskBookingDetails.setRequestedTeamId(editDeskBookingDetails.getRequestedTeamId());
         } else {
@@ -783,8 +783,7 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
                                     Utils.getISO8601format(editDeskBookingDetails.getDate()),
                                     editDeskBookingDetails,newEditStatus);
                         } else {
-                            if (editDeskBookingDetails.getRequestedTeamId()!=null
-                                    && editDeskBookingDetails.getRequestedTeamId()>0)
+                            if (editDeskBookingDetails.getRequestedTeamId()>0)
                                 selectedDeskList(editDeskBookingDetails.getRequestedTeamId(),
                                         Utils.getISO8601format(editDeskBookingDetails.getDate()),
                                         editDeskBookingDetails,newEditStatus);
