@@ -252,7 +252,7 @@
                 android:layout_height="@dimen/_50sdp"
                 android:layout_marginTop="@dimen/_3sdp"
                 android:padding="@dimen/_3sdp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/bookingRemoteHome"

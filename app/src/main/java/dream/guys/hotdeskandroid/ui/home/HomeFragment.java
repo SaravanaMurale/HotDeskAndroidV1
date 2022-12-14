@@ -801,7 +801,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         popDialog.show();
     }
 
-    private void loadHomeList() {
+    public void loadHomeList() {
         if (Utils.isNetworkAvailable(getActivity())) {
             mSwipeRefreshLayout.setRefreshing(true);
 //            dialog= ProgressDialog.showProgressBar(getContext());
