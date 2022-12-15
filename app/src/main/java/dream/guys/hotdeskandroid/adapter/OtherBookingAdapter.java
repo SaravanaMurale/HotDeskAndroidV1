@@ -14,7 +14,7 @@ import java.util.List;
 
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
-import dream.guys.hotdeskandroid.ui.book.OtherBookingController;
+import dream.guys.hotdeskandroid.controllers.OtherBookingController;
 import dream.guys.hotdeskandroid.utils.Utils;
 
 public class OtherBookingAdapter extends RecyclerView.Adapter<OtherBookingAdapter.ViewHolder> {

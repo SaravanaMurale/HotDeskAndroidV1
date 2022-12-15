@@ -1,10 +1,7 @@
 package dream.guys.hotdeskandroid.ui.book;
 
-import static dream.guys.hotdeskandroid.utils.Utils.addingHoursToCurrentDate;
-import static dream.guys.hotdeskandroid.utils.Utils.compareTwoDate;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
 import static dream.guys.hotdeskandroid.utils.Utils.getCurrentTime;
-import static dream.guys.hotdeskandroid.utils.Utils.toastMessage;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -15,7 +12,6 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -96,6 +92,7 @@ import dream.guys.hotdeskandroid.adapter.ParkingSpotListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.ParticipantNameShowAdapter;
 import dream.guys.hotdeskandroid.adapter.RoomListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
+import dream.guys.hotdeskandroid.controllers.OtherBookingController;
 import dream.guys.hotdeskandroid.controllers.EditDeskController;
 import dream.guys.hotdeskandroid.databinding.FragmentBookBinding;
 import dream.guys.hotdeskandroid.example.DataModel;

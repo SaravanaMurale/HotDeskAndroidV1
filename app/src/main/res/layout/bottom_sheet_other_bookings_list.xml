@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parentIdLocate"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     app:layout_behavior="@string/bottom_sheet_behavior">
 
     <RelativeLayout
@@ -15,7 +15,7 @@
             android:id="@+id/bookingName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_20sdp"
             android:text="@string/active_bookings"
             android:textSize="26sp"
@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_10sdp"
-                android:layout_marginStart="15dp"
+                android:layout_marginStart="@dimen/_15sdp"
                 android:textColor="@color/figmaBlack"
                 android:textSize="14sp"
                 android:theme="@style/TextRegular"
@@ -54,6 +54,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:orientation="horizontal"
                 android:paddingVertical="@dimen/_5sdp">
@@ -65,7 +67,6 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
-                    android:layout_marginStart="@dimen/_10sdp"
                     android:text="Close"
                     android:textSize="@dimen/_14sdp"
                     android:theme="@style/TextBold"
@@ -78,7 +79,6 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
                     android:text="Add New"
                     android:textColor="@color/figmaBlueText"
                     android:textSize="@dimen/_14sdp"

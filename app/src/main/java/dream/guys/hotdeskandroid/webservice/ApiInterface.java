@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
+import dream.guys.hotdeskandroid.model.request.*;
 import dream.guys.hotdeskandroid.model.request.CarParkingDeleteRequest;
 import dream.guys.hotdeskandroid.model.request.ChangePasswordRequest;
 import dream.guys.hotdeskandroid.model.request.CovidAnswerRequest;
@@ -35,7 +35,7 @@ import dream.guys.hotdeskandroid.model.request.ReportIssueRequest;
 import dream.guys.hotdeskandroid.model.request.TokenRequest;
 import dream.guys.hotdeskandroid.model.response.ActiveTeamsResponse;
 import dream.guys.hotdeskandroid.model.response.AmenitiesResponse;
-import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.*;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
 import dream.guys.hotdeskandroid.model.response.CarParkAvalibilityResponse;
@@ -527,6 +527,11 @@ public interface ApiInterface {
     @GET("https://dev-api.hotdeskplus.com/api/Download/Help")
     @Streaming
     Call<ResponseBody> downloadPdf();
+
+
+    @GET("api/Booking/BookingsOfDesk")
+    Call<List<BookedDeskResponse>> getDeskBookedTime(@Query("bookingDate") String bookingDate,@Query("deskId") int deskId);
+
 
     @PUT("api/booking/bookings")
     Call<BaseResponse> otherBookings(@Body OtherBookingRequest otherBookingRequest);
