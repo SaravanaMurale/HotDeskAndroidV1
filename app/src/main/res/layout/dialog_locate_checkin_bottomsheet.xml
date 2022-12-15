@@ -16,17 +16,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_margin="@dimen/_15sdp"
+            android:layout_margin="@dimen/_24sdp"
             >
 
             <TextView
                 android:id="@+id/locateDeskName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:text="Desk-001"
-                android:textSize="@dimen/_18sdp"
-                android:theme="@style/TextBold" />
+                android:textSize="@dimen/_20sdp"
+                android:textColor="@color/black"
+                 />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -40,9 +41,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:textSize="@dimen/_12sdp"
+                android:textSize="@dimen/_11sdp"
                 android:text="Location1,Location2"
-                android:theme="@style/TextSmall" />
+                 />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -85,7 +86,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_1sdp"
                 >
 
                 <TextView
@@ -93,8 +94,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Description"
-                    android:textColor="@color/figma_dark_black"
-                    />
+                    android:textColor="@color/figma_dark_black" />
 
 
             </RelativeLayout>
@@ -129,7 +129,7 @@
                 android:id="@+id/bookingDateBlock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_31sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
                 android:orientation="horizontal"
                 android:padding="@dimen/_3sdp">
@@ -141,9 +141,11 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
+                    android:paddingLeft="@dimen/_11sdp"
                     android:text="Date"
+                    android:textSize="@dimen/_14sdp"
                     android:textColor="@color/light_black"
-                    android:theme="@style/TextBold" />
+                    />
 
                 <TextView
                     android:id="@+id/locateCheckInDate"
@@ -165,8 +167,9 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="10 Aug"
+                    android:textSize="@dimen/_14sdp"
                     android:textColor="@color/figmaBlueText"
-                    android:theme="@style/TextBold" />
+                    />
 
             </RelativeLayout>
 
@@ -188,9 +191,10 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
+                    android:paddingLeft="@dimen/_11sdp"
                     android:text="Start"
                     android:textColor="@color/light_black"
-                    android:theme="@style/TextBold" />
+                    android:textSize="@dimen/_14sdp" />
 
                 <TextView
                     android:id="@+id/locateCheckInTime"
@@ -201,7 +205,7 @@
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text=""
                     android:textColor="@color/figmaBlueText"
-                    android:theme="@style/TextBold" />
+                    android:textSize="@dimen/_14sdp" />
             </RelativeLayout>
 
             <!--End-->
@@ -222,9 +226,10 @@
                     android:layout_centerVertical="true"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
+                    android:paddingLeft="@dimen/_11sdp"
                     android:text="End"
                     android:textColor="@color/light_black"
-                    android:theme="@style/TextBold" />
+                    android:textSize="@dimen/_14sdp" />
 
                 <TextView
                     android:id="@+id/locateCheckoutTime"
@@ -235,7 +240,7 @@
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text=""
                     android:textColor="@color/figmaBlueText"
-                    android:theme="@style/TextBold" />
+                    android:textSize="@dimen/_14sdp" />
             </RelativeLayout>
 
             <!--Repeat-->
@@ -256,9 +261,10 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
+                    android:paddingLeft="@dimen/_11sdp"
                     android:text="Repeat"
-                    android:textColor="@color/light_black"
-                    android:theme="@style/TextBold" />
+                    android:textSize="@dimen/_14sdp"
+                    android:textColor="@color/light_black" />
 
                 <TextView
                     android:id="@+id/tvRepeat"
@@ -269,7 +275,7 @@
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="None"
                     android:textColor="@color/none_blue"
-                    android:theme="@style/TextBold" />
+                    android:textSize="@dimen/_14sdp" />
             </RelativeLayout>
 
             <!--select desk-->
@@ -462,8 +468,9 @@
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:background="@null"
                     android:hint="@string/reg"
+                    android:paddingLeft="@dimen/_11sdp"
                     android:textColor="@color/figmaBlack"
-                    android:theme="@style/TextBold" />
+                    android:textSize="@dimen/_14sdp" />
 
             </RelativeLayout>
 
@@ -488,7 +495,11 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:layout_gravity="bottom"
-        android:layout_margin="@dimen/_15sdp">
+        android:layout_marginLeft="@dimen/_24sdp"
+        android:layout_marginRight="@dimen/_24sdp"
+        android:layout_marginBottom="@dimen/_39sdp"
+        >
+
 
         <TextView
             android:id="@+id/editBookingBack"
@@ -498,8 +509,8 @@
             android:layout_marginVertical="@dimen/_5sdp"
             android:layout_marginLeft="@dimen/_10sdp"
             android:text="Cancel"
-            android:textSize="@dimen/_14sdp"
-            android:theme="@style/TextBold" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp" />
 
         <TextView
             android:id="@+id/editBookingContinue"
@@ -508,11 +519,10 @@
             android:layout_alignParentEnd="true"
             android:layout_marginHorizontal="@dimen/_5sdp"
             android:layout_marginVertical="@dimen/_5sdp"
-            android:text="Book"
             android:layout_marginRight="@dimen/_8sdp"
+            android:text="Book"
             android:textColor="@color/figmaBlueText"
-            android:textSize="@dimen/_14sdp"
-            android:theme="@style/TextBold" />
+            android:textSize="@dimen/_14sdp" />
     </RelativeLayout>
 
 
