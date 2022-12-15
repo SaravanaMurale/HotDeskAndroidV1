@@ -8,10 +8,23 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -42,12 +55,14 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.microsoft.identity.common.internal.telemetry.TelemetryEventStrings;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -56,9 +71,11 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import butterknife.BindView;
+import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.ActiveTeamsAdapter;
 import dream.guys.hotdeskandroid.adapter.AssertListAdapter;
@@ -75,6 +92,8 @@ import dream.guys.hotdeskandroid.adapter.ParkingSpotListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.ParticipantNameShowAdapter;
 import dream.guys.hotdeskandroid.adapter.RoomListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
+import dream.guys.hotdeskandroid.controllers.OtherBookingController;
+import dream.guys.hotdeskandroid.controllers.EditDeskController;
 import dream.guys.hotdeskandroid.databinding.FragmentBookBinding;
 import dream.guys.hotdeskandroid.example.DataModel;
 import dream.guys.hotdeskandroid.example.ItemAdapter;
@@ -104,9 +123,12 @@ import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
 import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
 import dream.guys.hotdeskandroid.model.response.RoomListResponse;
+import dream.guys.hotdeskandroid.model.response.TeamsResponse;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
+import dream.guys.hotdeskandroid.ui.home.EditProfileActivity;
 import dream.guys.hotdeskandroid.ui.login.LoginActivity;
+import dream.guys.hotdeskandroid.ui.wellbeing.NotificationsListActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.CalendarView;
 import dream.guys.hotdeskandroid.utils.CustomSpinner;
@@ -132,7 +154,9 @@ public class BookFragment extends Fragment implements
         ParticipantNameShowAdapter.OnParticipantSelectable,
         RoomListRecyclerAdapter.OnSelectSelected,
         ShowCountryAdapter.OnSelectListener,
-        CustomSpinner.OnSpinnerEventsListener {
+        CustomSpinner.OnSpinnerEventsListener,
+        ItemAdapter.selectItemInterface {
+
     String TAG="BookFragment";
     LanguagePOJO.Login logoinPage;
     LanguagePOJO.AppKeys appKeysPage;
@@ -312,6 +336,9 @@ public class BookFragment extends Fragment implements
     boolean endDisabled = false;
     boolean selectDisabled = false;
     boolean tvTeamNameDisabled = false;
+    //New...
+    //For Displaying the count
+    TextView filterTotalSize;
 
     String companyDefaultDeskStartTime="";
     String companyDefaultDeskEndTime="";
@@ -374,6 +401,7 @@ public class BookFragment extends Fragment implements
                     //amenitiesResponseList
                     callLocateFilterBottomSheet(null);
                 }
+
 //                getLocateAmenitiesFilterData(true);
             }
         });
@@ -433,15 +461,12 @@ public class BookFragment extends Fragment implements
                         } else if(selectedicon==3) {
                             getCarParListToEdit(""+Utils.getISO8601format(date),""+Utils.getISO8601format(date));
                             calSelectedDate=Utils.getISO8601format(date);
-<<<<<<< HEAD
-                        } else {
-=======
-                        } else if (selectedicon == 4 || selectedicon == 5 || selectedicon == 6 || selectedicon == 7) {
+                        } else if (selectedicon == 4 || selectedicon == 5 || selectedicon == 6 ||
+                                selectedicon == 7) {
                             calSelectedDate = Utils.getISO8601format(date);
                             new OtherBookingController(context, selectedicon, calSelectedDate);
 
-                        }else {
->>>>>>> 1f15d9cbb2a5fa5003518dae92798347e3877213
+                        } else {
                         }
                     }else
                         Toast.makeText(getContext(), "Please Select current Date", Toast.LENGTH_SHORT).show();
@@ -861,9 +886,8 @@ public class BookFragment extends Fragment implements
 
         assertSpinner = view.findViewById(R.id.assertSpinner);
         loadAssertSpinner();
-
         loadDefaultLocation();
-
+//        Toast.makeText(context, "hit"+assertSpinner.getSelectedItemPosition(), Toast.LENGTH_SHORT).show();
 
         tabToggleViewClicked(selectedicon);
 
@@ -1038,6 +1062,9 @@ public class BookFragment extends Fragment implements
                 case 3:
                     call = apiService.getDailyParkingCount(month, ""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAM_ID));
                     break;
+                default:
+                    call = apiService.getDailyDeskCount(month, ""+SessionHandler.getInstance().getInt(getActivity(), AppConstants.TEAM_ID));
+                    break;
             }
             call.enqueue(new Callback<List<DeskRoomCountResponse>>() {
                 @Override
@@ -1085,9 +1112,8 @@ public class BookFragment extends Fragment implements
         if (Utils.isNetworkAvailable(getActivity()) && Integer.parseInt(locationId)!=0) {
             if(dialog.isShowing())
                 dialog.dismiss();
-            dialog= ProgressDialog.showProgressBar(context);
+//            dialog= ProgressDialog.showProgressBar(context);
             //System.out.println("check sub parent Id  :  "+locationId);
-//            Toast.makeText(context, "else"+locationId, Toast.LENGTH_SHORT).show();
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<List<DeskRoomCountResponse>> call = null;
@@ -1097,6 +1123,21 @@ public class BookFragment extends Fragment implements
             else
                 caseCount=selectedicon;
             switch (caseCount) {
+                case 0:
+                    if (drawStatus == 2) {
+                        String toDate = binding.locateCalendearView.getText().toString() + "T00:00:00Z";
+                        String fromTime = calSelectedDate + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
+                        String toTime = calSelectedDate + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
+                        call = apiService.getDailyDeskCountLocation(month, locationId, fromTime, toTime);
+                    }
+                    else    {
+                        String toDate = binding.locateCalendearView.getText().toString() + "T00:00:00Z";
+                        String fromTime = calSelectedDate + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
+                        String toTime = calSelectedDate + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
+                        call = apiService.getDailyDeskCountLocation(month, locationId, fromTime, toTime);
+//                        call = apiService.getDailyDeskCountLocation(month, locationId,"","");
+                    }
+                    break;
                 case 1:
                     if (drawStatus == 2) {
                         String toDate = binding.locateCalendearView.getText().toString() + "T00:00:00Z";
@@ -1137,7 +1178,7 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onResponse(Call<List<DeskRoomCountResponse>> call, Response<List<DeskRoomCountResponse>> response) {
 //                    ProgressDialog.dismisProgressBar(context,dialog);
-                    dialog.dismiss();
+//                    dialog.dismiss();
                     isGlobalLocationSetUP = true;
                     try{
 
@@ -1163,7 +1204,7 @@ public class BookFragment extends Fragment implements
                 public void onFailure(Call<List<DeskRoomCountResponse>> call, Throwable t) {
 //                    ProgressDialog.dismisProgressBar(context,dialog);
                     Toast.makeText(getActivity(), "fail "+t.getMessage(), Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
+//                    dialog.dismiss();
                 }
             });
 
@@ -1367,7 +1408,7 @@ public class BookFragment extends Fragment implements
                             }
 
                             if (newEdit.equalsIgnoreCase("new"))
-                                if (parkingSpotModelList.size()>0 && parkingSpotModelList.get(0).getParkingSlotAvailability()==2)
+                                if (parkingSpotModelList!=null && parkingSpotModelList.size()>0 && parkingSpotModelList.get(0).getParkingSlotAvailability()==2)
                                     editBookingUsingBottomSheet(editBookingDetails,3,0,"request");
                                 else
                                     editBookingUsingBottomSheet(editBookingDetails,3,0,"request");
@@ -1428,7 +1469,7 @@ public class BookFragment extends Fragment implements
 
                         for (int i=0; i < userAllowedMeetingResponseList.size(); i++){
                             boolean check=false;
-                            if (filterAmenitiesList.size()>0)
+                            if (filterAmenitiesList!=null && filterAmenitiesList.size()>0)
                                 check = false;
                             else
                                 check = true;
@@ -1496,19 +1537,22 @@ public class BookFragment extends Fragment implements
                                     0,"request");
 
                     } else {
-                        if(userAllowedMeetingResponseListUpdated.size()>0){
+                        if(userAllowedMeetingResponseListUpdated!=null &&
+                                userAllowedMeetingResponseListUpdated.size()>0){
                             editBookingDetails.setCapacity(""+userAllowedMeetingResponseListUpdated.get(0).getNoOfPeople());
                         }
-                        if (userAllowedMeetingResponseFilterList.size()>0)
+                        if (userAllowedMeetingResponseFilterList!=null
+                                &&userAllowedMeetingResponseFilterList.size()>0)
                             editBookingDetails.setCapacity(""+userAllowedMeetingResponseFilterList.get(0).getNoOfPeople());
-                        if (userAllowedMeetingResponseListUpdated.size()>0)
+                        if (userAllowedMeetingResponseListUpdated!=null
+                                && userAllowedMeetingResponseListUpdated.size()>0)
                             callAmenitiesListForMeetingRoom(editBookingDetails,
                                     editBookingDetails.getEditStartTTime(),
                                     editBookingDetails.getEditEndTime(),
                                     editBookingDetails.getDate(),
                                     userAllowedMeetingResponseListUpdated.get(0).getId(),
                                     0,"new");
-                        else if (userAllowedMeetingResponseFilterList.size()>0)
+                        else if (userAllowedMeetingResponseFilterList!=null && userAllowedMeetingResponseFilterList.size()>0)
                             callAmenitiesListForMeetingRoom(editBookingDetails,
                                     editBookingDetails.getEditStartTTime(),
                                     editBookingDetails.getEditEndTime(),
@@ -1964,7 +2008,7 @@ public class BookFragment extends Fragment implements
         LinearLayoutManager linearLayoutManager;
         bookingForEditResponseDesk.clear();
         try {
-            if (isGlobalLocationSetUP && bookingDeskList.size()>0){
+            if (isGlobalLocationSetUP && bookingDeskList!=null && bookingDeskList.size()>0){
                 //System.out.println(" data in");
                 for (int i=0; i < bookingDeskList.size(); i++){
 //                logic to show booked by else
@@ -2072,7 +2116,7 @@ public class BookFragment extends Fragment implements
         changedDeskId=0;
         selectedDeskId=0;
 
-        if (isGlobalLocationSetUP && bookingDeskList.size()>0){
+        if (isGlobalLocationSetUP && bookingDeskList!=null && bookingDeskList.size()>0){
             for (int i=0; i < bookingDeskList.size(); i++){
 //                logic to show booked by else
                 /*if(Utils.compareTwoDate(Utils.convertStringToDateFormet(calSelectedDate),
@@ -4298,7 +4342,8 @@ public class BookFragment extends Fragment implements
     }
 
     @Override
-    public void onEditClick(BookingForEditResponse.Bookings bookings, String code, List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities) {
+    public void onEditClick(BookingForEditResponse.Bookings bookings, String code,
+                            List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities) {
         EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
         editDeskBookingDetails.setEditStartTTime(Utils.splitTime(bookings.getFrom()));
         editDeskBookingDetails.setEditEndTime(Utils.splitTime(bookings.getMyto()));
@@ -4367,12 +4412,15 @@ public class BookFragment extends Fragment implements
         changedDeskId=0;
         changedTeamId=0;
 
-        if (editDeskBookingDetails.getUsageTypeId() == 7){
+        EditDeskController editDeskController = new EditDeskController(activityContext, context,
+                editDeskBookingDetails,AppConstants.BOOKFRAGMENTINSTANCESTRING);
+
+        /*if (editDeskBookingDetails.getUsageTypeId() == 7){
             getRequestDeskDeskList(editDeskBookingDetails,"edit");
         } else{
             editBookingUsingBottomSheet(editDeskBookingDetails,1,0,"edit");
         }
-
+*/
     }
 
     private void getRequestDeskDeskList(EditBookingDetails editDeskBookingDetails, String edit) {
@@ -5134,7 +5182,7 @@ public class BookFragment extends Fragment implements
         Chip chip = new Chip(getContext());
 
         //Should not add already added user
-        if(chipList.size()>0) {
+        if(chipList!=null && chipList.size()>0) {
 
             boolean alreadyHasId = chipList.stream().anyMatch(m -> m.getId() == participantDetsilResponse.getId());
 
@@ -5219,7 +5267,7 @@ public class BookFragment extends Fragment implements
                 }
             }
         }
-        if (amenityStringList.size()>0){
+        if (amenityStringList!=null && amenityStringList.size()>0){
             chipGroup.removeAllViews();
             for (int i=0; i<amenityStringList.size(); i++){
                 Chip chip = new Chip(getContext());
@@ -5874,7 +5922,8 @@ public class BookFragment extends Fragment implements
 
             @Override
             public void onFailure(Call<BookingForEditResponse> call, Throwable t) {
-
+                Toast.makeText(context, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onFailure: "+t.getMessage());
             }
         });
 
@@ -5948,7 +5997,8 @@ public class BookFragment extends Fragment implements
                         }
                     }
                 }
-                if (userAllowedMeetingResponseListUpdated.size()>0)
+                if (userAllowedMeetingResponseListUpdated!=null
+                        && userAllowedMeetingResponseListUpdated.size()>0)
                     editBookingDetails.setCapacity(""+userAllowedMeetingResponseListUpdated.get(0).getNoOfPeople());
                 if (newEditStatus.equalsIgnoreCase("new_deep_link")){
                     if (checkIsRequest)
@@ -5970,14 +6020,16 @@ public class BookFragment extends Fragment implements
                 }else {
                     //System.out.println("ame list vala else size"+userAllowedMeetingResponseListUpdated.size());
 
-                    if (userAllowedMeetingResponseListUpdated.size()>0 && checkIsRequest)
+                    if (userAllowedMeetingResponseListUpdated!=null
+                            && userAllowedMeetingResponseListUpdated.size()>0 && checkIsRequest)
                         callAmenitiesListForMeetingRoom(editBookingDetails,
                                 editBookingDetails.getEditStartTTime(),
                                 editBookingDetails.getEditEndTime(),
                                 editBookingDetails.getDate(),
                                 userAllowedMeetingResponseListUpdated.get(0).getId(),
                                 0,"request");
-                    else if (userAllowedMeetingResponseListUpdated.size()>0 && !checkIsRequest)
+                    else if (userAllowedMeetingResponseListUpdated!=null
+                            &&userAllowedMeetingResponseListUpdated.size()>0 && !checkIsRequest)
                         callAmenitiesListForMeetingRoom(editBookingDetails,
                                 editBookingDetails.getEditStartTTime(),
                                 editBookingDetails.getEditEndTime(),
@@ -6774,6 +6826,157 @@ public class BookFragment extends Fragment implements
         EditText filterSearch;
 
 
+        TextView locateFilterCancel, locateFilterApply, tvFilterAmenities;
+
+       /* BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((this).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_locate_filter,
+                new RelativeLayout(getContext())));*/
+
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        View view = View.inflate(getContext(), R.layout.dialog_bottom_sheet_locate_filter, null);
+        bottomSheetDialog.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(500);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+        RelativeLayout layout = bottomSheetDialog.findViewById(R.id.amenitiesViewBlock);
+        layout.setMinimumHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+
+        locateFilterCancel = bottomSheetDialog.findViewById(R.id.locateFilterCancel);
+        locateFilterApply = bottomSheetDialog.findViewById(R.id.locateFilterApply);
+        tvFilterAmenities = bottomSheetDialog.findViewById(R.id.tvFilter);
+        filterSearch = bottomSheetDialog.findViewById(R.id.filterSearch);
+        filterTotalSize = bottomSheetDialog.findViewById(R.id.filterTotalSize);
+
+        //Language
+        filterSearch.setHint(" "+appKeysPage.getSearch());
+        tvFilterAmenities.setText(appKeysPage.getFilters());
+
+
+        locateFilterMainRV = bottomSheetDialog.findViewById(R.id.locateFilterMainRV);
+        //locateFilterMainRV.setHasFixedSize(true);
+        locateFilterMainRV.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+        locateFilterApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*for (int i = 0; i < userAllowedMeetingResponseList.size(); i++) {
+                    for (int j = 0; j < meetingStatusModelList.size(); j++) {
+                        if (userAllowedMeetingResponseList.get(i).getId() == meetingStatusModelList.get(j).getId()) {
+                            if (meetingStatusModelList.get(j).getStatus() == 1) {
+                                List<UserAllowedMeetingResponse.Amenity> amenityList = userAllowedMeetingResponseList.get(i).getAmenities();
+
+                                doCheckAppliedAminitiesWithMeetingRoom(amenityList, meetingStatusModelList.get(j));
+
+
+                            }
+
+                        }
+
+
+                    }
+
+                }
+*/
+
+//                callInitView();
+
+                filterAmenitiesList.clear();
+                ItemAdapter itemAadapter=new ItemAdapter();
+                ArrayList<DataModel> userSelectedAmenities =itemAadapter.getUpdatedList();
+                int amenitiesMatchCount=0;
+
+                //Checking Here Only With Rooms
+                for (int i = 0; i <userSelectedAmenities.get(0).getNestedList().size() ; i++) {
+                    if(userSelectedAmenities.get(0).getNestedList().get(i).isChecked()) {
+                        filterAmenitiesList.add(userSelectedAmenities.get(0).getNestedList().get(i).getId());
+                    }
+                }
+
+
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        //mList = new ArrayList<>();
+
+        //list1L
+        ArrayList<ValuesPOJO> nestedList1 = new ArrayList<>();
+
+        //valuesPOJO = new ValuesPOJO("", false);
+        //nestedList1.add(valuesPOJO);
+
+        //if (filterClickedStatus == 0) {
+        //filterClickedStatus = 1;
+        ArrayList<ValuesPOJO> nestedList2 = new ArrayList<>();
+
+        for (int i = 0; i < amenitiesResponseList.size(); i++) {
+
+            //if(amenitiesResponseList.get(i).isAvailable()){
+            valuesPOJO = new ValuesPOJO(amenitiesResponseList.get(i).getId(), amenitiesResponseList.get(i).getName(), false);
+            nestedList2.add(valuesPOJO);
+            //}
+        }
+
+        //mList.add(new DataModel(nestedList1, "Workspaces"));
+        mList.add(new DataModel(nestedList2, appKeysPage.getRooms()));
+
+        //}
+
+        for (int i = 0; i < mList.size(); i++) {
+
+            mList.get(i).setExpandable(true);
+
+        }
+        filterTotalSize.setText("(" + mList.get(0).getNestedList().size() + ")");
+        adapter = new ItemAdapter(mList,this);
+        locateFilterMainRV.setAdapter(adapter);
+
+
+        filterSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+        locateFilterCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //When we search mList is updated, so clear when close
+                adapter.clearAll();
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        bottomSheetDialog.show();
+
+    }
+
+/*
+    private void callLocateFilterBottomSheet(List<AmenitiesResponse> amenitiesResponseList) {
+
+        RecyclerView locateFilterMainRV;
+        ValuesPOJO valuesPOJO;
+        //ArrayList<DataModel> mList;
+        ItemAdapter adapter;
+        EditText filterSearch;
+
+
         TextView locateFilterCancel, locateFilterApply,tvFilterAmenities,filterTotalSize;
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -6871,164 +7074,13 @@ public class BookFragment extends Fragment implements
         locateFilterMainRV.setAdapter(adapter);
 
 
-     /*   filterSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                if(s.toString().length()>=2){
-
-
-                    for (int i = 0; i <nestedList2.size() ; i++) {
-                       if( nestedList2.get(i).getValues().contains(s.toString())){
-
-                       }
-
-                    }
-
-
-
-                }
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });*/
 
         bottomSheetDialog.show();
 
     }
+*/
 
 
-/*    private void getLocateAmenitiesFilterData() {
-        if (Utils.isNetworkAvailable(getContext())) {
-            dialog = ProgressDialog.showProgressBar(getContext());
-//            binding.locateProgressBar.setVisibility(View.VISIBLE);
-            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<List<AmenitiesResponse>> call = apiService.getAmenities();
-            call.enqueue(new Callback<List<AmenitiesResponse>>() {
-                @Override
-                public void onResponse(Call<List<AmenitiesResponse>> call, Response<List<AmenitiesResponse>> response) {
-//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                    ProgressDialog.dismisProgressBar(getContext(),dialog);
-
-                    List<AmenitiesResponse> amenitiesResponseList=response.body();
-
-                    meetingAmenityStatusList.clear();
-                    callLocateFilterBottomSheet(amenitiesResponseList);
-
-                }
-
-                @Override
-                public void onFailure(Call<List<AmenitiesResponse>> call, Throwable t) {
-//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                    ProgressDialog.dismisProgressBar(getContext(),dialog);
-
-                }
-            });
-
-        }else {
-            Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
-        }
-    }*/
-    /*
-    private void callLocateFilterBottomSheet(List<AmenitiesResponse> amenitiesResponseList) {
-
-        RecyclerView locateFilterMainRV;
-        ValuesPOJO valuesPOJO;
-        ArrayList<DataModel> mList;
-        ItemAdapter adapter;
-
-        TextView locateFilterCancel, locateFilterApply;
-
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        bottomSheetDialog.setContentView((this).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_locate_filter,
-                new RelativeLayout(getContext())));
-
-        locateFilterCancel = bottomSheetDialog.findViewById(R.id.locateFilterCancel);
-        locateFilterApply = bottomSheetDialog.findViewById(R.id.locateFilterApply);
-
-
-        locateFilterMainRV = bottomSheetDialog.findViewById(R.id.locateFilterMainRV);
-        locateFilterMainRV.setHasFixedSize(true);
-        locateFilterMainRV.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
-        locateFilterCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomSheetDialog.dismiss();
-            }
-        });
-
-        locateFilterApply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                bottomSheetDialog.dismiss();
-            }
-        });
-
-        mList = new ArrayList<>();
-
-        //list1
-        ArrayList<ValuesPOJO> nestedList1 = new ArrayList<>();
-
-        valuesPOJO = new ValuesPOJO("Monitor", false);
-        nestedList1.add(valuesPOJO);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Adjustable height", false);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Laptop stand", false);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("USB_C Dock", false);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Charge point", false);
-        nestedList1.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Standing desk", false);
-        nestedList1.add(valuesPOJO);
-
-        ArrayList<ValuesPOJO> nestedList2 = new ArrayList<>();
-
-
-        for (int i = 0; i <amenitiesResponseList.size() ; i++) {
-
-//            if(amenitiesResponseList.get(i).isAvailable()){
-            valuesPOJO = new ValuesPOJO(amenitiesResponseList.get(i).getId(),amenitiesResponseList.get(i).getName(), false);
-            nestedList2.add(valuesPOJO);
-//            }
-
-
-        }
-
-
-        *//*valuesPOJO = new ValuesPOJO("Single", false);
-        nestedList2.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Double", false);
-        nestedList2.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Ac", false);
-        nestedList2.add(valuesPOJO);
-        valuesPOJO = new ValuesPOJO("Non-AC", false);
-        nestedList2.add(valuesPOJO);*//*
-
-
-        mList.add(new DataModel(nestedList1, "Workspaces"));
-        mList.add(new DataModel(nestedList2, "Rooms"));
-
-        adapter = new ItemAdapter(mList);
-        locateFilterMainRV.setAdapter(adapter);
-
-        bottomSheetDialog.show();
-
-    }*/
 
     public void setLanguage(){
 
@@ -7355,7 +7407,8 @@ public class BookFragment extends Fragment implements
         }
         assertListAdapter = new AssertListAdapter(context, assertList,this);
         assertSpinner.setAdapter(assertListAdapter);
-
+        assertSpinner.setSelection(0);
+        assertListAdapter.notifyDataSetChanged();
     }
     public void checkVeichleReg() {
 
@@ -7562,8 +7615,9 @@ public class BookFragment extends Fragment implements
 
     @Override
     public void onPopupWindowOpened(Spinner spinner) {
-        spinner.setBackground(getResources().getDrawable(R.drawable.spinner_outline_opened));
-        View view = spinner.getSelectedView();
+        Log.d(TAG, "onPopupWindowOpened: ");
+        assertSpinner.setBackground(getResources().getDrawable(R.drawable.spinner_outline_opened));
+        View view = assertSpinner.getSelectedView();
 
         TextView whiteLine = view.findViewById(R.id.divider);
         ImageView tick = view.findViewById(R.id.tick);
@@ -7571,19 +7625,19 @@ public class BookFragment extends Fragment implements
         whiteLine.setVisibility(View.GONE);
         tick.setVisibility(View.GONE);
         bg.setBackgroundColor(Color.TRANSPARENT);
-        int pos = spinner.getSelectedItemPosition();
+        int pos = assertSpinner.getSelectedItemPosition();
 
         assertListAdapter = new AssertListAdapter(context, assertList,this);
         assertSpinner.setAdapter(assertListAdapter);
         assertSpinner.setSelection(pos);
-
+        assertListAdapter.notifyDataSetChanged();
 
 
     }
 
     @Override
     public void onPopupWindowClosed(Spinner spinner) {
-        View view = spinner.getSelectedView();
+        View view = assertSpinner.getSelectedView();
 
         TextView whiteLine = view.findViewById(R.id.divider);
         ImageView tick = view.findViewById(R.id.tick);
@@ -7592,8 +7646,8 @@ public class BookFragment extends Fragment implements
         tick.setVisibility(View.GONE);
         bg.setBackgroundColor(Color.TRANSPARENT);
 
-        selectedicon = spinner.getSelectedItemPosition()+1;
-        spinner.setBackground(getResources().getDrawable(R.drawable.spinner_outline));
+        selectedicon = assertSpinner.getSelectedItemPosition()+1;
+        assertSpinner.setBackground(getResources().getDrawable(R.drawable.spinner_outline));
         switch (selectedicon) {
             case 1:
                 tabToggleViewClicked(1);
@@ -7620,6 +7674,35 @@ public class BookFragment extends Fragment implements
                 tabToggleViewClicked(1);
         }
 //        tabToggleViewClicked(selectedicon);
+
+    }
+
+    @Override
+    public void clickCount(ArrayList<DataModel> mList, int pos) {
+        if (mList!=null && mList.size()>0) {
+
+            ArrayList<ValuesPOJO> nestedList = mList.get(pos).getNestedList();
+
+            if (nestedList!=null && nestedList.size()>0){
+
+                ArrayList<ValuesPOJO> inComingList = new ArrayList<>();
+                inComingList = (ArrayList<ValuesPOJO>) nestedList.stream().filter(val -> val.isChecked()).collect(Collectors.toList());
+
+                if(inComingList!=null && inComingList.size()>0) {
+
+                    if (filterTotalSize!=null){
+                        filterTotalSize.setText("("+String.valueOf(inComingList.size())+")");
+                    }
+
+                }else {
+                    if (filterTotalSize!=null){
+                        filterTotalSize.setText("(0)");
+                    }
+                }
+
+            }
+
+        }
 
     }
 }

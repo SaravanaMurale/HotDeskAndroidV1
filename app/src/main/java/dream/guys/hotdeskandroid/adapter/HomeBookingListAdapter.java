@@ -5,6 +5,8 @@ import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +42,7 @@ import dream.guys.hotdeskandroid.utils.Utils;
 
 public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingListAdapter.HomeBookingListViewHolder> {
 
+    private static final String TAG = "HomeBookingListAdapter";
     Context context;
     Activity activity;
     HomeFragment fragment;
@@ -84,17 +87,22 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.dateLayout.setVisibility(View.VISIBLE);
 //            System.out.println("DateFormatPrintHere"+list.get(position).getDate());
 //            System.out.println("DayInTextAndNumber"+Utils.getDayAndDateFromDateFormat(list.get(position).getDate()));
-            holder.today_date.setText(""+Utils.getDayAndDateFromDateFormat(list.get(position).getDate()));
-            holder.lineLayout.setVisibility(View.GONE);
+            try {
+                String day = Utils.getDayAndDateFromDateFormat(list.get(position).getDate()).split(" ")[0];
+                String dateNum = Utils.getDayAndDateFromDateFormat(list.get(position).getDate()).split(" ")[1];
+                holder.today_date.setText(""+day+"\n"+dateNum);
+                holder.lineLayout.setVisibility(View.GONE);
+            }catch (Exception e){
+
+            }
         } else {
             holder.dateLayout.setVisibility(View.GONE);
             holder.lineLayout.setVisibility(View.VISIBLE);
         }
 
-//        System.out.println("check date of today "+list.size());
+        //        System.out.println("check date of today "+list.size());
         //condition displays today string instead od date and disable previous date
-        if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate()) == 1){
-//            System.out.println("check date of today past"+list.get(position).getDate()+fragment.showPastStatus);
+        if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate()) == 1) {
         /*    if (!fragment.showPastStatus){
                 holder.allLayout.setVisibility(View.GONE);
                 holder.allLinearLayout.setVisibility(View.GONE);
@@ -106,10 +114,13 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 */
             holder.tv_past_event.setVisibility(View.GONE);
             holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
+
             holder.bookingIvEdit.setVisibility(View.GONE);
             holder.bookingIvLocation.setVisibility(View.GONE);
             holder.tv_change.setVisibility(View.GONE);
-        } else if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
+            disableColorUpdate(holder);
+
+        } else if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2) {
 //            System.out.println("check date of today present "+list.get(position).getDate());
             if (!fragment.showPastStatus && !pastCheck)
                 holder.tv_past_event.setVisibility(View.VISIBLE);
@@ -119,13 +130,18 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             pastCheck = true;
             holder.today_date.setText("Today");
             holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
+            enableColorUpdate(holder);
             holder.bookingIvEdit.setVisibility(View.VISIBLE);
+            holder.tv_change.setVisibility(View.VISIBLE);
             holder.bookingIvLocation.setVisibility(View.VISIBLE);
+
         }else {
             System.out.println("check date of today future "+list.get(position).getDate());
             holder.tv_past_event.setVisibility(View.GONE);
             holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
+            enableColorUpdate(holder);
             holder.bookingIvEdit.setVisibility(View.VISIBLE);
+            holder.tv_change.setVisibility(View.VISIBLE);
             holder.bookingIvLocation.setVisibility(View.VISIBLE);
         }
 
@@ -160,6 +176,28 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom()));
             holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
 
+            try{
+                if(Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==1
+                        || (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2
+                        &&
+                        !Utils.compareTimeIfCheckInEnable(
+                                Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()),
+                                Utils.getCurrentTime()))){
+                    holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
+                    disableColorUpdate(holder);
+                    holder.bookingIvEdit.setVisibility(View.GONE);
+                    holder.bookingIvLocation.setVisibility(View.GONE);
+                    holder.tv_change.setVisibility(View.GONE);
+                } else {
+                    holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
+                    enableColorUpdate(holder);
+                    holder.bookingIvEdit.setVisibility(View.VISIBLE);
+                    holder.bookingIvLocation.setVisibility(View.VISIBLE);
+                    holder.tv_change.setVisibility(View.VISIBLE);
+                }
+            }catch (Exception e){
+
+            }
 
 /*
         Below Switch case Logic
@@ -246,10 +284,34 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                 !list.get(position).getCalendarEntriesModel()
                 .getUsageTypeAbbreviation().equalsIgnoreCase("IO")) {
             holder.rlBookingRemoteBlock.setVisibility(View.VISIBLE);
-            holder.tv_change.setVisibility(View.VISIBLE);
             holder.rlInOffice.setVisibility(View.GONE);
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
+            try{
+                if(Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==1
+                        || (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2
+                        &&
+                        !Utils.compareTimeIfCheckInEnable(
+                                Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()),
+                                Utils.getCurrentTime()))){
+                    holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
+                    disableColorUpdate(holder);
+                    holder.bookingIvEdit.setVisibility(View.GONE);
+                    holder.bookingIvLocation.setVisibility(View.GONE);
+                    holder.tv_change.setVisibility(View.GONE);
+
+                } else {
+                    enableColorUpdate(holder);
+                    holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
+                    holder.bookingIvEdit.setVisibility(View.VISIBLE);
+                    holder.bookingIvLocation.setVisibility(View.VISIBLE);
+                    holder.tv_change.setVisibility(View.VISIBLE);
+
+                }
+            }catch (Exception e){
+                Log.d(TAG, "onBindViewHolder: "+e.getMessage());
+            }
+//            holder.tv_change.setVisibility(View.VISIBLE);
 
      /*
             if (list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor()!=null)
@@ -272,7 +334,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             .placeholder(R.drawable.chair)
                             .into(holder.bookingRemoteHome);
 
-                    holder.tv_change.setVisibility(View.GONE);
+//                    holder.tv_change.setVisibility(View.GONE);
                     holder.tvBookingWorkingRemote.setText("Request for Desk In Progress");
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("Request for Desk In Progress");
                     if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
@@ -395,6 +457,30 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
             holder.bookingIvEdit.setVisibility(View.GONE);
+            try{
+                if(Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==1
+                        || (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2
+                        &&
+                        !Utils.compareTimeIfCheckInEnable(
+                                Utils.splitTime(list.get(position).getMeetingBookingsModel().getMyto()),
+                                Utils.getCurrentTime()))){
+                    holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
+                    disableColorUpdate(holder);
+                    holder.bookingIvEdit.setVisibility(View.GONE);
+                    holder.bookingIvLocation.setVisibility(View.GONE);
+                    holder.tv_change.setVisibility(View.GONE);
+
+                } else {
+                    enableColorUpdate(holder);
+                    holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
+
+                    holder.bookingIvEdit.setVisibility(View.VISIBLE);
+                    holder.bookingIvLocation.setVisibility(View.VISIBLE);
+                    holder.tv_change.setVisibility(View.VISIBLE);
+                }
+            }catch (Exception e){
+                Log.d(TAG, "onBindViewHolder: "+e.getMessage());
+            }
             if (map.containsKey(list.get(position).getMeetingBookingsModel().getId())){
                 holder.bookingRefreshIcon.setVisibility(View.VISIBLE);
             }
@@ -437,7 +523,28 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.rlBookingRemoteBlock.setVisibility(View.GONE);
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
-
+            try{
+                if(Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==1
+                        || (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2
+                        &&
+                        !Utils.compareTimeIfCheckInEnable(
+                                Utils.splitTime(list.get(position).getCarParkBookingsModel().getMyto()),
+                                Utils.getCurrentTime()))){
+                    holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
+                    disableColorUpdate(holder);
+                    holder.bookingIvEdit.setVisibility(View.GONE);
+                    holder.bookingIvLocation.setVisibility(View.GONE);
+                    holder.tv_change.setVisibility(View.GONE);
+                } else {
+                    holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
+                    enableColorUpdate(holder);
+                    holder.bookingIvEdit.setVisibility(View.VISIBLE);
+                    holder.bookingIvLocation.setVisibility(View.VISIBLE);
+                    holder.tv_change.setVisibility(View.VISIBLE);
+                }
+            } catch (Exception e){
+                Log.d(TAG, "onBindViewHolder: "+e.getMessage());
+            }
             holder.bookingAddress.setText(new StringBuilder()
                     .append("")
                     .append(list.get(position).getCarParkBookingsModel().getLocationBuildingFloor().getBuildingName())
@@ -475,6 +582,29 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.rlInOffice.setVisibility(View.GONE);
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
+            try {
+                if(Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==1
+                        || (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2
+                        &&
+                        !Utils.compareTimeIfCheckInEnable(
+                                Utils.splitTime(list.get(position).getCarParkBookingsModel().getMyto()),
+                                Utils.getCurrentTime()))){
+                    holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
+                    disableColorUpdate(holder);
+                    holder.bookingIvEdit.setVisibility(View.GONE);
+                    holder.bookingIvLocation.setVisibility(View.GONE);
+                    holder.tv_change.setVisibility(View.GONE);
+
+                } else {
+                    holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
+                    enableColorUpdate(holder);
+                    holder.bookingIvEdit.setVisibility(View.VISIBLE);
+                    holder.bookingIvLocation.setVisibility(View.VISIBLE);
+                    holder.tv_change.setVisibility(View.VISIBLE);
+                }
+            } catch (Exception e){
+                Log.e(TAG, "onBindViewHolder: ", e.getCause());
+            }
 
             holder.tvBookingWorkingRemote.setText("Request For Parking - "+list.get(position).getCarParkBookingsModel().getParkingSlotCode());
             holder.startTime.setText(""
@@ -617,6 +747,35 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         });
     }
 
+    private void disableColorUpdate(HomeBookingListViewHolder holder) {
+        holder.bookingImage.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.figmaGrey)));
+        holder.bookingRemoteHome.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.figmaGrey)));
+        holder.remoteChecoutIcon.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.figmaGrey)));
+        holder.bookingCheckInIcon.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.figmaGrey)));
+        holder.bookingCheckOutIcon.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.figmaGrey)));
+        holder.remoteChecinIcon.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.figmaGrey)));
+        holder.tvBookingWorkingRemote.setTextColor(ContextCompat.getColor(context,R.color.figmaGrey));
+        holder.bookingDeskName.setTextColor(ContextCompat.getColor(context,R.color.figmaGrey));
+        holder.startTime.setTextColor(ContextCompat.getColor(context,R.color.figmaGrey));
+        holder.endTime.setTextColor(ContextCompat.getColor(context,R.color.figmaGrey));
+        holder.bookingCheckInTime.setTextColor(ContextCompat.getColor(context,R.color.figmaGrey));
+        holder.bookingCheckOutTime.setTextColor(ContextCompat.getColor(context,R.color.figmaGrey));
+    }
+    private void enableColorUpdate(HomeBookingListViewHolder holder) {
+        holder.bookingImage.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.black)));
+        holder.bookingRemoteHome.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.black)));
+        holder.remoteChecoutIcon.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.figmaBlackGrey)));
+        holder.bookingCheckInIcon.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.figmaBlackGrey)));
+        holder.bookingCheckOutIcon.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.figmaBlackGrey)));
+        holder.remoteChecinIcon.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.figmaBlackGrey)));
+        holder.tvBookingWorkingRemote.setTextColor(ContextCompat.getColor(context,R.color.black));
+        holder.bookingDeskName.setTextColor(ContextCompat.getColor(context,R.color.black));
+        holder.startTime.setTextColor(ContextCompat.getColor(context,R.color.black));
+        holder.endTime.setTextColor(ContextCompat.getColor(context,R.color.black));
+        holder.bookingCheckInTime.setTextColor(ContextCompat.getColor(context,R.color.black));
+        holder.bookingCheckOutTime.setTextColor(ContextCompat.getColor(context,R.color.black));
+    }
+
     @Override
     public int getItemCount() {
         return list.size();
@@ -680,6 +839,14 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
         @BindView(R.id.bookingIvLocationIcon)
         ImageView bookingIvLocation;
+        @BindView(R.id.remote_checout_icon)
+        ImageView remoteChecoutIcon;
+        @BindView(R.id.remote_checin_icon)
+        ImageView remoteChecinIcon;
+        @BindView(R.id.bookingCheckInIcon)
+        ImageView bookingCheckInIcon;
+        @BindView(R.id.bookingCheckOutIcon)
+        ImageView bookingCheckOutIcon;
 
 
         public HomeBookingListViewHolder(@NonNull View itemView) {

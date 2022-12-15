@@ -29,6 +29,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:layout_marginVertical="@dimen/_5sdp"
                 >
 
                 <RelativeLayout
@@ -40,7 +41,8 @@
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
                         android:layout_marginHorizontal="@dimen/_15sdp"
-                        android:src="@drawable/notification_icon"
+                        android:padding="@dimen/_3sdp"
+                        android:src="@drawable/ic_home_notification_bell"
                         app:tint="@color/black" />
 
                     <ImageView
@@ -71,7 +73,7 @@
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:src="@drawable/ic_outline_settings_24"
+                    android:src="@drawable/ic_home_settings_icon"
                     app:tint="@color/black"
                     />
             </LinearLayout>
@@ -99,6 +101,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:background="@color/white"
+                        android:layout_marginHorizontal="@dimen/_15sdp"
                         >
                         <RelativeLayout
                             android:layout_width="0dp"
@@ -109,8 +112,8 @@
 
                             <de.hdodenhof.circleimageview.CircleImageView
                                 android:id="@+id/user_profile_pic"
-                                android:layout_width="@dimen/_45sdp"
-                                android:layout_height="@dimen/_45sdp"
+                                android:layout_width="@dimen/_65sdp"
+                                android:layout_height="@dimen/_65sdp"
                                 android:layout_centerInParent="true"
                                 android:background="@drawable/bg_circle_vector"
                                 android:padding="@dimen/_2sdp"
@@ -120,6 +123,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
+                            android:layout_marginStart="@dimen/_23sdp"
                             android:orientation="vertical"
                             android:gravity="center_vertical"
                             android:layout_gravity="center_vertical"
@@ -173,14 +177,15 @@
                                 class="android.widget.TextView"
                                 android:layout_width="@dimen/_2sdp"
                                 android:layout_height="match_parent"
-                                android:layout_marginVertical="@dimen/_5sdp"
+                                android:layout_marginVertical="@dimen/_10sdp"
                                 android:background="@color/figmaGrey" />
 
                             <ImageView
                                 android:id="@+id/tentant_image_view"
-                                android:layout_width="@dimen/_50sdp"
-                                android:layout_height="@dimen/_50sdp"
-                                android:layout_centerInParent="true"
+                                android:layout_width="@dimen/_44sdp"
+                                android:layout_height="@dimen/_44sdp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
                                 android:layout_weight="1"
                                 android:src="@drawable/default_company_logo" />
                         </RelativeLayout>
