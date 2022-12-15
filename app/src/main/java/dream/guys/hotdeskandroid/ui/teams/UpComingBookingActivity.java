@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.DAOUpcomingBooking;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.ExtendedDataHolder;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
@@ -86,8 +89,14 @@ public class UpComingBookingActivity extends AppCompatActivity {
             Intent intent = getIntent();
 
             if (intent!=null){
-
-                daoTeamMember = (DAOTeamMember) intent.getSerializableExtra(AppConstants.USER_CURRENT_STATUS);
+                String personJsonString = "";
+                ExtendedDataHolder extras = ExtendedDataHolder.getInstance();
+                if (extras.hasExtra("profile")) {
+                    personJsonString = (String) extras.getExtra("profile");
+                }
+                extras.clear();
+                daoTeamMember = new Gson().fromJson(personJsonString, DAOTeamMember.class);
+               // daoTeamMember = (DAOTeamMember) intent.getSerializableExtra(AppConstants.USER_CURRENT_STATUS);
                 date = intent.getStringExtra("DATE");
 
                 if (daoTeamMember!=null){

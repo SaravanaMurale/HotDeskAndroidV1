@@ -679,7 +679,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
         ExtendedDataHolder extras = ExtendedDataHolder.getInstance();
         extras.putExtra(AppConstants.USER_CURRENT_STATUS, personJsonString);
-      //  intent.putExtra(AppConstants.USER_CURRENT_STATUS, daoTeamMember);
+        //  intent.putExtra(AppConstants.USER_CURRENT_STATUS, daoTeamMember);
         intent.putExtra("DATE", currendate);
         startActivity(intent);
 
@@ -1166,7 +1166,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         binding.listTitle.setText(appKeysPage.getWorkFromOffice());
         binding.tvUnknown.setText(appKeysPage.getNoBookingsAvailable());
         binding.tvTotalAvail.setText(appKeysPage.getDesksAvailable());
-
+        binding.teamName.setText(SessionHandler.getInstance().get(getActivity(), AppConstants.CURRENT_TEAM)
+                == null ? "" : SessionHandler.getInstance().get(getActivity(), AppConstants.CURRENT_TEAM));
     }
 
 }

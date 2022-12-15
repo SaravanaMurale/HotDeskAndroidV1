@@ -860,7 +860,7 @@
                         android:layout_height="@dimen/_20sdp"
                         android:layout_alignParentEnd="true"
                         android:layout_marginHorizontal="@dimen/_2sdp"
-                        android:src="@drawable/ic_baseline_local_phone_24"
+                        android:src="@drawable/ic_call"
                         app:tint="@color/figmaBlueText"/>
                 </RelativeLayout>
 

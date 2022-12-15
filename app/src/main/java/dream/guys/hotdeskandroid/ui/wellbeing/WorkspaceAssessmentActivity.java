@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -65,7 +66,8 @@ public class WorkspaceAssessmentActivity extends AppCompatActivity implements Qu
     LinearLayoutManager mLayoutManager;
     AssessmentAdapter assessmentAdapter;
     RecyclerView rvWorkspaceHeader;
-    TextView etDate, reportCancel, reportSubmit, etLocation;
+    TextView etDate, reportCancel, etLocation;
+    Button reportSubmit;
     EditText etDescription;
     ImageView ReportBack;
     int deskId=0;

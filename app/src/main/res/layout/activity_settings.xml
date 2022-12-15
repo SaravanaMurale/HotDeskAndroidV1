@@ -88,29 +88,32 @@
                         android:layout_height="@dimen/_50sdp"
                         android:src="@drawable/avatar" />
 
-                    <TextView
-                        android:id="@+id/tvViewProfileName"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/ivViewPrifle"
-                        android:textColor="@color/figmaBlack"
-                        android:theme="@style/TextBold"
-                        android:textSize="@dimen/_13sdp"/>
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_centerInParent="true"
+                        android:layout_toEndOf="@+id/ivViewPrifle"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/settingViewProfile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tvViewProfileName"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:layout_toRightOf="@+id/ivViewPrifle"
-                        android:text="View Profile"
-                        android:theme="@style/TextRegular"
-                        android:textColor="@color/figmaBlack"
-                        android:textSize="@dimen/_13sdp" />
+                        <TextView
+                            android:id="@+id/tvViewProfileName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="asdasdasd"
+                            android:textColor="@color/figmaBlack"
+                            android:theme="@style/TextBold"
+                            android:textSize="@dimen/_13sdp"/>
+
+                        <TextView
+                            android:id="@+id/settingViewProfile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="View Profile"
+                            android:theme="@style/TextRegular"
+                            android:textColor="@color/figmaBlack"
+                            android:textSize="@dimen/_13sdp" />
+                    </LinearLayout>
 
                     <ImageView
                         android:id="@+id/viewPrfileIcon"
@@ -352,7 +355,7 @@
                         android:layout_alignParentStart="true"
                         android:layout_centerInParent="true"
                         android:layout_toLeftOf="@id/pin_icon"
-                        android:text="Set Up Pin"
+                        android:text="Set up pin"
                         android:textColor="@color/figmaBlack"
                         android:textSize="@dimen/_14sdp"
                         android:theme="@style/TextBold" />
@@ -384,7 +387,7 @@
                         android:layout_alignParentStart="true"
                         android:layout_centerInParent="true"
                         android:layout_toLeftOf="@id/reset_icon"
-                        android:text="Reset Password"
+                        android:text="Reset passwords"
                         android:textColor="@color/figmaBlack"
                         android:textSize="@dimen/_14sdp"
                         android:theme="@style/TextBold" />

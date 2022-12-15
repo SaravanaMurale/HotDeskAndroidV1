@@ -12,6 +12,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:theme="@style/TextBold"
+        android:layout_marginStart="@dimen/_15sdp"
         android:text="Header"/>
 
     <androidx.recyclerview.widget.RecyclerView

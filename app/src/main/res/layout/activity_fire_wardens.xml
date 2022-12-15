@@ -72,10 +72,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:padding="@dimen/_5sdp"
-                android:theme="@style/TextRegular"
                 android:text="@string/report_hazard"
                 android:textColor="@color/black"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                android:theme="@style/TextRegular" />
 
         </RelativeLayout>
 
@@ -165,7 +165,7 @@
             android:id="@+id/headFire"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Your Fire Warden"
+            android:text="Your Fire wardens"
             android:theme="@style/TextBold"
             />
         <TextView
@@ -173,6 +173,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/today"
+            android:layout_marginTop="@dimen/_2sdp"
             android:theme="@style/TextRegular"
             />
 

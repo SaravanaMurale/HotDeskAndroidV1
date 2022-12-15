@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/tool_bar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
-            android:id="@+id/tool_bar">
+            app:layout_constraintTop_toTopOf="parent">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -34,22 +34,20 @@
             </RelativeLayout>
 
             <ImageView
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:src="@drawable/ic_personal"
                 android:id="@+id/profile_update"
-                />
+                android:layout_width="@dimen/_22sdp"
+                android:layout_height="@dimen/_22sdp" />
+
             <TextView
                 android:id="@+id/profile_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/personal_help"
                 android:layout_marginLeft="@dimen/_10sdp"
+                android:text="@string/personal_help"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15sdp"
                 android:textStyle="bold"
-                android:theme="@style/TextBold"
-                />
+                android:theme="@style/TextBold" />
 
         </LinearLayout>
 
@@ -57,56 +55,56 @@
             android:id="@+id/tvContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tool_bar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:text="@string/benefits"
             android:textSize="@dimen/_15sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:theme="@style/TextBold"/>
+            android:theme="@style/TextBold"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tool_bar" />
 
         <TextView
             android:id="@+id/tvHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tvContent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_5sdp"
-            android:theme="@style/TextRegular"
             android:text="If you feel comfortable to describe the issue, please do below and we will forward to the personal help team."
-            android:layout_marginStart="@dimen/_10sdp"/>
+            android:theme="@style/TextRegular"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvContent" />
 
         <TextView
             android:id="@+id/tvLinks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tvHeader"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:textSize="@dimen/_15sdp"
+            android:background="@color/figmaBgGrey"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
             android:text="Links"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:theme="@style/TextBold"/>
-
-
+            android:textSize="@dimen/_15sdp"
+            android:theme="@style/TextBold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvHeader" />
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvCommon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@+id/tvLinks"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:listitem="@layout/item_text_view"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_15sdp"/>
+            android:layout_marginTop="@dimen/_15sdp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvLinks"
+            tools:listitem="@layout/item_text_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 </androidx.core.widget.NestedScrollView>

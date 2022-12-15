@@ -73,6 +73,10 @@ public class WellbeingFragment extends Fragment {
 
     LanguagePOJO.AppKeys appKeysPage;
 
+    public String WELLBEING_TYPE="WELLBEING_TYPE";
+    public String PERSONAL_CONTENT="PERSONAL_CONTENT";
+    public String PERSONAL_LINKS="PERSONAL_LINKS";
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,10 +99,11 @@ public class WellbeingFragment extends Fragment {
                 if (binding.tvHealthTips.isEnabled()) {
                     Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
                     //intent.putExtra(AppConstants.WELLBEING_TYPE, "Health Tips");
-                    intent.putExtra(AppConstants.WELLBEING_TYPE, binding.tvHealthTips.getText());
-                    intent.putExtra(AppConstants.PERSONAL_CONTENT, healthtips);
+                    intent.putExtra(WELLBEING_TYPE, binding.tvHealthTips.getText());
+                    intent.putExtra(PERSONAL_CONTENT, healthtips);
                     Log.d(TAG, "onClick: "+linksArrayHealthTips.size());
-                    intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayHealthTips);
+                    intent.putExtra(PERSONAL_LINKS, (Serializable) linksArrayHealthTips);
+                    intent.putExtra("type", "Health Tips");
                     startActivity(intent);
                 /*
                 Intent intent=new Intent(getActivity(),FireWardensActivity.class);
@@ -162,12 +167,14 @@ public class WellbeingFragment extends Fragment {
                 if (binding.mentalHealth.isEnabled()) {
                     /* Intent intent=new Intent(getActivity(),TrainingActivity.class);*/
                     Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
-                    //intent.putExtra(AppConstants.WELLBEING_TYPE, "Mental Health");
-                    intent.putExtra(AppConstants.WELLBEING_TYPE, binding.mentalHealth.getText());
-                    intent.putExtra(AppConstants.PERSONAL_CONTENT, health);
+                    //intent.putExtra(WELLBEING_TYPE, "Mental Health");
+                    intent.putExtra(WELLBEING_TYPE, binding.mentalHealth.getText());
+                    intent.putExtra(PERSONAL_CONTENT, health);
                     Log.d(TAG, "onClick: "+linksArrayPersonal.size());
-                    intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayHealth);
+                    intent.putExtra(PERSONAL_LINKS, (Serializable) linksArrayHealth);
+                    intent.putExtra("type", "Mental Health");
                     startActivity(intent);
+
                 }else {
                     disableToast();
                 }
@@ -194,11 +201,12 @@ public class WellbeingFragment extends Fragment {
                     /*Intent intent=new Intent(getActivity(),CreateNoticeActivity.class);
                     startActivity(intent);*/
                     Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
-                    //intent.putExtra(AppConstants.WELLBEING_TYPE, "Notice");
-                    intent.putExtra(AppConstants.WELLBEING_TYPE, binding.tvNotification.getText());
-                    intent.putExtra(AppConstants.PERSONAL_CONTENT, notice);
+                    //intent.putExtra(WELLBEING_TYPE, "Notice");
+                    intent.putExtra(WELLBEING_TYPE, binding.tvNotification.getText());
+                    intent.putExtra(PERSONAL_CONTENT, notice);
                     Log.d(TAG, "onClick: "+linksArrayPersonal.size());
-                    intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayNotice);
+                    intent.putExtra(PERSONAL_LINKS, (Serializable) linksArrayNotice);
+                    intent.putExtra("type", "Notice");
                     startActivity(intent);
                 }else {
                     disableToast();
@@ -215,11 +223,12 @@ public class WellbeingFragment extends Fragment {
                     /*Intent intent=new Intent(getActivity(),CreateNoticeActivity.class);
                     startActivity(intent);*/
                     Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
-                    //intent.putExtra(AppConstants.WELLBEING_TYPE, "Rewards");
-                    intent.putExtra(AppConstants.WELLBEING_TYPE, binding.tvRewards.getText());
-                    intent.putExtra(AppConstants.PERSONAL_CONTENT, rewards);
+                    //intent.putExtra(WELLBEING_TYPE, "Rewards");
+                    intent.putExtra(WELLBEING_TYPE, binding.tvRewards.getText());
+                    intent.putExtra(PERSONAL_CONTENT, rewards);
                     Log.d(TAG, "onClick: "+linksArrayPersonal.size());
-                    intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayRewards);
+                    intent.putExtra(PERSONAL_LINKS, (Serializable) linksArrayRewards);
+                    intent.putExtra("type", "Rewards");
                     startActivity(intent);
                 }else {
                     disableToast();
@@ -234,9 +243,9 @@ public class WellbeingFragment extends Fragment {
 
                 if (binding.tvPersonal.isEnabled()) {
                     Intent intent=new Intent(getActivity(),PersonalHelpActivity.class);
-                    intent.putExtra(AppConstants.PERSONAL_CONTENT, personalData);
+                    intent.putExtra(PERSONAL_CONTENT, personalData);
                     Log.d(TAG, "onClick: "+linksArrayPersonal.size());
-                    intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayPersonal);
+                    intent.putExtra(PERSONAL_LINKS, (Serializable) linksArrayPersonal);
                     startActivity(intent);
                 }else {
                     disableToast();
@@ -280,11 +289,12 @@ public class WellbeingFragment extends Fragment {
                 if (binding.tvTraining.isEnabled()) {
                     /* Intent intent=new Intent(getActivity(),TrainingActivity.class);*/
                     Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
-                    //intent.putExtra(AppConstants.WELLBEING_TYPE, "Benefits");
-                    intent.putExtra(AppConstants.WELLBEING_TYPE, binding.txtBenefits.getText());
-                    intent.putExtra(AppConstants.PERSONAL_CONTENT, benefits);
+                    //intent.putExtra(WELLBEING_TYPE, "Benefits");
+                    intent.putExtra(WELLBEING_TYPE, binding.txtBenefits.getText());
+                    intent.putExtra(PERSONAL_CONTENT, benefits);
                     Log.d(TAG, "onClick: "+linksArrayPersonal.size());
-                    intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayBenefits);
+                    intent.putExtra(PERSONAL_LINKS, (Serializable) linksArrayBenefits);
+                    intent.putExtra("type", "Benefits");
                     startActivity(intent);
                 }else {
                     disableToast();
@@ -300,11 +310,12 @@ public class WellbeingFragment extends Fragment {
                 if (binding.tvEvents.isEnabled()) {
                     /* Intent intent=new Intent(getActivity(),TrainingActivity.class);*/
                     Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
-                    //intent.putExtra(AppConstants.WELLBEING_TYPE, "Events");
-                    intent.putExtra(AppConstants.WELLBEING_TYPE, binding.tvEvents.getText());
-                    intent.putExtra(AppConstants.PERSONAL_CONTENT, events);
+                    //intent.putExtra(WELLBEING_TYPE, "Events");
+                    intent.putExtra(WELLBEING_TYPE, binding.tvEvents.getText());
+                    intent.putExtra(PERSONAL_CONTENT, events);
                     Log.d(TAG, "onClick: "+linksArrayPersonal.size());
-                    intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayEvents);
+                    intent.putExtra(PERSONAL_LINKS, (Serializable) linksArrayEvents);
+                    intent.putExtra("type", "Events");
                     startActivity(intent);
                 }else {
                     disableToast();
@@ -319,11 +330,12 @@ public class WellbeingFragment extends Fragment {
 
                 /* Intent intent=new Intent(getActivity(),TrainingActivity.class);*/
                 Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
-                //intent.putExtra(AppConstants.WELLBEING_TYPE, "Health Eating");
-                intent.putExtra(AppConstants.WELLBEING_TYPE, binding.txtHealtheat.getText());
-                intent.putExtra(AppConstants.PERSONAL_CONTENT, health);
+                //intent.putExtra(WELLBEING_TYPE, "Health Eating");
+                intent.putExtra(WELLBEING_TYPE, binding.txtHealtheat.getText());
+                intent.putExtra(PERSONAL_CONTENT, health);
                 Log.d(TAG, "onClick: "+linksArrayPersonal.size());
-                intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayHealth);
+                intent.putExtra(PERSONAL_LINKS, (Serializable) linksArrayHealth);
+                intent.putExtra("type", "Health Eating");
                 startActivity(intent);
 
             }
@@ -403,10 +415,11 @@ public class WellbeingFragment extends Fragment {
 
                 if (binding.tvMenu.isEnabled()) {
                     Intent intent=new Intent(getActivity(), WellbeingCommonActivity.class);
-                    intent.putExtra(AppConstants.WELLBEING_TYPE, binding.txtMenu.getText());
-                    intent.putExtra(AppConstants.PERSONAL_CONTENT, menu);
+                    intent.putExtra(WELLBEING_TYPE, binding.txtMenu.getText());
+                    intent.putExtra(PERSONAL_CONTENT, menu);
                     Log.d(TAG, "onClick: "+linksArrayMenu.size());
-                    intent.putExtra(AppConstants.PERSONAL_LINKS, (Serializable) linksArrayMenu);
+                    intent.putExtra(PERSONAL_LINKS, (Serializable) linksArrayMenu);
+                    intent.putExtra("type", "menu");
                     startActivity(intent);
                 }else {
                     disableToast();
