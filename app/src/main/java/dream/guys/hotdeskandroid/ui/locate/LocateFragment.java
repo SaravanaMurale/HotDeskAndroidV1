@@ -414,6 +414,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         setLanguage();
 
 
+
         //New...
         checkVeichleReg();
 
@@ -1132,7 +1133,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 binding.searchLocate.setHint("Choose Location");
             } else {
                 if (fullPathLocation == null) {
-                    binding.searchLocate.setText(CountryName + "," + buildingName + "," + floorName);
+                    binding.searchLocate.setText(buildingName + "  " + floorName);
                 } else {
                     binding.searchLocate.setText(fullPathLocation);
                 }
