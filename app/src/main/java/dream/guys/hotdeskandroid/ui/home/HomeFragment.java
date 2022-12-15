@@ -67,6 +67,7 @@ import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
 import dream.guys.hotdeskandroid.controllers.EditDeskController;
+import dream.guys.hotdeskandroid.controllers.EditMeetingRoomController;
 import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
@@ -1269,7 +1270,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             //Edit
             System.out.println("MeetingEditClicked");
 
-            EditBookingDetails editDeskBookingDetails = new EditBookingDetails();
+            callEditMeeting(meetingEntriesModel,date);
+            
+            /*EditBookingDetails editDeskBookingDetails = new EditBookingDetails();
             editDeskBookingDetails.setEditStartTTime(Utils.splitTime(meetingEntriesModel.getFrom()));
             editDeskBookingDetails.setEditEndTime(Utils.splitTime(meetingEntriesModel.getMyto()));
             editDeskBookingDetails.setDate(date);
@@ -1282,8 +1285,83 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     editDeskBookingDetails.getDate(),
                     editDeskBookingDetails.getMeetingRoomtId(),
                     position);
+            */
+            
 //            editBookingUsingBottomSheet(editDeskBookingDetails,2,position);
         }
+    }
+
+    private void callEditMeeting(BookingListResponse.DayGroup.MeetingBooking meetingEntriesModel, Date date) {
+        if (Utils.isNetworkAvailable(getActivity())) {
+            dialog= ProgressDialog.showProgressBar(context);
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<MeetingListToEditResponse>> call=apiService.getMeetingListToEdit(Utils.getYearMonthDateFormat(date)+"T00:00:00.000Z",Utils.getYearMonthDateFormat(date)+"T00:00:00.000Z");
+            call.enqueue(new Callback<List<MeetingListToEditResponse>>() {
+                @Override
+                public void onResponse(Call<List<MeetingListToEditResponse>> call, Response<List<MeetingListToEditResponse>> response) {
+
+                    List<MeetingListToEditResponse> meetingListToEditResponseList  =response.body();
+                    List<MeetingListToEditResponse> meetingListToEditList  =new ArrayList<>();
+                    if (meetingListToEditResponseList!=null){
+                        for(int i=0; i<meetingListToEditResponseList.size(); i++) {
+                            if(meetingEntriesModel.getId()==meetingListToEditResponseList.get(i).getId()){
+                                if (meetingListToEditResponseList.get(i).getBookedByUserId()
+                                        == SessionHandler.getInstance().getInt(getActivity(),AppConstants.USER_ID)) {
+                                    openEditMeeting(meetingListToEditResponseList.get(i), true);
+                                } else {
+                                    openEditMeeting(meetingListToEditResponseList.get(i), false);
+                                }
+                            }
+                        }
+                    }
+
+                    ProgressDialog.dismisProgressBar(context,dialog);
+
+
+                }
+
+                @Override
+                public void onFailure(Call<List<MeetingListToEditResponse>> call, Throwable t) {
+                    ProgressDialog.dismisProgressBar(context,dialog);
+//                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+                }
+            });
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
+    }
+
+    private void openEditMeeting(MeetingListToEditResponse meetingListToEditResponse, boolean isEditable) {
+        EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
+        editDeskBookingDetails.setEditStartTTime(Utils.splitTime(meetingListToEditResponse.getFrom()));
+        editDeskBookingDetails.setEditEndTime(Utils.splitTime(meetingListToEditResponse.getTo()));
+        editDeskBookingDetails.setDate(Utils.convertStringToDateFormet(meetingListToEditResponse.getDate()));
+        editDeskBookingDetails.setCalId(meetingListToEditResponse.getId());
+        editDeskBookingDetails.setMeetingRoomtId(meetingListToEditResponse.getMeetingRoomId());
+        editDeskBookingDetails.setRoomName(meetingListToEditResponse.getMeetingRoomName());
+        editDeskBookingDetails.setComments(meetingListToEditResponse.getComments());
+        MeetingListToEditResponse.Status status = meetingListToEditResponse.getStatus();
+        editDeskBookingDetails.setMeetingRoomBookingType(status.getBookingType());
+
+
+        //New...
+        editDeskBookingDetails.setAttendeesList(meetingListToEditResponse.getAttendeesList());
+        editDeskBookingDetails.setExternalAttendeesList(meetingListToEditResponse.getExternalAttendeesList());
+        editDeskBookingDetails.setComments(meetingListToEditResponse.getComments());
+        editDeskBookingDetails.setSubject(meetingListToEditResponse.getSubject());
+        selectedDeskId = meetingListToEditResponse.getMeetingRoomId();
+
+        EditMeetingRoomController editMeetingRoomController = new EditMeetingRoomController(
+                AppConstants.HOMEFRAGMENTINSTANCESTRING,
+                activityContext,
+                context,
+                meetingListToEditResponse.getDate(),
+                selectedDeskId,
+                editDeskBookingDetails,
+                isEditable
+        );
     }
 
     private void callAmenitiesListForMeetingRoom(EditBookingDetails editDeskBookingDetails, String editStartTTime,

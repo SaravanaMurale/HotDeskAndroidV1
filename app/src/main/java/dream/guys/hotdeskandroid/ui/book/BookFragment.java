@@ -95,6 +95,7 @@ import dream.guys.hotdeskandroid.adapter.ParkingSpotListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.ParticipantNameShowAdapter;
 import dream.guys.hotdeskandroid.adapter.RoomListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
+import dream.guys.hotdeskandroid.controllers.EditMeetingRoomController;
 import dream.guys.hotdeskandroid.controllers.OtherBookingController;
 import dream.guys.hotdeskandroid.controllers.EditDeskController;
 import dream.guys.hotdeskandroid.databinding.FragmentBookBinding;
@@ -1284,7 +1285,7 @@ public class BookFragment extends Fragment implements
                     List<MeetingListToEditResponse> meetingListToEditResponseList  =response.body();
                     List<MeetingListToEditResponse> meetingListToEditList  =new ArrayList<>();
 
-                    for(int i=0; i<meetingListToEditResponseList.size(); i++){
+                    for(int i=0; i<meetingListToEditResponseList.size(); i++) {
                         //System.out.println("meting userId"+meetingListToEditResponseList.get(i).getBookedByUserId()
 //                                +" : " +SessionHandler.getInstance().getInt(getActivity(),AppConstants.USER_ID));
                         if (meetingListToEditResponseList.get(i).getBookedByUserId()
@@ -1824,13 +1825,29 @@ public class BookFragment extends Fragment implements
         editDeskBookingDetails.setComments(meetingListToEditResponse.getComments());
         editDeskBookingDetails.setSubject(meetingListToEditResponse.getSubject());
         selectedDeskId = meetingListToEditResponse.getMeetingRoomId();
-
+        Toast.makeText(context, "hit", Toast.LENGTH_SHORT).show();
+        boolean isEditable = false;
+        if (meetingListToEditResponse.getBookedByUserId() == SessionHandler.getInstance().getInt(context,AppConstants.USER_ID)){
+            isEditable  = true;
+        } else {
+            isEditable  = false;
+        }
+        EditMeetingRoomController editMeetingRoomController = new EditMeetingRoomController(
+                AppConstants.BOOKFRAGMENTINSTANCESTRING,
+                activityContext,
+                context,
+                calSelectedDate,
+                selectedDeskId,
+                editDeskBookingDetails,
+                isEditable
+        );
+/*
         callAmenitiesListForMeetingRoom(editDeskBookingDetails,
                 editDeskBookingDetails.getEditStartTTime(),
                 editDeskBookingDetails.getEditEndTime(),
                 editDeskBookingDetails.getDate(),
                 editDeskBookingDetails.getMeetingRoomtId(),
-                0,"edit");
+                0,"edit");*/
     }
 
     @Override
