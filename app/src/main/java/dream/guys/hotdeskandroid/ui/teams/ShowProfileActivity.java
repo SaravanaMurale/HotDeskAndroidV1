@@ -448,13 +448,13 @@ public class ShowProfileActivity extends AppCompatActivity {
             binding.tvEditEmail.setText("Email");
         else
             binding.tvEditEmail.setText(results.getEmail());
-        if (results.getDeskPhoneNumber() == null
+      /*  if (results.getDeskPhoneNumber() == null
                 || results.getDeskPhoneNumber().equalsIgnoreCase("")
                 || results.getDeskPhoneNumber().isEmpty())
             binding.tvEditPhone.setText("Phone");
         else
-            binding.tvEditPhone.setText(results.getMobile());
-
+            binding.tvEditPhone.setText(results.getMobile());*/
+        binding.tvEditPhone.setText("Phone");
         binding.txtTname.setText(results.getTeam());
         //binding.tvEditPhone.setText(results.getMobile());
 
