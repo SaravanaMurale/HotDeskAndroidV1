@@ -32,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
-import dream.guys.hotdeskandroid.ui.book.OtherBookingController;
+import dream.guys.hotdeskandroid.controllers.OtherBookingController;
 import dream.guys.hotdeskandroid.ui.home.HomeFragment;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;

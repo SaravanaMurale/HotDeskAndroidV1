@@ -286,14 +286,13 @@
                 <RelativeLayout
                     android:id="@+id/rlParticipants"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_27sdp"
                     android:layout_below="@+id/searchGlobal"
                     android:layout_alignParentStart="true"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_8sdp"
                     android:background="@drawable/rectangle_bg_with_corner"
-                    android:paddingLeft="@dimen/_4sdp"
-                    android:paddingRight="@dimen/_4sdp"
+                    android:padding="@dimen/_5sdp"
                     tools:ignore="MissingConstraints">
 
                     <TextView
@@ -347,16 +346,14 @@
                 <LinearLayout
                     android:id="@+id/rlTime"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_27sdp"
                     android:layout_below="@+id/searchGlobal"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_8sdp"
                     android:layout_toRightOf="@id/rlParticipants"
                     android:gravity="center_vertical"
                     android:background="@drawable/rectangle_bg_with_corner"
                     android:orientation="horizontal"
-                    android:paddingLeft="@dimen/_8sdp"
-                    android:paddingRight="@dimen/_8sdp"
+                    android:padding="@dimen/_3sdp"
                     tools:ignore="MissingConstraints">
 
                     <view
@@ -385,7 +382,7 @@
                         android:layout_marginRight="@dimen/_4sdp"
                         android:layout_toRightOf="@id/tvStartLocate"
                         android:text="8:00"
-                        android:textColor="@color/figmaBlack"
+                        android:textColor="@color/figmaBlueText"
                         android:textSize="14sp"
                         android:theme="@style/TextRegular" />
 
@@ -435,7 +432,7 @@
                         android:layout_marginLeft="@dimen/_5sdp"
                         android:layout_toRightOf="@+id/tvLocateEndTime"
                         android:text="17:30"
-                        android:textColor="@color/figmaBlack"
+                        android:textColor="@color/figmaBlueText"
                         android:textSize="14sp"
                         android:theme="@style/TextRegular" />
 
@@ -448,20 +445,22 @@
                 <RelativeLayout
                     android:id="@+id/rlFilter"
                     android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
+                    android:layout_height="@dimen/_27sdp"
                     android:layout_below="@+id/searchGlobal"
                     android:layout_alignParentEnd="true"
                     android:layout_toRightOf="@id/rlTime"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:padding="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/rectangle_bg_with_corner"
                     tools:ignore="MissingConstraints">
 
                     <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/filter_icon"
-                        android:paddingVertical="@dimen/_6sdp"
-                        android:paddingHorizontal="@dimen/_4sdp"
+                        android:layout_width="@dimen/_12sdp"
+                        android:layout_height="@dimen/_12sdp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/filter_icon"
+
                         />
             </RelativeLayout>
 

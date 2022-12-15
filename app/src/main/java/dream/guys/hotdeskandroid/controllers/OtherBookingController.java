@@ -1,4 +1,4 @@
-package dream.guys.hotdeskandroid.ui.book;
+package dream.guys.hotdeskandroid.controllers;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -41,15 +41,17 @@ import retrofit2.Response;
 
 public class OtherBookingController {
 
-    private Context context;
+    private final Context context;
     private int selectedIcon;
     private String calSelectedDate;
-    private String isFrom = "";
+    private String isFrom;
     private BookingForEditResponse bookingForEditResponse;
     private Dialog dialog;
     private BookingListResponse.DayGroup.CalendarEntry calendarEntry;
     private Date date;
     private int type = 0;
+    private BottomSheetDialog addEditBottomSheet;
+    private BottomSheetDialog editBookingSheet;
 
     public OtherBookingController(Context context, int selectedIcon, String calSelectedDate) {
         this.context = context;
@@ -92,7 +94,6 @@ public class OtherBookingController {
 
         homeEditBooking(calendarEntry.getFrom(), calendarEntry.getMyto());
     }
-
 
     private void getAddEditDesk(int code, String date) {
         if (Utils.isNetworkAvailable(context)) {
@@ -162,7 +163,8 @@ public class OtherBookingController {
     }
 
     public void openNewBookingSheet(String from, String startTimeStr, String endTimeStr, int bookingId) {
-        BottomSheetDialog addEditBottomSheet = new BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme);
+
+        addEditBottomSheet = new BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme);
         addEditBottomSheet.setContentView(((Activity) context).getLayoutInflater().inflate
                 (R.layout.bottom_sheet_other_bookings_add_edit, new RelativeLayout(context)));
 
@@ -190,25 +192,19 @@ public class OtherBookingController {
             }
         });
 
-        tvBook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addEditBottomSheet.dismiss();
-                if (from.equalsIgnoreCase("new"))
-                    callBooking(from, startTime.getText().toString(), endTime.getText().toString());
-                else
-                    callEditBooking(from, startTime.getText().toString(), endTime.getText().toString(),
-                            bookingId);
+        tvBook.setOnClickListener(view -> {
+            addEditBottomSheet.dismiss();
+            if (from.equalsIgnoreCase("new"))
+                callBooking(from, startTime.getText().toString(), endTime.getText().toString());
+            else
+                callEditBooking(from, startTime.getText().toString(), endTime.getText().toString(),
+                        bookingId);
 
-            }
         });
 
-        editDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addEditBottomSheet.dismiss();
-                callDeleteBooking(bookingId);
-            }
+        editDelete.setOnClickListener(view -> {
+            addEditBottomSheet.dismiss();
+            callDeleteBooking(bookingId);
         });
 
          /*4 == 9 - remote - WFH
@@ -254,6 +250,10 @@ public class OtherBookingController {
                     Utils.convertStringToDateFormet(calSelectedDate)));
 
         } else {
+
+            if (editBookingSheet != null && editBookingSheet.isShowing())
+                editBookingSheet.dismiss();
+
             if (selectedIcon == 4) {
                 bookingName.setText("Edit working remotely");
                 type = 9;
@@ -296,7 +296,7 @@ public class OtherBookingController {
     }
 
     private void openEditBookingSheet(List<BookingForEditResponse.Bookings> bookingsList) {
-        BottomSheetDialog editBookingSheet = new BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme);
+        editBookingSheet = new BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme);
         editBookingSheet.setContentView(((Activity) context).getLayoutInflater().inflate
                 (R.layout.bottom_sheet_other_bookings_list, new RelativeLayout(context)));
 
@@ -416,30 +416,23 @@ public class OtherBookingController {
     private void callBooking(String newEditType, String startTimeStr, String endTimeStr) {
 
         if (Utils.isNetworkAvailable(context)) {
-
-
-            /*["teamMembershipId": "63", "deletedIds": [], "changesets": [["changes": ["timeZoneId": "India Standard Time",
- "usageTypeId": "9", "comments": "", "to": "2000-01-01T18:30:00Z", "from": "2000-01-01T13:42:00Z"],
- "date": "2022-12-14T00:00:00Z", "id": "0"]], "teamId": "6"]
-*/
+            dialog = ProgressDialog.showProgressBar(context);
             OtherBookingRequest otherBookingRequest = new OtherBookingRequest();
             otherBookingRequest.setTeamId(SessionHandler.getInstance().getInt(context, AppConstants.TEAM_ID));
-            otherBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(context, AppConstants.TEAMMEMBERSHIP_ID));
+            otherBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(context,
+                    AppConstants.TEAMMEMBERSHIP_ID));
 
             OtherBookingRequest.Changeset changeSets = otherBookingRequest.new Changeset();
             changeSets.setId(0);
             String date = Utils.removeTandZInDate(calSelectedDate).split(" ")[0];
             date = date + "T00:00:00Z";
-            // changeSets.setDate(getCurrentDate() + "T00:00:00Z");
             changeSets.setDate(date);
 
             OtherBookingRequest.Changeset.Changes changes = changeSets.new Changes();
             changes.setUsageTypeId(type);
 
             changes.setFrom("2000-01-01T" + startTimeStr + ":00.000Z");
-            // changes.setFrom("2000-01-01T15:42:00Z");
             changes.setTo("2000-01-01T" + endTimeStr + ":00.000Z");
-            // changes.setTo("2000-01-01T18:30:00Z");
 
             String timeZone = "India Standard Time";
             if (!SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID).isEmpty())
@@ -451,29 +444,21 @@ public class OtherBookingController {
 
             List<OtherBookingRequest.Changeset> changeSetsList = new ArrayList<>();
             changeSetsList.add(changeSets);
-
             otherBookingRequest.setChangesets(changeSetsList);
-
-         /*   OtherBookingRequest.DeleteIds deleteIds = locateBookingRequest.new DeleteIds();
-            List<LocateBookingRequest.DeleteIds> deleteIdsList = new ArrayList<>();
-            //deleteIdsList.add(deleteIds);*/
-
             otherBookingRequest.setDeletedIds(new ArrayList<>());
-
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<BaseResponse> call = apiService.otherBookings(otherBookingRequest);
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                    Log.e("", "");
+                    ProgressDialog.dismissProgressBar(dialog);
                     responseHandler(response, newEditType);
-                    //  locateResponseHandler(response, getResources().getString(R.string.booking_success));
                 }
 
                 @Override
                 public void onFailure(Call<BaseResponse> call, Throwable t) {
-                    // binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    ProgressDialog.dismissProgressBar(dialog);
                 }
             });
 
@@ -485,10 +470,11 @@ public class OtherBookingController {
     private void callEditBooking(String newEditType, String startTimeStr, String endTimeStr, int bookingId) {
 
         if (Utils.isNetworkAvailable(context)) {
-
+            dialog = ProgressDialog.showProgressBar(context);
             OtherBookingRequest otherBookingRequest = new OtherBookingRequest();
             otherBookingRequest.setTeamId(SessionHandler.getInstance().getInt(context, AppConstants.TEAM_ID));
-            otherBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(context, AppConstants.TEAMMEMBERSHIP_ID));
+            otherBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(context,
+                    AppConstants.TEAMMEMBERSHIP_ID));
 
             OtherBookingRequest.Changeset changeSets = otherBookingRequest.new Changeset();
             changeSets.setId(bookingId);
@@ -506,25 +492,20 @@ public class OtherBookingController {
             changeSetsList.add(changeSets);
             otherBookingRequest.setChangesets(changeSetsList);
 
-         /*   OtherBookingRequest.DeleteIds deleteIds = locateBookingRequest.new DeleteIds();
-            List<LocateBookingRequest.DeleteIds> deleteIdsList = new ArrayList<>();
-            //deleteIdsList.add(deleteIds);*/
-
             otherBookingRequest.setDeletedIds(new ArrayList<>());
-
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<BaseResponse> call = apiService.otherBookings(otherBookingRequest);
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                    Log.e("", "");
+                    ProgressDialog.dismissProgressBar(dialog);
                     responseHandler(response, newEditType);
                 }
 
                 @Override
                 public void onFailure(Call<BaseResponse> call, Throwable t) {
-                    // binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    ProgressDialog.dismissProgressBar(dialog);
                 }
             });
 
@@ -534,11 +515,18 @@ public class OtherBookingController {
     }
 
     public void callDeleteBooking(int bookingId) {
+        if (addEditBottomSheet != null && addEditBottomSheet.isShowing())
+            addEditBottomSheet.dismiss();
+
+        if (editBookingSheet != null && editBookingSheet.isShowing())
+            editBookingSheet.dismiss();
 
         if (Utils.isNetworkAvailable(context)) {
+            dialog = ProgressDialog.showProgressBar(context);
             OtherBookingRequest otherBookingRequest = new OtherBookingRequest();
             otherBookingRequest.setTeamId(SessionHandler.getInstance().getInt(context, AppConstants.TEAM_ID));
-            otherBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(context, AppConstants.TEAMMEMBERSHIP_ID));
+            otherBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(context,
+                    AppConstants.TEAMMEMBERSHIP_ID));
 
             List<OtherBookingRequest.Changeset> changeSetsList = new ArrayList<>();
             otherBookingRequest.setChangesets(changeSetsList);
@@ -546,19 +534,18 @@ public class OtherBookingController {
             deletedIds.add(bookingId);
             otherBookingRequest.setDeletedIds(deletedIds);
 
-
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<BaseResponse> call = apiService.otherBookings(otherBookingRequest);
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                    Log.e("", "");
+                    ProgressDialog.dismissProgressBar(dialog);
                     responseHandler(response, "");
                 }
 
                 @Override
                 public void onFailure(Call<BaseResponse> call, Throwable t) {
-                    // binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    ProgressDialog.dismissProgressBar(dialog);
                 }
             });
 
@@ -572,8 +559,6 @@ public class OtherBookingController {
         String resultString = "";
         try {
             if (response.code() == 200 && response.body().getResultCode() != null) {
-//                        Utils.showCustomAlertDialog(context,"Update Success");
-//                        Toast.makeText(context, "Success Bala", Toast.LENGTH_SHORT).show();
                 if (response.body().getResultCode().equalsIgnoreCase("ok")) {
                     if (newEditType.equalsIgnoreCase("new"))
                         openCheckoutDialog("Booking Created");
@@ -582,22 +567,22 @@ public class OtherBookingController {
                     else
                         openCheckoutDeleteDialog("Booking Deleted");
                 } else {
-                    if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
+                    if (response.body().getResultCode().equals("INVALID_FROM")) {
                         resultString = "Invalid booking start time";
-                    } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
+                    } else if (response.body().getResultCode().equals("INVALID_TO")) {
                         resultString = "Invalid booking end time";
-                    } else if (response.body().getResultCode().toString().equals("INVALID_TIMEZONE_ID")) {
+                    } else if (response.body().getResultCode().equals("INVALID_TIMEZONE_ID")) {
                         resultString = "Invalid timezone";
-                    } else if (response.body().getResultCode().toString().equals("INVALID_TIMEPERIOD")) {
+                    } else if (response.body().getResultCode().equals("INVALID_TIMEPERIOD")) {
                         resultString = "Invalid timeperiod";
-                    } else if (response.body().getResultCode().toString().equals("USER_TIME_OVERLAP")) {
+                    } else if (response.body().getResultCode().equals("USER_TIME_OVERLAP")) {
                         resultString = "Time overlaps with another booking";
-                    } else if (response.body().getResultCode().toString().equals("COVID_SYMPTOMS")) {
+                    } else if (response.body().getResultCode().equals("COVID_SYMPTOMS")) {
                         resultString = "COVID_SYMPTOMS";
-                    } else if (response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")) {
+                    } else if (response.body().getResultCode().equals("DESK_UNAVAILABLE")) {
                         resultString = "Desk is Unavailable";
                     } else {
-                        resultString = response.body().getResultCode().toString();
+                        resultString = response.body().getResultCode();
                     }
                     Utils.showCustomAlertDialog((Activity) context, resultString);
                 }
@@ -606,7 +591,6 @@ public class OtherBookingController {
             } else if (response.code() == 401) {
                 Utils.showCustomTokenExpiredDialog((Activity) context, "401 Error Response");
                 SessionHandler.getInstance().saveBoolean(context, AppConstants.LOGIN_CHECK, false);
-//                        Utils.finishAllActivity(getContext());
             } else {
                 Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
             }
@@ -615,27 +599,24 @@ public class OtherBookingController {
         }
     }
 
-    private void openCheckoutDialog(String mesg) {
+    private void openCheckoutDialog(String message) {
         Dialog popDialog = new Dialog(context);
         popDialog.setContentView(R.layout.layout_checkout_success);
         popDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         TextView checkDialogClose = popDialog.findViewById(R.id.checkDialogClose);
         TextView dialogMsg = popDialog.findViewById(R.id.dialog_text);
-        dialogMsg.setText("" + mesg);
+        dialogMsg.setText(message);
 
-        checkDialogClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isFrom.equalsIgnoreCase("home"))
-                    ((MainActivity) context).callHomeFragment();
-                popDialog.dismiss();
-            }
+        checkDialogClose.setOnClickListener(v -> {
+            if (isFrom.equalsIgnoreCase("home"))
+                ((MainActivity) context).callHomeFragment();
+            popDialog.dismiss();
         });
         popDialog.show();
     }
 
-    private void openCheckoutDeleteDialog(String mesg) {
+    private void openCheckoutDeleteDialog(String message) {
         Dialog popDialog = new Dialog(context);
         popDialog.setContentView(R.layout.layout_checkout_success);
         popDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -644,17 +625,12 @@ public class OtherBookingController {
         TextView dialogMsg = popDialog.findViewById(R.id.dialog_text);
         ImageView ivChecout = popDialog.findViewById(R.id.ivCheckoutSuccess);
 
-        dialogMsg.setText("" + mesg);
+        dialogMsg.setText(message);
 
-        checkDialogClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isFrom.equalsIgnoreCase("home"))
-                    ((MainActivity) context).callHomeFragment();
-
-
-                popDialog.dismiss();
-            }
+        checkDialogClose.setOnClickListener(v -> {
+            if (isFrom.equalsIgnoreCase("home"))
+                ((MainActivity) context).callHomeFragment();
+            popDialog.dismiss();
         });
         popDialog.show();
     }
