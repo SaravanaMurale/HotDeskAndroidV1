@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@drawable/login_background_corner_white"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
@@ -38,6 +38,7 @@
         android:layout_height="wrap_content"
         android:fillViewport="true"
         android:layout_below="@id/listHead"
+        android:layout_above="@id/bottom"
         >
 
         <RelativeLayout
@@ -70,42 +71,43 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/rvEditList"
-                android:layout_marginBottom="@dimen/_5sdp"
-                android:orientation="horizontal"
-                android:paddingVertical="@dimen/_5sdp">
 
-                <TextView
-                    android:id="@+id/editClose"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="Close"
-                    android:textSize="@dimen/_14sdp"
-                    android:theme="@style/TextBold"
-                    android:visibility="visible" />
-
-                <TextView
-                    android:id="@+id/editBookingContinue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="Add New"
-                    android:textColor="@color/figmaBlueText"
-                    android:textSize="@dimen/_14sdp"
-                    android:theme="@style/TextBold"
-                    android:visibility="visible" />
-            </RelativeLayout>
 
         </RelativeLayout>
 
     </androidx.core.widget.NestedScrollView>
+    <RelativeLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:orientation="horizontal"
+        android:paddingVertical="@dimen/_5sdp">
 
+        <TextView
+            android:id="@+id/editClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:text="Close"
+            android:textSize="@dimen/_14sdp"
+            android:theme="@style/TextBold"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/editBookingContinue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:text="Add New"
+            android:textColor="@color/figmaBlueText"
+            android:textSize="@dimen/_14sdp"
+            android:theme="@style/TextBold"
+            android:visibility="visible" />
+    </RelativeLayout>
 </RelativeLayout>

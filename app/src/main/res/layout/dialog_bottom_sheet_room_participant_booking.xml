@@ -10,7 +10,9 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,8 +51,8 @@
                 <ImageView
                     android:layout_width="@dimen/_5sdp"
                     android:layout_height="@dimen/_5sdp"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
                     android:src="@drawable/dot" />
 
                 <TextView
@@ -58,7 +60,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:text=""
                     android:textColor="@color/figmaBlack"
@@ -78,12 +79,14 @@
                     android:id="@+id/locationAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:minHeight="19px"
                     android:text="Location1, Location2"
-                    android:textSize="14sp"
                     android:textColor="@color/figmaBlack"
+                    android:textSize="14sp"
                     android:theme="@style/TextRegular" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/capacity_layout"
                 android:layout_width="match_parent"
@@ -95,8 +98,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Capacity"
-                    android:textSize="14sp"
                     android:textColor="@color/figmaBlack"
+                    android:textSize="14sp"
                     android:theme="@style/TextRegular" />
 
                 <TextView
@@ -111,8 +114,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="5"
-                    android:textSize="14sp"
                     android:textColor="@color/figmaBlack"
+                    android:textSize="14sp"
                     android:theme="@style/TextRegular" />
             </LinearLayout>
 
@@ -121,6 +124,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ll_desk_layout_room"
+                app:lineSpacing="5dp"
+                android:minHeight="@dimen/_5sdp"
+                app:chipSpacingVertical="-10dp"
+                app:chipSpacingHorizontal="@dimen/_5sdp"
                 android:layout_marginVertical="@dimen/_5sdp">
 
                 <!-- Chips can be declared here, or added dynamically. -->
@@ -141,7 +148,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Description:"
-                android:theme="@style/TextRegular" />
+                android:theme="@style/TextRegular"
+                android:visibility="gone" />
 
 
             <RelativeLayout
@@ -243,9 +251,15 @@
                     android:id="@+id/list_item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+
                     android:layout_below="@id/ll_desk_layout_room"
                     android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:layout_marginVertical="@dimen/_5sdp">
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:minHeight="@dimen/_5sdp"
+                    app:chipSpacingVertical="-10dp"
+                    app:chipSpacingHorizontal="@dimen/_3sdp"
+
+                    >
 
                     <!-- Chips can be declared here, or added dynamically. -->
 
@@ -282,7 +296,12 @@
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/participantChipGroup"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/_5sdp"
+                app:chipSpacingVertical="-10dp"
+                app:chipSpacingHorizontal="@dimen/_3sdp"
+
+                />
 
 
             <EditText
@@ -291,7 +310,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
-                android:hint="Participants(optional)"
+                android:hint="Internal participants optional"
                 android:paddingHorizontal="@dimen/_15sdp"
                 android:paddingVertical="@dimen/_10sdp" />
 
@@ -305,6 +324,9 @@
                 android:id="@+id/externalAttendeesChipGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minHeight="@dimen/_5sdp"
+                app:chipSpacingVertical="-10dp"
+                app:chipSpacingHorizontal="@dimen/_3sdp"
                 android:visibility="gone" />
 
 
@@ -314,7 +336,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
-                android:hint="externalattendees"
+                android:hint="External participants optional"
                 android:paddingHorizontal="@dimen/_15sdp"
                 android:paddingVertical="@dimen/_10sdp" />
 
@@ -339,40 +361,41 @@
                 android:paddingHorizontal="@dimen/_15sdp"
                 android:paddingVertical="@dimen/_10sdp" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_35sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/editRoomBookingBack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="Back"
-                    android:textSize="18sp"
-                    android:theme="@style/TextBold" />
-
-                <TextView
-                    android:id="@+id/editRoomBookingContinue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="Continue"
-                    android:textColor="@color/figmaBlueText"
-                    android:textSize="18sp"
-                    android:theme="@style/TextBold" />
-            </RelativeLayout>
-
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+    <RelativeLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/_35sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/editRoomBookingBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:text="Back"
+            android:textSize="18sp"
+            android:theme="@style/TextBold" />
+
+        <TextView
+            android:id="@+id/editRoomBookingContinue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:text="Continue"
+            android:textColor="@color/figmaBlueText"
+            android:textSize="18sp"
+            android:theme="@style/TextBold" />
+    </RelativeLayout>
 
 </RelativeLayout>

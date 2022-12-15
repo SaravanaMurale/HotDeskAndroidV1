@@ -21,7 +21,7 @@
     </style>
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/top_round_corner_white</item>
-        <item name="android:layout_marginTop">@dimen/_5sdp</item>
+        <item name="android:layout_marginTop">@dimen/_15sdp</item>
     </style>
     <style name="RoundedTabLayoutStyle" parent="Widget.Design.TabLayout">
         <item name="tabBackground">@drawable/tabs_selector</item>
