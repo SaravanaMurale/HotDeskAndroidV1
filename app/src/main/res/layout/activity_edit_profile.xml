@@ -217,6 +217,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:visibility="gone"
                 android:layout_marginVertical="@dimen/_3sdp"
                 >
                 <RelativeLayout
@@ -771,6 +772,7 @@
                     android:layout_centerInParent="true"
                     android:layout_toLeftOf="@id/ivEditEmailIcon"
                     android:background="@null"
+                    android:paddingStart="@dimen/_5sdp"
                     android:imeOptions="actionDone"
                     android:inputType="text"
                     android:text="Email"
@@ -805,8 +807,10 @@
                     android:layout_centerInParent="true"
                     android:layout_toLeftOf="@id/ivTeamsIcon"
                     android:background="@null"
+                    android:enabled="false"
                     android:imeOptions="actionDone"
                     android:inputType="text"
+                    android:paddingStart="@dimen/_5sdp"
                     android:text="Teams"
                     android:textColor="@color/figmaBlack"
                     android:theme="@style/TextRegular" />
@@ -838,9 +842,11 @@
                     android:layout_centerInParent="true"
                     android:layout_toLeftOf="@id/tvEditPhoneIcon"
                     android:background="@null"
+                    android:enabled="false"
                     android:imeOptions="actionDone"
                     android:inputType="number"
                     android:maxLength="10"
+                    android:paddingStart="@dimen/_5sdp"
                     android:text="Phone"
                     android:textColor="@color/figmaBlack"
                     android:theme="@style/TextRegular" />
@@ -851,8 +857,7 @@
                     android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentEnd="true"
                     android:layout_marginHorizontal="@dimen/_2sdp"
-                    android:src="@drawable/ic_baseline_local_phone_24"
-                    android:rotation="280"
+                    android:src="@drawable/ic_call"
                     app:tint="@color/figmaBlueText" />
                 </RelativeLayout>
 
@@ -863,6 +868,7 @@
                 android:orientation="horizontal"
                 android:background="@drawable/rectangle_greybg_with_corner"
                 android:padding="@dimen/_6sdp"
+                android:visibility="gone"
                 android:layout_marginVertical="@dimen/_5sdp">
 
                 <EditText
@@ -876,6 +882,7 @@
                     android:imeOptions="actionDone"
                     android:inputType="number"
                     android:maxLength="10"
+                    android:paddingStart="@dimen/_5sdp"
                     android:text=""
                     android:textColor="@color/figmaBlack"
                     android:theme="@style/TextRegular" />
@@ -889,35 +896,7 @@
                     android:src="@drawable/ic_telephone"
                     app:tint="@color/figmaBlueText" />
             </RelativeLayout>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         </LinearLayout>
-
-
-
-
-
-
 
     </androidx.core.widget.NestedScrollView>
 

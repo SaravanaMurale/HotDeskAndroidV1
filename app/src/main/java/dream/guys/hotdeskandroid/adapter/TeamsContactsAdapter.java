@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -208,6 +209,8 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
                     if (teamMembersList.get(position).getDayGroups().get(0)
                             .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
                                     .getCalendarEntries().size()-1).getBooking().getLocationBuildingFloor()!=null) {
+                        holderList.mbookingAddress.setVisibility(View.VISIBLE);
+                        holderList.timeLayout.setVisibility(View.VISIBLE);
                         holderList.mbookingAddress.setText(""+teamMembersList.get(position).getDayGroups().get(0)
                                 .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
                                         .getCalendarEntries().size()-1).getBooking().getLocationBuildingFloor().getBuildingName()+"-"
@@ -225,6 +228,8 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
                                     .getCalendarEntries().size()-1).getMyto()));
                 } else {
                     holderList.mbookingAddress.setText("");
+                    holderList.mbookingAddress.setVisibility(View.GONE);
+                    holderList.timeLayout.setVisibility(View.GONE);
                     holderList.mbookingCheckInTime.setVisibility(View.GONE);
                     holderList.mbookingCheckOutTime.setVisibility(View.GONE);
                     holderList.ivCheckIn.setVisibility(View.GONE);
@@ -286,6 +291,7 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
         TextView mTxtName, mbookingAddress,mbookingCheckOutTime,mbookingCheckInTime;
         ImageView ivCheckOut,ivCheckIn, fireWardenIcon,firstAidWardenIcon;
         CircleImageView teamMemberImage;
+        LinearLayout timeLayout;
 
         public viewHolderList(@NonNull View itemView) {
             super(itemView);
@@ -300,6 +306,7 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
             teamMemberImage = itemView.findViewById(R.id.bookingIvIcon);
             fireWardenIcon = itemView.findViewById(R.id.fireWardenIcon);
             firstAidWardenIcon = itemView.findViewById(R.id.firstAidIcon);
+            timeLayout = itemView.findViewById(R.id.timeLayout);
 
         }
     }

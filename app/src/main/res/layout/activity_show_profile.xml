@@ -67,9 +67,9 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/figmaBgGrey"
         android:layout_below="@+id/tool_bar"
-        android:visibility="gone"/>
+        android:background="@color/figmaBgGrey"
+        android:visibility="gone" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -80,11 +80,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_8sdp">
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:orientation="vertical">
 
             <!--Image-->
             <androidx.cardview.widget.CardView
@@ -112,40 +112,39 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_toRightOf="@+id/ivEditPrifle"
                         android:text="upload photo"
-                        android:textColor="@color/figmaBlueText"/>
+                        android:textColor="@color/figmaBlueText" />
 
                     <TextView
                         android:id="@+id/tvImageSize"
+                        style="@style/TextRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Use image at lease 250 px by 250px"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/ivEditPrifle"
                         android:layout_below="@+id/tvUpdateImage"
+                        android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_5sdp"
-                        style="@style/TextRegular"
-                        android:textColor="@color/figmaBlack"/>
+                        android:layout_toRightOf="@+id/ivEditPrifle"
+                        android:text="Use image at lease 250 px by 250px"
+                        android:textColor="@color/figmaBlack" />
 
                     <TextView
                         android:id="@+id/removeProfilePic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Remove"
                         android:layout_below="@+id/tvImageSize"
-                        android:layout_toRightOf="@+id/ivEditPrifle"
                         android:layout_marginLeft="@dimen/_10sdp"
-                        android:visibility="gone"/>
-
+                        android:layout_toRightOf="@+id/ivEditPrifle"
+                        android:text="Remove"
+                        android:visibility="gone" />
 
 
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/viewProfileBlock"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    android:id="@+id/viewProfileBlock"
-                    android:background="@drawable/setting_item_bg">
+                    android:background="@drawable/setting_item_bg"
+                    android:padding="@dimen/_5sdp">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/ivViewPrifle"
@@ -153,88 +152,89 @@
                         android:layout_height="@dimen/_70sdp"
                         android:src="@drawable/avatar" />
 
-                    <TextView
-                        android:id="@+id/tvViewProfileName"
-                        style="@style/TextBold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_toRightOf="@+id/ivViewPrifle"
-                        tools:text="skm"
-                        android:textColor="@color/figmaBlack"
-                        android:textSize="@dimen/_13sdp" />
 
-                    <TextView
-                        android:id="@+id/txt_team"
-                        style="@style/TextRegular"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tvViewProfileName"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:layout_toRightOf="@+id/ivViewPrifle"
-                        tools:text="Pmo"
-                        android:textColor="@color/figmaBlack"
-                        android:textSize="@dimen/_13sdp" />
-
-                    <ImageView
-                        android:id="@+id/viewPrfileIcon"
-                        android:layout_width="@dimen/_18sdp"
-                        android:layout_height="@dimen/_18sdp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginHorizontal="@dimen/_2sdp"
-                        android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                        app:tint="@color/figmaBlueText"
-                        android:visibility="gone"/>
-
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/txt_team"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:layout_toRightOf="@+id/ivViewPrifle">
-
-                        <ImageView
-                            android:id="@+id/locateMyTeamFireIv"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
-                            android:src="@drawable/fire" />
-
+                        android:gravity="center"
+                        android:layout_centerInParent="true"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_toEndOf="@+id/ivViewPrifle"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/locateMyTeamName"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/tvViewProfileName"
+                            style="@style/TextBold"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_toRightOf="@+id/locateMyTeamFireIv"
-                            android:text="Fire warden"
-                            android:textStyle="bold"
-                            android:theme="@style/TextRegular" />
-
-                        <ImageView
-                            android:id="@+id/locateMyTeamPlusIv"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginTop="1dp"
-                            android:layout_toRightOf="@id/locateMyTeamName"
-                            android:src="@drawable/plus" />
+                            android:textColor="@color/figmaBlack"
+                            android:textSize="@dimen/_13sdp"
+                            tools:text="skm" />
 
                         <TextView
-                            android:id="@+id/txt_fire"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/txt_team"
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_toRightOf="@+id/locateMyTeamPlusIv"
-                            android:text="First aider"
-                            android:textStyle="bold"
-                            android:theme="@style/TextRegular"
-                            android:layout_centerVertical="true"/>
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:textColor="@color/figmaBlack"
+                            android:textSize="@dimen/_13sdp"
+                            tools:text="Pmo" />
 
-                    </RelativeLayout>
+                        <ImageView
+                            android:id="@+id/viewPrfileIcon"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
+                            android:layout_marginHorizontal="@dimen/_2sdp"
+                            android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+                            android:visibility="gone"
+                            app:tint="@color/figmaBlueText" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp">
+
+                            <ImageView
+                                android:id="@+id/locateMyTeamFireIv"
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:src="@drawable/fire" />
+
+
+                            <TextView
+                                android:id="@+id/locateMyTeamName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:layout_toRightOf="@+id/locateMyTeamFireIv"
+                                android:text="Fire warden"
+                                android:textStyle="bold"
+                                android:theme="@style/TextRegular" />
+
+                            <ImageView
+                                android:id="@+id/locateMyTeamPlusIv"
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:layout_marginTop="1dp"
+                                android:layout_toRightOf="@id/locateMyTeamName"
+                                android:src="@drawable/plus" />
+
+                            <TextView
+                                android:id="@+id/txt_fire"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:layout_toRightOf="@+id/locateMyTeamPlusIv"
+                                android:text="First aider"
+                                android:textStyle="bold"
+                                android:theme="@style/TextRegular" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
 
 
                 </RelativeLayout>
@@ -245,8 +245,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/title_team"
@@ -266,9 +265,9 @@
                     android:layout_below="@+id/title_team"
                     android:layout_alignParentStart="true"
                     android:layout_marginTop="@dimen/_4sdp"
-                    tools:text="Name"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_12sdp"
+                    tools:text="Name" />
 
                 <TextView
                     android:id="@+id/tvViewTeam"
@@ -289,22 +288,22 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginVertical="@dimen/_8sdp">
+                android:visibility="gone"
+                android:layout_marginVertical="@dimen/_8sdp"
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:id="@+id/ll_edit_schedule"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
+                        android:layout_marginVertical="@dimen/_3sdp"
                         android:layout_toStartOf="@+id/ivEditSchedule"
                         android:layout_toRightOf="@id/ivEditSchedule"
-                        android:layout_marginVertical="@dimen/_3sdp"
                         android:orientation="vertical">
 
                         <TextView
@@ -312,170 +311,178 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Schedule"
+                            android:textColor="@color/figmaBlack"
                             android:textSize="@dimen/_12sdp"
-                            android:theme="@style/TextBold"
-                            android:textColor="@color/figmaBlack"/>
+                            android:theme="@style/TextBold" />
 
                         <TextView
                             android:id="@+id/weekStartEnd"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="@dimen/_2sdp"
-                            tools:text="12 Jun - 19 Jun"
                             android:textColor="@color/figmaBlack"
-                            android:theme="@style/TextSmall" />
+                            android:theme="@style/TextSmall"
+                            tools:text="12 Jun - 19 Jun" />
                     </LinearLayout>
+
                     <ImageView
                         android:id="@+id/ivEditSchedule"
                         android:layout_width="@dimen/_15sdp"
                         android:layout_height="@dimen/_15sdp"
-                        android:src="@drawable/edit"
-                        android:layout_marginEnd="@dimen/_5sdp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:visibility="gone"/>
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:src="@drawable/edit"
+                        android:visibility="gone" />
 
                 </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_marginVertical="@dimen/_2sdp"
                     android:background="@drawable/rectangle_greybg_with_corner"
+                    android:orientation="horizontal"
                     android:padding="@dimen/_8sdp"
                     android:weightSum="7">
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
+                        android:layout_weight="1"
                         android:gravity="center_horizontal"
-                        android:layout_weight="1">
+                        android:orientation="vertical">
+
                         <ImageView
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/building_circle"
-                            />
+                            android:src="@drawable/building_circle" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="M"
-                            android:textColor="@color/figmaBlack"
-                            />
+                            android:textColor="@color/figmaBlack" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal"
                         android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
                         <ImageView
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/info_circle"
-                            />
+                            android:src="@drawable/info_circle" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="T"
-                            android:textColor="@color/figmaBlack"
-                            />
+                            android:textColor="@color/figmaBlack" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal"
                         android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
                         <ImageView
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/info_circle"
-                            />
+                            android:src="@drawable/info_circle" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="W"
-                            android:textColor="@color/figmaBlack"
-                            />
+                            android:textColor="@color/figmaBlack" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal"
                         android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
                         <ImageView
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/info_circle"
-                            />
+                            android:src="@drawable/info_circle" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="T"
-                            android:textColor="@color/figmaBlack"
-                            />
+                            android:textColor="@color/figmaBlack" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal"
                         android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
                         <ImageView
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/info_circle"
-                            />
+                            android:src="@drawable/info_circle" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="F"
-                            android:textColor="@color/figmaBlack"
-                            />
+                            android:textColor="@color/figmaBlack" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal"
                         android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
                         <ImageView
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/info_circle"
-                            />
+                            android:src="@drawable/info_circle" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="S"
-                            android:textColor="@color/figmaBlack"
-                            />
+                            android:textColor="@color/figmaBlack" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal"
                         android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
                         <ImageView
                             android:layout_width="@dimen/_15sdp"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/info_circle"
-                            />
+                            android:src="@drawable/info_circle" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="S"
-                            android:textColor="@color/figmaBlack"
-                            />
+                            android:textColor="@color/figmaBlack" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -485,8 +492,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="vertical"
                 android:visibility="gone">
 
                 <TextView
@@ -495,8 +502,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Default working hours"
-                    android:textSize="@dimen/_12sdp"
-                    android:textColor="@color/figmaBlack"/>
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="@dimen/_12sdp" />
 
                 <!--Start-->
                 <RelativeLayout
@@ -506,8 +513,7 @@
                     android:layout_marginTop="@dimen/_4sdp"
                     android:background="@drawable/rectangle_greybg_with_corner"
                     android:orientation="horizontal"
-                    android:padding="@dimen/_3sdp"
-                    >
+                    android:padding="@dimen/_3sdp">
 
                     <TextView
                         android:id="@+id/tvEditStartTime"
@@ -527,10 +533,10 @@
                         android:layout_alignParentEnd="true"
                         android:layout_marginHorizontal="@dimen/_10sdp"
                         android:layout_marginVertical="@dimen/_5sdp"
+                        android:enabled="false"
                         android:text="9:00"
                         android:textColor="@color/grey"
-                        android:theme="@style/TextBold"
-                        android:enabled="false"/>
+                        android:theme="@style/TextBold" />
                 </RelativeLayout>
 
                 <!--End-->
@@ -540,8 +546,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_6sdp"
                     android:background="@drawable/rectangle_greybg_with_corner"
-                    android:padding="@dimen/_3sdp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_3sdp">
 
                     <TextView
                         android:id="@+id/tvEditEndTime"
@@ -562,13 +568,11 @@
                         android:layout_alignParentEnd="true"
                         android:layout_marginHorizontal="@dimen/_10sdp"
                         android:layout_marginVertical="@dimen/_5sdp"
+                        android:enabled="false"
                         android:text="10:00"
                         android:textColor="@color/grey"
-                        android:theme="@style/TextBold"
-                        android:enabled="false"/>
+                        android:theme="@style/TextBold" />
                 </RelativeLayout>
-
-
 
 
             </LinearLayout>
@@ -582,24 +586,23 @@
                 android:visibility="gone">
 
                 <TextView
+                    style="@style/TextBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:text="Default Location"
                     android:textColor="@color/black"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:textSize="@dimen/_12sdp"
-                    style="@style/TextBold"
-                    />
+                    android:textSize="@dimen/_12sdp" />
 
                 <EditText
                     android:id="@+id/editDefaultLocaton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="4oth Bank Street"
-                    android:enabled="false"
+                    android:layout_marginTop="@dimen/_4sdp"
                     android:background="@drawable/edittext_bg"
-                    android:padding="@dimen/_5sdp"
-                    android:layout_marginTop="@dimen/_4sdp"/>
+                    android:enabled="false"
+                    android:hint="4oth Bank Street"
+                    android:padding="@dimen/_5sdp" />
 
             </LinearLayout>
 
@@ -611,20 +614,19 @@
                 android:visibility="gone">
 
                 <TextView
+                    style="@style/TextBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Default Assets"
                     android:layout_marginTop="@dimen/_10sdp"
-                    style="@style/TextBold"
+                    android:text="Default Assets"
                     android:textColor="@color/figmaBlack"
-                    android:textSize="@dimen/_12sdp"/>
+                    android:textSize="@dimen/_12sdp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Workspaces"
                     android:layout_marginTop="@dimen/_4sdp"
-                    />
+                    android:text="Workspaces" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -647,17 +649,15 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:enabled="false"
-                        android:text="Change"
-                        />
+                        android:text="Change" />
 
                 </RelativeLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Parking"
                     android:layout_marginTop="@dimen/_10sdp"
-                    />
+                    android:text="Parking" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -678,9 +678,9 @@
                         android:id="@+id/editParkChange"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Change"
                         android:layout_alignParentRight="true"
-                        android:enabled="false"/>
+                        android:enabled="false"
+                        android:text="Change" />
 
                 </RelativeLayout>
 
@@ -688,9 +688,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Room"
                     android:layout_marginTop="@dimen/_10sdp"
-                    />
+                    android:text="Room" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -711,9 +710,9 @@
                         android:id="@+id/editRoomChange"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Change"
                         android:layout_alignParentRight="true"
-                        android:enabled="false"/>
+                        android:enabled="false"
+                        android:text="Change" />
 
                 </RelativeLayout>
 
@@ -723,8 +722,8 @@
                 android:id="@+id/upcoming_booking_rel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:layout_marginTop="@dimen/_5sdp"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/title_upcoming"
@@ -747,18 +746,18 @@
                     android:text="View All"
                     android:textColor="@color/figmaBlueText"
                     android:textSize="@dimen/_12sdp" />
+
                 <TextView
                     android:id="@+id/notAvailable"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="@dimen/_40sdp"
-                    android:gravity="center"
-                    android:visibility="gone"
-                    android:theme="@style/TextBold"
-                    android:textColor="@color/figmaGrey"
                     android:layout_below="@id/title_upcoming"
+                    android:gravity="center"
+                    android:minHeight="@dimen/_40sdp"
                     android:text="No Upcomming Bookings"
-                    />
+                    android:textColor="@color/figmaGrey"
+                    android:theme="@style/TextBold"
+                    android:visibility="gone" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/samUpcomingRecycler"
@@ -777,9 +776,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginTop="@dimen/_8sdp"
-                >
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tvEditContact"
@@ -791,14 +789,15 @@
                     android:textColor="@color/figmaBlack"
                     android:textSize="@dimen/_12sdp"
                     android:theme="@style/TextBold" />
+
                 <ImageView
                     android:id="@+id/contact_edit"
                     android:layout_width="@dimen/_15sdp"
                     android:layout_height="@dimen/_15sdp"
-                    android:src="@drawable/edit"
-                    android:layout_marginHorizontal="@dimen/_2sdp"
                     android:layout_alignParentEnd="true"
-                    android:visibility="gone"/>
+                    android:layout_marginHorizontal="@dimen/_2sdp"
+                    android:src="@drawable/edit"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <!--Email-->
@@ -806,11 +805,11 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/_3sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
-                android:padding="@dimen/_6sdp"
-                android:layout_marginTop="@dimen/_3sdp">
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/_6sdp">
 
                 <EditText
                     android:id="@+id/tvEditEmail"
@@ -821,6 +820,7 @@
                     android:layout_toLeftOf="@id/ivEditEmailIcon"
                     android:background="@null"
                     android:enabled="false"
+                    android:paddingStart="@dimen/_5sdp"
                     android:text="Email"
                     android:textColor="@color/figmaBlack"
                     android:theme="@style/TextRegular" />
@@ -840,9 +840,9 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
+                android:orientation="horizontal"
                 android:padding="@dimen/_6sdp">
 
                 <EditText
@@ -850,13 +850,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_toLeftOf="@id/ivTeamsIcon"
-                    android:text="Teams"
                     android:layout_centerInParent="true"
-                    android:textColor="@color/figmaBlack"
-                    android:theme="@style/TextRegular"
+                    android:layout_toLeftOf="@id/ivTeamsIcon"
+                    android:background="@null"
                     android:enabled="false"
-                    android:background="@null"/>
+                    android:paddingStart="@dimen/_5sdp"
+                    android:text="Teams"
+                    android:textColor="@color/figmaBlack"
+                    android:theme="@style/TextRegular" />
 
                 <ImageView
                     android:id="@+id/ivTeamsIcon"
@@ -864,8 +865,7 @@
                     android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentEnd="true"
                     android:layout_marginHorizontal="@dimen/_2sdp"
-                    android:src="@drawable/teams_icon"
-                    />
+                    android:src="@drawable/teams_icon" />
             </RelativeLayout>
 
             <!--Phone-->
@@ -873,8 +873,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:background="@drawable/rectangle_greybg_with_corner"
+                android:orientation="horizontal"
                 android:padding="@dimen/_6sdp">
 
                 <EditText
@@ -886,6 +886,7 @@
                     android:layout_toLeftOf="@id/tvEditPhoneIcon"
                     android:background="@null"
                     android:enabled="false"
+                    android:paddingStart="@dimen/_5sdp"
                     android:text="Phone"
                     android:textColor="@color/figmaBlack"
                     android:theme="@style/TextRegular" />
@@ -896,8 +897,8 @@
                     android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentEnd="true"
                     android:layout_marginHorizontal="@dimen/_2sdp"
-                    android:src="@drawable/ic_baseline_local_phone_24"
-                    app:tint="@color/figmaBlueText"/>
+                    android:src="@drawable/ic_call"
+                    app:tint="@color/figmaBlueText" />
             </RelativeLayout>
 
         </LinearLayout>

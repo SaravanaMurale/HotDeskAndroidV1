@@ -10,8 +10,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
         android:orientation="vertical">
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,7 +39,7 @@
             <ImageView
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
-                android:src="@drawable/report"
+                android:src="@drawable/icon_survey"
                 android:id="@+id/profile_update"
                 />
             <TextView
@@ -1075,8 +1076,49 @@
         </LinearLayout>
 
 
-
         <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rvPersonal">
+
+            <TextView
+                android:id="@+id/reportCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@color/white"
+                android:backgroundTint="@color/white"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/cancel"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:theme="@style/TextBoldButton" />
+
+            <Button
+                android:id="@+id/reportSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@drawable/button_round_corner"
+                android:backgroundTint="@color/figmaBlueText"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/submit"
+                android:textAlignment="gravity"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:theme="@style/TextBoldButton" />
+
+
+        </RelativeLayout>
+     <!--   <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
@@ -1111,7 +1153,7 @@
                 android:textColor="@color/white" />
 
 
-        </RelativeLayout>
+        </RelativeLayout>-->
 
 
 

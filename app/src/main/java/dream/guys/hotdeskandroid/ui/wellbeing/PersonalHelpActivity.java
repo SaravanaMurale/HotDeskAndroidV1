@@ -39,9 +39,9 @@ import retrofit2.Response;
 public class PersonalHelpActivity extends AppCompatActivity {
     private static final String TAG = "PersonalHelpActivity";
 
-    TextView tvContent;
+    TextView tvContent,btn_cancel;
     RecyclerView rvPersonal;
-    Button btn_send, btn_cancel;
+    Button btn_send;
     ImageView ReportBack;
     EditText tvDescription;
     CheckBox cb_anonymous;
@@ -158,7 +158,7 @@ public class PersonalHelpActivity extends AppCompatActivity {
         mTitle.setText(personalHelp.getTitle());
         tvHeader.setText(personalHelp.getDescribeInfo());
         cb_anonymous.setText(global.getAnonymous());
-        btn_send.setText(appKeysPage.getSend());
+        btn_send.setText(appKeysPage.getSubmit());
         btn_cancel.setText(appKeysPage.getCancel());
 
     }

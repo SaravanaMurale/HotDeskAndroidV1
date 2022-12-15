@@ -384,10 +384,10 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
             binding.editName.setText(profileData.getFullName());
             binding.editDisplayName.setText(profileData.getFullName());
-            if (profileData.getCurrentTeam() != null) {
+            /*if (profileData.getCurrentTeam() != null) {
                 binding.tvEditTeams.setText(profileData.getCurrentTeam().getCurrentTeamName());
             }
-            binding.tvEditPhone.setText(profileData.getPhoneNumber());
+            binding.tvEditPhone.setText(profileData.getPhoneNumber());*/
             binding.tvEditEmail.setText(profileData.getEmail());
 
             binding.editStartTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
@@ -575,7 +575,11 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         String phone = binding.tvEditPhone.getText().toString();
         String deskPhone = binding.tvEditTel.getText().toString();
         String email = binding.tvEditEmail.getText().toString();
-        String teams = binding.tvEditTeams.getText().toString();
+        String teams ="";
+        if (profileData.getCurrentTeam() != null) {
+            teams = profileData.getCurrentTeam().getCurrentTeamName();
+        }
+
         String startTime = binding.editStartTime.getText().toString();
         String endTime = binding.editEndTime.getText().toString();
         String vehicleNum = binding.editVehicleNum.getText().toString();

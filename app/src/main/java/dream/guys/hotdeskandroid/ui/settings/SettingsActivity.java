@@ -233,17 +233,20 @@ public class SettingsActivity extends AppCompatActivity {
                 EditText etNewPassword = dialog.findViewById(R.id.etNewPassword);
                 EditText etConfirmPassword = dialog.findViewById(R.id.etConfirmPassword);
                 TextView tv_titleChangePassword = dialog.findViewById(R.id.tv_titleChangePassword);
+                TextView tvConfirmPwd = dialog.findViewById(R.id.tvConfirmPwd);
+                TextView tvNewPwd = dialog.findViewById(R.id.tvNewPwd);
+                TextView tvCurrentPwd = dialog.findViewById(R.id.tvCurrentPwd);
 
 
                 Button buttonChangePassword = dialog.findViewById(R.id.btnChangePasswordSubmit);
-                Button buttonChangePasswordCancel = dialog.findViewById(R.id.btnChangePasswordCancel);
+                TextView buttonChangePasswordCancel = dialog.findViewById(R.id.btnChangePasswordCancel);
 
                 //tv_titleChangePassword.setText(appKeysPage.getChangePassword());
-                buttonChangePasswordCancel.setText(appKeysPage.getCancel());
-                buttonChangePassword.setText(appKeysPage.getSubmit());
-                etCurrentPassword.setHint(appKeysPage.getCurrentPassword());
-                etNewPassword.setHint(appKeysPage.getNewPassword());
-                etConfirmPassword.setHint(appKeysPage.getConfirmPassword());
+                buttonChangePasswordCancel.setText(appKeysPage.getBack());
+                buttonChangePassword.setText(appKeysPage.getChangePassword());
+                tvCurrentPwd.setText(appKeysPage.getCurrentPassword());
+                tvNewPwd.setText(appKeysPage.getNewPassword());
+                tvConfirmPwd.setText(appKeysPage.getConfirmPassword());
 
 
                 buttonChangePasswordCancel.setOnClickListener(new View.OnClickListener() {
@@ -585,13 +588,13 @@ public class SettingsActivity extends AppCompatActivity {
             binding.tvDarkMode.setText(wellBeingPage.getDarkMode());
             binding.tvPhone.setText(wellBeingPage.getWhatsnew());
             binding.tvDesk.setText(wellBeingPage.getFeedback());
-            binding.tvPreference.setText(wellBeingPage.getPreference());
+            binding.tvPreference.setText(wellBeingPage.getPreference()+"s");
             binding.tvLang.setText(wellBeingPage.getLanguage());
             binding.tvNoti.setText(wellBeingPage.getNotifications());
             binding.tvApp.setText(wellBeingPage.getApp());
             //binding.tvPin.setText(wellBeingPage.getSetUpPin());
             binding.tvBio.setText(wellBeingPage.getSetUpBiometric());
-            binding.tvReset.setText(wellBeingPage.getResetPassword());
+          //  binding.tvReset.setText(wellBeingPage.getResetPassword()+"s");
             binding.tvReport.setText(wellBeingPage.getHelp());
             binding.tvHelp.setText(wellBeingPage.getAbout());
             binding.tvLogout.setText(wellBeingPage.getLogOut());

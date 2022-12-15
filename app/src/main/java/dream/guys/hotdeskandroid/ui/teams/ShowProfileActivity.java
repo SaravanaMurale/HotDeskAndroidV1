@@ -204,7 +204,10 @@ public class ShowProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, UpComingBookingActivity.class);
-                intent.putExtra(AppConstants.USER_CURRENT_STATUS, daoTeamMember);
+//                intent.putExtra(AppConstants.USER_CURRENT_STATUS, daoTeamMember);
+                String personJsonString = new Gson().toJson(daoTeamMember);
+                ExtendedDataHolder extras = ExtendedDataHolder.getInstance();
+                extras.putExtra("profile", personJsonString);
                 intent.putExtra("DATE", date);
                 startActivity(intent);
             }

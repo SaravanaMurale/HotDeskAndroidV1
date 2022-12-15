@@ -20,7 +20,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_name"
         android:autoLink="web"
         android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginStart="@dimen/_10sdp"
+
         app:layout_constraintStart_toStartOf="parent"
         android:theme="@style/TextRegular"/>
 

@@ -71,6 +71,7 @@
             android:layout_marginVertical="@dimen/_5sdp"
             android:text="@string/set_pin_content"
             android:textSize="@dimen/_12sdp"
+            android:textColor="@color/figmaBlack"
             android:theme="@style/TextRegular" />
 
         <LinearLayout

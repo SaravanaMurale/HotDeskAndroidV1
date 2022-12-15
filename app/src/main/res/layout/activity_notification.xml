@@ -66,6 +66,7 @@
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="@string/checkInOut_content"
                     android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/figmaBlack"
                     android:theme="@style/TextRegular" />
 
                 <RelativeLayout
@@ -151,6 +152,7 @@
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="@string/noty_booking_content"
                     android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/figmaBlack"
                     android:theme="@style/TextRegular" />
 
                 <RelativeLayout

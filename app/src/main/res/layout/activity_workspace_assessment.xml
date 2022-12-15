@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/tool_bar"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_25sdp"
             android:text="@string/location"
             android:textSize="@dimen/_16sdp"
             android:layout_marginTop="@dimen/_10sdp"
@@ -79,7 +79,7 @@
                 android:id="@+id/etLocation"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_30sdp"
-                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_25sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:theme="@style/TextBold"
                 android:enabled="true"
@@ -93,7 +93,7 @@
                 android:id="@+id/etDesk"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_30sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_25sdp"
                 android:theme="@style/TextBold"
                 android:paddingStart="@dimen/_5sdp"
                 android:backgroundTint="@color/figmaBgGrey"
@@ -110,8 +110,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/location_lay"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:text="@string/assessment_date_txt"
+            android:layout_marginStart="@dimen/_25sdp"
+            android:text="@string/report_select_date"
             android:textSize="@dimen/_16sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:theme="@style/TextBold" />
@@ -124,10 +124,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:gravity="center_vertical"
-            android:hint="Select Date"
+            android:hint="From"
             android:drawableRight="@drawable/calendar_nav_icon"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_25sdp"
+            android:layout_marginEnd="@dimen/_25sdp"
             android:paddingStart="@dimen/_5sdp"
             android:theme="@style/TextBold"
             android:backgroundTint="@color/figmaBgGrey"
@@ -153,7 +153,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/rvWorkspaceHeader"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_25sdp"
             android:text="@string/desc"
             android:textSize="@dimen/_16sdp"
             android:layout_marginTop="@dimen/_10sdp"
@@ -169,11 +169,56 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_25sdp"
+            android:layout_marginStart="@dimen/_25sdp"
             android:background="@drawable/edittext_boarder"/>
 
+
         <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/etDescription"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp">
+
+            <TextView
+                android:id="@+id/reportCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@color/white"
+                android:backgroundTint="@color/white"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/cancel"
+                android:theme="@style/TextBoldButton"
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
+
+            <Button
+                android:id="@+id/reportSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@drawable/button_round_corner"
+                android:backgroundTint="@color/figmaBlueText"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/submit"
+                android:textAlignment="gravity"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:theme="@style/TextBoldButton" />
+
+
+        </RelativeLayout>
+     <!--   <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/etDescription"
@@ -212,6 +257,6 @@
                 android:textAlignment="gravity" />
 
 
-        </RelativeLayout>
+        </RelativeLayout>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
