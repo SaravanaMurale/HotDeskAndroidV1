@@ -66,6 +66,7 @@ import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
+import dream.guys.hotdeskandroid.controllers.EditDeskController;
 import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
@@ -152,6 +153,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     public static int expiryCheckInTime = 0;
     public boolean showPastStatus = false;
     Activity activityContext;
+    Context context;
+
 //    protected static final String TAG = "MonitoringActivity";
 //    private BeaconManager beaconManager;
 
@@ -657,6 +660,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         //loadHomeList();
         this.view = view;
         activityContext = getActivity();
+        context = getContext();
         loadTenantImage();
         loadHomeList();
 
@@ -1103,8 +1107,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             }
 
         } else if (click.equals(AppConstants.EDIT)) {
-            //Edit
-            System.out.println("BookingEditClicked");
+            callEditDesk(calendarEntriesModel, date);
+            /*//Edit
             EditBookingDetails editDeskBookingDetails = new EditBookingDetails();
             editDeskBookingDetails.setEditStartTTime(Utils.splitTime(calendarEntriesModel.getFrom()));
             editDeskBookingDetails.setEditEndTime(Utils.splitTime(calendarEntriesModel.getMyto()));
@@ -1118,8 +1122,121 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             );
             loadDeskListCheckRequest(calendarEntriesModel.getId(), Utils.getYearMonthDateFormat(date), editDeskBookingDetails, 1, position);
 //            editBookingUsingBottomSheet(editDeskBookingDetails,1,position);
+*/
+        }
+    }
+
+    private void callEditDesk(BookingListResponse.DayGroup.CalendarEntry calendarEntriesModel,Date date) {
+        if (Utils.isNetworkAvailable(getActivity())) {
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+            Call<BookingForEditResponse> call = apiService.getBookingsForEdit(
+                    SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID),
+                    SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID),
+                    Utils.getISO8601format(date),
+                    Utils.getISO8601format(date));
+
+            call.enqueue(new Callback<BookingForEditResponse>() {
+                @Override
+                public void onResponse(Call<BookingForEditResponse> call, Response<BookingForEditResponse> response) {
+                    try {
+                        BookingForEditResponse bookingForEditResponse = response.body();
+
+                        if(bookingForEditResponse.getBookings()!=null
+                                && bookingForEditResponse.getBookings().size()>0){
+                            oo:
+                            for (BookingForEditResponse.Bookings booking: bookingForEditResponse.getBookings()) {
+                                if (booking.getId() == calendarEntriesModel.getId()){
+                                    callEditDeskBookingController(booking);
+                                    break oo;
+                                }
+                            }
+                        }
+
+
+                    } catch (Exception exception){
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<BookingForEditResponse> call, Throwable t) {
+                    Log.d(TAG, "onFailure: "+t.getMessage());
+                }
+            });
+
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
+
+    }
+
+    private void callEditDeskBookingController(BookingForEditResponse.Bookings bookings) {
+        EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
+        editDeskBookingDetails.setEditStartTTime(Utils.splitTime(bookings.getFrom()));
+        editDeskBookingDetails.setEditEndTime(Utils.splitTime(bookings.getMyto()));
+        editDeskBookingDetails.setDate(Utils.convertStringToDateFormet(bookings.getDate()));
+        editDeskBookingDetails.setCalId(bookings.getId());
+        editDeskBookingDetails.setDeskCode(bookings.getDeskCode());
+        editDeskBookingDetails.setComments(bookings.getComments());
+        if (bookings.getDeskLocation()!=null)
+            editDeskBookingDetails.setLocationAddress(bookings.getDeskLocation().getfLoorName()+", "+bookings.getDeskLocation().getBuildingName());
+        else if(bookings.getRequestedDeskLocation()!=null)
+            editDeskBookingDetails.setLocationAddress(bookings.getRequestedDeskLocation().getfLoorName()+", "+bookings.getRequestedDeskLocation().getBuildingName());
+        if (bookings.getStatus().getTimeStatus().equalsIgnoreCase("ongoing"))
+            editDeskBookingDetails.setDeskStatus(2);
+        else if (bookings.getStatus().getTimeStatus().equalsIgnoreCase("past"))
+            editDeskBookingDetails.setDeskStatus(1);
+        else
+            editDeskBookingDetails.setDeskStatus(0);
+        if (bookings.getStatus()!=null)
+            editDeskBookingDetails.setDeskBookingType(bookings.getStatus().getBookingType());
+        else
+            editDeskBookingDetails.setDeskBookingType("");
+
+        editDeskBookingDetails.setDesktId(bookings.getTeamDeskId());
+        editDeskBookingDetails.setTimeStatus(bookings.getStatus().getTimeStatus());
+
+        if (bookings.getRequestedTeamDeskId()!=null)
+            editDeskBookingDetails.setRequestedTeamDeskId(bookings.getRequestedTeamDeskId());
+        else
+            editDeskBookingDetails.setRequestedTeamDeskId(0);
+        if (bookings.getRequestedTeamId()!=null &&bookings.getRequestedTeamId()>0){
+            editDeskBookingDetails.setRequestedTeamId(bookings.getRequestedTeamId());
+        } else {
+            editDeskBookingDetails.setRequestedTeamId(0);
+        }
+        if (bookings.getUsageTypeId()>0)
+            editDeskBookingDetails.setUsageTypeId(bookings.getUsageTypeId());
+        switch (bookings.getUsageTypeId()){
+            case 9:
+                editDeskBookingDetails.setDeskCode("Working from home");
+                break;
+            case 1:
+                editDeskBookingDetails.setDeskCode("Working in alternative office");
+                break;
+            case 5:
+                editDeskBookingDetails.setDeskCode("Not assigned to team");
+                break;
+            case 8:
+                editDeskBookingDetails.setDeskCode("Training");
+                break;
+            case 6:
+                editDeskBookingDetails.setDeskCode("Out of office");
+                break;
+            case 18:
+                editDeskBookingDetails.setDeskCode("Sick Leave");
+                break;
+            default:
+                break;
 
         }
+
+        EditDeskController editDeskController = new EditDeskController(activityContext, context,
+                editDeskBookingDetails,AppConstants.HOMEFRAGMENTINSTANCESTRING);
     }
 
     @Override

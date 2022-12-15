@@ -96,6 +96,7 @@ import dream.guys.hotdeskandroid.adapter.ParkingSpotListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.ParticipantNameShowAdapter;
 import dream.guys.hotdeskandroid.adapter.RoomListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
+import dream.guys.hotdeskandroid.controllers.EditDeskController;
 import dream.guys.hotdeskandroid.databinding.FragmentBookBinding;
 import dream.guys.hotdeskandroid.example.DataModel;
 import dream.guys.hotdeskandroid.example.ItemAdapter;
@@ -157,7 +158,7 @@ public class BookFragment extends Fragment implements
         RoomListRecyclerAdapter.OnSelectSelected,
         ShowCountryAdapter.OnSelectListener,
         CustomSpinner.OnSpinnerEventsListener,
-        ItemAdapter.selectItemInterface{
+        ItemAdapter.selectItemInterface {
 
     String TAG="BookFragment";
     LanguagePOJO.Login logoinPage;
@@ -4344,7 +4345,8 @@ public class BookFragment extends Fragment implements
     }
 
     @Override
-    public void onEditClick(BookingForEditResponse.Bookings bookings, String code, List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities) {
+    public void onEditClick(BookingForEditResponse.Bookings bookings, String code,
+                            List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities) {
         EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
         editDeskBookingDetails.setEditStartTTime(Utils.splitTime(bookings.getFrom()));
         editDeskBookingDetails.setEditEndTime(Utils.splitTime(bookings.getMyto()));
@@ -4413,12 +4415,15 @@ public class BookFragment extends Fragment implements
         changedDeskId=0;
         changedTeamId=0;
 
-        if (editDeskBookingDetails.getUsageTypeId() == 7){
+        EditDeskController editDeskController = new EditDeskController(activityContext, context,
+                editDeskBookingDetails,AppConstants.BOOKFRAGMENTINSTANCESTRING);
+
+        /*if (editDeskBookingDetails.getUsageTypeId() == 7){
             getRequestDeskDeskList(editDeskBookingDetails,"edit");
         } else{
             editBookingUsingBottomSheet(editDeskBookingDetails,1,0,"edit");
         }
-
+*/
     }
 
     private void getRequestDeskDeskList(EditBookingDetails editDeskBookingDetails, String edit) {

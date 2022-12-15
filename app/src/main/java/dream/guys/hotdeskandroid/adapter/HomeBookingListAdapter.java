@@ -528,7 +528,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
                 if (list.get(holder.getAbsoluteAdapterPosition()).getCalDeskStatus() ==1){
                     String clickedStatus="EDIT";
-                    onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(), AppConstants.EDIT,list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
+                    onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(),
+                            AppConstants.EDIT,list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
                     //Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
                 }else if(list.get(holder.getAbsoluteAdapterPosition()).getCalDeskStatus() ==2){
                     String clickedStatus="EDIT";

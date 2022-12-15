@@ -57,6 +57,7 @@ import retrofit2.Response;
 
 public class EditDeskController implements DeskListBookAdapter.OnChangeSelected {
     String TAG="DeskController";
+    String isFrom;
     Activity activityContext;
     Context context;
     Dialog dialog;
@@ -101,9 +102,10 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
     LanguagePOJO.Global global;
     LanguagePOJO.MeetingRooms meetingRoomsLanguage;
 
-    public EditDeskController(Activity activityContext, Context context, EditBookingDetails editDeskBookingDetails) {
+    public EditDeskController(Activity activityContext, Context context, EditBookingDetails editDeskBookingDetails,String isFrom) {
         this.activityContext = activityContext;
         this.context = context;
+        this.isFrom = isFrom;
 
         setLanguage();
         getActiveTeams();

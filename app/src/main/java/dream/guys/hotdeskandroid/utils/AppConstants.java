@@ -7,6 +7,8 @@ public class AppConstants {
     public static final String BASE_URL="https://dev-api.hybridhero.com/";
 
     //SharedPreference Constant
+    public static final String HOMEFRAGMENTINSTANCESTRING = "HOME";
+    public static final String BOOKFRAGMENTINSTANCESTRING = "BOOK";
     public static final String USERTOKEN = "USERTOKEN";
     public static final String LOGIN_CHECK = "LOGIN_CHECK";
     public static final String DARK_MODE_CHECK = "DARK_MODE_CHECK";
