@@ -2706,6 +2706,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         tv_cap_size = locateBookedBottomSheet.findViewById(R.id.tv_cap_size);
         meetingRoomDescription = locateBookedBottomSheet.findViewById(R.id.meetingRoomDescription);
 
+
         bookedAmenitiesChipGroup = locateBookedBottomSheet.findViewById(R.id.bookedAmenitiesChipGroup);
 
         tvBookedRoomStartTime = locateBookedBottomSheet.findViewById(R.id.tvBookedRoomStartTime);
