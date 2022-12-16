@@ -3,50 +3,41 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable-hdpi/rectangle_greybg_with_corner.xml" value="0.1825" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable-night/rectangle_greybg_with_corner.xml" value="0.1825" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/drawble_calendar.xml" value="0.1825" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/drawble_location.xml" value="0.1825" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/rectangle_bg_with_corner.xml" value="0.1825" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_forgot_password.xml" value="0.1675929884566054" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_login.xml" value="0.1675929884566054" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_login_pin.xml" value="0.1675929884566054" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_notification_manage.xml" value="0.2" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_signin.xml" value="0.1675929884566054" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_user_notification.xml" value="0.1675929884566054" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/adapter_old_req_list.xml" value="0.1675929884566054" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/bottom_sheet_locate_floor_filter.xml" value="0.1675929884566054" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/control_calendar.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/desk_room_list_recycler_layout.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet.xml" value="0.1675929884566054" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet_date_picker.xml" value="0.21" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet_edit_booking.xml" value="0.25" />
         <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet_edit_select_desk.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet_locate_filter.xml" value="0.1675929884566054" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet_repeat_new.xml" value="0.18" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet_room_booking.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet_until.xml" value="0.1675929884566054" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_locate_booked_bottomsheet.xml" value="0.2" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_locate_checkin_bottomsheet.xml" value="0.25" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_locate_edit_booking_bottomsheet.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_locate_unavalible_bottomsheet.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/fragment_locate.xml" value="0.22" />
-        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/layout_booking_edit_adapter.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_locate_checkin_bottomsheet.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/fragment_locate.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/layout_desk_select_adapter.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable-mdpi/login_background_corner_white.xml" value="0.1395" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/button_round_corner.xml" value="0.1405" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/circle_date_calender.xml" value="0.1405" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/spinner_outline.xml" value="0.1405" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/spinner_outline_opened.xml" value="0.1405" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/spinner_pop_background.xml" value="0.1" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_forgot_password.xml" value="0.3" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_main.xml" value="0.3" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_signin.xml" value="0.3" />
-        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/booking_list_recycler_layout.xml" value="0.3" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/assert_list.xml" value="0.4662698412698413" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/booking_list_recycler_layout.xml" value="0.75" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/control_calendar_day.xml" value="0.75" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/desk_room_list_recycler_layout.xml" value="0.33" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet.xml" value="0.3" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet_edit_select_desk.xml" value="0.3" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet_edit_select_desk_new.xml" value="0.3" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet_repeat_new.xml" value="0.3" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet_room_booking.xml" value="0.3" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet_room_participant_booking.xml" value="0.2" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet_until.xml" value="0.3" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_calendar_bottom_sheet_edit_booking.xml" value="0.573170731707317" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_calendar_edit_booking_bottomsheet.xml" value="0.3" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_locate_booked_bottomsheet.xml" value="0.3" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_locate_checkin_bottomsheet.xml" value="0.3" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_locate_edit_booking_bottomsheet.xml" value="0.25" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/fragment_book.xml" value="0.25" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/fragment_home.xml" value="0.33" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/layout_firewardens_adapter.xml" value="0.3" />
-        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/new_desk_room_list_recycler_layout.xml" value="0.3" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/new_desk_room_list_recycler_layout.xml" value="0.5" />
       </map>
     </option>
   </component>

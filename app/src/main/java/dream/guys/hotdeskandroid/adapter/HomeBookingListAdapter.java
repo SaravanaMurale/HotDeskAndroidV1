@@ -453,7 +453,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             .placeholder(R.drawable.notification_icon)
                             .into(holder.bookingRemoteHome);
             }
-        } else if (list.get(position).getCalDeskStatus() == 2){
+        } else if (list.get(position).getCalDeskStatus() == 2) {
             //Meeting Room
             holder.rlBookingRemoteBlock.setVisibility(View.GONE);
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
@@ -475,8 +475,18 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                 } else {
                     enableColorUpdate(holder);
                     holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
+                    if (list.get(position).getMeetingBookingsModel().getBookedByUserId()
+                            == SessionHandler.getInstance().getInt(context,AppConstants.USER_ID)) {
+                        holder.bookingIvEdit.setVisibility(View.VISIBLE);
+                        Glide.with(context).load(R.drawable.ic_home_io_edit).into(holder.bookingIvEdit);
+                    } else {
+                        Log.d(TAG, "onBindViewHolder: "+list.get(position).getMeetingBookingsModel().getMeetingRoomName());
+                        Log.d(TAG, "onBindViewHolder: "+list.get(position).getMeetingBookingsModel().getBookedByUserId());
+                        Log.d(TAG, "onBindViewHolder: "+SessionHandler.getInstance().getInt(context,AppConstants.USER_ID));
 
-                    holder.bookingIvEdit.setVisibility(View.VISIBLE);
+                        holder.bookingIvEdit.setVisibility(View.VISIBLE);
+                        Glide.with(context).load(R.drawable.info_circle).into(holder.bookingIvEdit);
+                    }
                     holder.bookingIvLocation.setVisibility(View.VISIBLE);
                     holder.tv_change.setVisibility(View.VISIBLE);
                 }

@@ -466,6 +466,7 @@ public class BookingListResponse {
         public class MeetingBooking{
             private int id;
             private int meetingRoomId;
+            private int bookedByUserId;
             private String meetingRoomName;
             private String  from;
             @SerializedName("to")
@@ -475,6 +476,14 @@ public class BookingListResponse {
             private String timeZoneId;
             private String subject;
             private LocationBuildingFloor locationBuildingFloor;
+
+            public int getBookedByUserId() {
+                return bookedByUserId;
+            }
+
+            public void setBookedByUserId(int bookedByUserId) {
+                this.bookedByUserId = bookedByUserId;
+            }
 
             public LocationBuildingFloor getLocationBuildingFloor() {
                 return locationBuildingFloor;
