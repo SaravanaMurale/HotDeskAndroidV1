@@ -1,7 +1,5 @@
 package dream.guys.hotdeskandroid.controllers;
 
-import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -34,7 +32,6 @@ import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.OtherBookingAdapter;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
-import dream.guys.hotdeskandroid.model.request.MeetingRoomRecurrence;
 import dream.guys.hotdeskandroid.model.request.OtherBookingRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
@@ -194,7 +191,7 @@ public class OtherBookingController {
         TextView tvRepeat = addEditBottomSheet.findViewById(R.id.tv_repeat);
         tvRepeatTxt = addEditBottomSheet.findViewById(R.id.repeat);
         RelativeLayout repeatBlock = addEditBottomSheet.findViewById(R.id.repeatBlock);
-       // repeatBlock.setVisibility(View.GONE);
+
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -252,7 +249,20 @@ public class OtherBookingController {
                 type = 8;
             }
 
-            repeatBlock.setVisibility(View.GONE);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+            try {
+                Date objDate = dateFormat.parse(calSelectedDate);
+                if (Utils.compareTwoDate(objDate, Utils.getCurrentDate()) == 2) {
+                    repeatBlock.setVisibility(View.VISIBLE);
+                } else {
+                    repeatBlock.setVisibility(View.GONE);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
             editDelete.setVisibility(View.GONE);
 
             if (Utils.compareTwoDate(Utils.convertStringToDateFormet(calSelectedDate),
@@ -990,77 +1000,84 @@ public class OtherBookingController {
 
 
     private void callBooking(String newEditType, String startTimeStr, String endTimeStr) {
+        try {
+            if (Utils.isNetworkAvailable(context)) {
+                dialog = ProgressDialog.showProgressBar(context);
+                OtherBookingRequest otherBookingRequest = new OtherBookingRequest();
+                otherBookingRequest.setTeamId(SessionHandler.getInstance().getInt(context, AppConstants.TEAM_ID));
+                otherBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(context,
+                        AppConstants.TEAMMEMBERSHIP_ID));
 
-        if (Utils.isNetworkAvailable(context)) {
-            dialog = ProgressDialog.showProgressBar(context);
-            OtherBookingRequest otherBookingRequest = new OtherBookingRequest();
-            otherBookingRequest.setTeamId(SessionHandler.getInstance().getInt(context, AppConstants.TEAM_ID));
-            otherBookingRequest.setTeamMembershipId(SessionHandler.getInstance().getInt(context,
-                    AppConstants.TEAMMEMBERSHIP_ID));
+                if (!repeatActiveStatus) {
+                    OtherBookingRequest.Changeset changeSets = otherBookingRequest.new Changeset();
+                    changeSets.setId(0);
+                    String date = Utils.removeTandZInDate(calSelectedDate).split(" ")[0];
+                    date = date + "T00:00:00Z";
+                    changeSets.setDate(date);
 
-            if (!repeatActiveStatus) {
-                OtherBookingRequest.Changeset changeSets = otherBookingRequest.new Changeset();
-                changeSets.setId(0);
-                String date = Utils.removeTandZInDate(calSelectedDate).split(" ")[0];
-                date = date + "T00:00:00Z";
-                changeSets.setDate(date);
+                    OtherBookingRequest.Changeset.Changes changes = changeSets.new Changes();
+                    changes.setUsageTypeId(type);
 
-                OtherBookingRequest.Changeset.Changes changes = changeSets.new Changes();
-                changes.setUsageTypeId(type);
-
-                changes.setFrom("2000-01-01T" + startTimeStr + ":00.000Z");
-                changes.setTo("2000-01-01T" + endTimeStr + ":00.000Z");
-
-                String timeZone = "India Standard Time";
-                if (!SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID).isEmpty())
-                    changes.setTimeZoneId(SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID));
-                else
-                    changes.setTimeZoneId(timeZone);
-
-                changeSets.setChanges(changes);
-
-                List<OtherBookingRequest.Changeset> changeSetsList = new ArrayList<>();
-                changeSetsList.add(changeSets);
-                otherBookingRequest.setChangesets(changeSetsList);
-            } else {
-                List<String> dateList = Utils.getCurrentWeekDateList(calSelectedDate, enableCurrentWeek);
-                for (int i = 0; i < dateList.size(); i++) {
-                    OtherBookingRequest.Changeset changeset = otherBookingRequest.new Changeset();
-                    changeset.setId(0);
-                    changeset.setDate(dateList.get(i) + "T" + "00:00:00.000" + "Z");
-
-                    OtherBookingRequest.Changeset.Changes changes = changeset.new Changes();
                     changes.setFrom("2000-01-01T" + startTimeStr + ":00.000Z");
                     changes.setTo("2000-01-01T" + endTimeStr + ":00.000Z");
-                    changes.setRecurrence("True");
 
-                    changeset.setChanges(changes);
+                    String timeZone = "India Standard Time";
+                    if (!SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID).isEmpty())
+                        changes.setTimeZoneId(SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID));
+                    else
+                        changes.setTimeZoneId(timeZone);
+
+                    changeSets.setChanges(changes);
 
                     List<OtherBookingRequest.Changeset> changeSetsList = new ArrayList<>();
-                    changeSetsList.add(changeset);
+                    changeSetsList.add(changeSets);
+                    otherBookingRequest.setChangesets(changeSetsList);
+                } else {
+                    List<OtherBookingRequest.Changeset> changeSetsList = new ArrayList<>();
+                    List<String> dateList = Utils.getCurrentWeekDateList(calSelectedDate, enableCurrentWeek);
+                    for (int i = 0; i < dateList.size(); i++) {
+                        OtherBookingRequest.Changeset changeset = otherBookingRequest.new Changeset();
+                        changeset.setId(0);
+                        changeset.setDate(dateList.get(i) + "T" + "00:00:00.000" + "Z");
+
+                        OtherBookingRequest.Changeset.Changes changes = changeset.new Changes();
+                        changes.setUsageTypeId(type);
+                        changes.setFrom("2000-01-01T" + startTimeStr + ":00.000Z");
+                        changes.setTo("2000-01-01T" + endTimeStr + ":00.000Z");
+                        String timeZone = "India Standard Time";
+                        if (!SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID).isEmpty())
+                            changes.setTimeZoneId(SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID));
+                        else
+                            changes.setTimeZoneId(timeZone);
+
+                        changeset.setChanges(changes);
+                        changeSetsList.add(changeset);
+                    }
+                    otherBookingRequest.setChangesets(changeSetsList);
                 }
+
+                otherBookingRequest.setDeletedIds(new ArrayList<>());
+
+                ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+                Call<BaseResponse> call = apiService.otherBookings(otherBookingRequest);
+                call.enqueue(new Callback<BaseResponse>() {
+                    @Override
+                    public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                        ProgressDialog.dismissProgressBar(dialog);
+                        responseHandler(response, newEditType);
+                    }
+
+                    @Override
+                    public void onFailure(Call<BaseResponse> call, Throwable t) {
+                        ProgressDialog.dismissProgressBar(dialog);
+                    }
+                });
+
+            } else {
+                Utils.toastMessage(context, context.getResources().getString(R.string.enable_internet));
             }
-
-
-            otherBookingRequest.setDeletedIds(new ArrayList<>());
-
-           /* ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<BaseResponse> call = apiService.otherBookings(otherBookingRequest);
-            call.enqueue(new Callback<BaseResponse>() {
-                @Override
-                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                    ProgressDialog.dismissProgressBar(dialog);
-                    responseHandler(response, newEditType);
-                }
-
-                @Override
-                public void onFailure(Call<BaseResponse> call, Throwable t) {
-                    ProgressDialog.dismissProgressBar(dialog);
-                }
-            });*/
-
-        } else {
-            Utils.toastMessage(context, context.getResources().getString(R.string.enable_internet));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

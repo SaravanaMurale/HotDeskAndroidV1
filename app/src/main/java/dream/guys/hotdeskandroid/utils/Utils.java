@@ -2084,6 +2084,22 @@ public class Utils {
         return weekendDate;
     }
 
+    public static Date getWeekEndDate(Date date){
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+        c.add(Calendar.DATE, 1);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date weekendDate = null;
+        try {
+            weekendDate = sdf.parse(sdf.format(c.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return weekendDate;
+    }
+
     public static String getDateFormatToSetInRepeat(Date date) {
 
         System.out.println("DateInStringFormat " + String.valueOf(date));
