@@ -33,9 +33,9 @@
         <ImageView
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
-            android:src="@drawable/ic_assessment"
+            android:src="@drawable/icon_covidcert"
             android:id="@+id/profile_update"
-            android:visibility="gone"
+            android:visibility="visible"
             />
         <TextView
             android:id="@+id/profile_edit"

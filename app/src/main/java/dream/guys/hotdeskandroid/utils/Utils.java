@@ -2688,6 +2688,12 @@ public class Utils {
         activity.startActivity(intent);
     }
 
+    public static void openDial(Activity activity, String number){
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:"+number));
+        activity.startActivity(intent);
+    }
+
     public static boolean isAdminOrNot(Context context) {
 
         if (SessionHandler.getInstance().get(context,AppConstants.ROLE)!=null &&

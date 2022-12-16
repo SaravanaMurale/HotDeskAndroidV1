@@ -157,7 +157,7 @@ public class NotificationActivity extends AppCompatActivity {
                     profileData.setNotificationType(notify);
                     String json = gson.toJson(profileData);
                     SessionHandler.getInstance().save(NotificationActivity.this,AppConstants.LOGIN_RESPONSE,json);
-                    Toast.makeText(NotificationActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NotificationActivity.this, "Notification updated", Toast.LENGTH_SHORT).show();
                 }
 
             }

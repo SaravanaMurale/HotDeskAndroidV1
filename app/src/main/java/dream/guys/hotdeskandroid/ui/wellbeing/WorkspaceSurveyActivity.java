@@ -535,9 +535,9 @@ public class WorkspaceSurveyActivity extends AppCompatActivity {
         if (reportPastBooking.getText().toString().isEmpty()) {
             Toast.makeText(getApplicationContext(), "Floor must not be Empty", Toast.LENGTH_LONG).show();
         } else if (reportFromDate.getText().toString().isEmpty()) {
-            Toast.makeText(getApplicationContext(), "From Date must not be Empty", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Please select from date", Toast.LENGTH_LONG).show();
         } else if (reportToDate.getText().toString().isEmpty()) {
-            Toast.makeText(getApplicationContext(), "To Date must not be Empty", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Please select to date", Toast.LENGTH_LONG).show();
         } else {
 
 
@@ -688,9 +688,9 @@ public class WorkspaceSurveyActivity extends AppCompatActivity {
 
         mTxtTitle.setText(appKeysPage.getWorkSpaceSurvey());
         mTxtLocation.setText(appKeysPage.getLocation());
-        mTxtDate.setText(appKeysPage.getDateApplicable());
-        reportFromDate.setText(appKeysPage.getFrom());
-        reportToDate.setText(appKeysPage.getTo());
+        mTxtDate.setText(appKeysPage.getDurationFrom());
+        reportFromDate.setHint(appKeysPage.getFrom());
+        reportToDate.setHint(appKeysPage.getTo());
         tvAccessibility.setText(appKeysPage.getAccessibility());
         tvAir.setText(appKeysPage.getAir());
         tvClean.setText(appKeysPage.getCleanliness());

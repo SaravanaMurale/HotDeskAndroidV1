@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginBottom="1dp"
     android:background="@color/lightGrey"
     android:orientation="vertical"
@@ -11,8 +12,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toStartOf="@+id/tv_exapnd">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tvFloorName"
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_marginVertical="@dimen/_5sdp"
-            android:text="30th Floor"
+            tools:text="30th Floor"
             android:textColor="@color/figmaBlack"
             android:textSize="@dimen/_14sdp"
             android:theme="@style/TextRegular"
@@ -39,24 +39,22 @@
 
     </RelativeLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
     <TextView
         android:id="@+id/tvAvailableCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginBottom="@dimen/_5sdp"
-        android:layout_toStartOf="@+id/tv_exapnd"
-        android:text="14/15 desk available"
+        tools:text="14/15 desk available"
         android:textColor="@color/figmaBlack"
         android:textSize="@dimen/_11sdp"
         android:theme="@style/TextRegular"
         android:visibility="visible" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
 </LinearLayout>

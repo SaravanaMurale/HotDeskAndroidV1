@@ -1,14 +1,13 @@
 package dream.guys.hotdeskandroid.ui.wellbeing;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
 
@@ -17,9 +16,7 @@ import dream.guys.hotdeskandroid.adapter.CovidCertificationAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityCovidCertificationBinding;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.CovidAnswerRequest;
-import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.CovidQuestionsResponse;
-import dream.guys.hotdeskandroid.ui.teams.ShowProfileActivity;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.Utils;
 import dream.guys.hotdeskandroid.webservice.ApiClient;
@@ -41,9 +38,9 @@ public class CovidCertificationActivity extends AppCompatActivity {
     //ForLanguage
     LanguagePOJO.Login logoinPage;
     LanguagePOJO.AppKeys appKeysPage;
-    LanguagePOJO.ResetPassword resetPage ;
+    LanguagePOJO.ResetPassword resetPage;
     LanguagePOJO.ActionOverLays actionOverLays;
-    LanguagePOJO.Booking bookindata ;
+    LanguagePOJO.Booking bookindata;
     LanguagePOJO.Global global;
 
 
@@ -56,7 +53,7 @@ public class CovidCertificationActivity extends AppCompatActivity {
 
         dialog = new Dialog(CovidCertificationActivity.this);
 
-        binding=ActivityCovidCertificationBinding.inflate(getLayoutInflater());
+        binding = ActivityCovidCertificationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         binding.ReportBack.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +75,7 @@ public class CovidCertificationActivity extends AppCompatActivity {
             }
         });
 
-        covidRadioGroup=(RadioGroup)findViewById(R.id.covidRadioGroup);
+        covidRadioGroup = (RadioGroup) findViewById(R.id.covidRadioGroup);
 
 
         binding.covidSubmit.setOnClickListener(new View.OnClickListener() {
@@ -87,52 +84,54 @@ public class CovidCertificationActivity extends AppCompatActivity {
 
                 if (Utils.isNetworkAvailable(CovidCertificationActivity.this)) {
 
-                int selectedId=covidRadioGroup.getCheckedRadioButtonId();
-                radioTransportButton=(RadioButton)findViewById(selectedId);
+                    int selectedId = covidRadioGroup.getCheckedRadioButtonId();
+                    radioTransportButton = (RadioButton) findViewById(selectedId);
 
-                System.out.println("SelectedTransport"+radioTransportButton.getText().toString());
-                String transPortMode=radioTransportButton.getText().toString();
-
-                int transportMode=0;
-
-                if(transPortMode.equalsIgnoreCase("Car")){
-                    transportMode=1;
-                }else if(transPortMode.equalsIgnoreCase("Public Transport")){
-                    transportMode=2;
-                }else if(transPortMode.equalsIgnoreCase("Taxi Uber")){
-                    transportMode=3;
-                }else if(transPortMode.equalsIgnoreCase("Bike")){
-                    transportMode=4;
-                }else if(transPortMode.equalsIgnoreCase("Walk")){
-                    transportMode=5;
-                }else if(transPortMode.equalsIgnoreCase("Work from home")){
-                    transportMode=6;
-                }
+                    String transPortMode = "Car";
+                    if (radioTransportButton != null)
+                        radioTransportButton.getText().toString();
 
 
-                //"localDate": "2022-09-06T00:00:00.000Z"
-                CovidAnswerRequest covidAnswerRequest=new CovidAnswerRequest();
-                covidAnswerRequest.setCovidQuestionsResponseList(covidCertificationAdapter.getList());
+                    int transportMode = 0;
 
-
-                covidAnswerRequest.setLocalDate(Utils.getCurrentDate()+"T00:00:00.000Z");
-                covidAnswerRequest.setTemplate("");
-
-                covidAnswerRequest.setResult(1);
-
-                //If any answer is set to trye then result should be 2 else 1
-                for (int i = 0; i <covidCertificationAdapter.getList().size() ; i++) {
-
-                    if(covidCertificationAdapter.getList().get(i).isAnswer()){
-                        covidAnswerRequest.setResult(2);
+                    if (transPortMode.equalsIgnoreCase("Car")) {
+                        transportMode = 1;
+                    } else if (transPortMode.equalsIgnoreCase("Public Transport")) {
+                        transportMode = 2;
+                    } else if (transPortMode.equalsIgnoreCase("Taxi Uber")) {
+                        transportMode = 3;
+                    } else if (transPortMode.equalsIgnoreCase("Bike")) {
+                        transportMode = 4;
+                    } else if (transPortMode.equalsIgnoreCase("Walk")) {
+                        transportMode = 5;
+                    } else if (transPortMode.equalsIgnoreCase("Work from home")) {
+                        transportMode = 6;
                     }
 
-                }
 
-                covidAnswerRequest.setCovidCertificationTransportMode(transportMode);
-                submitCovidAnswer(covidAnswerRequest);
+                    //"localDate": "2022-09-06T00:00:00.000Z"
+                    CovidAnswerRequest covidAnswerRequest = new CovidAnswerRequest();
+                    covidAnswerRequest.setCovidQuestionsResponseList(covidCertificationAdapter.getList());
 
-                }else {
+
+                    covidAnswerRequest.setLocalDate(Utils.getCurrentDate() + "T00:00:00.000Z");
+                    covidAnswerRequest.setTemplate("");
+
+                    covidAnswerRequest.setResult(1);
+
+                    //If any answer is set to trye then result should be 2 else 1
+                    for (int i = 0; i < covidCertificationAdapter.getList().size(); i++) {
+
+                        if (covidCertificationAdapter.getList().get(i).isAnswer()) {
+                            covidAnswerRequest.setResult(2);
+                        }
+
+                    }
+
+                    covidAnswerRequest.setCovidCertificationTransportMode(transportMode);
+                    submitCovidAnswer(covidAnswerRequest);
+
+                } else {
                     Utils.toastMessage(CovidCertificationActivity.this, getResources().getString(R.string.enable_internet));
                 }
             }
@@ -141,7 +140,7 @@ public class CovidCertificationActivity extends AppCompatActivity {
     }
 
     private void submitCovidAnswer(CovidAnswerRequest covidAnswerRequest) {
-        dialog= ProgressDialog.showProgressBar(CovidCertificationActivity.this);
+        dialog = ProgressDialog.showProgressBar(CovidCertificationActivity.this);
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<Void> call = apiService.submitCovidAnswer(covidAnswerRequest);
         call.enqueue(new Callback<Void>() {
@@ -150,8 +149,8 @@ public class CovidCertificationActivity extends AppCompatActivity {
 
                 dialog.dismiss();
 
-                if(response.code()==200){
-                    Toast.makeText(CovidCertificationActivity.this, "Successfull Updated", Toast.LENGTH_SHORT).show();
+                if (response.code() == 200) {
+                    Toast.makeText(CovidCertificationActivity.this, "Certificate updated", Toast.LENGTH_SHORT).show();
                     finish();
                 }
 
@@ -168,51 +167,49 @@ public class CovidCertificationActivity extends AppCompatActivity {
 
         if (Utils.isNetworkAvailable(CovidCertificationActivity.this)) {
 
-        dialog= ProgressDialog.showProgressBar(CovidCertificationActivity.this);
+            dialog = ProgressDialog.showProgressBar(CovidCertificationActivity.this);
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<CovidQuestionsResponse>> call = apiService.getCovidQuestions("en");
-        call.enqueue(new Callback<List<CovidQuestionsResponse>>() {
-            @Override
-            public void onResponse(Call<List<CovidQuestionsResponse>> call, Response<List<CovidQuestionsResponse>> response) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<CovidQuestionsResponse>> call = apiService.getCovidQuestions("en");
+            call.enqueue(new Callback<List<CovidQuestionsResponse>>() {
+                @Override
+                public void onResponse(Call<List<CovidQuestionsResponse>> call, Response<List<CovidQuestionsResponse>> response) {
 
-                List<CovidQuestionsResponse> covidQuestionsResponseList=response.body();
-
-
-                covidCertificationAdapter=new CovidCertificationAdapter(CovidCertificationActivity.this,covidQuestionsResponseList);
-                binding.rvCovidCertificate.setAdapter(covidCertificationAdapter);
-
-                dialog.dismiss();
+                    List<CovidQuestionsResponse> covidQuestionsResponseList = response.body();
 
 
-            }
+                    covidCertificationAdapter = new CovidCertificationAdapter(CovidCertificationActivity.this, covidQuestionsResponseList);
+                    binding.rvCovidCertificate.setAdapter(covidCertificationAdapter);
 
-            @Override
-            public void onFailure(Call<List<CovidQuestionsResponse>> call, Throwable t) {
-                dialog.dismiss();
-            }
-        });
+                    dialog.dismiss();
 
-        }else {
+
+                }
+
+                @Override
+                public void onFailure(Call<List<CovidQuestionsResponse>> call, Throwable t) {
+                    dialog.dismiss();
+                }
+            });
+
+        } else {
             Utils.toastMessage(CovidCertificationActivity.this, getResources().getString(R.string.enable_internet));
         }
 
     }
 
-    public void setLanguage(){
+    public void setLanguage() {
 
         logoinPage = Utils.getLoginScreenData(CovidCertificationActivity.this);
         appKeysPage = Utils.getAppKeysPageScreenData(CovidCertificationActivity.this);
         resetPage = Utils.getResetPasswordPageScreencreenData(CovidCertificationActivity.this);
         actionOverLays = Utils.getActionOverLaysPageScreenData(CovidCertificationActivity.this);
         bookindata = Utils.getBookingPageScreenData(CovidCertificationActivity.this);
-        global=Utils.getGlobalScreenData(CovidCertificationActivity.this);
+        global = Utils.getGlobalScreenData(CovidCertificationActivity.this);
 
         binding.covidSubmit.setText(appKeysPage.getSubmit());
         binding.covidCancel.setText(appKeysPage.getCancel());
         binding.indicateMode.setText(appKeysPage.getCovidTransportMode());
-
-
 
 
     }

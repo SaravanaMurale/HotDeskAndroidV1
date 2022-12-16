@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginBottom="@dimen/_6sdp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -49,7 +50,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_3sdp"
-                    android:text="Checked In"
+                    tools:text="Checked In"
                     android:theme="@style/TextRegular" />
             </LinearLayout>
 
@@ -72,7 +73,7 @@
                     android:layout_marginLeft="@dimen/_3sdp"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:layout_toRightOf="@+id/bookingCheckInIcon"
-                    android:text="8:00"
+                    tools:text="8:00"
                     android:textColor="@color/figmaBlack"
                     android:textSize="@dimen/_10sdp" />
 
@@ -94,7 +95,7 @@
                     android:layout_marginLeft="@dimen/_3sdp"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:layout_toRightOf="@+id/bookingCheckOutIcon"
-                    android:text="8:00"
+                    tools:text="8:00"
                     android:textColor="@color/figmaBlack"
                     android:textSize="@dimen/_10sdp" />
             </RelativeLayout>
@@ -116,7 +117,7 @@
                 android:layout_marginVertical="@dimen/_3sdp"
                 android:gravity="center"
                 android:layout_centerHorizontal="true"
-                android:text="Today"
+                tools:text="Today"
                 android:theme="@style/TextSmall" />
 
             <view
@@ -188,7 +189,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_toRightOf="@+id/bookingIvIcon"
-                    android:text="Space-001"
+                    tools:text="Space-001"
                     android:textStyle="bold"
                     android:theme="@style/TextBold" />
 
@@ -200,7 +201,7 @@
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:layout_toRightOf="@+id/bookingIvIcon"
-                    android:text="40 Bank Street -30th Floor"
+                    tools:text="40 Bank Street -30th Floor"
                     android:textColor="@color/figmaGrey"
                     android:layout_alignParentStart="true"
                     android:layout_toStartOf="@+id/bookingIvLocation"/>

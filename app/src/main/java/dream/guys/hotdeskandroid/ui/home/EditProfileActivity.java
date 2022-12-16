@@ -243,7 +243,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             @Override
             public void onClick(View view) {
                 notifyStartTimeChange = "start";
-                Utils.bottomSheetTimePickerInBooking(EditProfileActivity.this, EditProfileActivity.this, binding.editStartTime, "Start", "");
+                Utils.bottomSheetTimePicker24Hrs(EditProfileActivity.this, EditProfileActivity.this, binding.editStartTime, "Start", "",false);
             }
         });
 
@@ -255,7 +255,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             @Override
             public void onClick(View view) {
                 notifyEndTimeChange = "End";
-                Utils.bottomSheetTimePickerInBooking(EditProfileActivity.this, EditProfileActivity.this, binding.editEndTime, "End", "");
+                Utils.bottomSheetTimePicker24Hrs(EditProfileActivity.this, EditProfileActivity.this, binding.editEndTime, "End", "",false);
             }
         });
 
@@ -384,10 +384,10 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
             binding.editName.setText(profileData.getFullName());
             binding.editDisplayName.setText(profileData.getFullName());
-            /*if (profileData.getCurrentTeam() != null) {
+            if (profileData.getCurrentTeam() != null) {
                 binding.tvEditTeams.setText(profileData.getCurrentTeam().getCurrentTeamName());
             }
-            binding.tvEditPhone.setText(profileData.getPhoneNumber());*/
+            binding.tvEditPhone.setText(profileData.getPhoneNumber());
             binding.tvEditEmail.setText(profileData.getEmail());
 
             binding.editStartTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
@@ -563,6 +563,22 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             public void onClick(View view) {
                 if (profileData.getEmail() != null && !profileData.getEmail().isEmpty())
                     Utils.openMail(EditProfileActivity.this, profileData.getEmail());
+            }
+        });
+
+        binding.tvEditPhoneIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (profileData.getPhoneNumber() != null && !profileData.getPhoneNumber().isEmpty())
+                    Utils.openDial(EditProfileActivity.this, profileData.getPhoneNumber());
+            }
+        });
+
+        binding.ivEditEmailIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (profileData.getDeskPhoneNumber() != null && !profileData.getDeskPhoneNumber().isEmpty())
+                    Utils.openMail(EditProfileActivity.this, profileData.getDeskPhoneNumber());
             }
         });
 
@@ -1029,6 +1045,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    Toast.makeText(EditProfileActivity.this,"Profile updated", Toast.LENGTH_SHORT).show();
                     getProfilePicture();
 
                 }

@@ -74,7 +74,7 @@
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_3sdp"
                 android:layout_toRightOf="@+id/ivAvaliable"
-                android:text="In Office"
+                tools:text="In Office"
                 android:theme="@style/TextRegular"
                 android:textColor="@color/figmaBlack" />
 
@@ -99,7 +99,7 @@
                 android:layout_marginTop="@dimen/_3sdp"
                 android:theme="@style/TextRegular"
                 android:layout_toRightOf="@+id/firewardensProfilePic"
-                android:text="40th Bank Street-30th Floor"
+                tools:text="40th Bank Street-30th Floor"
                 android:textColor="@color/figmaBlack"
                 android:textSize="@dimen/_10sdp"
                 />
