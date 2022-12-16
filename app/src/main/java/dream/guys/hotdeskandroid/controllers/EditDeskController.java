@@ -262,6 +262,8 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
         TextView tv_end=deskBottomSheet.findViewById(R.id.tv_end);
         TextView tv_comment=deskBottomSheet.findViewById(R.id.tv_comment);
         TextView tv_repeat=deskBottomSheet.findViewById(R.id.tv_repeat);
+        TextView tv_delete=deskBottomSheet.findViewById(R.id.delete_text);
+        tv_delete.setVisibility(View.VISIBLE);
         repeat = deskBottomSheet.findViewById(R.id.repeat);
         deskStatusText = deskBottomSheet.findViewById(R.id.desk_status_text);
         deskStatusDot = deskBottomSheet.findViewById(R.id.user_status_dot);
@@ -674,7 +676,12 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
                 }
             }
         }
-        
+        tv_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteBooking(editDeskBookingDetails);
+            }
+        });
         showcheckInDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -826,6 +833,33 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
 
         deskBottomSheet.show();
 
+    }
+
+    private void deleteBooking(EditBookingDetails editDeskBookingDetails) {
+//        EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
+//        editDeskBookingDetails.setCalId(bookings.getId());
+//        editBookingUsingBottomSheet(editDeskBookingDetails,1,0,"delete");
+
+        JsonObject jsonOuterObject = new JsonObject();
+        JsonObject jsonInnerObject = new JsonObject();
+        JsonObject jsonChangesObject = new JsonObject();
+        JsonArray jsonChangesetArray = new JsonArray();
+        JsonArray jsonDeletedIdsArray = new JsonArray();
+        jsonOuterObject.addProperty("teamId",SessionHandler.getInstance().getInt(activityContext,AppConstants.TEAM_ID));
+        jsonOuterObject.addProperty("teamMembershipId",SessionHandler.getInstance().getInt(activityContext,AppConstants.TEAMMEMBERSHIP_ID));
+
+        BookingsRequest bookingsRequest = new BookingsRequest();
+        ArrayList<BookingsRequest.ChangeSets> list =new ArrayList<>();
+        ArrayList<Integer> list1 =new ArrayList<>();
+//        list1.add(editDeskBookingDetails.getCalId());
+        jsonDeletedIdsArray.add(editDeskBookingDetails.getCalId());
+
+        jsonOuterObject.add("changesets", jsonChangesetArray);
+        jsonOuterObject.add("deletedIds", jsonDeletedIdsArray);
+
+        //System.out.println("json un"+jsonOuterObject.toString());
+
+        editBookingCall(jsonOuterObject,0,1,"delete");
     }
 
     private void editBookingCallForDesk(EditBookingDetails editDeskBookingDetails,EditText edComments) {

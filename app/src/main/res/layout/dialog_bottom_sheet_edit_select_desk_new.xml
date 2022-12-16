@@ -11,12 +11,19 @@
         android:id="@+id/head_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/transparent"
         android:orientation="vertical"
         android:elevation="@dimen/_3sdp"
         android:layout_marginBottom="@dimen/_5sdp"
         android:paddingVertical="@dimen/_10sdp">
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+        </LinearLayout>
         <TextView
             android:id="@+id/sheet_name"
             android:layout_width="wrap_content"
@@ -65,13 +72,28 @@
                 android:textColor="@color/figmaBlack"
                 android:textSize="14sp"
                 android:theme="@style/TextRegular" />
+            <view
+                class="android.widget.TextView"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_5sdp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/location_icon_location"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:src="@drawable/location"
+                app:tint="@color/figmaBlueText" />
+
 
         </LinearLayout>
-
         <LinearLayout
+            android:id="@+id/filter_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:visibility="gone"
             android:padding="@dimen/_10sdp">
 
             <TextView
@@ -80,6 +102,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:text="Filter"
+                android:visibility="gone"
                 android:textColor="@color/figmaBlueText"
                 android:textSize="18sp"
                 android:theme="@style/TextBold" />
@@ -91,6 +114,7 @@
                 android:layout_weight="1" />
 
             <ImageView
+                android:id="@+id/location_icon"
                 android:layout_width="@dimen/_18sdp"
                 android:layout_height="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
