@@ -9791,4 +9791,5 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         setIconColor(img_bsStreet,R.color.black);
     }
 
+
 }

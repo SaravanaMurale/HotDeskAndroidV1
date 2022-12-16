@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidProjects/hotdesk_android/app/src/main/res/layout/adapter_all_teams.xml" value="0.1" />
+        <entry key="..\:/AndroidProjects/hotdesk_android/app/src/main/res/layout/adapter_old_req_list.xml" value="0.1" />
         <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/desk_room_list_recycler_layout.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet_edit_select_desk.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_locate_checkin_bottomsheet.xml" value="0.20416666666666666" />
