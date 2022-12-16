@@ -12,24 +12,24 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom"
-        >
+        android:layout_above="@id/bottom">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
             android:orientation="vertical">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_15sdp"
-                >
+                android:layout_marginBottom="@dimen/_15sdp">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    >
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/title"
                         android:layout_width="wrap_content"
@@ -54,12 +54,12 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
-                    android:text="Delete"
-                    android:visibility="gone"
                     android:layout_margin="@dimen/_2sdp"
-                    android:theme="@style/TextSuperBold"
+                    android:text="Delete"
                     android:textColor="@color/figma_red_delete"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:theme="@style/TextSuperBold"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <!--Date-->
@@ -350,7 +350,7 @@
                     <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.5">
+                        android:layout_weight="0.1">
 
                         <ImageView
                             android:layout_width="@dimen/_15sdp"
@@ -358,6 +358,7 @@
                             android:layout_centerInParent="true"
                             android:layout_marginTop="@dimen/_15sdp"
                             android:src="@drawable/info_circle"
+                            android:visibility="gone"
                             app:tint="@color/figmaBlueText" />
 
                     </RelativeLayout>
@@ -385,6 +386,23 @@
                             android:text="location1, location 2"
                             android:textColor="@color/figmaBlack"
                             android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Description "
+                            android:textColor="@color/figmaBlack"
+                            android:textSize="14sp"
+                            android:theme="@style/TextRegular" />
+
+                        <TextView
+                            android:id="@+id/tv_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textColor="@color/figmaBlack"
+                            android:textSize="12sp"
+                            android:theme="@style/TextRegular" />
 
                         <LinearLayout
                             android:id="@+id/capacity_layout"
@@ -446,11 +464,11 @@
                         android:id="@+id/list_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_5sdp"
+                        android:layout_marginVertical="@dimen/_3sdp"
                         android:minHeight="@dimen/_5sdp"
-                        app:chipSpacingVertical="-10dp"
                         app:chipSpacingHorizontal="@dimen/_5sdp"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:layout_marginVertical="@dimen/_3sdp">
+                        app:chipSpacingVertical="-10dp">
 
                         <!-- Chips can be declared here, or added dynamically. -->
 
@@ -461,7 +479,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/list_item"
-                        android:layout_marginStart="@dimen/_30sdp"
+                        android:layout_marginStart="@dimen/_12sdp"
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"

@@ -9,13 +9,14 @@
     <TextView
         android:id="@+id/tv_past_event"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_20sdp"
         android:layout_centerHorizontal="true"
         android:drawableEnd="@drawable/past_events_arrow"
-        android:drawablePadding="@dimen/_2sdp"
-        android:drawableTint="@color/figmaBlue"
-        android:paddingVertical="@dimen/_2sdp"
+        android:drawablePadding="@dimen/_10sdp"
+        android:drawableTint="@color/figmaBlueText"
         android:text="Show Past Events"
+        android:theme="@style/TextRegular"
+        android:textSize="14sp"
         android:textColor="@color/figmaBlueText"
         android:visibility="gone" />
 

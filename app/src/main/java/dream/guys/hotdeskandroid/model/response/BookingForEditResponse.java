@@ -7,6 +7,8 @@ import java.util.List;
 public class BookingForEditResponse {
     @SerializedName("userPreferences")
     UserPreferences userPreferences;
+    @SerializedName("locationDesks")
+    List<DeskAvaliabilityResponse.LocationDesks> locationDesks;
     @SerializedName("teamDeskAvailabilities")
     List<TeamDeskAvailabilities> teamDeskAvailabilities;
     @SerializedName("teamDeskAvailability")
@@ -15,6 +17,14 @@ public class BookingForEditResponse {
     List<TeamDeskAvailabilities> meetingRooms;
     @SerializedName("bookings")
     List<Bookings> bookings;
+
+    public List<DeskAvaliabilityResponse.LocationDesks> getLocationDesks() {
+        return locationDesks;
+    }
+
+    public void setLocationDesks(List<DeskAvaliabilityResponse.LocationDesks> locationDesks) {
+        this.locationDesks = locationDesks;
+    }
 
     public UserPreferences getUserPreferences() {
         return userPreferences;
@@ -91,12 +101,16 @@ public class BookingForEditResponse {
         private int teamDeskId;
         @SerializedName("deskId")
         private int deskId;
+        @SerializedName("automaticApprovalStatus")
+        private int automaticApprovalStatus;
         @SerializedName("teamId")
         private int teamId;
         @SerializedName("teamName")
         private String teamName;
         @SerializedName("code")
         private String deskCode;
+        @SerializedName("description")
+        private String description;
         @SerializedName("teamAllocationStartDate")
         private String teamAllocationStartDate;
         @SerializedName("teamAllocationEndDate")
@@ -109,11 +123,37 @@ public class BookingForEditResponse {
         private boolean isPartiallyAvailable;
         @SerializedName("isBookedByElse")
         private boolean isBookedByElse;
+        @SerializedName("locationDetails")
+        private Location locationDetails;
 
         @SerializedName("availableTimeSlots")
         private List<AvailableTimeSlots> availableTimeSlots;
         @SerializedName("timeZones")
         private List<TimeZones> timeZones;
+
+        public int getAutomaticApprovalStatus() {
+            return automaticApprovalStatus;
+        }
+
+        public void setAutomaticApprovalStatus(int automaticApprovalStatus) {
+            this.automaticApprovalStatus = automaticApprovalStatus;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public Location getLocationDetails() {
+            return locationDetails;
+        }
+
+        public void setLocationDetails(Location locationDetails) {
+            this.locationDetails = locationDetails;
+        }
 
         public int getTeamDeskId() {
             return teamDeskId;
@@ -335,6 +375,7 @@ public class BookingForEditResponse {
         public int teamDeskId;
         public int parkingSlotId;
         public String timeZoneId;
+        public String description;
         public boolean isPendingRequest;
         public String from;
         @SerializedName("to")
@@ -352,6 +393,14 @@ public class BookingForEditResponse {
         public Status status;
         public Location requestedDeskLocation;
         public Location deskLocation;
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
 
         public boolean isPendingRequest() {
             return isPendingRequest;

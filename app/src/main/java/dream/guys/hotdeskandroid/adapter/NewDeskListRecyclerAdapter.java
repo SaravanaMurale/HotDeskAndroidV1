@@ -61,7 +61,8 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
         this.newEditStatus=newEditStatus;
     }
     public interface OnChangeSelected{
-        public void onChangeDesk(int deskId, String deskName, String request,
+        public void onChangeDesk(BookingForEditResponse.TeamDeskAvailabilities deskList,
+                                 int deskId, String deskName, String request,
                                  String timeZone,int typeId,
                                  EditBookingDetails editBookingDetails,String newEditStatus,int teamId);
 
@@ -80,9 +81,13 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
     public void onBindViewHolder(@NonNull viewholder holder, int position) {
 //        fragment.selectedTeamId
         holder.desk_name.setText(deskList.get(position).getDeskCode());
+        holder.tvLocationAddress.setText(Utils.checkStringParms(deskList.get(position).getLocationDetails().getBuildingName())+
+                ", "+
+                Utils.checkStringParms(deskList.get(position).getLocationDetails().getfLoorName()));
+        holder.tvDescription.setText(Utils.checkStringParms(deskList.get(position).getDescription()));
         if (deskList.get(position).getTeamId() != SessionHandler.getInstance()
                 .getInt(context, AppConstants.TEAM_ID)
-                && fragment.selectedTeamAutoApproveStatus == 3){
+                && deskList.get(holder.getAbsoluteAdapterPosition()).getAutomaticApprovalStatus() == 3){
             holder.card.setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
             holder.select.setVisibility(View.GONE);
 //            System.out.println("chec stats adapter "+fragment.selectedTeamAutoApproveStatus);
@@ -91,7 +96,7 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
             holder.deskIconStatus.setColorFilter(context.getColor(R.color.figma_red));
         } else if (deskList.get(position).getTeamId() != SessionHandler.getInstance()
                 .getInt(context, AppConstants.TEAM_ID)
-                && fragment.selectedTeamAutoApproveStatus != 2) {
+                && deskList.get(holder.getAbsoluteAdapterPosition()).getAutomaticApprovalStatus() != 2) {
             holder.card.setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
             holder.select.setVisibility(View.VISIBLE);
 //            System.out.println("chec stats adapter "+fragment.selectedTeamAutoApproveStatus);
@@ -119,7 +124,7 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
 
             } else if (deskList.get(position).getTeamId() != SessionHandler.getInstance()
                     .getInt(context, AppConstants.TEAM_ID)
-                    && fragment.selectedTeamAutoApproveStatus != 2){
+                    && deskList.get(holder.getAbsoluteAdapterPosition()).getAutomaticApprovalStatus() != 2){
                 holder.card.setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
                 holder.select.setVisibility(View.VISIBLE);
 
@@ -146,26 +151,30 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
             @Override
             public void onClick(View v) {
                 if (holder.deskStatus.getText().toString().equalsIgnoreCase("Available For Request")){
-                    onChangeSelected.onChangeDesk(deskList.get(holder.getAbsoluteAdapterPosition()).getTeamDeskId(),
+                    onChangeSelected.onChangeDesk(deskList.get(holder.getAbsoluteAdapterPosition()),
+                            deskList.get(holder.getAbsoluteAdapterPosition()).getTeamDeskId(),
                             deskList.get(holder.getAbsoluteAdapterPosition()).getDeskCode(),"request"
                             ,deskList.get(holder.getAbsoluteAdapterPosition()).getTimeZones().get(0).getTimeZoneId(),
                             typeId,editBookingDetails,newEditStatus,deskList.get(holder.getAbsoluteAdapterPosition()).getTeamId());
                 } else if(holder.deskStatus.getText().toString().equalsIgnoreCase("Available")){
-                    onChangeSelected.onChangeDesk(deskList.get(holder.getAbsoluteAdapterPosition()).getTeamDeskId(),
+                    onChangeSelected.onChangeDesk(deskList.get(holder.getAbsoluteAdapterPosition()),
+                            deskList.get(holder.getAbsoluteAdapterPosition()).getTeamDeskId(),
                             deskList.get(holder.getAbsoluteAdapterPosition()).getDeskCode(),"new"
                             , deskList.get(holder.getAbsoluteAdapterPosition()).getTimeZones().get(0).getTimeZoneId(),
                             typeId,editBookingDetails,newEditStatus,deskList.get(holder.getAbsoluteAdapterPosition()).getTeamId());
                 } else {
                     if (deskList.get(holder.getAbsoluteAdapterPosition()).getTeamId() != SessionHandler.getInstance()
                             .getInt(context, AppConstants.TEAM_ID)
-                            && fragment.selectedTeamAutoApproveStatus != 2)
+                            && deskList.get(holder.getAbsoluteAdapterPosition()).getAutomaticApprovalStatus() != 2)
                     {
-                        onChangeSelected.onChangeDesk(deskList.get(holder.getAbsoluteAdapterPosition()).getTeamDeskId(),
+                        onChangeSelected.onChangeDesk(deskList.get(holder.getAbsoluteAdapterPosition()),
+                                deskList.get(holder.getAbsoluteAdapterPosition()).getTeamDeskId(),
                                 deskList.get(holder.getAbsoluteAdapterPosition()).getDeskCode(),"request"
                                 , deskList.get(holder.getAbsoluteAdapterPosition()).getTimeZones().get(0).getTimeZoneId(),
                                 typeId,editBookingDetails,newEditStatus,deskList.get(holder.getAbsoluteAdapterPosition()).getTeamId());
                     } else {
-                        onChangeSelected.onChangeDesk(deskList.get(holder.getAbsoluteAdapterPosition()).getTeamDeskId(),
+                        onChangeSelected.onChangeDesk(deskList.get(holder.getAbsoluteAdapterPosition()),
+                                deskList.get(holder.getAbsoluteAdapterPosition()).getTeamDeskId(),
                                 deskList.get(holder.getAbsoluteAdapterPosition()).getDeskCode(),"new",
                                 deskList.get(holder.getAbsoluteAdapterPosition()).getTimeZones().get(0).getTimeZoneId(),
                                 typeId,editBookingDetails,newEditStatus,deskList.get(holder.getAbsoluteAdapterPosition()).getTeamId());
@@ -237,6 +246,10 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
         TextView select;
         @BindView(R.id.desk_status)
         TextView deskStatus;
+        @BindView(R.id.tv_location_address)
+        TextView tvLocationAddress;
+        @BindView(R.id.tv_description)
+        TextView tvDescription;
         @BindView(R.id.desk_icon_status)
         ImageView deskIconStatus;
 

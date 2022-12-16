@@ -1477,7 +1477,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onChangeDesk(int deskId, String deskName, String request,
+    public void onChangeDesk(BookingForEditResponse.TeamDeskAvailabilities desklIst, int deskId, String deskName, String request,
                              String timeZone, int typeId,
                              EditBookingDetails editBookingDetails, String newEditStatus, int teamId) {
         editBookingDetailsGlobal.setDeskCode(deskName);

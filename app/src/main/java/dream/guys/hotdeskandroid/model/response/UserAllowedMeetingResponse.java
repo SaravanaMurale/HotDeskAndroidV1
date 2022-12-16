@@ -125,6 +125,44 @@ public class UserAllowedMeetingResponse {
     public void setTeams(List<Teams> teams) {
         this.teams = teams;
     }
+    public class Location {
+        private int FloorID;
+        private String FloorName;
+        private int BuildingID;
+        private String BuildingName;
+
+        public int getFloorID() {
+            return FloorID;
+        }
+
+        public void setFloorID(int floorID) {
+            FloorID = floorID;
+        }
+
+        public String getFloorName() {
+            return FloorName;
+        }
+
+        public void setFloorName(String floorName) {
+            FloorName = floorName;
+        }
+
+        public int getBuildingID() {
+            return BuildingID;
+        }
+
+        public void setBuildingID(int buildingID) {
+            BuildingID = buildingID;
+        }
+
+        public String getBuildingName() {
+            return BuildingName;
+        }
+
+        public void setBuildingName(String buildingName) {
+            BuildingName = buildingName;
+        }
+    }
 
     public class LocationMeeting{
 
@@ -134,11 +172,22 @@ public class UserAllowedMeetingResponse {
             int parentLocationId;
             boolean isLeafLocation;
             int locationType;
+
             String timeZoneId;
             String description;
+            @SerializedName("locationDetails")
+            Location locationDetails;
             boolean isActive;
 
-            public int getLocationId() {
+        public Location getLocationDetails() {
+            return locationDetails;
+        }
+
+        public void setLocationDetails(Location locationDetails) {
+            this.locationDetails = locationDetails;
+        }
+
+        public int getLocationId() {
                 return locationId;
             }
 

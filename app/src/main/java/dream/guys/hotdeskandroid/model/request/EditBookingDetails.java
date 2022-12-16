@@ -13,6 +13,7 @@ public class EditBookingDetails {
     String editStartTTime;
     String editEndTime;
     String deskCode;
+    String description;
     String roomName;
     String capacity;
     String vehicleRegNumber;
@@ -41,6 +42,14 @@ public class EditBookingDetails {
     public int requestedTeamId;
     public int requestedTeamDeskId;
     public Status status;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getDeskBookingType() {
         return deskBookingType;

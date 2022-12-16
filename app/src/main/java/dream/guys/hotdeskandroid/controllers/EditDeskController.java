@@ -47,6 +47,7 @@ import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
 import dream.guys.hotdeskandroid.model.response.ActiveTeamsResponse;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
+import dream.guys.hotdeskandroid.ui.home.HomeFragment;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -77,7 +78,7 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
     boolean endDisabled = false;
     boolean selectDisabled = false;
     boolean tvTeamNameDisabled = false;
-    TextView startTime,endTime,repeat,date,deskRoomName,locationAddress,continueEditBook;
+    TextView startTime,endTime,repeat,date,deskRoomName,tv_description,locationAddress,continueEditBook;
     TextView country, state, street, floor, back, bsApply,deskStatusText,deskStatusDot;
     TextView tvRepeat, tvTeamName,tvcapacityCount;
     EditText bsGeneralSearch;
@@ -296,6 +297,7 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
         TextView select=deskBottomSheet.findViewById(R.id.select_desk_room);
 
         TextView tvComments=deskBottomSheet.findViewById(R.id.tv_comments);
+        TextView tv_description=deskBottomSheet.findViewById(R.id.tv_description);
         EditText edComments=deskBottomSheet.findViewById(R.id.comments);
         EditText commentRegistration=deskBottomSheet.findViewById(R.id.ed_registration);
         EditText edRegistration=deskBottomSheet.findViewById(R.id.et_registration_num);
@@ -394,15 +396,23 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
                 continueEditBook.setVisibility(View.VISIBLE);
             }
 
-            select.setVisibility(View.VISIBLE);
+//            select.setVisibility(View.VISIBLE);
+            select.setVisibility(View.GONE);
             dateBlock.setVisibility(View.GONE);
         } else {
             dateBlock.setVisibility(View.GONE);
-            select.setVisibility(View.VISIBLE);
+//            select.setVisibility(View.VISIBLE);
+            select.setVisibility(View.GONE);
         }
 
 
         if (dskRoomParkStatus == 1) {
+            if (editDeskBookingDetails.getLocationAddress()!=null &&
+                    !editDeskBookingDetails.getLocationAddress().isEmpty()
+                    && !editDeskBookingDetails.getLocationAddress().equalsIgnoreCase(""))
+                locationAddress.setText(""+editDeskBookingDetails.getLocationAddress());
+            tv_description.setText(editDeskBookingDetails.getDescription());
+
             if (newEditStatus.equalsIgnoreCase("edit")){
                 if (editDeskBookingDetails.getDate()!=null)
                     date.setText(""+Utils.calendarDay10thMonthYearformat(editDeskBookingDetails.getDate()));
@@ -435,7 +445,8 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
                     editDeskBookingDetails.getUsageTypeId()== 7)){
                 select.setVisibility(View.GONE);
             } else {
-                select.setVisibility(View.VISIBLE);
+//                select.setVisibility(View.VISIBLE);
+                select.setVisibility(View.GONE);
             }
 
             if (newEditStatus.equalsIgnoreCase("edit")){
@@ -701,15 +712,15 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
                                 && newEditStatus.equalsIgnoreCase("edit")) {
                             if (editDeskBookingDetails.getUsageTypeId()==2
                                     && editDeskBookingDetails.getRequestedTeamId()>0) {
-                                Utils.bottomSheetTimePicker(context,activityContext,startTime,"Start Time",
+                                Utils.bottomSheetTimePicker24Hrs(context,activityContext,startTime,"Start Time",
                                         Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
                             } else {
 
-                                Utils.bottomSheetTimePicker(context,activityContext,startTime,"Start Time",
+                                Utils.bottomSheetTimePicker24Hrs(context,activityContext,startTime,"Start Time",
                                         Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
                             }
                         } else
-                            Utils.bottomSheetTimePicker(context,activityContext,startTime,"Start Time",
+                            Utils.bottomSheetTimePicker24Hrs(context,activityContext,startTime,"Start Time",
                                     Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
 
                     }
@@ -1362,8 +1373,132 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
     }
 
     @Override
-    public void onChangeDesk(int deskId, String deskName, String request, String timeZone, int typeId, EditBookingDetails editBookingDetails, String newEditStatus, int teamId) {
+    public void onChangeDesk(BookingForEditResponse.TeamDeskAvailabilities deskList,
+                             int deskId, String deskName, String request, String timeZone,
+                             int typeId, EditBookingDetails editBookingDetails, String newEditStatus, int teamId) {
+        changedTeamId = teamId;
+        changedDeskId = deskId;
+        selectedDeskId = deskId;
+        continueEditBook.setVisibility(View.VISIBLE);
+        if (locationAddress!=null)
+            locationAddress.setText(Utils.checkStringParms(deskList.getLocationDetails().getBuildingName())+
+                    ", "+
+                    Utils.checkStringParms(deskList.getLocationDetails().getfLoorName()));
+        if (tv_description!=null)
+            tv_description.setText(Utils.checkStringParms(deskList.getDescription()));
 
+//        Toast.makeText(context, "dsj"+changedDeskId, Toast.LENGTH_SHORT).show();
+        if (typeId == 0) {
+
+        } else {
+            if (newEditStatus.equalsIgnoreCase("edit")){
+                selectedDeskId = deskId;
+                deskRoomName.setText(deskName);
+                if (editBookingDetails!=null){
+                    editBookingDetails.setDeskCode(deskName);
+                    editBookingDetails.setDesktId(deskId);
+                    editBookingDetails.setDeskTeamId(selectedTeamId);
+                    editBookingDetails.setTimeZone(timeZone);
+                }
+                if(request.equalsIgnoreCase("request")){
+                    deskStatusText.setText("Available For Request");
+                    deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(activityContext,R.color.figma_orange));
+                    if (teamId!=SessionHandler.getInstance().getInt(context,AppConstants.TEAM_ID)){
+                        editBookingDetails.setRequestedTeamDeskId(deskId);
+                        editBookingDetails.setRequestedTeamId(selectedTeamId);
+                    } else {
+                        editBookingDetails.setRequestedTeamDeskId(0);
+                        editBookingDetails.setRequestedTeamId(0);
+                    }
+                } else {
+                    deskStatusText.setText("Available");
+                    deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(activityContext,R.color.figmaLiteGreen));
+                    if (teamId!=SessionHandler.getInstance().getInt(context,AppConstants.TEAM_ID)){
+                        editBookingDetails.setRequestedTeamDeskId(deskId);
+                        editBookingDetails.setRequestedTeamId(selectedTeamId);
+                    } else {
+                        editBookingDetails.setRequestedTeamDeskId(0);
+                        editBookingDetails.setRequestedTeamId(0);
+                    }
+                }
+
+            }else if (newEditStatus.equalsIgnoreCase(request)){
+                selectedDeskId = deskId;
+                deskRoomName.setText(deskName);
+                if (editBookingDetails!=null){
+                    editBookingDetails.setDeskCode(deskName);
+                    editBookingDetails.setDesktId(deskId);
+                    editBookingDetails.setDeskTeamId(selectedTeamId);
+                    editBookingDetails.setTimeZone(timeZone);
+                }
+                if(request.equalsIgnoreCase("request")){
+                    deskStatusText.setText("Available For Request");
+                    deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(activityContext,R.color.figma_orange));
+                    if (teamId!=SessionHandler.getInstance().getInt(context,AppConstants.TEAM_ID)){
+                        editBookingDetails.setRequestedTeamDeskId(deskId);
+                        editBookingDetails.setRequestedTeamId(selectedTeamId);
+                    } else {
+                        editBookingDetails.setRequestedTeamDeskId(0);
+                        editBookingDetails.setRequestedTeamId(0);
+                    }
+                } else {
+                    deskStatusText.setText("Available");
+                    deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(activityContext,R.color.figmaLiteGreen));
+                    if (teamId!=SessionHandler.getInstance().getInt(context,AppConstants.TEAM_ID)){
+                        editBookingDetails.setRequestedTeamDeskId(deskId);
+                        editBookingDetails.setRequestedTeamId(selectedTeamId);
+                    } else {
+                        editBookingDetails.setRequestedTeamDeskId(0);
+                        editBookingDetails.setRequestedTeamId(0);
+                    }
+                }
+
+            } else {
+                selectedDeskId = deskId;
+                deskRoomName.setText(deskName);
+                if (editBookingDetails!=null){
+                    editBookingDetails.setDeskCode(deskName);
+                    editBookingDetails.setDesktId(deskId);
+                    editBookingDetails.setDeskTeamId(selectedTeamId);
+                    editBookingDetails.setTimeZone(timeZone);
+                }
+                /*if(request.equalsIgnoreCase("request")){
+                    if(teamId!=SessionHandler.getInstance().getInt(context,AppConstants.TEAM_ID)){
+                        editBookingDetailsGlobal.setRequestedTeamDeskId(deskId);
+                        editBookingDetailsGlobal.setRequestedTeamId(selectedTeamId);
+                    } else {
+                        editBookingDetailsGlobal.setRequestedTeamDeskId(0);
+                        editBookingDetailsGlobal.setRequestedTeamId(0);
+                    }
+                } else {
+                    if(teamId!=SessionHandler.getInstance().getInt(context,AppConstants.TEAM_ID)){
+                        editBookingDetailsGlobal.setRequestedTeamDeskId(deskId);
+                        editBookingDetailsGlobal.setRequestedTeamId(selectedTeamId);
+                    } else {
+                        editBookingDetailsGlobal.setRequestedTeamDeskId(0);
+                        editBookingDetailsGlobal.setRequestedTeamId(0);
+                    }
+                }*/
+
+                /*if(roomBottomSheet!=null)
+                    roomBottomSheet.dismiss();*/
+
+                /*if(request.equalsIgnoreCase("new"))
+                    editBookingUsingBottomSheet(editBookingDetails,
+                            1,0,"new");
+                else
+                    editBookingUsingBottomSheet(editBookingDetails,
+                            1,0,"request");*/
+            }
+            /*selectedDeskId = deskId;
+            deskRoomName.setText(deskName);
+            if (editBookingDetails!=null){
+                editBookingDetails.setDeskCode(deskName);
+                editBookingDetails.setDesktId(deskId);
+                editBookingDetails.setDeskTeamId(selectedTeamId);
+                editBookingDetails.setTimeZone(timeZone);
+            }*/
+        }
     }
 /*
     private void callActiveTeamsBottomSheet(int id, EditBookingDetails editBookingDetails, String newEditStatus) {

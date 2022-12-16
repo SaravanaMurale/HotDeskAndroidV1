@@ -341,7 +341,7 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5">
+                    android:layout_weight="0.1">
 
                     <ImageView
                         android:layout_width="@dimen/_15sdp"
@@ -349,6 +349,7 @@
                         android:layout_centerInParent="true"
                         android:layout_marginTop="@dimen/_15sdp"
                         android:src="@drawable/info_circle"
+                        android:visibility="gone"
                         app:tint="@color/figmaBlueText" />
 
                 </RelativeLayout>

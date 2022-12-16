@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/_10sdp"
+    android:background="@color/bg_grey"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginHorizontal="@dimen/_10sdp"
-    android:layout_marginVertical="@dimen/_7sdp"
-    app:cardCornerRadius="@dimen/_3sdp"
     >
 
     <RelativeLayout
         android:id="@+id/repeatNoneBlock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_10sdp"
-        android:background="@color/bg_grey">
+        android:padding="@dimen/_10sdp">
 
         <TextView
             android:id="@+id/tv_desk_name"
@@ -26,8 +25,8 @@
             android:layout_toLeftOf="@id/tv_select"
             android:layout_toRightOf="@id/info_layout"
             android:text="Desk"
-            android:textSize="18sp"
             android:textColor="@color/figmaBlack"
+            android:textSize="18sp"
             android:theme="@style/TextBold" />
 
 
@@ -56,13 +55,33 @@
                 android:text="location1, location 2"
                 android:textColor="@color/figmaBlack"
                 android:textSize="14sp"
-                android:visibility="gone"
+                android:visibility="visible"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:theme="@style/TextRegular"
+                android:textColor="@color/figmaBlack"
+                android:textSize="14sp"
+                android:visibility="visible"
+                />
+            <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:theme="@style/TextRegular"
+                android:textColor="@color/figmaBlack"
+                android:textSize="14sp"
+                android:visibility="visible"
                 />
 
             <LinearLayout
                 android:id="@+id/capacity_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:visibility="gone"
@@ -128,6 +147,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_3sdp"
+                android:visibility="gone"
                 android:layout_alignParentStart="true"
                 android:src="@drawable/info_circle"
                 android:layout_marginTop="@dimen/_4sdp"
@@ -135,4 +155,9 @@
 
         </LinearLayout>
     </RelativeLayout>
-</androidx.cardview.widget.CardView>
+    <view
+        class="android.widget.TextView"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_width="match_parent"
+        />
+</LinearLayout>

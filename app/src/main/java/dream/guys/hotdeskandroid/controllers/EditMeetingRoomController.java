@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -301,6 +302,8 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
         TextView tv_end=roomBottomSheet.findViewById(R.id.tv_end);
         TextView tv_comment=roomBottomSheet.findViewById(R.id.tv_comment);
         TextView tv_repeat=roomBottomSheet.findViewById(R.id.tv_repeat);
+        TextView tvDelete = roomBottomSheet.findViewById(R.id.delete_text);
+        tvDelete.setVisibility(View.VISIBLE);
         repeat = roomBottomSheet.findViewById(R.id.repeat);
         deskStatusText = roomBottomSheet.findViewById(R.id.desk_status_text);
         deskStatusDot = roomBottomSheet.findViewById(R.id.user_status_dot);
@@ -315,7 +318,12 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
         continueEditBook.setText(appKeysPage.getContinue());
         back.setText(appKeysPage.getBack());
 
-
+        tvDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteBookingCall(editDeskBookingDetails);
+            }
+        });
 
         startTime = roomBottomSheet.findViewById(R.id.start_time);
         endTime = roomBottomSheet.findViewById(R.id.end_time);
@@ -756,6 +764,164 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
 
         roomBottomSheet.show();
 
+    }
+
+    private void deleteBookingCall(EditBookingDetails editDeskBookingDetails) {
+
+        JsonObject jsonOuterObject = new JsonObject();
+        JsonObject jsonInnerObject = new JsonObject();
+        JsonObject jsonChangesObject = new JsonObject();
+        JsonArray jsonChangesetArray = new JsonArray();
+        JsonArray jsonDeletedIdsArray = new JsonArray();
+        jsonOuterObject.addProperty("meetingRoomId",selectedRoomId);
+        jsonOuterObject.addProperty("handleRecurring",false);
+//        jsonOuterObject.addProperty("teamMembershipId",SessionHandler.getInstance().getInt(getActivity(),AppConstants.TEAMMEMBERSHIP_ID));
+
+        BookingsRequest bookingsRequest = new BookingsRequest();
+        ArrayList<BookingsRequest.ChangeSets> list =new ArrayList<>();
+        ArrayList<Integer> list1 =new ArrayList<>();
+//        list1.add(editDeskBookingDetails.getCalId());
+        jsonDeletedIdsArray.add(editDeskBookingDetails.getCalId());
+        jsonOuterObject.add("changesets", jsonChangesetArray);
+        jsonOuterObject.add("deletedIds", jsonDeletedIdsArray);
+
+        //System.out.println("json un"+jsonOuterObject.toString());
+
+        editBookingCall(jsonOuterObject,0,2,"delete");
+
+    }
+    public void editBookingCall(JsonObject data,int position,int dskRoomStatus,String newEditDelete) {
+        if (Utils.isNetworkAvailable(activityContext)) {
+            dialog= ProgressDialog.showProgressBar(context);
+            // TODO: 06-07-2022
+            String json ="{'teamId':6,'teamMembershipId':21,'changesets':[{'id':1178,'date':'2022-07-11T00:00:00.000Z','changes':{'teamDeskId':64,'from':'2000-01-01T14:24:00.000Z','to':'2000-01-01T17:50:00.000Z'}}],'deletedIds':[]}";
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call=null;
+            switch (dskRoomStatus){
+                case 1:
+                    call = apiService.bookingBookings(data);
+                    break;
+                case 2:
+                    call = apiService.meetingRoomBookingBookings(data);
+                    break;
+                case 3:
+                    call = apiService.carParkBookingBookings(data);
+                    break;
+            }
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                    dialog.dismiss();
+                    String resultString="";
+                    try {
+                        if (response.code()==200 && response.body().getResultCode()!=null){
+//                        Utils.showCustomAlertDialog(activityContext,"Update Success");
+//                        Toast.makeText(activityContext, "Success Bala", Toast.LENGTH_SHORT).show();
+                            if (response.body().getResultCode().equalsIgnoreCase("ok")){
+                                if (newEditDelete.equalsIgnoreCase("new")
+                                        || newEditDelete.equalsIgnoreCase("new_deep_link"))
+                                    openCheckoutDialog("Booking Created",dskRoomStatus);
+                                else if (newEditDelete.equalsIgnoreCase("edit"))
+                                    openCheckoutDialog("Booking Updated",dskRoomStatus);
+                                else if (newEditDelete.equalsIgnoreCase("request"))
+                                    openCheckoutDialog("Booking Created",dskRoomStatus);
+                                else
+                                    openCheckoutDeleteDialog("Booking Deleted",dskRoomStatus);
+
+                                switch (dskRoomStatus){
+                                    case 1:
+//                                        tabToggleViewClicked(0);
+                                        break;
+                                    case 2:
+//                                        tabToggleViewClicked(1);
+                                        break;
+                                    case 3:
+//                                        tabToggleViewClicked(2);
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+//                            openCheckoutDialog("Booking Updated");
+                            }else {
+                                if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
+                                    resultString = "Invalid booking start time";
+                                } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
+                                    resultString = "Invalid booking end time";
+                                } else if (response.body().getResultCode().toString().equals("INVALID_TIMEZONE_ID")) {
+                                    resultString = "Invalid timezone";
+                                } else if (response.body().getResultCode().toString().equals("INVALID_TIMEPERIOD")) {
+                                    resultString = "Invalid timeperiod";
+                                } else if (response.body().getResultCode().toString().equals("USER_TIME_OVERLAP")) {
+                                    resultString = "Time overlaps with another booking";
+                                } else if(response.body().getResultCode().toString().equals("COVID_SYMPTOMS")){
+                                    resultString = "COVID_SYMPTOMS";
+                                }else if(response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")){
+                                    resultString = "Desk is Unavailable";
+                                }else {
+                                    resultString = response.body().getResultCode().toString();
+                                }
+                                Utils.showCustomAlertDialog(activityContext, resultString);
+                            }
+                        }else if (response.code() == 500){
+                            Utils.showCustomAlertDialog(activityContext,""+response.message());
+                        }else if (response.code() == 401){
+                            Utils.showCustomTokenExpiredDialog(activityContext,"401 Error Response");
+                            SessionHandler.getInstance().saveBoolean(activityContext, AppConstants.LOGIN_CHECK,false);
+//                        Utils.finishAllActivity(context);
+                        }
+                        else {
+                            Toast.makeText(activityContext, "Response Failure", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception exception){
+                        Log.e(TAG,exception.getMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+//                    Toast.makeText(activityContext, "fail Bala"+t.getMessage(), Toast.LENGTH_SHORT).show();
+                    //System.out.println("resps"+t.getMessage());
+                    dialog.dismiss();
+                }
+            });
+
+        } else {
+            Utils.toastMessage(activityContext, "Please Enable Internet");
+        }
+    }
+    private void openCheckoutDeleteDialog(String mesg, int dskRoomStatus) {
+        Dialog popDialog = new Dialog(activityContext);
+        popDialog.setContentView(R.layout.layout_checkout_success);
+        popDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        NavController navController= Navigation.findNavController(view);
+
+        TextView checkDialogClose = popDialog.findViewById(R.id.checkDialogClose);
+        TextView dialogMsg = popDialog.findViewById(R.id.dialog_text);
+        ImageView ivChecout = popDialog.findViewById(R.id.ivCheckoutSuccess);
+//        ivChecout.setBackgroundTintList(ContextCompat.getColorStateList(activityContext,R.color.figma_red));
+        // ivChecout.setImageTintList(ContextCompat.getColorStateList(activityContext,R.color.figma_red));
+        dialogMsg.setText(""+mesg);
+/*
+        if (dskRoomStatus==1 && bookEditBottomSheet!=null)
+            bookEditBottomSheet.dismiss();
+        else if(dskRoomStatus==3 && bookEditBottomSheet!=null)
+            bookEditBottomSheet.dismiss();
+        else{
+            if (bookEditBottomSheet!=null)
+                bookEditBottomSheet.dismiss();
+*/
+        if (roomBottomSheet!=null)
+            roomBottomSheet.dismiss();
+
+
+        checkDialogClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popDialog.dismiss();
+            }
+        });
+        popDialog.show();
     }
 
     private void callMeetingRoomBookingBottomSheet(EditBookingDetails editDeskBookingDetails, TextView startTime, TextView endTime,

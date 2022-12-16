@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -59,6 +60,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.shape.CornerFamily;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -92,6 +95,7 @@ import dream.guys.hotdeskandroid.adapter.ParkingSpotListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.ParticipantNameShowAdapter;
 import dream.guys.hotdeskandroid.adapter.RoomListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
+import dream.guys.hotdeskandroid.controllers.EditMeetingRoomController;
 import dream.guys.hotdeskandroid.controllers.OtherBookingController;
 import dream.guys.hotdeskandroid.controllers.EditDeskController;
 import dream.guys.hotdeskandroid.databinding.FragmentBookBinding;
@@ -251,6 +255,7 @@ public class BookFragment extends Fragment implements
     List<UserAllowedMeetingResponse> userAllowedMeetingResponseListUpdatedFilterList=new ArrayList<>();
 
     BookingForEditResponse bookingForEditResponse;
+    BookingForEditResponse temp;
     View view;
 
     //room bookings
@@ -619,7 +624,6 @@ public class BookFragment extends Fragment implements
             SessionHandler.getInstance().save(getContext(), AppConstants.BUILDING,buildingCheck);
             SessionHandler.getInstance().save(getContext(), AppConstants.FLOOR,floorCheck);
             SessionHandler.getInstance().save(getContext(), AppConstants.FULLPATHLOCATION,fullPathCheck);
-
         }
 
         int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
@@ -876,6 +880,12 @@ public class BookFragment extends Fragment implements
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (assertSpinner != null)
+            assertSpinner.setSelection(0);
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -1047,11 +1057,13 @@ public class BookFragment extends Fragment implements
     }
 
     private void getDeskCount(String month) {
+//        Toast.makeText(context, "just count", Toast.LENGTH_SHORT).show();
         if (Utils.isNetworkAvailable(getActivity())) {
             dialog= ProgressDialog.showProgressBar(getContext());
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<List<DeskRoomCountResponse>> call = null;
+            Log.d(TAG, "getDeskCount: count");
             switch (selectedicon){
                 case 1:
                     call = apiService.getDailyDeskCount(month, ""+SessionHandler.getInstance().getInt(getActivity(), AppConstants.TEAM_ID));
@@ -1109,6 +1121,7 @@ public class BookFragment extends Fragment implements
     }
 
     private void getDeskCountLocation(String month, String locationId,int drawStatus) {
+//        Toast.makeText(context, "loca count"+calSelectedDate, Toast.LENGTH_SHORT).show();
         if (Utils.isNetworkAvailable(getActivity()) && Integer.parseInt(locationId)!=0) {
             if(dialog.isShowing())
                 dialog.dismiss();
@@ -1126,14 +1139,20 @@ public class BookFragment extends Fragment implements
                 case 0:
                     if (drawStatus == 2) {
                         String toDate = binding.locateCalendearView.getText().toString() + "T00:00:00Z";
-                        String fromTime = calSelectedDate + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
-                        String toTime = calSelectedDate + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
+                        String fromTime = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
+                        String toTime = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
+                        Log.d(TAG, "getDeskCountLocation: if"+fromTime);
+                        Log.d(TAG, "getDeskCountLocation: if to"+toTime);
                         call = apiService.getDailyDeskCountLocation(month, locationId, fromTime, toTime);
+
                     }
                     else    {
                         String toDate = binding.locateCalendearView.getText().toString() + "T00:00:00Z";
-                        String fromTime = calSelectedDate + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
-                        String toTime = calSelectedDate + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
+                        String fromTime = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
+                        String toTime = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
+                        Log.d(TAG, "getDeskCountLocation: else from"+fromTime);
+                        Log.d(TAG, "getDeskCountLocation: else to"+toTime);
+
                         call = apiService.getDailyDeskCountLocation(month, locationId, fromTime, toTime);
 //                        call = apiService.getDailyDeskCountLocation(month, locationId,"","");
                     }
@@ -1141,14 +1160,14 @@ public class BookFragment extends Fragment implements
                 case 1:
                     if (drawStatus == 2) {
                         String toDate = binding.locateCalendearView.getText().toString() + "T00:00:00Z";
-                        String fromTime = calSelectedDate + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
-                        String toTime = calSelectedDate + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
+                        String fromTime = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
+                        String toTime = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
                         call = apiService.getDailyDeskCountLocation(month, locationId, fromTime, toTime);
                     }
                     else    {
                         String toDate = binding.locateCalendearView.getText().toString() + "T00:00:00Z";
-                        String fromTime = calSelectedDate + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
-                        String toTime = calSelectedDate + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
+                        String fromTime = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
+                        String toTime = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
                         call = apiService.getDailyDeskCountLocation(month, locationId, fromTime, toTime);
 //                        call = apiService.getDailyDeskCountLocation(month, locationId,"","");
                     }
@@ -1156,8 +1175,8 @@ public class BookFragment extends Fragment implements
                 case 2:
                     if (drawStatus == 2){
                         String toDate = binding.locateCalendearView.getText().toString() + "T00:00:00Z";
-                        String fromTime = calSelectedDate + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
-                        String toTime = calSelectedDate + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
+                        String fromTime = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
+                        String toTime = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
                         call = apiService.getDailyRoomCountLocation(month, locationId,fromTime,toTime);
                     }
                     else
@@ -1166,13 +1185,30 @@ public class BookFragment extends Fragment implements
                 case 3:
                     if (drawStatus == 2){
                         String toDate = binding.locateCalendearView.getText().toString() + "T00:00:00Z";
-                        String fromTime = calSelectedDate + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
-                        String toTime = calSelectedDate + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
+                        String fromTime = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
+                        String toTime = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
                         call = apiService.getDailyParkingCountLocation(month, locationId,fromTime,toTime);
                     }
                     else
                         call = apiService.getDailyParkingCountLocation(month, locationId,"","");
                     break;
+                default:
+                    Log.d(TAG, "getDeskCountLocation: else from"+calSelectedDate);
+                    Log.d(TAG, "getDeskCountLocation: else to"+calSelectedDate);
+
+                    if (drawStatus == 2) {
+                        String toDate = binding.locateCalendearView.getText().toString() + "T00:00:00Z";
+                        String fromTime = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
+                        String toTime = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
+                        call = apiService.getDailyDeskCountLocation(month, locationId, fromTime, toTime);
+                    }
+                    else    {
+                        String toDate = binding.locateCalendearView.getText().toString() + "T00:00:00Z";
+                        String fromTime = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
+                        String toTime = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
+                        call = apiService.getDailyDeskCountLocation(month, locationId, fromTime, toTime);
+//                        call = apiService.getDailyDeskCountLocation(month, locationId,"","");
+                    }
             }
             call.enqueue(new Callback<List<DeskRoomCountResponse>>() {
                 @Override
@@ -1256,7 +1292,7 @@ public class BookFragment extends Fragment implements
                     List<MeetingListToEditResponse> meetingListToEditResponseList  =response.body();
                     List<MeetingListToEditResponse> meetingListToEditList  =new ArrayList<>();
 
-                    for(int i=0; i<meetingListToEditResponseList.size(); i++){
+                    for(int i=0; i<meetingListToEditResponseList.size(); i++) {
                         //System.out.println("meting userId"+meetingListToEditResponseList.get(i).getBookedByUserId()
 //                                +" : " +SessionHandler.getInstance().getInt(getActivity(),AppConstants.USER_ID));
                         if (meetingListToEditResponseList.get(i).getBookedByUserId()
@@ -1591,8 +1627,11 @@ public class BookFragment extends Fragment implements
         LinearLayoutManager linearLayoutManager;
 
         bookEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        bookEditBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_calendar_edit_booking_bottomsheet,
-                new RelativeLayout(getContext())));
+        View view = View.inflate(getContext(), R.layout.dialog_calendar_edit_booking_bottomsheet, null);
+        bookEditBottomSheet.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels-150);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
         rvCarEditList = bookEditBottomSheet.findViewById(R.id.rvEditList);
         editClose = bookEditBottomSheet.findViewById(R.id.editClose);
@@ -1687,8 +1726,15 @@ public class BookFragment extends Fragment implements
         LinearLayoutManager linearLayoutManager;
 
         bookEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        bookEditBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_calendar_edit_booking_bottomsheet,
-                new RelativeLayout(getContext())));
+//        bookEditBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_calendar_edit_booking_bottomsheet,
+//                new RelativeLayout(getContext())));
+
+        View view = View.inflate(getContext(), R.layout.dialog_calendar_edit_booking_bottomsheet, null);
+        bookEditBottomSheet.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels - 150);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
 
         rvMeeingEditList = bookEditBottomSheet.findViewById(R.id.rvEditList);
         editClose=bookEditBottomSheet.findViewById(R.id.editClose);
@@ -1787,12 +1833,29 @@ public class BookFragment extends Fragment implements
         editDeskBookingDetails.setSubject(meetingListToEditResponse.getSubject());
         selectedDeskId = meetingListToEditResponse.getMeetingRoomId();
 
+        boolean isEditable = false;
+        if (meetingListToEditResponse.getBookedByUserId() == SessionHandler.getInstance().getInt(context,AppConstants.USER_ID)){
+            isEditable  = true;
+        } else {
+            isEditable  = false;
+        }
+
+        EditMeetingRoomController editMeetingRoomController = new EditMeetingRoomController(
+                AppConstants.BOOKFRAGMENTINSTANCESTRING,
+                activityContext,
+                context,
+                calSelectedDate,
+                selectedDeskId,
+                editDeskBookingDetails,
+                isEditable
+        );
+/*
         callAmenitiesListForMeetingRoom(editDeskBookingDetails,
                 editDeskBookingDetails.getEditStartTTime(),
                 editDeskBookingDetails.getEditEndTime(),
                 editDeskBookingDetails.getDate(),
                 editDeskBookingDetails.getMeetingRoomtId(),
-                0,"edit");
+                0,"edit");*/
     }
 
     @Override
@@ -1912,9 +1975,7 @@ public class BookFragment extends Fragment implements
 
     private void getAddEditDesk(String code,String date) {
         if (Utils.isNetworkAvailable(getActivity())) {
-
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-
             Call<BookingForEditResponse> call = apiService.getBookingsForEdit(
                     SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID),
                     SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAMMEMBERSHIP_ID),
@@ -1925,7 +1986,16 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onResponse(Call<BookingForEditResponse> call, Response<BookingForEditResponse> response) {
                     try {
+                        temp = response.body();
                         bookingForEditResponse = response.body();
+                        List<BookingForEditResponse.Bookings> bookingsList = new ArrayList<>();
+                        for (BookingForEditResponse.Bookings respo: bookingForEditResponse.getBookings()) {
+                            if (respo.getUsageTypeId()==2 || respo.getUsageTypeId()==7){
+                                bookingsList.add(respo);
+                            }
+                        }
+                        bookingForEditResponse.setBookings(bookingsList);
+
                         if(bookingDeskList==null)
                             bookingDeskList= new ArrayList<>();
 
@@ -1935,7 +2005,7 @@ public class BookFragment extends Fragment implements
                                 bookingDeskList = response.body().getTeamDeskAvailabilities();
                         }
 
-                        if (code.equalsIgnoreCase("3")){
+                        if (code.equalsIgnoreCase("3")) {
                             if(bookingForEditResponse.getBookings()!=null
                                     && bookingForEditResponse.getBookings().size()>0)
                                 callBottomSheetToEdit(bookingForEditResponse, code);
@@ -2008,8 +2078,7 @@ public class BookFragment extends Fragment implements
         LinearLayoutManager linearLayoutManager;
         bookingForEditResponseDesk.clear();
         try {
-            if (isGlobalLocationSetUP && bookingDeskList!=null && bookingDeskList.size()>0){
-                //System.out.println(" data in");
+            if (isGlobalLocationSetUP && bookingDeskList!=null && bookingDeskList.size()>0) {
                 for (int i=0; i < bookingDeskList.size(); i++){
 //                logic to show booked by else
                     /*if(Utils.compareTwoDate(Utils.convertStringToDateFormet(calSelectedDate),
@@ -2055,8 +2124,15 @@ public class BookFragment extends Fragment implements
         }
 //        bookingForEditResponseDesk.addAll(bookingForEditResponse.getTeamDeskAvailabilities());
         bookEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        bookEditBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_calendar_edit_booking_bottomsheet,
-                new RelativeLayout(getContext())));
+//        bookEditBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_calendar_edit_booking_bottomsheet,
+//                new RelativeLayout(getContext())));
+
+        View view = View.inflate(getContext(), R.layout.dialog_calendar_edit_booking_bottomsheet, null);
+        bookEditBottomSheet.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels-150);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
 
         rvEditList = bookEditBottomSheet.findViewById(R.id.rvEditList);
         editClose = bookEditBottomSheet.findViewById(R.id.editClose);
@@ -2195,8 +2271,17 @@ public class BookFragment extends Fragment implements
                 Log.d(TAG," desk id check if "+bookingForEditResponseDesk.get(i).getTeamDeskId());
                 break loop;
             } else {
-                selectedTeamId = bookingForEditResponseDesk.get(0).getTeamId();
-                globalSelectedTeamId = bookingForEditResponseDesk.get(0).getTeamId();
+                int pos =0;
+                out:
+                for (int t=0; t < bookingForEditResponseDesk.size(); t++) {
+                    if (bookingForEditResponseDesk.get(t).getTeamId()
+                            == SessionHandler.getInstance().getInt(context, AppConstants.TEAM_ID)){
+                        pos = t;
+                    }
+                }
+
+                selectedTeamId = bookingForEditResponseDesk.get(pos).getTeamId();
+                globalSelectedTeamId = bookingForEditResponseDesk.get(pos).getTeamId();
                 for (int x=0; x<activeTeamsList.size(); x++) {
                     if (selectedTeamId == activeTeamsList.get(x).getId()) {
                         selectedTeamName = activeTeamsList.get(x).getName();
@@ -2205,15 +2290,15 @@ public class BookFragment extends Fragment implements
                 }
                 editBookingDetailsGlobal.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursFrom()));
                 editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
-                editBookingDetailsGlobal.setDeskCode(bookingForEditResponseDesk.get(0).getDeskCode());
-                editBookingDetailsGlobal.setDesktId(bookingForEditResponseDesk.get(0).getTeamDeskId());
-                editBookingDetailsGlobal.setDeskTeamId(bookingForEditResponseDesk.get(0).getTeamId());
-                editBookingDetailsGlobal.setTimeZone(bookingForEditResponseDesk.get(i).getTimeZones().get(0).getTimeZoneId());
-                selectedDeskId = bookingForEditResponseDesk.get(0).getTeamDeskId();
+                editBookingDetailsGlobal.setDeskCode(bookingForEditResponseDesk.get(pos).getDeskCode());
+                editBookingDetailsGlobal.setDesktId(bookingForEditResponseDesk.get(pos).getTeamDeskId());
+                editBookingDetailsGlobal.setDeskTeamId(bookingForEditResponseDesk.get(pos).getTeamId());
+                editBookingDetailsGlobal.setTimeZone(bookingForEditResponseDesk.get(i).getTimeZones().get(pos).getTimeZoneId());
+                selectedDeskId = bookingForEditResponseDesk.get(pos).getTeamDeskId();
                 editBookingDetailsGlobal.setDate(Utils.convertStringToDateFormet(calSelectedDate));
                 editBookingDetailsGlobal.setCalId(0);
                 editBookingDetailsGlobal.setDeskStatus(0);
-                Log.d(TAG," desk id check else "+bookingForEditResponseDesk.get(0).getTeamDeskId());
+
             }
         }
 
@@ -2222,8 +2307,15 @@ public class BookFragment extends Fragment implements
             editBookingDetailsGlobal.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
                     .getMyto()));
 
-            editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
+            editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(
+                    Utils.addingHoursToDate(bookingForEditResponse.getBookings().get(
+<<<<<<< HEAD
+                            bookingForEditResponse.getBookings().size()-1)
                     .getMyto(),2)));
+=======
+                                    bookingForEditResponse.getBookings().size()-1)
+                            .getMyto(),2)));
+>>>>>>> 307a9c774297a2b3db585f67519a9ee60667feda
         }
 
         if (bookingForEditResponse.getBookings().size()==0) {
@@ -2283,8 +2375,13 @@ public class BookFragment extends Fragment implements
         selectDisabled=false;
 
         roomBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        roomBottomSheet.setContentView((getLayoutInflater().inflate(R.layout.dialog_calendar_bottom_sheet_edit_booking,
-                new RelativeLayout(getContext()))));
+//        roomBottomSheet.setContentView((getLayoutInflater().inflate(R.layout.dialog_calendar_bottom_sheet_edit_booking,
+//                new RelativeLayout(getContext()))));
+        View view = View.inflate(getContext(), R.layout.dialog_calendar_bottom_sheet_edit_booking, null);
+        roomBottomSheet.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
         //Language
         TextView tv_start=roomBottomSheet.findViewById(R.id.tv_start);
@@ -2709,9 +2806,14 @@ public class BookFragment extends Fragment implements
             //System.out.println("chip check"+editDeskBookingDetails.getAmenities().size());
             if (editDeskBookingDetails.getAmenities()!=null){
                 for (int i=0; i<editDeskBookingDetails.getAmenities().size(); i++){
+                    ShapeAppearanceModel shapeAppearanceModel= new ShapeAppearanceModel()
+                            .toBuilder()
+                            .setAllCorners(CornerFamily.ROUNDED,15)
+                            .build();
                     Chip chip = new Chip(getContext());
                     chip.setId(i);
                     chip.setTextAppearance(R.style.chipText);
+                    chip.setShapeAppearanceModel(shapeAppearanceModel);
                     chip.setText(""+editDeskBookingDetails.getAmenities().get(i));
                     chip.setChipBackgroundColorResource(R.color.figmaBgGrey);
                     chip.setCloseIconVisible(false);
@@ -2853,7 +2955,7 @@ public class BookFragment extends Fragment implements
                         }
                     }
                 }else if(selectedicon==1){
-                   if (repeatActvieStatus) {
+                    if (repeatActvieStatus) {
                         if (dskRoomParkStatus==1)
                             doRepeatDeskBookingForAWeek(editDeskBookingDetails);
                         else if (dskRoomParkStatus==3)
@@ -2953,14 +3055,14 @@ public class BookFragment extends Fragment implements
                                 }else{
                                     if (!newEditStatus.equalsIgnoreCase("edit") && selectedDeskId!=0){
                                         if (changedDeskId>0)
-                                        if (editDeskBookingDetails.getRequestedTeamId()>0){
-                                            Log.d("bookei chock 6st if",""+selectedDeskId);
+                                            if (editDeskBookingDetails.getRequestedTeamId()>0){
+                                                Log.d("bookei chock 6st if",""+selectedDeskId);
 
-                                            jsonChangesObject.addProperty("requestedTeamDeskId",selectedDeskId);
-                                            jsonChangesObject.addProperty("requestedTeamId",editDeskBookingDetails.getDeskTeamId());
-                                        } else {
-                                            jsonChangesObject.addProperty("teamDeskId",selectedDeskId);
-                                        }
+                                                jsonChangesObject.addProperty("requestedTeamDeskId",selectedDeskId);
+                                                jsonChangesObject.addProperty("requestedTeamId",editDeskBookingDetails.getDeskTeamId());
+                                            } else {
+                                                jsonChangesObject.addProperty("teamDeskId",selectedDeskId);
+                                            }
                                     }
                                     else if (selectedDeskId != editDeskBookingDetails.getDesktId()){
                                         if (editDeskBookingDetails.getRequestedTeamId()>0){
@@ -3140,7 +3242,7 @@ public class BookFragment extends Fragment implements
         }
 
         if (!editDeskBookingDetails.getEditEndTime().equalsIgnoreCase(endTime.getText().toString())
-                ){
+        ){
             jsonChangesObject.addProperty("to","2000-01-01T"+endTime.getText().toString()+":00.000Z");
         }
 
@@ -3210,7 +3312,7 @@ public class BookFragment extends Fragment implements
         }
 
         if (!editDeskBookingDetails.getEditEndTime().equalsIgnoreCase(endTime.getText().toString())
-                ){
+        ){
             jsonChangesObject.addProperty("to","2000-01-01T"+endTime.getText().toString()+":00.000Z");
         }
 
@@ -3280,7 +3382,7 @@ public class BookFragment extends Fragment implements
         }
 
         if (!editDeskBookingDetails.getEditEndTime().equalsIgnoreCase(endTime.getText().toString())
-                ){
+        ){
             jsonChangesObject.addProperty("to","2000-01-01T"+endTime.getText().toString()+":00.000Z");
         }
 
@@ -3967,8 +4069,15 @@ public class BookFragment extends Fragment implements
         }
 
         deskListBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        deskListBottomSheet.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_select_desk_new,
-                new RelativeLayout(getContext()))));
+//        deskListBottomSheet.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_select_desk_new,
+//                new RelativeLayout(getContext()))));
+
+        View view = View.inflate(getContext(), R.layout.dialog_bottom_sheet_edit_select_desk_new, null);
+        deskListBottomSheet.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
 
         TextView bsRepeatBack, selectDesk, sheetDate, sheetTime;
         bsGeneralSearch = deskListBottomSheet.findViewById(R.id.bsGeneralSearch);
@@ -4045,7 +4154,7 @@ public class BookFragment extends Fragment implements
                     }else {
 //                        if(newEditStatus.equalsIgnoreCase("new")
 //                                || newEditStatus.equalsIgnoreCase("request"))
-                            callActiveTeamsBottomSheet(id,editBookingDetails,newEditStatus);
+                        callActiveTeamsBottomSheet(id,editBookingDetails,newEditStatus);
                     }
                 }
             }
@@ -4414,6 +4523,8 @@ public class BookFragment extends Fragment implements
 
         EditDeskController editDeskController = new EditDeskController(activityContext, context,
                 editDeskBookingDetails,AppConstants.BOOKFRAGMENTINSTANCESTRING);
+        if(bookEditBottomSheet!=null)
+            bookEditBottomSheet.dismiss();
 
         /*if (editDeskBookingDetails.getUsageTypeId() == 7){
             getRequestDeskDeskList(editDeskBookingDetails,"edit");
@@ -4601,8 +4712,14 @@ public class BookFragment extends Fragment implements
 
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_room_participant_booking,
-                new RelativeLayout(getContext()))));
+//        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_room_participant_booking,
+//                new RelativeLayout(getContext()))));
+        View view = View.inflate(getContext(), R.layout.dialog_bottom_sheet_room_participant_booking, null);
+        bottomSheetDialog.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels-150);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
 
         etParticipants = bottomSheetDialog.findViewById(R.id.etParticipants);
         etSubject = bottomSheetDialog.findViewById(R.id.etSubject);
@@ -4625,12 +4742,18 @@ public class BookFragment extends Fragment implements
 
         if (editDeskBookingDetails.getAmenities()!=null){
             for (int i=0; i<editDeskBookingDetails.getAmenities().size(); i++){
+                ShapeAppearanceModel  shapeAppearanceModel = new ShapeAppearanceModel()
+                        .toBuilder()
+                        .setAllCorners(CornerFamily.ROUNDED,15)
+                        .build();
                 Chip chip = new Chip(getContext());
+                chip.setCheckable(false);
+                chip.setClickable(false);
+                chip.setShapeAppearanceModel(shapeAppearanceModel);
                 chip.setId(i);
                 chip.setTextAppearance(R.style.chipText);
                 chip.setText(""+editDeskBookingDetails.getAmenities().get(i));
                 chip.setChipBackgroundColorResource(R.color.figmaBgGrey);
-                chip.setCloseIconVisible(false);
                 chip.setTextColor(getContext().getResources().getColor(R.color.figmaBlack));
 //            chip.setTextAppearance(R.style.ChipTextAppearance);
                 chipGroup.addView(chip);
@@ -6837,7 +6960,7 @@ public class BookFragment extends Fragment implements
         View view = View.inflate(getContext(), R.layout.dialog_bottom_sheet_locate_filter, null);
         bottomSheetDialog.setContentView(view);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
-        bottomSheetBehavior.setPeekHeight(500);
+        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels-150);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
         RelativeLayout layout = bottomSheetDialog.findViewById(R.id.amenitiesViewBlock);
@@ -7364,8 +7487,8 @@ public class BookFragment extends Fragment implements
     //New...
     public void loadAssertSpinner() {
 //        assertSpinner = activityContext.findViewById(R.id.assertSpinner);
-
 //        assertList.clear();
+
         assertList = new ArrayList<>();
         assertSpinner.setSpinnerEventsListener(this);
         for (int i=1;i<8;i++){
@@ -7409,6 +7532,13 @@ public class BookFragment extends Fragment implements
         assertSpinner.setAdapter(assertListAdapter);
         assertSpinner.setSelection(0);
         assertListAdapter.notifyDataSetChanged();
+
+        /*
+        OnSpinnerEventsListener onSpinnerEventsListener = this;
+        if (assertSpinner!=null)
+            assertSpinner.performClosedEvent(assertSpinner);
+        */
+
     }
     public void checkVeichleReg() {
 
@@ -7615,7 +7745,7 @@ public class BookFragment extends Fragment implements
 
     @Override
     public void onPopupWindowOpened(Spinner spinner) {
-        Log.d(TAG, "onPopupWindowOpened: ");
+        Log.d(TAG, "onPopupWindowOpened: "+spinner.getSelectedItemPosition());
         assertSpinner.setBackground(getResources().getDrawable(R.drawable.spinner_outline_opened));
         View view = assertSpinner.getSelectedView();
 

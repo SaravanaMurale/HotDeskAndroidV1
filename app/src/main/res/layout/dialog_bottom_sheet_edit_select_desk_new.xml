@@ -199,6 +199,7 @@
             android:text="Workspaces available to your team:"
             android:theme="@style/TextRegular"
             android:textSize="14sp"
+            android:visibility="gone"
             android:textColor="@color/figmaBlack"
             android:layout_marginStart="@dimen/_10sdp"
             />

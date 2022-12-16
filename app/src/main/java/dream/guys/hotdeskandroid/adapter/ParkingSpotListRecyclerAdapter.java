@@ -182,7 +182,7 @@ public class ParkingSpotListRecyclerAdapter extends RecyclerView.Adapter<Parking
         @BindView(R.id.desk_icon_status)
         ImageView deskIconStatus;
         @BindView(R.id.card)
-        CardView card;
+        LinearLayout card;
 
         public Viewholder(@NonNull View itemView) {
             super(itemView);

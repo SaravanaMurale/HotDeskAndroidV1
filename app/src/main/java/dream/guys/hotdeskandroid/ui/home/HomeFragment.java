@@ -1183,10 +1183,14 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         editDeskBookingDetails.setCalId(bookings.getId());
         editDeskBookingDetails.setDeskCode(bookings.getDeskCode());
         editDeskBookingDetails.setComments(bookings.getComments());
+        editDeskBookingDetails.setDescription(Utils.checkStringParms(bookings.getDescription()));
         if (bookings.getDeskLocation()!=null)
-            editDeskBookingDetails.setLocationAddress(bookings.getDeskLocation().getfLoorName()+", "+bookings.getDeskLocation().getBuildingName());
-        else if(bookings.getRequestedDeskLocation()!=null)
-            editDeskBookingDetails.setLocationAddress(bookings.getRequestedDeskLocation().getfLoorName()+", "+bookings.getRequestedDeskLocation().getBuildingName());
+            editDeskBookingDetails.setLocationAddress(Utils.checkStringParms(bookings.getDeskLocation().getBuildingName())
+                    +", " + Utils.checkStringParms(bookings.getDeskLocation().getfLoorName()));
+        else if (bookings.getRequestedDeskLocation()!=null)
+            editDeskBookingDetails.setLocationAddress(bookings.getRequestedDeskLocation().getBuildingName()
+                    +", " + bookings.getRequestedDeskLocation().getfLoorName());
+
         if (bookings.getStatus().getTimeStatus().equalsIgnoreCase("ongoing"))
             editDeskBookingDetails.setDeskStatus(2);
         else if (bookings.getStatus().getTimeStatus().equalsIgnoreCase("past"))

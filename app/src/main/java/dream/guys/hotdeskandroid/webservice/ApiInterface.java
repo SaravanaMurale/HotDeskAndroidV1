@@ -255,8 +255,9 @@ public interface ApiInterface {
                                                            @Query("toDate") String toDate,
                                                            @Query("fromTime") String fromTime,
                                                            @Query("toTime") String toTime);
-    @GET("api/meetingrooms/allwithavailability")
-    Call<RoomListResponse> getAvaliableRoomDetailsForRoomList(@Query("locationId") int parentId,
+//    @GET("api/meetingrooms/allwithavailability")
+    @GET("api/MeetingRooms/AllMeetingRoomsWithLocationsV2Mobile")
+    Call<List<UserAllowedMeetingResponse>> getAvaliableRoomDetailsForRoomList(@Query("locationId") int parentId,
                                                               @Query("bookingDate") String toDate,
                                                               @Query("from") String fromTime,
                                                               @Query("to") String toTime);
@@ -267,7 +268,7 @@ public interface ApiInterface {
                                                     @Query("fromDate") String fromTime,
                                                     @Query("toDate") String toTime);
 
-    @GET("api/booking/teamDeskAvailability")
+    @GET("api/booking/TeamDeskAvailabilityV2Mobile")
     Call<List<BookingForEditResponse.TeamDeskAvailabilities>> getTeamDeskAvailability(@Query("teamId") int parentId,
                                                     @Query("fromDate") String fromTime,
                                                     @Query("toDate") String toTime);

@@ -162,7 +162,25 @@ public class DeskAvaliabilityResponse {
 
         private int id;
         private String code;
+        private String description;
         private boolean isTeamDesk;
+        private BookingForEditResponse.Location locationDetails;
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public BookingForEditResponse.Location getLocationDetails() {
+            return locationDetails;
+        }
+
+        public void setLocationDetails(BookingForEditResponse.Location locationDetails) {
+            this.locationDetails = locationDetails;
+        }
 
         public int getId() {
             return id;

@@ -116,16 +116,16 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
         holder.capacityLayout.setVisibility(View.VISIBLE);
         holder.locationDetails.setVisibility(View.VISIBLE);
         holder.statusLayout.setVisibility(View.VISIBLE);
-
-        for (int i=0; i < getAllRooms.size(); i++) {
-            if (getAllRooms.get(i).getId() == rooms.get(position).getId()) {
+        if (rooms.get(position).getDescription() != null)
+            holder.tv_description.setText(rooms.get(position).getDescription());
                 team:
-                for (int x=0; x<getAllRooms.get(i).getTeams().size(); x++) {
-                    if(getAllRooms.get(i).getTeams().get(x).getId() ==
-                            SessionHandler.getInstance().getInt(context,AppConstants.TEAM_ID)){
+                for (int x=0; x<rooms.get(position).getTeams().size(); x++) {
+                    if(rooms.get(position).getTeams().get(x).getId() ==
+                            SessionHandler.getInstance().getInt(context,AppConstants.TEAM_ID)) {
                             holder.capacityNo.setText(""+Utils.checkStringParms(rooms.get(position).getNoOfPeople()));
                             if (rooms.get(position).getLocationMeeting()!=null)
-                                holder.locationDetails.setText(Utils.checkStringParms(rooms.get(position).getLocationMeeting().getName()));
+                                holder.locationDetails.setText(Utils.checkStringParms(rooms.get(position).getLocationMeeting().getLocationDetails().getBuildingName())
+                                +", "+Utils.checkStringParms(rooms.get(position).getLocationMeeting().getLocationDetails().getFloorName()));
                             else
                                 holder.locationDetails.setVisibility(View.GONE);
 
@@ -143,7 +143,8 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
                             holder.select.setVisibility(View.GONE);
                             holder.capacityNo.setText(""+rooms.get(position).getNoOfPeople());
                             if (rooms.get(position).getLocationMeeting()!=null)
-                                holder.locationDetails.setText(Utils.checkStringParms(rooms.get(position).getLocationMeeting().getName()));
+                                holder.locationDetails.setText(Utils.checkStringParms(rooms.get(position).getLocationMeeting().getLocationDetails().getBuildingName())
+                                        +", "+Utils.checkStringParms(rooms.get(position).getLocationMeeting().getLocationDetails().getFloorName()));
                             else
                                 holder.locationDetails.setVisibility(View.GONE);
 
@@ -153,7 +154,8 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
                         } else if (rooms.get(position).getAutomaticApprovalStatus() == 2){
                             holder.capacityNo.setText(""+Utils.checkStringParms(rooms.get(position).getNoOfPeople()));
                             if (rooms.get(position).getLocationMeeting()!=null)
-                                holder.locationDetails.setText(Utils.checkStringParms(rooms.get(position).getLocationMeeting().getName()));
+                                holder.locationDetails.setText(Utils.checkStringParms(rooms.get(position).getLocationMeeting().getLocationDetails().getBuildingName())
+                                        +", "+Utils.checkStringParms(rooms.get(position).getLocationMeeting().getLocationDetails().getFloorName()));
                             else
                                 holder.locationDetails.setVisibility(View.GONE);
 
@@ -166,7 +168,8 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
                         } else {
                             holder.capacityNo.setText(""+Utils.checkStringParms(rooms.get(position).getNoOfPeople()));
                             if (rooms.get(position).getLocationMeeting()!=null)
-                                holder.locationDetails.setText(Utils.checkStringParms(rooms.get(position).getLocationMeeting().getName()));
+                                holder.locationDetails.setText(Utils.checkStringParms(rooms.get(position).getLocationMeeting().getLocationDetails().getBuildingName())
+                                        +", "+Utils.checkStringParms(rooms.get(position).getLocationMeeting().getLocationDetails().getFloorName()));
                             else
                                 holder.locationDetails.setVisibility(View.GONE);
 
@@ -179,8 +182,7 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
                     }
                 }
 
-            }
-        }
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,6 +206,8 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_desk_name)
         TextView room_name;
+        @BindView(R.id.tv_description)
+        TextView tv_description;
         @BindView(R.id.desk_status)
         TextView deskStatus;
         @BindView(R.id.tv_select)
@@ -219,7 +223,7 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
         @BindView(R.id.desk_icon_status)
         ImageView deskIconStatus;
         @BindView(R.id.card)
-        CardView card;
+        LinearLayout card;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
