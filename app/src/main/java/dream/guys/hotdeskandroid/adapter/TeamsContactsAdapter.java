@@ -131,7 +131,7 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 if (position > 4) {
                     if (position == 5){
                         holder.relative.setVisibility(View.VISIBLE);
-                        holder.tvCount.setText(" + \n" + String.valueOf(teamMembersList.size()-6));
+                        holder.tvCount.setText(" + " + String.valueOf(teamMembersList.size()-6));
                     }else {
                         holder.profile_image.setVisibility(View.GONE);
                         holder.relative.setVisibility(View.GONE);

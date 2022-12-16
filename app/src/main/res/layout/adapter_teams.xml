@@ -97,6 +97,8 @@
                         android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/avatar"
+                        app:civ_border_color="@color/white"
+                        app:civ_border_width="1dp"
                         app:tint="@color/black" />
 
                     <ImageView
@@ -112,9 +114,9 @@
                     android:id="@+id/bookingIvEdit"
                     android:layout_width="@dimen/_18sdp"
                     android:layout_height="@dimen/_18sdp"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_6sdp"
                     android:src="@drawable/ic_baseline_arrow_forward_ios_24"
                     app:tint="@color/figmaBlueText" />
 

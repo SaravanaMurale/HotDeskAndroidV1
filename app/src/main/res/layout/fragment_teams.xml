@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.teams.TeamsFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ui.teams.TeamsFragment">
 
     <RelativeLayout
         android:id="@+id/hdr_layout"
@@ -18,23 +18,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:text="My Team"
+            android:text="My team"
             android:textColor="@color/figmaBlack"
             android:textSize="@dimen/_18sdp"
-            android:theme="@style/TextBold"
-            />
+            android:theme="@style/TextBold" />
 
         <TextView
             android:id="@+id/teamName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
             android:layout_alignParentStart="true"
-            tools:text="dgguys"
+            android:layout_marginStart="@dimen/_2sdp"
             android:textColor="@color/figmaBlack"
             android:textSize="@dimen/_12sdp"
-            android:layout_marginStart="@dimen/_2sdp"
             android:theme="@style/TextRegular"
-            android:layout_below="@+id/title"/>
+            tools:text="dgguys" />
 
         <TextView
             android:id="@+id/txt_allteam"
@@ -43,10 +42,10 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:text="All Team"
-            android:visibility="gone"
             android:textColor="@color/figmaBlueText"
             android:textSize="@dimen/_11sdp"
-            android:theme="@style/TextBold" />
+            android:theme="@style/TextBold"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
@@ -54,48 +53,48 @@
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:textColorNormal="@color/figmaBlack"
-        app:textColorSelected="@color/white"
+        android:layout_below="@+id/hdr_layout"
         android:layout_marginTop="@dimen/_8sdp"
-        android:layout_below="@+id/hdr_layout"/>
+        app:textColorNormal="@color/figmaBlack"
+        app:textColorSelected="@color/white" />
 
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/calendarView">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_margin="@dimen/_12sdp">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/search_block"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
-                android:orientation="vertical"
-                android:visibility="visible"
+                android:layout_margin="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
-                android:layout_marginTop="@dimen/_8sdp">
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <!--Notification,Search-->
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_35sdp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
                     android:layout_marginHorizontal="@dimen/_10sdp"
-                    >
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <ImageView
+                        android:id="@+id/search_ic"
                         android:layout_width="@dimen/_18sdp"
                         android:layout_height="@dimen/_20sdp"
-                        android:src="@drawable/search_1px"
-                        android:id="@+id/search_ic"
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/_5sdp"/>
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:src="@drawable/search_1px" />
 
                     <EditText
                         android:id="@+id/serach_bar"
@@ -106,8 +105,8 @@
                         android:layout_toRightOf="@+id/search_ic"
                         android:backgroundTint="@color/white"
                         android:hint="Search"
-                        android:theme="@style/TextRegular"
-                        android:inputType="text" />
+                        android:inputType="text"
+                        android:theme="@style/TextRegular" />
 
                     <ImageView
                         android:id="@+id/close"
@@ -115,33 +114,39 @@
                         android:layout_height="@dimen/_18sdp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:visibility="gone"
                         android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:src="@drawable/close_circle" />
+                        android:src="@drawable/close_circle"
+                        android:visibility="gone" />
                 </RelativeLayout>
-
-
-
             </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardElevation="@dimen/_2sdp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/search_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="@dimen/_12sdp"
+                android:background="@drawable/bg_transparent_round"
+                android:fillViewport="true"
                 android:paddingHorizontal="@dimen/_10sdp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:background="@drawable/bg_transparent_round"
-                android:fillViewport="true"
-                android:visibility="gone"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp">
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_5sdp">
 
                 <TextView
                     android:id="@+id/list_title"
@@ -177,7 +182,7 @@
                     android:textColor="@color/figmaBlack"
                     android:textSize="@dimen/_10sdp"
                     android:theme="@style/TextRegular"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tv_exapnd"
@@ -193,101 +198,134 @@
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/recyclerView"
                 android:visibility="visible"
-                android:layout_marginTop="@dimen/_8sdp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <TextView
                 android:id="@+id/tvWorkRemote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_4sdp"
                 android:layout_toStartOf="@+id/tv_exapnd"
                 android:text="Working Remotely"
-                android:visibility="gone"
                 android:textColor="@color/figmaBlack"
                 android:textSize="@dimen/_14sdp"
-                android:layout_marginVertical="@dimen/_5sdp"
-                android:theme="@style/TextRegular" />
+                android:theme="@style/TextRegular"
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewRemote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/recyclerViewRemote"
-                android:layout_marginTop="@dimen/_8sdp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                android:background="@color/lightGrey"
+                android:paddingStart="@dimen/_12sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_12sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:visibility="invisible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <TextView
                 android:id="@+id/tvOutOfOffice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_4sdp"
                 android:layout_toStartOf="@+id/tv_exapnd"
                 android:text="Out of Office"
-                android:visibility="gone"
                 android:textColor="@color/figmaBlack"
                 android:textSize="@dimen/_14sdp"
                 android:theme="@style/TextRegular"
-                android:layout_marginVertical="@dimen/_5sdp"
-                />
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewOutOfOffice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/recyclerViewOutOfOffice"
-                android:layout_marginTop="@dimen/_8sdp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                android:background="@color/lightGrey"
+                android:paddingStart="@dimen/_12sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_12sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:visibility="invisible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
             <TextView
                 android:id="@+id/tvHoliday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_4sdp"
                 android:layout_toStartOf="@+id/tv_exapnd"
                 android:text="Sick Leave"
-                android:visibility="gone"
                 android:textColor="@color/figmaBlack"
                 android:textSize="@dimen/_14sdp"
                 android:theme="@style/TextRegular"
-                android:layout_marginVertical="@dimen/_5sdp"
-                />
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewHoliday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/recyclerViewHoliday"
-                android:layout_marginTop="@dimen/_8sdp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                android:background="@color/lightGrey"
+                android:paddingStart="@dimen/_12sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_12sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:visibility="invisible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
             <TextView
                 android:id="@+id/tvUnknown"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_4sdp"
                 android:layout_toStartOf="@+id/tv_exapnd"
                 android:text="No Bookings Available"
-                android:visibility="gone"
                 android:textColor="@color/figmaBlack"
                 android:textSize="@dimen/_14sdp"
                 android:theme="@style/TextRegular"
-                android:layout_marginVertical="@dimen/_5sdp"
-                />
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/recyclerViewUnkown"
-                android:layout_marginTop="@dimen/_8sdp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-            <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/lightGrey"
+                android:paddingStart="@dimen/_12sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_12sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:visibility="invisible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/expandRecyclerView"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/lightGrey"
+                android:paddingStart="@dimen/_12sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_12sdp"
+                android:paddingBottom="@dimen/_5sdp"
                 android:visibility="gone"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </LinearLayout>
 

@@ -10,16 +10,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:paddingStart="@dimen/_5sdp"
-        android:paddingEnd="@dimen/_5sdp"
-        android:orientation="vertical">
+        android:paddingEnd="@dimen/_5sdp">
 
         <LinearLayout
+            android:id="@+id/tool_bar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:id="@+id/tool_bar">
+            android:orientation="horizontal">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -37,77 +37,80 @@
             </RelativeLayout>
 
             <ImageView
+                android:id="@+id/profile_update"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
-                android:src="@drawable/icon_survey"
-                android:id="@+id/profile_update"
-                />
+                android:src="@drawable/icon_survey" />
+
             <TextView
                 android:id="@+id/profile_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/workspace_survey"
                 android:layout_marginLeft="@dimen/_10sdp"
-                android:theme="@style/TextBold"
-                android:textSize="@dimen/_15sdp"/>
+                android:text="@string/workspace_survey"
+                android:textSize="@dimen/_15sdp"
+                android:theme="@style/TextBold" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginLeft="@dimen/_5sdp"
-            android:layout_marginRight="@dimen/_5sdp">
+            android:layout_marginRight="@dimen/_5sdp"
+            android:orientation="vertical">
 
 
             <TextView
                 android:id="@+id/txt_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:text="@string/location"
                 android:textSize="@dimen/_16sdp"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:theme="@style/TextBold" />
 
             <TextView
                 android:id="@+id/reportPastBooking"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
-                android:paddingStart="@dimen/_5sdp"
-                android:gravity="center_vertical"
-                android:theme="@style/TextRegular"
+                android:background="@drawable/button_white_bg"
                 android:backgroundTint="@color/figmaBgGrey"
-                android:background="@drawable/button_white_bg"/>
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/_5sdp"
+                android:theme="@style/TextRegular" />
+
             <TextView
                 android:id="@+id/txt_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/report_select_date"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:theme="@style/TextBold"
-                android:textSize="@dimen/_16sdp"/>
+                android:text="@string/report_select_date"
+                android:textSize="@dimen/_16sdp"
+                android:theme="@style/TextBold" />
+
             <TextView
                 android:id="@+id/reportFromDate"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
+                android:background="@drawable/button_white_bg"
+                android:backgroundTint="@color/figmaBgGrey"
+                android:gravity="center_vertical"
                 android:hint="From"
                 android:paddingStart="@dimen/_5sdp"
-                android:theme="@style/TextRegular"
-                android:gravity="center_vertical"
-                android:backgroundTint="@color/figmaBgGrey"
-                android:background="@drawable/button_white_bg"/>
+                android:theme="@style/TextRegular" />
+
             <TextView
                 android:id="@+id/reportToDate"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@drawable/button_white_bg"
+                android:backgroundTint="@color/figmaBgGrey"
+                android:gravity="center_vertical"
                 android:hint="To"
                 android:paddingStart="@dimen/_5sdp"
-                android:theme="@style/TextRegular"
-                android:gravity="center_vertical"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:backgroundTint="@color/figmaBgGrey"
-                android:background="@drawable/button_white_bg"/>
+                android:theme="@style/TextRegular" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_accessibility"
@@ -117,56 +120,55 @@
 
                 <TextView
                     android:id="@+id/tvAccessibility"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:theme="@style/TextBold"
-                    android:text="@string/accessibility"
                     android:layout_width="@dimen/_70sdp"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_dislike"
+                    android:layout_height="wrap_content"
+                    android:text="@string/accessibility"
                     android:textColor="@color/figmaBlack"
-                    android:layout_height="wrap_content"/>
+                    android:theme="@style/TextBold"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_dislike"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_dislike"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
                     android:src="@drawable/ic_dislike"
                     app:layout_constraintLeft_toRightOf="@+id/tvAccessibility"
-                    app:layout_constraintRight_toLeftOf="@+id/sb_Accessibility"/>
+                    app:layout_constraintRight_toLeftOf="@+id/sb_Accessibility"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <SeekBar
                     android:id="@+id/sb_Accessibility"
-                    android:layout_width="@dimen/_150sdp"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_like"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/iv_dislike"
+                    app:layout_constraintRight_toLeftOf="@+id/iv_like"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_like"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:src="@drawable/ic_like"
                     app:layout_constraintLeft_toRightOf="@+id/sb_Accessibility"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_accessibility"/>
+                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_accessibility"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_edit_accessibility"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_like"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/edit"/>
-
+                    android:src="@drawable/edit"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_like"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -180,56 +182,55 @@
 
                 <TextView
                     android:id="@+id/tvAir"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:theme="@style/TextBold"
-                    android:text="@string/air"
                     android:layout_width="@dimen/_70sdp"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_dislike_air"
+                    android:layout_height="wrap_content"
+                    android:text="@string/air"
                     android:textColor="@color/figmaBlack"
-                    android:layout_height="wrap_content"/>
+                    android:theme="@style/TextBold"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_dislike_air"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_dislike_air"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:src="@drawable/ic_dislike"
                     app:layout_constraintLeft_toRightOf="@+id/tvAir"
-                    app:layout_constraintRight_toLeftOf="@+id/sb_Air"/>
+                    app:layout_constraintRight_toLeftOf="@+id/sb_Air"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <SeekBar
                     android:id="@+id/sb_Air"
-                    android:layout_width="@dimen/_150sdp"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_like_air"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/iv_dislike_air"
+                    app:layout_constraintRight_toLeftOf="@+id/iv_like_air"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_like_air"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:src="@drawable/ic_like"
                     app:layout_constraintLeft_toRightOf="@+id/sb_Air"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_air"/>
+                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_air"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_edit_air"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_like_air"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/edit"/>
-
+                    android:src="@drawable/edit"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_like_air"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -242,56 +243,55 @@
 
                 <TextView
                     android:id="@+id/tvClean"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:theme="@style/TextBold"
-                    android:text="@string/cleanliness"
                     android:layout_width="@dimen/_70sdp"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_dislike_clean"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cleanliness"
                     android:textColor="@color/figmaBlack"
-                    android:layout_height="wrap_content"/>
+                    android:theme="@style/TextBold"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_dislike_clean"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_dislike_clean"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:src="@drawable/ic_dislike"
                     app:layout_constraintLeft_toRightOf="@+id/tvClean"
-                    app:layout_constraintRight_toLeftOf="@+id/sb_clean"/>
+                    app:layout_constraintRight_toLeftOf="@+id/sb_clean"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <SeekBar
                     android:id="@+id/sb_clean"
-                    android:layout_width="@dimen/_150sdp"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_like_clean"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/iv_dislike_clean"
+                    app:layout_constraintRight_toLeftOf="@+id/iv_like_clean"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_like_clean"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:src="@drawable/ic_like"
                     app:layout_constraintLeft_toRightOf="@+id/sb_clean"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_clean"/>
+                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_clean"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_edit_clean"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_like_clean"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/edit"/>
-
+                    android:src="@drawable/edit"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_like_clean"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -304,56 +304,55 @@
 
                 <TextView
                     android:id="@+id/tvLight"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:theme="@style/TextBold"
-                    android:text="@string/light"
                     android:layout_width="@dimen/_70sdp"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_dislike_light"
+                    android:layout_height="wrap_content"
+                    android:text="@string/light"
                     android:textColor="@color/figmaBlack"
-                    android:layout_height="wrap_content"/>
+                    android:theme="@style/TextBold"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_dislike_light"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_dislike_light"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:src="@drawable/ic_dislike"
                     app:layout_constraintLeft_toRightOf="@+id/tvLight"
-                    app:layout_constraintRight_toLeftOf="@+id/sb_light"/>
+                    app:layout_constraintRight_toLeftOf="@+id/sb_light"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <SeekBar
                     android:id="@+id/sb_light"
-                    android:layout_width="@dimen/_150sdp"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_like_light"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/iv_dislike_light"
+                    app:layout_constraintRight_toLeftOf="@+id/iv_like_light"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_like_light"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:src="@drawable/ic_like"
                     app:layout_constraintLeft_toRightOf="@+id/sb_light"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_light"/>
+                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_light"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_edit_light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_like_light"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/edit"/>
-
+                    android:src="@drawable/edit"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_like_light"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -366,56 +365,55 @@
 
                 <TextView
                     android:id="@+id/tvNoise"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:theme="@style/TextBold"
-                    android:text="@string/noise"
                     android:layout_width="@dimen/_70sdp"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_dislike_noise"
+                    android:layout_height="wrap_content"
+                    android:text="@string/noise"
                     android:textColor="@color/figmaBlack"
-                    android:layout_height="wrap_content"/>
+                    android:theme="@style/TextBold"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_dislike_noise"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_dislike_noise"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:src="@drawable/ic_dislike"
                     app:layout_constraintLeft_toRightOf="@+id/tvNoise"
-                    app:layout_constraintRight_toLeftOf="@+id/sb_noise"/>
+                    app:layout_constraintRight_toLeftOf="@+id/sb_noise"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <SeekBar
                     android:id="@+id/sb_noise"
-                    android:layout_width="@dimen/_150sdp"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_like_noise"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/iv_dislike_noise"
+                    app:layout_constraintRight_toLeftOf="@+id/iv_like_noise"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_like_noise"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:src="@drawable/ic_like"
                     app:layout_constraintLeft_toRightOf="@+id/sb_noise"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_noise"/>
+                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_noise"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_edit_noise"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_like_noise"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/edit"/>
-
+                    android:src="@drawable/edit"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_like_noise"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -428,56 +426,55 @@
 
                 <TextView
                     android:id="@+id/tvTemperature"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:theme="@style/TextBold"
-                    android:text="@string/temperature"
                     android:layout_width="@dimen/_70sdp"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_dislike_temperature"
+                    android:layout_height="wrap_content"
+                    android:text="@string/temperature"
                     android:textColor="@color/figmaBlack"
-                    android:layout_height="wrap_content"/>
+                    android:theme="@style/TextBold"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_dislike_temperature"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_dislike_temperature"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
                     android:src="@drawable/ic_dislike"
                     app:layout_constraintLeft_toRightOf="@+id/tvTemperature"
-                    app:layout_constraintRight_toLeftOf="@+id/sb_temperature"/>
+                    app:layout_constraintRight_toLeftOf="@+id/sb_temperature"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <SeekBar
                     android:id="@+id/sb_temperature"
-                    android:layout_width="@dimen/_150sdp"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_like_temperature"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/iv_dislike_temperature"
+                    app:layout_constraintRight_toLeftOf="@+id/iv_like_temperature"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_like_temperature"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:src="@drawable/ic_like"
                     app:layout_constraintLeft_toRightOf="@+id/sb_temperature"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_temperature"/>
+                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_temperature"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_edit_temperature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_like_temperature"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/edit"/>
-
+                    android:src="@drawable/edit"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_like_temperature"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -490,55 +487,54 @@
 
                 <TextView
                     android:id="@+id/tvChair"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:theme="@style/TextBold"
-                    android:text="@string/chair"
                     android:layout_width="@dimen/_70sdp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chair"
                     android:textColor="@color/figmaBlack"
-                    android:layout_height="wrap_content"/>
+                    android:theme="@style/TextBold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_dislike_chair"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:src="@drawable/ic_dislike"
                     app:layout_constraintLeft_toRightOf="@+id/tvChair"
-                    app:layout_constraintRight_toLeftOf="@+id/sb_chair"/>
+                    app:layout_constraintRight_toLeftOf="@+id/sb_chair"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <SeekBar
                     android:id="@+id/sb_chair"
-                    android:layout_width="@dimen/_150sdp"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_like_chair"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/iv_dislike_chair"
+                    app:layout_constraintRight_toLeftOf="@+id/iv_like_chair"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_like_chair"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:src="@drawable/ic_like"
                     app:layout_constraintLeft_toRightOf="@+id/sb_chair"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_chair"/>
+                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_chair"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_edit_chair"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_like_chair"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/edit"/>
-
+                    android:src="@drawable/edit"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_like_chair"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -551,55 +547,54 @@
 
                 <TextView
                     android:id="@+id/tvDesk"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:theme="@style/TextBold"
-                    android:text="@string/desk"
                     android:layout_width="@dimen/_70sdp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/desk"
                     android:textColor="@color/figmaBlack"
-                    android:layout_height="wrap_content"/>
+                    android:theme="@style/TextBold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_dislike_desk"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:src="@drawable/ic_dislike"
                     app:layout_constraintLeft_toRightOf="@+id/tvDesk"
-                    app:layout_constraintRight_toLeftOf="@+id/sb_desk"/>
+                    app:layout_constraintRight_toLeftOf="@+id/sb_desk"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <SeekBar
                     android:id="@+id/sb_desk"
-                    android:layout_width="@dimen/_150sdp"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_like_desk"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/iv_dislike_desk"
+                    app:layout_constraintRight_toLeftOf="@+id/iv_like_desk"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_like_desk"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:src="@drawable/ic_like"
                     app:layout_constraintLeft_toRightOf="@+id/sb_desk"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_desk"/>
+                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_desk"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_edit_desk"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_like_desk"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/edit"/>
-
+                    android:src="@drawable/edit"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_like_desk"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -612,55 +607,54 @@
 
                 <TextView
                     android:id="@+id/tvDisplay"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:theme="@style/TextBold"
-                    android:text="@string/display"
                     android:layout_width="@dimen/_70sdp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/display"
                     android:textColor="@color/figmaBlack"
-                    android:layout_height="wrap_content"/>
+                    android:theme="@style/TextBold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_dislike_display"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:src="@drawable/ic_dislike"
                     app:layout_constraintLeft_toRightOf="@+id/tvDisplay"
-                    app:layout_constraintRight_toLeftOf="@+id/sb_display"/>
+                    app:layout_constraintRight_toLeftOf="@+id/sb_display"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <SeekBar
                     android:id="@+id/sb_display"
-                    android:layout_width="@dimen/_150sdp"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_like_display"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/iv_dislike_display"
+                    app:layout_constraintRight_toLeftOf="@+id/iv_like_display"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_like_display"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:src="@drawable/ic_like"
                     app:layout_constraintLeft_toRightOf="@+id/sb_display"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_display"/>
+                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_display"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_edit_display"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_like_display"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/edit"/>
-
+                    android:src="@drawable/edit"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_like_display"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -673,55 +667,54 @@
 
                 <TextView
                     android:id="@+id/tvKeyboard"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:theme="@style/TextBold"
-                    android:text="@string/keyboard"
                     android:layout_width="@dimen/_70sdp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/keyboard"
                     android:textColor="@color/figmaBlack"
-                    android:layout_height="wrap_content"/>
+                    android:theme="@style/TextBold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_dislike_keyboard"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:src="@drawable/ic_dislike"
                     app:layout_constraintLeft_toRightOf="@+id/tvKeyboard"
-                    app:layout_constraintRight_toLeftOf="@+id/sb_keyboard"/>
+                    app:layout_constraintRight_toLeftOf="@+id/sb_keyboard"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <SeekBar
                     android:id="@+id/sb_keyboard"
-                    android:layout_width="@dimen/_150sdp"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_like_keyboard"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/iv_dislike_keyboard"
+                    app:layout_constraintRight_toLeftOf="@+id/iv_like_keyboard"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_like_keyboard"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:src="@drawable/ic_like"
                     app:layout_constraintLeft_toRightOf="@+id/sb_keyboard"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_keyboard"/>
+                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_keyboard"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_edit_keyboard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_like_keyboard"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/edit"/>
-
+                    android:src="@drawable/edit"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_like_keyboard"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -734,55 +727,54 @@
 
                 <TextView
                     android:id="@+id/tvMouse"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:theme="@style/TextBold"
-                    android:text="@string/mouse"
                     android:layout_width="@dimen/_70sdp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mouse"
                     android:textColor="@color/figmaBlack"
-                    android:layout_height="wrap_content"/>
+                    android:theme="@style/TextBold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_dislike_mouse"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:src="@drawable/ic_dislike"
                     app:layout_constraintLeft_toRightOf="@+id/tvMouse"
-                    app:layout_constraintRight_toLeftOf="@+id/sb_mouse"/>
+                    app:layout_constraintRight_toLeftOf="@+id/sb_mouse"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <SeekBar
                     android:id="@+id/sb_mouse"
-                    android:layout_width="@dimen/_150sdp"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_like_mouse"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/iv_dislike_mouse"
+                    app:layout_constraintRight_toLeftOf="@+id/iv_like_mouse"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_like_mouse"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:src="@drawable/ic_like"
                     app:layout_constraintLeft_toRightOf="@+id/sb_mouse"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_mouse"/>
+                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_mouse"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_edit_mouse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_like_mouse"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/edit"/>
-
+                    android:src="@drawable/edit"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_like_mouse"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -795,55 +787,54 @@
 
                 <TextView
                     android:id="@+id/tvPhone"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:theme="@style/TextBold"
-                    android:text="@string/phone"
                     android:layout_width="@dimen/_70sdp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phone"
                     android:textColor="@color/figmaBlack"
-                    android:layout_height="wrap_content"/>
+                    android:theme="@style/TextBold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_dislike_phone"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:src="@drawable/ic_dislike"
                     app:layout_constraintLeft_toRightOf="@+id/tvPhone"
-                    app:layout_constraintRight_toLeftOf="@+id/sb_phone"/>
+                    app:layout_constraintRight_toLeftOf="@+id/sb_phone"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <SeekBar
                     android:id="@+id/sb_phone"
-                    android:layout_width="@dimen/_150sdp"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_like_phone"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/iv_dislike_phone"
+                    app:layout_constraintRight_toLeftOf="@+id/iv_like_phone"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_like_phone"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:src="@drawable/ic_like"
                     app:layout_constraintLeft_toRightOf="@+id/sb_phone"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_phone"/>
+                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_phone"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_edit_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_like_phone"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/edit"/>
-
+                    android:src="@drawable/edit"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_like_phone"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -856,55 +847,54 @@
 
                 <TextView
                     android:id="@+id/tvMobile"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:theme="@style/TextBold"
-                    android:text="@string/mobile"
                     android:layout_width="@dimen/_70sdp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mobile"
                     android:textColor="@color/figmaBlack"
-                    android:layout_height="wrap_content"/>
+                    android:theme="@style/TextBold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_dislike_mobile"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:src="@drawable/ic_dislike"
                     app:layout_constraintLeft_toRightOf="@+id/tvMobile"
-                    app:layout_constraintRight_toLeftOf="@+id/sb_mobile"/>
+                    app:layout_constraintRight_toLeftOf="@+id/sb_mobile"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <SeekBar
                     android:id="@+id/sb_mobile"
-                    android:layout_width="@dimen/_150sdp"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_like_mobile"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/iv_dislike_mobile"
+                    app:layout_constraintRight_toLeftOf="@+id/iv_like_mobile"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_like_mobile"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:src="@drawable/ic_like"
                     app:layout_constraintLeft_toRightOf="@+id/sb_mobile"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_mobile"/>
+                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_mobile"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_edit_mobile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_like_mobile"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/edit"/>
-
+                    android:src="@drawable/edit"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_like_mobile"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -917,55 +907,54 @@
 
                 <TextView
                     android:id="@+id/tvWifi"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:theme="@style/TextBold"
-                    android:text="@string/wifi"
                     android:layout_width="@dimen/_70sdp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/wifi"
                     android:textColor="@color/figmaBlack"
-                    android:layout_height="wrap_content"/>
+                    android:theme="@style/TextBold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_dislike_wifi"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:src="@drawable/ic_dislike"
                     app:layout_constraintLeft_toRightOf="@+id/tvWifi"
-                    app:layout_constraintRight_toLeftOf="@+id/sb_wifi"/>
+                    app:layout_constraintRight_toLeftOf="@+id/sb_wifi"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <SeekBar
                     android:id="@+id/sb_wifi"
-                    android:layout_width="@dimen/_150sdp"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_like_wifi"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/iv_dislike_wifi"
+                    app:layout_constraintRight_toLeftOf="@+id/iv_like_wifi"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_like_wifi"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:src="@drawable/ic_like"
                     app:layout_constraintLeft_toRightOf="@+id/sb_wifi"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_wifi"/>
+                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_wifi"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_edit_wifi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_like_wifi"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/edit"/>
-
+                    android:src="@drawable/edit"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_like_wifi"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -978,55 +967,54 @@
 
                 <TextView
                     android:id="@+id/tvLan"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:theme="@style/TextBold"
-                    android:text="@string/lan"
                     android:layout_width="@dimen/_70sdp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lan"
                     android:textColor="@color/figmaBlack"
-                    android:layout_height="wrap_content"/>
+                    android:theme="@style/TextBold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_dislike_lan"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:src="@drawable/ic_dislike"
                     app:layout_constraintLeft_toRightOf="@+id/tvLan"
-                    app:layout_constraintRight_toLeftOf="@+id/sb_lan"/>
+                    app:layout_constraintRight_toLeftOf="@+id/sb_lan"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <SeekBar
                     android:id="@+id/sb_lan"
-                    android:layout_width="@dimen/_150sdp"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_like_lan"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/iv_dislike_lan"
+                    app:layout_constraintRight_toLeftOf="@+id/iv_like_lan"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_like_lan"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:src="@drawable/ic_like"
                     app:layout_constraintLeft_toRightOf="@+id/sb_lan"
-                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_lan"/>
+                    app:layout_constraintRight_toLeftOf="@+id/iv_edit_lan"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/iv_edit_lan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_like_lan"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/edit"/>
-
+                    android:src="@drawable/edit"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_like_lan"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -1044,21 +1032,20 @@
                     android:text="Other Comments"
                     android:theme="@style/TextBold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
                 <EditText
                     android:id="@+id/etDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:minLines="5"
-                    app:layout_constraintTop_toBottomOf="@+id/tvComments"
-                    app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    android:background="@drawable/edittext_boarder"/>
+                    android:background="@drawable/edittext_boarder"
+                    android:gravity="start"
+                    android:minLines="5"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvComments" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -1067,10 +1054,9 @@
                 android:id="@+id/cb_anonymous"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
                 android:text="Anonymous"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="@dimen/_5sdp"/>
-
+                app:layout_constraintStart_toStartOf="parent" />
 
 
         </LinearLayout>
@@ -1079,10 +1065,10 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
             android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rvPersonal">
 
@@ -1118,43 +1104,42 @@
 
 
         </RelativeLayout>
-     <!--   <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginEnd="@dimen/_20sdp">
+        <!--   <RelativeLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="@dimen/_10sdp"
+               android:layout_marginBottom="@dimen/_20sdp"
+               android:layout_marginStart="@dimen/_20sdp"
+               android:layout_marginEnd="@dimen/_20sdp">
 
-            <TextView
-                android:id="@+id/reportCancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:text="@string/cancel"
-                android:textColor="@color/white"
-                android:layout_marginBottom="@dimen/_5sdp"
-                android:background="@drawable/button_white_bg"
-                android:backgroundTint="@color/figmaBlueText"
-                android:padding="@dimen/_5sdp" />
+               <TextView
+                   android:id="@+id/reportCancel"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_alignParentBottom="true"
+                   android:text="@string/cancel"
+                   android:textColor="@color/white"
+                   android:layout_marginBottom="@dimen/_5sdp"
+                   android:background="@drawable/button_white_bg"
+                   android:backgroundTint="@color/figmaBlueText"
+                   android:padding="@dimen/_5sdp" />
 
-            <TextView
-                android:id="@+id/reportSubmit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="@dimen/_5sdp"
-                android:background="@drawable/button_white_bg"
-                android:backgroundTint="@color/figmaBlueText"
-                android:padding="@dimen/_5sdp"
-                android:text="@string/submit"
-                android:textAlignment="gravity"
-                android:textColor="@color/white" />
+               <TextView
+                   android:id="@+id/reportSubmit"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_alignParentRight="true"
+                   android:layout_alignParentBottom="true"
+                   android:layout_marginBottom="@dimen/_5sdp"
+                   android:background="@drawable/button_white_bg"
+                   android:backgroundTint="@color/figmaBlueText"
+                   android:padding="@dimen/_5sdp"
+                   android:text="@string/submit"
+                   android:textAlignment="gravity"
+                   android:textColor="@color/white" />
 
 
-        </RelativeLayout>-->
-
+           </RelativeLayout>-->
 
 
     </LinearLayout>
