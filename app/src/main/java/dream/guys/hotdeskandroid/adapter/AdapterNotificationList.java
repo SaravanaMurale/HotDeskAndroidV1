@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -284,7 +285,7 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
 
         holder.checkBox.setChecked(notiList.get(pos).isCheckBoxStatus());
 
-        holder.checkBox.setOnClickListener(new View.OnClickListener() {
+        /*holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -295,7 +296,30 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
                 notifyDataSetChanged();
 
             }
+        });*/
+
+
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(isChecked){
+
+                    //holder.checkBox.isChecked();
+
+                    cBoxPos = pos;
+                    notiList.get(pos).setCheckBoxStatus(isChecked);
+                    notifyDataSetChanged();
+                }else {
+                    cBoxPos = -1;
+                    notiList.get(pos).setCheckBoxStatus(isChecked);
+                    notifyDataSetChanged();
+                }
+
+
+            }
         });
+
 
 
         if (SessionHandler.getInstance().get(context,AppConstants.ROLE)!=null &&
