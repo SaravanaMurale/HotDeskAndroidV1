@@ -78,15 +78,16 @@
                 android:textColor="@color/figma_dark_black"
                 android:textSize="@dimen/_10sdp" />
 
-    <ImageView
-        android:layout_width="@dimen/_20sdp"
-        android:layout_height="@dimen/_20sdp"
-        android:src="@drawable/world"
-        android:layout_toLeftOf="@id/bsCountry"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="@dimen/_15sdp"
-        />
+            <ImageView
+                android:id="@+id/img_bsCountry"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:layout_toLeftOf="@id/bsCountry"
+                android:src="@drawable/world"
+                app:tint="@color/black"/>
 
     </RelativeLayout>
 
@@ -120,13 +121,14 @@
                 />
 
             <ImageView
+                android:id="@+id/img_bsState"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
-                android:src="@drawable/location"
-                android:layout_toLeftOf="@id/bsState"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="@dimen/_15sdp"
-                />
+                android:layout_toLeftOf="@id/bsState"
+                android:src="@drawable/location"
+                app:tint="@color/black"/>
 
         </RelativeLayout>
 
@@ -160,13 +162,14 @@
                 />
 
             <ImageView
+                android:id="@+id/img_bsStreet"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
-                android:src="@drawable/building"
-                android:layout_toLeftOf="@id/bsStreet"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="@dimen/_15sdp"
-                />
+                android:layout_toLeftOf="@id/bsStreet"
+                android:src="@drawable/building"
+                app:tint="@color/black"/>
 
         </RelativeLayout>
 

@@ -46,6 +46,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -369,6 +371,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     //SupportZonelayout canvas
     List<LocateCountryRespose.SupportZoneLayoutItems> getSupportZoneLayoutForCanvas;
+
+
+    //New...
+    ImageView img_bsCountry,img_bsState,img_bsStreet;
 
 
     @Override
@@ -4544,6 +4550,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         back = bottomSheetDialog.findViewById(R.id.bsBack);
         bsApply = bottomSheetDialog.findViewById(R.id.bsApply);
 
+        //New...
+        img_bsCountry = bottomSheetDialog.findViewById(R.id.img_bsCountry);
+        img_bsStreet = bottomSheetDialog.findViewById(R.id.img_bsStreet);
+        img_bsState = bottomSheetDialog.findViewById(R.id.img_bsState);
+
         back.setText(appKeysPage.getBack());
         bsApply.setText(appKeysPage.getApply());
 
@@ -4624,6 +4635,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 rvFloor.setVisibility(View.INVISIBLE);
 
                 //getLocateCountryList();
+                //New...
+                countryColor();
             }
         });
 
@@ -4638,6 +4651,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 rvFloor.setVisibility(View.INVISIBLE);
                 callCountrysChildData(stateId);
 
+                //New...
+                cityColor();
+                floorBlock.setVisibility(View.GONE);
 
             }
         });
@@ -4652,6 +4668,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 floor.setVisibility(View.INVISIBLE);
                 rvStreet.setVisibility(View.VISIBLE);
                 rvFloor.setVisibility(View.INVISIBLE);
+
+                //New...
+                buildingcolor();
             }
         });
 
@@ -4659,6 +4678,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
                 rvFloor.setVisibility(View.VISIBLE);
+                floorColor();
             }
         });
 
@@ -4739,6 +4759,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 SessionHandler.getInstance().save(getContext(), AppConstants.COUNTRY_NAME, locateCountryRespose.getName());
                 country.setText(locateCountryRespose.getName());
                 callCountrysChildData(locateCountryRespose.getLocateCountryId());
+
+
+                //New...
+                //Set Clicked Place To Show Textview
+                bsLocationSearch.setText(locateCountryRespose.getName());
+
+                cityColor();
                 break;
 
             case "STATE":
@@ -4758,6 +4785,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 //System.out.println("SubParentIdAndItsPosition" + locateCountryRespose.getLocateCountryId() + " ");
 
+                //New...
+                //Set Clicked Place To Show Textview
+                bsLocationSearch.setText(locateCountryRespose.getName());
+
+                buildingcolor();
                 break;
 
             case "FLOOR":
@@ -4797,7 +4829,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 //Final
                 getDeskRoomCarParkingDetails(locateCountryRespose.getLocateCountryId());
 
+                //New...
+                //Set Clicked Place To Show Textview
+                bsLocationSearch.setText(locateCountryRespose.getName());
 
+                floorColor();
                 break;
 
 
@@ -9750,5 +9786,50 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
+
+
+    //New...
+    private void setIconColor(ImageView icon,int color) {
+
+        try {
+            DrawableCompat.setTint(
+                    DrawableCompat.wrap(icon.getDrawable()),
+                    ContextCompat.getColor(getActivity(),color)
+            );
+        }catch (Exception e){
+
+        }
+
+    }
+
+    private void countryColor() {
+
+        setIconColor(img_bsCountry,R.color.blue);
+        setIconColor(img_bsState,R.color.black);
+        setIconColor(img_bsStreet,R.color.black);
+
+    }
+
+    private void cityColor() {
+
+        setIconColor(img_bsCountry,R.color.black);
+        setIconColor(img_bsState,R.color.blue);
+        setIconColor(img_bsStreet,R.color.black);
+
+    }
+
+    private void buildingcolor() {
+
+        setIconColor(img_bsCountry,R.color.black);
+        setIconColor(img_bsState,R.color.black);
+        setIconColor(img_bsStreet,R.color.blue);
+
+    }
+
+    private void floorColor() {
+        setIconColor(img_bsCountry,R.color.black);
+        setIconColor(img_bsState,R.color.black);
+        setIconColor(img_bsStreet,R.color.black);
+    }
 
 }

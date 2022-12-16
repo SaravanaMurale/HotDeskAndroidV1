@@ -19,7 +19,7 @@
             android:id="@+id/txt_title"
             android:text="Old"
             style="@style/TextRegular"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_11sdp"
             android:textColor="@color/figmaBlack"/>
 
 
@@ -70,7 +70,7 @@
                     android:layout_centerVertical="true"
                     android:text="10 Aug,2022"
                     android:textColor="@color/figmaBlack"
-                    android:textSize="@dimen/_11sdp" />
+                    android:textSize="@dimen/_9sdp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -79,40 +79,40 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true">
                     <ImageView
-                        android:layout_width="@dimen/_13sdp"
-                        android:layout_height="@dimen/_13sdp"
-                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp"
                         android:src="@drawable/checkin"
-                        app:tint="@color/figmaBlack" />
+                        app:tint="@color/figmaBlack"
+                        android:layout_gravity="center_vertical"/>
 
                     <TextView
                         android:id="@+id/CheckInTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_3sdp"
-                        android:layout_marginTop="@dimen/_3sdp"
                         android:text="8:00"
                         android:textColor="@color/figmaBlack"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textSize="@dimen/_9sdp"
+                        android:layout_gravity="center_vertical"/>
 
 
                     <ImageView
-                        android:layout_width="@dimen/_13sdp"
-                        android:layout_height="@dimen/_13sdp"
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp"
                         android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_3sdp"
                         android:src="@drawable/checkout"
-                        app:tint="@color/figmaBlack" />
+                        app:tint="@color/figmaBlack"
+                        android:layout_gravity="center_vertical"/>
 
                     <TextView
                         android:id="@+id/CheckOutTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_3sdp"
-                        android:layout_marginTop="@dimen/_3sdp"
                         android:text="8:00"
                         android:textColor="@color/figmaBlack"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textSize="@dimen/_9sdp"
+                        android:layout_gravity="center_vertical"/>
 
                 </LinearLayout>
 
@@ -188,27 +188,27 @@
 
                     <ImageView
                         android:id="@+id/ivMeeting"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:src="@drawable/chair"
+                        android:layout_width="@dimen/_19sdp"
+                        android:layout_height="@dimen/_21sdp"
                         android:layout_centerVertical="true"
-                        android:scaleType="fitXY"/>
+                        android:scaleType="fitXY"
+                        android:src="@drawable/chair" />
 
                     <TextView
                         android:id="@+id/tvDesk"
                         style="@style/TextBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_6sdp"
+                        android:layout_marginLeft="@dimen/_4sdp"
                         android:layout_toRightOf="@+id/ivMeeting"
                         android:text="Desk"
                         android:textColor="@color/figmaBlack"
-                        android:textSize="@dimen/_14sdp" />
+                        android:textSize="@dimen/_11sdp" />
 
                     <ImageView
                         android:id="@+id/img_info"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_toRightOf="@+id/tvDesk"
                         android:text="Desk"
@@ -221,11 +221,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Pmo Office"
-                        android:layout_marginLeft="@dimen/_6sdp"
+                        android:layout_marginLeft="@dimen/_4sdp"
                         android:layout_toEndOf="@+id/ivMeeting"
                         android:layout_below="@+id/tvDesk"
                         android:layout_marginTop="@dimen/_2sdp"
                         style="@style/TextRegular"
+                        android:textSize="@dimen/_9sdp"
                         android:textColor="@color/figmaBlack" />
 
                 </RelativeLayout>
