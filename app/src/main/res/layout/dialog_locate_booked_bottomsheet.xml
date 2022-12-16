@@ -59,7 +59,9 @@
                 <RelativeLayout
                     android:id="@+id/capacityRoomBlock"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    >
 
                     <TextView
                         android:id="@+id/tv_cap"

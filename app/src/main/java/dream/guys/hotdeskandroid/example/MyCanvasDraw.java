@@ -41,7 +41,7 @@ public class MyCanvasDraw extends View {
         Paint paint = new Paint();
         paint.setColor(Color.GRAY);
         paint.setPathEffect(new DashPathEffect(new float[] {10,5}, 0));
-        paint.setStrokeWidth(3);
+        paint.setStrokeWidth(2);
         paint.setStyle(Paint.Style.STROKE);
         Path path = new Path();
 

@@ -56,9 +56,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (validateLoginDetails(etCompanyName.getText().toString().trim(),etEmail.getText().toString().trim())){
                     requestPasswordRest();
-                }else {
+                }/*else {
                     Toast.makeText(ForgotPasswordActivity.this, "Enter Credentials", Toast.LENGTH_SHORT).show();
-                }
+                }*/
             }
         });
 
@@ -114,12 +114,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             if (Utils.isValidEmail(email)) {
                 userDetailStatus=true;
             } else {
-//                Utils.toastMessage(ForgotPasswordActivity.this, "Please enter a valid email address.");
-                etEmail.setError("Please enter a valid email address.");
+               Utils.toastMessage(ForgotPasswordActivity.this, "Please enter a valid email address.");
+               // etEmail.setError("Please enter a valid email address.");
             }
         } else {
-            etCompanyName.setError("Please enter a valid company name.");
-//            Utils.toastMessage(ForgotPasswordActivity.this, "Please enter a valid company name.");
+           // etCompanyName.setError("Please enter a valid company name.");
+           Utils.toastMessage(ForgotPasswordActivity.this, "Please enter a valid company name.");
         }
 
         return userDetailStatus;

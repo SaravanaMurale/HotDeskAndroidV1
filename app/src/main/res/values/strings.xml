@@ -165,4 +165,6 @@
     <string name="deleted">Deleted</string>
     <string name="active_bookings">Active bookings</string>
 
+    <string name="use">Use Email &amp; Password</string>
+
 </resources>

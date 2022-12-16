@@ -2505,7 +2505,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                         callDeskUnavaliable(selctedCode, key, id, code, requestTeamId, requestTeamDeskId);
                                     } else if (deskStatusModelList.get(i).getStatus() == 3) {
                                         //Booked
-                                        Toast.makeText(getContext(), "Desk Is Already Booked", Toast.LENGTH_LONG).show();
+                                        //Toast.makeText(getContext(), "Desk Is Already Booked", Toast.LENGTH_LONG).show();
                                         getDeskBookedData(selctedCode, key, id, code);
 
 
@@ -2545,7 +2545,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                 } else if (carParkingStatusModelList.get(i).getStatus() == 3) {
                                     //Booked
-                                    //Toast.makeText(getContext(), "Park Is Already Booked", Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(getContext(), "Park Is Already Booked", Toast.LENGTH_LONG).show();1
+                                    
+                                    getCarParkBookedData(selctedCode, key, id, code);
+                                    
                                 } else if (carParkingStatusModelList.get(i).getStatus() == 4) {
 
                                     getCarDescriptionUsingCardId(id);
@@ -2588,6 +2591,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                     getMeetingBookingListToEdit(meetingRoomId, meetingRoomName, isReqduest);
                                 } else if (meetingStatusModelList.get(i).getStatus() == 3) {
                                     //Toast.makeText(getContext(), "Meeting Room Is Already Booked", Toast.LENGTH_LONG).show();
+                                    
+                                    getMeetingBookedData(meetingRoomId, meetingRoomName);
+                                    
                                 } else if (meetingStatusModelList.get(i).getStatus() == 4) {
                                     editLastEndTime = "";
                                     boolean isReqduest = true;
@@ -2653,6 +2659,192 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
+    private void getMeetingBookedData(int meetingRoomId, String meetingRoomName) {
+
+        binding.locateProgressBar.setVisibility(View.VISIBLE);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<BookedMeetingResponse>> call=apiService.getMeetingBookedTime(getCurrentDate(),getCurrentDate(),meetingRoomId);
+        call.enqueue(new Callback<List<BookedMeetingResponse>>() {
+            @Override
+            public void onResponse(Call<List<BookedMeetingResponse>> call, Response<List<BookedMeetingResponse>> response) {
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                List<BookedMeetingResponse> bookedMeetingResponse=response.body();
+                if(bookedMeetingResponse!=null){
+                    callMeetingBookedBottomSheet(meetingRoomId,meetingRoomName,bookedMeetingResponse);
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<BookedMeetingResponse>> call, Throwable t) {
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+            }
+        });
+
+    }
+
+    private void callMeetingBookedBottomSheet(int meetingRoomId, String meetingRoomName, List<BookedMeetingResponse> bookedMeetingResponse) {
+
+        int selectedMeetingRoomId=0;
+        BookedMeetingResponse getBookedResponse=null;
+
+        //get meeting room id
+        for (int i = 0; i <bookedMeetingResponse.size() ; i++) {
+            if(meetingRoomId==bookedMeetingResponse.get(i).getMeetingRoomId()){
+                //selectedMeetingRoomId=bookedMeetingResponse.get(i).getMeetingRoomId();
+                getBookedResponse=bookedMeetingResponse.get(i);
+            }
+        }
+
+        TextView bookedDeskTitle, bookedDeskDate, bookedLocation;
+        RelativeLayout capacityRoomBlock, BookedAmenitiesBlock;
+        ChipGroup bookedAmenitiesChipGroup;
+
+        TextView tv_cap, tv_cap_size, meetingRoomDescription, tvBookedRoomStartTime, tvBookedRoomEndTime, bookedCancel;
+
+        BottomSheetDialog locateBookedBottomSheet = new BottomSheetDialog(getContext());
+        View view = View.inflate(getContext(), R.layout.dialog_locate_booked_bottomsheet, null);
+        locateBookedBottomSheet.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(800);
+
+        bookedDeskTitle = locateBookedBottomSheet.findViewById(R.id.bookedDeskTitle);
+        bookedDeskDate = locateBookedBottomSheet.findViewById(R.id.bookedDeskDate);
+        bookedLocation = locateBookedBottomSheet.findViewById(R.id.bookedLocation);
+
+        capacityRoomBlock = locateBookedBottomSheet.findViewById(R.id.capacityRoomBlock);
+        BookedAmenitiesBlock = locateBookedBottomSheet.findViewById(R.id.BookedAmenitiesBlock);
+        tv_cap_size = locateBookedBottomSheet.findViewById(R.id.tv_cap_size);
+        meetingRoomDescription = locateBookedBottomSheet.findViewById(R.id.meetingRoomDescription);
+
+
+        bookedAmenitiesChipGroup = locateBookedBottomSheet.findViewById(R.id.bookedAmenitiesChipGroup);
+
+        tvBookedRoomStartTime = locateBookedBottomSheet.findViewById(R.id.tvBookedRoomStartTime);
+        tvBookedRoomEndTime = locateBookedBottomSheet.findViewById(R.id.tvBookedRoomEndTime);
+        bookedCancel = locateBookedBottomSheet.findViewById(R.id.bookedCancel);
+
+
+
+        //System.out.println("FromAndToTimeOfBooking "+Utils.splitTime(getBookedResponse.getFrom())+" "+Utils.splitTime(bookedDeskResponseList.get(0).getTo()));
+
+        bookedDeskTitle.setText(meetingRoomName);
+        tvBookedRoomStartTime.setText(Utils.splitTime(getBookedResponse.getFrom()));
+        tvBookedRoomEndTime.setText(Utils.splitTime(getBookedResponse.getTo()));
+
+        String sDate = binding.locateCalendearView.getText().toString();
+        String dateTime = Utils.dateWithDayString(sDate);
+        bookedDeskDate.setText(dateTime);
+
+        bookedLocation.setText(binding.searchLocate.getText());
+
+
+        bookedCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locateBookedBottomSheet.dismiss();
+            }
+        });
+
+
+        locateBookedBottomSheet.show();
+
+
+
+
+    }
+
+    private void getCarParkBookedData(String selctedCode, String key, int id, String code) {
+
+        binding.locateProgressBar.setVisibility(View.VISIBLE);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+        Call<BookedCarResponse> call=apiService.getCarBookedTime(getCurrentDate(),getCurrentDate(),id,parentId);
+        call.enqueue(new Callback<BookedCarResponse>() {
+            @Override
+            public void onResponse(Call<BookedCarResponse> call, Response<BookedCarResponse> response) {
+
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+                BookedCarResponse bookedCarResponse =response.body();
+                
+                if(bookedCarResponse!=null){
+                    callCarBookedBottomSheet(selctedCode, key, id, code, bookedCarResponse);
+                }
+                
+                
+            }
+
+            @Override
+            public void onFailure(Call<BookedCarResponse> call, Throwable t) {
+
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                
+            }
+        });
+
+    }
+
+    private void callCarBookedBottomSheet(String selctedCode, String key, int id, String code, BookedCarResponse bookedCarResponse) {
+
+
+        TextView bookedDeskTitle, bookedDeskDate, bookedLocation;
+        RelativeLayout capacityRoomBlock, BookedAmenitiesBlock;
+        ChipGroup bookedAmenitiesChipGroup;
+
+        TextView tv_cap, tv_cap_size, meetingRoomDescription, tvBookedRoomStartTime, tvBookedRoomEndTime, bookedCancel;
+
+        BottomSheetDialog locateBookedBottomSheet = new BottomSheetDialog(getContext());
+        View view = View.inflate(getContext(), R.layout.dialog_locate_booked_bottomsheet, null);
+        locateBookedBottomSheet.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(800);
+
+        bookedDeskTitle = locateBookedBottomSheet.findViewById(R.id.bookedDeskTitle);
+        bookedDeskDate = locateBookedBottomSheet.findViewById(R.id.bookedDeskDate);
+        bookedLocation = locateBookedBottomSheet.findViewById(R.id.bookedLocation);
+
+        capacityRoomBlock = locateBookedBottomSheet.findViewById(R.id.capacityRoomBlock);
+        BookedAmenitiesBlock = locateBookedBottomSheet.findViewById(R.id.BookedAmenitiesBlock);
+        tv_cap_size = locateBookedBottomSheet.findViewById(R.id.tv_cap_size);
+        meetingRoomDescription = locateBookedBottomSheet.findViewById(R.id.meetingRoomDescription);
+
+
+        bookedAmenitiesChipGroup = locateBookedBottomSheet.findViewById(R.id.bookedAmenitiesChipGroup);
+
+        tvBookedRoomStartTime = locateBookedBottomSheet.findViewById(R.id.tvBookedRoomStartTime);
+        tvBookedRoomEndTime = locateBookedBottomSheet.findViewById(R.id.tvBookedRoomEndTime);
+        bookedCancel = locateBookedBottomSheet.findViewById(R.id.bookedCancel);
+
+
+
+        //System.out.println("FromAndToTimeOfBooking "+Utils.splitTime(bookedDeskResponseList.get(0).getFrom())+" "+Utils.splitTime(bookedDeskResponseList.get(0).getTo()));
+
+        bookedDeskTitle.setText(selctedCode);
+        tvBookedRoomStartTime.setText(Utils.splitTime(bookedCarResponse.getCarParkBookingsList().get(0).getFrom()));
+        tvBookedRoomEndTime.setText(Utils.splitTime(bookedCarResponse.getCarParkBookingsList().get(0).getTo()));
+
+        String sDate = binding.locateCalendearView.getText().toString();
+        String dateTime = Utils.dateWithDayString(sDate);
+        bookedDeskDate.setText(dateTime);
+
+        bookedLocation.setText(binding.searchLocate.getText());
+
+
+        bookedCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locateBookedBottomSheet.dismiss();
+            }
+        });
+
+
+        locateBookedBottomSheet.show();
+
+
+    }
+
     private void getDeskBookedData(String selctedCode, String key, int id, String code) {
 
 
@@ -2714,19 +2906,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         tvBookedRoomEndTime = locateBookedBottomSheet.findViewById(R.id.tvBookedRoomEndTime);
         bookedCancel = locateBookedBottomSheet.findViewById(R.id.bookedCancel);
 
-
-        //Hide and Visible
-        if (code.equals("3")) {
-            capacityRoomBlock.setVisibility(View.GONE);
-            BookedAmenitiesBlock.setVisibility(View.GONE);
-            bookedAmenitiesChipGroup.setVisibility(View.GONE);
-        } else if (code.equals("4")) {
-            capacityRoomBlock.setVisibility(View.GONE);
-            BookedAmenitiesBlock.setVisibility(View.GONE);
-            bookedAmenitiesChipGroup.setVisibility(View.GONE);
-        } else if (code.equals("5")) {
-
-        }
 
 
         System.out.println("FromAndToTimeOfBooking "+Utils.splitTime(bookedDeskResponseList.get(0).getFrom())+" "+Utils.splitTime(bookedDeskResponseList.get(0).getTo()));
@@ -3100,9 +3279,28 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         ImageView tv_user_status_room;
 
 
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+       /* BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_room_booking,
-                new RelativeLayout(getContext()))));
+                new RelativeLayout(getContext()))));*/
+
+
+
+
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        View view = View.inflate(getContext(), R.layout.dialog_bottom_sheet_room_booking, null);
+        bottomSheetDialog.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(500);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+        RelativeLayout layout = bottomSheetDialog.findViewById(R.id.design_bottom_sheet_room);
+        layout.setMinimumHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+
+
+
+
+
 
         startRoomTime = bottomSheetDialog.findViewById(R.id.tvRoomStartTime);
         endTRoomime = bottomSheetDialog.findViewById(R.id.tvRoomEndTime);
@@ -3318,7 +3516,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             roomDate.setText(buildingName + "," + floorName);
 
         } else {
-            roomDate.setText(CountryName + "," + buildingName + "," + floorName);
+            roomDate.setText(buildingName + "," + floorName);
 
         }
 
@@ -5405,9 +5603,27 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void repeatBottomSheetDialog(String code) {
 
-        repeatBottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+
+        /*repeatBottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         repeatBottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_repeat_new,
-                new RelativeLayout(getContext()))));
+                new RelativeLayout(getContext()))));*/
+
+
+
+        repeatBottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        View view = View.inflate(getContext(), R.layout.dialog_bottom_sheet_repeat_new, null);
+        repeatBottomSheetDialog.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(500);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+        RelativeLayout layout = repeatBottomSheetDialog.findViewById(R.id.design_bottom_sheet_repeat);
+        layout.setMinimumHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+
+
+
+
+
 
         //Language
         TextView titleRepeat = repeatBottomSheetDialog.findViewById(R.id.titleRepeat);
@@ -8199,7 +8415,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         showTvRoomEndTime = bottomSheetDialog.findViewById(R.id.showTvRoomEndTime);
 
         selectMeetingRoomLayout = bottomSheetDialog.findViewById(R.id.selectMeetingRoomLayout);
-        selectMeetingRoomLayout.setVisibility(View.VISIBLE);
+        selectMeetingRoomLayout.setVisibility(View.GONE);
         select_desk_room_room = bottomSheetDialog.findViewById(R.id.select_desk_room_room);
         select_desk_room_room.setVisibility(View.GONE);
 

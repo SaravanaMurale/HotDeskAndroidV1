@@ -33,7 +33,7 @@
                 android:id="@+id/rl_repeat_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
                 android:backgroundTint="@color/figmaBackground"
                 android:orientation="horizontal"

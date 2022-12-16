@@ -221,7 +221,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     checkSsoEnabled();
                 } else {
-                    Toast.makeText(LoginActivity.this, "Enter Tenant Name", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Please enter a valid company name.", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -753,18 +753,19 @@ public class LoginActivity extends AppCompatActivity {
                         etPassword.setError("You have entered the incorrect password. Please try again.");
                     }
                 } else {
-                    etPassword.setError("Please enter a valid password.");
+                    Utils.toastMessage(LoginActivity.this, "Please enter a valid password.");
+                    //etPassword.setError("Please enter a valid password.");
                     etPassword.requestFocus();
                 }
             } else {
-//                Utils.toastMessage(LoginActivity.this, "Please enter a valid email address.");
+               Utils.toastMessage(LoginActivity.this, "Please enter a valid email address.");
                 etEmail.requestFocus();
-                etEmail.setError("Please enter a valid email address.");
+                //etEmail.setError("Please enter a valid email address.");
             }
         } else {
-//            Utils.toastMessage(LoginActivity.this, "Please enter a valid company name.");
+           Utils.toastMessage(LoginActivity.this, "Please enter a valid company name.");
             etCompanyName.requestFocus();
-            etCompanyName.setError("Please enter a valid company name.");
+            //etCompanyName.setError("Please enter a valid company name.");
         }
 
 
@@ -799,13 +800,13 @@ public class LoginActivity extends AppCompatActivity {
 
         if (logoinPage != null) {
 
-            etTenantName.setHint(appKeysPage.getTenantName());
+            //etTenantName.setHint(appKeysPage.getTenantName());
           //  etCompanyName.setHint(resetPage.getCompany());
           //  etEmail.setHint(appKeysPage.getEmail());
             etPassword.setHint(appKeysPage.getPassword());
             tvForgotPassword.setText(appKeysPage.getForgotPassword() + "?");
-            tvBackToLogin.setText(appKeysPage.getGoBackToSignIn());
-            signInSso.setText(appKeysPage.getSignInWithSso());
+            //tvBackToLogin.setText(appKeysPage.getGoBackToSignIn());
+            //signInSso.setText(abackToLoginppKeysPage.getSignInWithSso());
             //tvSignInWith.setText(appKeysPage.getOrSignInWith());
         }
 

@@ -101,7 +101,7 @@ public class LoginPinActivity extends AppCompatActivity {
         tvBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(LoginPinActivity.this, LoginPinActivity.class);
+                Intent intent=new Intent(LoginPinActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }

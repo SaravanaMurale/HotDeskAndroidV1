@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/design_bottom_sheet"
+    android:id="@+id/design_bottom_sheet_room"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/_10sdp"
+
     android:background="@drawable/login_background_corner_white"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+
+        >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_31sdp"
+        android:layout_marginLeft="@dimen/_23sdp"
+        android:layout_marginRight="@dimen/_23sdp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -154,7 +158,7 @@
             android:id="@+id/startTimeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_35sdp"
             android:padding="@dimen/_3sdp"
             android:background="@drawable/rectangle_greybg_with_corner"
             android:orientation="horizontal">
@@ -167,6 +171,7 @@
                 android:layout_marginHorizontal="@dimen/_5sdp"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:text="Start"
+                android:paddingLeft="@dimen/_12sdp"
                 android:textColor="@color/figmaBlack"
                 android:theme="@style/TextBold" />
 
@@ -200,7 +205,7 @@
             android:id="@+id/endTimeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_16sdp"
             android:background="@drawable/rectangle_greybg_with_corner"
             android:orientation="horizontal"
             android:padding="@dimen/_3sdp"
@@ -214,6 +219,7 @@
                 android:layout_marginHorizontal="@dimen/_5sdp"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:text="End"
+                android:paddingLeft="@dimen/_12sdp"
                 android:textColor="@color/figmaBlack"
                 android:theme="@style/TextBold" />
 
@@ -250,7 +256,7 @@
             android:id="@+id/rl_teams_layout_room"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_16sdp"
             android:padding="@dimen/_1sdp"
             android:background="@drawable/rectangle_greybg_with_corner"
             android:orientation="horizontal"
@@ -266,6 +272,7 @@
                 android:layout_marginHorizontal="@dimen/_5sdp"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:text="Teams"
+                android:paddingLeft="@dimen/_12sdp"
                 android:textColor="@color/figmaBlack"
                 android:theme="@style/TextBold" />
 
@@ -283,7 +290,7 @@
             android:id="@+id/rl_repeat_block_room"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_16sdp"
             android:background="@drawable/rectangle_greybg_with_corner"
             android:orientation="horizontal"
             android:padding="@dimen/_3sdp"
@@ -299,6 +306,7 @@
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:text="Repeat"
                 android:textColor="@color/figmaBlack"
+                android:paddingLeft="@dimen/_12sdp"
                 android:theme="@style/TextBold" />
 
             <TextView
@@ -318,7 +326,7 @@
             android:id="@+id/selectMeetingRoomLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_16sdp"
             android:background="@drawable/rectangle_greybg_with_corner"
             android:orientation="horizontal"
             android:visibility="visible">
@@ -372,8 +380,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:visibility="visible"
-                        >
+                        android:visibility="visible">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -410,9 +417,9 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_5sdp"
                         android:text="Select"
-                        android:visibility="gone"
                         android:textColor="@color/figmaBlueText"
-                        android:theme="@style/TextBold" />
+                        android:theme="@style/TextBold"
+                        android:visibility="gone" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -547,41 +554,39 @@
 
         </LinearLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_35sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/editRoomBookingBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginHorizontal="@dimen/_5sdp"
-                android:layout_marginVertical="@dimen/_5sdp"
-                android:text="Back"
-                android:textSize="@dimen/_14sdp"
-                android:theme="@style/TextBold" />
-
-            <TextView
-                android:id="@+id/editRoomBookingContinue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginHorizontal="@dimen/_5sdp"
-                android:layout_marginVertical="@dimen/_5sdp"
-                android:text="Continue"
-                android:textColor="@color/figmaBlueText"
-                android:textSize="@dimen/_14sdp"
-                android:theme="@style/TextBold" />
-        </RelativeLayout>
-
-
 
     </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+
+        <TextView
+            android:id="@+id/editRoomBookingBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_38sdp"
+            android:text="Back"
+            android:textSize="@dimen/_14sdp"
+            android:layout_marginLeft="@dimen/_23sdp"
+
+            android:theme="@style/TextBold" />
+
+        <TextView
+            android:id="@+id/editRoomBookingContinue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="Continue"
+            android:textColor="@color/figmaBlueText"
+            android:textSize="@dimen/_14sdp"
+            android:layout_marginRight="@dimen/_23sdp"
+            android:theme="@style/TextBold" />
+    </RelativeLayout>
 
 </RelativeLayout>
