@@ -196,7 +196,7 @@ public class OtherBookingController {
             @Override
             public void onClick(View view) {
                 Utils.bottomSheetTimePicker24Hrs(context, ((Activity) context), startTime, "Start Time",
-                        Utils.dayDateMonthFormat(Utils.convertStringToDateFormet(calSelectedDate)), true);
+                        Utils.dayDateMonthFormat(Utils.convertStringToDateFormet(calSelectedDate)), false);
             }
         });
 
@@ -204,7 +204,7 @@ public class OtherBookingController {
             @Override
             public void onClick(View view) {
                 Utils.bottomSheetTimePicker24Hrs(context, ((Activity) context), endTime, "End Time",
-                        Utils.dayDateMonthFormat(Utils.convertStringToDateFormet(calSelectedDate)), true);
+                        Utils.dayDateMonthFormat(Utils.convertStringToDateFormet(calSelectedDate)), false);
             }
         });
 
@@ -392,7 +392,7 @@ public class OtherBookingController {
             @Override
             public void onClick(View view) {
                 Utils.bottomSheetTimePicker24Hrs(context, ((Activity) context), startTime, "Start Time",
-                        Utils.dayDateMonthFormat(Utils.convertStringToDateFormet(calSelectedDate)), true);
+                        Utils.dayDateMonthFormat(Utils.convertStringToDateFormet(calSelectedDate)), false);
             }
         });
 
@@ -400,7 +400,7 @@ public class OtherBookingController {
             @Override
             public void onClick(View view) {
                 Utils.bottomSheetTimePicker24Hrs(context, ((Activity) context), endTime, "End Time",
-                        Utils.dayDateMonthFormat(Utils.convertStringToDateFormet(calSelectedDate)), true);
+                        Utils.dayDateMonthFormat(Utils.convertStringToDateFormet(calSelectedDate)), false);
             }
         });
 
