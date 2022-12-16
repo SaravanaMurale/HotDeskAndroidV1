@@ -80,6 +80,12 @@ public class CustomSpinner extends AppCompatSpinner {
             mListener.onPopupWindowClosed(this);
         }
     }
+    public void performClosedEvent(CustomSpinner customSpinner) {
+        mOpenInitiated = false;
+        if (mListener != null) {
+            mListener.onPopupWindowClosed(customSpinner);
+        }
+    }
 
     /**
      * A boolean flag indicating that the Spinner triggered an open event.

@@ -2061,7 +2061,7 @@ public class BookFragment extends Fragment implements
         LinearLayoutManager linearLayoutManager;
         bookingForEditResponseDesk.clear();
         try {
-            if (isGlobalLocationSetUP && bookingDeskList!=null && bookingDeskList.size()>0){
+            if (isGlobalLocationSetUP && bookingDeskList!=null && bookingDeskList.size()>0) {
                 for (int i=0; i < bookingDeskList.size(); i++){
 //                logic to show booked by else
                     /*if(Utils.compareTwoDate(Utils.convertStringToDateFormet(calSelectedDate),
@@ -4483,6 +4483,8 @@ public class BookFragment extends Fragment implements
 
         EditDeskController editDeskController = new EditDeskController(activityContext, context,
                 editDeskBookingDetails,AppConstants.BOOKFRAGMENTINSTANCESTRING);
+        if(bookEditBottomSheet!=null)
+            bookEditBottomSheet.dismiss();
 
         /*if (editDeskBookingDetails.getUsageTypeId() == 7){
             getRequestDeskDeskList(editDeskBookingDetails,"edit");
@@ -7445,8 +7447,8 @@ public class BookFragment extends Fragment implements
     //New...
     public void loadAssertSpinner() {
 //        assertSpinner = activityContext.findViewById(R.id.assertSpinner);
-
 //        assertList.clear();
+
         assertList = new ArrayList<>();
         assertSpinner.setSpinnerEventsListener(this);
         for (int i=1;i<8;i++){
@@ -7490,6 +7492,13 @@ public class BookFragment extends Fragment implements
         assertSpinner.setAdapter(assertListAdapter);
         assertSpinner.setSelection(0);
         assertListAdapter.notifyDataSetChanged();
+
+        /*
+        OnSpinnerEventsListener onSpinnerEventsListener = this;
+        if (assertSpinner!=null)
+            assertSpinner.performClosedEvent(assertSpinner);
+        */
+
     }
     public void checkVeichleReg() {
 
@@ -7696,7 +7705,7 @@ public class BookFragment extends Fragment implements
 
     @Override
     public void onPopupWindowOpened(Spinner spinner) {
-        Log.d(TAG, "onPopupWindowOpened: ");
+        Log.d(TAG, "onPopupWindowOpened: "+spinner.getSelectedItemPosition());
         assertSpinner.setBackground(getResources().getDrawable(R.drawable.spinner_outline_opened));
         View view = assertSpinner.getSelectedView();
 
