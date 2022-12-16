@@ -178,7 +178,7 @@
             android:id="@+id/txt_title"
             android:text=""
             style="@style/TextRegular"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_11sdp"
             android:textColor="@color/figmaBlack"/>
 
         <TextView
@@ -189,7 +189,7 @@
             android:layout_toEndOf="@+id/txt_title"
             android:layout_marginStart="@dimen/_3sdp"
             style="@style/TextRegular"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_11sdp"
             android:textColor="@color/figma_red"/>
 
     </RelativeLayout>
@@ -200,7 +200,9 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="@dimen/_6sdp"
         android:layout_below="@+id/hdr_lay"
-        android:layout_margin="@dimen/_2sdp">
+        android:layout_marginStart="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:layout_marginBottom="@dimen/_2sdp">
 
         <RelativeLayout
             android:id="@+id/rel_status"
@@ -225,8 +227,8 @@
 
                <de.hdodenhof.circleimageview.CircleImageView
                    android:id="@+id/ivEditPrifle"
-                   android:layout_width="@dimen/_30sdp"
-                   android:layout_height="@dimen/_30sdp"
+                   android:layout_width="@dimen/_22sdp"
+                   android:layout_height="@dimen/_22sdp"
                    android:layout_centerVertical="true"
                    android:src="@drawable/avatar" />
 
@@ -234,10 +236,10 @@
                    android:id="@+id/tvUserName"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
-                   android:layout_marginLeft="@dimen/_10sdp"
-                   android:layout_marginTop="@dimen/_4sdp"
+                   android:layout_marginLeft="@dimen/_4sdp"
                    android:layout_toRightOf="@+id/ivEditPrifle"
                    android:text="Desk"
+                   android:textSize="@dimen/_11sdp"
                    android:textColor="@color/figmaBlack"/>
 
                <TextView
@@ -245,7 +247,7 @@
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:text="Pmo Office"
-                   android:layout_marginLeft="@dimen/_10sdp"
+                   android:layout_marginLeft="@dimen/_4sdp"
                    android:layout_toEndOf="@+id/ivEditPrifle"
                    android:layout_below="@+id/tvUserName"
                    android:layout_marginTop="@dimen/_5sdp"
@@ -253,7 +255,8 @@
                    android:textColor="@color/figmaBlack"
                    android:layout_toStartOf="@+id/btn_layout"
                    android:maxLines="1"
-                   android:ellipsize="end"/>
+                   android:ellipsize="end"
+                   android:textSize="@dimen/_9sdp"/>
 
                <LinearLayout
                    android:id="@+id/btn_layout"
@@ -296,7 +299,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/figmaBgGrey"
-                android:layout_marginTop="@dimen/_4sdp"/>
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginBottom="@dimen/_4sdp"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -311,7 +315,7 @@
                     android:layout_centerVertical="true"
                     android:text="10 Aug,2022"
                     android:textColor="@color/figmaBlack"
-                    android:textSize="@dimen/_11sdp" />
+                    android:textSize="@dimen/_9sdp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -320,40 +324,40 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true">
                     <ImageView
-                        android:layout_width="@dimen/_13sdp"
-                        android:layout_height="@dimen/_13sdp"
-                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp"
                         android:src="@drawable/checkin"
-                        app:tint="@color/figmaBlack" />
+                        app:tint="@color/figmaBlack"
+                        android:layout_gravity="center_vertical"/>
 
                     <TextView
                         android:id="@+id/CheckInTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_3sdp"
-                        android:layout_marginTop="@dimen/_3sdp"
                         android:text="8:00"
                         android:textColor="@color/figmaBlack"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textSize="@dimen/_9sdp"
+                        android:layout_gravity="center_vertical"/>
 
 
                     <ImageView
-                        android:layout_width="@dimen/_13sdp"
-                        android:layout_height="@dimen/_13sdp"
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp"
                         android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_3sdp"
                         android:src="@drawable/checkout"
-                        app:tint="@color/figmaBlack" />
+                        app:tint="@color/figmaBlack"
+                        android:layout_gravity="center_vertical"/>
 
                     <TextView
                         android:id="@+id/CheckOutTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_3sdp"
-                        android:layout_marginTop="@dimen/_3sdp"
                         android:text="8:00"
                         android:textColor="@color/figmaBlack"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textSize="@dimen/_9sdp"
+                        android:layout_gravity="center_vertical"/>
 
                 </LinearLayout>
 
@@ -379,11 +383,11 @@
 
                     <ImageView
                         android:id="@+id/ivMeeting"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
+                        android:layout_width="@dimen/_19sdp"
+                        android:layout_height="@dimen/_21sdp"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/chair"
-                        android:scaleType="fitXY"/>
+                        android:scaleType="fitXY"
+                        android:src="@drawable/chair" />
 
                     <TextView
                         android:id="@+id/tvDesk"
@@ -391,20 +395,20 @@
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/ivMeeting"
                         android:text="Desk"
-                        android:layout_marginLeft="@dimen/_6sdp"
+                        android:layout_marginLeft="@dimen/_4sdp"
                         android:textColor="@color/figmaBlack"
-                        android:textSize="@dimen/_14sdp" />
+                        android:textSize="@dimen/_11sdp" />
 
                     <ImageView
                         android:id="@+id/img_info"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_toRightOf="@+id/tvDesk"
                         android:text="Desk"
-                        android:textSize="@dimen/_14sdp"
                         android:src="@drawable/info_circle"
-                        app:tint="@color/figmaBlueText"/>
+                        app:tint="@color/figmaBlueText"
+                        android:layout_marginTop="@dimen/_2sdp"/>
 
                     <TextView
                         android:id="@+id/tvAddress"
@@ -412,10 +416,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tvDesk"
-                        android:layout_marginLeft="@dimen/_6sdp"
+                        android:layout_marginLeft="@dimen/_4sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_toEndOf="@+id/ivMeeting"
                         android:text="Pmo Office"
+                        android:textSize="@dimen/_9sdp"
                         android:textColor="@color/figmaBlack" />
 
                 </RelativeLayout>
@@ -441,8 +446,8 @@
                         android:visibility="gone"/>
 
                     <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
                         android:id="@+id/checkBox"
                         android:visibility="visible"/>
 

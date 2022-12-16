@@ -22,7 +22,6 @@
                 android:id="@+id/profile_back"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_20sdp"
-                android:layout_marginHorizontal="@dimen/_15sdp"
                 android:src="@drawable/ic_baseline_arrow_back_ios_24"
                 app:tint="@color/figmaBlueText"
                 android:layout_centerVertical="true"/>
@@ -34,9 +33,10 @@
                 android:layout_toEndOf="@id/profile_back"
                 android:text="Manage"
                 android:textColor="@color/figmaBlack"
-                android:textSize="@dimen/_14sdp"
+                android:textSize="26sp"
                 android:theme="@style/TextBold"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_15sdp"/>
 
             <TextView
                 android:id="@+id/tv_manage"
@@ -45,7 +45,7 @@
                 android:layout_alignParentEnd="true"
                 android:text="Select All"
                 android:textColor="@color/figmaBlueText"
-                android:textSize="@dimen/_12sdp"
+                android:textSize="18sp"
                 android:theme="@style/TextBold"
                 android:layout_centerVertical="true"
                 />

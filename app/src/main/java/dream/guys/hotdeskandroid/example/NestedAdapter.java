@@ -59,7 +59,7 @@ public class NestedAdapter extends RecyclerView.Adapter<NestedAdapter.NestedView
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-               // Log.d("POS", String.valueOf(pos));
+                // Log.d("POS", String.valueOf(pos));
 
                 ItemAdapter.mList.get(pos).getNestedList().get(holder.getAdapterPosition()).setChecked(b);
                 //itemAdapter.notifyDataSetChanged();

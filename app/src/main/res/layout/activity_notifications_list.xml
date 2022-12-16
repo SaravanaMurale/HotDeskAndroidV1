@@ -40,7 +40,7 @@
             android:layout_toEndOf="@id/profile_back"
             android:text="Request"
             android:textColor="@color/figmaBlack"
-            android:textSize="@dimen/_14sdp"
+            android:textSize="26sp"
             android:theme="@style/TextBold"
             android:layout_centerVertical="true" />
 
@@ -51,7 +51,7 @@
             android:layout_alignParentEnd="true"
             android:text="Manage"
             android:textColor="@color/figmaBlueText"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="18sp"
             android:theme="@style/TextBold"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/_8sdp"/>

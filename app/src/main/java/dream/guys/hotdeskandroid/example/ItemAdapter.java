@@ -28,6 +28,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     NestedAdapter adapter;
     selectItemInterface selectItemInterface;
 
+    //For Filter
+    public static ArrayList<DataModel> mListAll;
+
     public ArrayList<DataModel> getUpdatedList(){
         return mList;
     }
@@ -44,6 +47,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         this.mList  = mList;
         notifyDataSetChanged();
         this.selectItemInterface = selectItemInterface;
+        this.mListAll=new ArrayList<>(mList);
+
     }
     @NonNull
     @Override
@@ -55,21 +60,21 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
 
-        if(position!=0) {
+        //if(position!=0) {
 
-            DataModel model = mList.get(holder.getAdapterPosition());
-            holder.mTextView.setText(model.getItemText());
+        DataModel model = mList.get(holder.getAdapterPosition());
+        holder.mTextView.setText(model.getItemText());
 
-            //boolean isExpandable = model.isExpandable();
-            //holder.expandableLayout.setVisibility(isExpandable ? View.VISIBLE : View.GONE);
+        //boolean isExpandable = model.isExpandable();
+        //holder.expandableLayout.setVisibility(isExpandable ? View.VISIBLE : View.GONE);
 
-            if (model.isChecked()) {
-                mList.get(position).setChecked(true);
-                holder.checkBox.setChecked(true);
-            } else {
-                mList.get(position).setChecked(false);
-                holder.checkBox.setChecked(false);
-            }
+        if (model.isChecked()) {
+            mList.get(position).setChecked(true);
+            holder.checkBox.setChecked(true);
+        } else {
+            mList.get(position).setChecked(false);
+            holder.checkBox.setChecked(false);
+        }
 
             /*if (isExpandable) {
                 holder.mArrowImage.setImageResource(R.drawable.minus_1px);
@@ -79,58 +84,58 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                 holder.expandableLayout.setVisibility(View.GONE);
             }
 */
-            holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                    if (b) {
-                        mList.get(holder.getAdapterPosition()).setChecked(true);
-                        list = new ArrayList<>();
+                if (b) {
+                    mList.get(holder.getAdapterPosition()).setChecked(true);
+                    list = new ArrayList<>();
 
-                        for (int i = 0; i < mList.get(holder.getAdapterPosition()).getNestedList().size(); i++) {
+                    for (int i = 0; i < mList.get(holder.getAdapterPosition()).getNestedList().size(); i++) {
 
-                            mList.get(holder.getAdapterPosition()).getNestedList().get(i).setChecked(true);
-                            //list.set(i,mList.get(holder.getAdapterPosition()).getNestedList().get(i));
+                        mList.get(holder.getAdapterPosition()).getNestedList().get(i).setChecked(true);
+                        //list.set(i,mList.get(holder.getAdapterPosition()).getNestedList().get(i));
 
-                            list = mList.get(holder.getAdapterPosition()).getNestedList();
+                        list = mList.get(holder.getAdapterPosition()).getNestedList();
 
-                        }
-                        setValueToadapter(holder, holder.getAbsoluteAdapterPosition());
-                    } else {
-                        mList.get(holder.getAdapterPosition()).setChecked(false);
-                        list = new ArrayList<>();
-
-                        for (int i = 0; i < mList.get(holder.getAdapterPosition()).getNestedList().size(); i++) {
-
-                            mList.get(holder.getAdapterPosition()).getNestedList().get(i).setChecked(false);
-                            //list.set(i,mList.get(holder.getAdapterPosition()).getNestedList().get(i));
-
-                            list = mList.get(holder.getAdapterPosition()).getNestedList();
-
-                        }
-                        setValueToadapter(holder, holder.getAbsoluteAdapterPosition());
                     }
+                    setValueToadapter(holder, holder.getAbsoluteAdapterPosition());
+                } else {
+                    mList.get(holder.getAdapterPosition()).setChecked(false);
+                    list = new ArrayList<>();
+
+                    for (int i = 0; i < mList.get(holder.getAdapterPosition()).getNestedList().size(); i++) {
+
+                        mList.get(holder.getAdapterPosition()).getNestedList().get(i).setChecked(false);
+                        //list.set(i,mList.get(holder.getAdapterPosition()).getNestedList().get(i));
+
+                        list = mList.get(holder.getAdapterPosition()).getNestedList();
+
+                    }
+                    setValueToadapter(holder, holder.getAbsoluteAdapterPosition());
                 }
-            });
+            }
+        });
 
-            //New...
-            list = mList.get(holder.getAdapterPosition()).getNestedList();
+        //New...
+        list = mList.get(holder.getAdapterPosition()).getNestedList();
 
-            setValueToadapter(holder, holder.getAbsoluteAdapterPosition());
+        setValueToadapter(holder, holder.getAbsoluteAdapterPosition());
 
-            holder.linearLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //model.setExpandable(!model.isExpandable());
-                    mList.get(holder.getAdapterPosition()).setExpandable(!model.isExpandable());
-                    list = mList.get(holder.getAdapterPosition()).getNestedList(); //model.getNestedList();
-                    notifyItemChanged(holder.getAdapterPosition());
-                }
-            });
+        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //model.setExpandable(!model.isExpandable());
+                mList.get(holder.getAdapterPosition()).setExpandable(!model.isExpandable());
+                list = mList.get(holder.getAdapterPosition()).getNestedList(); //model.getNestedList();
+                notifyItemChanged(holder.getAdapterPosition());
+            }
+        });
 
-        }else {
+        /*}else {
             holder.linearLayout.setVisibility(View.GONE);
-        }
+        }*/
     }
 
     private void setValueToadapter(ItemViewHolder holder,int pos) {
@@ -166,6 +171,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     }
 
 
+    public void clearAll(){
+        mList.clear();
+        mListAll.clear();
+    }
+
     @Override
     public Filter getFilter() {
         return filter;
@@ -177,19 +187,23 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
             List<DataModel> filteredList=new ArrayList<>();
 
+
             if(constraint==null || constraint.toString().isEmpty() || constraint.length()==0){
-                filteredList.addAll(mList);
+                filteredList.addAll(mListAll);
             }else {
                 String filterPattern=constraint.toString().toLowerCase().trim();
 
-                for (DataModel daoTeamMember:mList){
+                for (DataModel daoTeamMember:mListAll){
+                    ArrayList<ValuesPOJO> nestedList2 = new ArrayList<>();
 
-                    for (ValuesPOJO valuesPOJO:list){
-                        if(valuesPOJO.getValues().toLowerCase().contains(filterPattern)){
-                            filteredList.add(daoTeamMember);
+                    for (int i = 0; i < list.size(); i++) {
+
+                        if(list.get(i).getValues().toLowerCase().contains(filterPattern)){
+                            nestedList2.add(list.get(i));
+
                         }
                     }
-
+                    filteredList.add(new DataModel(nestedList2,mList.get(0).getItemText()));
                 }
 
             }

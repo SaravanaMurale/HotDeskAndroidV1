@@ -128,11 +128,12 @@ public class NotificationCenterActivity extends AppCompatActivity {
         notificationList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
 
         int count = 0;
-        if (outGoingNotificationList!=null && outGoingNotificationList.size()>0) {
+        //if (outGoingNotificationList!=null && outGoingNotificationList.size()>0) {
+        if (notiList!=null && notiList.size()>0) {
             IncomingRequestResponse.Result result = new IncomingRequestResponse.Result(0);
-            count = Collections.frequency(outGoingNotificationList, result);
-        }
+            count = Collections.frequency(notiList, result);
 
+        }
 
         adapterNotificationList = new AdapterNotificationCenter(context,notificationList,count,notiList,outGoingNotificationList);
         binding.notificationRecyclerview.setAdapter(adapterNotificationList);
