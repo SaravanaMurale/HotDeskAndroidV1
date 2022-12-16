@@ -490,7 +490,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     holder.bookingIvLocation.setVisibility(View.VISIBLE);
                     holder.tv_change.setVisibility(View.VISIBLE);
                 }
-            }catch (Exception e){
+            } catch (Exception e){
                 Log.d(TAG, "onBindViewHolder: "+e.getMessage());
             }
             if (map.containsKey(list.get(position).getMeetingBookingsModel().getId())){
