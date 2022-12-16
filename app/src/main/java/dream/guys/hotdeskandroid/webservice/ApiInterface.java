@@ -529,8 +529,22 @@ public interface ApiInterface {
     Call<ResponseBody> downloadPdf();
 
 
+    //Desk Booked Data
     @GET("api/Booking/BookingsOfDesk")
     Call<List<BookedDeskResponse>> getDeskBookedTime(@Query("bookingDate") String bookingDate,@Query("deskId") int deskId);
+
+    //Car Booked Data
+    @GET("api/CarParkBooking/Bookings")
+    Call<BookedCarResponse> getCarBookedTime(@Query("fromDate") String fromDate,
+                                             @Query("toDate") String toDate,
+                                             @Query("slotId") int slotId,
+                                             @Query("locationId") int locationId);
+
+    @GET("api/MeetingRoomBooking/Bookings")
+    Call<List<BookedMeetingResponse>> getMeetingBookedTime(@Query("fromDate") String fromDate,
+                                                     @Query("toDate") String toDate,
+                                                     @Query("roomId") int locationId);
+
 
 
     @PUT("api/booking/bookings")

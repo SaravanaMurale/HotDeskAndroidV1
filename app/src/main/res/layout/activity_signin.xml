@@ -22,23 +22,24 @@
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
         >
+
         <Button
             android:id="@+id/btnSignIn"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_35sdp"
-            android:maxHeight="@dimen/_35sdp"
             android:layout_above="@id/btnPinSignIn"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:background="@drawable/button_round_corner"
+            android:maxHeight="@dimen/_35sdp"
             android:text="@string/signin"
-            android:theme="@style/TextBoldButton"
-            android:textSize="18sp"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:visibility="visible"
-            />
+            android:textSize="18sp"
+            android:theme="@style/TextBoldButton"
+            android:visibility="visible" />
+
         <Button
             android:id="@+id/btnPinSignIn"
             android:layout_width="match_parent"
@@ -48,7 +49,7 @@
             android:layout_marginRight="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_60sdp"
             android:background="@drawable/button_round_corner"
-            android:text="Pin Login"
+            android:text="Sign in with PIN"
             android:theme="@style/TextBoldButton"
             android:textSize="18sp"
             android:textAllCaps="false"
