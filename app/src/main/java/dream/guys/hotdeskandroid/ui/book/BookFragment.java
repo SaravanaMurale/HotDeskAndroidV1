@@ -1825,13 +1825,14 @@ public class BookFragment extends Fragment implements
         editDeskBookingDetails.setComments(meetingListToEditResponse.getComments());
         editDeskBookingDetails.setSubject(meetingListToEditResponse.getSubject());
         selectedDeskId = meetingListToEditResponse.getMeetingRoomId();
-        Toast.makeText(context, "hit", Toast.LENGTH_SHORT).show();
+
         boolean isEditable = false;
         if (meetingListToEditResponse.getBookedByUserId() == SessionHandler.getInstance().getInt(context,AppConstants.USER_ID)){
             isEditable  = true;
         } else {
             isEditable  = false;
         }
+
         EditMeetingRoomController editMeetingRoomController = new EditMeetingRoomController(
                 AppConstants.BOOKFRAGMENTINSTANCESTRING,
                 activityContext,

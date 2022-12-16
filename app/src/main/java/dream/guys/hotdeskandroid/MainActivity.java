@@ -167,6 +167,8 @@ public class MainActivity extends AppCompatActivity implements
     public HashMap<Integer, Boolean> firstAidList;
     public HashMap<Integer, Boolean> firewardenList;
 
+    private static final int TIME_INTERVAL = 2000; // # milliseconds, desired time passed between two back presses.
+    private long mBackPressed;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -203,9 +205,8 @@ public class MainActivity extends AppCompatActivity implements
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().length() == 0) {
+                if (s.toString().length() == 0){
                     list.clear();
-
                     binding.serachBar.clearComposingText();
                     searchRecyclerAdapter.notifyDataSetChanged();
                 }
@@ -1550,9 +1551,18 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
+            super.onBackPressed();
+            return;
+        } else {
+            binding.searchLayout.setVisibility(View.GONE);
+        }
+
+        mBackPressed = System.currentTimeMillis();
+
 
     }
+
 
 
     public void getFloorCoordinatesInMain(List<List<Integer>> coordinateList, LinearLayout secondLayout) {
@@ -1783,5 +1793,6 @@ public class MainActivity extends AppCompatActivity implements
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
     }
+
 
 }

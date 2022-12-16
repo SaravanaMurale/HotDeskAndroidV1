@@ -3,6 +3,7 @@ package dream.guys.hotdeskandroid.controllers;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.Editable;
@@ -24,6 +25,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.gson.JsonArray;
@@ -246,8 +248,14 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
         selectDisabled=false;
 
         deskBottomSheet = new BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme);
-        deskBottomSheet.setContentView((activityContext.getLayoutInflater().inflate(R.layout.dialog_calendar_bottom_sheet_edit_booking,
-                new RelativeLayout(context))));
+//        deskBottomSheet.setContentView((activityContext.getLayoutInflater().inflate(R.layout.dialog_calendar_bottom_sheet_edit_booking,
+//                new RelativeLayout(context))));
+
+        View view = View.inflate(context, R.layout.dialog_calendar_bottom_sheet_edit_booking, null);
+        deskBottomSheet.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
         //Language
         TextView tv_start=deskBottomSheet.findViewById(R.id.tv_start);
@@ -464,7 +472,7 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
                         !editDeskBookingDetails.getComments().equalsIgnoreCase("")&&
                         !editDeskBookingDetails.getComments().isEmpty())
                     edComments.setText(editDeskBookingDetails.getComments());
-                continueEditBook.setText("Continue");
+                continueEditBook.setText("Save changes");
                 back.setText("Back");
             }
 
@@ -1232,8 +1240,15 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
         }
 
         deskListBottomSheet = new BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme);
-        deskListBottomSheet.setContentView((activityContext.getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_select_desk_new,
-                new RelativeLayout(context))));
+//        deskListBottomSheet.setContentView((activityContext.getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_select_desk_new,
+//                new RelativeLayout(context))));
+
+        View view = View.inflate(context, R.layout.dialog_bottom_sheet_edit_select_desk_new, null);
+        deskListBottomSheet.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
 
         TextView bsRepeatBack, selectDesk, sheetDate, sheetTime;
         bsGeneralSearch = deskListBottomSheet.findViewById(R.id.bsGeneralSearch);

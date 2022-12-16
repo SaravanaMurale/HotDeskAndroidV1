@@ -868,7 +868,7 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
 
         //Language
 //        editRoomBookingContinue.setText(appKeysPage.getContinue());
-        editRoomBookingContinue.setText("Book");
+        editRoomBookingContinue.setText("Save changes");
         if (isEditable){
             editRoomBookingContinue.setVisibility(View.VISIBLE);
         } else {

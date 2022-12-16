@@ -253,6 +253,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
                     }
                     holder.bookingBtnCheckOut.setVisibility(View.GONE);
+                    holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
                     break;
                 case 2:
                     //show green line if its falls between from and to time of today
@@ -271,6 +272,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     }
 
                     holder.bookingBtnCheckIn.setVisibility(View.GONE);
+                    holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
 //                    holder.bookingBtnCheckOut.setVisibility(View.VISIBLE);
                     break;
                 case 1:
@@ -302,7 +304,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
                 } else {
                     enableColorUpdate(holder);
-                    holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
+                    holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
                     holder.bookingIvEdit.setVisibility(View.VISIBLE);
                     holder.bookingIvLocation.setVisibility(View.VISIBLE);
                     holder.tv_change.setVisibility(View.VISIBLE);
