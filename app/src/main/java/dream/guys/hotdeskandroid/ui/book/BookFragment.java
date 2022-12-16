@@ -880,6 +880,12 @@ public class BookFragment extends Fragment implements
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (assertSpinner != null)
+            assertSpinner.setSelection(0);
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -2303,8 +2309,8 @@ public class BookFragment extends Fragment implements
 
             editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(
                     Utils.addingHoursToDate(bookingForEditResponse.getBookings().get(
-                            bookingForEditResponse.getBookings().size()-1)
-                    .getMyto(),2)));
+                                    bookingForEditResponse.getBookings().size()-1)
+                            .getMyto(),2)));
         }
 
         if (bookingForEditResponse.getBookings().size()==0) {
@@ -2944,7 +2950,7 @@ public class BookFragment extends Fragment implements
                         }
                     }
                 }else if(selectedicon==1){
-                   if (repeatActvieStatus) {
+                    if (repeatActvieStatus) {
                         if (dskRoomParkStatus==1)
                             doRepeatDeskBookingForAWeek(editDeskBookingDetails);
                         else if (dskRoomParkStatus==3)
@@ -3044,14 +3050,14 @@ public class BookFragment extends Fragment implements
                                 }else{
                                     if (!newEditStatus.equalsIgnoreCase("edit") && selectedDeskId!=0){
                                         if (changedDeskId>0)
-                                        if (editDeskBookingDetails.getRequestedTeamId()>0){
-                                            Log.d("bookei chock 6st if",""+selectedDeskId);
+                                            if (editDeskBookingDetails.getRequestedTeamId()>0){
+                                                Log.d("bookei chock 6st if",""+selectedDeskId);
 
-                                            jsonChangesObject.addProperty("requestedTeamDeskId",selectedDeskId);
-                                            jsonChangesObject.addProperty("requestedTeamId",editDeskBookingDetails.getDeskTeamId());
-                                        } else {
-                                            jsonChangesObject.addProperty("teamDeskId",selectedDeskId);
-                                        }
+                                                jsonChangesObject.addProperty("requestedTeamDeskId",selectedDeskId);
+                                                jsonChangesObject.addProperty("requestedTeamId",editDeskBookingDetails.getDeskTeamId());
+                                            } else {
+                                                jsonChangesObject.addProperty("teamDeskId",selectedDeskId);
+                                            }
                                     }
                                     else if (selectedDeskId != editDeskBookingDetails.getDesktId()){
                                         if (editDeskBookingDetails.getRequestedTeamId()>0){
@@ -3231,7 +3237,7 @@ public class BookFragment extends Fragment implements
         }
 
         if (!editDeskBookingDetails.getEditEndTime().equalsIgnoreCase(endTime.getText().toString())
-                ){
+        ){
             jsonChangesObject.addProperty("to","2000-01-01T"+endTime.getText().toString()+":00.000Z");
         }
 
@@ -3301,7 +3307,7 @@ public class BookFragment extends Fragment implements
         }
 
         if (!editDeskBookingDetails.getEditEndTime().equalsIgnoreCase(endTime.getText().toString())
-                ){
+        ){
             jsonChangesObject.addProperty("to","2000-01-01T"+endTime.getText().toString()+":00.000Z");
         }
 
@@ -3371,7 +3377,7 @@ public class BookFragment extends Fragment implements
         }
 
         if (!editDeskBookingDetails.getEditEndTime().equalsIgnoreCase(endTime.getText().toString())
-                ){
+        ){
             jsonChangesObject.addProperty("to","2000-01-01T"+endTime.getText().toString()+":00.000Z");
         }
 
@@ -4143,7 +4149,7 @@ public class BookFragment extends Fragment implements
                     }else {
 //                        if(newEditStatus.equalsIgnoreCase("new")
 //                                || newEditStatus.equalsIgnoreCase("request"))
-                            callActiveTeamsBottomSheet(id,editBookingDetails,newEditStatus);
+                        callActiveTeamsBottomSheet(id,editBookingDetails,newEditStatus);
                     }
                 }
             }
