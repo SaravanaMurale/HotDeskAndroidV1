@@ -32,6 +32,7 @@ import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.FirstAidResponse;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
+import dream.guys.hotdeskandroid.ui.home.EditProfileActivity;
 import dream.guys.hotdeskandroid.ui.home.ViewTeamsActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ExtendedDataHolder;
@@ -448,16 +449,40 @@ public class ShowProfileActivity extends AppCompatActivity {
             binding.tvEditEmail.setText("Email");
         else
             binding.tvEditEmail.setText(results.getEmail());
-      /*  if (results.getDeskPhoneNumber() == null
-                || results.getDeskPhoneNumber().equalsIgnoreCase("")
-                || results.getDeskPhoneNumber().isEmpty())
+
+        if (results.getEmail() == null
+                || results.getEmail().equalsIgnoreCase("")
+                || results.getEmail().isEmpty())
+            binding.tvEditEmail.setText("Email");
+        else
+            binding.tvEditEmail.setText(results.getEmail());
+
+        if (results.getPhoneNumber() == null
+                || results.getPhoneNumber().equalsIgnoreCase("")
+                || results.getPhoneNumber().isEmpty())
             binding.tvEditPhone.setText("Phone");
         else
-            binding.tvEditPhone.setText(results.getMobile());*/
-        binding.tvEditPhone.setText("Phone");
+            binding.tvEditPhone.setText(results.getMobile());
+       // binding.tvEditPhone.setText("Phone");
         binding.txtTname.setText(results.getTeam());
         //binding.tvEditPhone.setText(results.getMobile());
 
+
+        binding.ivEditEmailIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (results.getEmail() != null && !results.getEmail().isEmpty())
+                    Utils.openMail(ShowProfileActivity.this, results.getEmail());
+            }
+        });
+
+        binding.tvEditPhoneIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (results.getPhoneNumber() != null && !results.getPhoneNumber().isEmpty())
+                    Utils.openDial(ShowProfileActivity.this, results.getPhoneNumber());
+            }
+        });
     }
 
     private void createRecyclerList(TeamMembersResponse bookingListResponses) {

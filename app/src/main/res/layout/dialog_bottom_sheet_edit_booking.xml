@@ -15,26 +15,104 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_31sdp"
+            android:layout_marginLeft="@dimen/_23sdp"
+            android:layout_marginRight="@dimen/_23sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/_3sdp"
-                android:text="Edit your booking"
-                android:textSize="20sp"
-                android:theme="@style/TextBold" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_3sdp"
+                    android:text="Edit your booking"
+                    android:textSize="@dimen/_20sdp"
+                    android:theme="@style/TextBold" />
+
+                <TextView
+                    android:id="@+id/deskDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/delete"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/_14sdp"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
 
             <TextView
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_15sdp"
                 android:text="Mon, 10th August, 2022"
                 android:textSize="14sp"
-                android:theme="@style/TextSmall" />
+                android:theme="@style/TextSmall"
+                android:visibility="gone"
+                />
+
+            <!--Location-->
+            <TextView
+                android:id="@+id/editLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="location1,location2"
+                android:textSize="@dimen/_11sdp"
+                android:textColor="@color/black"
+                android:visibility="gone"
+                />
+
+            <!--Description-->
+            <TextView
+                android:id="@+id/editdesccription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="Description: "
+                android:textSize="@dimen/_11sdp"
+                android:textColor="@color/black"
+                android:visibility="gone"
+                />
+
+
+            <!--Booked by me-->
+            <LinearLayout
+                android:id="@+id/bookedByBlock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/list_item"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="horizontal"
+                android:visibility="invisible"
+                >
+
+                <ImageView
+                    android:id="@+id/tv_user_status_room"
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:background="@drawable/status_booked_byme"
+                    />
+
+                <TextView
+                    android:id="@+id/meetingAvaliable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Booked by me"
+                    android:layout_marginLeft="@dimen/_7sdp"
+                    android:theme="@style/TextBold"
+                    android:textColor="@color/figmaBlack"/>
+            </LinearLayout>
+
+
             <!--Date-->
             <RelativeLayout
                 android:id="@+id/bookingDateBlock"
@@ -88,8 +166,8 @@
             <RelativeLayout
                 android:id="@+id/startTimeBlock"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_31sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
                 android:orientation="horizontal"
                 android:padding="@dimen/_3sdp">
@@ -102,6 +180,7 @@
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="Start"
+                    android:paddingLeft="@dimen/_5sdp"
                     android:textColor="@color/figmaBlack"
                     android:textSize="16sp"
                     android:theme="@style/TextBold" />
@@ -120,12 +199,11 @@
             </RelativeLayout>
 
             <!--EndTime-->
-
             <RelativeLayout
                 android:id="@+id/endTimeBlock"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_12sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
                 android:orientation="horizontal"
                 android:padding="@dimen/_3sdp">
@@ -138,6 +216,7 @@
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="End"
+                    android:paddingLeft="@dimen/_5sdp"
                     android:textColor="@color/figmaBlack"
                     android:textSize="16sp"
                     android:theme="@style/TextBold" />
@@ -154,6 +233,34 @@
                     android:textSize="15sp"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
+
+            <!--Vechicle Reg Number-->
+            <RelativeLayout
+                android:id="@+id/bookingVechicleRegtBlock"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@drawable/rectangle_greybg_with_corner"
+                android:padding="@dimen/_1sdp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/etVehicleRegEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:background="@null"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:hint="@string/reg"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="@dimen/_14sdp" />
+
+            </RelativeLayout>
+
 
 
 

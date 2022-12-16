@@ -37,7 +37,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:theme="@style/TextBold"
-                    android:text="My Team"
+                    android:text="My team"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/view_teams_back"
                     />

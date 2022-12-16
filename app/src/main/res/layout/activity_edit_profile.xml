@@ -87,10 +87,10 @@
             android:layout_marginBottom="@dimen/_8sdp">
 
             <!--Image-->
-            <androidx.cardview.widget.CardView
+           <!-- <androidx.cardview.widget.CardView
                 android:id="@+id/editProfileBlock"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content">-->
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -124,7 +124,7 @@
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_toRightOf="@+id/ivEditPrifle"
-                        android:text="Use image at least 250 px by 250px"
+                        android:text="Use image at least 250px by 250px"
                         android:textColor="@color/figmaBlack" />
 
                     <TextView
@@ -141,7 +141,7 @@
 
                 </RelativeLayout>
 
-            </androidx.cardview.widget.CardView>
+           <!-- </androidx.cardview.widget.CardView>-->
 
             <!--Name-->
             <LinearLayout
@@ -565,6 +565,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Workspaces"
+                    android:textColor="@color/figmaBlack"
                     android:layout_marginTop="@dimen/_4sdp"
                     />
 
@@ -601,6 +602,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Parking"
+                    android:textColor="@color/figmaBlack"
                     android:layout_marginTop="@dimen/_10sdp"
                     />
 
@@ -635,6 +637,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Room"
+                    android:textColor="@color/figmaBlack"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:visibility="visible"/>
 
@@ -705,6 +708,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Vehicle Number"
+                    android:textColor="@color/figmaBlack"
                     android:layout_marginTop="@dimen/_4sdp"
                     />
 
@@ -807,7 +811,6 @@
                     android:layout_centerInParent="true"
                     android:layout_toLeftOf="@id/ivTeamsIcon"
                     android:background="@null"
-                    android:enabled="false"
                     android:imeOptions="actionDone"
                     android:inputType="text"
                     android:paddingStart="@dimen/_5sdp"
@@ -842,7 +845,6 @@
                     android:layout_centerInParent="true"
                     android:layout_toLeftOf="@id/tvEditPhoneIcon"
                     android:background="@null"
-                    android:enabled="false"
                     android:imeOptions="actionDone"
                     android:inputType="number"
                     android:maxLength="10"
@@ -868,7 +870,7 @@
                 android:orientation="horizontal"
                 android:background="@drawable/rectangle_greybg_with_corner"
                 android:padding="@dimen/_6sdp"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_marginVertical="@dimen/_5sdp">
 
                 <EditText

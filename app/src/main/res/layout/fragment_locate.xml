@@ -112,7 +112,7 @@
         <!--Calender-->
         <TextView
             android:id="@+id/locateCalendearView"
-            android:layout_width="@dimen/_100sdp"
+            android:layout_width="@dimen/_116sdp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/searchLocate"
             android:layout_centerVertical="true"
@@ -131,7 +131,7 @@
 
         <TextView
             android:id="@+id/show_calendar"
-            android:layout_width="@dimen/_100sdp"
+            android:layout_width="@dimen/_116sdp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/searchLocate"
             android:layout_marginStart="@dimen/_12sdp"
@@ -156,6 +156,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/searchLocate"
             android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/_7sdp"
             android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginEnd="@dimen/_19sdp"
             android:background="@drawable/rectangle_bg_with_corner"

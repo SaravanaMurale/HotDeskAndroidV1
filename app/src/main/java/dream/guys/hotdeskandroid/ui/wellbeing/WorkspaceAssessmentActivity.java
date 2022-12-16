@@ -513,7 +513,7 @@ public class WorkspaceAssessmentActivity extends AppCompatActivity implements Qu
             etDate.setHint(appKeysPage.getSelectDate());
             reportCancel.setText(appKeysPage.getCancel());
             reportSubmit.setText(appKeysPage.getSubmit());
-            tvDescription.setText(appKeysPage.getDescription());
+            tvDescription.setText(appKeysPage.getComments());
 
         }
 

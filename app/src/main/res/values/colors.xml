@@ -23,6 +23,7 @@
     <color name="figmaGrey80">#cc777777</color>
     <color name="figmaGrey05">#66777777</color>
     <color name="figmaBgGrey">#F2F2F2</color>
+    <color name="lightGrey">#FAFAFA</color>
     <color name="figmaBlack">#1b1b1b</color>
     <color name="figmaBlackGrey">#323232</color>
     <color name="figmaGreenFade">#C6F4E1</color>
@@ -46,5 +47,6 @@
     <color name="figma_red_delete">#BA3B46</color>
 
     <color name="figmaLiteGreen">#8DEAC3</color>
+    <color name="red">#BA3B46</color>
 
 </resources>

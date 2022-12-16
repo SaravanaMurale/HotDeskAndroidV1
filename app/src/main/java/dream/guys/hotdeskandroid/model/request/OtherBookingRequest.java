@@ -102,6 +102,15 @@ public class OtherBookingRequest {
             @Expose
             private Integer usageTypeId;
 
+            private String recurrence;
+
+            public String getRecurrence() {
+                return recurrence;
+            }
+
+            public void setRecurrence(String recurrence) {
+                this.recurrence = recurrence;
+            }
             public String getFrom() {
                 return from;
             }

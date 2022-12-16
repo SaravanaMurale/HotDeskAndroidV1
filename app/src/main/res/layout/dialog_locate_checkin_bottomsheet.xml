@@ -30,6 +30,7 @@
                  />
 
             <TextView
+                android:id="@+id/deskBookDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="date comer here"
@@ -132,7 +133,9 @@
                 android:layout_marginTop="@dimen/_31sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
                 android:orientation="horizontal"
-                android:padding="@dimen/_3sdp">
+                android:padding="@dimen/_3sdp"
+                android:visibility="gone"
+                >
 
                 <TextView
                     android:id="@+id/tvLocateCheckInDate"
@@ -178,7 +181,7 @@
                 android:id="@+id/bookingStartBlock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_31sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
                 android:orientation="horizontal"
                 android:padding="@dimen/_3sdp"
