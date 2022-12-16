@@ -14,14 +14,14 @@
         android:layout_marginTop="@dimen/_15sdp"
         android:text="@string/select_date"
         android:textColor="@color/black"
-        android:textSize="@dimen/_15sdp"
-        android:textStyle="bold" />
+        android:textSize="@dimen/_20sdp"
+        />
 
         <CalendarView
             android:id="@+id/datePicker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_50sdp"
             android:minDate=""
 
             />
@@ -33,10 +33,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/datePicker"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:text="Continue"
         android:textColor="@color/blue"
         android:layout_marginRight="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_95sdp"
         />
 
     <TextView
@@ -46,7 +47,7 @@
         android:layout_below="@id/datePicker"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_95sdp"
         android:text="@string/back"
         android:textColor="@color/black" />
 

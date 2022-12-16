@@ -27,6 +27,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
             <TextView
                 android:id="@+id/roomTitle"
                 android:layout_width="wrap_content"
@@ -35,6 +39,22 @@
                 android:text="Room Booking"
                 android:textSize="@dimen/_14sdp"
                 android:theme="@style/TextBold" />
+
+                <TextView
+                    android:id="@+id/meetingDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/delete"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/_14sdp"
+                    android:visibility="gone"
+                    />
+
+
+            </RelativeLayout>
+
+
 
             <TextView
                 android:id="@+id/roomDate"
@@ -45,6 +65,14 @@
                 android:text="Mon, 10th August, 2022"
                 />
 
+            <TextView
+                android:id="@+id/roomLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:textColor="@color/light_black"
+                android:text="Location"
+                />
 
 
 
@@ -96,8 +124,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="@dimen/_5sdp"
-                    app:chipSpacingVertical="-13dp"
                     app:chipSpacingHorizontal="@dimen/_1sdp"
+                    app:chipSpacingVertical="-13dp"
 
                     />
 
@@ -115,6 +143,7 @@
 
 
             <LinearLayout
+                android:id="@+id/meetingRoomStatusBlock"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/list_item"
@@ -134,7 +163,7 @@
                     android:id="@+id/meetingAvaliable"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Available"
+                    android:text="Booked by me"
                     android:layout_marginStart="@dimen/_6sdp"
                     android:theme="@style/TextBold"
                     android:textColor="@color/figmaBlack"/>
@@ -150,7 +179,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="@dimen/_10sdp"
             android:id="@+id/child_layout">
 
 
@@ -158,7 +186,7 @@
             android:id="@+id/startTimeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:padding="@dimen/_3sdp"
             android:background="@drawable/rectangle_greybg_with_corner"
             android:orientation="horizontal">
@@ -185,7 +213,7 @@
                 android:text=""
                 android:textColor="@color/figmaBlueText"
                 android:theme="@style/TextBold"
-                android:visibility="invisible"/>
+                android:visibility="visible"/>
             <TextView
                 android:id="@+id/showtvRoomStartTime"
                 android:layout_width="wrap_content"
@@ -197,6 +225,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/figmaBlueText"
                 android:theme="@style/TextBold"
+                android:visibility="invisible"
                 />
         </RelativeLayout>
 
@@ -233,7 +262,7 @@
                 android:text=""
                 android:textColor="@color/figmaBlueText"
                 android:theme="@style/TextBold"
-                android:visibility="invisible"
+                android:visibility="visible"
                 />
 
             <TextView
@@ -246,7 +275,9 @@
                 android:text=""
                 android:textStyle="bold"
                 android:textColor="@color/figmaBlueText"
-                android:theme="@style/TextBold" />
+                android:theme="@style/TextBold"
+                android:visibility="invisible"
+                />
 
         </RelativeLayout>
 
@@ -526,6 +557,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/spaceadd"
                 android:textSize="@dimen/_10sdp"
+                android:visibility="gone"
                 />
 
 
@@ -550,6 +582,7 @@
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:paddingHorizontal="@dimen/_15sdp"
                 android:paddingVertical="@dimen/_10sdp"
+                android:gravity="left|top"
                 />
 
         </LinearLayout>
@@ -582,10 +615,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_marginRight="@dimen/_23sdp"
             android:text="Continue"
             android:textColor="@color/figmaBlueText"
             android:textSize="@dimen/_14sdp"
-            android:layout_marginRight="@dimen/_23sdp"
             android:theme="@style/TextBold" />
     </RelativeLayout>
 

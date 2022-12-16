@@ -2997,9 +2997,27 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         TextView editClose, editDate, addNew, tvActiveBookings;
         LinearLayoutManager linearLayoutManager;
 
-        locateMeetEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        /*locateMeetEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         locateMeetEditBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_edit_booking_bottomsheet,
-                new RelativeLayout(getContext())));
+                new RelativeLayout(getContext())));*/
+
+
+
+
+
+        locateMeetEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        View view = View.inflate(getContext(), R.layout.dialog_locate_edit_booking_bottomsheet, null);
+        locateMeetEditBottomSheet.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(500);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+        RelativeLayout layout = locateMeetEditBottomSheet.findViewById(R.id.listData);
+        layout.setMinimumHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+
+
+
+
 
         rvMeeingEditList = locateMeetEditBottomSheet.findViewById(R.id.rvEditList);
         editClose = locateMeetEditBottomSheet.findViewById(R.id.editClose);
@@ -3279,7 +3297,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         ChipGroup chipGroup, externalAttendeesChipGroup;
 
         //Language
-        TextView tvRoomStart, tvRoomEnd, tv_teams_room, tv_repeat_room, showTvRoomEndTime;
+        TextView tvRoomStart, tvRoomEnd, tv_teams_room, tv_repeat_room, showTvRoomEndTime,roomLocation;
 
         CheckBox teams_check_box_room;
         ImageView tv_user_status_room;
@@ -3307,7 +3325,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
 
-
+        roomLocation=bottomSheetDialog.findViewById(R.id.roomLocation);
         startRoomTime = bottomSheetDialog.findViewById(R.id.tvRoomStartTime);
         endTRoomime = bottomSheetDialog.findViewById(R.id.tvRoomEndTime);
         showtvRoomStartTime = bottomSheetDialog.findViewById(R.id.showtvRoomStartTime);
@@ -3330,8 +3348,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         tv_cap_size = bottomSheetDialog.findViewById(R.id.tv_cap_size);
 
         tv_cap_size.setText("" + capacity);
-
-
+        roomLocation.setVisibility(View.VISIBLE);
+        roomLocation.setText(binding.searchLocate.getText().toString());
         //Set All Amenities Here
         for (int i = 0; i < amenitiesList.size(); i++) {
 
@@ -3414,7 +3432,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         roomTitle.setText(meetingRoomName);
-
+        roomDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()));
         externalAttendees.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -3514,7 +3532,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         //New...
-        String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
+       /* String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
         String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
         String CountryName = SessionHandler.getInstance().get(getContext(), AppConstants.COUNTRY_NAME);
         if (CountryName == null && buildingName == null && floorName == null) {
@@ -3524,7 +3542,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         } else {
             roomDate.setText(buildingName + "," + floorName);
 
-        }
+        }*/
 
         if (meetingRoomDescription != null) {
             tvMeetingRoomDescription.setText(tvMeetingRoomDescription.getText().toString() + meetingRoomDescription);
@@ -3699,7 +3717,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     editRoomBookingBack.setText(appKeysPage.getCancel());
                     subCmtLay.setVisibility(View.GONE);
                     child_layout.setVisibility(View.VISIBLE);
-                    roomDate.setText(buildingName + "," + floorName);
+                    //roomDate.setText(buildingName + "," + floorName);
+                    roomDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()));
                     page = 1;
                 }
 
@@ -3711,6 +3730,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             public void onClick(View v) {
 
                 if (page == 1) {
+
+
                     editRoomBookingContinue.setText(appKeysPage.getContinue());
                     boolean status = true;
                     if (startRoomTime.getText().toString().equals("")) {
@@ -3749,6 +3770,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     editRoomBookingBack.setText(appKeysPage.getBack());
 
                 } else {
+
+                    roomDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()));
+
                     boolean status = true;
                     editRoomBookingContinue.setText(appKeysPage.getBook());
                     if (startRoomTime.getText().toString().equals("")) {
@@ -4151,9 +4175,26 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         TextView editClose, editDate, bookingName, carAddNew;
         LinearLayoutManager linearLayoutManager;
 
-        locateCarEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        /*locateCarEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         locateCarEditBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_edit_booking_bottomsheet,
-                new RelativeLayout(getContext())));
+                new RelativeLayout(getContext())));*/
+
+
+
+        locateCarEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        View view = View.inflate(getContext(), R.layout.dialog_locate_edit_booking_bottomsheet, null);
+        locateCarEditBottomSheet.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(500);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+        RelativeLayout layout = locateCarEditBottomSheet.findViewById(R.id.listData);
+        layout.setMinimumHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+
+
+
+
+
 
         rvCarEditList = locateCarEditBottomSheet.findViewById(R.id.rvEditList);
         editClose = locateCarEditBottomSheet.findViewById(R.id.editClose);
@@ -4224,9 +4265,26 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         TextView editClose, editDate, bookingName, addNew, tvActiveBookings;
         LinearLayoutManager linearLayoutManager;
 
-        locateEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+
+
+       /* locateEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         locateEditBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_edit_booking_bottomsheet,
-                new RelativeLayout(getContext())));
+                new RelativeLayout(getContext())));*/
+
+
+
+        locateEditBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        View view = View.inflate(getContext(), R.layout.dialog_locate_edit_booking_bottomsheet, null);
+        locateEditBottomSheet.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(500);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+        RelativeLayout layout = locateEditBottomSheet.findViewById(R.id.listData);
+        layout.setMinimumHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+
+
+
 
         rvEditList = locateEditBottomSheet.findViewById(R.id.rvEditList);
         editClose = locateEditBottomSheet.findViewById(R.id.editClose);
@@ -5091,7 +5149,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         TextView selectedLocation, tv_select_desk_room, statusText;
         ImageView ivOnline;
 
-        TextView tvDescription, tvLocateDeskBookLocation;
+        TextView tvDescription, tvLocateDeskBookLocation,deskBookDate;
 
         TextView tvLocateCheckInDateLang, tvLocateCheckInStartLang, tvLocateCheckoutLang, tv_repeatLang;
 
@@ -5119,6 +5177,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         bookingEndBlock = locateCheckInBottomSheet.findViewById(R.id.bookingEndBlock);
         selectDeskBlock = locateCheckInBottomSheet.findViewById(R.id.selectDeskBlock);
         bsRepeatBlock = locateCheckInBottomSheet.findViewById(R.id.bsRepeatBlock);
+        deskBookDate=locateCheckInBottomSheet.findViewById(R.id.deskBookDate);
+
+        deskBookDate.setVisibility(View.VISIBLE);
+        deskBookDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()));
 
         ivOnline = locateCheckInBottomSheet.findViewById(R.id.ivOnline);
         statusText = locateCheckInBottomSheet.findViewById(R.id.statusText);
@@ -7073,8 +7135,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     @Override
     public void onEditClick(BookingForEditResponse.Bookings bookings, String code, List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities) {
 
-        TextView startTime, endTime, date, editBookingBack, tv_comment;
-        LinearLayout status_check_layout;
+        TextView startTime, endTime, date, editBookingBack, tv_comment,title,deskDelete,editLocation,editdesccription;
+        LinearLayout status_check_layout,bookedByBlock;
         RelativeLayout selectDeskEditBlock;
         EditText et_comment_desk;
 
@@ -7082,6 +7144,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_booking,
                 new RelativeLayout(getContext()))));
 
+        title=bottomSheetDialog.findViewById(R.id.title);
+        deskDelete=bottomSheetDialog.findViewById(R.id.deskDelete);
+        editLocation=bottomSheetDialog.findViewById(R.id.editLocation);
+        editdesccription=bottomSheetDialog.findViewById(R.id.editdesccription);
         startTime = bottomSheetDialog.findViewById(R.id.start_time);
         endTime = bottomSheetDialog.findViewById(R.id.end_time);
         date = bottomSheetDialog.findViewById(R.id.date);
@@ -7101,13 +7167,35 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         TextView select = bottomSheetDialog.findViewById(R.id.select_desk_room);
         et_comment_desk = bottomSheetDialog.findViewById(R.id.et_comment_desk);
 
-        et_comment_desk.setVisibility(View.VISIBLE);
+        bookedByBlock=bottomSheetDialog.findViewById(R.id.bookedByBlock);
+
+
+
+        continueEditBook.setText("Save changes");
+        editBookingBack.setText("Cancel");
+        title.setText(bookings.getDeskCode());
+
+
+
+        //Cr2
+        bookedByBlock.setVisibility(View.VISIBLE);
+        deskDelete.setVisibility(View.VISIBLE);
+        editLocation.setVisibility(View.VISIBLE);
+        editdesccription.setVisibility(View.VISIBLE);
+        date.setVisibility(View.VISIBLE);
+        et_comment_desk.setVisibility(View.GONE);
+        rl_comment_block.setVisibility(View.GONE);
+
         et_comment_desk.setText(bookings.getComments());
+        editLocation.setText(binding.searchLocate.getText().toString());
+
+
         llDeskLayout.setVisibility(View.GONE);
         status_check_layout.setVisibility(View.GONE);
         selectDeskEditBlock.setVisibility(View.GONE);
         //Need To Change Date Here
-        String sDate = binding.locateCalendearView.getText().toString();
+        //I Blocked here 16-12-2022
+        /*String sDate = binding.locateCalendearView.getText().toString();
         if (!(sDate.equalsIgnoreCase(""))) {
             String dateTime = Utils.dateWithDayString(sDate);
             if (dateTime.equalsIgnoreCase("")) {
@@ -7117,8 +7205,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         } else {
             date.setText(binding.locateCalendearView.getText().toString());
-        }
-        //date.setText(binding.locateCalendearView.getText().toString());
+        }*/
+        date.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()));
 
         orgSTime = "";
         orgETime = "";
@@ -7140,6 +7228,16 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             endTime.setEnabled(true);
         }
 
+        deskDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ondeskDeleteClick( bookings,  code,  teamDeskAvailabilities);
+
+                bottomSheetDialog.dismiss();
+
+            }
+        });
 
         if (code.equals("3")) {
             //repeatBlock.setVisibility(View.VISIBLE);
@@ -7492,15 +7590,24 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     @Override
     public void onCarEditClick(CarParkingForEditResponse.CarParkBooking carParkBooking, String selectedCode) {
 
-        TextView startTime, endTime, date, editBookingBack, tv_location_details;
-        LinearLayout status_check_layout, capacity_layout;
-        RelativeLayout selectDeskEditBlock;
+        TextView startTime, endTime, date, editBookingBack, tv_location_details,title,deskDelete,editLocation;
+        LinearLayout status_check_layout, capacity_layout,bookedByBlock;
+        RelativeLayout selectDeskEditBlock,bookingVechicleRegtBlock;
         ChipGroup list_item;
+        EditText etVehicleRegEdit;
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_booking,
                 new RelativeLayout(getContext()))));
 
+
+        title=bottomSheetDialog.findViewById(R.id.title);
+        deskDelete=bottomSheetDialog.findViewById(R.id.deskDelete);
+
+
+        bookingVechicleRegtBlock=bottomSheetDialog.findViewById(R.id.bookingVechicleRegtBlock);
+        editLocation=bottomSheetDialog.findViewById(R.id.editLocation);
+        bookedByBlock=bottomSheetDialog.findViewById(R.id.bookedByBlock);
         list_item = bottomSheetDialog.findViewById(R.id.list_item);
         tv_location_details = bottomSheetDialog.findViewById(R.id.tv_location_details);
         startTime = bottomSheetDialog.findViewById(R.id.start_time);
@@ -7520,8 +7627,32 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         selectDeskEditBlock = bottomSheetDialog.findViewById(R.id.selectDeskEditBlock);
         TextView select = bottomSheetDialog.findViewById(R.id.select_desk_room);
         carSelectedName = bottomSheetDialog.findViewById(R.id.tv_desk_room_name);
+        etVehicleRegEdit=bottomSheetDialog.findViewById(R.id.etVehicleRegEdit);
 
         carSelectedName.setText(selectedCode);
+
+        //cr2
+        deskDelete.setVisibility(View.VISIBLE);
+        bookedByBlock.setVisibility(View.VISIBLE);
+        commentRegistration.setVisibility(View.GONE);
+        date.setVisibility(View.VISIBLE);
+        bookingVechicleRegtBlock.setVisibility(View.VISIBLE);
+        editLocation.setVisibility(View.VISIBLE);
+
+        editLocation.setText(binding.searchLocate.getText().toString());
+        title.setText(selectedCode);
+        etVehicleRegEdit.setText(carParkBooking.getVehicleRegNumber());
+
+
+        System.out.println("PrintedDataHere "+carParkBooking.getParkingSlotName()+" "+carParkBooking.getParkingSlotId()+" "+carParkBooking.getId());
+
+        deskDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onCarDeleteClick(carParkBooking);
+                bottomSheetDialog.dismiss();
+            }
+        });
 
 
         //New...
@@ -7547,7 +7678,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         teamsBlock.setVisibility(View.GONE);
         llDeskLayout.setVisibility(View.VISIBLE);
         status_check_layout.setVisibility(View.VISIBLE);
-        selectDeskEditBlock.setVisibility(View.VISIBLE);
+        selectDeskEditBlock.setVisibility(View.GONE);
 
         etBookedBy.setVisibility(View.GONE);
         //etBookedBy.setText(carParkBooking.getBookedForUserName());
@@ -7581,7 +7712,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         });
 
         //New...
-        String sDate = binding.locateCalendearView.getText().toString();
+        //I commended on 16-12-2022
+        /*String sDate = binding.locateCalendearView.getText().toString();
         if (!(sDate.equalsIgnoreCase(""))) {
             String dateTime = Utils.dateWithDayString(sDate);
             if (dateTime.equalsIgnoreCase("")) {
@@ -7591,7 +7723,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         } else {
             date.setText(binding.locateCalendearView.getText().toString());
-        }
+        }*/
+
+        date.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()));
 
         orgSTime = "";
         orgETime = "";
@@ -8414,25 +8548,47 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //Get AttendeeList To Edit
         attendeesListForEdit = meetingListToEditResponse.getAttendeesList();
 
-        TextView startRoomTime, endTRoomime, editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle, showtvRoomStartTime, tvRoomCapacityCount;
+        TextView startRoomTime, endTRoomime,meetingAvaliable, editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription, roomTitle, showtvRoomStartTime, tvRoomCapacityCount;
         EditText etParticipants, externalAttendees, etSubject, etComments;
-        RelativeLayout startTimeLayout, endTimeLayout, rl_repeat_block_room, selectMeetingRoomLayout, rl_teams_layout_room, capacityRoomBlock;
+        RelativeLayout startTimeLayout, endTimeLayout, rl_repeat_block_room, selectMeetingRoomLayout, rl_teams_layout_room, capacityRoomBlock,amenitiesBlock;
         RecyclerView rvParticipant;
-        LinearLayout capacityBlock;
+        LinearLayout capacityBlock,meetingRoomStatusBlock;
+
+        ImageView tv_user_status_room;
+
         //New...
         LinearLayout subCmtLay, child_layout;
-        TextView roomDate, select_desk_room_room, tv_desk_room_name_room, meetingRoomLocation, user_status_room;
+        TextView roomDate, select_desk_room_room, tv_desk_room_name_room, meetingRoomLocation, user_status_room,meetingDelete;
 
-        ChipGroup chipGroupListItem, externalAttendeesChipGroup, list_item;
+        ChipGroup chipGroupListItem, externalAttendeesChipGroup, list_item,meetingAmenitiesChipGroup;
         //participantChipGroupInEdit
 
         //Language
-        TextView tvRoomStart, tvRoomEnd, showTvRoomEndTime;
+        TextView tvRoomStart, tvRoomEnd, showTvRoomEndTime,roomLocation;
+
+       /* bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_room_booking,
+                new RelativeLayout(getContext()))));*/
+
+
+
+
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_room_booking,
-                new RelativeLayout(getContext()))));
+        View view = View.inflate(getContext(), R.layout.dialog_bottom_sheet_room_booking, null);
+        bottomSheetDialog.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(500);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
+        RelativeLayout layout = bottomSheetDialog.findViewById(R.id.design_bottom_sheet_room);
+        layout.setMinimumHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+
+
+        meetingAmenitiesChipGroup=bottomSheetDialog.findViewById(R.id.meetingAmenitiesChipGroup);
+        tv_user_status_room=bottomSheetDialog.findViewById(R.id.tv_user_status_room);
+        meetingRoomStatusBlock=bottomSheetDialog.findViewById(R.id.meetingRoomStatusBlock);
+        meetingAvaliable=bottomSheetDialog.findViewById(R.id.meetingAvaliable);
         roomTitle = bottomSheetDialog.findViewById(R.id.roomTitle);
         tvRoomStart = bottomSheetDialog.findViewById(R.id.tvRoomStart);
         tvRoomEnd = bottomSheetDialog.findViewById(R.id.tvRoomEnd);
@@ -8440,12 +8596,18 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         rl_teams_layout_room.setVisibility(View.GONE);
 
         capacityRoomBlock = bottomSheetDialog.findViewById(R.id.capacityRoomBlock);
-        capacityRoomBlock.setVisibility(View.GONE);
+        capacityRoomBlock.setVisibility(View.VISIBLE);
+
+        meetingRoomStatusBlock.setVisibility(View.VISIBLE);
+        meetingAvaliable.setText("Booked by me");
+        tv_user_status_room.setImageDrawable(getResources().getDrawable(R.drawable.status_booked_byme));
 
 
-        roomTitle.setText("Edit your booking");
 
-
+        amenitiesBlock=bottomSheetDialog.findViewById(R.id.amenitiesBlock);
+        meetingDelete=bottomSheetDialog.findViewById(R.id.meetingDelete);
+        meetingDelete.setVisibility(View.VISIBLE);
+        roomLocation=bottomSheetDialog.findViewById(R.id.roomLocation);
         startRoomTime = bottomSheetDialog.findViewById(R.id.tvRoomStartTime);
         endTRoomime = bottomSheetDialog.findViewById(R.id.tvRoomEndTime);
         showTvRoomEndTime = bottomSheetDialog.findViewById(R.id.showTvRoomEndTime);
@@ -8490,7 +8652,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         editRoomBookingBack = bottomSheetDialog.findViewById(R.id.editRoomBookingBack);
         tvMeetingRoomDescription = bottomSheetDialog.findViewById(R.id.meetingRoomDescription);
         roomTitle = bottomSheetDialog.findViewById(R.id.roomTitle);
-        TextView meetingAvaliable = bottomSheetDialog.findViewById(R.id.meetingAvaliable);
+        //TextView meetingAvaliable = bottomSheetDialog.findViewById(R.id.meetingAvaliable);
 
         TextView select = bottomSheetDialog.findViewById(R.id.select_desk_room);
 
@@ -8511,6 +8673,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         rvParticipant.setLayoutManager(linearLayoutManager);
         rvParticipant.setHasFixedSize(true);
 
+
+        //CR2
+        roomTitle.setText(meetingListToEditResponse.getMeetingRoomName());
+        roomLocation.setText(binding.searchLocate.getText().toString());
+        amenitiesBlock.setVisibility(View.VISIBLE);
+
+
         //Language
         tvRoomStart.setText(appKeysPage.getStart());
         tvRoomEnd.setText(appKeysPage.getEnd());
@@ -8519,18 +8688,28 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         editRoomBookingBack.setText(appKeysPage.getBack());
         etSubject.setHint(meetingRoomsLanguage.getSubject());
         etComments.setHint(appKeysPage.getComments());
-        meetingAvaliable.setText(global.getAvailable());
+        //meetingAvaliable.setText(global.getAvailable());
 
 
-        showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " • " + startRoomTime.getText().toString());
+        //showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " • " + startRoomTime.getText().toString());
+        showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(startRoomTime.getText().toString()));
 
 
         //Language
         tvMeetingRoomDescription.setText(appKeysPage.getDescription());
 
+        meetingDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onMeetingDeleteClick(meetingListToEditResponse);
+                bottomSheetDialog.dismiss();
+            }
+        });
+
 
         //New...
-        String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
+        //I commended on 16-12-2022
+       /* String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
         String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
         String CountryName = SessionHandler.getInstance().get(getContext(), AppConstants.COUNTRY_NAME);
         if (CountryName == null && buildingName == null && floorName == null) {
@@ -8542,7 +8721,31 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             roomDate.setText(CountryName + "," + buildingName + "," + floorName);
             meetingRoomLocation.setText(CountryName + "," + buildingName + "," + floorName);
 
+        }*/
+
+        roomDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()));
+
+
+
+        if (amenitiesList.size() > 0) {
+            meetingAmenitiesChipGroup.setVisibility(View.VISIBLE);
+            for (int i = 0; i < amenitiesList.size(); i++) {
+
+                Chip AminitiesChip = new Chip(getContext());
+                AminitiesChip.setText(amenitiesList.get(i));
+                AminitiesChip.setCheckable(false);
+                AminitiesChip.setClickable(false);
+
+                AminitiesChip.setTextAppearance(R.style.chipText);
+                AminitiesChip.setChipBackgroundColorResource(R.color.figmaBgGrey);
+                AminitiesChip.setTextColor(getContext().getResources().getColor(R.color.figmaBlack));
+
+                meetingAmenitiesChipGroup.addView(AminitiesChip);
+
+
+            }
         }
+
 
         if (amenitiesList.size() > 0) {
             list_item.setVisibility(View.VISIBLE);
@@ -8894,7 +9097,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     subCmtLay.setVisibility(View.GONE);
                     child_layout.setVisibility(View.VISIBLE);
-                    roomDate.setText(buildingName + "," + floorName);
+                    //roomDate.setText(buildingName + "," + floorName);
+
+                    editRoomBookingContinue.setText("Continue");
+                    editRoomBookingBack.setText("Cancel");
+
+
                     page = 1;
                 }
             }
@@ -8904,7 +9112,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
                 if (page == 1) {
-
+                    editRoomBookingContinue.setText("Continue");
+                    editRoomBookingBack.setText("Cancel");
                     boolean status = true;
 
                     if (startRoomTime.getText().toString().equals("")) {
@@ -8948,10 +9157,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                             startWithAMOrPM + "to" + showTvRoomEndTime.getText().toString());
 
                     page = 2;
+                    editRoomBookingContinue.setText("Save Changes");
+                    editRoomBookingBack.setText("Back");
 
                 } else {
                     boolean status = true;
-
                     if (startRoomTime.getText().toString().equals("")) {
                         Toast.makeText(getContext(), "Please Select Start Time", Toast.LENGTH_LONG).show();
                         status = false;

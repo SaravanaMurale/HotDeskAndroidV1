@@ -237,7 +237,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_39sdp"
             android:text="@string/cancel"
             android:textColor="@color/black"
             android:textSize="@dimen/_15sdp"

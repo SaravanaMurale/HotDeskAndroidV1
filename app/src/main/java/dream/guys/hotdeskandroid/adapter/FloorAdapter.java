@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
-import dream.guys.hotdeskandroid.ui.book.BookFragment;
+import dream.guys.hotdeskandroid.ui.book.*;
 import dream.guys.hotdeskandroid.ui.locate.LocateFragment;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;

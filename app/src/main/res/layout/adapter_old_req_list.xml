@@ -446,10 +446,12 @@
                         android:visibility="gone"/>
 
                     <CheckBox
+                        android:id="@+id/checkBox"
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="@dimen/_20sdp"
-                        android:id="@+id/checkBox"
-                        android:visibility="visible"/>
+                        android:visibility="visible"
+                        android:buttonTint="@color/figmaBlueText"
+                        />
 
                 </RelativeLayout>
 
