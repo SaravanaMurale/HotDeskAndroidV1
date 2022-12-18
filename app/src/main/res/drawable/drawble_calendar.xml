@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:drawable="@drawable/locate_calender"
-        android:width="@dimen/_16sdp"
-        android:height="@dimen/_16sdp">
+        android:width="@dimen/_18sdp"
+        android:height="@dimen/_18sdp">
     </item>
 </layer-list>

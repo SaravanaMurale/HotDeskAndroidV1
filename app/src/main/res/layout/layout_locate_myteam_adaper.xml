@@ -29,7 +29,6 @@
                 android:layout_height="@dimen/_10sdp"
                 android:layout_alignRight="@+id/locateMyTeamProfiles"
                 android:layout_alignBottom="@+id/locateMyTeamProfiles"
-                android:layout_marginBottom="@dimen/_5sdp"
                 android:src="@drawable/online" />
 
 

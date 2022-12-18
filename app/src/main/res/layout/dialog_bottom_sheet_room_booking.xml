@@ -520,12 +520,11 @@
             <EditText
                 android:id="@+id/etParticipants"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_30sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
                 android:hint="@string/attendeesInternal"
-                android:layout_marginVertical="@dimen/_5sdp"
-                android:paddingHorizontal="@dimen/_15sdp"
-                android:paddingVertical="@dimen/_10sdp"
+                android:paddingLeft="@dimen/_12sdp"
+
                 />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -545,12 +544,12 @@
             <EditText
                     android:id="@+id/externalAttendees"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_30sdp"
                     android:background="@drawable/rectangle_greybg_with_corner"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:paddingHorizontal="@dimen/_15sdp"
-                    android:paddingVertical="@dimen/_10sdp"
                     android:hint="@string/attendeesExternal"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:paddingLeft="@dimen/_12sdp"
+
                     />
 
             <TextView
@@ -566,12 +565,11 @@
             <EditText
                 android:id="@+id/etSubject"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_30sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
                 android:hint="@string/subject"
-                android:layout_marginVertical="@dimen/_5sdp"
-                android:paddingHorizontal="@dimen/_15sdp"
-                android:paddingVertical="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:paddingLeft="@dimen/_12sdp"
                 />
 
             <EditText
@@ -580,9 +578,8 @@
                 android:layout_height="@dimen/_60sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
                 android:hint="@string/comment_opt"
-                android:layout_marginVertical="@dimen/_5sdp"
-                android:paddingHorizontal="@dimen/_15sdp"
-                android:paddingVertical="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:paddingLeft="@dimen/_12sdp"
                 android:gravity="left|top"
                 />
 

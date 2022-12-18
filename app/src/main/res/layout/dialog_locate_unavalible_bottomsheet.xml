@@ -20,12 +20,22 @@
         android:id="@+id/unAvalibaleDeskName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/_3sdp"
+        android:layout_marginVertical="@dimen/_5sdp"
         android:text="Desk-001"
         android:textSize="26dp"
 
         android:textColor="@color/figmaBlack"
          />
+
+        <TextView
+            android:id="@+id/unAvaliableDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location1,Location2"
+            android:theme="@style/TextBold"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:visibility="gone"
+            />
 
     <TextView
         android:id="@+id/unAvaliableLocate"
@@ -34,7 +44,7 @@
         android:layout_marginBottom="@dimen/_10sdp"
         android:text="Location1,Location2"
         android:theme="@style/TextBold"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_3sdp"
         />
 
 

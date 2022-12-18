@@ -83,6 +83,11 @@
         android:outlineSpotShadowColor="@color/figmaGrey"
         android:visibility="invisible" />
 
+    <TextView
+        android:id="@+id/locateRoomTitile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
 
     <!--Locate Header-->
     <RelativeLayout
@@ -93,7 +98,7 @@
         <TextView
             android:id="@+id/searchLocate"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_28sdp"
             android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_19sdp"
@@ -103,9 +108,9 @@
             android:gravity="center_vertical"
             android:hint="Choose Location"
             android:paddingStart="@dimen/_11sdp"
-            android:paddingTop="@dimen/_5sdp"
-            android:paddingEnd="@dimen/_11sdp"
-            android:paddingBottom="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_13sdp"
+            android:paddingTop="@dimen/_6sdp"
+            android:paddingBottom="@dimen/_7sdp"
             android:textColorHint="@color/figmaBlack"
             android:textSize="@dimen/_11sdp" />
 
@@ -121,9 +126,11 @@
             android:background="@drawable/rectangle_bg_with_corner"
             android:drawableRight="@drawable/locate_calender"
             android:paddingLeft="@dimen/_11sdp"
-            android:paddingTop="@dimen/_5sdp"
+
             android:paddingRight="@dimen/_11sdp"
-            android:paddingBottom="@dimen/_5sdp"
+            android:paddingTop="@dimen/_7sdp"
+            android:paddingBottom="@dimen/_7sdp"
+
             android:text="Wed 4"
             android:textColor="@color/figmaBlack"
             android:textSize="@dimen/_11sdp"
@@ -137,11 +144,13 @@
             android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_12sdp"
             android:background="@drawable/rectangle_bg_with_corner"
-            android:drawableRight="@drawable/locate_calender"
+            android:drawableRight="@drawable/drawble_calendar"
             android:paddingStart="@dimen/_11sdp"
-            android:paddingTop="@dimen/_5sdp"
+            android:paddingTop="@dimen/_7sdp"
+
             android:paddingEnd="@dimen/_11sdp"
-            android:paddingBottom="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_7sdp"
+
             android:text="Wed 4"
             android:textColor="@color/figmaBlack"
             android:textSize="@dimen/_11sdp"
@@ -152,18 +161,21 @@
 
         <!--StartAndEndTime-->
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_147sdp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/searchLocate"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="@dimen/_7sdp"
+            android:layout_marginLeft="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginEnd="@dimen/_19sdp"
             android:background="@drawable/rectangle_bg_with_corner"
             android:paddingStart="@dimen/_11sdp"
-            android:paddingTop="@dimen/_5sdp"
             android:paddingEnd="@dimen/_11sdp"
-            android:paddingBottom="@dimen/_5sdp"
+
+
+            android:paddingTop="@dimen/_7sdp"
+            android:paddingBottom="@dimen/_7sdp"
+
             tools:ignore="MissingConstraints">
 
 
@@ -180,7 +192,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/_4sdp"
+                android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_toRightOf="@id/tvStartLocate"
                 android:text="8:00"
                 android:textColor="@color/figmaBlack"
@@ -193,8 +205,8 @@
                 android:layout_width="@dimen/_1sdp"
                 android:layout_height="14dp"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/_11sdp"
-                android:layout_marginEnd="@dimen/_11sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_toRightOf="@id/locateStartTime"
                 android:background="@color/grey"
 
@@ -205,7 +217,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/views"
+                android:layout_marginRight="@dimen/_6sdp"
+                android:layout_toLeftOf="@+id/locateEndTime"
                 android:text="End"
                 android:textSize="@dimen/_9sdp"
 
@@ -215,9 +228,9 @@
                 android:id="@+id/locateEndTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_toRightOf="@+id/tvLocateEndTime"
+                android:layout_marginRight="@dimen/_1sdp"
                 android:text="17:30"
                 android:textColor="@color/figmaBlack"
                 android:textSize="@dimen/_10sdp" />
@@ -240,22 +253,22 @@
 
         <ImageView
             android:id="@+id/ivLocateMyTeam"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
+            android:layout_width="@dimen/_37sdp"
+            android:layout_height="@dimen/_37sdp"
             android:src="@drawable/locate_myteam" />
 
         <ImageView
             android:id="@+id/ivLocateFilter"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
+            android:layout_width="@dimen/_37sdp"
+            android:layout_height="@dimen/_37sdp"
             android:layout_below="@+id/ivLocateMyTeam"
             android:layout_marginTop="@dimen/_5sdp"
             android:src="@drawable/locate_filter" />
 
         <ImageView
             android:id="@+id/ivLocateKey"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
+            android:layout_width="@dimen/_37sdp"
+            android:layout_height="@dimen/_37sdp"
             android:layout_below="@+id/ivLocateFilter"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_30sdp"
@@ -468,13 +481,15 @@
             android:id="@+id/myTeamHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_10sdp"
             >
 
             <RelativeLayout
                 android:id="@+id/header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_5sdp"
+
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginRight="@dimen/_5sdp">
 
@@ -483,10 +498,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:text="MyTeam"
+                    android:text="My team"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/_15sdp" />
+                    android:textSize="@dimen/_20sdp" />
 
                 <TextView
                     android:id="@+id/tvPMOOffice"
@@ -517,12 +531,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/header"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
                 android:drawableLeft="@drawable/search_1px"
-                android:hint="   Search"
+                android:hint=" Search"
                 android:paddingLeft="@dimen/_10sdp"
                 android:drawablePadding="@dimen/_5sdp"
                 android:paddingTop="@dimen/_7sdp"
@@ -545,7 +558,6 @@
                 android:layout_height="@dimen/_40sdp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginLeft="@dimen/_10sdp"
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:text="@string/close"

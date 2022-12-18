@@ -883,12 +883,15 @@ public class LoginActivity extends AppCompatActivity {
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.COUNTRY_NAME_CHECK, CountryName);
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.BUILDING_CHECK, buildingName);
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FLOOR_CHECK, floorName);
+                    SessionHandler.getInstance().save(LoginActivity.this,AppConstants.FINAL_FLOOR_CHECK,CityName);
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FULLPATHLOCATION_CHECK, fullPathLocation);
+
 
 
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.COUNTRY_NAME, CountryName);
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.BUILDING, buildingName);
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FLOOR, floorName);
+                    SessionHandler.getInstance().save(LoginActivity.this,AppConstants.FINAL_FLOOR,CityName);
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FULLPATHLOCATION, fullPathLocation);
 
                     launchWelcomeActivity();
