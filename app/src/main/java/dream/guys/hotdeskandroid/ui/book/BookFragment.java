@@ -96,6 +96,7 @@ import dream.guys.hotdeskandroid.adapter.ParkingSpotListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.ParticipantNameShowAdapter;
 import dream.guys.hotdeskandroid.adapter.RoomListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
+import dream.guys.hotdeskandroid.controllers.EditCarParkController;
 import dream.guys.hotdeskandroid.controllers.EditMeetingRoomController;
 import dream.guys.hotdeskandroid.controllers.OtherBookingController;
 import dream.guys.hotdeskandroid.controllers.EditDeskController;
@@ -2462,6 +2463,8 @@ public class BookFragment extends Fragment implements
 
         TextView select=roomBottomSheet.findViewById(R.id.select_desk_room);
 
+        TextView tvDelete=roomBottomSheet.findViewById(R.id.delete_text);
+        tvDelete.setVisibility(View.GONE);
         TextView tvComments=roomBottomSheet.findViewById(R.id.tv_comments);
         EditText edComments=roomBottomSheet.findViewById(R.id.comments);
         EditText commentRegistration=roomBottomSheet.findViewById(R.id.ed_registration);
@@ -2731,6 +2734,7 @@ public class BookFragment extends Fragment implements
                 if (editDeskBookingDetails.getDate()!=null)
                     date.setText(""+Utils.calendarDay10thMonthYearformat(editDeskBookingDetails.getDate()));
 
+                tvDelete.setVisibility(View.VISIBLE);
                 repeatBlock.setVisibility(View.GONE);
                 select.setVisibility(View.GONE);
                 commentBlock.setVisibility(View.GONE);
@@ -2781,6 +2785,7 @@ public class BookFragment extends Fragment implements
                 selectedDeskId = parkingSpotModelList.get(0).getId();
                 try {
                     locationAddress.setText(""+parkingSpotModelList.get(0).getLocation().getName());
+                    locationAddressTop.setText(""+parkingSpotModelList.get(0).getLocation().getName());
                     tv_description.setText(""+parkingSpotModelList.get(0).getDescription());
                 } catch (Exception e){
 
@@ -2894,6 +2899,12 @@ public class BookFragment extends Fragment implements
                 }
             }
 
+        tvDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteCar(editDeskBookingDetails.getCalId());
+            }
+        });
         showcheckInDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -4757,6 +4768,10 @@ public class BookFragment extends Fragment implements
 
     @Override
     public void onCarEditClicks(CarParkListToEditResponse carParkBooking) {
+        if(bookEditBottomSheet!=null){
+            bookEditBottomSheet.dismiss();
+        }
+
         EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
         editDeskBookingDetails.setCalId(carParkBooking.getId());
         editDeskBookingDetails.setParkingSlotId(carParkBooking.getParkingSlotId());
@@ -4766,7 +4781,10 @@ public class BookFragment extends Fragment implements
         editDeskBookingDetails.setVehicleRegNumber(carParkBooking.getVehicleRegNumber());
         editDeskBookingDetails.setParkingSlotCode(carParkBooking.getParkingSlotName());
 
-        getParkingSpotList(""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID),editDeskBookingDetails,"edit");
+
+        EditCarParkController editCarParkController = new EditCarParkController(activityContext, context,
+                editDeskBookingDetails,AppConstants.BOOKFRAGMENTINSTANCESTRING,calSelectedDate);
+//        getParkingSpotList(""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID),editDeskBookingDetails,"edit");
 
 
     }
@@ -4797,7 +4815,29 @@ public class BookFragment extends Fragment implements
 
 
     }
+    public void deleteCar(int id){
 
+        JsonObject jsonOuterObject = new JsonObject();
+        JsonObject jsonInnerObject = new JsonObject();
+        JsonObject jsonChangesObject = new JsonObject();
+        JsonArray jsonChangesetArray = new JsonArray();
+        JsonArray jsonDeletedIdsArray = new JsonArray();
+        jsonOuterObject.addProperty("parkingSlotId",id);
+
+        BookingsRequest bookingsRequest = new BookingsRequest();
+        ArrayList<BookingsRequest.ChangeSets> list =new ArrayList<>();
+        ArrayList<Integer> list1 =new ArrayList<>();
+//        list1.add(editDeskBookingDetails.getCalId());
+        jsonDeletedIdsArray.add(id);
+        jsonOuterObject.add("changesets", jsonChangesetArray);
+        jsonOuterObject.add("deletedIds", jsonDeletedIdsArray);
+
+        //System.out.println("json un"+jsonOuterObject.toString());
+
+        editBookingCall(jsonOuterObject,0,3,"delete");
+
+
+    }
     @Override
     public void onSelectParking(int deskId, String deskName,String location,String description) {
         deskRoomName.setText(""+deskName);
@@ -5697,7 +5737,7 @@ public class BookFragment extends Fragment implements
 
                         defaultLocationcheck = 1;
                         initLoadFloorDetails(canvasss);
-                        getAvaliableDeskDetails("3",calSelectedDate);
+                        getAvaliableDeskDetails("5",calSelectedDate);
                         bottomSheetDialog.dismiss();
                     }else {
                         Utils.toastMessage(getContext(),"Please Select Floor");

@@ -66,6 +66,7 @@ import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
+import dream.guys.hotdeskandroid.controllers.EditCarParkController;
 import dream.guys.hotdeskandroid.controllers.EditDeskController;
 import dream.guys.hotdeskandroid.controllers.EditMeetingRoomController;
 import dream.guys.hotdeskandroid.databinding.FragmentHomeBinding;
@@ -77,6 +78,7 @@ import dream.guys.hotdeskandroid.model.response.AmenitiesResponse;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.BookingListResponse;
+import dream.guys.hotdeskandroid.model.response.CarParkListToEditResponse;
 import dream.guys.hotdeskandroid.model.response.ImageResponse;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
@@ -1479,7 +1481,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         } else if (click.equals(AppConstants.EDIT)) {
             //Edit
             System.out.println("CarParkingEditClicked");
-            EditBookingDetails editDeskBookingDetails = new EditBookingDetails();
+            /*EditBookingDetails editDeskBookingDetails = new EditBookingDetails();
             editDeskBookingDetails.setCalId(carParkingEntriesModel.getId());
             editDeskBookingDetails.setParkingSlotId(carParkingEntriesModel.getParkingSlotId());
             editDeskBookingDetails.setEditStartTTime(Utils.splitTime(carParkingEntriesModel.getFrom()));
@@ -1488,7 +1490,63 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             editDeskBookingDetails.setVehicleRegNumber(carParkingEntriesModel.getVehicleRegNumber());
             editDeskBookingDetails.setParkingSlotCode(carParkingEntriesModel.getParkingSlotCode());
             editBookingUsingBottomSheet(editDeskBookingDetails, 3, position);
+            */
+            getCarParListToEdit(date,date,carParkingEntriesModel.getId());
+
+
+
+
         }
+    }
+
+    private void getCarParListToEdit(Date startDate, Date endDate, int id) {
+        if (Utils.isNetworkAvailable(getActivity())) {
+            dialog= ProgressDialog.showProgressBar(getContext());
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<CarParkListToEditResponse>> call = apiService.getCarParkListToEdit(Utils.getYearMonthDateFormat(startDate)+"T00:00:00.000Z", Utils.getYearMonthDateFormat(endDate)+"T00:00:00.000Z");
+            call.enqueue(new Callback<List<CarParkListToEditResponse>>() {
+                @Override
+                public void onResponse(Call<List<CarParkListToEditResponse>> call, Response<List<CarParkListToEditResponse>> response) {
+
+                    List<CarParkListToEditResponse> carParkingForEditResponse = response.body();
+//                    CallCarBookingEditList(carParkingForEditResponse, "5");
+                    loop:
+                    for (CarParkListToEditResponse list:carParkingForEditResponse) {
+                        if (list.getId() == id){
+                            callCarEditController(list);
+                            break loop;
+                        }
+                    }
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                }
+
+                @Override
+                public void onFailure(Call<List<CarParkListToEditResponse>> call, Throwable t) {
+                    ProgressDialog.dismisProgressBar(getContext(),dialog);
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
+
+    }
+
+    private void callCarEditController(CarParkListToEditResponse carParkBooking) {
+        EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
+        editDeskBookingDetails.setCalId(carParkBooking.getId());
+        editDeskBookingDetails.setParkingSlotId(carParkBooking.getParkingSlotId());
+        editDeskBookingDetails.setEditStartTTime(Utils.splitTime(carParkBooking.getFrom()));
+        editDeskBookingDetails.setEditEndTime(Utils.splitTime(carParkBooking.getMyto()));
+        editDeskBookingDetails.setDate(Utils.convertStringToDateFormet(carParkBooking.getDate()));
+        editDeskBookingDetails.setVehicleRegNumber(carParkBooking.getVehicleRegNumber());
+        editDeskBookingDetails.setParkingSlotCode(carParkBooking.getParkingSlotName());
+
+
+        EditCarParkController editCarParkController = new EditCarParkController(activityContext, context,
+                editDeskBookingDetails,AppConstants.BOOKFRAGMENTINSTANCESTRING,
+                Utils.getISO8601format(Utils.convertStringToDateFormet(carParkBooking.getDate())));
     }
 
     @Override

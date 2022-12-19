@@ -105,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
 
     //New...
     ArrayList<DAOActiveLocation> activeLocationArrayList = new ArrayList<>();
-    int floorParentID = 0, cityPlaceID = 0, cityPlaceParentID = 0, cityID = 0, cityParentID = 0, locationID = 0, locationParentID = 0,
+    int defaultLocationIdForCalendar=0,floorParentID = 0, cityPlaceID = 0, cityPlaceParentID = 0, cityID = 0, cityParentID = 0, locationID = 0, locationParentID = 0,
             floorPositon;
 
     String CountryName = null;
@@ -827,6 +827,7 @@ public class LoginActivity extends AppCompatActivity {
                     activeLocationArrayList = response.body();
 
                     floorParentID = defaultLocation.getParentLocationId();
+                    defaultLocationIdForCalendar = defaultLocation.getId();
                     Integer id = defaultLocation.getId();
                     floorName = defaultLocation.getName();
 
@@ -846,7 +847,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                     //please add this for calendar default locations #Bala
-                    SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.LOCATION_ID, locationID);
+                    SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.LOCATION_ID, defaultLocationIdForCalendar);
                     SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.PARENT_ID_CHECK, floorParentID);
                     SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.FLOOR_POSITION_CHECK, floorPositon);
 
