@@ -1888,6 +1888,23 @@ public class Utils {
         return profileData;
     }
 
+    public static String showCalendarWithFullMonth(String d) {
+        String date = d;
+        SimpleDateFormat spf = new SimpleDateFormat("yyyy-MM-dd");
+        Date newDate = null;
+        try {
+            newDate = spf.parse(d);
+            spf = new SimpleDateFormat("E, dd'th' MMMM");
+            if (newDate != null) {
+                date = spf.format(newDate);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return date;
+    }
+
     public static String showCalendarDate(String d) {
         String date = d;
         SimpleDateFormat spf = new SimpleDateFormat("yyyy-MM-dd");

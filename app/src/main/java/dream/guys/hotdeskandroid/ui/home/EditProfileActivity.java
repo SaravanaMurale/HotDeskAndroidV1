@@ -75,6 +75,7 @@ import dream.guys.hotdeskandroid.model.response.ProfilePicResponse;
 import dream.guys.hotdeskandroid.model.response.ProfileResponse;
 import dream.guys.hotdeskandroid.model.response.TeamDeskResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
+import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.settings.CountryListActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -111,6 +112,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     String CityName = null;
     String buildingName = null;
     String floorName = null;
+    String finFloorName="";
     String fullPathLocation = null;
 
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
@@ -457,6 +459,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
                                             if (id.equals(selectFloors.get(i).getId())) {
                                                 floorPositon = i;
+                                                finFloorName=selectFloors.get(i).getName();
                                                 break;
                                             }
                                         }
@@ -520,9 +523,9 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                                         carPark.setTimeZoneId(finalLocationArrayList.get(position).getTimeZoneId());
                                         carPark.setParentLocationId(floorParentID);
 
-                                        profileData.setDefaultCarParkLocation(carPark);
+                                        //profileData.setDefaultCarParkLocation(carPark);
 
-                                        validateData();
+                                        //validateData();
 
                                     }
                                 }
@@ -1145,12 +1148,19 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         //To load Default location
         SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.COUNTRY_NAME_CHECK, CountryName);
         SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.BUILDING_CHECK, buildingName);
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FLOOR_CHECK, floorName);
+
+        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FLOOR_CHECK, buildingName);
+        SessionHandler.getInstance().save(EditProfileActivity.this,AppConstants.FINAL_FLOOR_CHECK,finFloorName);
+
         SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FULLPATHLOCATION_CHECK, fullPathLocation);
+
 
         SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.COUNTRY_NAME, CountryName);
         SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.BUILDING, buildingName);
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FLOOR, floorName);
+
+        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FLOOR, buildingName);
+        SessionHandler.getInstance().save(EditProfileActivity.this,AppConstants.FINAL_FLOOR,finFloorName);
+
         SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FULLPATHLOCATION, fullPathLocation);
 
     }

@@ -188,6 +188,7 @@ public class SettingsActivity extends AppCompatActivity {
                 SessionHandler.getInstance().remove(context, AppConstants.FULLPATHLOCATION);
                 SessionHandler.getInstance().remove(context, AppConstants.PARENT_ID);
                 SessionHandler.getInstance().remove(context, AppConstants.TEAM_ID);
+                SessionHandler.getInstance().remove(context,AppConstants.FINAL_FLOOR);
 
                 //To Load Defaul Location
                 SessionHandler.getInstance().remove(context, AppConstants.PARENT_ID_CHECK);
@@ -197,6 +198,7 @@ public class SettingsActivity extends AppCompatActivity {
                 SessionHandler.getInstance().remove(context, AppConstants.BUILDING_CHECK);
                 SessionHandler.getInstance().remove(context, AppConstants.FLOOR_CHECK);
                 SessionHandler.getInstance().remove(context, AppConstants.FULLPATHLOCATION_CHECK);
+                SessionHandler.getInstance().remove(context,AppConstants.FINAL_FLOOR_CHECK);
 
                 SessionHandler.getInstance().remove(context,AppConstants.PIN_SETUP_DONE);
 
