@@ -6,6 +6,8 @@ import android.content.res.Configuration;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
+import com.raygun.raygun4android.RaygunClient;
+
 import dream.guys.hotdeskandroid.ui.login.SignInActivity;
 
 public class MyApp extends Application {
@@ -21,6 +23,8 @@ public class MyApp extends Application {
     public void onCreate() {
         instance = this;
         super.onCreate();
+        RaygunClient.init(this);
+        RaygunClient.enableCrashReporting();
         setNightMode(this,
                 SessionHandler.getInstance()
                         .getBoolean(this, AppConstants.DARK_MODE_CHECK));
