@@ -30,6 +30,7 @@ public class EditDefaultAssetAdapter extends RecyclerView.Adapter<EditDefaultAss
     List<DefaultAssetResponse> tempList;
     BottomSheetDialog bottomSheetDialog;
     OnDefaultAssetSelectable onDefaultAssetSelectable;
+    private String selectedItem;
 
     public interface OnDefaultAssetSelectable {
 
@@ -38,13 +39,14 @@ public class EditDefaultAssetAdapter extends RecyclerView.Adapter<EditDefaultAss
 
     }
 
-    public EditDefaultAssetAdapter(Context context, List<DefaultAssetResponse> defaultAssetResponseList, BottomSheetDialog bottomSheetDialog, OnDefaultAssetSelectable onDefaultAssetSelectable) {
+    public EditDefaultAssetAdapter(Context context, List<DefaultAssetResponse> defaultAssetResponseList, BottomSheetDialog bottomSheetDialog, OnDefaultAssetSelectable onDefaultAssetSelectable, String selectedItem) {
 
         this.context = context;
         this.defaultAssetResponseList = defaultAssetResponseList;
         this.tempList = defaultAssetResponseList;
         this.bottomSheetDialog = bottomSheetDialog;
         this.onDefaultAssetSelectable = onDefaultAssetSelectable;
+        this.selectedItem = selectedItem;
 
     }
 
@@ -58,6 +60,16 @@ public class EditDefaultAssetAdapter extends RecyclerView.Adapter<EditDefaultAss
     @Override
     public void onBindViewHolder(@NonNull EditDefaultAssetViewHolder holder, int position) {
         holder.desk_name.setText(tempList.get(position).getCode());
+
+        if (selectedItem != null && !selectedItem.isEmpty()) {
+            if (selectedItem.equalsIgnoreCase(tempList.get(position).getCode())) {
+                holder.tvSelect.setText("Selected");
+                holder.tvSelect.setTextColor(context.getResources().getColor(R.color.figmaBlack));
+            } else {
+                holder.tvSelect.setText("Select");
+                holder.tvSelect.setTextColor(context.getResources().getColor(R.color.figmaBlueText));
+            }
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +91,8 @@ public class EditDefaultAssetAdapter extends RecyclerView.Adapter<EditDefaultAss
     public class EditDefaultAssetViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_desk_name)
         TextView desk_name;
+        @BindView(R.id.tv_select)
+        TextView tvSelect;
         LinearLayout locationLayout;
 
         public EditDefaultAssetViewHolder(@NonNull View itemView) {

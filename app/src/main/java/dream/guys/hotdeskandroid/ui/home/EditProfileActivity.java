@@ -75,7 +75,6 @@ import dream.guys.hotdeskandroid.model.response.ProfilePicResponse;
 import dream.guys.hotdeskandroid.model.response.ProfileResponse;
 import dream.guys.hotdeskandroid.model.response.TeamDeskResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
-import dream.guys.hotdeskandroid.ui.login.LoginActivity;
 import dream.guys.hotdeskandroid.ui.settings.CountryListActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -353,7 +352,8 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.editDeskChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getDeskName();
+                if (binding.editDesk.getText().toString() != null)
+                    getDeskName(binding.editDesk.getText().toString());
             }
         });
 
@@ -893,7 +893,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
     }
 
-    private void getDeskName() {
+    private void getDeskName(String selectedItem) {
 
         if (Utils.isNetworkAvailable(EditProfileActivity.this)) {
             binding.locateProgressBar.setVisibility(View.VISIBLE);
@@ -914,7 +914,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
-                    callDeskBottomSheetDialogToSelectDeskCode(teamDeskResponseList);
+                    callDeskBottomSheetDialogToSelectDeskCode(teamDeskResponseList, selectedItem);
                 }
 
                 @Override
@@ -1248,7 +1248,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
     }
 
-    private void callDeskBottomSheetDialogToSelectDeskCode(List<TeamDeskResponse> teamDeskResponseList) {
+    private void callDeskBottomSheetDialogToSelectDeskCode(List<TeamDeskResponse> teamDeskResponseList, String selectedItem) {
 
         RecyclerView rvDeskRecycler;
 
@@ -1294,12 +1294,15 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
         List<DefaultAssetResponse> defaultAssetResponseList = new ArrayList<>();
         for (int i = 0; i < teamDeskResponseList.size(); i++) {
-            DefaultAssetResponse defaultAssetResponse = new DefaultAssetResponse(teamDeskResponseList.get(i).getId(), teamDeskResponseList.get(i).getDeskId(), teamDeskResponseList.get(i).getTeamId(), teamDeskResponseList.get(i).getDesk().getCode());
+            DefaultAssetResponse defaultAssetResponse = new DefaultAssetResponse(teamDeskResponseList.get(i).getId(),
+                    teamDeskResponseList.get(i).getDeskId(), teamDeskResponseList.get(i).getTeamId(),
+                    teamDeskResponseList.get(i).getDesk().getCode());
             defaultAssetResponseList.add(defaultAssetResponse);
 
         }
 
-        editDefaultAssetAdapter = new EditDefaultAssetAdapter(EditProfileActivity.this, defaultAssetResponseList, bottomSheetDialog, this);
+        editDefaultAssetAdapter = new EditDefaultAssetAdapter(EditProfileActivity.this, defaultAssetResponseList,
+                bottomSheetDialog, this, selectedItem);
         rvDeskRecycler.setAdapter(editDefaultAssetAdapter);
 
         bottomSheetDialog.show();
