@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginVertical="@dimen/_7sdp"
     app:cardElevation="0dp"
     >
     <LinearLayout
@@ -78,9 +77,10 @@
                 android:id="@+id/tv_select"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
                 android:text="Select"
+                android:textSize="18sp"
                 android:textColor="@color/figmaBlueText"
                 android:theme="@style/TextBold" />
 

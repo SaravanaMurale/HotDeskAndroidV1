@@ -6,24 +6,29 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <LinearLayout
+        android:id="@+id/tv_past_event"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_19sdp"
         android:orientation="horizontal"
+        android:visibility="gone"
+        android:gravity="center"
+
         >
         <TextView
-            android:id="@+id/tv_past_event"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_20sdp"
+            android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
             android:drawableTint="@color/figmaBlueText"
             android:text="Show Past Events"
+            android:gravity="center_vertical"
             android:theme="@style/TextRegular"
             android:textSize="14sp"
             android:textColor="@color/figmaBlueText"
-            android:visibility="gone" />
+            android:visibility="visible" />
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_19sdp"
+            android:padding="@dimen/_3sdp"
             android:src="@drawable/past_events_arrow"
             app:tint="@color/figmaBlueText" />
 

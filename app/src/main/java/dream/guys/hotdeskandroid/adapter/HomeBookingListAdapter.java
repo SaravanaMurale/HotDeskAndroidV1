@@ -831,7 +831,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         @BindView(R.id.tv_change)
         ImageView tv_change;
         @BindView(R.id.tv_past_event)
-        TextView tv_past_event;
+        LinearLayout tv_past_event;
         @BindView(R.id.today_date)
         TextView today_date;
         @BindView(R.id.tvBookingWorkingRemote)

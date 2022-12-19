@@ -915,7 +915,17 @@ public class BookFragment extends Fragment implements
         resetLayout();
         switch (i){
             case 1:
-                binding.profileBack.setText("Book a workspace");
+                if (selectedicon==4)
+                    binding.profileBack.setText("Working Remotely");
+                else if (selectedicon==5)
+                    binding.profileBack.setText("Log sickness");
+                else if (selectedicon==6)
+                    binding.profileBack.setText("Book holiday");
+                else if (selectedicon==7)
+                    binding.profileBack.setText("Book training");
+                else
+                    binding.profileBack.setText("Book a workspace");
+
                 binding.rlTime.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
                 binding.deskLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
                 binding.ivDesk.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
@@ -1026,7 +1036,17 @@ public class BookFragment extends Fragment implements
                 }
                 break;
             default:
-                binding.profileBack.setText("Book a workspace");
+                if (selectedicon==4)
+                    binding.profileBack.setText("Working Remotely");
+                else if (selectedicon==5)
+                    binding.profileBack.setText("Log sickness");
+                else if (selectedicon==6)
+                    binding.profileBack.setText("Book holiday");
+                else if (selectedicon==7)
+                    binding.profileBack.setText("Book training");
+                else
+                    binding.profileBack.setText("Book a workspace");
+
                 binding.rlTime.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
                 binding.deskLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
                 binding.ivDesk.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
