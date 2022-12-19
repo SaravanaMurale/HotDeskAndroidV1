@@ -776,10 +776,11 @@
                     android:layout_centerInParent="true"
                     android:layout_toLeftOf="@id/ivEditEmailIcon"
                     android:background="@null"
-                    android:paddingStart="@dimen/_5sdp"
+                    android:hint="Email"
+                    android:enabled="false"
                     android:imeOptions="actionDone"
                     android:inputType="text"
-                    android:text="Email"
+                    android:paddingStart="@dimen/_5sdp"
                     android:textColor="@color/figmaBlack"
                     android:theme="@style/TextRegular" />
 
@@ -811,10 +812,11 @@
                     android:layout_centerInParent="true"
                     android:layout_toLeftOf="@id/ivTeamsIcon"
                     android:background="@null"
+                    android:text="Teams"
+                    android:enabled="false"
                     android:imeOptions="actionDone"
                     android:inputType="text"
                     android:paddingStart="@dimen/_5sdp"
-                    android:text="Teams"
                     android:textColor="@color/figmaBlack"
                     android:theme="@style/TextRegular" />
 
@@ -849,7 +851,7 @@
                     android:inputType="number"
                     android:maxLength="10"
                     android:paddingStart="@dimen/_5sdp"
-                    android:text="Phone"
+                    android:hint="Phone"
                     android:textColor="@color/figmaBlack"
                     android:theme="@style/TextRegular" />
 
@@ -870,7 +872,7 @@
                 android:orientation="horizontal"
                 android:background="@drawable/rectangle_greybg_with_corner"
                 android:padding="@dimen/_6sdp"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_marginVertical="@dimen/_5sdp">
 
                 <EditText

@@ -390,7 +390,7 @@ public interface ApiInterface {
 
     //Update Setting
     @POST("api/account/UpdateProfileSettings")
-    Call<BaseResponse> updateSetting(@Body UserDetailsResponse userDetailsResponse);
+    Call<ProfileResponse> updateSetting(@Body UserDetailsResponse userDetailsResponse);
 
     //UpdateProfile Pic
     @POST("api/image/user")

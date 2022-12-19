@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -71,6 +72,7 @@ import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
 import dream.guys.hotdeskandroid.model.response.DAOCountryList;
 import dream.guys.hotdeskandroid.model.response.DefaultAssetResponse;
 import dream.guys.hotdeskandroid.model.response.ProfilePicResponse;
+import dream.guys.hotdeskandroid.model.response.ProfileResponse;
 import dream.guys.hotdeskandroid.model.response.TeamDeskResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import dream.guys.hotdeskandroid.ui.settings.CountryListActivity;
@@ -122,6 +124,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     String notifyStartTimeChange = "";
     String notifyEndTimeChange = "";
     private static final int PERMISSION_REQUEST_CODE = 1;
+    EditDefaultAssetAdapter editDefaultAssetAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -384,11 +387,16 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
             binding.editName.setText(profileData.getFullName());
             binding.editDisplayName.setText(profileData.getFullName());
-            if (profileData.getCurrentTeam() != null) {
+           /* if (profileData.getCurrentTeam() != null) {
                 binding.tvEditTeams.setText(profileData.getCurrentTeam().getCurrentTeamName());
+            }*/
+
+            if (profileData.getPhoneNumber() != null) {
+                binding.tvEditPhone.setText(profileData.getPhoneNumber());
             }
-            binding.tvEditPhone.setText(profileData.getPhoneNumber());
-            binding.tvEditEmail.setText(profileData.getEmail());
+             if (profileData.getEmail() != null) {
+                 binding.tvEditEmail.setText(profileData.getEmail());
+            }
 
             binding.editStartTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
             binding.editEndTime.setText(Utils.splitTime(profileData.getWorkHoursTo()));
@@ -561,24 +569,24 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.ivEditEmailIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (profileData.getEmail() != null && !profileData.getEmail().isEmpty())
-                    Utils.openMail(EditProfileActivity.this, profileData.getEmail());
+               /* if (profileData.getEmail() != null && !profileData.getEmail().isEmpty())
+                    Utils.openMail(EditProfileActivity.this, profileData.getEmail());*/
             }
         });
 
         binding.tvEditPhoneIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (profileData.getPhoneNumber() != null && !profileData.getPhoneNumber().isEmpty())
-                    Utils.openDial(EditProfileActivity.this, profileData.getPhoneNumber());
+               /* if (profileData.getPhoneNumber() != null && !profileData.getPhoneNumber().isEmpty())
+                    Utils.openDial(EditProfileActivity.this, profileData.getPhoneNumber());*/
             }
         });
 
         binding.ivEditEmailIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (profileData.getDeskPhoneNumber() != null && !profileData.getDeskPhoneNumber().isEmpty())
-                    Utils.openMail(EditProfileActivity.this, profileData.getDeskPhoneNumber());
+               /* if (profileData.getDeskPhoneNumber() != null && !profileData.getDeskPhoneNumber().isEmpty())
+                    Utils.openMail(EditProfileActivity.this, profileData.getDeskPhoneNumber());*/
             }
         });
 
@@ -1068,25 +1076,26 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         if (Utils.isNetworkAvailable(EditProfileActivity.this)) {
             binding.locateProgressBar.setVisibility(View.VISIBLE);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<BaseResponse> call = apiService.updateSetting(profileData);
-            call.enqueue(new Callback<BaseResponse>() {
+            Call<ProfileResponse> call = apiService.updateSetting(profileData);
+            call.enqueue(new Callback<ProfileResponse>() {
                 @Override
-                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
 
                     //ProgressDialog.dismisProgressBar(getContext(),dialog);
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
                     binding.profileUpdate.setVisibility(View.GONE);
                     binding.profileEdit.setVisibility(View.GONE);
 
-
+                    Toast.makeText(EditProfileActivity.this,"Profile updated", Toast.LENGTH_SHORT).show();
                     updateProfileValue();
+                    closeKeyboard();
                     //makeDisable();
 
                 }
 
                 @Override
-                public void onFailure(Call<BaseResponse> call, Throwable t) {
-
+                public void onFailure(Call<ProfileResponse> call, Throwable t) {
+                    Toast.makeText(EditProfileActivity.this,"Profile updated", Toast.LENGTH_SHORT).show();
                     closeKeyboard();
                     updateProfileValue();
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
@@ -1156,9 +1165,9 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         //binding.editDeskChange.setEnabled(true);
         binding.editParkChange.setEnabled(true);
         binding.editRoomChange.setEnabled(true);
-        binding.tvEditEmail.setEnabled(true);
+        binding.tvEditEmail.setEnabled(false);
         binding.tvEditPhone.setEnabled(true);
-        binding.tvEditTeams.setEnabled(true);
+        binding.tvEditTeams.setEnabled(false);
         binding.editVehicleNum.setEnabled(true);
         binding.tvEditTel.setEnabled(true);
         binding.changeCountry.setEnabled(true);
@@ -1230,8 +1239,9 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     private void callDeskBottomSheetDialogToSelectDeskCode(List<TeamDeskResponse> teamDeskResponseList) {
 
         RecyclerView rvDeskRecycler;
-        EditDefaultAssetAdapter editDefaultAssetAdapter;
+
         TextView bsRepeatBack;
+        EditText bsGeneralSearch;
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_select_desk,
@@ -1239,6 +1249,8 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
         rvDeskRecycler = bottomSheetDialog.findViewById(R.id.desk_list_select_recycler);
         bsRepeatBack = bottomSheetDialog.findViewById(R.id.bsDeskBack);
+        bsGeneralSearch = bottomSheetDialog.findViewById(R.id.bsGeneralSearch);
+        bottomSheetDialog.findViewById(R.id.filter_layout).setVisibility(View.GONE);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvDeskRecycler.setLayoutManager(linearLayoutManager);
@@ -1251,6 +1263,22 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             }
         });
 
+        bsGeneralSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editDefaultAssetAdapter.getFilter().filter(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         List<DefaultAssetResponse> defaultAssetResponseList = new ArrayList<>();
         for (int i = 0; i < teamDeskResponseList.size(); i++) {
