@@ -39,7 +39,7 @@
 			android:textAppearance="@android:style/TextAppearance.Small"
 			android:textAlignment="center"
 			android:textColor="@color/teal_200"
-			android:text="11" />
+			android:text="0" />
 
 	</LinearLayout>
 

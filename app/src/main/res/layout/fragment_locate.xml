@@ -641,7 +641,7 @@
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_toRightOf="@+id/locateMyTeamProfile"
-                android:text="Location1,Location2" />
+                android:text="" />
 
 
             <TextView

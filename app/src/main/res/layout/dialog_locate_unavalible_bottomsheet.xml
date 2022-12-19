@@ -31,7 +31,7 @@
             android:id="@+id/unAvaliableDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Location1,Location2"
+            android:text=""
             android:theme="@style/TextBold"
             android:layout_marginTop="@dimen/_2sdp"
             android:visibility="gone"
@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_10sdp"
-        android:text="Location1,Location2"
+        android:text=""
         android:theme="@style/TextBold"
         android:layout_marginTop="@dimen/_3sdp"
         />

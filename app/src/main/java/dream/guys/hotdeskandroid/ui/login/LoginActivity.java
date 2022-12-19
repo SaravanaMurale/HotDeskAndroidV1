@@ -845,6 +845,8 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
 
+                    //please add this for calendar default locations #Bala
+                    SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.LOCATION_ID, locationID);
                     SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.PARENT_ID_CHECK, floorParentID);
                     SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.FLOOR_POSITION_CHECK, floorPositon);
 

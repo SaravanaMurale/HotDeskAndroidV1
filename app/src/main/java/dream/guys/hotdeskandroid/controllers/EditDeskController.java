@@ -264,6 +264,7 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
         TextView tv_comment=deskBottomSheet.findViewById(R.id.tv_comment);
         TextView tv_repeat=deskBottomSheet.findViewById(R.id.tv_repeat);
         TextView tv_delete=deskBottomSheet.findViewById(R.id.delete_text);
+        locationAddress=deskBottomSheet.findViewById(R.id.locationAddress);
         tv_delete.setVisibility(View.VISIBLE);
         repeat = deskBottomSheet.findViewById(R.id.repeat);
         deskStatusText = deskBottomSheet.findViewById(R.id.desk_status_text);
@@ -417,7 +418,7 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
                 if (editDeskBookingDetails.getDate()!=null)
                     date.setText(""+Utils.calendarDay10thMonthYearformat(editDeskBookingDetails.getDate()));
                 repeatBlock.setVisibility(View.GONE);
-                commentBlock.setVisibility(View.VISIBLE);
+                commentBlock.setVisibility(View.GONE);
                 select.setText("Select");
                 if (editDeskBookingDetails.getUsageTypeId() == 7) {
                     deskStatusText.setText("Available For Request");
@@ -431,7 +432,7 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
                 if (editDeskBookingDetails.getDate()!=null)
                     date.setText(""+Utils.calendarDay10thMonthformat(editDeskBookingDetails.getDate()));
 
-                commentBlock.setVisibility(View.VISIBLE);
+                commentBlock.setVisibility(View.GONE);
                 if(Utils.compareTwoDate(editDeskBookingDetails.getDate(),Utils.getCurrentDate())==2){
                     repeatBlock.setVisibility(View.VISIBLE);
                 } else {
@@ -439,6 +440,7 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
                 }
             }
 
+            date.setText(""+Utils.calendarDay10thMonthYearformat(editDeskBookingDetails.getDate()));
 
             if (newEditStatus.equalsIgnoreCase("edit")
                     && !(editDeskBookingDetails.getUsageTypeId()== 2 ||

@@ -358,8 +358,8 @@ public class CalendarView extends LinearLayout
             */
 
             //below if condition greys out previous dates of past month
-            if(month!=Integer.parseInt(currentMonth)){
-                if (position < Integer.parseInt(currentDay)){
+            if(month!=Integer.parseInt(currentMonth)) {
+                if (position < Integer.parseInt(currentDay)) {
                     Log.d(TAG, "getView: date"+currentDay+"==="+month);
                     Log.d(TAG, "getView: "+firstDayOfMonth+"==="+currentDay);
                     Log.d("CardView : ", "getView: "+position);

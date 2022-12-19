@@ -14,6 +14,7 @@
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/spinner_outline.xml" value="0.1405" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/spinner_outline_opened.xml" value="0.1405" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/spinner_pop_background.xml" value="0.1" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_edit_profile.xml" value="0.2203125" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_forgot_password.xml" value="0.3" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_main.xml" value="0.3" />
@@ -30,7 +31,7 @@
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet_room_booking.xml" value="0.3" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet_room_participant_booking.xml" value="0.2" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet_until.xml" value="0.3" />
-        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_calendar_bottom_sheet_edit_booking.xml" value="0.3714759535655058" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_calendar_bottom_sheet_edit_booking.xml" value="0.33" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_calendar_edit_booking_bottomsheet.xml" value="0.3" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_locate_booked_bottomsheet.xml" value="0.3" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_locate_checkin_bottomsheet.xml" value="0.3" />

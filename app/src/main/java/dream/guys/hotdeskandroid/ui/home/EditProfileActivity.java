@@ -1134,6 +1134,8 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.LOGIN_RESPONSE, json);
 //        Toast.makeText(EditProfileActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
+        //please add this for calendar default locations #Bala
+        SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.LOCATION_ID, locationID);
         SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.PARENT_ID_CHECK, floorParentID);
         SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.FLOOR_POSITION_CHECK, floorPositon);
 

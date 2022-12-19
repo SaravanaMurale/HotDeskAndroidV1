@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:text="location1,location2"
+                android:text=""
                 android:textSize="@dimen/_11sdp"
                 android:textColor="@color/black"
                 android:visibility="gone"
@@ -464,7 +464,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="@dimen/_3sdp"
-                            android:text="location1, location 2"
+                            android:text=""
                             android:textColor="@color/figmaBlack"
                             android:textSize="14sp" />
 

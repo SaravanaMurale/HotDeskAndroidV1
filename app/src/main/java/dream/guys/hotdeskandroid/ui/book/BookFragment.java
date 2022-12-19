@@ -613,7 +613,7 @@ public class BookFragment extends Fragment implements
 
         //To load default location-saved in login Activity
         int parentIdCheck =SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID_CHECK);
-        if(parentIdCheck>0 && defaultLocationcheck==0){
+        if(parentIdCheck>0 && defaultLocationcheck==0) {
             int floorPositionCheck=SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION_CHECK);
 
             SessionHandler.getInstance().saveInt(getContext(),AppConstants.PARENT_ID,parentIdCheck);
@@ -644,15 +644,16 @@ public class BookFragment extends Fragment implements
             String CountryName = SessionHandler.getInstance().get(getContext(), AppConstants.COUNTRY_NAME);
             String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
             String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
+            String finalFloor = SessionHandler.getInstance().get(getContext(), AppConstants.FINAL_FLOOR);
             String fullPathLocation = SessionHandler.getInstance().get(getContext(), AppConstants.FULLPATHLOCATION);
 
             if (CountryName == null && buildingName == null && floorName == null && fullPathLocation == null) {
                 binding.searchGlobal.setHint("choose location from the list");
             } else {
                 if (fullPathLocation == null) {
-                    binding.searchGlobal.setText(CountryName + "," + buildingName + "," + floorName);
+                    binding.searchGlobal.setText(floorName + "  " + finalFloor);
                 } else {
-                    binding.searchGlobal.setText(fullPathLocation);
+                    binding.searchGlobal.setText(floorName + "  " + finalFloor);
                 }
             }
 
@@ -962,7 +963,9 @@ public class BookFragment extends Fragment implements
                 break;
             case 2:
                 binding.profileBack.setText("Book a Room");
-                binding.rlTime.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                binding.rlTime.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+
+//                binding.rlTime.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
                 binding.roomLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
                 binding.ivRoom.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
                 binding.tvRoom.setVisibility(View.VISIBLE);
@@ -1245,11 +1248,13 @@ public class BookFragment extends Fragment implements
                     isGlobalLocationSetUP = true;
                     try{
 
-                        if (response.code()==200 && response.body().size()>0){
+                        if (response.code()==200 && response.body()!=null){
                             events.clear();
                             events.addAll(response.body());
                             if (events.size()>0){
                                 binding.calendarView.updateCalendar(events, selectedicon);
+                            }else {
+                                binding.calendarView.updateCalendar(null, -1);
                             }
 
                         } else if(response.code()==401){
@@ -2291,8 +2296,12 @@ public class BookFragment extends Fragment implements
                 editBookingDetailsGlobal.setDate(Utils.convertStringToDateFormet(calSelectedDate));
                 editBookingDetailsGlobal.setCalId(0);
                 editBookingDetailsGlobal.setDescription(Utils.checkStringParms(bookingForEditResponseDesk.get(i).getDescription()));
-                editBookingDetailsGlobal.setLocationAddress(bookingForEditResponseDesk.get(i).getLocationDetails().getBuildingName()
-                        +","+bookingForEditResponseDesk.get(i).getLocationDetails().getfLoorName());
+                try {
+                    editBookingDetailsGlobal.setLocationAddress(bookingForEditResponseDesk.get(i).getLocationDetails().getBuildingName()
+                            +","+bookingForEditResponseDesk.get(i).getLocationDetails().getfLoorName());
+                }catch (Exception e){
+
+                }
                 editBookingDetailsGlobal.setDeskCode(bookingForEditResponseDesk.get(i).getDeskCode());
                 editBookingDetailsGlobal.setDesktId(bookingForEditResponseDesk.get(i).getTeamDeskId());
                 editBookingDetailsGlobal.setTimeZone(bookingForEditResponseDesk.get(i).getTimeZones().get(0).getTimeZoneId());
@@ -2324,8 +2333,12 @@ public class BookFragment extends Fragment implements
                 editBookingDetailsGlobal.setDeskCode(bookingForEditResponseDesk.get(pos).getDeskCode());
                 editBookingDetailsGlobal.setDesktId(bookingForEditResponseDesk.get(pos).getTeamDeskId());
                 editBookingDetailsGlobal.setDeskTeamId(bookingForEditResponseDesk.get(pos).getTeamId());
-                editBookingDetailsGlobal.setLocationAddress(bookingForEditResponseDesk.get(pos).getLocationDetails().getBuildingName()
-                        +","+bookingForEditResponseDesk.get(pos).getLocationDetails().getfLoorName());
+                try {
+                    editBookingDetailsGlobal.setLocationAddress(bookingForEditResponseDesk.get(pos).getLocationDetails().getBuildingName()
+                            +","+bookingForEditResponseDesk.get(pos).getLocationDetails().getfLoorName());
+                } catch (Exception e){
+
+                }
                 editBookingDetailsGlobal.setTimeZone(bookingForEditResponseDesk.get(i).getTimeZones().get(0).getTimeZoneId());
                 selectedDeskId = bookingForEditResponseDesk.get(pos).getTeamDeskId();
                 editBookingDetailsGlobal.setDate(Utils.convertStringToDateFormet(calSelectedDate));
@@ -2437,6 +2450,7 @@ public class BookFragment extends Fragment implements
         endTime = roomBottomSheet.findViewById(R.id.end_time);
 
         deskRoomName=roomBottomSheet.findViewById(R.id.tv_desk_room_name);
+        TextView locationAddressTop=roomBottomSheet.findViewById(R.id.locationAddress);
         locationAddress=roomBottomSheet.findViewById(R.id.tv_location_details);
         //New...
         locationAddress.setVisibility(View.VISIBLE);
@@ -2557,6 +2571,11 @@ public class BookFragment extends Fragment implements
         if (isGlobalLocationSetUP)
             select.setVisibility(View.VISIBLE);
 
+        if (editDeskBookingDetails.getLocationAddress()!=null &&
+                !editDeskBookingDetails.getLocationAddress().isEmpty()
+                && !editDeskBookingDetails.getLocationAddress().equalsIgnoreCase(""))
+            locationAddressTop.setText(""+editDeskBookingDetails.getLocationAddress());
+
         if (dskRoomParkStatus == 1) {
 //            Toast.makeText(context, ""+editDeskBookingDetails.getLocationAddress(), Toast.LENGTH_SHORT).show();
             if (editDeskBookingDetails.getLocationAddress()!=null &&
@@ -2569,7 +2588,7 @@ public class BookFragment extends Fragment implements
                 if (editDeskBookingDetails.getDate()!=null)
                     date.setText(""+Utils.calendarDay10thMonthYearformat(editDeskBookingDetails.getDate()));
                 repeatBlock.setVisibility(View.GONE);
-                commentBlock.setVisibility(View.VISIBLE);
+                commentBlock.setVisibility(View.GONE);
                 select.setText("Select");
                 if (editDeskBookingDetails.getUsageTypeId() == 7) {
                     deskStatusText.setText("Available For Request");
@@ -2583,7 +2602,7 @@ public class BookFragment extends Fragment implements
                 if (editDeskBookingDetails.getDate()!=null)
                     date.setText(""+Utils.calendarDay10thMonthformat(editDeskBookingDetails.getDate()));
 
-                commentBlock.setVisibility(View.VISIBLE);
+                commentBlock.setVisibility(View.GONE);
                 if(Utils.compareTwoDate(editDeskBookingDetails.getDate(),Utils.getCurrentDate())==2){
                     repeatBlock.setVisibility(View.VISIBLE);
                 } else {
@@ -5979,15 +5998,16 @@ public class BookFragment extends Fragment implements
             String CountryName = SessionHandler.getInstance().get(getContext(), AppConstants.COUNTRY_NAME);
             String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
             String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
+            String finalFloor = SessionHandler.getInstance().get(getContext(), AppConstants.FINAL_FLOOR);
             String fullPathLocation = SessionHandler.getInstance().get(getContext(), AppConstants.FULLPATHLOCATION);
 
             if (CountryName == null && buildingName == null && floorName == null && fullPathLocation==null) {
                 binding.searchGlobal.setHint("choose location from the list");
             } else {
                 if(fullPathLocation == null) {
-                    binding.searchGlobal.setText(CountryName + "," + buildingName + "," + floorName);
+                    binding.searchGlobal.setText(floorName + "  " + finalFloor);
                 }else {
-                    binding.searchGlobal.setText(fullPathLocation);
+                    binding.searchGlobal.setText(floorName + "  " + finalFloor);
                 }
             }
 

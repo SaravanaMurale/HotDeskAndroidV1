@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/design_bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/_10sdp"
+    android:padding="@dimen/_25sdp"
     android:background="@drawable/login_background_corner_white"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
     >
@@ -17,7 +18,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -46,6 +46,14 @@
                         android:text="Mon, 10th August, 2022"
                         android:textSize="14sp"
                         android:theme="@style/TextSmall" />
+
+                    <TextView
+                        android:id="@+id/locationAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="14sp"
+                        android:theme="@style/TextSmall" />
                 </LinearLayout>
 
                 <TextView
@@ -53,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
+                    android:layout_centerInParent="true"
                     android:layout_margin="@dimen/_2sdp"
                     android:text="Delete"
                     android:textColor="@color/figma_red_delete"
@@ -142,7 +150,7 @@
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text=""
                     android:textColor="@color/figmaBlueText"
-                    android:textSize="15sp"
+                    android:textSize="18sp"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 
@@ -178,7 +186,7 @@
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text=""
                     android:textColor="@color/figmaBlueText"
-                    android:textSize="15sp"
+                    android:textSize="18sp"
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 
@@ -383,7 +391,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="@dimen/_3sdp"
-                            android:text="location1, location 2"
+                            android:text=""
                             android:textColor="@color/figmaBlack"
                             android:textSize="14sp" />
 
@@ -498,7 +506,7 @@
                             android:id="@+id/desk_status_text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_3sdp"
+                            android:layout_marginStart="@dimen/_8sdp"
                             android:text="Available"
                             android:textSize="14sp"
                             android:theme="@style/TextRegular" />
