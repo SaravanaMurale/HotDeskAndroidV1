@@ -243,7 +243,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             }
         });
 
-        binding.homeUserName.setText(SessionHandler.getInstance().get(getContext(), AppConstants.USERNAME));
+        binding.homeUserName.setText("Hi, "+SessionHandler.getInstance().get(getContext(), AppConstants.USERNAME));
         binding.homeTeamName.setText(SessionHandler.getInstance().get(getContext(), AppConstants.CURRENT_TEAM));
 /*
         text.setOnClickListener(new View.OnClickListener() {
@@ -2039,7 +2039,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         //binding.homeUserName.setText(SessionHandler.getInstance().get(getContext(),AppConstants.USERNAME));
         profileData = Utils.getLoginData(getActivity());
         if (profileData != null) {
-            binding.homeUserName.setText(profileData.getFullName());
+            binding.homeUserName.setText("Hi, "+profileData.getFullName());
         }
 
     }

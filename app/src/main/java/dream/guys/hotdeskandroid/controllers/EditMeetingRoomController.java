@@ -519,7 +519,7 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
 
         //Logic for start time and end time of DESK and MEETING ROOM
         if(dskRoomParkStatus==2) {
-            if(Utils.compareTwoDate(editDeskBookingDetails.getDate(),Utils.getCurrentDate())==2){
+            /*if(Utils.compareTwoDate(editDeskBookingDetails.getDate(),Utils.getCurrentDate())==2){
 //                startTime.setText(Utils.convert24HrsTO12Hrs(Utils.currentTimeWithExtraMins(2)));
                 startTime.setText(Utils.setStartNearestThirtyMinToMeeting(Utils.getCurrentTime()));
 //                endTime.setText(Utils.setStartNearestFiveMinToMeeting(Utils.currentTimeWithExtraMins(32)));
@@ -554,7 +554,7 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
                     }
                 }
             }
-
+*/
         } else {
             if(Utils.compareTwoDate(editDeskBookingDetails.getDate(),Utils.getCurrentDate())==2){
 //                startTime.setText(Utils.convert24HrsTO12Hrs(Utils.currentTimeWithExtraMins(2)));

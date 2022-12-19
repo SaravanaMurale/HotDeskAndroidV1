@@ -1191,7 +1191,7 @@ public class BookFragment extends Fragment implements
                         String fromTime = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
                         String toTime = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + " " + binding.locateEndTime.getText().toString() + ":00" + ".000Z";
 //                        call = apiService.getDailyDeskCountLocation(month, locationId, fromTime, toTime);
-                        call = apiService.getDailyRoomCountLocation(month, locationId,"","");
+                        call = apiService.getDailyDeskCountLocation(month, locationId,"","");
                     }
                     break;
                 case 2:
@@ -2779,9 +2779,9 @@ public class BookFragment extends Fragment implements
         if(dskRoomParkStatus==2) {
             if(Utils.compareTwoDate(editDeskBookingDetails.getDate(),Utils.getCurrentDate())==2){
 //                startTime.setText(Utils.convert24HrsTO12Hrs(Utils.currentTimeWithExtraMins(2)));
-                startTime.setText(Utils.setStartNearestThirtyMinToMeeting(Utils.getCurrentTime()));
+                startTime.setText(Utils.setNearestThirtyMinToMeeting(Utils.getCurrentTime()));
 //                endTime.setText(Utils.setStartNearestFiveMinToMeeting(Utils.currentTimeWithExtraMins(32)));
-                endTime.setText(Utils.setStartNearestThirtyMinToMeeting(startTime.getText().toString()));
+                endTime.setText(Utils.selectedTimeWithExtraMins(startTime.getText().toString(),30));
 //                endTime.setText(Utils.convert24HrsTO12Hrs(Utils.setStartNearestFiveMinToMeeting(Utils.currentTimeWithExtraMins(32))));
             } else {
 
@@ -4154,7 +4154,7 @@ public class BookFragment extends Fragment implements
                     deskListBottomSheet,allMeetingRoomList);
             rvDeskRecycler.setAdapter(roomListRecyclerAdapter);
         }else {
-            selectDesk.setText("Book a Workspace");
+            selectDesk.setText("Book a workspace");
             tvTeamName.setText(selectedTeamName);
             if (newEditStatus.equalsIgnoreCase("edit")){
                 if (editBookingDetails.getUsageTypeId()==2){
@@ -4810,6 +4810,20 @@ public class BookFragment extends Fragment implements
 
         externalAttendees = bottomSheetDialog.findViewById(R.id.externalAttendees);
         externalAttendeesChipGroup = bottomSheetDialog.findViewById(R.id.externalAttendeesChipGroup);
+
+        //set spannable text
+        String s= "Internal participants optional";
+        int start=21;
+        int end=29;
+        Utils.setSPannableStringForParticipants(etParticipants,s,start,end);
+
+        String ex= "External participants optional";
+        Utils.setSPannableStringForParticipants(externalAttendees,ex,start,end);
+
+        String com="Comments optional";
+        int start1=9;
+        int end1=12;
+        Utils.setSPannableStringForParticipants(etComments,com,start1,end1);
 
         if (editDeskBookingDetails.getAmenities()!=null){
             for (int i=0; i<editDeskBookingDetails.getAmenities().size(); i++){
