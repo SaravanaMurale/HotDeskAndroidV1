@@ -61,6 +61,7 @@
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:text="This will impact both the mobile, and desktop apps. As well as all notifications"
                 android:textSize="@dimen/_12sdp"
+                android:textColor="@color/figmaBlack"
                 android:theme="@style/TextRegular" />
 
         </LinearLayout>
