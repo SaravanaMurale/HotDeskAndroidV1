@@ -169,7 +169,7 @@ public class NotificationCenterActivity extends AppCompatActivity {
                             val.setIncoming("incoming");
                             return val;
                         });
-                        notiList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
+                      //  notiList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
 
                         notificationList.addAll(notiList);
 

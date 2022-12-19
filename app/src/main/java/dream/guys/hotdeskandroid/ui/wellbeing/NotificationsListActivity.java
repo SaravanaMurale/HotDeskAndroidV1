@@ -575,7 +575,7 @@ AdapterAdminNotificationReq.AccRejReqInterface{
                             return val;
                         });
 
-                        OutGoingList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
+                     //   OutGoingList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
 
                         setAdapter();
 
