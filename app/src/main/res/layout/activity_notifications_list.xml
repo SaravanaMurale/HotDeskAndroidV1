@@ -38,10 +38,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/profile_back"
-            android:text="Request"
+            android:text="Requests"
             android:textColor="@color/figmaBlack"
             android:textSize="26sp"
-            android:theme="@style/TextBold"
+            android:theme="@style/TextRegular"
             android:layout_centerVertical="true" />
 
         <TextView
