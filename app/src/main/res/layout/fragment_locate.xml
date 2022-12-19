@@ -279,7 +279,7 @@
     <!--Visible and Invisible Status-->
     <RelativeLayout
         android:id="@+id/locateKeyStatusBlock"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/_50sdp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/_30sdp"
@@ -294,7 +294,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:padding="@dimen/_1sdp"
+            android:padding="@dimen/_2sdp"
             android:background="@drawable/rectangle_bg_with_corner">
 
             <ImageView
@@ -325,12 +325,14 @@
 
         <RelativeLayout
             android:id="@+id/statusBookedByMe"
-            android:layout_width="@dimen/_90sdp"
+            android:layout_width="@dimen/_95sdp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@+id/statusUnAvaliable"
             android:background="@drawable/rectangle_bg_with_corner"
-            android:layout_marginRight="@dimen/_5sdp">
+            android:layout_marginRight="@dimen/_5sdp"
+            android:padding="@dimen/_2sdp"
+            >
 
 
             <ImageView
@@ -364,7 +366,9 @@
             android:layout_above="@id/statusUnAvaliable"
             android:layout_alignParentRight="true"
             android:background="@drawable/rectangle_bg_with_corner"
-            android:layout_marginBottom="@dimen/_5sdp">
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:padding="@dimen/_2sdp"
+            >
 
 
             <ImageView
@@ -391,13 +395,14 @@
 
         <RelativeLayout
             android:id="@+id/statusByRequest"
-            android:layout_width="@dimen/_70sdp"
+            android:layout_width="@dimen/_75sdp"
             android:layout_height="wrap_content"
             android:layout_above="@id/statusUnAvaliable"
             android:layout_toLeftOf="@+id/statusBooked"
             android:background="@drawable/rectangle_bg_with_corner"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_5sdp"
+            android:padding="@dimen/_2sdp"
             >
 
             <ImageView
@@ -425,14 +430,14 @@
 
         <RelativeLayout
             android:id="@+id/statusAvaliable"
-            android:layout_width="@dimen/_65sdp"
+            android:layout_width="@dimen/_69sdp"
             android:layout_height="wrap_content"
             android:layout_above="@id/statusUnAvaliable"
             android:layout_toLeftOf="@+id/statusByRequest"
             android:background="@drawable/rectangle_bg_with_corner"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_2sdp"
+            android:padding="@dimen/_2sdp"
 
             >
 

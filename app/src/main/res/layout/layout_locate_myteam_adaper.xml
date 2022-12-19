@@ -29,7 +29,9 @@
                 android:layout_height="@dimen/_10sdp"
                 android:layout_alignRight="@+id/locateMyTeamProfiles"
                 android:layout_alignBottom="@+id/locateMyTeamProfiles"
-                android:src="@drawable/online" />
+                android:src="@drawable/online"
+                android:visibility="gone"
+                />
 
 
             <TextView

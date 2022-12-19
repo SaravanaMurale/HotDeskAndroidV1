@@ -154,11 +154,28 @@ public class AdapterNotificationCenter extends RecyclerView.Adapter<AdapterNotif
                 break;
         }
 
-        if (position == 1) {
+      /*  if (position == 1 ) {
             holder.hdr_lay.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             holder.hdr_lay.setVisibility(View.GONE);
+        }*/
+
+        if (notiList.get(0).getStatus() == 0){
+            if (position == 1) {
+                holder.hdr_lay.setVisibility(View.VISIBLE);
+            }else {
+                holder.hdr_lay.setVisibility(View.GONE);
+            }
+        }else {
+            if (position == 0) {
+                holder.hdr_lay.setVisibility(View.VISIBLE);
+            }else {
+                holder.hdr_lay.setVisibility(View.GONE);
+            }
         }
+
+
+
 
     }
 

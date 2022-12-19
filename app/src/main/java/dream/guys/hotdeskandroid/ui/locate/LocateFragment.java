@@ -1120,7 +1120,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             SessionHandler.getInstance().save(getContext(), AppConstants.COUNTRY_NAME, countryCheck);
             SessionHandler.getInstance().save(getContext(), AppConstants.BUILDING, buildingCheck);
             SessionHandler.getInstance().save(getContext(), AppConstants.FLOOR, floorCheck);
-            SessionHandler.getInstance().save(getContext(), AppConstants.FLOOR, finalFloorCheck);
+            SessionHandler.getInstance().save(getContext(), AppConstants.FINAL_FLOOR, finalFloorCheck);
             SessionHandler.getInstance().save(getContext(), AppConstants.FULLPATHLOCATION, fullPathCheck);
 
         }
@@ -1137,15 +1137,26 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             //Set Selected Floor In SearchView
             String CountryName = SessionHandler.getInstance().get(getContext(), AppConstants.COUNTRY_NAME);
             String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
+
             String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
             String finalFloorName = SessionHandler.getInstance().get(getContext(), AppConstants.FINAL_FLOOR);
+
+
             String fullPathLocation = SessionHandler.getInstance().get(getContext(), AppConstants.FULLPATHLOCATION);
 
+
+            //System.out.println("LocateLocation "+CountryName+ );
+
             if (CountryName == null && buildingName == null && floorName == null && fullPathLocation == null) {
-                binding.searchLocate.setHint("Choose Location");
+                binding.searchLocate.setHint("");
             } else {
                 if (fullPathLocation == null) {
-                    binding.searchLocate.setText(floorName + "  " + finalFloorName);
+                    int l=floorName.length();
+                    SpannableString ss1=  new SpannableString(floorName);
+                    ss1.setSpan(new RelativeSizeSpan(1.1f), 0,l, 0);
+                    ss1.setSpan(new ForegroundColorSpan(Color.RED), 0, l, 0);// set color
+                    //binding.searchLocate.setText(floorName + "  " + finalFloorName);
+                    binding.searchLocate.setText(ss1 + "  " + finalFloorName);
                 } else {
                     binding.searchLocate.setText(fullPathLocation);
                 }
@@ -1665,14 +1676,17 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 TextView roormTitle = roomTitleView.findViewById(R.id.roomTileCanvas);
                                 RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                                 roormTitle.setVisibility(View.VISIBLE);
+                                int a=getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(0).get(0);
+                                int b=getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(0).get(1);;
+                                System.out.println("FloorNameSuppportZoneeePoint "+a+" "+b);
 
-                                relativeLayout.leftMargin=getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(0).get(0);
-                                relativeLayout.rightMargin=getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(0).get(1);;
-                               /* relativeLayout.width = 60;
-                                relativeLayout.height = 60;*/
+                                relativeLayout.leftMargin=getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(0).get(0)+5;
+                                relativeLayout.topMargin=getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(0).get(1)+40;;
+                                relativeLayout.width = 60;
+                                relativeLayout.height = 60;
                                 roormTitle.setText(getSupportZoneLayoutForCanvas.get(i).getTitle());
                                 roormTitle.setLayoutParams(relativeLayout);
-                                binding.firstLayout.addView(roomTitleView);
+                                //binding.firstLayout.addView(roomTitleView);
                             }
 
                         }
@@ -2862,7 +2876,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         String dateTime = Utils.dateWithDayString(sDate);
         bookedDeskDate.setText(dateTime);*/
 
-        bookedDeskDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()));
+        bookedDeskDate.setText(Utils.showCalendarWithFullMonth(binding.locateCalendearView.getText().toString()));
 
         bookedLocation.setText(binding.searchLocate.getText());
 
@@ -2950,7 +2964,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         tvBookedRoomEndTime.setText(Utils.splitTime(bookedDeskResponseList.get(0).getTo()));
 
 
-        bookedDeskDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()));
+        bookedDeskDate.setText(Utils.showCalendarWithFullMonth(binding.locateCalendearView.getText().toString()));
 
         /*String sDate = binding.locateCalendearView.getText().toString();
         String dateTime = Utils.dateWithDayString(sDate);
@@ -3507,7 +3521,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         roomTitle.setText(meetingRoomName);
-        roomDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()));
+        roomDate.setText(Utils.showCalendarWithFullMonth(binding.locateCalendearView.getText().toString()));
         externalAttendees.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -3793,7 +3807,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     subCmtLay.setVisibility(View.GONE);
                     child_layout.setVisibility(View.VISIBLE);
                     //roomDate.setText(buildingName + "," + floorName);
-                    roomDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()));
+                    roomDate.setText(Utils.showCalendarWithFullMonth(binding.locateCalendearView.getText().toString()));
                     page = 1;
                 }
 
@@ -3837,7 +3851,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     String startWithAMOrPM = startTimeToSplit[1];
 
 
-                    roomDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()) + " • " +
+                    roomDate.setText(Utils.showCalendarWithFullMonth(binding.locateCalendearView.getText().toString()) + " • " +
                             startWithAMOrPM + " to " + showTvRoomEndTime.getText().toString());
 
                     page = 2;
@@ -3846,7 +3860,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 } else {
 
-                    roomDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()));
+                    roomDate.setText(Utils.showCalendarWithFullMonth(binding.locateCalendearView.getText().toString()));
 
                     boolean status = true;
                     editRoomBookingContinue.setText(appKeysPage.getBook());
@@ -5285,7 +5299,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         deskBookDate=locateCheckInBottomSheet.findViewById(R.id.deskBookDate);
 
         deskBookDate.setVisibility(View.VISIBLE);
-        deskBookDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()));
+        deskBookDate.setText(Utils.showCalendarWithFullMonth(binding.locateCalendearView.getText().toString()));
 
         ivOnline = locateCheckInBottomSheet.findViewById(R.id.ivOnline);
         statusText = locateCheckInBottomSheet.findViewById(R.id.statusText);
@@ -7311,7 +7325,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         } else {
             date.setText(binding.locateCalendearView.getText().toString());
         }*/
-        date.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()));
+        date.setText(Utils.showCalendarWithFullMonth(binding.locateCalendearView.getText().toString()));
 
         orgSTime = "";
         orgETime = "";
@@ -8178,6 +8192,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
+                filterClickedStatus = 1;
+
                 for (int i = 0; i < userAllowedMeetingResponseList.size(); i++) {
 
                     System.out.println("AllDetailsInUserAllowedMeetings " + userAllowedMeetingResponseList.get(i).getName());
@@ -8221,16 +8237,24 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //filterClickedStatus = 1;
         ArrayList<ValuesPOJO> nestedList2 = new ArrayList<>();
 
-        for (int i = 0; i < amenitiesResponseList.size(); i++) {
 
-            //if(amenitiesResponseList.get(i).isAvailable()){
-            valuesPOJO = new ValuesPOJO(amenitiesResponseList.get(i).getId(), amenitiesResponseList.get(i).getName(), false);
-            nestedList2.add(valuesPOJO);
-            //}
+        //if user applied filter option no need to load data again becoz we need to show check amenities
+        if(filterClickedStatus==0) {
+
+            if (amenitiesResponseList != null && amenitiesResponseList.size() > 0) {
+                for (int i = 0; i < amenitiesResponseList.size(); i++) {
+
+                    //if(amenitiesResponseList.get(i).isAvailable()){
+                    valuesPOJO = new ValuesPOJO(amenitiesResponseList.get(i).getId(), amenitiesResponseList.get(i).getName(), false);
+                    nestedList2.add(valuesPOJO);
+                    //}
+                }
+            }
+            mList.add(new DataModel(nestedList2, appKeysPage.getRooms()));
         }
 
         //mList.add(new DataModel(nestedList1, "Workspaces"));
-        mList.add(new DataModel(nestedList2, appKeysPage.getRooms()));
+
 
         //}
 
@@ -8239,6 +8263,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             mList.get(i).setExpandable(true);
 
         }
+
         filterTotalSize.setText("(" + mList.get(0).getNestedList().size() + ")");
         adapter = new ItemAdapter(mList, this);
         locateFilterMainRV.setAdapter(adapter);
@@ -8269,6 +8294,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 //When we search mList is updated, so clear when close
                 adapter.clearAll();
                 bottomSheetDialog.dismiss();
+
+                filterClickedStatus=0;
             }
         });
 
@@ -8857,7 +8884,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         }*/
 
-        roomDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()));
+        roomDate.setText(Utils.showCalendarWithFullMonth(binding.locateCalendearView.getText().toString()));
 
 
 
@@ -9287,7 +9314,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     String[] startTimeToSplit = startTime.split("•");
                     String startWithAMOrPM = startTimeToSplit[1];
 
-                    roomDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()) +
+                    roomDate.setText(Utils.showCalendarWithFullMonth(binding.locateCalendearView.getText().toString()) +
                             startWithAMOrPM + "to" + showTvRoomEndTime.getText().toString());
 
                     page = 2;
@@ -9898,6 +9925,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                             binding.myTeamBookNearBy.setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
+
+                                                    binding.bookNearByBlock.setVisibility(View.GONE);
+                                                    binding.firstLayout.removeView(ivPerson);
+                                                    binding.firstLayout.removeView(perSonView);
+                                                    binding.myTeamHeader.setVisibility(View.VISIBLE);
+                                                    binding.myTeamContactBlock.setVisibility(View.GONE);
+
 
                                                     bookNearByToMyTeam(booking.getDeskId(), locateCountryResposeList.get(0).getLocationItemLayout());
                                                 }

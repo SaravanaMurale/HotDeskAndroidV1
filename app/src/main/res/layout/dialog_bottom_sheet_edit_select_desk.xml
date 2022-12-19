@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
 
     <TextView
@@ -17,74 +17,79 @@
         android:textColor="@color/figmaBlack"
         android:textSize="26sp"
         android:theme="@style/TextBold" />
+
     <LinearLayout
         android:id="@+id/linera"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_below="@id/select_desk"
         android:layout_marginBottom="@dimen/_10sdp"
-        >
+        android:orientation="horizontal"
+        android:visibility="gone">
+
         <TextView
             android:id="@+id/sheet_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:text="Select Desk"
-            android:layout_gravity="center_vertical"
             android:textColor="@color/figmaBlack"
             android:textSize="14sp"
             android:theme="@style/TextRegular" />
+
         <ImageView
             android:layout_width="@dimen/_5sdp"
             android:layout_height="@dimen/_5sdp"
-            android:src="@drawable/dot"
             android:layout_gravity="center_vertical"
-            />
+            android:src="@drawable/dot" />
+
         <TextView
             android:id="@+id/sheet_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:text=""
-            android:layout_gravity="center_vertical"
             android:textColor="@color/figmaBlack"
             android:textSize="14sp"
             android:theme="@style/TextRegular" />
 
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/filter_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_below="@id/linera"
+        android:orientation="horizontal"
         android:padding="@dimen/_10sdp">
 
         <TextView
             android:id="@+id/filter"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_weight="1"
             android:text="Filter"
             android:textColor="@color/figmaBlueText"
             android:textSize="18sp"
             android:theme="@style/TextBold" />
+
         <TextView
             android:id="@+id/capa_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:text="Capacity"
-            android:visibility="visible"
             android:textColor="@color/figmaBlueText"
             android:textSize="18sp"
-            android:theme="@style/TextBold" />
+            android:theme="@style/TextBold"
+            android:visibility="visible" />
 
         <view
             class="android.widget.TextView"
@@ -106,15 +111,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/filter_layout"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_9sdp"
+        android:layout_margin="@dimen/_10sdp"
         android:background="@drawable/rectangle_greybg_with_corner"
-        android:drawableLeft="@drawable/search_1px"
+        android:drawableStart="@drawable/search_1px"
+        android:drawablePadding="@dimen/_10sdp"
         android:gravity="center_vertical"
-        android:hint="  Search"
-        android:paddingLeft="@dimen/_8sdp"
+        android:hint="Search"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:maxLines="1"
+        android:paddingStart="@dimen/_8sdp"
         android:paddingTop="@dimen/_5sdp"
         android:paddingBottom="@dimen/_7sdp"
         android:textSize="@dimen/_10sdp" />
@@ -123,7 +129,6 @@
         android:id="@+id/desk_list_select_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_above="@id/bsDeskBack"
         android:layout_below="@id/bsGeneralSearch" />
 
@@ -132,9 +137,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/_20sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_20sdp"
-        android:layout_marginStart="@dimen/_20sdp"
         android:text="@string/back"
         android:textSize="18sp"
         android:theme="@style/TextBold" />

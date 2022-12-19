@@ -471,16 +471,16 @@ public class ShowProfileActivity extends AppCompatActivity {
         binding.ivEditEmailIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (results.getEmail() != null && !results.getEmail().isEmpty())
-                    Utils.openMail(ShowProfileActivity.this, results.getEmail());
+               /* if (results.getEmail() != null && !results.getEmail().isEmpty())
+                    Utils.openMail(ShowProfileActivity.this, results.getEmail());*/
             }
         });
 
         binding.tvEditPhoneIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (results.getPhoneNumber() != null && !results.getPhoneNumber().isEmpty())
-                    Utils.openDial(ShowProfileActivity.this, results.getPhoneNumber());
+               /* if (results.getPhoneNumber() != null && !results.getPhoneNumber().isEmpty())
+                    Utils.openDial(ShowProfileActivity.this, results.getPhoneNumber());*/
             }
         });
     }

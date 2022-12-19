@@ -834,11 +834,13 @@ public class LoginActivity extends AppCompatActivity {
 
                     ArrayList<DAOActiveLocation> selectFloors = new ArrayList<>();
                     selectFloors = (ArrayList<DAOActiveLocation>) activeLocationArrayList.stream().filter(val -> val.getParentLocationId() == floorParentID).collect(Collectors.toList());
+                    String finFloorName="";
 
                     for (int i = 0; i < selectFloors.size(); i++) {
 
                         if (id.equals(selectFloors.get(i).getId())) {
                             floorPositon = i;
+                            finFloorName=selectFloors.get(i).getName();
                             break;
                         }
                     }
@@ -878,20 +880,26 @@ public class LoginActivity extends AppCompatActivity {
                         CountryName = location.get(0).getName();
                     }
 
+                    System.out.println("LoginLocation "+buildingName+" "+CityName+" "+CountryName+" "+finFloorName);
+
 
                     //To load Default location
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.COUNTRY_NAME_CHECK, CountryName);
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.BUILDING_CHECK, buildingName);
-                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FLOOR_CHECK, floorName);
-                    SessionHandler.getInstance().save(LoginActivity.this,AppConstants.FINAL_FLOOR_CHECK,CityName);
+
+                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FLOOR_CHECK, buildingName);
+                    SessionHandler.getInstance().save(LoginActivity.this,AppConstants.FINAL_FLOOR_CHECK,finFloorName);
+
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FULLPATHLOCATION_CHECK, fullPathLocation);
 
 
 
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.COUNTRY_NAME, CountryName);
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.BUILDING, buildingName);
-                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FLOOR, floorName);
-                    SessionHandler.getInstance().save(LoginActivity.this,AppConstants.FINAL_FLOOR,CityName);
+
+                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FLOOR, buildingName);
+                    SessionHandler.getInstance().save(LoginActivity.this,AppConstants.FINAL_FLOOR,finFloorName);
+
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FULLPATHLOCATION, fullPathLocation);
 
                     launchWelcomeActivity();
