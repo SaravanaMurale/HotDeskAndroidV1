@@ -28,6 +28,8 @@ import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
 import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
+import dream.guys.hotdeskandroid.utils.AppConstants;
+import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
 
 public class ParkingSpotListRecyclerAdapter extends RecyclerView.Adapter<ParkingSpotListRecyclerAdapter.Viewholder> implements Filterable {
@@ -102,13 +104,21 @@ public class ParkingSpotListRecyclerAdapter extends RecyclerView.Adapter<Parking
 
 
     public interface OnSelectSelected{
-        public void onSelectParking(int deskId,String deskName, String location);
+        public void onSelectParking(int deskId,String deskName, String location,String description);
 
     }
 
     @Override
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
-        holder.parking_name.setText(""+parkingSpots.get(position).getCode());
+        holder.parking_name.setText(""+Utils.checkStringParms(parkingSpots.get(position).getCode()));
+        holder.description.setText(""+Utils.checkStringParms(parkingSpots.get(position).getDescription()));
+        if (parkingSpots.get(position).getDescription()==null
+                || parkingSpots.get(position).getDescription().equalsIgnoreCase("") || parkingSpots.get(position).getDescription().isEmpty()){
+            holder.descriptionText.setVisibility(View.GONE);
+        } else {
+            holder.descriptionText.setVisibility(View.VISIBLE);
+        }
+
         holder.capacityLayout.setVisibility(View.GONE);
         holder.locationDetails.setVisibility(View.VISIBLE);
         holder.statusLayout.setVisibility(View.VISIBLE);
@@ -124,17 +134,42 @@ public class ParkingSpotListRecyclerAdapter extends RecyclerView.Adapter<Parking
             holder.deskIconStatus.setColorFilter(context.getColor(R.color.figma_red));
         } else if (parkingSpots.get(position).getParkingSlotAvailability() == 2
                 && parkingSpots.get(position).isActive()) {
+            if (parkingSpots.get(position).getAssignees()!=null && parkingSpots.get(position).getAssignees().size()>0){
+                boolean assigneeCheck=false;
+                loop:
+                for (ParkingSpotModel.Assignees assignee:parkingSpots.get(position).getAssignees()) {
+                    if (assignee.getId()== SessionHandler.getInstance().getInt(context, AppConstants.USER_ID)){
+                        assigneeCheck=true;
+                        break loop;
+                    }
+                }
 
-            if (parkingSpots.get(position).getLocation()!=null)
-                holder.locationDetails.setText(Utils.checkStringParms(parkingSpots.get(position).getLocation().getName()));
-            else
-                holder.locationDetails.setVisibility(View.GONE);
+                if (assigneeCheck){
+                    holder.card.setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
+                    holder.select.setVisibility(View.VISIBLE);
 
-            holder.card.setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
-            holder.select.setVisibility(View.VISIBLE);
+                    holder.deskStatus.setText("Available");
+                    holder.deskIconStatus.setColorFilter(context.getColor(R.color.figmaLiteGreen));
+                } else {
+                    holder.card.setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
+                    holder.select.setVisibility(View.VISIBLE);
 
-            holder.deskStatus.setText("Available For Request");
-            holder.deskIconStatus.setColorFilter(context.getColor(R.color.figma_orange));
+                    holder.deskStatus.setText("Available For Request");
+                    holder.deskIconStatus.setColorFilter(context.getColor(R.color.figma_orange));
+                }
+            } else {
+                if (parkingSpots.get(position).getLocation()!=null)
+                    holder.locationDetails.setText(Utils.checkStringParms(parkingSpots.get(position).getLocation().getName()));
+                else
+                    holder.locationDetails.setVisibility(View.GONE);
+
+                holder.card.setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
+                holder.select.setVisibility(View.VISIBLE);
+
+                holder.deskStatus.setText("Available For Request");
+                holder.deskIconStatus.setColorFilter(context.getColor(R.color.figma_orange));
+            }
+
         } else {
             if (parkingSpots.get(position).getLocation()!=null)
                 holder.locationDetails.setText(Utils.checkStringParms(parkingSpots.get(position).getLocation().getName()));
@@ -154,7 +189,7 @@ public class ParkingSpotListRecyclerAdapter extends RecyclerView.Adapter<Parking
             public void onClick(View v) {
                 bottomSheetDialog.dismiss();
                 onSelectSelected.onSelectParking(parkingSpots.get(holder.getAbsoluteAdapterPosition()).getId(),
-                        parkingSpots.get(holder.getAbsoluteAdapterPosition()).getCode(),parkingSpots.get(holder.getAbsoluteAdapterPosition()).getLocation().getName());
+                        parkingSpots.get(holder.getAbsoluteAdapterPosition()).getCode(),parkingSpots.get(holder.getAbsoluteAdapterPosition()).getLocation().getName(),parkingSpots.get(holder.getAbsoluteAdapterPosition()).getDescription());
             }
         });
     }
@@ -167,6 +202,10 @@ public class ParkingSpotListRecyclerAdapter extends RecyclerView.Adapter<Parking
     public class Viewholder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_desk_name)
         TextView parking_name;
+        @BindView(R.id.tv_description)
+        TextView description;
+        @BindView(R.id.description_text)
+        TextView descriptionText;
         @BindView(R.id.desk_status)
         TextView deskStatus;
         @BindView(R.id.tv_select)

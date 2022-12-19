@@ -1496,7 +1496,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onSelectParking(int deskId, String deskName, String location) {
+    public void onSelectParking(int deskId, String deskName, String location,String description) {
         deskRoomName.setText("" + deskName);
         selectedDeskId = deskId;
         locationAddress.setText(location);

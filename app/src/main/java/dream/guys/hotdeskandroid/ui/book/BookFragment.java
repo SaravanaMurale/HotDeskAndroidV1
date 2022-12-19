@@ -1459,6 +1459,7 @@ public class BookFragment extends Fragment implements
                                 for (int i=0;i<parkingSpotModelList.size();i++){
                                     if (editBookingDetails.getParkingSlotId()==parkingSpotModelList.get(i).getId()){
                                         editBookingDetails.setLocationAddress(parkingSpotModelList.get(i).getLocation().getName());
+                                        editBookingDetails.setDescription(parkingSpotModelList.get(i).getDescription());
                                         checkIsRequest=true;
                                         break loo;
                                     }
@@ -2754,13 +2755,23 @@ public class BookFragment extends Fragment implements
                 select.setVisibility(View.VISIBLE);
                 deskRoomName.setText(""+parkingSpotModelList.get(0).getCode());
                 selectedDeskId = parkingSpotModelList.get(0).getId();
-                locationAddress.setText(""+parkingSpotModelList.get(0).getLocation().getName());
+                try {
+                    locationAddress.setText(""+parkingSpotModelList.get(0).getLocation().getName());
+                    tv_description.setText(""+parkingSpotModelList.get(0).getDescription());
+                } catch (Exception e){
+
+                }
             } else {
                 select.setVisibility(View.GONE);
 //                title.setText("Edit Parking Details");
                 deskRoomName.setText(""+editDeskBookingDetails.getParkingSlotCode());
                 selectedDeskId = editDeskBookingDetails.getParkingSlotId();
-                locationAddress.setText(""+editDeskBookingDetails.getLocationAddress());
+                try {
+                    locationAddress.setText(""+editDeskBookingDetails.getLocationAddress());
+                    tv_description.setText(""+editDeskBookingDetails.getDescription());
+                }catch (Exception e){
+
+                }
             }
         }
 
@@ -4255,8 +4266,15 @@ public class BookFragment extends Fragment implements
     private void callDeskBottomSheetDialog() {
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_select_desk,
-                new RelativeLayout(getContext()))));
+//        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_select_desk,
+//                new RelativeLayout(getContext()))));
+
+        View view = View.inflate(getContext(), R.layout.dialog_bottom_sheet_edit_select_desk, null);
+        bottomSheetDialog.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
 
         TextView bsRepeatBack, selectDesk,sheetDate,sheetTime,tvCapacityFilter,tvFilter;
         rvDeskRecycler= bottomSheetDialog.findViewById(R.id.desk_list_select_recycler);
@@ -4706,10 +4724,15 @@ public class BookFragment extends Fragment implements
     }
 
     @Override
-    public void onSelectParking(int deskId, String deskName,String location) {
+    public void onSelectParking(int deskId, String deskName,String location,String description) {
         deskRoomName.setText(""+deskName);
         selectedDeskId= deskId;
-        locationAddress.setText(location);
+        try {
+            locationAddress.setText(location);
+            tv_description.setText(description);
+        } catch (Exception e){
+
+        }
     }
 
 
