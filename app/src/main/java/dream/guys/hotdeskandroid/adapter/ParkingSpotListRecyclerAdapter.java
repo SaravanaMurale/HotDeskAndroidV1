@@ -47,10 +47,10 @@ public class ParkingSpotListRecyclerAdapter extends RecyclerView.Adapter<Parking
         this.context = context;
         this.onSelectSelected = onSelectSelected;
         this.activity = activity;
-        this.parkingSpots=bookingForEditResponse;
-        this.parkingSpotsAll=new ArrayList<>(bookingForEditResponse);
-        this.bottomSheetDialog=bottomSheetDialog;
-        this.roomName=roomName;
+        this.parkingSpots = bookingForEditResponse;
+        this.parkingSpotsAll = new ArrayList<>(bookingForEditResponse);
+        this.bottomSheetDialog = bottomSheetDialog;
+        this.roomName = roomName;
     }
 
     @NonNull
@@ -121,8 +121,9 @@ public class ParkingSpotListRecyclerAdapter extends RecyclerView.Adapter<Parking
 
         holder.parking_name.setText(""+Utils.checkStringParms(parkingSpots.get(position).getCode()));
         holder.description.setText(""+Utils.checkStringParms(parkingSpots.get(position).getDescription()));
-        if (parkingSpots.get(position).getDescription()==null
-                || parkingSpots.get(position).getDescription().equalsIgnoreCase("") || parkingSpots.get(position).getDescription().isEmpty()){
+        if (parkingSpots.get(position).getDescription() == null
+                || parkingSpots.get(position).getDescription().equalsIgnoreCase("")
+                || parkingSpots.get(position).getDescription().isEmpty()){
             holder.descriptionText.setVisibility(View.GONE);
         } else {
             holder.descriptionText.setVisibility(View.VISIBLE);
