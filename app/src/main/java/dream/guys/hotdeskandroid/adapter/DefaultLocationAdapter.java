@@ -60,13 +60,13 @@ public class DefaultLocationAdapter extends RecyclerView.Adapter<DefaultLocation
             case 4:
                 setMargins(holder,150);
                 if (sFrom.equalsIgnoreCase(AppConstants.DefaultLocation)){
-                  //  setEnable(holder,position);
+                    setEnable(holder,position);
 
-                    if (!activeLocationArrayList.get(position).getLocationType().equals(26)){
+                   /* if (!activeLocationArrayList.get(position).getLocationType().equals(26)){
                         setEnable(holder,position);
                     }else {
                         setDisable(holder,position);
-                    }
+                    }*/
 
 
                 }else {
