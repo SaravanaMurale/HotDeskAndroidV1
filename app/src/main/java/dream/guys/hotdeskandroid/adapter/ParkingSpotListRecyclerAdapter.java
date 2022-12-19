@@ -40,9 +40,9 @@ public class ParkingSpotListRecyclerAdapter extends RecyclerView.Adapter<Parking
     List<ParkingSpotModel> parkingSpotsAll;
     public OnSelectSelected onSelectSelected;
     BottomSheetDialog bottomSheetDialog;
+    String roomName;
 
-
-    public ParkingSpotListRecyclerAdapter(Context context, OnSelectSelected onSelectSelected, FragmentActivity activity, List<ParkingSpotModel> bookingForEditResponse, Context context1, BottomSheetDialog bottomSheetDialog) {
+    public ParkingSpotListRecyclerAdapter(Context context, OnSelectSelected onSelectSelected, FragmentActivity activity, List<ParkingSpotModel> bookingForEditResponse, Context context1, BottomSheetDialog bottomSheetDialog,String roomName) {
         // this.homeFragment=homeFragment;
         this.context = context;
         this.onSelectSelected = onSelectSelected;
@@ -110,6 +110,14 @@ public class ParkingSpotListRecyclerAdapter extends RecyclerView.Adapter<Parking
 
     @Override
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
+        if (roomName.equalsIgnoreCase(parkingSpots.get(position).getCode())) {
+            holder.select.setText("Selected");
+            holder.select.setTextColor(ContextCompat.getColor(context,R.color.figmaBlack));
+        } else {
+            holder.select.setText("Select");
+            holder.select.setTextColor(ContextCompat.getColor(context,R.color.figmaBlueText));
+        }
+
         holder.parking_name.setText(""+Utils.checkStringParms(parkingSpots.get(position).getCode()));
         holder.description.setText(""+Utils.checkStringParms(parkingSpots.get(position).getDescription()));
         if (parkingSpots.get(position).getDescription()==null

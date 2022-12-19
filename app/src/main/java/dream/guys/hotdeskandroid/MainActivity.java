@@ -546,13 +546,14 @@ public class MainActivity extends AppCompatActivity implements
         if (selectedicon == 2) {
             selectDesk.setText("Select Parking");
             parkingSpotListRecyclerAdapter = new ParkingSpotListRecyclerAdapter(getContext(),
-                    MainActivity.this, this, parkingSpotModelList, getContext(), deskListBottomSheet);
+                    MainActivity.this, this, parkingSpotModelList, getContext(),
+                    deskListBottomSheet, Utils.checkStringParms(deskRoomName.getText().toString()));
             rvDeskRecycler.setAdapter(parkingSpotListRecyclerAdapter);
         } else if (selectedicon == 1) {
             selectDesk.setText("Select Meeting Room");
             roomListRecyclerAdapter = new RoomListRecyclerAdapter(getContext(),
                     this, this, userAllowedMeetingResponseListUpdated, getContext(),
-                    deskListBottomSheet, null);
+                    deskListBottomSheet, null,Utils.checkStringParms(deskRoomName.getText().toString()));
             rvDeskRecycler.setAdapter(roomListRecyclerAdapter);
         } else {
             selectDesk.setText("Book a Workspace");
@@ -564,7 +565,7 @@ public class MainActivity extends AppCompatActivity implements
             */
 
             newdeskListRecyclerAdapter = new NewDeskListRecyclerAdapter(getContext(), this,
-                    this, bookingDeskList, null, deskListBottomSheet, 0, null, "");
+                    this, bookingDeskList, null, deskListBottomSheet, 0, null, "","");
             rvDeskRecycler.setAdapter(newdeskListRecyclerAdapter);
 
         }

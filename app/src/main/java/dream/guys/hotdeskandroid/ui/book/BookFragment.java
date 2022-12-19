@@ -4180,13 +4180,14 @@ public class BookFragment extends Fragment implements
         if (selectedicon == 3){
             selectDesk.setText("Select Parking");
             parkingSpotListRecyclerAdapter =new ParkingSpotListRecyclerAdapter(getContext(),
-                    this,getActivity(),parkingSpotModelList,getContext(),deskListBottomSheet);
+                    this,getActivity(),parkingSpotModelList,getContext(),
+                    deskListBottomSheet, deskRoomName.getText().toString());
             rvDeskRecycler.setAdapter(parkingSpotListRecyclerAdapter);
         }else if (selectedicon==2){
             selectDesk.setText("Select a room");
             roomListRecyclerAdapter =new RoomListRecyclerAdapter(getContext(),
                     this,getActivity(),userAllowedMeetingResponseListUpdated,getContext(),
-                    deskListBottomSheet,allMeetingRoomList);
+                    deskListBottomSheet,allMeetingRoomList,Utils.checkStringParms(deskRoomName.getText().toString()));
             rvDeskRecycler.setAdapter(roomListRecyclerAdapter);
         }else {
             selectDesk.setText("Book a workspace");
@@ -4219,11 +4220,15 @@ public class BookFragment extends Fragment implements
 
             }
             */
+            try {
+                newdeskListRecyclerAdapter = new NewDeskListRecyclerAdapter(getContext(),this,
+                        getActivity(),bookingDeskList,this,deskListBottomSheet,
+                        id,editBookingDetails,newEditStatus,Utils.checkStringParms(deskRoomName.getText().toString()));
+                rvDeskRecycler.setAdapter(newdeskListRecyclerAdapter);
+            } catch (Exception e){
 
-            newdeskListRecyclerAdapter = new NewDeskListRecyclerAdapter(getContext(),this,
-                    getActivity(),bookingDeskList,this,deskListBottomSheet,
-                    id,editBookingDetails,newEditStatus);
-            rvDeskRecycler.setAdapter(newdeskListRecyclerAdapter);
+            }
+
 
         }
 
@@ -4312,6 +4317,9 @@ public class BookFragment extends Fragment implements
 
 
         TextView bsRepeatBack, selectDesk,sheetDate,sheetTime,tvFilter;
+        LinearLayout linera,filter_layout;
+        linera= bottomSheetDialog.findViewById(R.id.linera);
+        filter_layout= bottomSheetDialog.findViewById(R.id.filter_layout);
         rvDeskRecycler= bottomSheetDialog.findViewById(R.id.desk_list_select_recycler);
         ImageView ivLocation = bottomSheetDialog.findViewById(R.id.location_icon_location);
         tvFilter = bottomSheetDialog.findViewById(R.id.filter);
@@ -4330,15 +4338,19 @@ public class BookFragment extends Fragment implements
 
         if (selectedicon == 3) {
             selectDesk.setText("Book parking");
-            tvCapacityFilter.setVisibility(View.GONE);
-            parkingSpotListRecyclerAdapter =new ParkingSpotListRecyclerAdapter(getContext(),this,getActivity(),parkingSpotModelList,getContext(),bottomSheetDialog);
+            filter_layout.setVisibility(View.GONE);
+            linera.setVisibility(View.VISIBLE);
+            parkingSpotListRecyclerAdapter =new ParkingSpotListRecyclerAdapter(getContext(),this,getActivity(),parkingSpotModelList,getContext(),bottomSheetDialog,
+                    Utils.checkStringParms(deskRoomName.getText().toString()));
             rvDeskRecycler.setAdapter(parkingSpotListRecyclerAdapter);
         }else if (selectedicon==2) {
             selectDesk.setText("Book a room");
             tvCapacityFilter.setVisibility(View.VISIBLE);
+            linera.setVisibility(View.VISIBLE);
+
             tvFilter.setVisibility(View.GONE);
             roomListRecyclerAdapter =new RoomListRecyclerAdapter(getContext(),this,getActivity(),userAllowedMeetingResponseListUpdated,
-                    getContext(),bottomSheetDialog,allMeetingRoomList);
+                    getContext(),bottomSheetDialog,allMeetingRoomList,Utils.checkStringParms(deskRoomName.getText().toString()));
             rvDeskRecycler.setAdapter(roomListRecyclerAdapter);
         }else {
             selectDesk.setText("Book a workspace");
@@ -4427,7 +4439,7 @@ public class BookFragment extends Fragment implements
 
             roomListRecyclerAdapter = new RoomListRecyclerAdapter(getContext(), this, getActivity(),
                     tempList,
-                    getContext(), bottomSheetDialog, allMeetingRoomList);
+                    getContext(), bottomSheetDialog, allMeetingRoomList,Utils.checkStringParms(deskRoomName.getText().toString()));
             rvDeskRecycler.setAdapter(roomListRecyclerAdapter);
         }
     }

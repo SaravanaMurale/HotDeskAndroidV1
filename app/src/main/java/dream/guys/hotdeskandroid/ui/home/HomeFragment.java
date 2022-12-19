@@ -1244,7 +1244,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         }
 
         EditDeskController editDeskController = new EditDeskController(activityContext, context,
-                editDeskBookingDetails,AppConstants.HOMEFRAGMENTINSTANCESTRING);
+                editDeskBookingDetails, AppConstants.HOMEFRAGMENTINSTANCESTRING);
     }
 
     @Override
@@ -1545,7 +1545,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
 
         EditCarParkController editCarParkController = new EditCarParkController(activityContext, context,
-                editDeskBookingDetails,AppConstants.BOOKFRAGMENTINSTANCESTRING,
+                editDeskBookingDetails,AppConstants.HOMEFRAGMENTINSTANCESTRING,
                 Utils.getISO8601format(Utils.convertStringToDateFormet(carParkBooking.getDate())));
     }
 
