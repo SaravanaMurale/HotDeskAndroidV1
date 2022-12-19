@@ -45,10 +45,11 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
     EditBookingDetails editBookingDetails;
     int typeId;
     String newEditStatus;
+    String roomName;
     public NewDeskListRecyclerAdapter(Context context, OnChangeSelected onSelectSelected, FragmentActivity activity,
                                       List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse,
                                       BookFragment context1, BottomSheetDialog bottomSheetDialog,
-                                      int typeId, EditBookingDetails editBookingDetails,String newEditStatus) {
+                                      int typeId, EditBookingDetails editBookingDetails,String newEditStatus,String roomName) {
         this.fragment=context1;
         this.context = context;
         this.onChangeSelected =onSelectSelected;
@@ -59,6 +60,7 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
         this.typeId = typeId;
         this.editBookingDetails = editBookingDetails;
         this.newEditStatus=newEditStatus;
+        this.roomName=roomName;
     }
     public interface OnChangeSelected{
         public void onChangeDesk(BookingForEditResponse.TeamDeskAvailabilities deskList,
@@ -80,6 +82,13 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
     @Override
     public void onBindViewHolder(@NonNull viewholder holder, int position) {
 //        fragment.selectedTeamId
+        if (roomName.equalsIgnoreCase(deskList.get(position).getDeskCode())){
+            holder.select.setText("selected");
+            holder.select.setTextColor(ContextCompat.getColor(context, R.color.figmaBlack));
+        } else {
+            holder.select.setText("select");
+            holder.select.setTextColor(ContextCompat.getColor(context, R.color.figmaBlueText));
+        }
         holder.desk_name.setText(deskList.get(position).getDeskCode());
         holder.tvLocationAddress.setText(Utils.checkStringParms(deskList.get(position).getLocationDetails().getBuildingName())+
                 ", "+

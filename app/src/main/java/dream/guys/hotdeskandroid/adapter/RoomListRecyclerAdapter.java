@@ -41,10 +41,10 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
     List<UserAllowedMeetingResponse> roomsAll;
     public OnSelectSelected onSelectSelected;
     BottomSheetDialog bottomSheetDialog;
-
+    String roomName;
     List<BookingForEditResponse.TeamDeskAvailabilities> deskListAll;
     public RoomListRecyclerAdapter(Context context, OnSelectSelected onSelectSelected, FragmentActivity activity, List<UserAllowedMeetingResponse> bookingForEditResponse, Context context1,
-                                   BottomSheetDialog bottomSheetDialog,List<UserAllowedMeetingResponse> allMeetingRoomList) {
+                                   BottomSheetDialog bottomSheetDialog,List<UserAllowedMeetingResponse> allMeetingRoomList, String roomName) {
         // this.homeFragment=homeFragment;
         this.context = context;
         this.onSelectSelected = onSelectSelected;
@@ -53,6 +53,7 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
         this.roomsAll = new ArrayList<>(bookingForEditResponse);
         this.bottomSheetDialog=bottomSheetDialog;
         this.getAllRooms =allMeetingRoomList;
+        this.roomName =roomName;
     }
     public interface OnSelectSelected{
         public void onSelectRoom(int deskId, String deskName, String location,
@@ -116,6 +117,15 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
         holder.capacityLayout.setVisibility(View.VISIBLE);
         holder.locationDetails.setVisibility(View.VISIBLE);
         holder.statusLayout.setVisibility(View.VISIBLE);
+
+        if (roomName.equalsIgnoreCase(rooms.get(position).getName())){
+            holder.select.setText("selected");
+            holder.select.setTextColor(ContextCompat.getColor(context,R.color.figmaBlack));
+        } else {
+            holder.select.setText("select");
+            holder.select.setTextColor(ContextCompat.getColor(context,R.color.figmaBlueText));
+        }
+
         if (rooms.get(position).getDescription() != null)
             holder.tv_description.setText(rooms.get(position).getDescription());
                 team:
