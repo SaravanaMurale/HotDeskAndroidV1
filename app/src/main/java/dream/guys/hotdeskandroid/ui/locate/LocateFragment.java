@@ -380,6 +380,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     ImageView img_bsCountry,img_bsState,img_bsStreet;
 
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -1145,7 +1146,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             String fullPathLocation = SessionHandler.getInstance().get(getContext(), AppConstants.FULLPATHLOCATION);
 
 
-            //System.out.println("LocateLocation "+CountryName+ );
+            System.out.println("LocateLocationCountry "+CountryName);
+            System.out.println("LocateLocationBuildingName "+buildingName);
+            System.out.println("LocateLocationFloorName "+floorName);
+            System.out.println("LocateLocationFinalFloorName "+finalFloorName);
+            System.out.println("LocateLocationfullPathLocation "+fullPathLocation);
 
             if (CountryName == null && buildingName == null && floorName == null && fullPathLocation == null) {
                 binding.searchLocate.setHint("");
@@ -4686,14 +4691,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         bsLocationSearch = bottomSheetDialog.findViewById(R.id.bsLocationSearch);
         bsGeneralSearch = bottomSheetDialog.findViewById(R.id.bsGeneralSearch);
 
-        String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
+       /* String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
         String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
 
         if (buildingName == null && floorName == null) {
-            bsLocationSearch.setText("40th Bank Street,30th Floor");
+            bsLocationSearch.setText("");
         } else {
             bsLocationSearch.setText(buildingName + "," + floorName);
-        }
+        }*/
 
         countryBlock = bottomSheetDialog.findViewById(R.id.bsCountryBlock);
         statBlock = bottomSheetDialog.findViewById(R.id.bsStateBlock);
@@ -4778,6 +4783,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         });
 
+        bsLocationSearch.setText(appKeysPage.getGlobalLocation());
 
         country.setText(appKeysPage.getGlobalLocation());
         rvCountry.setVisibility(View.VISIBLE);
@@ -4799,7 +4805,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                //country.setText("Global Location");
+
                 country.setText(appKeysPage.getGlobalLocation());
                 rvCountry.setVisibility(View.VISIBLE);
                 showCountryListInAdapter(locateCountryResposes);
@@ -4926,21 +4932,22 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     public void onSelect(LocateCountryRespose locateCountryRespose, String identifier) {
 
 
+
         switch (identifier) {
             case "COUNTRY":
-
                 floorSearchStatus = false;
 
                 state.setText("City");
                 stateId = locateCountryRespose.getLocateCountryId();
                 SessionHandler.getInstance().save(getContext(), AppConstants.COUNTRY_NAME, locateCountryRespose.getName());
+
                 country.setText(locateCountryRespose.getName());
                 callCountrysChildData(locateCountryRespose.getLocateCountryId());
 
 
                 //New...
                 //Set Clicked Place To Show Textview
-                bsLocationSearch.setText(locateCountryRespose.getName());
+                bsLocationSearch.setText(SessionHandler.getInstance().get(getContext(),AppConstants.COUNTRY_NAME));
 
                 cityColor();
                 break;
@@ -4964,7 +4971,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 //New...
                 //Set Clicked Place To Show Textview
-                bsLocationSearch.setText(locateCountryRespose.getName());
+                bsLocationSearch.setText(SessionHandler.getInstance().get(getContext(),AppConstants.COUNTRY_NAME)+","+SessionHandler.getInstance().get(getContext(),AppConstants.BUILDING));
 
                 buildingcolor();
                 break;
@@ -5008,7 +5015,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 //New...
                 //Set Clicked Place To Show Textview
-                bsLocationSearch.setText(locateCountryRespose.getName());
+                bsLocationSearch.setText(SessionHandler.getInstance().get(getContext(),AppConstants.COUNTRY_NAME)+","+SessionHandler.getInstance().get(getContext(),AppConstants.BUILDING)+","+SessionHandler.getInstance().get(getContext(),AppConstants.FLOOR));
 
                 floorColor();
                 break;
