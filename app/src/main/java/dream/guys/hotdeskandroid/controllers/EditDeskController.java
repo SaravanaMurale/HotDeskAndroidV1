@@ -117,7 +117,6 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
     private void getActiveTeams() {
 
         if (Utils.isNetworkAvailable(activityContext)) {
-
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<List<ActiveTeamsResponse>> call = apiService.getActiveTeams();
             call.enqueue(new Callback<List<ActiveTeamsResponse>>() {

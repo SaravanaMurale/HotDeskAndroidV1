@@ -105,7 +105,7 @@ public class ParkingSpotListRecyclerAdapter extends RecyclerView.Adapter<Parking
 
 
     public interface OnSelectSelected{
-        public void onSelectParking(int deskId,String deskName, String location,String description);
+        public void onSelectParking(int deskId,String deskName, String location,String description,String available);
 
     }
 
@@ -199,7 +199,10 @@ public class ParkingSpotListRecyclerAdapter extends RecyclerView.Adapter<Parking
             public void onClick(View v) {
                 bottomSheetDialog.dismiss();
                 onSelectSelected.onSelectParking(parkingSpots.get(holder.getAbsoluteAdapterPosition()).getId(),
-                        parkingSpots.get(holder.getAbsoluteAdapterPosition()).getCode(),parkingSpots.get(holder.getAbsoluteAdapterPosition()).getLocation().getName(),parkingSpots.get(holder.getAbsoluteAdapterPosition()).getDescription());
+                        parkingSpots.get(holder.getAbsoluteAdapterPosition()).getCode(),
+                        parkingSpots.get(holder.getAbsoluteAdapterPosition()).getLocation().getName(),
+                        parkingSpots.get(holder.getAbsoluteAdapterPosition()).getDescription(),
+                        holder.deskStatus.getText().toString());
             }
         });
     }

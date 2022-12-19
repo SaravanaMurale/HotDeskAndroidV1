@@ -1460,8 +1460,18 @@ public class BookFragment extends Fragment implements
                     try {
                         if(response.code()==200 && response.body()!=null && response.body().size()>0){
                             for(int i=0;i<response.body().size();i++){
-                                if(response.body().get(i).isActive()){
+                                if(response.body().get(i).isActive() && response.body().get(i).getAssignees().size()==0) {
                                     parkingSpotModelList.add(response.body().get(i));
+                                } else if(response.body().get(i).isActive() && response.body().get(i).getAssignees().size()>0){
+                                    for (int x=0;x<response.body().get(i).getAssignees().size();x++){
+                                        if (response.body().get(i).getAssignees().get(x).getId()
+                                                == SessionHandler.getInstance().getInt(context,AppConstants.USER_ID)) {
+                                            parkingSpotModelList.add(response.body().get(i));
+                                        } else {
+                                            if (response.body().get(i).getParkingSlotAvailability()==2)
+                                                parkingSpotModelList.add(response.body().get(i));
+                                        }
+                                    }
                                 }
                             }
                             boolean checkIsRequest=false;
@@ -2558,7 +2568,7 @@ public class BookFragment extends Fragment implements
                     deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaLiteGreen));
                     continueEditBook.setVisibility(View.VISIBLE);
                 }
-            } else{
+            } else {
                 deskStatusText.setText("Available");
                 deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaLiteGreen));
                 continueEditBook.setVisibility(View.VISIBLE);
@@ -2729,7 +2739,8 @@ public class BookFragment extends Fragment implements
                 continueEditBook.setText("Continue");
                 back.setText("Cancel");
             }
-        }else {
+        } else {
+
             if (newEditStatus.equalsIgnoreCase("edit")){
                 if (editDeskBookingDetails.getDate()!=null)
                     date.setText(""+Utils.calendarDay10thMonthYearformat(editDeskBookingDetails.getDate()));
@@ -2778,7 +2789,31 @@ public class BookFragment extends Fragment implements
                 back.setText("Back");
             }
 //            //System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
-            if (parkingSpotModelList.size() > 0 && !newEditStatus.equalsIgnoreCase("edit")){
+            if (parkingSpotModelList.size() > 0 && !newEditStatus.equalsIgnoreCase("edit")) {
+                if (parkingSpotModelList.get(0).getParkingSlotAvailability()==1) {
+                    deskStatusText.setText("Available");
+                    deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaLiteGreen));
+                } else {
+                    if(parkingSpotModelList.get(0).getAssignees().size()>0){
+                        loop:
+                        for (int i=0; i < parkingSpotModelList.get(0).getAssignees().size(); i++) {
+                            if (parkingSpotModelList.get(0).getAssignees().get(i).getId() == SessionHandler.getInstance().getInt(context,AppConstants.USER_ID)){
+                                deskStatusText.setText("Available");
+                                deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaLiteGreen));
+                                break loop;
+                            } else {
+                                deskStatusText.setText("Available For Request");
+                                deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figma_orange));
+                            }
+                        }
+                    } else {
+                        deskStatusText.setText("Available For Request");
+                        deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figma_orange));
+                    }
+//                    deskStatusText.setText("Available For Request");
+//                    deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figma_orange));
+                }
+
 //                //System.out.println("tim else"+
                 select.setVisibility(View.VISIBLE);
                 deskRoomName.setText(""+parkingSpotModelList.get(0).getCode());
@@ -4851,15 +4886,25 @@ public class BookFragment extends Fragment implements
 
     }
     @Override
-    public void onSelectParking(int deskId, String deskName,String location,String description) {
-        deskRoomName.setText(""+deskName);
-        selectedDeskId= deskId;
+    public void onSelectParking(int deskId, String deskName,String location,String description,String available) {
         try {
+            deskRoomName.setText(""+deskName);
+            selectedDeskId= deskId;
+            if (available.equalsIgnoreCase("Available")){
+                deskStatusText.setText("Available");
+                deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaLiteGreen));
+            } else {
+                deskStatusText.setText("Available For Request");
+                deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figma_orange));
+            }
+
             locationAddress.setText(location);
             tv_description.setText(description);
+
         } catch (Exception e){
 
         }
+
     }
 
 
