@@ -35,7 +35,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.RelativeSizeSpan;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
@@ -2706,6 +2708,16 @@ public class Utils {
             return false;
         }
 
+    }
+
+    public static void setSPannableStringForParticipants(TextView textView,String s,int start,int end){
+        //Set Font Size
+        //String s= "Internal participants optional";
+        SpannableString ss1=  new SpannableString(s);
+        ss1.setSpan(new RelativeSizeSpan(1.1f), 0,start, 0);
+        ss1.setSpan(new RelativeSizeSpan(0.8f), start,end, 0);// set size
+        //ss1.setSpan(new ForegroundColorSpan(Color.RED), 0, 5, 0);// set color
+        textView.setHint(ss1);
     }
 
 

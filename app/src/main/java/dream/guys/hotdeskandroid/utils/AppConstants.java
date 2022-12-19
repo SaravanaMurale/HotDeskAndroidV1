@@ -54,6 +54,7 @@ public class AppConstants {
     public static final String COUNTRY_NAME="COUNTRY_NAME";
     public static final String BUILDING="BUILDING";
     public static final String FLOOR="FLOOR";
+    public static final String FINAL_FLOOR="FINAL_FLOOR";
     public static final String FULLPATHLOCATION="FULLPATHLOCATION";
     public static final String DESK="3";
     public static final String MEETING="4";
@@ -65,6 +66,7 @@ public class AppConstants {
     public static final String COUNTRY_NAME_CHECK="COUNTRY_NAME_CHECK";
     public static final String BUILDING_CHECK="BUILDING_CHECK";
     public static final String FLOOR_CHECK="FLOOR_CHECK";
+    public static final String FINAL_FLOOR_CHECK="FINAL_FLOOR_CHECK";
     public static final String FULLPATHLOCATION_CHECK="FULLPATHLOCATION_CHECK";
 
 

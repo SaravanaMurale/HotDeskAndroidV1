@@ -24,7 +24,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -1110,12 +1113,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             String countryCheck = SessionHandler.getInstance().get(getContext(), AppConstants.COUNTRY_NAME_CHECK);
             String buildingCheck = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING_CHECK);
             String floorCheck = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR_CHECK);
+            String finalFloorCheck = SessionHandler.getInstance().get(getContext(), AppConstants.FINAL_FLOOR_CHECK);
             String fullPathCheck = SessionHandler.getInstance().get(getContext(), AppConstants.FULLPATHLOCATION_CHECK);
 
 
             SessionHandler.getInstance().save(getContext(), AppConstants.COUNTRY_NAME, countryCheck);
             SessionHandler.getInstance().save(getContext(), AppConstants.BUILDING, buildingCheck);
             SessionHandler.getInstance().save(getContext(), AppConstants.FLOOR, floorCheck);
+            SessionHandler.getInstance().save(getContext(), AppConstants.FLOOR, finalFloorCheck);
             SessionHandler.getInstance().save(getContext(), AppConstants.FULLPATHLOCATION, fullPathCheck);
 
         }
@@ -1133,13 +1138,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             String CountryName = SessionHandler.getInstance().get(getContext(), AppConstants.COUNTRY_NAME);
             String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
             String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
+            String finalFloorName = SessionHandler.getInstance().get(getContext(), AppConstants.FINAL_FLOOR);
             String fullPathLocation = SessionHandler.getInstance().get(getContext(), AppConstants.FULLPATHLOCATION);
 
             if (CountryName == null && buildingName == null && floorName == null && fullPathLocation == null) {
                 binding.searchLocate.setHint("Choose Location");
             } else {
                 if (fullPathLocation == null) {
-                    binding.searchLocate.setText(buildingName + "  " + floorName);
+                    binding.searchLocate.setText(floorName + "  " + finalFloorName);
                 } else {
                     binding.searchLocate.setText(fullPathLocation);
                 }
@@ -1650,6 +1656,25 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                 addDottedLine(pointList);
                             }
+
+
+                            //Draw Title
+                            for (int i = 0; i <getSupportZoneLayoutForCanvas.size() ; i++) {
+                                System.out.println("FloorNameSuppportZoneee "+getSupportZoneLayoutForCanvas.get(i).getTitle());
+                                View roomTitleView = getLayoutInflater().inflate(R.layout.layout_room_title, null, false);
+                                TextView roormTitle = roomTitleView.findViewById(R.id.roomTileCanvas);
+                                RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                                roormTitle.setVisibility(View.VISIBLE);
+
+                                relativeLayout.leftMargin=getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(0).get(0);
+                                relativeLayout.rightMargin=getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(0).get(1);;
+                               /* relativeLayout.width = 60;
+                                relativeLayout.height = 60;*/
+                                roormTitle.setText(getSupportZoneLayoutForCanvas.get(i).getTitle());
+                                roormTitle.setLayoutParams(relativeLayout);
+                                binding.firstLayout.addView(roomTitleView);
+                            }
+
                         }
 
                         //Final API canvas
@@ -1794,6 +1819,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         MyCanvasDraw myCanvasDraw = new MyCanvasDraw(getContext(), pointList);
 
         //binding.firstLayout.removeAllViews();
+
+
 
         binding.firstLayout.addView(myCanvasDraw);
 
@@ -2831,9 +2858,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         tvBookedRoomStartTime.setText(Utils.splitTime(bookedCarResponse.getCarParkBookingsList().get(0).getFrom()));
         tvBookedRoomEndTime.setText(Utils.splitTime(bookedCarResponse.getCarParkBookingsList().get(0).getTo()));
 
-        String sDate = binding.locateCalendearView.getText().toString();
+        /*String sDate = binding.locateCalendearView.getText().toString();
         String dateTime = Utils.dateWithDayString(sDate);
-        bookedDeskDate.setText(dateTime);
+        bookedDeskDate.setText(dateTime);*/
+
+        bookedDeskDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()));
 
         bookedLocation.setText(binding.searchLocate.getText());
 
@@ -2920,9 +2949,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         tvBookedRoomStartTime.setText(Utils.splitTime(bookedDeskResponseList.get(0).getFrom()));
         tvBookedRoomEndTime.setText(Utils.splitTime(bookedDeskResponseList.get(0).getTo()));
 
-        String sDate = binding.locateCalendearView.getText().toString();
+
+        bookedDeskDate.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()));
+
+        /*String sDate = binding.locateCalendearView.getText().toString();
         String dateTime = Utils.dateWithDayString(sDate);
-        bookedDeskDate.setText(dateTime);
+        bookedDeskDate.setText(dateTime);*/
 
         bookedLocation.setText(binding.searchLocate.getText());
 
@@ -2973,7 +3005,25 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
-                    callMeetingRoomEditListAdapterBottomSheet(meetingListToEditResponseList, meetingRoomName, isReqduest);
+                    //callMeetingRoomEditListAdapterBottomSheet(meetingListToEditResponseList, meetingRoomName, isReqduest);
+
+
+                    for (int i = 0; i <meetingListToEditResponseList.size() ; i++) {
+
+
+                        if(meetingRoomId==meetingListToEditResponseList.get(i).getMeetingRoomId()){
+
+                            onMeetingEditClick(meetingListToEditResponseList.get(i));
+                            break;
+
+                        }
+
+
+                    }
+
+
+
+
 
                     //}
 
@@ -3106,7 +3156,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //close when myteam bottom sheet open
         closeAndClearMyTeamList(locateMyTeamMemberStatusList);
 
-        TextView unAvalibaleDeskName, tvUnavaliableBack, unAvaliableLocate, tvDescriptionUnAvaliable, unAvailableDesc;
+        TextView unAvalibaleDeskName,unAvaliableDate, tvUnavaliableBack, unAvaliableLocate, tvDescriptionUnAvaliable, unAvailableDesc;
 
         BottomSheetDialog locateCheckInBottomSheet = new BottomSheetDialog(getContext());
         View view = View.inflate(getContext(), R.layout.dialog_locate_unavalible_bottomsheet, null);
@@ -3114,12 +3164,20 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
         bottomSheetBehavior.setPeekHeight(500);
 
-
+        unAvaliableDate=locateCheckInBottomSheet.findViewById(R.id.unAvaliableDate);
         unAvalibaleDeskName = locateCheckInBottomSheet.findViewById(R.id.unAvalibaleDeskName);
         tvUnavaliableBack = locateCheckInBottomSheet.findViewById(R.id.tvUnavaliableBack);
         unAvaliableLocate = locateCheckInBottomSheet.findViewById(R.id.unAvaliableLocate);
         tvDescriptionUnAvaliable = locateCheckInBottomSheet.findViewById(R.id.tvDescriptionUnAvaliable);
         unAvailableDesc = locateCheckInBottomSheet.findViewById(R.id.un_available_desc);
+
+        if(code.equalsIgnoreCase("4")){
+            unAvaliableDate.setVisibility(View.VISIBLE);
+
+            String sDate = binding.locateCalendearView.getText().toString();
+            String dateTime = Utils.dateWithDayString(sDate);
+            unAvaliableDate.setText(dateTime);
+        }
 
         unAvalibaleDeskName.setText(selctedCode);
         if (binding.searchLocate.getText().toString() != null) {
@@ -3411,6 +3469,23 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //tvMeetingRoomDescription.setText(appKeysPage.getDescription());
         //etComments.setHint(appKeysPage.getComments());
         etSubject.setHint(meetingRoomsLanguage.getSubject());
+
+
+
+        //set spannable text
+        String s= "Internal participants optional";
+        int start=21;
+        int end=29;
+        Utils.setSPannableStringForParticipants(etParticipants,s,start,end);
+
+        String ex= "External participants optional";
+        Utils.setSPannableStringForParticipants(externalAttendees,ex,start,end);
+
+        String com="Comments optional";
+        int start1=9;
+        int end1=16;
+        Utils.setSPannableStringForParticipants(etComments,com,start1,end1);
+
 
         if (isRequest) {
             meetingAvaliable.setText("Request");
@@ -4142,12 +4217,25 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     CarParkingForEditResponse carParkingForEditResponse = response.body();
 
                     if (carParkingForEditResponse != null) {
-                        CallCarBookingEditList(carParkingForEditResponse, code, selectedCode, key, id, requestTeamId, requestTeamDeskId, i);
-                    }
-               /* for (int i = 0; i <carParkingForEditResponse.getCarParkBookings().size() ; i++) {
-                    System.out.println("CarParkingEditListVeHicleNumber"+carParkingForEditResponse.getCarParkBookings().get(i).getVehicleRegNumber());
+                       // CallCarBookingEditList(carParkingForEditResponse, code, selectedCode, key, id, requestTeamId, requestTeamDeskId, i);
 
-                }*/
+
+                        for (int i = 0; i <carParkingForEditResponse.getCarParkBookings().size() ; i++) {
+                            System.out.println("CarParkingEditListVeHicleNumber"+carParkingForEditResponse.getCarParkBookings().get(i).getVehicleRegNumber());
+
+                            if(id==carParkingForEditResponse.getCarParkBookings().get(i).getParkingSlotId()){
+
+                                onCarEditClick(carParkingForEditResponse.getCarParkBookings().get(i),selectedCode);
+                                break;
+
+
+                            }
+
+
+                        }
+
+                    }
+
 
                     // ProgressDialog.dismisProgressBar(getContext(),dialog);
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
@@ -4259,6 +4347,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     //DeskBookingEditList
     private void callBottomSheetToEdit(BookingForEditResponse bookingForEditResponse, String selctedCode, String key, int id, String code, int requestTeamId, int requestTeamDeskId, int i) {
+
+
+
 
 
         RecyclerView rvEditList;
@@ -4381,7 +4472,21 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
                     if (bookingForEditResponse != null) {
-                        callBottomSheetToEdit(bookingForEditResponse, selctedCode, key, id, code, requestTeamId, requestTeamDeskId, i);
+                        //callBottomSheetToEdit(bookingForEditResponse, selctedCode, key, id, code, requestTeamId, requestTeamDeskId, i);
+
+                        //No List direct UI
+                        if(bookingForEditResponse.getBookings().size()>0 && bookingForEditResponse.getBookings()!=null)
+                        for (int i = 0; i <bookingForEditResponse.getBookings().size() ; i++) {
+
+                            if(id==bookingForEditResponse.getBookings().get(i).getDeskId()){
+                                bookingForEditResponse.getBookings().get(i);
+                                onEditClick(bookingForEditResponse.getBookings().get(i),"3",bookingForEditResponse.getTeamDeskAvailabilities());
+                                break;
+                            }
+
+
+                        }
+
                     }
 
                 }
@@ -5155,8 +5260,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         System.out.println("BookingRequestDetail" + selctedCode + " " + key + " " + id + " " + code + " " + statusCode);
-
-        /*BottomSheetDialog locateCheckInBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+/*
+        BottomSheetDialog locateCheckInBottomSheet = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         locateCheckInBottomSheet.setContentView(getLayoutInflater().inflate(R.layout.dialog_locate_checkin_bottomsheet,
                 new RelativeLayout(getContext())));*/
 
@@ -7428,7 +7533,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     locateResponseHandler(response, getResources().getString(R.string.desk_book_deleted));
 
-                    locateEditBottomSheet.dismiss();
+                    if(locateEditBottomSheet!=null) {
+                        locateEditBottomSheet.dismiss();
+                    }
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
 
@@ -7436,7 +7543,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 @Override
                 public void onFailure(Call<BaseResponse> call, Throwable t) {
-                    locateEditBottomSheet.dismiss();
+                    if(locateEditBottomSheet!=null) {
+                        locateEditBottomSheet.dismiss();
+                    }
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 }
             });
@@ -7927,7 +8036,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                locateCarEditBottomSheet.dismiss();
+                if(locateCarEditBottomSheet!=null) {
+                    locateCarEditBottomSheet.dismiss();
+                }
                 locateResponseHandler(response, getResources().getString(R.string.desk_book_deleted));
 
 
@@ -7936,7 +8047,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                locateCarEditBottomSheet.dismiss();
+                if(locateCarEditBottomSheet!=null) {
+                    locateCarEditBottomSheet.dismiss();
+                }
             }
         });
 
@@ -7989,7 +8102,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                    locateCarEditBottomSheet.dismiss();
+
+                    if(locateCarEditBottomSheet!=null){
+                        locateCarEditBottomSheet.dismiss();
+                    }
+
+
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
                     selectedCarId = 0;
                     locateResponseHandler(response, getResources().getString(R.string.booking_updated));
@@ -7999,7 +8117,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 @Override
                 public void onFailure(Call<BaseResponse> call, Throwable t) {
-                    locateCarEditBottomSheet.dismiss();
+                    if(locateCarEditBottomSheet!=null){
+                        locateCarEditBottomSheet.dismiss();
+                    }
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 }
             });
@@ -8680,6 +8800,20 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         amenitiesBlock.setVisibility(View.VISIBLE);
 
 
+        //set spannable text
+        String s= "Internal participants optional";
+        int start=21;
+        int end=29;
+        Utils.setSPannableStringForParticipants(etParticipants,s,start,end);
+
+        String ex= "External participants optional";
+        Utils.setSPannableStringForParticipants(externalAttendees,ex,start,end);
+
+        String com="Comments optional";
+        int start1=9;
+        int end1=12;
+        Utils.setSPannableStringForParticipants(etComments,com,start1,end1);
+
         //Language
         tvRoomStart.setText(appKeysPage.getStart());
         tvRoomEnd.setText(appKeysPage.getEnd());
@@ -8687,12 +8821,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         editRoomBookingContinue.setText(appKeysPage.getContinue());
         editRoomBookingBack.setText(appKeysPage.getBack());
         etSubject.setHint(meetingRoomsLanguage.getSubject());
-        etComments.setHint(appKeysPage.getComments());
+        //etComments.setHint(appKeysPage.getComments());
         //meetingAvaliable.setText(global.getAvailable());
 
 
-        //showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " • " + startRoomTime.getText().toString());
-        showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(startRoomTime.getText().toString()));
+        showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " • " + startRoomTime.getText().toString());
+        //showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(startRoomTime.getText().toString()));
 
 
         //Language
@@ -9236,7 +9370,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                    locateMeetEditBottomSheet.dismiss();
+                    if(locateMeetEditBottomSheet!=null) {
+                        locateMeetEditBottomSheet.dismiss();
+                    }
 
                     locateResponseHandler(response, getResources().getString(R.string.desk_book_deleted));
                 }
@@ -9348,7 +9484,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     chipList.clear();
                     bottomSheetDialog.dismiss();
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                    locateMeetEditBottomSheet.dismiss();
+//                    locateMeetEditBottomSheet.dismiss();
 
                     locateResponseHandler(response, getResources().getString(R.string.booking_updated));
 
