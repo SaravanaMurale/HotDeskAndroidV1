@@ -293,6 +293,7 @@
                     android:layout_marginRight="@dimen/_8sdp"
                     android:background="@drawable/rectangle_bg_with_corner"
                     android:padding="@dimen/_5sdp"
+                    android:visibility="gone"
                     tools:ignore="MissingConstraints">
 
                     <TextView
@@ -345,7 +346,7 @@
                 <!--StartAndEndTime-->
                 <LinearLayout
                     android:id="@+id/rlTime"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/_27sdp"
                     android:layout_below="@+id/searchGlobal"
                     android:layout_marginTop="@dimen/_10sdp"
@@ -451,6 +452,7 @@
                     android:layout_toRightOf="@id/rlTime"
                     android:layout_marginStart="@dimen/_8sdp"
                     android:padding="@dimen/_5sdp"
+                    android:visibility="gone"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/rectangle_bg_with_corner"
                     tools:ignore="MissingConstraints">

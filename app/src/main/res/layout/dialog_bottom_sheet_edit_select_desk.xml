@@ -80,9 +80,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/_10sdp"
             android:text="Capacity"
-            android:visibility="gone"
+            android:visibility="visible"
             android:textColor="@color/figmaBlueText"
             android:textSize="18sp"
             android:theme="@style/TextBold" />
