@@ -4768,7 +4768,7 @@ public class BookFragment extends Fragment implements
 
     @Override
     public void onCarEditClicks(CarParkListToEditResponse carParkBooking) {
-        if(bookEditBottomSheet!=null){
+        if(bookEditBottomSheet!=null) {
             bookEditBottomSheet.dismiss();
         }
 
