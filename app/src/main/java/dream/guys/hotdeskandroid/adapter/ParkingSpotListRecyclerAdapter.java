@@ -50,6 +50,7 @@ public class ParkingSpotListRecyclerAdapter extends RecyclerView.Adapter<Parking
         this.parkingSpots=bookingForEditResponse;
         this.parkingSpotsAll=new ArrayList<>(bookingForEditResponse);
         this.bottomSheetDialog=bottomSheetDialog;
+        this.roomName=roomName;
     }
 
     @NonNull
