@@ -83,6 +83,7 @@ import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.ActiveTeamsAdapter;
 import dream.guys.hotdeskandroid.adapter.AssertListAdapter;
 import dream.guys.hotdeskandroid.adapter.BookingListToEditAdapter;
+import dream.guys.hotdeskandroid.adapter.CapacityAdapter;
 import dream.guys.hotdeskandroid.adapter.CarListToEditAdapterBooking;
 import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.FloorAdapter;
@@ -282,7 +283,7 @@ public class BookFragment extends Fragment implements
     //    LinearLayoutManager linearLayoutManager;
     RelativeLayout countryBlock, statBlock, streetBlock, floorBlock;
 
-    TextView bsLocationSearch;
+    TextView bsLocationSearch, tvCapacityFilter;
 
     RecyclerView rvMyTeam;
     LocateMyTeamAdapter locateMyTeamAdapter;
@@ -352,6 +353,10 @@ public class BookFragment extends Fragment implements
     CustomSpinner assertSpinner;
     ArrayList<AssertModel> assertList;
     AssertListAdapter assertListAdapter;
+
+    BottomSheetDialog capacityDialog;
+    private String capacitySelectedItem = "1";
+    BottomSheetDialog bottomSheetDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -962,8 +967,8 @@ public class BookFragment extends Fragment implements
                 binding.ivRoom.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
                 binding.tvRoom.setVisibility(View.VISIBLE);
                 binding.tvRoom.setText(appKeysPage.getRoom());
-                binding.rlParticipants.setVisibility(View.VISIBLE);
-                binding.rlFilter.setVisibility(View.VISIBLE);
+                binding.rlParticipants.setVisibility(View.GONE);
+                binding.rlFilter.setVisibility(View.GONE);
 
                 LinearLayout.LayoutParams roomParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -4254,11 +4259,11 @@ public class BookFragment extends Fragment implements
 
     private void callDeskBottomSheetDialog() {
 
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog  = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_select_desk,
                 new RelativeLayout(getContext()))));
 
-        TextView bsRepeatBack, selectDesk,sheetDate,sheetTime,tvCapacityFilter,tvFilter;
+        TextView bsRepeatBack, selectDesk,sheetDate,sheetTime,tvFilter;
         rvDeskRecycler= bottomSheetDialog.findViewById(R.id.desk_list_select_recycler);
         ImageView ivLocation = bottomSheetDialog.findViewById(R.id.location_icon_location);
         tvFilter = bottomSheetDialog.findViewById(R.id.filter);
@@ -4317,6 +4322,13 @@ public class BookFragment extends Fragment implements
             }
         });
 
+        tvCapacityFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callCapacityBottomDialog(capacitySelectedItem);
+            }
+        });
+
         bsRepeatBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -4328,6 +4340,50 @@ public class BookFragment extends Fragment implements
 
 
     }
+
+    private void callCapacityBottomDialog(String selectedItem) {
+
+        capacityDialog  = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        capacityDialog.setContentView((getLayoutInflater().inflate(R.layout.bottom_sheet_capacity,
+                new RelativeLayout(getContext()))));
+
+        TextView title = capacityDialog.findViewById(R.id.title);
+        RecyclerView capacityRecycler = capacityDialog.findViewById(R.id.capacityRecycler);
+
+        ArrayList<String> capacityList = new ArrayList<>();
+
+        for (int i = 1; i <= 12; i++) {
+            capacityList.add(i+"");
+        }
+
+        CapacityAdapter adapter = new CapacityAdapter(BookFragment.this, capacityList, selectedItem);
+        capacityRecycler.setAdapter(adapter);
+
+        capacityDialog.show();
+    }
+
+    public void dismissCapacityDialog(String selectedItem){
+        capacityDialog.dismiss();
+        tvCapacityFilter.setText("Capacity " + selectedItem.replace(" +","+"));
+        capacitySelectedItem = selectedItem.replace(" +","");
+
+        if(userAllowedMeetingResponseListUpdated != null && userAllowedMeetingResponseListUpdated.size()>0) {
+            List<UserAllowedMeetingResponse> tempList = new ArrayList<>();
+
+            for (UserAllowedMeetingResponse res : userAllowedMeetingResponseListUpdated) {
+                int i = Integer.parseInt(selectedItem.replace(" +", ""));
+                if (i <= res.getNoOfPeople()) {
+                    tempList.add(res);
+                }
+            }
+
+            roomListRecyclerAdapter = new RoomListRecyclerAdapter(getContext(), this, getActivity(),
+                    tempList,
+                    getContext(), bottomSheetDialog, allMeetingRoomList);
+            rvDeskRecycler.setAdapter(roomListRecyclerAdapter);
+        }
+    }
+
     public void editBookingCall(JsonObject data,int position,int dskRoomStatus,String newEditDelete) {
         if (Utils.isNetworkAvailable(getActivity())) {
             dialog= ProgressDialog.showProgressBar(getContext());

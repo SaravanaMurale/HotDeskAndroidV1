@@ -167,5 +167,6 @@
 
     <string name="use">Use Email &amp; Password</string>
     <string name="delete">Delete</string>
+    <string name="capacity">Capacity</string>
 
 </resources>
