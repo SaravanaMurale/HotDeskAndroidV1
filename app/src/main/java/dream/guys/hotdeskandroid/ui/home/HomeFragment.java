@@ -97,7 +97,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnCheckInClickable, DeskListRecyclerAdapter.OnSelectSelected, SwipeRefreshLayout.OnRefreshListener {
+public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnCheckInClickable,
+        DeskListRecyclerAdapter.OnSelectSelected, SwipeRefreshLayout.OnRefreshListener {
     String TAG = "HomeFragment";
     FragmentHomeBinding binding;
     TextView text;
@@ -1308,8 +1309,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     List<MeetingListToEditResponse> meetingListToEditResponseList  =response.body();
                     List<MeetingListToEditResponse> meetingListToEditList  =new ArrayList<>();
                     if (meetingListToEditResponseList!=null){
-                        for(int i=0; i<meetingListToEditResponseList.size(); i++) {
-                            if(meetingEntriesModel.getId()==meetingListToEditResponseList.get(i).getId()){
+                        for(int i=0; i < meetingListToEditResponseList.size(); i++) {
+                            if(meetingEntriesModel.getId() == meetingListToEditResponseList.get(i).getId()){
                                 if (meetingListToEditResponseList.get(i).getBookedByUserId()
                                         == SessionHandler.getInstance().getInt(getActivity(),AppConstants.USER_ID)) {
                                     openEditMeeting(meetingListToEditResponseList.get(i), true);
@@ -1338,7 +1339,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     }
 
     private void openEditMeeting(MeetingListToEditResponse meetingListToEditResponse, boolean isEditable) {
-        EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
+        /*EditBookingDetails editDeskBookingDetails=new EditBookingDetails();
         editDeskBookingDetails.setEditStartTTime(Utils.splitTime(meetingListToEditResponse.getFrom()));
         editDeskBookingDetails.setEditEndTime(Utils.splitTime(meetingListToEditResponse.getTo()));
         editDeskBookingDetails.setDate(Utils.convertStringToDateFormet(meetingListToEditResponse.getDate()));
@@ -1356,14 +1357,35 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         editDeskBookingDetails.setComments(meetingListToEditResponse.getComments());
         editDeskBookingDetails.setSubject(meetingListToEditResponse.getSubject());
         selectedDeskId = meetingListToEditResponse.getMeetingRoomId();
+*/
+        EditBookingDetails editBookingDetails = new EditBookingDetails();
+        editBookingDetails.setEditStartTTime(Utils.splitTime(meetingListToEditResponse.getFrom()));
+        editBookingDetails.setEditEndTime(Utils.splitTime(meetingListToEditResponse.getTo()));
+        editBookingDetails.setDate(Utils.convertStringToDateFormet(meetingListToEditResponse.getDate()));
+        editBookingDetails.setCalId(meetingListToEditResponse.getId());
+        editBookingDetails.setMeetingRoomtId(meetingListToEditResponse.getMeetingRoomId());
+        editBookingDetails.setRoomName(meetingListToEditResponse.getMeetingRoomName());
+        editBookingDetails.setComments(meetingListToEditResponse.getComments());
+        MeetingListToEditResponse.Status status = meetingListToEditResponse.getStatus();
+        editBookingDetails.setMeetingRoomBookingType(status.getBookingType());
+
+
+        //New...
+        editBookingDetails.setAttendeesList(meetingListToEditResponse.getAttendeesList());
+        editBookingDetails.setExternalAttendeesList(meetingListToEditResponse.getExternalAttendeesList());
+        editBookingDetails.setComments(meetingListToEditResponse.getComments());
+        editBookingDetails.setSubject(meetingListToEditResponse.getSubject());
+        selectedDeskId = meetingListToEditResponse.getMeetingRoomId();
+
+
 
         EditMeetingRoomController editMeetingRoomController = new EditMeetingRoomController(
                 AppConstants.HOMEFRAGMENTINSTANCESTRING,
                 activityContext,
                 context,
-                meetingListToEditResponse.getDate(),
+                Utils.getISO8601format(Utils.convertStringToDateFormet(meetingListToEditResponse.getDate())),
                 selectedDeskId,
-                editDeskBookingDetails,
+                editBookingDetails,
                 isEditable
         );
     }

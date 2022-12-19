@@ -303,7 +303,10 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
         TextView tv_comment=roomBottomSheet.findViewById(R.id.tv_comment);
         TextView tv_repeat=roomBottomSheet.findViewById(R.id.tv_repeat);
         TextView tvDelete = roomBottomSheet.findViewById(R.id.delete_text);
-        tvDelete.setVisibility(View.VISIBLE);
+        if (isEditable)
+            tvDelete.setVisibility(View.VISIBLE);
+        else
+            tvDelete.setVisibility(View.GONE);
         repeat = roomBottomSheet.findViewById(R.id.repeat);
         deskStatusText = roomBottomSheet.findViewById(R.id.desk_status_text);
         deskStatusDot = roomBottomSheet.findViewById(R.id.user_status_dot);
@@ -516,6 +519,8 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
         } else {
 
         }
+        startTime.setText(editDeskBookingDetails.getEditStartTTime());
+        endTime.setText(editDeskBookingDetails.getEditEndTime());
 
         //Logic for start time and end time of DESK and MEETING ROOM
         if(dskRoomParkStatus==2) {
@@ -953,8 +958,6 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
 
                     }
                 }
-
-
             }
 
         }

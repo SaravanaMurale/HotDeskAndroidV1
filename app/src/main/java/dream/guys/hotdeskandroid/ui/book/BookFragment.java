@@ -6429,7 +6429,7 @@ public class BookFragment extends Fragment implements
 
         //New...
         if (!(date.equalsIgnoreCase(""))) {
-            String dateTime = Utils.dateWithDayString(date);
+            String dateTime = Utils.dateWithDayString(calSelectedDate);
             if (dateTime.equalsIgnoreCase("")) {
                 dateTv.setText(date);
             } else {

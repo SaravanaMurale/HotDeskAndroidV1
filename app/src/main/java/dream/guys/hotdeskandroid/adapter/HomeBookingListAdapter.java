@@ -485,7 +485,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                         Log.d(TAG, "onBindViewHolder: "+SessionHandler.getInstance().getInt(context,AppConstants.USER_ID));
 
                         holder.bookingIvEdit.setVisibility(View.VISIBLE);
-                        Glide.with(context).load(R.drawable.info_circle).into(holder.bookingIvEdit);
+                        Glide.with(context).load(R.drawable.ic_info_circle_blue).into(holder.bookingIvEdit);
                     }
                     holder.bookingIvLocation.setVisibility(View.VISIBLE);
                     holder.tv_change.setVisibility(View.VISIBLE);
