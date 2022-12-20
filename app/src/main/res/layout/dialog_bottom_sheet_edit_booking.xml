@@ -261,6 +261,8 @@
                     android:id="@+id/etVehicleRegEdit"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_35sdp"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="center|end"
                     android:layout_toEndOf="@+id/tvRegEdit"
                     android:layout_centerVertical="true"
                     android:layout_marginHorizontal="@dimen/_5sdp"

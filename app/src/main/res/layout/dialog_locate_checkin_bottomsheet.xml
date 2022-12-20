@@ -480,6 +480,8 @@
                     android:layout_height="@dimen/_35sdp"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/tvReg"
+                    android:gravity="end|center"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:background="@null"
@@ -488,14 +490,6 @@
                     android:textSize="@dimen/_14sdp" />
 
             </RelativeLayout>
-
-
-
-
-
-
-
-
 
         </LinearLayout>
 
