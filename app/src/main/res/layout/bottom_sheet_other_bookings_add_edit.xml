@@ -159,7 +159,7 @@
                         android:layout_marginHorizontal="@dimen/_10sdp"
                         android:layout_marginVertical="@dimen/_5sdp"
                         android:text="None"
-                        android:textColor="@color/figmaBlueText"
+                        android:textColor="@color/figmaBlueDisabled"
                         android:textSize="18sp"
                         android:theme="@style/TextBold" />
                 </RelativeLayout>

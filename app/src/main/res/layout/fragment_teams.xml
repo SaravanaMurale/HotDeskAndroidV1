@@ -167,6 +167,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:text="40 Bank Street (GMT)"
+                    android:visibility="gone"
                     android:textColor="@color/figmaBlack"
                     android:textSize="@dimen/_11sdp"
                     android:theme="@style/TextRegular" />
@@ -201,6 +202,7 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:visibility="visible"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 

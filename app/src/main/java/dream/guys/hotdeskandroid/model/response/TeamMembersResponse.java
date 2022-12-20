@@ -70,6 +70,24 @@ public class TeamMembersResponse {
         private MeetingBooking meetingBookingsModel;
         private CarParkBooking carParkBookingsModel;
         public LocationBuildingFloor locationBuildingFloor;
+        private String from;
+        private String myto;
+
+        public String getFrom() {
+            return from;
+        }
+
+        public void setFrom(String from) {
+            this.from = from;
+        }
+
+        public String getMyto() {
+            return myto;
+        }
+
+        public void setMyto(String myto) {
+            this.myto = myto;
+        }
 
         // 1--> desk booking 2--> meeting 3--> parking
         private int calDeskStatus;

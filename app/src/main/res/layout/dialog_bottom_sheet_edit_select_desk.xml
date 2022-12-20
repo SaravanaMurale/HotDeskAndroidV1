@@ -73,6 +73,7 @@
                 android:layout_height="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:src="@drawable/location"
+                android:visibility="gone"
                 app:tint="@color/figmaBlueText" />
         </LinearLayout>
 

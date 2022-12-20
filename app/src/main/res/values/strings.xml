@@ -142,7 +142,7 @@
     <string name="transport_method">Please indicate method of transportation to office</string>
 
     <string name="car">Car</string>
-    <string name="public_trans">Public Transport</string>
+    <string name="public_trans">(bus, train, tram, ferry, metro, etc.)</string>
     <string name="taxi">Taxi Uber</string>
     <string name="bike">Bike</string>
     <string name="walk">Walk</string>

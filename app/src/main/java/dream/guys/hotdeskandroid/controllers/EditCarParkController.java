@@ -331,6 +331,7 @@ public class EditCarParkController {
         EditText edComments=roomBottomSheet.findViewById(R.id.comments);
         EditText commentRegistration=roomBottomSheet.findViewById(R.id.ed_registration);
         EditText edRegistration=roomBottomSheet.findViewById(R.id.et_registration_num);
+        RelativeLayout registrationLayout=roomBottomSheet.findViewById(R.id.registrationLayout);
         RelativeLayout repeatBlock=roomBottomSheet.findViewById(R.id.rl_repeat_block);
         RelativeLayout commentBlock=roomBottomSheet.findViewById(R.id.rl_comment_block);
         RelativeLayout teamsBlock=roomBottomSheet.findViewById(R.id.rl_teams_layout);
@@ -444,9 +445,15 @@ public class EditCarParkController {
 //            Toast.makeText(context, ""+editDeskBookingDetails.getLocationAddress(), Toast.LENGTH_SHORT).show();
             if (editDeskBookingDetails.getLocationAddress()!=null &&
                     !editDeskBookingDetails.getLocationAddress().isEmpty()
-                    && !editDeskBookingDetails.getLocationAddress().equalsIgnoreCase(""))
+                    && !editDeskBookingDetails.getLocationAddress().equalsIgnoreCase("null"))
                 locationAddress.setText(""+editDeskBookingDetails.getLocationAddress());
-            tv_description.setText(editDeskBookingDetails.getDescription());
+
+            if(editDeskBookingDetails.getDescription()!= null &&
+                    !editDeskBookingDetails.getDescription().equalsIgnoreCase("null"))
+                tv_description.setText(""+editDeskBookingDetails.getDescription());
+
+
+          //  tv_description.setText(editDeskBookingDetails.getDescription());
 
             if (newEditStatus.equalsIgnoreCase("edit")){
                 if (editDeskBookingDetails.getDate()!=null)
@@ -546,6 +553,7 @@ public class EditCarParkController {
                 }
             }
             edRegistration.setVisibility(View.VISIBLE);
+            registrationLayout.setVisibility(View.VISIBLE);
             llDeskLayout.setVisibility(View.VISIBLE);
 //            repeatBlock.setVisibility(View.VISIBLE);
             teamsBlock.setVisibility(View.GONE);
@@ -578,9 +586,19 @@ public class EditCarParkController {
                 deskRoomName.setText(""+parkingSpotModelList.get(0).getCode());
                 selectedDeskId = parkingSpotModelList.get(0).getId();
                 try {
-                    locationAddress.setText(""+parkingSpotModelList.get(0).getLocation().getName());
-                    locationAddressTop.setText(""+parkingSpotModelList.get(0).getLocation().getName());
-                    tv_description.setText(""+parkingSpotModelList.get(0).getDescription());
+                   // locationAddress.setText(""+parkingSpotModelList.get(0).getLocation().getName());
+
+                    if(parkingSpotModelList.get(0).getDescription()!= null &&
+                            !parkingSpotModelList.get(0).getDescription().equalsIgnoreCase("null"))
+                        tv_description.setText(""+parkingSpotModelList.get(0).getDescription());
+
+                    if(parkingSpotModelList.get(0).getLocation().getName()!= null &&
+                            !parkingSpotModelList.get(0).getLocation().getName().equalsIgnoreCase("null"))
+                        locationAddress.setText(""+parkingSpotModelList.get(0).getLocation().getName());
+
+
+                  //  locationAddressTop.setText(""+parkingSpotModelList.get(0).getLocation().getName());
+                  //  tv_description.setText(""+parkingSpotModelList.get(0).getDescription());
                 } catch (Exception e){
 
                 }
@@ -590,8 +608,18 @@ public class EditCarParkController {
                 deskRoomName.setText(""+editDeskBookingDetails.getParkingSlotCode());
                 selectedDeskId = editDeskBookingDetails.getParkingSlotId();
                 try {
-                    locationAddress.setText(""+editDeskBookingDetails.getLocationAddress());
-                    tv_description.setText(""+editDeskBookingDetails.getDescription());
+                  //  locationAddress.setText(""+editDeskBookingDetails.getLocationAddress());
+                    //tv_description.setText(""+editDeskBookingDetails.getDescription());
+
+
+                    if(editDeskBookingDetails.getLocationAddress()!= null &&
+                            !editDeskBookingDetails.getLocationAddress().equalsIgnoreCase("null"))
+                        locationAddress.setText(""+editDeskBookingDetails.getLocationAddress());
+
+
+                    if(editDeskBookingDetails.getDescription()!= null &&
+                            !editDeskBookingDetails.getDescription().equalsIgnoreCase("null"))
+                        tv_description.setText(""+editDeskBookingDetails.getDescription());
                 }catch (Exception e){
 
                 }
