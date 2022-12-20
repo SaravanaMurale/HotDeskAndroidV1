@@ -5354,7 +5354,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         bottomSheetBehavior.setPeekHeight(500);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
-        CoordinatorLayout layout = locateCheckInBottomSheet.findViewById(R.id.bottomBookCoordinatorLayout);
+        RelativeLayout layout = locateCheckInBottomSheet.findViewById(R.id.bottomBookCoordinatorLayout);
         layout.setMinimumHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
 
 
