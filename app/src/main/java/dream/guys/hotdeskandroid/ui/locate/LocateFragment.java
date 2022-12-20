@@ -389,6 +389,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //TimeZoneId
         int defaultTeamId = SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID);
 
+        //getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
         //Before initLoadFloorDetails need to get timezone
         getTimeZoneForBooking(defaultTeamId);
 
@@ -1849,8 +1851,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
 
+
+
     @SuppressLint("ResourceType")
     private void addView(List<String> valueList, String key, int floorPosition, int itemTotalSize) {
+
+        try {
+
 
         //System.out.println("ItemTotalSize" + itemTotalSize);
         //System.out.println("ReceivedKeyInAddView" + key);
@@ -2707,6 +2714,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         binding.firstLayout.addView(deskView);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
 
     }
@@ -7270,6 +7282,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_booking,
                 new RelativeLayout(getContext()))));
 
+        //getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
         title=bottomSheetDialog.findViewById(R.id.title);
         deskDelete=bottomSheetDialog.findViewById(R.id.deskDelete);
         editLocation=bottomSheetDialog.findViewById(R.id.editLocation);
@@ -7814,8 +7828,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //etBookedBy.setText(carParkBooking.getBookedForUserName());
         tvComments.setVisibility(View.GONE);
         //tvComments.setText("Registration number");
-        System.out.println("REceivedCarRegNumber " + carParkBooking.getVehicleRegNumber());
-        commentRegistration.setText(carParkBooking.getVehicleRegNumber());
+        //System.out.println("REceivedCarRegNumber " + carParkBooking.getVehicleRegNumber());
+        //commentRegistration.setText(carParkBooking.getVehicleRegNumber());
 
 
         startTime.setText(Utils.splitTime(carParkBooking.getFrom()));
@@ -7988,7 +8002,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 if (isVehicleReg) {
 
-                    if (commentRegistration.getText().toString().isEmpty()) {
+                    if (etVehicleRegEdit.getText().toString().isEmpty()) {
                         Toast.makeText(getActivity(), "Enter Registration Number", Toast.LENGTH_SHORT).show();
                         status = false;
                         return;
@@ -7999,7 +8013,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 if (status) {
                     //Edit CarParkBooking
                     bottomSheetDialog.dismiss();
-                    doEditCarParkBooking(carParkBooking, startTime.getText().toString(), endTime.getText().toString());
+                    doEditCarParkBooking(carParkBooking, startTime.getText().toString(), endTime.getText().toString(),etVehicleRegEdit.getText().toString());
                 }
 
 
@@ -8077,7 +8091,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
-    private void doEditCarParkBooking(CarParkingForEditResponse.CarParkBooking carParkBooking, String startTime, String endTime) {
+    private void doEditCarParkBooking(CarParkingForEditResponse.CarParkBooking carParkBooking, String startTime, String endTime,String vechNum) {
 
         if (Utils.isNetworkAvailable(getActivity())) {
             binding.locateProgressBar.setVisibility(View.VISIBLE);
@@ -8103,7 +8117,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             carParkingChangeSets.setDate(startDate);
 
             LocateCarParkEditRequest.CarParkingChangeSets.CarParkingChanges carParkingChanges = carParkingChangeSets.new CarParkingChanges();
-            carParkingChanges.setVehicleRegNumber(carParkBooking.getVehicleRegNumber());
+            carParkingChanges.setVehicleRegNumber(vechNum);
             carParkingChanges.setFrom("2000-01-01T" + startTime + ":00.000Z");
             carParkingChanges.setTo("2000-01-01T" + endTime + ":00.000Z");
             carParkingChangeSets.setCarParkingChanges(carParkingChanges);
@@ -9602,7 +9616,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
     @Override
-    public void showMyTeamLocation(DAOTeamMember.DayGroup.CalendarEntry calendarEntry, String name) {
+    public void showMyTeamLocation(DAOTeamMember.DayGroup.CalendarEntry calendarEntry, String name, boolean ifFirstAidStatus, boolean fireStatus) {
         /*relativeLayout.leftMargin = i;
         relativeLayout.topMargin = i1;
         ivDesk.setLayoutParams(relativeLayout);*/
@@ -9672,6 +9686,19 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     binding.locateMyTeamDeskName.setText(calendarEntry.getBooking().getDeskCode());
                     binding.myTeamTvStartTime.setText(Utils.splitTime(calendarEntry.getFrom()));
                     binding.myTeamTvEndTime.setText(Utils.splitTime(calendarEntry.getMyto()));
+
+                    if(ifFirstAidStatus) {
+                        binding.locateMyTeamPlusIview.setVisibility(View.VISIBLE);
+                    }else {
+                        binding.locateMyTeamPlusIview.setVisibility(View.GONE);
+                    }
+
+                    if(fireStatus) {
+                        binding.locateMyTeamFireIview.setVisibility(View.VISIBLE);
+                    }else {
+                        binding.locateMyTeamPlusIview.setVisibility(View.GONE);
+                    }
+
                     getFloorAndDeskDetailsToPlaceUser(calendarEntry.getBooking(), relativeLayout, perSonView, ivPerson);
                 } else {
                     Toast.makeText(getContext(), "Selected user is not avaliable in this floor", Toast.LENGTH_LONG).show();

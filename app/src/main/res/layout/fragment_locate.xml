@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/figmaBgGrey"
     tools:context=".ui.locate.LocateFragment">-->
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -579,289 +579,291 @@
             android:layout_marginBottom="@dimen/_50sdp"
             >
 
-        <RelativeLayout
-            android:id="@+id/myTeamContactBlock"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_5sdp"
-            android:padding="@dimen/_10sdp"
-            android:visibility="gone">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/locateMyTeamProfile"
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="@dimen/_40sdp"
-                android:src="@drawable/avatar"
-                app:tint="@color/figmaBlack" />
-
-            <ImageView
-                android:layout_width="@dimen/_10sdp"
-                android:layout_height="@dimen/_10sdp"
-                android:src="@drawable/online"
-                android:layout_alignRight="@+id/locateMyTeamProfile"
-                android:layout_alignBottom="@+id/locateMyTeamProfile"
-                android:layout_marginBottom="@dimen/_5sdp"
-                />
-
-            <TextView
-                android:id="@+id/locateMyTeamUserName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_toRightOf="@+id/locateMyTeamProfile"
-                android:text="Space-001"
-                android:textStyle="bold"
-                android:theme="@style/TextBold" />
-
-            <ImageView
-                android:id="@+id/locateMyTeamPlusIview"
-                android:layout_width="@dimen/_18sdp"
-                android:layout_height="@dimen/_18sdp"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_marginTop="1dp"
-                android:layout_toRightOf="@id/locateMyTeamUserName"
-                android:src="@drawable/plus"
-
-                />
-
-            <ImageView
-                android:id="@+id/locateMyTeamFireIview"
-                android:layout_width="@dimen/_18sdp"
-                android:layout_height="@dimen/_18sdp"
-                android:layout_toRightOf="@+id/locateMyTeamPlusIview"
-                android:src="@drawable/fire"
-                android:layout_marginLeft="@dimen/_10sdp"
-                />
-
-            <TextView
-                android:id="@+id/tvLocateMyTeamLocationView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/locateMyTeamUserName"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_toRightOf="@+id/locateMyTeamProfile"
-                android:text="" />
-
-
-            <TextView
-                android:id="@+id/locateMyTeamDeskName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvLocateMyTeamLocationView"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_toRightOf="@+id/locateMyTeamProfile"
-                android:text="Desk-001"
-                android:textColor="@color/figmaBlack" />
-
-
-            <!--StartTime-->
             <RelativeLayout
-                android:id="@+id/myTeamStartTimeBlock"
+                android:id="@+id/myTeamContactBlock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/locateMyTeamDeskName"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:background="@drawable/rectangle_greybg_with_corner"
-                android:orientation="horizontal"
-                android:padding="@dimen/_3sdp">
+                android:layout_margin="@dimen/_5sdp"
+                android:padding="@dimen/_10sdp"
+                android:visibility="gone">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/locateMyTeamProfile"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:src="@drawable/avatar"
+                    app:tint="@color/figmaBlack" />
+
+                <ImageView
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:src="@drawable/online"
+                    android:layout_alignRight="@+id/locateMyTeamProfile"
+                    android:layout_alignBottom="@+id/locateMyTeamProfile"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    />
 
                 <TextView
-                    android:id="@+id/myTeam_tv_start"
+                    android:id="@+id/locateMyTeamUserName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="Check in"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_toRightOf="@+id/locateMyTeamProfile"
+                    android:text="Space-001"
+                    android:textStyle="bold"
+                    android:theme="@style/TextBold" />
+
+                <ImageView
+                    android:id="@+id/locateMyTeamPlusIview"
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="1dp"
+                    android:layout_toRightOf="@id/locateMyTeamUserName"
+                    android:src="@drawable/plus"
+                    android:visibility="gone"
+
+                    />
+
+                <ImageView
+                    android:id="@+id/locateMyTeamFireIview"
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:layout_toRightOf="@+id/locateMyTeamPlusIview"
+                    android:src="@drawable/fire"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:visibility="gone"
+                    />
+
+                <TextView
+                    android:id="@+id/tvLocateMyTeamLocationView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/locateMyTeamUserName"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_toRightOf="@+id/locateMyTeamProfile"
+                    android:text="" />
+
+
+                <TextView
+                    android:id="@+id/locateMyTeamDeskName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvLocateMyTeamLocationView"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_toRightOf="@+id/locateMyTeamProfile"
+                    android:text="Desk-001"
                     android:textColor="@color/figmaBlack" />
 
-                <TextView
-                    android:id="@+id/myTeam_tv_start_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:text=""
-                    android:textColor="@color/figmaBlueText"
-                    android:theme="@style/TextBold" />
-            </RelativeLayout>
 
-            <!--EndTime-->
-            <RelativeLayout
-                android:id="@+id/myTeamEndTimeBlock"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_below="@+id/myTeamStartTimeBlock"
-                android:background="@drawable/rectangle_greybg_with_corner"
-                android:orientation="horizontal"
-                android:padding="@dimen/_3sdp">
-
-                <TextView
-                    android:id="@+id/myTeam_tv_end"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="Check out"
-                    android:textColor="@color/figmaBlack" />
-
-                <TextView
-                    android:id="@+id/myTeam_tv_end_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:text=""
-                    android:textColor="@color/figmaBlueText"
-                    android:theme="@style/TextBold" />
-            </RelativeLayout>
-
-
-            <LinearLayout
-                android:id="@+id/locateTeamContactBlock"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_below="@+id/myTeamEndTimeBlock"
-                >
-
+                <!--StartTime-->
                 <RelativeLayout
+                    android:id="@+id/myTeamStartTimeBlock"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/locateMyTeamDeskName"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:background="@drawable/rectangle_greybg_with_corner"
                     android:orientation="horizontal"
-                    android:layout_marginTop="@dimen/_8sdp"
+                    android:padding="@dimen/_3sdp">
+
+                    <TextView
+                        android:id="@+id/myTeam_tv_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginHorizontal="@dimen/_5sdp"
+                        android:layout_marginVertical="@dimen/_5sdp"
+                        android:text="Check in"
+                        android:textColor="@color/figmaBlack" />
+
+                    <TextView
+                        android:id="@+id/myTeam_tv_start_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginVertical="@dimen/_5sdp"
+                        android:text=""
+                        android:textColor="@color/figmaBlueText"
+                        android:theme="@style/TextBold" />
+                </RelativeLayout>
+
+                <!--EndTime-->
+                <RelativeLayout
+                    android:id="@+id/myTeamEndTimeBlock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_below="@+id/myTeamStartTimeBlock"
+                    android:background="@drawable/rectangle_greybg_with_corner"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_3sdp">
+
+                    <TextView
+                        android:id="@+id/myTeam_tv_end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginHorizontal="@dimen/_5sdp"
+                        android:layout_marginVertical="@dimen/_5sdp"
+                        android:text="Check out"
+                        android:textColor="@color/figmaBlack" />
+
+                    <TextView
+                        android:id="@+id/myTeam_tv_end_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginVertical="@dimen/_5sdp"
+                        android:text=""
+                        android:textColor="@color/figmaBlueText"
+                        android:theme="@style/TextBold" />
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/locateTeamContactBlock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_below="@+id/myTeamEndTimeBlock"
                     >
 
-                    <TextView
-                        android:id="@+id/tvEditContact"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_toLeftOf="@id/contact_edit"
-                        android:text="Contact"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        >
 
-                        android:textColor="@color/figmaBlack"
-                        android:textSize="@dimen/_12sdp"
-                        android:theme="@style/TextBold" />
-                    <ImageView
-                        android:id="@+id/contact_edit"
-                        android:layout_width="@dimen/_15sdp"
-                        android:layout_height="@dimen/_15sdp"
-                        android:src="@drawable/edit"
-                        android:layout_marginHorizontal="@dimen/_2sdp"
-                        android:layout_alignParentEnd="true"
-                        android:visibility="gone"/>
-                </RelativeLayout>
+                        <TextView
+                            android:id="@+id/tvEditContact"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_toLeftOf="@id/contact_edit"
+                            android:text="Contact"
 
-                <!--Email-->
+                            android:textColor="@color/figmaBlack"
+                            android:textSize="@dimen/_12sdp"
+                            android:theme="@style/TextBold" />
+                        <ImageView
+                            android:id="@+id/contact_edit"
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="@dimen/_15sdp"
+                            android:src="@drawable/edit"
+                            android:layout_marginHorizontal="@dimen/_2sdp"
+                            android:layout_alignParentEnd="true"
+                            android:visibility="gone"/>
+                    </RelativeLayout>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/rectangle_greybg_with_corner"
-                    android:padding="@dimen/_6sdp"
-                    android:layout_marginTop="@dimen/_3sdp">
+                    <!--Email-->
 
-                    <TextView
-                        android:id="@+id/tvMyTeamEmail"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerInParent="true"
-                        android:layout_toLeftOf="@id/ivEditEmailIcon"
-                        android:background="@null"
-                        android:enabled="false"
-                        android:text="Email"
-                        android:textColor="@color/figmaBlack"
-                        android:theme="@style/TextRegular" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/rectangle_greybg_with_corner"
+                        android:padding="@dimen/_6sdp"
+                        android:layout_marginTop="@dimen/_3sdp">
 
-                    <ImageView
-                        android:id="@+id/ivEditEmailIcon"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginHorizontal="@dimen/_2sdp"
-                        android:src="@drawable/ic_outline_mail_outline_24"
-                        app:tint="@color/figmaBlueText" />
-                </RelativeLayout>
+                        <TextView
+                            android:id="@+id/tvMyTeamEmail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerInParent="true"
+                            android:layout_toLeftOf="@id/ivEditEmailIcon"
+                            android:background="@null"
+                            android:enabled="false"
+                            android:text="Email"
+                            android:textColor="@color/figmaBlack"
+                            android:theme="@style/TextRegular" />
 
-                <!--Teams-->
+                        <ImageView
+                            android:id="@+id/ivEditEmailIcon"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginHorizontal="@dimen/_2sdp"
+                            android:src="@drawable/ic_outline_mail_outline_24"
+                            app:tint="@color/figmaBlueText" />
+                    </RelativeLayout>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:background="@drawable/rectangle_greybg_with_corner"
-                    android:padding="@dimen/_6sdp">
+                    <!--Teams-->
 
-                    <TextView
-                        android:id="@+id/tvMyTeamTeams"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerInParent="true"
-                        android:layout_toLeftOf="@id/ivTeamsIcon"
-                        android:background="@null"
-                        android:enabled="false"
-                        android:text="Teams"
-                        android:textColor="@color/figmaBlack"
-                        android:theme="@style/TextRegular" />
+                        android:orientation="horizontal"
+                        android:layout_marginVertical="@dimen/_5sdp"
+                        android:background="@drawable/rectangle_greybg_with_corner"
+                        android:padding="@dimen/_6sdp">
 
-                    <ImageView
-                        android:id="@+id/ivTeamsIcon"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginHorizontal="@dimen/_2sdp"
-                        android:src="@drawable/teams_icon"
-                        />
-                </RelativeLayout>
+                        <TextView
+                            android:id="@+id/tvMyTeamTeams"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerInParent="true"
+                            android:layout_toLeftOf="@id/ivTeamsIcon"
+                            android:background="@null"
+                            android:enabled="false"
+                            android:text="Teams"
+                            android:textColor="@color/figmaBlack"
+                            android:theme="@style/TextRegular" />
 
-                <!--Phone-->
+                        <ImageView
+                            android:id="@+id/ivTeamsIcon"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginHorizontal="@dimen/_2sdp"
+                            android:src="@drawable/teams_icon"
+                            />
+                    </RelativeLayout>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="@drawable/rectangle_greybg_with_corner"
-                    android:padding="@dimen/_6sdp">
+                    <!--Phone-->
 
-                    <TextView
-                        android:id="@+id/tvmyTeamPhone"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerInParent="true"
-                        android:layout_toLeftOf="@id/tvEditPhoneIcon"
-                        android:background="@null"
-                        android:enabled="false"
-                        android:text="Phone"
-                        android:textColor="@color/figmaBlack"
-                        android:theme="@style/TextRegular" />
+                        android:orientation="horizontal"
+                        android:background="@drawable/rectangle_greybg_with_corner"
+                        android:padding="@dimen/_6sdp">
 
-                    <ImageView
-                        android:id="@+id/tvEditPhoneIcon"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginHorizontal="@dimen/_2sdp"
-                        android:src="@drawable/ic_baseline_local_phone_24"
-                        app:tint="@color/figmaBlueText"/>
-                </RelativeLayout>
+                        <TextView
+                            android:id="@+id/tvmyTeamPhone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerInParent="true"
+                            android:layout_toLeftOf="@id/tvEditPhoneIcon"
+                            android:background="@null"
+                            android:enabled="false"
+                            android:text="Phone"
+                            android:textColor="@color/figmaBlack"
+                            android:theme="@style/TextRegular" />
 
-            </LinearLayout>
+                        <ImageView
+                            android:id="@+id/tvEditPhoneIcon"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginHorizontal="@dimen/_2sdp"
+                            android:src="@drawable/ic_baseline_local_phone_24"
+                            app:tint="@color/figmaBlueText"/>
+                    </RelativeLayout>
+
+                </LinearLayout>
 
 
-        </RelativeLayout>
+            </RelativeLayout>
 
         </ScrollView>
 
@@ -875,6 +877,7 @@
             android:visibility="gone"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
             >
 
             <TextView
@@ -882,11 +885,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:text="@string/back"
-                android:gravity="center_vertical"
                 android:layout_alignParentBottom="true"
-                android:textColor="@color/black"
                 android:layout_marginBottom="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:text="@string/back"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14sdp"
                 android:textStyle="bold" />
 
             <TextView
@@ -899,6 +903,7 @@
                 android:gravity="center_vertical"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:textColor="@color/figmaBlueText"
+                android:textSize="@dimen/_14sdp"
                 />
 
         </RelativeLayout>
@@ -910,4 +915,4 @@
 
 
 </RelativeLayout>
-<!--</com.alexvasilkov.gestures.views.GestureFrameLayout>-->
+    <!--</com.alexvasilkov.gestures.views.GestureFrameLayout>-->
