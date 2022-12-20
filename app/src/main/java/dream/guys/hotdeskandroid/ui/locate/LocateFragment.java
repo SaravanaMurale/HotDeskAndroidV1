@@ -3218,8 +3218,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         if (code.equalsIgnoreCase("5")) {
             unAvailableDesc.setText("This car par is unavailable");
         }
-        if (deskDescriotion != null) {
+        if (deskDescriotion != null && !deskDescriotion.isEmpty() && !deskDescriotion.equals("")) {
             tvDescriptionUnAvaliable.setText(deskDescriotion);
+        }else {
+            tvDescriptionUnAvaliable.setVisibility(View.GONE);
         }
 
         tvUnavaliableBack.setOnClickListener(new View.OnClickListener() {
@@ -3717,6 +3719,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void afterTextChanged(Editable editable) {
 
+
                 showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " • " + Utils.showBottomSheetDateTimeAMPM(startRoomTime.getText().toString()));
 
                 boolean b = Utils.checkIsCurrentDate(binding.locateCalendearView.getText().toString());
@@ -3726,9 +3729,26 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 int workHour = Integer.parseInt(strDefaultWork[0]);
                 int workMinute = Integer.parseInt(strDefaultWork[1]);
 
+
+                String endWorkHours="";
+                String[] strEndWorkHours;
+                int workHourEnd=0;
+                int workMinuteEnd=0;
+
+                if(endTRoomime.getText().toString().equals("") || endTRoomime.getText().toString().isEmpty() || endTRoomime.getText().toString()==null){
+
+                }else {
+                     endWorkHours = endTRoomime.getText().toString();
+                     strEndWorkHours = endWorkHours.split(":");
+                     workHourEnd = Integer.parseInt(strEndWorkHours[0]);
+                     workMinuteEnd = Integer.parseInt(strEndWorkHours[1]);
+                }
+
+
                 if (b) {
 
-                    //endTRoomime.setText(Utils.setNearestThirtyMinToMeeting(startRoomTime.getText().toString()));
+                    //endTRoomime.setText(Utils.setNearestThirtyMinToMeeting
+                    // (startRoomTime.getText().toString()));
 
                     if (workHour == 23) {
 
@@ -3739,8 +3759,18 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                         } else {
 
+                            //If start time greater than end time means need to add 30 min in end time
+                            if (workHour > workHourEnd) {
+                                endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
+                            }else if(workHour == workHourEnd) {
+                                if(workMinute>workMinuteEnd){
+                                    endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
+                                }
+                            }
+
+
                             //New Logic For set Near 30 min and end time +30 from start Time...
-                            endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
+                            //endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
                             showTvRoomEndTime.setText(Utils.showBottomSheetDateTimeAMPM(
                                     Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30)));
 
@@ -3749,14 +3779,26 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     } else {
 
+
+                        //If start time greater than end time means need to add 30 min in end time
+                        if (workHour > workHourEnd) {
+                            endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
+                        }else if(workHour == workHourEnd) {
+                            if(workMinute>workMinuteEnd){
+                                endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
+                            }
+                        }
+
                         //New Logic For set Near 30 min and end time +30 from start Time...
-                        endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
+                        //endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
                         showTvRoomEndTime.setText(Utils.showBottomSheetDateTimeAMPM(
                                 Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30)));
 
                         //endTRoomime.setText(Utils.setStartNearestFiveMinToMeeting(startRoomTime.getText().toString()));
 
                     }
+
+
 
 
                 } else {
@@ -3780,6 +3822,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     }
 
                 }
+
+
+
+
+
 
             }
         });
@@ -3952,6 +3999,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 startRoomTime.setText(Utils.setNearestThirtyMinToMeeting(getCurrentTime()));
                 showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " • " + Utils.showBottomSheetDateTimeAMPM(startRoomTime.getText().toString()));
+                endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
 
             } else {
                 if (profileData != null) {
@@ -5582,7 +5630,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         tv_repeatLang.setText(appKeysPage.getRepeat());
         editBookingBack.setText(appKeysPage.getCancel());
         editBookingContinue.setText(appKeysPage.getBook());
-        tvDescription.setText(appKeysPage.getDescription());
+        //tvDescription.setText(appKeysPage.getDescription());
 
 
         bsRepeatBlock.setOnClickListener(new View.OnClickListener() {
@@ -5595,10 +5643,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         });
 
-        if (deskDescriotion != null) {
+        if (deskDescriotion != null && !deskDescriotion.isEmpty() && !deskDescriotion.equals("") ) {
             tvDescription.setText(tvDescription.getText().toString() + ":" + deskDescriotion);
         } else {
-            //tvDescription.setText("Description:");
+            tvDescription.setVisibility(View.GONE);
         }
 
         tv_select_desk_room.setOnClickListener(new View.OnClickListener() {
