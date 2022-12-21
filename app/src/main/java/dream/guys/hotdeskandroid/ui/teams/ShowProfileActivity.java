@@ -111,16 +111,7 @@ public class ShowProfileActivity extends AppCompatActivity {
                 }
             }
         });
-        binding.tvEditPhoneIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (binding.tvEditEmail != null && !binding.tvEditPhone.getText().toString().equalsIgnoreCase("phone")) {
-                    Intent intent = new Intent(Intent.ACTION_DIAL);
-                    intent.setData(Uri.parse("tel:" + binding.tvEditPhone.getText().toString()));
-                    startActivity(intent);
-                }
-            }
-        });
+
         binding.tvViewTeam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -511,20 +502,24 @@ public class ShowProfileActivity extends AppCompatActivity {
 
             if (calendarEntries != null) {
                 for (int j = 0; j < calendarEntries.size(); j++) {
-                    TeamMembersResponse.DayGroup momdel = new TeamMembersResponse.DayGroup();
+                    TeamMembersResponse.DayGroup model = new TeamMembersResponse.DayGroup();
                     if (dateCheck) {
-                        momdel.setDateStatus(true);
-                        momdel.setCalDeskStatus(1);
-                        momdel.setDate(date);
-                        momdel.setCalendarEntriesModel(calendarEntries.get(j));
+                        model.setDateStatus(true);
+                        model.setCalDeskStatus(1);
+                        model.setDate(date);
+                        model.setCalendarEntriesModel(calendarEntries.get(j));
+                        model.setFrom(calendarEntries.get(j).getFrom());
+                        model.setMyto(calendarEntries.get(j).getMyto());
                         dateCheck = false;
                     } else {
-                        momdel.setDateStatus(false);
-                        momdel.setCalDeskStatus(1);
-                        momdel.setDate(date);
-                        momdel.setCalendarEntriesModel(calendarEntries.get(j));
+                        model.setDateStatus(false);
+                        model.setCalDeskStatus(1);
+                        model.setDate(date);
+                        model.setCalendarEntriesModel(calendarEntries.get(j));
+                        model.setFrom(calendarEntries.get(j).getFrom());
+                        model.setMyto(calendarEntries.get(j).getMyto());
                     }
-                    recyclerModelArrayList.add(momdel);
+                    recyclerModelArrayList.add(model);
                 }
             }
             if (meetingEntries != null) {

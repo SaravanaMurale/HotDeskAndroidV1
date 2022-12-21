@@ -95,7 +95,7 @@ public class UserNotificationActivity extends AppCompatActivity {
                             val.setIncoming("outgoing");
                             return val;
                         });
-                        notiList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
+                        //notiList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
 
                         notificationList.addAll(notiList);
 

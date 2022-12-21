@@ -119,10 +119,10 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
         holder.statusLayout.setVisibility(View.VISIBLE);
 
         if (roomName.equalsIgnoreCase(rooms.get(position).getName())){
-            holder.select.setText("selected");
+            holder.select.setText("Selected");
             holder.select.setTextColor(ContextCompat.getColor(context,R.color.figmaBlack));
         } else {
-            holder.select.setText("select");
+            holder.select.setText("Select");
             holder.select.setTextColor(ContextCompat.getColor(context,R.color.figmaBlueText));
         }
 

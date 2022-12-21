@@ -255,6 +255,9 @@ public class UpComingBookingAdapter extends RecyclerView.Adapter<UpComingBooking
                     if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
                         SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Sick Leave");
                     }
+                    holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom()));
+                    holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
+
                     break;
             }
         }

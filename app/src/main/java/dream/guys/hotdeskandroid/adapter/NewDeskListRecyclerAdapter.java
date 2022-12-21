@@ -83,10 +83,10 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
     public void onBindViewHolder(@NonNull viewholder holder, int position) {
 //        fragment.selectedTeamId
         if (roomName.equalsIgnoreCase(deskList.get(position).getDeskCode())){
-            holder.select.setText("selected");
+            holder.select.setText("Selected");
             holder.select.setTextColor(ContextCompat.getColor(context, R.color.figmaBlack));
         } else {
-            holder.select.setText("select");
+            holder.select.setText("Select");
             holder.select.setTextColor(ContextCompat.getColor(context, R.color.figmaBlueText));
         }
         holder.desk_name.setText(deskList.get(position).getDeskCode());

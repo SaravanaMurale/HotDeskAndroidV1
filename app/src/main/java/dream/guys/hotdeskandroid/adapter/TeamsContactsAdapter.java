@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -27,9 +26,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import dream.guys.hotdeskandroid.R;
-import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
-import dream.guys.hotdeskandroid.ui.home.EditProfileActivity;
 import dream.guys.hotdeskandroid.ui.teams.TeamsFragment;
 import dream.guys.hotdeskandroid.utils.Utils;
 
@@ -38,29 +35,31 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
     Context context;
     ArrayList<DAOTeamMember> teamMembersList;
     ArrayList<DAOTeamMember> teamMembersListAll;
-    OnProfileClickable  onProfileClickable;
+    OnProfileClickable onProfileClickable;
     TeamsFragment fragment;
     HashMap<Integer, Boolean> fireWarden;
     HashMap<Integer, Boolean> firstAid;
+
     @Override
     public Filter getFilter() {
         return filter;
     }
-    Filter filter=new Filter() {
+
+    Filter filter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
 
-            List<DAOTeamMember> filteredList=new ArrayList<>();
+            List<DAOTeamMember> filteredList = new ArrayList<>();
 
-            if(constraint==null || constraint.toString().isEmpty() || constraint.length()==0 || constraint==""){
+            if (constraint == null || constraint.toString().isEmpty() || constraint.length() == 0 || constraint == "") {
                 filteredList.addAll(teamMembersListAll);
-            }else {
-                String filterPattern=constraint.toString().toLowerCase().trim();
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for (DAOTeamMember dskl:teamMembersListAll){
+                for (DAOTeamMember dskl : teamMembersListAll) {
 
-                    if(dskl.getFirstName().toLowerCase().contains(filterPattern)
-                            || dskl.getFirstName().toLowerCase().contains(filterPattern)){
+                    if (dskl.getFirstName().toLowerCase().contains(filterPattern)
+                            || dskl.getFirstName().toLowerCase().contains(filterPattern)) {
                         filteredList.add(dskl);
 
                     }
@@ -69,8 +68,8 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             }
 
-            FilterResults results=new FilterResults();
-            results.values=filteredList;
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
 
             return results;
         }
@@ -78,22 +77,23 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             teamMembersList.clear();
-            teamMembersList.addAll((List)results.values);
+            teamMembersList.addAll((List) results.values);
             notifyDataSetChanged();
 
         }
     };
 
-    public interface OnProfileClickable{
+    public interface OnProfileClickable {
         public void onProfileClick(DAOTeamMember daoTeamMember);
+
         void clickEvent(DAOTeamMember daoTeamMember);
     }
 
-    public TeamsContactsAdapter(Context context, ArrayList<DAOTeamMember> teamMembersList, OnProfileClickable  onProfileClickable, Fragment fragment) {
+    public TeamsContactsAdapter(Context context, ArrayList<DAOTeamMember> teamMembersList, OnProfileClickable onProfileClickable, Fragment fragment) {
         this.context = context;
         this.teamMembersList = teamMembersList;
         this.teamMembersListAll = new ArrayList<>(teamMembersList);
-        this.onProfileClickable=onProfileClickable;
+        this.onProfileClickable = onProfileClickable;
         this.fragment = (TeamsFragment) fragment;
 
     }
@@ -123,16 +123,17 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
         else
             return 1;
     }
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewholder, int position) {
         switch (viewholder.getItemViewType()) {
             case 0:
-                viewHolder holder  = (viewHolder) viewholder;
+                viewHolder holder = (viewHolder) viewholder;
                 if (position > 4) {
-                    if (position == 5){
+                    if (position == 5) {
                         holder.relative.setVisibility(View.VISIBLE);
-                        holder.tvCount.setText(" + " + String.valueOf(teamMembersList.size()-6));
-                    }else {
+                        holder.tvCount.setText(" + " + String.valueOf(teamMembersList.size() - 6));
+                    } else {
                         holder.profile_image.setVisibility(View.GONE);
                         holder.relative.setVisibility(View.GONE);
                     }
@@ -142,9 +143,9 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
                     holder.relative.setVisibility(View.GONE);
                 }
 
-                if (teamMembersList.get(position).getProfileImage()!=null
-                        && !teamMembersList.get(position).getProfileImage().equalsIgnoreCase("")){
-                    String cleanImage = teamMembersList.get(position).getProfileImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");
+                if (teamMembersList.get(position).getProfileImage() != null
+                        && !teamMembersList.get(position).getProfileImage().equalsIgnoreCase("")) {
+                    String cleanImage = teamMembersList.get(position).getProfileImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,", "");
                     byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     holder.profile_image.setImageBitmap(decodedByte);
@@ -169,12 +170,12 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                 break;
             case 1:
-                viewHolderList holderList  = (viewHolderList) viewholder;
+                viewHolderList holderList = (viewHolderList) viewholder;
 
                 String fName = teamMembersList.get(position).getFirstName();
                 String lName = teamMembersList.get(position).getLastName();
-                if (fragment.firewardenList!=null){
-                    if (fragment.firewardenList.containsKey(teamMembersList.get(position).getUserId())){
+                if (fragment.firewardenList != null) {
+                    if (fragment.firewardenList.containsKey(teamMembersList.get(position).getUserId())) {
                         holderList.fireWardenIcon.setVisibility(View.VISIBLE);
                     } else {
                         holderList.fireWardenIcon.setVisibility(View.GONE);
@@ -183,8 +184,8 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
                     holderList.fireWardenIcon.setVisibility(View.GONE);
                 }
 
-                if (fragment.firstAidList!=null){
-                    if (fragment.firstAidList.containsKey(teamMembersList.get(position).getUserId())){
+                if (fragment.firstAidList != null) {
+                    if (fragment.firstAidList.containsKey(teamMembersList.get(position).getUserId())) {
                         holderList.firstAidWardenIcon.setVisibility(View.VISIBLE);
                     } else {
                         holderList.firstAidWardenIcon.setVisibility(View.GONE);
@@ -195,40 +196,63 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
 
                 holderList.mTxtName.setText(fName + " " + lName);
-                if (teamMembersList.get(position).getDayGroups().size()>0
-                        && teamMembersList.get(position).getDayGroups().get(0).getCalendarEntries().size()>0
+                if (teamMembersList.get(position).getDayGroups().size() > 0
+                        && teamMembersList.get(position).getDayGroups().get(0).getCalendarEntries().size() > 0
                         && teamMembersList.get(position).getDayGroups().get(0)
                         .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
-                                .getCalendarEntries().size()-1).getBooking()!=null
-                ){
+                                .getCalendarEntries().size() - 1).getBooking() != null
+                ) {
 
-                    holderList.mbookingCheckInTime.setVisibility(View.VISIBLE);
+                    /*holderList.mbookingCheckInTime.setVisibility(View.VISIBLE);
                     holderList.mbookingCheckOutTime.setVisibility(View.VISIBLE);
                     holderList.ivCheckIn.setVisibility(View.VISIBLE);
-                    holderList.ivCheckOut.setVisibility(View.VISIBLE);
+                    holderList.ivCheckOut.setVisibility(View.VISIBLE);*/
                     if (teamMembersList.get(position).getDayGroups().get(0)
                             .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
-                                    .getCalendarEntries().size()-1).getBooking().getLocationBuildingFloor()!=null) {
+                                    .getCalendarEntries().size() - 1).getBooking().getLocationBuildingFloor() != null) {
                         holderList.mbookingAddress.setVisibility(View.VISIBLE);
-                        holderList.timeLayout.setVisibility(View.VISIBLE);
-                        holderList.mbookingAddress.setText(""+teamMembersList.get(position).getDayGroups().get(0)
+
+                        holderList.mbookingAddress.setText("" + teamMembersList.get(position).getDayGroups().get(0)
                                 .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
-                                        .getCalendarEntries().size()-1).getBooking().getLocationBuildingFloor().getBuildingName()+"-"
-                                +teamMembersList.get(position).getDayGroups().get(0)
+                                        .getCalendarEntries().size() - 1).getBooking().getLocationBuildingFloor().getBuildingName() + "-"
+                                + teamMembersList.get(position).getDayGroups().get(0)
                                 .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
-                                        .getCalendarEntries().size()-1).getBooking().getLocationBuildingFloor().getfLoorName());
+                                        .getCalendarEntries().size() - 1).getBooking().getLocationBuildingFloor().getfLoorName());
                     }
 
-                    holderList.mbookingCheckInTime.setText(Utils.splitTime(teamMembersList.get(position).getDayGroups().get(0)
+                   /* holderList.mbookingCheckInTime.setText(Utils.splitTime(teamMembersList.get(position).getDayGroups().get(0)
                             .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
                                     .getCalendarEntries().size()-1).getFrom()));
 
                     holderList.mbookingCheckOutTime.setText(Utils.splitTime(teamMembersList.get(position).getDayGroups().get(0)
                             .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
-                                    .getCalendarEntries().size()-1).getMyto()));
+                                    .getCalendarEntries().size()-1).getMyto()));*/
                 } else {
                     holderList.mbookingAddress.setText("");
                     holderList.mbookingAddress.setVisibility(View.GONE);
+                   /* holderList.timeLayout.setVisibility(View.GONE);
+                    holderList.mbookingCheckInTime.setVisibility(View.GONE);
+                    holderList.mbookingCheckOutTime.setVisibility(View.GONE);
+                    holderList.ivCheckIn.setVisibility(View.GONE);
+                    holderList.ivCheckOut.setVisibility(View.GONE);*/
+                }
+
+                if (teamMembersList.get(position).getDayGroups().size() > 0
+                        && teamMembersList.get(position).getDayGroups().get(0).getCalendarEntries().size() > 0) {
+                    holderList.timeLayout.setVisibility(View.VISIBLE);
+                    holderList.mbookingCheckInTime.setVisibility(View.VISIBLE);
+                    holderList.mbookingCheckOutTime.setVisibility(View.VISIBLE);
+                    holderList.ivCheckIn.setVisibility(View.VISIBLE);
+                    holderList.ivCheckOut.setVisibility(View.VISIBLE);
+
+                    holderList.mbookingCheckInTime.setText(Utils.splitTime(teamMembersList.get(position).getDayGroups().get(0)
+                            .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
+                                    .getCalendarEntries().size() - 1).getFrom()));
+
+                    holderList.mbookingCheckOutTime.setText(Utils.splitTime(teamMembersList.get(position).getDayGroups().get(0)
+                            .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
+                                    .getCalendarEntries().size() - 1).getMyto()));
+                } else {
                     holderList.timeLayout.setVisibility(View.GONE);
                     holderList.mbookingCheckInTime.setVisibility(View.GONE);
                     holderList.mbookingCheckOutTime.setVisibility(View.GONE);
@@ -237,9 +261,9 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
 
                 System.out.println("bala check teams out");
-                if (teamMembersList.get(position).getProfileImage()!=null
-                        && !teamMembersList.get(position).getProfileImage().equalsIgnoreCase("")){
-                    String cleanImage = teamMembersList.get(position).getProfileImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");
+                if (teamMembersList.get(position).getProfileImage() != null
+                        && !teamMembersList.get(position).getProfileImage().equalsIgnoreCase("")) {
+                    String cleanImage = teamMembersList.get(position).getProfileImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,", "");
                     byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     holderList.teamMemberImage.setImageBitmap(decodedByte);
@@ -256,7 +280,7 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                 break;
         }
-        if (!fragment.expandStatus){
+        if (!fragment.expandStatus) {
 
         } else {
 
@@ -269,7 +293,7 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
         return teamMembersList.size();
     }
 
-    public class viewHolder extends RecyclerView.ViewHolder{
+    public class viewHolder extends RecyclerView.ViewHolder {
 
         TextView tvCount;
         RelativeLayout relative;
@@ -286,10 +310,11 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         }
     }
-    public class viewHolderList extends RecyclerView.ViewHolder{
 
-        TextView mTxtName, mbookingAddress,mbookingCheckOutTime,mbookingCheckInTime;
-        ImageView ivCheckOut,ivCheckIn, fireWardenIcon,firstAidWardenIcon;
+    public class viewHolderList extends RecyclerView.ViewHolder {
+
+        TextView mTxtName, mbookingAddress, mbookingCheckOutTime, mbookingCheckInTime;
+        ImageView ivCheckOut, ivCheckIn, fireWardenIcon, firstAidWardenIcon;
         CircleImageView teamMemberImage;
         LinearLayout timeLayout;
 

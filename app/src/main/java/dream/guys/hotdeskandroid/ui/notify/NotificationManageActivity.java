@@ -418,7 +418,7 @@ public class NotificationManageActivity extends AppCompatActivity {
                             val.setIncoming("incoming");
                             return val;
                         });
-                        incomingList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
+                        //incomingList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
 
                         notiList = new ArrayList<>();
                         notiList = (ArrayList<IncomingRequestResponse.Result>) incomingList.stream().filter(val -> val.getStatus() == 0).collect(Collectors.toList());

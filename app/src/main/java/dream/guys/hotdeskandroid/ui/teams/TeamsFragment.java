@@ -606,7 +606,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         }
         if (teamMembersInOfficeList.size() > 0) {
 //            binding.tvFloorName.setVisibility(View.VISIBLE);
-            binding.tvAdddress.setVisibility(View.VISIBLE);
+            binding.tvAdddress.setVisibility(View.GONE);
             binding.listTitle.setVisibility(View.VISIBLE);
             binding.recyclerView.setVisibility(View.VISIBLE);
 //            binding.tvAvailableCount.setVisibility(View.VISIBLE);

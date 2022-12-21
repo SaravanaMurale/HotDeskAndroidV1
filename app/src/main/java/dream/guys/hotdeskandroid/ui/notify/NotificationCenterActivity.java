@@ -105,7 +105,7 @@ public class NotificationCenterActivity extends AppCompatActivity {
                             return val;
                         });
 
-                        outGoingNotificationList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
+                        //outGoingNotificationList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
 
                         notificationList.addAll(outGoingNotificationList);
                         setAdapter();
@@ -125,7 +125,7 @@ public class NotificationCenterActivity extends AppCompatActivity {
 
     private void setAdapter() {
 
-        notificationList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
+        //notificationList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
 
         int count = 0;
         //if (outGoingNotificationList!=null && outGoingNotificationList.size()>0) {

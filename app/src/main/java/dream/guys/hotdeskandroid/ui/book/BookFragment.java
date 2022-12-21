@@ -485,8 +485,15 @@ public class BookFragment extends Fragment implements
                         }
                     }else
                         Toast.makeText(getContext(), "Please Select current Date", Toast.LENGTH_SHORT).show();
-                } else
-                    Toast.makeText(getContext(), "No booking available", Toast.LENGTH_SHORT).show();
+                } else{
+                    if (selectedicon == 4 || selectedicon == 5 || selectedicon == 6 ||
+                            selectedicon == 7) {
+                        calSelectedDate = Utils.getISO8601format(date);
+                        new OtherBookingController(context, selectedicon, calSelectedDate);
+
+                    }
+                }
+                   // Toast.makeText(getContext(), "No booking available", Toast.LENGTH_SHORT).show();
 
             }
 
@@ -2504,7 +2511,7 @@ public class BookFragment extends Fragment implements
         TextView locationAddressTop=roomBottomSheet.findViewById(R.id.locationAddress);
         locationAddress=roomBottomSheet.findViewById(R.id.tv_location_details);
         //New...
-        locationAddress.setVisibility(View.VISIBLE);
+        locationAddress.setVisibility(View.GONE);
 
         date=roomBottomSheet.findViewById(R.id.date);
         TextView title=roomBottomSheet.findViewById(R.id.title);
@@ -2519,6 +2526,7 @@ public class BookFragment extends Fragment implements
         EditText edComments=roomBottomSheet.findViewById(R.id.comments);
         EditText commentRegistration=roomBottomSheet.findViewById(R.id.ed_registration);
         EditText edRegistration=roomBottomSheet.findViewById(R.id.et_registration_num);
+        RelativeLayout registrationLayout=roomBottomSheet.findViewById(R.id.registrationLayout);
         RelativeLayout repeatBlock=roomBottomSheet.findViewById(R.id.rl_repeat_block);
         RelativeLayout commentBlock=roomBottomSheet.findViewById(R.id.rl_comment_block);
         RelativeLayout teamsBlock=roomBottomSheet.findViewById(R.id.rl_teams_layout);
@@ -2802,6 +2810,7 @@ public class BookFragment extends Fragment implements
                 }
             }
             edRegistration.setVisibility(View.VISIBLE);
+            registrationLayout.setVisibility(View.VISIBLE);
             llDeskLayout.setVisibility(View.VISIBLE);
 //            repeatBlock.setVisibility(View.VISIBLE);
             teamsBlock.setVisibility(View.GONE);

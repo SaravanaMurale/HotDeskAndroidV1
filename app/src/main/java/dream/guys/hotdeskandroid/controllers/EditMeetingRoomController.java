@@ -223,7 +223,7 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
                                 if (allMeetingRoomList.get(i).getId() == calId) {
                                     editDeskBookingDetails.setCapacity(""+allMeetingRoomList.get(i).getNoOfPeople());
                                     editDeskBookingDetails.setLocationAddress(""+allMeetingRoomList.get(i).getLocationMeeting().getName());
-
+                                    editDeskBookingDetails.setDescription(""+allMeetingRoomList.get(i).getDescription());
                                     team:
                                     for (int x=0; x<allMeetingRoomList.get(i).getTeams().size(); x++){
                                         if(allMeetingRoomList.get(i).getTeams().get(x).getId() == myTeamId){
@@ -299,6 +299,7 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
 
         //Language
         TextView tv_start=roomBottomSheet.findViewById(R.id.tv_start);
+        TextView tvDesc=roomBottomSheet.findViewById(R.id.tv_description);
         TextView tv_end=roomBottomSheet.findViewById(R.id.tv_end);
         TextView tv_comment=roomBottomSheet.findViewById(R.id.tv_comment);
         TextView tv_repeat=roomBottomSheet.findViewById(R.id.tv_repeat);
@@ -502,6 +503,13 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
             }
             if (newEditStatus.equalsIgnoreCase("edit")) {
                 deskRoomName.setText(""+editDeskBookingDetails.getRoomName());
+                if(editDeskBookingDetails.getDescription()!= null &&
+                        !editDeskBookingDetails.getDescription().equalsIgnoreCase("null"))
+                    tvDesc.setText(""+editDeskBookingDetails.getDescription());
+
+                if(editDeskBookingDetails.getLocationAddress()!= null &&
+                        !editDeskBookingDetails.getLocationAddress().equalsIgnoreCase("null"))
+                    locationAddress.setText(""+editDeskBookingDetails.getLocationAddress());
             }
             if(newEditStatus.equalsIgnoreCase("new") || newEditStatus.equalsIgnoreCase("new_deep_link")
                     || newEditStatus.equalsIgnoreCase("request")){

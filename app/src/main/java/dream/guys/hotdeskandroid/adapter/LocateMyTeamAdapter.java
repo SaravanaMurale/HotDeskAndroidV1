@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -40,7 +39,7 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
 
 
     public interface ShowMyTeamLocationClickable {
-        public void showMyTeamLocation(DAOTeamMember.DayGroup.CalendarEntry dayGroups, String name);
+        public void showMyTeamLocation(DAOTeamMember.DayGroup.CalendarEntry dayGroups, String name, boolean ifFirstAidStatus, boolean fireStatus);
 
         public void loadMyTeamLocation(int id, int floorID);
     }
@@ -162,7 +161,7 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
                     if (daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel() != null) {
                         //showMyTeamLocationClickable.showMyTeamLocation(175,273,bottomSheetDialog,bottomSheetBehavior);
                         String name = daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getFirstName() + " " + daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getLastName();
-                        showMyTeamLocationClickable.showMyTeamLocation(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel(), name);
+                        showMyTeamLocationClickable.showMyTeamLocation(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel(), name,daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).isIfFirstAidStatus(),daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).isFireStatus());
                     } else {
                         Utils.toastMessage(context, "No Booking Avaliable");
                     }

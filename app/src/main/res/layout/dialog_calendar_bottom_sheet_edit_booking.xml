@@ -52,6 +52,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text=""
+                        android:visibility="gone"
                         android:textSize="14sp"
                         android:theme="@style/TextSmall" />
                 </LinearLayout>
@@ -339,6 +340,40 @@
                     android:theme="@style/TextBold" />
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/registrationLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:background="@drawable/rectangle_greybg_with_corner"
+                android:layout_marginTop="@dimen/_5sdp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:text="Registration"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="16sp"
+                    android:theme="@style/TextBold" />
+
+                <EditText
+                    android:id="@+id/et_registration_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@color/figmaBlueText"
+                    android:background="@color/transparent"
+                    android:paddingHorizontal="@dimen/_15sdp"
+                    android:paddingVertical="@dimen/_10sdp"
+                    android:visibility="visible" />
+            </RelativeLayout>
+
+
+
             <!--SelectDesk-->
             <RelativeLayout
                 android:id="@+id/selectDeskEditBlock"
@@ -396,6 +431,7 @@
                             android:textSize="14sp" />
 
                         <TextView
+                            android:id="@+id/tvDesc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Description "
@@ -518,16 +554,7 @@
             </RelativeLayout>
 
 
-            <EditText
-                android:id="@+id/et_registration_num"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/rectangle_greybg_with_corner"
-                android:hint="Registration"
-                android:paddingHorizontal="@dimen/_15sdp"
-                android:paddingVertical="@dimen/_10sdp"
-                android:visibility="gone" />
+
 
             <!--<TextView
                 android:id="@+id/tv_comments"
