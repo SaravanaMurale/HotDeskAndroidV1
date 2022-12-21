@@ -395,7 +395,7 @@
                         android:id="@+id/tv_desk_room_name_room"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Room - 001"
+                        android:text=""
                         android:theme="@style/TextBold" />
 
                     <TextView

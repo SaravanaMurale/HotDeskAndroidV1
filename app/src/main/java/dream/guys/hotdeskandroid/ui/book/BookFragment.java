@@ -1413,9 +1413,17 @@ public class BookFragment extends Fragment implements
             call.enqueue(new Callback<List<CarParkListToEditResponse>>() {
                 @Override
                 public void onResponse(Call<List<CarParkListToEditResponse>> call, Response<List<CarParkListToEditResponse>> response) {
+                    try {
+                        List<CarParkListToEditResponse> carParkingForEditResponse = response.body();
 
-                    List<CarParkListToEditResponse> carParkingForEditResponse = response.body();
-                    CallCarBookingEditList(carParkingForEditResponse, "5");
+                        if(carParkingForEditResponse.size()>0)
+                            CallCarBookingEditList(carParkingForEditResponse, "5");
+                        else
+                            newCarBottomSheet(carParkingForEditResponse);
+
+                    } catch (Exception e){
+
+                    }
 
                     ProgressDialog.dismisProgressBar(getContext(),dialog);
                 }
@@ -1734,8 +1742,8 @@ public class BookFragment extends Fragment implements
             public void onClick(View v) {
 //                getCarParkLocationsList();
 //                if (SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID)!=null)
-
-                EditBookingDetails editBookingDetails= new EditBookingDetails();
+                newCarBottomSheet(carParkingForEditResponse);
+                /*EditBookingDetails editBookingDetails= new EditBookingDetails();
                 if (carParkingForEditResponse.size() > 0){
                     editBookingDetails.setEditStartTTime(Utils.splitTime(carParkingForEditResponse.get(carParkingForEditResponse.size()-1)
                             .getMyto()));
@@ -1757,11 +1765,11 @@ public class BookFragment extends Fragment implements
                                 +Utils.getCurrentTime()+":00Z",1800)));
 
                     }
-                    /*editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
+                    *//*editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
                     //System.out.println("tim else" +" "+Utils.getCurrentDate()+"T"
                             +Utils.getCurrentTime()+"Z");
                     editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(Utils.getCurrentDate()+"T"
-                            +Utils.getCurrentTime()+":00Z",12000)));*/
+                            +Utils.getCurrentTime()+":00Z",12000)));*//*
 
                 }
                 changedDeskId=0;
@@ -1770,7 +1778,7 @@ public class BookFragment extends Fragment implements
                 if(SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID) > 0)
                     getParkingSpotList(""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID),editBookingDetails,"new");
                 else
-                    getCarParkLocationsList(editBookingDetails,"new");
+                    getCarParkLocationsList(editBookingDetails,"new");*/
             }
         });
 
@@ -1782,6 +1790,45 @@ public class BookFragment extends Fragment implements
         });
 
         bookEditBottomSheet.show();
+    }
+
+    private void newCarBottomSheet(List<CarParkListToEditResponse> carParkingForEditResponse) {
+        EditBookingDetails editBookingDetails= new EditBookingDetails();
+        if (carParkingForEditResponse.size() > 0){
+            editBookingDetails.setEditStartTTime(Utils.splitTime(carParkingForEditResponse.get(carParkingForEditResponse.size()-1)
+                    .getMyto()));
+            editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(carParkingForEditResponse.get(carParkingForEditResponse.size()-1)
+                    .getMyto(),12000)));
+
+        }else {
+            if (profileData != null) {
+                editBookingDetails.setEditStartTTime(Utils.splitTime(profileData.getWorkHoursFrom()));
+                editBookingDetails.setEditEndTime(Utils.splitTime(profileData.getWorkHoursTo()));
+//                        startRoomTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
+//                        endTRoomime.setText(Utils.splitTime(profileData.getWorkHoursTo()));
+//                        showtvRoomStartTime.setText(Utils.showBottomSheetDateTime(binding.locateCalendearView.getText().toString()) + " " + startRoomTime.getText().toString());
+            } else {
+                editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
+                //System.out.println("tim else" +" "+Utils.getCurrentDate()+"T"
+//                                +Utils.getCurrentTime()+"Z");
+                editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(Utils.getCurrentDate()+"T"
+                        +Utils.getCurrentTime()+":00Z",1800)));
+
+            }
+                    /*editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
+                    //System.out.println("tim else" +" "+Utils.getCurrentDate()+"T"
+                            +Utils.getCurrentTime()+"Z");
+                    editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(Utils.getCurrentDate()+"T"
+                            +Utils.getCurrentTime()+":00Z",12000)));*/
+
+        }
+        changedDeskId=0;
+        changedTeamId=0;
+        editBookingDetails.setDate(Utils.convertStringToDateFormet(calSelectedDate));
+        if(SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID) > 0)
+            getParkingSpotList(""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID),editBookingDetails,"new");
+        else
+            getCarParkLocationsList(editBookingDetails,"new");
     }
 
 
@@ -2704,7 +2751,12 @@ public class BookFragment extends Fragment implements
             commentRegistration.setVisibility(View.GONE);
             tvComments.setVisibility(View.GONE);
 
-            deskRoomName.setText(editDeskBookingDetails.getDeskCode());
+            if (editDeskBookingDetails.getDeskCode()!=null && !editDeskBookingDetails.getDeskCode().isEmpty()
+                    && !editDeskBookingDetails.getDeskCode().equalsIgnoreCase(""))
+                deskRoomName.setText(editDeskBookingDetails.getDeskCode());
+            else
+                deskRoomName.setText("No Available desk/Room");
+
             selectedDeskId=editDeskBookingDetails.getDesktId();
             if(newEditStatus.equalsIgnoreCase("new") || newEditStatus.equalsIgnoreCase("new_deep_link")
                     || newEditStatus.equalsIgnoreCase("request")) {
@@ -2770,7 +2822,11 @@ public class BookFragment extends Fragment implements
                 } catch (Exception c){
 
                 }
+            }else {
+                deskRoomName.setText("No Available Desk/Room");
             }
+
+
             if (newEditStatus.equalsIgnoreCase("edit")) {
                 deskRoomName.setText(""+editDeskBookingDetails.getRoomName());
             }
@@ -6497,8 +6553,8 @@ public class BookFragment extends Fragment implements
                                 userAllowedMeetingResponseListUpdated.get(0).getId(),
                                 0,"request");
                     else
-                        Toast.makeText(getContext(), "Please Clear Fiter", Toast.LENGTH_SHORT).show();
-//                        editBookingUsingBottomSheet(editBookingDetails,2,0,"new");
+                        editBookingUsingBottomSheet(editBookingDetails,2,0,"new");
+//                        Toast.makeText(getContext(), "Please Clear Fiter", Toast.LENGTH_SHORT).show();
                 }
 
             }

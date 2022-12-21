@@ -416,7 +416,7 @@
                             android:id="@+id/tv_desk_room_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Room - 001"
+                            android:text=""
                             android:textColor="@color/figmaBlack"
                             android:textSize="18sp"
                             android:theme="@style/TextBold" />
