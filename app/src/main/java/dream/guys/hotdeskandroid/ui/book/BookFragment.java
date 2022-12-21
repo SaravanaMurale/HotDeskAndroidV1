@@ -345,6 +345,7 @@ public class BookFragment extends Fragment implements
     boolean endDisabled = false;
     boolean selectDisabled = false;
     boolean tvTeamNameDisabled = false;
+    boolean defaultLocationSet = false;
     //New...
     //For Displaying the count
     TextView filterTotalSize;
@@ -359,6 +360,7 @@ public class BookFragment extends Fragment implements
     private String capacitySelectedItem = "1";
     BottomSheetDialog bottomSheetDialog;
 
+    int locationId =0;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -611,7 +613,8 @@ public class BookFragment extends Fragment implements
 
         ProgressDialog.touchLock(getContext(), getActivity());
 
-
+        locationId = SessionHandler.getInstance().getInt(context, AppConstants.LOCATION_ID);
+        defaultLocationSet=true;
         //To load default location-saved in login Activity
         int parentIdCheck =SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID_CHECK);
         if(parentIdCheck>0 && defaultLocationcheck==0) {
@@ -626,12 +629,14 @@ public class BookFragment extends Fragment implements
             String countryCheck=SessionHandler.getInstance().get(getContext(),AppConstants.COUNTRY_NAME_CHECK);
             String buildingCheck=SessionHandler.getInstance().get(getContext(),AppConstants.BUILDING_CHECK);
             String floorCheck=SessionHandler.getInstance().get(getContext(),AppConstants.FLOOR_CHECK);
+            String finalFloorCheck = SessionHandler.getInstance().get(getContext(), AppConstants.FINAL_FLOOR_CHECK);
             String fullPathCheck=SessionHandler.getInstance().get(getContext(),AppConstants.FULLPATHLOCATION_CHECK);
 
 
             SessionHandler.getInstance().save(getContext(), AppConstants.COUNTRY_NAME,countryCheck);
             SessionHandler.getInstance().save(getContext(), AppConstants.BUILDING,buildingCheck);
             SessionHandler.getInstance().save(getContext(), AppConstants.FLOOR,floorCheck);
+            SessionHandler.getInstance().save(getContext(), AppConstants.FINAL_FLOOR,finalFloorCheck);
             SessionHandler.getInstance().save(getContext(), AppConstants.FULLPATHLOCATION,fullPathCheck);
         }
 
@@ -1160,6 +1165,12 @@ public class BookFragment extends Fragment implements
 //            dialog= ProgressDialog.showProgressBar(context);
             //System.out.println("check sub parent Id  :  "+locationId);
 
+            if(defaultLocationcheck>0){
+                locationId = ""+SessionHandler.getInstance().getInt(context, AppConstants.LOCATION_ID_TEMP);
+            } else {
+                locationId = ""+SessionHandler.getInstance().getInt(context, AppConstants.LOCATION_ID);
+            }
+
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<List<DeskRoomCountResponse>> call = null;
             int caseCount =0;
@@ -1365,7 +1376,10 @@ public class BookFragment extends Fragment implements
 
 
                     } else {
-                        callMeetingRoomEditListAdapterBottomSheet(meetingListToEditList,"new");
+                        if(meetingListToEditList.size()>0)
+                            callMeetingRoomEditListAdapterBottomSheet(meetingListToEditList,"new");
+                        else
+                            newRoomBookingSheet(meetingListToEditResponseList);
                     }
 
                 }
@@ -1817,7 +1831,41 @@ public class BookFragment extends Fragment implements
         addNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chipList.clear();
+                newRoomBookingSheet(meetingListToEditResponseList);
+//                chipList.clear();
+                /*EditBookingDetails editBookingDetails= new EditBookingDetails();
+                if (meetingListToEditResponseList.size() > 0){
+                    editBookingDetails.setEditStartTTime(Utils.splitTime(meetingListToEditResponseList.get(meetingListToEditResponseList.size()-1).getTo()));
+                    editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(meetingListToEditResponseList.get(meetingListToEditResponseList.size()-1).getTo(),
+                            1800)));
+                } else {
+                    if (profileData != null) {
+                        editBookingDetails.setEditStartTTime(Utils.splitTime(profileData.getWorkHoursFrom()));
+                        editBookingDetails.setEditEndTime(Utils.splitTime(profileData.getWorkHoursTo()));
+                    } else {
+                        editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
+                        editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(Utils.getCurrentDate()+"T"
+                                +Utils.getCurrentTime()+":00Z",1800)));
+
+                    }
+                }
+                editBookingDetails.setDate(Utils.convertStringToDateFormet(calSelectedDate));
+                if (isGlobalLocationSetUP)
+                    getAvaliableRoomDetails("4",calSelectedDate,editBookingDetails,"new");
+                else
+                    getRoomlist(editBookingDetails,"new");
+*/
+            }
+        });
+
+        //getMeetingListToEdit
+
+
+        bookEditBottomSheet.show();
+    }
+
+    private void newRoomBookingSheet(List<MeetingListToEditResponse> meetingListToEditResponseList) {
+        chipList.clear();
                 EditBookingDetails editBookingDetails= new EditBookingDetails();
                 if (meetingListToEditResponseList.size() > 0){
                     editBookingDetails.setEditStartTTime(Utils.splitTime(meetingListToEditResponseList.get(meetingListToEditResponseList.size()-1).getTo()));
@@ -1839,14 +1887,6 @@ public class BookFragment extends Fragment implements
                     getAvaliableRoomDetails("4",calSelectedDate,editBookingDetails,"new");
                 else
                     getRoomlist(editBookingDetails,"new");
-
-            }
-        });
-
-        //getMeetingListToEdit
-
-
-        bookEditBottomSheet.show();
     }
 
     @Override
@@ -5793,6 +5833,7 @@ public class BookFragment extends Fragment implements
 //                    binding.firstLayout.removeAllViews();
 
                         defaultLocationcheck = 1;
+                        locationId = SessionHandler.getInstance().getInt(context, AppConstants.LOCATION_ID_TEMP);
                         initLoadFloorDetails(canvasss);
                         getAvaliableDeskDetails("5",calSelectedDate);
                         bottomSheetDialog.dismiss();
@@ -6086,7 +6127,7 @@ public class BookFragment extends Fragment implements
 
         int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
 
-        if (parentId > 0) {
+        if (parentId > 0 ) {
             //Disable touch Screen
             ProgressDialog.touchLock(getContext(),getActivity());
             ProgressDialog.clearTouchLock(getContext(),getActivity());
@@ -6097,14 +6138,15 @@ public class BookFragment extends Fragment implements
             String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
             String finalFloor = SessionHandler.getInstance().get(getContext(), AppConstants.FINAL_FLOOR);
             String fullPathLocation = SessionHandler.getInstance().get(getContext(), AppConstants.FULLPATHLOCATION);
-
-            if (CountryName == null && buildingName == null && floorName == null && fullPathLocation==null) {
-                binding.searchGlobal.setHint("choose location from the list");
-            } else {
-                if(fullPathLocation == null) {
-                    binding.searchGlobal.setText(floorName + "  " + finalFloor);
-                }else {
-                    binding.searchGlobal.setText(floorName + "  " + finalFloor);
+            if(defaultLocationcheck>0){
+                if (CountryName == null && buildingName == null && floorName == null && fullPathLocation==null) {
+                    binding.searchGlobal.setHint("choose location from the list");
+                } else {
+                    if(fullPathLocation == null) {
+                        binding.searchGlobal.setText(floorName + "  " + finalFloor);
+                    }else {
+                        binding.searchGlobal.setText(floorName + "  " + finalFloor);
+                    }
                 }
             }
 
@@ -6357,7 +6399,7 @@ public class BookFragment extends Fragment implements
 
 
                 for (int i=0; i < userAllowedMeeting.size(); i++){
-                    if (userAllowedMeeting.get(i).isActive()){
+                    if (userAllowedMeeting.get(i).isActive() && userAllowedMeeting.get(i).getLocationMeeting().getLocationId()==locationId){
                         userAllowedMeetingResponseList.add(userAllowedMeeting.get(i));
                     }
                 }

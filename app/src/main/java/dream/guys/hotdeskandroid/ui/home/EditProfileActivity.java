@@ -446,6 +446,8 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
                                     floorParentID = finalLocationArrayList.get(position).getParentLocationId();
                                     Integer id = finalLocationArrayList.get(position).getId();
+                                    locationID = finalLocationArrayList.get(position).getId();
+
 
                                     if (from.equalsIgnoreCase(AppConstants.DefaultLocation)) {
 
@@ -501,7 +503,6 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                                         location.addAll(finalLocationArrayList.stream().filter(val -> val.getId() == cityParentID).collect(Collectors.toList()));
 
                                         if (location.size() > 0) {
-                                            locationID = location.get(0).getId();
                                             locationParentID = location.get(0).getParentLocationId();
                                             CountryName = location.get(0).getName();
                                         }

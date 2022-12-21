@@ -98,7 +98,7 @@ public class FloorAdapter extends RecyclerView.Adapter<FloorAdapter.FloorAdapter
 
                 //System.out.println("SelectedFloorPosition "+position);
                 //SessionHandler.getInstance().saveInt(context, AppConstants.FLOOR_POSITION,holder.getAbsoluteAdapterPosition());
-                SessionHandler.getInstance().saveInt(context, AppConstants.LOCATION_ID,
+                SessionHandler.getInstance().saveInt(context, AppConstants.LOCATION_ID_TEMP,
                         locateCountryResposeList.get(holder.getAbsoluteAdapterPosition()).getLocateCountryId());
                 SessionHandler.getInstance().save(context,AppConstants.FINAL_FLOOR,locateCountryResposeList.get(holder.getAbsoluteAdapterPosition()).getName());
                 System.out.println("FloorPositionSaved");
@@ -124,7 +124,7 @@ public class FloorAdapter extends RecyclerView.Adapter<FloorAdapter.FloorAdapter
                 holder.ivFloor.setImageDrawable(context.getDrawable(R.drawable.floor_enable));
                 SessionHandler.getInstance().saveBoolean(context,AppConstants.FLOOR_SELECTED_STATUS,true);
                 //SessionHandler.getInstance().saveInt(context, AppConstants.FLOOR_POSITION, holder.getAbsoluteAdapterPosition());
-                SessionHandler.getInstance().saveInt(context, AppConstants.LOCATION_ID,
+                SessionHandler.getInstance().saveInt(context, AppConstants.LOCATION_ID_TEMP,
                         locateCountryResposeList.get(holder.getAbsoluteAdapterPosition()).getLocateCountryId());
                 sPos=pos;
             }

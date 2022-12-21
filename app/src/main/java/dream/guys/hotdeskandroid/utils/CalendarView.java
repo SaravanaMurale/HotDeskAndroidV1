@@ -332,6 +332,18 @@ public class CalendarView extends LinearLayout
                         e.printStackTrace();
                     }
                 }
+            } else {
+                if (Utils.compareTwoDate(date,
+                        Utils.getCurrentDate())==1){
+                    if (count!=null && dateBox!=null){
+                        ((TextView) count).setVisibility(GONE);
+                        ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
+                        ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGreyCalDisable));
+                    }
+                }else {
+                    ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
+                    ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
+                }
             }
 
             ((TextView) dateBox).setTypeface(null, Typeface.NORMAL);
@@ -343,6 +355,7 @@ public class CalendarView extends LinearLayout
 //            System.out.println("mont check"+month+" "+today.getMonth());
             if (day == today.getDate() && month==today.getMonth()) {
 //                ((TextView) dateBox).setTypeface(null, Typeface.BOLD);
+                ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
                 ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.figmaBlack));
             } else {
                 ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.figmaBackground));
@@ -359,32 +372,34 @@ public class CalendarView extends LinearLayout
 
             //below if condition greys out previous dates of past month
             if(month!=Integer.parseInt(currentMonth)) {
-                if (position < Integer.parseInt(currentDay)) {
-                    Log.d(TAG, "getView: date"+currentDay+"==="+month);
-                    Log.d(TAG, "getView: "+firstDayOfMonth+"==="+currentDay);
-                    Log.d("CardView : ", "getView: "+position);
-                    int value = this.previousMonthMaxDays - Integer.parseInt(currentDay) + position + 1;
+//                Toast.makeText(getContext(), ""+firstDayOfMonth, Toast.LENGTH_SHORT).show();
+                if (position < firstDayOfMonth){
+                    Log.d(TAG, "getView: date else"+currentDay+"==="+month);
+
+                    int value = this.previousMonthMaxDays - firstDayOfMonth + position + 1;
 //                date.setText(String.valueOf(value));
-                    dateBox.setTextColor(Color.rgb(166, 166, 166));
+//                    dateBox.setTextColor(Color.rgb(166, 166, 166));
+
+                    dateBox.setTextColor(getResources().getColor(R.color.figmaGreyCalDisable));
                     ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.white));
                     count.setVisibility(GONE);
                 }
+
             } else {
                 if (position < firstDayOfMonth){
                     Log.d(TAG, "getView: date else"+currentDay+"==="+month);
 
-                    Log.d(TAG, "getView: "+firstDayOfMonth+"==="+currentDay);
-                    Log.d("CardView : ", "getView: "+position);
                     int value = this.previousMonthMaxDays - firstDayOfMonth + position + 1;
 //                date.setText(String.valueOf(value));
-                    dateBox.setTextColor(Color.rgb(166, 166, 166));
+//                    dateBox.setTextColor(Color.rgb(166, 166, 166));
+
+                    dateBox.setTextColor(getResources().getColor(R.color.figmaGreyCalDisable));
                     ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.white));
                     count.setVisibility(GONE);
                 }
             }
 
-            /*
-            if (position >= firstDayOfMonth && position < maxNumberOfDays + firstDayOfMonth) {
+            /*if (position >= firstDayOfMonth && position < maxNumberOfDays + firstDayOfMonth) {
                 int value = position - firstDayOfMonth + 1;
                 System.out.println("bala today"+ currentDate.getTime());
 //                Toast.makeText(getContext(), " betweeen"+currentDate, Toast.LENGTH_SHORT).show();
@@ -396,8 +411,7 @@ public class CalendarView extends LinearLayout
                     dateBox.setVisibility(VISIBLE);
                     count.setVisibility(VISIBLE);
                 }
-            }
-            */
+            }*/
 
             if (position >= maxNumberOfDays + firstDayOfMonth) {
                 int value = position - (maxNumberOfDays + firstDayOfMonth - 1);

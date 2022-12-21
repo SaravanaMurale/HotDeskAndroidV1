@@ -51,6 +51,7 @@ public class AppConstants {
     public static final String FLOOR_ICON_BLINK="FLOOR_ICON_BLINK";
 
     public static final String LOCATION_ID="LOCATION_ID";
+    public static final String LOCATION_ID_TEMP="LOCATION_ID_TEMP";
     public static final String COUNTRY_NAME="COUNTRY_NAME";
     public static final String BUILDING="BUILDING";
     public static final String FLOOR="FLOOR";
