@@ -620,10 +620,10 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
             holder.tvBookingWorkingRemote.setText("Request For Parking - "+list.get(position).getCarParkBookingsModel().getParkingSlotCode());
             holder.startTime.setText(""
-                    +Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom()));
+                    +Utils.splitTime(list.get(position).getCarParkBookingsModel().getFrom()));
 
             holder.endTime.setText(""
-                    +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
+                    +Utils.splitTime(list.get(position).getCarParkBookingsModel().getMyto()));
 
             Glide.with(context)
                     .load(R.drawable.car)

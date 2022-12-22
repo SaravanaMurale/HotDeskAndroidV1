@@ -2050,7 +2050,8 @@ public class BookFragment extends Fragment implements
                             for (int i=0; i < allMeetingRoomList.size(); i++) {
                                 if (allMeetingRoomList.get(i).getId() == calId) {
                                     editDeskBookingDetails.setCapacity(""+allMeetingRoomList.get(i).getNoOfPeople());
-//                                    editDeskBookingDetails.setLocationAddress(""+allMeetingRoomList.get(i).getLocationMeeting().getName());
+                                    editDeskBookingDetails.setLocationAddress(""+allMeetingRoomList.get(i).getLocationMeeting().getLocationDetails().getBuildingName()+", "
+                                            +allMeetingRoomList.get(i).getLocationMeeting().getLocationDetails().getBuildingName());
 
                                     team:
                                     for (int x=0; x<allMeetingRoomList.get(i).getTeams().size(); x++){
@@ -2124,7 +2125,6 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onResponse(Call<BookingForEditResponse> call, Response<BookingForEditResponse> response) {
                     try {
-                        temp = response.body();
                         bookingForEditResponse = response.body();
                         List<BookingForEditResponse.Bookings> bookingsList = new ArrayList<>();
                         for (BookingForEditResponse.Bookings respo: bookingForEditResponse.getBookings()) {
@@ -2138,9 +2138,10 @@ public class BookFragment extends Fragment implements
                             bookingDeskList= new ArrayList<>();
 
                         if (!isGlobalLocationSetUP) {
-                            bookingDeskList.clear();
-                            if(response.body().getTeamDeskAvailabilities()!=null)
-                                bookingDeskList = response.body().getTeamDeskAvailabilities();
+                            getDeskList("3",calSelectedDate,"new");
+//                            bookingDeskList.clear();
+//                            if(response.body().getTeamDeskAvailabilities()!=null)
+//                                bookingDeskList = response.body().getTeamDeskAvailabilities();
                         }
 
                         if (code.equalsIgnoreCase("3")) {
@@ -2332,6 +2333,7 @@ public class BookFragment extends Fragment implements
 
         if (isGlobalLocationSetUP && bookingDeskList!=null && bookingDeskList.size()>0){
             for (int i=0; i < bookingDeskList.size(); i++){
+
 //                logic to show booked by else
                 /*if(Utils.compareTwoDate(Utils.convertStringToDateFormet(calSelectedDate),
                         Utils.getCurrentDate())==2 && bookingDeskList.get(i).isBookedByElse()){
@@ -2507,7 +2509,6 @@ public class BookFragment extends Fragment implements
             selectedTeamId = SessionHandler.getInstance().getInt(context,AppConstants.TEAM_ID);
             changedTeamId=0;
             changedDeskId=0;
-            Log.d(TAG,"not global");
 //                    Toast.makeText(context, "else da" , Toast.LENGTH_SHORT).show();
             editBookingUsingBottomSheet(editBookingDetailsGlobal,
                     1, 0, "new");
@@ -2558,7 +2559,7 @@ public class BookFragment extends Fragment implements
         TextView locationAddressTop=roomBottomSheet.findViewById(R.id.locationAddress);
         locationAddress=roomBottomSheet.findViewById(R.id.tv_location_details);
         //New...
-        locationAddress.setVisibility(View.GONE);
+//        locationAddress.setVisibility(View.GONE);
 
         date=roomBottomSheet.findViewById(R.id.date);
         TextView title=roomBottomSheet.findViewById(R.id.title);
@@ -6289,9 +6290,21 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onResponse(Call<List<BookingForEditResponse.TeamDeskAvailabilities>> call, Response<List<BookingForEditResponse.TeamDeskAvailabilities>> response) {
                     bookingDeskList.clear();
-                    bookingDeskList = response.body();
-//                    //System.out.println("Selecrt id"+selectedTeamId + bookingDeskList.get(0).getDeskCode());
-                    callDeskListBottomSheetDialog(0,null,newEditStatus);
+                    locationDeskList.clear();
+                    if(response.body() != null)
+                        bookingDeskList = response.body();
+
+
+                    if(bookingDeskList!=null && bookingDeskList.size() > 0){
+                        selectedTeamId = bookingDeskList.get(0).getTeamId();
+                        globalSelectedTeamId = bookingDeskList.get(0).getTeamId();
+                    }
+                    for (int x=0; x<activeTeamsList.size(); x++) {
+                        if (selectedTeamId == activeTeamsList.get(x).getId()) {
+                            selectedTeamName = activeTeamsList.get(x).getName();
+                            selectedTeamAutoApproveStatus = activeTeamsList.get(x).getAutomaticApprovalStatus();
+                        }
+                    }
 
                 }
 

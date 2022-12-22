@@ -272,6 +272,10 @@ public interface ApiInterface {
     Call<List<BookingForEditResponse.TeamDeskAvailabilities>> getTeamDeskAvailability(@Query("teamId") int parentId,
                                                     @Query("fromDate") String fromTime,
                                                     @Query("toDate") String toTime);
+    @GET("api/booking/TeamDeskAvailabilityV2Mobile")
+    Call<BookingForEditResponse> getUpdaedTeamDeskAvailability(@Query("teamId") int parentId,
+                                                    @Query("fromDate") String fromTime,
+                                                    @Query("toDate") String toTime);
 
 
     @GET("api/locate/ImmediateChildLocations")
@@ -364,7 +368,7 @@ public interface ApiInterface {
     Call<List<UserAllowedMeetingResponse>> userAllowedMeetings();
 
     //Get All Meetings
-    @GET("api/meetingrooms/getAll")
+    @GET("api/MeetingRooms/AllMeetingRoomsWithLocationsV2Mobile")
     Call<List<UserAllowedMeetingResponse>> getAllMeetings();
 
 

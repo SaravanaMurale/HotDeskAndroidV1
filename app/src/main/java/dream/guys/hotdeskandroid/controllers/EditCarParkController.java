@@ -31,6 +31,7 @@ import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.BookingsRequest;
@@ -1059,6 +1060,9 @@ public class EditCarParkController {
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     dialog.dismiss();
+                    if (isFrom.equalsIgnoreCase(AppConstants.HOMEFRAGMENTINSTANCESTRING)){
+                        ((MainActivity) activityContext).callHomeFragment();
+                    }
                     String resultString="";
                     try {
                         if (response.code()==200 && response.body().getResultCode()!=null){

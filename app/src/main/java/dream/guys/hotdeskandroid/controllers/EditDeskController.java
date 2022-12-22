@@ -34,6 +34,7 @@ import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.ActiveTeamsAdapter;
 import dream.guys.hotdeskandroid.adapter.*;
@@ -1100,6 +1101,9 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     dialog.dismiss();
+                    if (isFrom.equalsIgnoreCase(AppConstants.HOMEFRAGMENTINSTANCESTRING)){
+                        ((MainActivity) activityContext).callHomeFragment();
+                    }
                     String resultString="";
                     try {
                         if (response.code()==200 && response.body().getResultCode()!=null){

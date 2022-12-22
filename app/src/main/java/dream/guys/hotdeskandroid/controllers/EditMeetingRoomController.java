@@ -42,6 +42,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.ParticipantNameShowAdapter;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
@@ -214,7 +215,6 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
                                 allMeetingRoomList = new ArrayList<>();
 
                             allMeetingRoomList = response.body();
-//                            Toast.makeText(activityContext, "dasd", Toast.LENGTH_SHORT).show();
 
                             List<Integer> amenitiesIntList =new ArrayList<>();
                             List<String> amenitiesStringList =new ArrayList<>();
@@ -222,7 +222,9 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
                             for (int i=0; i < allMeetingRoomList.size(); i++) {
                                 if (allMeetingRoomList.get(i).getId() == calId) {
                                     editDeskBookingDetails.setCapacity(""+allMeetingRoomList.get(i).getNoOfPeople());
-                                    editDeskBookingDetails.setLocationAddress(""+allMeetingRoomList.get(i).getLocationMeeting().getName());
+                                    editDeskBookingDetails.setLocationAddress(""+allMeetingRoomList.get(i).getLocationMeeting().getLocationDetails().getBuildingName()+", "
+                                            +allMeetingRoomList.get(i).getLocationMeeting().getLocationDetails().getFloorName());
+//                                    editDeskBookingDetails.setLocationAddress(""+allMeetingRoomList.get(i).getLocationMeeting().getName());
                                     editDeskBookingDetails.setDescription(""+allMeetingRoomList.get(i).getDescription());
                                     team:
                                     for (int x=0; x<allMeetingRoomList.get(i).getTeams().size(); x++){
@@ -499,7 +501,8 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
 //                //System.out.println("tim else"+parkingSpotModelList.get(0).getCode());
                 deskRoomName.setText(""+userAllowedMeetingResponseListUpdated.get(0).getName());
                 selectedRoomId = userAllowedMeetingResponseListUpdated.get(0).getId();
-                locationAddress.setText(""+userAllowedMeetingResponseListUpdated.get(0).getLocationMeeting().getName());
+//                locationAddress.setText(""+userAllowedMeetingResponseListUpdated.get(0).getLocationMeeting().getName());
+                locationAddress.setText(""+editDeskBookingDetails.getLocationAddress());
             }
             if (newEditStatus.equalsIgnoreCase("edit")) {
                 deskRoomName.setText(""+editDeskBookingDetails.getRoomName());
@@ -825,6 +828,10 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                     dialog.dismiss();
+
+                    if (isFrom.equalsIgnoreCase(AppConstants.HOMEFRAGMENTINSTANCESTRING)){
+                        ((MainActivity) activityContext).callHomeFragment();
+                    }
                     String resultString="";
                     try {
                         if (response.code()==200 && response.body().getResultCode()!=null){
