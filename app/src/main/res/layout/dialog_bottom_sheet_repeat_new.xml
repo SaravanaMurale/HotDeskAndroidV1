@@ -343,7 +343,7 @@
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:checked="true"
-                    android:text="Fri 19 Sep(end of Week)"
+                    android:text="Fri 19 Sep (end of Week)"
                     android:textColor="@color/figmaBlueText"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

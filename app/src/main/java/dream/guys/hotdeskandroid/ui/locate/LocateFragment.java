@@ -6059,7 +6059,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             if (repeatSelectedDate.isEmpty()) {
                 //Show end of week
-                tv_until.setText(Utils.getDateFormatToSetInRepeat(date) + "(end of Week)");
+                tv_until.setText(Utils.getDateFormatToSetInRepeat(date) + " (end of Week)");
             } else {
                 //Show selected date
                 tv_until.setText(repeatSelectedDate);
@@ -6125,7 +6125,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 //Set Figma format
 
                 if (repeatSelectedDate.isEmpty()) {
-                    tv_until.setText(Utils.getDateFormatToSetInRepeat(date) + "(end of Week)");
+                    tv_until.setText(Utils.getDateFormatToSetInRepeat(date) + " (end of Week)");
                 } else {
                     tv_until.setText(repeatSelectedDate);
                 }
@@ -6547,7 +6547,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //Get Current Week End Date
         Date date = Utils.getCurrentWeekEndDate();
         //Set Figma format
-        tv_forever.setText(Utils.getDateFormatToSetInRepeat(date) + "(end of Week)");
+        tv_forever.setText(Utils.getDateFormatToSetInRepeat(date) + " (end of Week)");
 
 
         //System.out.println("LocateDateHere " + binding.locateCalendearView.getText().toString() + " " + binding.locateStartTime.getText().toString() + " " + binding.locateEndTime.getText().toString());

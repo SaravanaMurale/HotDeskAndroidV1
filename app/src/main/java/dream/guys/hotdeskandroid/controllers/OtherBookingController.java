@@ -553,7 +553,7 @@ public class OtherBookingController {
                 //Get Current Week End Date
                 Date date = Utils.getCurrentWeekEndDate();
                 //Set Figma format
-                tv_until.setText(Utils.getDateFormatToSetInRepeat(date) + "(end of Week)");
+                tv_until.setText(Utils.getDateFormatToSetInRepeat(date) + " (end of Week)");
 
                 cl_daily_layout.setVisibility(View.VISIBLE);
                 tv_repeat.setVisibility(View.VISIBLE);
@@ -684,7 +684,7 @@ public class OtherBookingController {
         calendar_view.setVisibility(View.GONE);
 
         Date date = Utils.getCurrentWeekEndDate();
-        tv_forever.setText(Utils.getDateFormatToSetInRepeat(date) + "(end of Week)");
+        tv_forever.setText(Utils.getDateFormatToSetInRepeat(date) + " (end of Week)");
 
         enableCurrentWeek = Utils.getDifferenceBetweenTwoDates(calSelectedDate);
 

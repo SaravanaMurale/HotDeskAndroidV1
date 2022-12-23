@@ -3847,7 +3847,7 @@ public class BookFragment extends Fragment implements
         //Get Current Week End Date
         Date date=Utils.getCurrentWeekEndDate();
         //Set Figma format
-        tv_forever.setText(Utils.getDateFormatToSetInRepeat(date)+"(end of Week)");
+        tv_forever.setText(Utils.getDateFormatToSetInRepeat(date)+" (end of Week)");
 
 
         ////System.out.println("LocateDateHere "+binding.locateCalendearView.getText().toString()+" "+binding.locateStartTime.getText().toString()+" "+ binding.locateEndTime.getText().toString());
@@ -6851,7 +6851,7 @@ public class BookFragment extends Fragment implements
                 //Get Current Week End Date
                 Date date=Utils.getCurrentWeekEndDate();
                 //Set Figma format
-                tv_until.setText(Utils.getDateFormatToSetInRepeat(date)+"(end of Week)");
+                tv_until.setText(Utils.getDateFormatToSetInRepeat(date)+" (end of Week)");
 
                 cl_daily_layout.setVisibility(View.VISIBLE);
                 tv_repeat.setVisibility(View.VISIBLE);
