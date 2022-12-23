@@ -712,12 +712,11 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
                     } else {
                         if (dskRoomParkStatus == 1
                                 && newEditStatus.equalsIgnoreCase("edit")) {
-                            if (editDeskBookingDetails.getUsageTypeId()==2
+                            if ((editDeskBookingDetails.getUsageTypeId()==2 || editDeskBookingDetails.getUsageTypeId()==7)
                                     && editDeskBookingDetails.getRequestedTeamId()>0) {
                                 Utils.bottomSheetTimePicker24Hrs(context,activityContext,startTime,"Start Time",
                                         Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
                             } else {
-
                                 Utils.bottomSheetTimePicker24Hrs(context,activityContext,startTime,"Start Time",
                                         Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
                             }
@@ -740,7 +739,7 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
                 if(!endDisabled){
                     if (dskRoomParkStatus == 1
                             && newEditStatus.equalsIgnoreCase("edit")){
-                        if (editDeskBookingDetails.getUsageTypeId()==2
+                        if ((editDeskBookingDetails.getUsageTypeId()==2 || editDeskBookingDetails.getUsageTypeId()==7)
                                 && editDeskBookingDetails.getRequestedTeamId()>0) {
 
                             Utils.bottomSheetTimePicker(context,activityContext,endTime,"End Time",

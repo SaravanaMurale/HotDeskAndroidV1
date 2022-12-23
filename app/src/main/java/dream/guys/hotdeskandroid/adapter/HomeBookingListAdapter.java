@@ -701,6 +701,24 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     new OtherBookingController(context,
                             list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(),
                             list.get(holder.getAbsoluteAdapterPosition()).getDate(), "home");
+                } else if(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel() != null &&
+                        (list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel()
+                                .getUsageTypeAbbreviation().equalsIgnoreCase("REQ") || list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel()
+                                .getUsageTypeAbbreviation().equalsIgnoreCase("RQ"))){
+                    if (list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel() != null) {
+                        String clickedStatus = "EDIT";
+                        onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(), AppConstants.EDIT,
+                                list.get(holder.getAbsoluteAdapterPosition()).getDate(), holder.getAbsoluteAdapterPosition());
+                        //Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
+                    } else if (list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel() != null) {
+                        String clickedStatus = "EDIT";
+                        onCheckInClickable.onCheckInMeetingRoomClick(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel(), AppConstants.EDIT, list.get(holder.getAbsoluteAdapterPosition()).getDate(), holder.getAbsoluteAdapterPosition());
+                        //Toast.makeText(context, "ROOM CLICKED", Toast.LENGTH_SHORT).show();
+                    } else if (list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel() != null) {
+                        String clickedStatus = "EDIT";
+                        onCheckInClickable.onCheckInCarParkingClick(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel(), AppConstants.EDIT, list.get(holder.getAbsoluteAdapterPosition()).getDate(), holder.getAbsoluteAdapterPosition());
+                        //Toast.makeText(context, "CAR CLICKED", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     if (list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel() != null) {
                         String clickedStatus = "REMOTE";

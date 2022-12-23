@@ -641,7 +641,7 @@ public class LoginActivity extends AppCompatActivity {
                             String password = etPassword.getText().toString();
 
 
-//                            sendFCMToken();
+                            sendFCMToken();
 
 
                             userDetailsResponse.getFullName();
