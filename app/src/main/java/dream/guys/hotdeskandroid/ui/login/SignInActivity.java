@@ -427,7 +427,8 @@ public class SignInActivity extends AppCompatActivity {
     public void setLang() {
         String key = SessionHandler.getInstance().get(SignInActivity.this, AppConstants.LANGUAGE_KEY); //= key+".json";
 
-        if (key == null) {
+        //if (key == null) {
+        if (key.isEmpty()) {
             SessionHandler.getInstance().save(SignInActivity.this, AppConstants.LANGUAGE_KEY, "en");
             SessionHandler.getInstance().save(SignInActivity.this, AppConstants.LANGUAGE, "English");
 

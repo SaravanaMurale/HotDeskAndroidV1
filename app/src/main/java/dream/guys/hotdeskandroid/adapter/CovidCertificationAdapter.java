@@ -1,6 +1,8 @@
 package dream.guys.hotdeskandroid.adapter;
 
 import android.content.Context;
+import android.os.Build;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +48,12 @@ public class CovidCertificationAdapter extends RecyclerView.Adapter<CovidCertifi
     @Override
     public void onBindViewHolder(@NonNull CovidCertificationViewHolder holder, int position) {
 
-        holder.covidQuestion.setText(covidQuestionsResponseList.get(position).getQuestion());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            holder.covidQuestion.setText(Html.fromHtml(covidQuestionsResponseList.get(position).getQuestion(), Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            holder.covidQuestion.setText(Html.fromHtml(covidQuestionsResponseList.get(position).getQuestion()));
+        }
+     //   holder.covidQuestion.setText(covidQuestionsResponseList.get(position).getQuestion());
 
         //covidQuestionsResponseList.set(holder.getAbsoluteAdapterPosition()).setLanguage("");
         covidQuestionsResponseList.get(position).setLanguage("");

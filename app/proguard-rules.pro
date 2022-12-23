@@ -19,4 +19,17 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keep class androidx.appcompat.widget.** { *; }
+#-keep class androidx.appcompat.widget.** { *; }
+
+#-keep class dream.guys.hotdeskandroid.** { *; }
+#-dontwarn mypackage.**
+#-dontwarn dream.guys.hotdeskandroid.**
+#-dontusemixedcaseclassnames
+#-dontskipnonpubliclibraryclasses
+#-verbose
+
+#-keepnames class dream.guys.** {
+# *;
+#}
+-repackageclasses 'myobfuscated'
+-allowaccessmodification

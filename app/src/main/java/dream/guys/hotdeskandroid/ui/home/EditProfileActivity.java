@@ -57,6 +57,8 @@ import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -126,6 +128,8 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     String notifyEndTimeChange = "";
     private static final int PERMISSION_REQUEST_CODE = 1;
     EditDefaultAssetAdapter editDefaultAssetAdapter;
+    String[] items = new String[]{"Take Photo", "Gallery","Remove photo",
+            "Cancel"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -937,7 +941,9 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             binding.locateProgressBar.setVisibility(View.VISIBLE);
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<BaseResponse> call = apiService.removeProfilePicture();
+            ProfilePicResponse profilePicResponse = new ProfilePicResponse();
+            profilePicResponse.setImage("");
+            Call<BaseResponse> call = apiService.removeProfilePicture(profilePicResponse);
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
@@ -948,7 +954,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                             .into(binding.ivEditPrifle);
 
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
-
+                    getProfilePicture();
                 }
 
                 @Override
@@ -988,6 +994,16 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
                             binding.ivEditPrifle.setImageBitmap(decodedByte);
+
+                            items = new String[]{"Take Photo", "Gallery","Remove photo",
+                                    "Cancel"};
+                        }else{
+
+                            Glide.with(EditProfileActivity.this).load(R.drawable.avatar)
+                                    .into(binding.ivEditPrifle);
+                            List<String> list = new ArrayList<String>(Arrays.asList(items));
+                            list.remove("Remove photo");
+                            items = list.toArray(new String[0]);
                         }
                     }
 
@@ -1336,7 +1352,8 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     protected void onResume() {
         super.onResume();
 
-        if (SessionHandler.getInstance().get(EditProfileActivity.this, AppConstants.SELECTED_COUNTRY) != null) {
+        if (SessionHandler.getInstance().get(EditProfileActivity.this, AppConstants.SELECTED_COUNTRY) != null
+                && !SessionHandler.getInstance().get(EditProfileActivity.this, AppConstants.SELECTED_COUNTRY).isEmpty()) {
 
             binding.editCountry.setText(SessionHandler.getInstance().get(EditProfileActivity.this, AppConstants.SELECTED_COUNTRY));
 
@@ -1490,8 +1507,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     }
 */
     private void selectImage() {
-        final CharSequence[] items = {"Take Photo", "Gallery",
-                "Cancel"};
+
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(EditProfileActivity.this);
         builder.setTitle("Select Photo");
         builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -1513,6 +1529,9 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                         galleryIntent();
                 } else if (items[item].equals("Cancel")) {
                     dialog.dismiss();
+                }else if (items[item].equals("Remove photo")) {
+                    dialog.dismiss();
+                    doRemoveProfilePicture();
                 }
             }
         });

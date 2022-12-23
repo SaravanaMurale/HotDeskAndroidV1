@@ -481,9 +481,11 @@
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/tvReg"
                     android:gravity="end|center"
+                    android:text="sdfsdf"
+                    android:paddingEnd="@dimen/_5sdp"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
                     android:background="@null"
                     android:paddingLeft="@dimen/_11sdp"
                     android:textColor="@color/figmaBlack"
@@ -506,13 +508,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="@dimen/_65sdp"
         android:orientation="horizontal"
-        android:layout_gravity="bottom"
-android:layout_marginEnd="@dimen/_39sdp"
+        android:layout_marginEnd="@dimen/_39sdp"
         android:layout_marginStart="@dimen/_39sdp"
-        android:layout_marginBottom="@dimen/_39sdp"
-        >
+        android:layout_marginBottom="@dimen/_65sdp">
 
 
         <TextView

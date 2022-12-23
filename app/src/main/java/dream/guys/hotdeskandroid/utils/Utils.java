@@ -96,7 +96,8 @@ public class Utils {
 
     public static Boolean isThemeChanged(Context mContext) {
         Boolean appTheme = false;
-        if (SessionHandler.getInstance().get(mContext, AppConstants.APPTHEME) != null) {
+        if (SessionHandler.getInstance().get(mContext, AppConstants.APPTHEME) != null
+                && !SessionHandler.getInstance().get(mContext, AppConstants.APPTHEME).isEmpty()) {
             appTheme = true;
         }
         return appTheme;
@@ -104,7 +105,8 @@ public class Utils {
 
     public static int getAppTheme(Context mContext) {
         int appTheme = 0;
-        if (SessionHandler.getInstance().get(mContext, AppConstants.APPTHEME) != null) {
+        if (SessionHandler.getInstance().get(mContext, AppConstants.APPTHEME) != null &&
+                !SessionHandler.getInstance().get(mContext, AppConstants.APPTHEME).isEmpty()) {
             appTheme = Color.parseColor(SessionHandler.getInstance().get(mContext, AppConstants.APPTHEME));
         } else {
             appTheme = mContext.getColor(R.color.figmaBlueText);
@@ -184,7 +186,8 @@ public class Utils {
 
     public static String getToken() {
         String token = "";
-        if (SessionHandler.getInstance().get(MyApp.getContext(), AppConstants.USERTOKEN) != null) {
+        if (SessionHandler.getInstance().get(MyApp.getContext(), AppConstants.USERTOKEN) != null
+                && !SessionHandler.getInstance().get(MyApp.getContext(), AppConstants.USERTOKEN).isEmpty()) {
             token = SessionHandler.getInstance().get(MyApp.getContext(), AppConstants.USERTOKEN);
         }
         return token;

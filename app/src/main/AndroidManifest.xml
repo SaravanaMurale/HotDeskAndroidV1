@@ -30,7 +30,8 @@
         android:roundIcon="@mipmap/ic_launcher_new_hh_round"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
-        android:theme="@style/Theme.HotDeskAndroid">
+        android:theme="@style/Theme.HotDeskAndroid"
+        tools:replace="android:allowBackup">
         <activity
             android:name=".ui.home.DefaultLocationActivity"
             android:exported="false" />
@@ -287,7 +288,7 @@
         <!-- optional (needed if default theme has no action bar) -->
 
 
-        <service android:name="com.raygun.raygun4android.services.CrashReportingPostService"
+       <!-- <service android:name="com.raygun.raygun4android.services.CrashReportingPostService"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:process=":crashreportingpostservice"/>
@@ -298,7 +299,7 @@
             android:process=":rumpostservice" />
 
         <meta-data android:name="com.raygun.raygun4android.apikey"
-            android:value="CugspLkwNEMXZ5APV6vEVA" />
+            android:value="CugspLkwNEMXZ5APV6vEVA" />-->
 
     </application>
 

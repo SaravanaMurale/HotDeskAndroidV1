@@ -410,8 +410,8 @@ public interface ApiInterface {
             @Field("notification") int notification);
 
     //Remove Profile Pic
-    @DELETE("api/image/user")
-    Call<BaseResponse>  removeProfilePicture();
+    @POST("api/image/user")
+    Call<BaseResponse>  removeProfilePicture(@Body ProfilePicResponse base64Img);
 
 
     //GetDesk Code in EditActivity

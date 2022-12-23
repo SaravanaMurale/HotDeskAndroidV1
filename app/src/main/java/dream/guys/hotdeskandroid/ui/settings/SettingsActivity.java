@@ -30,6 +30,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
 import com.microsoft.identity.client.IAccount;
 import com.microsoft.identity.client.IMultipleAccountPublicClientApplication;
 import com.microsoft.identity.client.IPublicClientApplication;
@@ -159,7 +160,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("message/rfc822");
-                i.putExtra(Intent.EXTRA_EMAIL, new String[]{"feedback@hybridhero.com"});
+                i.putExtra(Intent.EXTRA_EMAIL, new String[]{"support@hybridhero.com"});
                 i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
                 i.putExtra(Intent.EXTRA_TEXT, "body of email");
                 try {
@@ -370,7 +371,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Utils.openMail(SettingsActivity.this, "feedback@hybridhero.com");
+                Utils.openMail(SettingsActivity.this, "support@hybridhero.com");
 
                 // Intent intent=new Intent(SettingsActivity.this,HelpPdfViewActivity.class);
                 //startActivity(intent);
@@ -557,6 +558,10 @@ public class SettingsActivity extends AppCompatActivity {
 
                         binding.ivViewPrifle.setImageBitmap(decodedByte);
 
+                    }
+                    else{
+                        Glide.with(SettingsActivity.this).load(R.drawable.avatar)
+                                .into(binding.ivViewPrifle);
                     }
 
                 }

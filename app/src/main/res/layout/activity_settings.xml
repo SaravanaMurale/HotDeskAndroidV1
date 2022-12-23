@@ -513,7 +513,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:text="feedback@hybridhero.com"
+                        android:text="support@hybridhero.com"
                         android:textColor="@color/figmaBlueText"
                         android:textSize="@dimen/_11sdp"
                         android:theme="@style/TextBold" />

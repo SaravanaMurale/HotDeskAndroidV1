@@ -9,13 +9,14 @@ android {
         applicationId "dream.guys.hotdeskandroid"
         minSdk 26
         targetSdk 31
-        versionCode 44
+        versionCode 46
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
         config {
-            storeFile file('C:\\Users\\Dreamsuser\\AndroidStudioProjects\\hotdesk_android\\app\\hotdeskKey.jks')
+            //storeFile file('C:\\Users\\Dreamsuser\\AndroidStudioProjects\\hotdesk_android\\app\\hotdeskKey.jks')
+            storeFile file('D:\\Projects\\Backup\\hotdesk_master_before_CR_06_12_2022\\app\\hotdeskKey.jks')
             storePassword 'hybridhero'
             keyAlias 'key'
             keyPassword 'hybridhero'
@@ -23,8 +24,14 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+           // minifyEnabled true
+            shrinkResources false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
         }
     }
     compileOptions {
@@ -36,6 +43,11 @@ android {
     }
     packagingOptions{
         exclude("META-INF/jersey-module-version")
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
     }
 }
 
@@ -128,5 +140,6 @@ dependencies {
 //    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
 
-    implementation 'com.raygun:raygun4android:4.+'
+    implementation 'com.github.joshjdevl.libsodiumjni:libsodium-jni-aar:2.0.1'
+   // implementation 'com.raygun:raygun4android:4.+'
 }

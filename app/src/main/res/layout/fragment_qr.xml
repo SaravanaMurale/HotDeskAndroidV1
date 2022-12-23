@@ -53,6 +53,7 @@
                 android:textColor="@color/figmaBlueText"
                 android:textSize="@dimen/_13sdp"
                 android:textStyle="bold"
+                android:visibility="gone"
                 android:theme="@style/TextBold" />
 
         </RelativeLayout>

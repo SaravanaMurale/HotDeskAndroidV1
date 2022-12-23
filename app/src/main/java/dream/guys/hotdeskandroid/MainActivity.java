@@ -49,8 +49,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.raygun.raygun4android.RaygunClient;
-import com.raygun.raygun4android.messages.shared.RaygunUserInfo;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -1320,9 +1319,9 @@ public class MainActivity extends AppCompatActivity implements
     private void uiInit() {
         navView = findViewById(R.id.nav_view);
 
-        RaygunUserInfo user = new RaygunUserInfo(getString(R.string.app_name));
+     /*   RaygunUserInfo user = new RaygunUserInfo(getString(R.string.app_name));
         user.setFirstName(getString(R.string.app_name));
-        RaygunClient.setUser(user);
+        RaygunClient.setUser(user);*/
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
 
