@@ -1872,7 +1872,7 @@ public class Utils {
 
     public static LanguagePOJO.AppKeys getAppKeysPageScreenData(Context mContext) {
         LanguagePOJO.AppKeys AppKeysPage = new Gson().fromJson(SessionHandler.getInstance().get(mContext, AppConstants.APPKEYS_PAGE), LanguagePOJO.AppKeys.class);
-        System.out.println("lang check util" + AppKeysPage);
+        //System.out.println("lang check util" + AppKeysPage);
         return AppKeysPage;
     }
 

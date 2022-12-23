@@ -106,8 +106,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="@dimen/_5sdp"
-                        app:chipSpacingVertical="-13dp"
                         app:chipSpacingHorizontal="@dimen/_1sdp"
+                        app:chipSpacingVertical="-13dp"
 
                         />
 
@@ -120,6 +120,7 @@
                     android:layout_height="wrap_content"
                     android:text="Description:"
                     android:textColor="@color/figma_dark_black"
+                    android:visibility="gone"
                     />
 
 

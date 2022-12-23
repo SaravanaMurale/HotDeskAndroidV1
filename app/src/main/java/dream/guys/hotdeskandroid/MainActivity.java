@@ -1354,7 +1354,7 @@ public class MainActivity extends AppCompatActivity implements
                     Utils.toastMessage(MainActivity.this, "Not assigned to a team.Please contact administrator!");
                 }
 
-                System.out.println("home frag" + navDestination.getAction(R.id.navigation_home));
+                //System.out.println("home frag" + navDestination.getAction(R.id.navigation_home));
             }
         });
 

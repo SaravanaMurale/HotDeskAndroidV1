@@ -1,6 +1,8 @@
 package dream.guys.hotdeskandroid.ui.login;
 
 import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
+import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getLoginScreenData;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -438,6 +440,12 @@ public class SignInActivity extends AppCompatActivity {
         } else {
 
         }
+
+        LanguagePOJO.Login logoinPage = getLoginScreenData(this);
+        LanguagePOJO.AppKeys appKeysPage = getAppKeysPageScreenData(this);
+
+        btnSignIn.setText(appKeysPage.getSignIn());
+        btnPinSignIn.setText(appKeysPage.getSigninwithpin());
 
     }
 

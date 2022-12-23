@@ -44,9 +44,9 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/company_name"
                     android:inputType="text"
+                    android:outlineAmbientShadowColor="@color/red"
                     android:text=""
                     android:textColorHighlight="@color/red"
-                    android:outlineAmbientShadowColor="@color/red"
 
                     />
 

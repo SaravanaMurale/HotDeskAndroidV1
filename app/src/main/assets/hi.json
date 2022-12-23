@@ -721,8 +721,22 @@
     "PMO Office":"PMO Office",
       
 
-    "HealthEating": "health Eating",
-    "Send": "Send"
+    "HealthEating": "पौष्टिक भोजन",
+    "Send": "भेजना",
+    "CalendarBooking": "कैलेंडर बुकिंग",
+    "DeskBooking": "डेस्क बुकिंग",
+    "Repeatsdaily": "प्रतिदिन दोहराता है",
+    "endOfWeek": "सप्ताह का अंत",
+    "participants(optional)":"प्रतिभागी (वैकल्पिक)",
+    "Checkin": "चेक इन",
+    "Checkout": "चेक आउट",
+    "Booknearby": "पास बुक करें",
+    "SaveChanges": "परिवर्तनों को सुरक्षित करें",
+    "BookedByMeL": "मेरे द्वारा बुक किया गया",
+    "Capacity": "क्षमता",
+    "Internalparticipantsoptional":"आंतरिक प्रतिभागी वैकल्पिक",
+    "Externalparticipantsoptional": "बाहरी प्रतिभागी वैकल्पिक",
+    "Commentsoptional":"टिप्पणियां (वैकल्पिक"
       
 
 
