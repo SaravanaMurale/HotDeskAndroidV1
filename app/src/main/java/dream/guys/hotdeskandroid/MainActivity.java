@@ -1511,7 +1511,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onSelectRoom(int deskId, String deskName,
-                             String location, List<UserAllowedMeetingResponse.Amenity> amenityList, int count) {
+                             String location, List<UserAllowedMeetingResponse.Amenity> amenityList, int count,String availability) {
         deskRoomName.setText("" + deskName);
         selectedDeskId = deskId;
         locationAddress.setText(location);

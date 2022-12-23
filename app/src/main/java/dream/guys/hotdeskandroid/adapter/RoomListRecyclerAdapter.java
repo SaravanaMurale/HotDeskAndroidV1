@@ -2,6 +2,7 @@ package dream.guys.hotdeskandroid.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +58,7 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
     }
     public interface OnSelectSelected{
         public void onSelectRoom(int deskId, String deskName, String location,
-                                 List<UserAllowedMeetingResponse.Amenity> amenityList,int capacityCount);
+                                 List<UserAllowedMeetingResponse.Amenity> amenityList,int capacityCount,String availabilityString);
 
     }
 
@@ -202,7 +203,8 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
                         rooms.get(holder.getAbsoluteAdapterPosition()).getName(),
                         rooms.get(holder.getAbsoluteAdapterPosition()).getLocationMeeting().getName(),
                         rooms.get(holder.getAbsoluteAdapterPosition()).getAmenities(),
-                        rooms.get(holder.getAbsoluteAdapterPosition()).getNoOfPeople()
+                        rooms.get(holder.getAbsoluteAdapterPosition()).getNoOfPeople(),
+                        holder.deskStatus.getText().toString()
                         );
             }
         });

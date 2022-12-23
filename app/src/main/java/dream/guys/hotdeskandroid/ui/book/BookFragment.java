@@ -729,7 +729,6 @@ public class BookFragment extends Fragment implements
 
     }
 
-
     private void getAmenities() {
         if (Utils.isNetworkAvailable(getActivity())) {
 //            dialog= ProgressDialog.showProgressBar(getContext());
@@ -2794,9 +2793,11 @@ public class BookFragment extends Fragment implements
             if(editDeskBookingDetails.getMeetingRoomStatus() == 2){
                 deskStatusText.setText("Available For Request");
                 deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figma_orange));
+                continueEditBook.setVisibility(View.VISIBLE);
             } else {
                 deskStatusText.setText("Available");
                 deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaLiteGreen));
+                continueEditBook.setVisibility(View.VISIBLE);
             }
 
             if (newEditStatus.equalsIgnoreCase("edit")){
@@ -5752,10 +5753,20 @@ public class BookFragment extends Fragment implements
     }
 
     @Override
-    public void onSelectRoom(int deskId, String deskName, String location, List<UserAllowedMeetingResponse.Amenity> amenityLIst,int capacityCount) {
+    public void onSelectRoom(int deskId, String deskName, String location, List<UserAllowedMeetingResponse.Amenity> amenityLIst,int capacityCount,String availability) {
         deskRoomName.setText(""+deskName);
         selectedDeskId= deskId;
         locationAddress.setText(location);
+
+        if (availability.equalsIgnoreCase("Available For Request")){
+            deskStatusText.setText("Available For Request");
+            deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figma_orange));
+        } else {
+            deskStatusText.setText("Available");
+            deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaLiteGreen));
+
+        }
+        
         if (tvcapacityCount!=null)
             tvcapacityCount.setText(""+capacityCount);
 
