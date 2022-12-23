@@ -801,10 +801,12 @@ public class LoginActivity extends AppCompatActivity {
         if (logoinPage != null) {
 
             //etTenantName.setHint(appKeysPage.getTenantName());
-          //  etCompanyName.setHint(resetPage.getCompany());
-          //  etEmail.setHint(appKeysPage.getEmail());
+           etCompanyName.setHint(resetPage.getCompany());
+            etEmail.setHint(appKeysPage.getEmail());
             etPassword.setHint(appKeysPage.getPassword());
             tvForgotPassword.setText(appKeysPage.getForgotPassword() + "?");
+            signIn.setText(appKeysPage.getSignIn());
+            btnLoginWithSso.setText(appKeysPage.getSignInWithSso());
             //tvBackToLogin.setText(appKeysPage.getGoBackToSignIn());
             //signInSso.setText(abackToLoginppKeysPage.getSignInWithSso());
             //tvSignInWith.setText(appKeysPage.getOrSignInWith());

@@ -700,9 +700,17 @@
       "Send": "Send",
       "Repeatsdaily": "Repeats daily",
       "endOfWeek": "End of Week",
-      "participants(optional)":"Participants(optional)"
+      "participants(optional)":"Participants(optional)",
+      "Checkin": "Check in",
+      "Checkout": "Check out",
+      "Booknearby": "Book nearby",
+      "SaveChanges": "Save Changes",
+      "BookedByMeL": "Booked by me",
+    "Capacity": "Capacity",
+    "Internalparticipantsoptional":"Internal participants optional",
+    "Externalparticipantsoptional": "External participants optional",
+    "Commentsoptional":"Comments optional",
+    "Signinwithpin": "Sign in with PIN"
 
-      
-      
   }
 }

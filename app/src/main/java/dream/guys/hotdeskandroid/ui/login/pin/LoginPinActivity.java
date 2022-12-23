@@ -1,5 +1,8 @@
 package dream.guys.hotdeskandroid.ui.login.pin;
 
+import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getLoginScreenData;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
@@ -21,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.CreatePinRequest;
 import dream.guys.hotdeskandroid.model.response.CheckPinLoginResponse;
 import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
@@ -52,6 +56,9 @@ public class LoginPinActivity extends AppCompatActivity {
     Dialog dialog;
     String pin="";
 
+    @BindView(R.id.tvRest)
+    TextView tvRest;
+
     ArrayList<DAOActiveLocation> activeLocationArrayList = new ArrayList<>();
     int floorParentID = 0, cityPlaceID = 0, cityPlaceParentID = 0, cityID = 0, cityParentID = 0, locationID = 0, locationParentID = 0,
             floorPositon;
@@ -68,6 +75,8 @@ public class LoginPinActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login_pin);
         ButterKnife.bind(this);
         dialog= new Dialog(LoginPinActivity.this);
+
+        setLanguage();
 
         etPin.setOtpListener(new OTPListener()
         {
@@ -106,6 +115,18 @@ public class LoginPinActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void setLanguage() {
+
+        LanguagePOJO.Login logoinPage = getLoginScreenData(this);
+        LanguagePOJO.AppKeys appKeysPage = getAppKeysPageScreenData(this);
+
+        tvRest.setText(appKeysPage.getEnterYourPin());
+        btnSubmit.setText(appKeysPage.getSignIn());
+        tvBack.setText(appKeysPage.getUseEmailPassword());
+
+
     }
 
     private void checkPin() {

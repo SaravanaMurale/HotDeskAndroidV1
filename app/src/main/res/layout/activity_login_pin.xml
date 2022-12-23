@@ -28,11 +28,11 @@
 
         <TextView
             android:id="@+id/tvRest"
+            style="@style/TextRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/_5sdp"
             android:text="Enter your pin"
-            style="@style/TextRegular"
             android:textSize="@dimen/_14sdp"
             android:theme="@style/TextRegular" />
 

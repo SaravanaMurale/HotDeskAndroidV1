@@ -5131,6 +5131,171 @@ public class LanguagePOJO {
         @Expose
         private String Send;
 
+        @SerializedName("Repeatsdaily")
+        private String repeatsDaily;
+        @SerializedName("endOfWeek")
+        private String endOfWeek;
+        @SerializedName("participants(optional)")
+        private String participantsOptional;
+        @SerializedName("Checkin")
+        private String checkIn;
+        @SerializedName("Checkout")
+        private String Checkout;
+        @SerializedName("Booknearby")
+        private String bookNearBy;
+        @SerializedName("SaveChanges")
+        private String saveChanges;
+        @SerializedName("BookedByMeL")
+        private String bookedByme;
+        @SerializedName("Capacity")
+        private String Capacity;
+
+
+        @SerializedName("Internalparticipantsoptional")
+        String internalParticipant;
+        @SerializedName("Externalparticipantsoptional")
+        String externalParticipants;
+        @SerializedName("Commentsoptional")
+        String Commentsoptional;
+        @SerializedName("Signinwithpin")
+        String Signinwithpin;
+
+        public String getSigninwithpin() {
+            return Signinwithpin;
+        }
+
+        public void setSigninwithpin(String signinwithpin) {
+            Signinwithpin = signinwithpin;
+        }
+
+        public String getInternalParticipant() {
+            return internalParticipant;
+        }
+
+        public void setInternalParticipant(String internalParticipant) {
+            this.internalParticipant = internalParticipant;
+        }
+
+        public String getExternalParticipants() {
+            return externalParticipants;
+        }
+
+        public void setExternalParticipants(String externalParticipants) {
+            this.externalParticipants = externalParticipants;
+        }
+
+        public String getCommentsoptional() {
+            return Commentsoptional;
+        }
+
+        public void setCommentsoptional(String commentsoptional) {
+            Commentsoptional = commentsoptional;
+        }
+
+        public String getCapacity() {
+            return Capacity;
+        }
+
+        public void setCapacity(String capacity) {
+            Capacity = capacity;
+        }
+
+        public String getBookedByme() {
+            return bookedByme;
+        }
+
+        public void setBookedByme(String bookedByme) {
+            this.bookedByme = bookedByme;
+        }
+
+        public String getSaveChanges() {
+            return saveChanges;
+        }
+
+        public void setSaveChanges(String saveChanges) {
+            this.saveChanges = saveChanges;
+        }
+
+        public String get_continue() {
+            return _continue;
+        }
+
+        public void set_continue(String _continue) {
+            this._continue = _continue;
+        }
+
+        public String getmYTeam() {
+            return mYTeam;
+        }
+
+        public void setmYTeam(String mYTeam) {
+            this.mYTeam = mYTeam;
+        }
+
+        public String getuSBCDock() {
+            return uSBCDock;
+        }
+
+        public void setuSBCDock(String uSBCDock) {
+            this.uSBCDock = uSBCDock;
+        }
+
+        public String get_new() {
+            return _new;
+        }
+
+        public void set_new(String _new) {
+            this._new = _new;
+        }
+
+        public String getRepeatsDaily() {
+            return repeatsDaily;
+        }
+
+        public void setRepeatsDaily(String repeatsDaily) {
+            this.repeatsDaily = repeatsDaily;
+        }
+
+        public String getEndOfWeek() {
+            return endOfWeek;
+        }
+
+        public void setEndOfWeek(String endOfWeek) {
+            this.endOfWeek = endOfWeek;
+        }
+
+        public String getParticipantsOptional() {
+            return participantsOptional;
+        }
+
+        public void setParticipantsOptional(String participantsOptional) {
+            this.participantsOptional = participantsOptional;
+        }
+
+        public String getCheckIn() {
+            return checkIn;
+        }
+
+        public void setCheckIn(String checkIn) {
+            this.checkIn = checkIn;
+        }
+
+        public String getCheckout() {
+            return Checkout;
+        }
+
+        public void setCheckout(String checkout) {
+            Checkout = checkout;
+        }
+
+        public String getBookNearBy() {
+            return bookNearBy;
+        }
+
+        public void setBookNearBy(String bookNearBy) {
+            this.bookNearBy = bookNearBy;
+        }
+
         public String getSignInWithSso() {
             return signInWithSso;
         }

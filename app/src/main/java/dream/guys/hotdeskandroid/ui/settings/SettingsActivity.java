@@ -556,6 +556,7 @@ public class SettingsActivity extends AppCompatActivity {
                         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
                         binding.ivViewPrifle.setImageBitmap(decodedByte);
+
                     }
 
                 }
