@@ -905,8 +905,13 @@ public class BookFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
-        if (assertSpinner != null)
-            assertSpinner.setSelection(0);
+        try {
+            if (assertSpinner != null) {
+                assertSpinner.setSelection(selectedicon-1);
+            }
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
@@ -1516,22 +1521,26 @@ public class BookFragment extends Fragment implements
                                 }
                             }
 
-                            if (newEdit.equalsIgnoreCase("new"))
-                                if (parkingSpotModelList!=null && parkingSpotModelList.size()>0 && parkingSpotModelList.get(0).getParkingSlotAvailability()==2)
-                                    editBookingUsingBottomSheet(editBookingDetails,3,0,"request");
-                                else
-                                    editBookingUsingBottomSheet(editBookingDetails,3,0,"request");
-                            else if (newEdit.equalsIgnoreCase("new_deep_link")){
-                                if (checkIsRequest)
-                                    editBookingUsingBottomSheet(editBookingDetails,3,0,"new_deep_link");
-                                else
-                                    editBookingUsingBottomSheet(editBookingDetails,3,0,"request");
-                            }else
-                                editBookingUsingBottomSheet(editBookingDetails,3,0,"edit");
+                            if (parkingSpotModelList.size() > 0) {
+                                if (newEdit.equalsIgnoreCase("new"))
+                                    if (parkingSpotModelList!=null && parkingSpotModelList.size()>0 && parkingSpotModelList.get(0).getParkingSlotAvailability()==2)
+                                        editBookingUsingBottomSheet(editBookingDetails,3,0,"request");
+                                    else
+                                        editBookingUsingBottomSheet(editBookingDetails,3,0,"request");
+                                else if (newEdit.equalsIgnoreCase("new_deep_link")){
+                                    if (checkIsRequest)
+                                        editBookingUsingBottomSheet(editBookingDetails,3,0,"new_deep_link");
+                                    else
+                                        editBookingUsingBottomSheet(editBookingDetails,3,0,"request");
+                                }else
+                                    editBookingUsingBottomSheet(editBookingDetails,3,0,"edit");
 
-
+                            } else {
+                                Toast.makeText(context, "No Parkings available,Please try later.", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
-                            getCarParkLocationsList(editBookingDetails,"new");
+                            if(!isGlobalLocationSetUP)
+                                getCarParkLocationsList(editBookingDetails,"new");
                         }
 
                     } catch (Exception exception){
@@ -1825,10 +1834,18 @@ public class BookFragment extends Fragment implements
         changedDeskId=0;
         changedTeamId=0;
         editBookingDetails.setDate(Utils.convertStringToDateFormet(calSelectedDate));
-        if(SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID) > 0)
-            getParkingSpotList(""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID),editBookingDetails,"new");
-        else
-            getCarParkLocationsList(editBookingDetails,"new");
+
+        if(isGlobalLocationSetUP) {
+            if(defaultLocationcheck>0)
+                getParkingSpotList(""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.LOCATION_ID_TEMP),editBookingDetails,"new");
+            else
+                getParkingSpotList(""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.LOCATION_ID),editBookingDetails,"new");
+        } else {
+            if(SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID) > 0)
+                getParkingSpotList(""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID),editBookingDetails,"new");
+            else
+                getCarParkLocationsList(editBookingDetails,"new");
+        }
     }
 
 
