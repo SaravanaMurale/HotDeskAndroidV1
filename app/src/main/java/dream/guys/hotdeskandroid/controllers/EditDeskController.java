@@ -742,15 +742,15 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
                         if ((editDeskBookingDetails.getUsageTypeId()==2 || editDeskBookingDetails.getUsageTypeId()==7)
                                 && editDeskBookingDetails.getRequestedTeamId()>0) {
 
-                            Utils.bottomSheetTimePicker(context,activityContext,endTime,"End Time",
+                            Utils.bottomSheetTimePicker24Hrs(context,activityContext,endTime,"End Time",
                                     Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
                         } else {
 
-                            Utils.bottomSheetTimePicker(context,activityContext,endTime,"End Time",
+                            Utils.bottomSheetTimePicker24Hrs(context,activityContext,endTime,"End Time",
                                     Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
                         }
                     } else
-                        Utils.bottomSheetTimePicker(context,activityContext,endTime,"End Time",
+                        Utils.bottomSheetTimePicker24Hrs(context,activityContext,endTime,"End Time",
                                 Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
 
                 }

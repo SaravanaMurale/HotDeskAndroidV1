@@ -8,7 +8,7 @@
         android:color="@color/figmaBackground"
         />
     <stroke
-        android:color="#f2f2f2"
+        android:color="@color/figmaBorder"
         android:width="@dimen/_1sdp"
         />
 </shape>

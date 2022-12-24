@@ -420,10 +420,12 @@ public class BookFragment extends Fragment implements
 //                getLocateAmenitiesFilterData(true);
             }
         });
+
         binding.searchGlobal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getLocateCountryList();
+                if(selectedicon < 4)
+                    getLocateCountryList();
             }
         });
 
@@ -936,7 +938,7 @@ public class BookFragment extends Fragment implements
     @SuppressLint("ResourceAsColor")
     public void tabToggleViewClicked(int i) {
         resetLayout();
-        switch (i){
+        switch (i) {
             case 1:
                 if (selectedicon==4)
                     binding.profileBack.setText("Working Remotely");
@@ -948,6 +950,14 @@ public class BookFragment extends Fragment implements
                     binding.profileBack.setText("Book training");
                 else
                     binding.profileBack.setText("Book a workspace");
+
+                if (selectedicon>3){
+                    binding.searchGlobal.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.line_gray));
+                    binding.searchGlobal.setTextColor(ContextCompat.getColorStateList(getActivity(),R.color.figmaGrey));
+                } else {
+                    binding.searchGlobal.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBackground));
+                    binding.searchGlobal.setTextColor(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlack));
+                }
 
                 binding.rlTime.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
                 binding.deskLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
@@ -980,6 +990,7 @@ public class BookFragment extends Fragment implements
                 break;
             case 2:
                 binding.profileBack.setText("Book a Room");
+                binding.searchGlobal.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBackground));
                 binding.rlTime.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
 
 //                binding.rlTime.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -1023,6 +1034,7 @@ public class BookFragment extends Fragment implements
                 break;
             case 3:
                 binding.profileBack.setText("Book Parking");
+                binding.searchGlobal.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBackground));
                 binding.rlTime.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
                 binding.parkingLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
                 binding.ivParking.setImageTintList(ContextCompat.getColorStateList(getActivity(),R.color.white));
@@ -5764,7 +5776,6 @@ public class BookFragment extends Fragment implements
         } else {
             deskStatusText.setText("Available");
             deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaLiteGreen));
-
         }
         
         if (tvcapacityCount!=null)

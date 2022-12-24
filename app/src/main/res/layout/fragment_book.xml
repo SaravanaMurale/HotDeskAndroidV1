@@ -278,7 +278,8 @@
                     android:drawableTint="@color/figmaBlack"
                     android:gravity="center_vertical"
                     android:hint="choose location from the list"
-                    android:padding="@dimen/_5sdp"
+                    android:paddingVertical="@dimen/_5sdp"
+                    android:paddingHorizontal="@dimen/_10sdp"
                     android:textColorHint="@color/figmaBlack"
                     android:textSize="@dimen/_10sdp" />
 

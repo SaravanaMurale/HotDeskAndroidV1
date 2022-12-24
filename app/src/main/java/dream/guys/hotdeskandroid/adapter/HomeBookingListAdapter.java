@@ -606,7 +606,6 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     holder.bookingIvEdit.setVisibility(View.GONE);
                     holder.bookingIvLocation.setVisibility(View.GONE);
                     holder.tv_change.setVisibility(View.GONE);
-
                 } else {
                     holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
                     enableColorUpdate(holder);
@@ -703,7 +702,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             list.get(holder.getAbsoluteAdapterPosition()).getDate(), "home");
                 } else if(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel() != null &&
                         (list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel()
-                                .getUsageTypeAbbreviation().equalsIgnoreCase("REQ") || list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel()
+                                .getUsageTypeAbbreviation().equalsIgnoreCase("REQ")
+                                || list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel()
                                 .getUsageTypeAbbreviation().equalsIgnoreCase("RQ"))){
                     if (list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel() != null) {
                         String clickedStatus = "EDIT";
