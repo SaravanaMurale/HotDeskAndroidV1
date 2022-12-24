@@ -79,6 +79,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import butterknife.BindView;
+import de.hdodenhof.circleimageview.CircleImageView;
 import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.BookingListToEditAdapter;
@@ -864,9 +865,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
+
         //SetLang
         binding.myTeamClose.setText(appKeysPage.getClose());
-        binding.locateMyTeamSearch.setText(appKeysPage.getSearch());
+        binding.locateMyTeamSearch.setHint(appKeysPage.getSearch());
 
         binding.myTeamClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -891,7 +893,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
 
-                locateMyTeamAdapter.getFilter().filter(s.toString());
+                if(!s.toString().isEmpty() || !s.equals("")) {
+                    locateMyTeamAdapter.getFilter().filter(s.toString());
+                }
                /* if (s.toString().length() >= 2) {
                     locateMyTeamAdapter.getFilter().filter(s.toString());
                 }*/
@@ -1685,7 +1689,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                     int x = getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(j).get(0);
                                     int y = getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(j).get(1);
 
-                                    Point point = new Point(x + 40, y + 20);
+                                    Point point = new Point(x + 40, y + 40);
                                     pointList.add(point);
                                 }
 
@@ -9816,6 +9820,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         String lastName=words[1];*/
 
 
+
         getUserContactDetails(name);
 
         //binding.locateMyTeamList.set
@@ -9838,12 +9843,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         View perSonView = getLayoutInflater().inflate(R.layout.layout_item_myteam_sitting, null, false);
         //ImageView desk = perSonView.findViewById(R.id.ivDesk);
 
-        ImageView ivPerson = perSonView.findViewById(R.id.ivUserImageMyTeam);
+        CircleImageView ivPerson = perSonView.findViewById(R.id.ivUserImageMyTeam);
         RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         //desk.setVisibility(View.GONE);
         ivPerson.setVisibility(View.VISIBLE);
-        relativeLayout.width = 60;
-        relativeLayout.height = 60;
+        relativeLayout.width = 55;
+        relativeLayout.height = 56;
 
         if(profileImage!=null){
             //ivPerson.setImageDrawable(getResources().getDrawable(profileImage));
@@ -9895,8 +9900,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     byte[] decodedString = Base64.decode(profileImage, Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
+                    Glide.with(getContext())
+                            .load(profileImage)
+                            .placeholder(R.drawable.avatar)
+                            .into(binding.locateMyTeamProfile);
+
                     //binding.locateMyTeamProfile.setImageDrawable(profileImage);
-                    binding.locateMyTeamProfile.setImageBitmap(decodedByte);
+                    //binding.locateMyTeamProfile.setImageBitmap(decodedByte);
                     binding.locateMyTeamUserName.setText(name);
                     binding.tvLocateMyTeamLocationView.setText(calendarEntry.getBooking().getLocationBuildingFloor().getBuildingName() + "," + calendarEntry.getBooking().getLocationBuildingFloor().getfLoorName());
                     binding.locateMyTeamDeskName.setText(calendarEntry.getBooking().getDeskCode());
@@ -10154,8 +10164,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                             System.out.println("CoordinatesSlected " + coordinateList.get(0) + " " + coordinateList.get(1));
 
-                                            relativeLayout.leftMargin = Integer.parseInt(coordinateList.get(0));
-                                            relativeLayout.topMargin = Integer.parseInt(coordinateList.get(1));
+                                            relativeLayout.leftMargin = Integer.parseInt(coordinateList.get(0))+10;
+                                            relativeLayout.topMargin = Integer.parseInt(coordinateList.get(1))+7;
 
 
                                             ivPerson.setLayoutParams(relativeLayout);
