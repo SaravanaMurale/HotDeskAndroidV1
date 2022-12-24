@@ -31,5 +31,15 @@
 #-keepnames class dream.guys.** {
 # *;
 #}
--repackageclasses 'myobfuscated'
--allowaccessmodification
+#-repackageclasses 'myobfuscated'
+#-allowaccessmodification
+
+
+-obfuscationdictionary "D:\Projects\Backup\hotdesk_master_before_CR_06_12_2022\dic.txt"
+-classobfuscationdictionary "D:\Projects\Backup\hotdesk_master_before_CR_06_12_2022\dic.txt"
+-packageobfuscationdictionary "D:\Projects\Backup\hotdesk_master_before_CR_06_12_2022\dic.txt"
+
+
+-mergeinterfacesaggressively
+-overloadaggressively
+-repackageclasses "dream.guys.hotdeskandroid"
