@@ -2355,11 +2355,10 @@ public class BookFragment extends Fragment implements
     }
 
     private void newDeskBookingSheet(BookingForEditResponse bookingForEditResponse, String code) {
-      /*  BookDeskController bookDeskController = new BookDeskController(activityContext, context,bookingForEditResponse,
+        BookDeskController bookDeskController = new BookDeskController(activityContext, context,bookingForEditResponse,
                 AppConstants.BOOKFRAGMENTINSTANCESTRING,isGlobalLocationSetUP,calSelectedDate);
 //        bookDeskController.newDeskBookingSheet(bookingForEditResponse,code);
-*/
-        bookingForEditResponseDesk.clear();
+      /*  bookingForEditResponseDesk.clear();
         changedTeamId=0;
         changedDeskId=0;
         selectedDeskId=0;
@@ -2545,7 +2544,7 @@ public class BookFragment extends Fragment implements
 //                    Toast.makeText(context, "else da" , Toast.LENGTH_SHORT).show();
             editBookingUsingBottomSheet(editBookingDetailsGlobal,
                     1, 0, "new");
-        }
+        }*/
     }
 
     private void editBookingUsingBottomSheet(EditBookingDetails editDeskBookingDetails, int dskRoomParkStatus, int position,String newEditStatus) {
@@ -8030,7 +8029,7 @@ public class BookFragment extends Fragment implements
         if (tv_description!=null)
             tv_description.setText(Utils.checkStringParms(deskList.getDescription()));
 
-//        Toast.makeText(context, "dsj"+changedDeskId, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "dsj"+request, Toast.LENGTH_SHORT).show();
         if (typeId == 0) {
             editBookingDetailsGlobal.setDeskCode(deskName);
             editBookingDetailsGlobal.setTimeZone(timeZone);
@@ -8133,6 +8132,9 @@ public class BookFragment extends Fragment implements
                     editBookingDetails.setTimeZone(timeZone);
                 }
                 if(request.equalsIgnoreCase("request")){
+                    deskStatusText.setText("Available For Request");
+                    deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figma_orange));
+
                     if(teamId!=SessionHandler.getInstance().getInt(context,AppConstants.TEAM_ID)){
                         editBookingDetailsGlobal.setRequestedTeamDeskId(deskId);
                         editBookingDetailsGlobal.setRequestedTeamId(selectedTeamId);
@@ -8141,6 +8143,9 @@ public class BookFragment extends Fragment implements
                         editBookingDetailsGlobal.setRequestedTeamId(0);
                     }
                 } else {
+                    deskStatusText.setText("Available");
+                    deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaLiteGreen));
+
                     if(teamId!=SessionHandler.getInstance().getInt(context,AppConstants.TEAM_ID)){
                         editBookingDetailsGlobal.setRequestedTeamDeskId(deskId);
                         editBookingDetailsGlobal.setRequestedTeamId(selectedTeamId);

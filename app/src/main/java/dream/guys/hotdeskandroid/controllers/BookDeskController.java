@@ -2345,6 +2345,9 @@ public class BookDeskController implements
                     editBookingDetails.setTimeZone(timeZone);
                 }
                 if(request.equalsIgnoreCase("request")){
+                    deskStatusText.setText("Available For Request");
+                    deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(activityContext,R.color.figma_orange));
+
                     if(teamId!=SessionHandler.getInstance().getInt(context,AppConstants.TEAM_ID)){
                         editBookingDetailsGlobal.setRequestedTeamDeskId(deskId);
                         editBookingDetailsGlobal.setRequestedTeamId(selectedTeamId);
@@ -2353,6 +2356,9 @@ public class BookDeskController implements
                         editBookingDetailsGlobal.setRequestedTeamId(0);
                     }
                 } else {
+                    deskStatusText.setText("Available");
+                    deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(activityContext,R.color.figmaLiteGreen));
+
                     if(teamId!=SessionHandler.getInstance().getInt(context,AppConstants.TEAM_ID)){
                         editBookingDetailsGlobal.setRequestedTeamDeskId(deskId);
                         editBookingDetailsGlobal.setRequestedTeamId(selectedTeamId);

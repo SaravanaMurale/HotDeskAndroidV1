@@ -412,6 +412,7 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
                     !editDeskBookingDetails.getLocationAddress().isEmpty()
                     && !editDeskBookingDetails.getLocationAddress().equalsIgnoreCase(""))
                 locationAddress.setText(""+editDeskBookingDetails.getLocationAddress());
+
             tv_description.setText(editDeskBookingDetails.getDescription());
 
             if (newEditStatus.equalsIgnoreCase("edit")){
@@ -1467,23 +1468,29 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
                     editBookingDetails.setDeskTeamId(selectedTeamId);
                     editBookingDetails.setTimeZone(timeZone);
                 }
-                /*if(request.equalsIgnoreCase("request")){
+                if(request.equalsIgnoreCase("request")){
+                    deskStatusText.setText("Available");
+                    deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(activityContext,R.color.figmaLiteGreen));
+
                     if(teamId!=SessionHandler.getInstance().getInt(context,AppConstants.TEAM_ID)){
-                        editBookingDetailsGlobal.setRequestedTeamDeskId(deskId);
-                        editBookingDetailsGlobal.setRequestedTeamId(selectedTeamId);
+                        editBookingDetails.setRequestedTeamDeskId(deskId);
+                        editBookingDetails.setRequestedTeamId(selectedTeamId);
                     } else {
-                        editBookingDetailsGlobal.setRequestedTeamDeskId(0);
-                        editBookingDetailsGlobal.setRequestedTeamId(0);
+                        editBookingDetails.setRequestedTeamDeskId(0);
+                        editBookingDetails.setRequestedTeamId(0);
                     }
                 } else {
+                    deskStatusText.setText("Available");
+                    deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(activityContext,R.color.figmaLiteGreen));
+
                     if(teamId!=SessionHandler.getInstance().getInt(context,AppConstants.TEAM_ID)){
-                        editBookingDetailsGlobal.setRequestedTeamDeskId(deskId);
-                        editBookingDetailsGlobal.setRequestedTeamId(selectedTeamId);
+                        editBookingDetails.setRequestedTeamDeskId(deskId);
+                        editBookingDetails.setRequestedTeamId(selectedTeamId);
                     } else {
-                        editBookingDetailsGlobal.setRequestedTeamDeskId(0);
-                        editBookingDetailsGlobal.setRequestedTeamId(0);
+                        editBookingDetails.setRequestedTeamDeskId(0);
+                        editBookingDetails.setRequestedTeamId(0);
                     }
-                }*/
+                }
 
                 /*if(roomBottomSheet!=null)
                     roomBottomSheet.dismiss();*/
