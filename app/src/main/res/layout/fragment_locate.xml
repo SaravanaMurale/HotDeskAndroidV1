@@ -108,8 +108,8 @@
             android:gravity="center_vertical"
             android:hint="Choose Location"
             android:paddingStart="@dimen/_11sdp"
-            android:paddingEnd="@dimen/_13sdp"
             android:paddingTop="@dimen/_6sdp"
+            android:paddingEnd="@dimen/_13sdp"
             android:paddingBottom="@dimen/_7sdp"
             android:textColorHint="@color/figmaBlack"
             android:textSize="@dimen/_11sdp" />
@@ -171,11 +171,8 @@
             android:background="@drawable/rectangle_bg_with_corner"
             android:paddingStart="@dimen/_11sdp"
             android:paddingEnd="@dimen/_11sdp"
-
-
             android:paddingTop="@dimen/_7sdp"
             android:paddingBottom="@dimen/_7sdp"
-
             tools:ignore="MissingConstraints">
 
 
