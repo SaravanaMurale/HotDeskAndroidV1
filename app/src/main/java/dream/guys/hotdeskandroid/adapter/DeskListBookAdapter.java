@@ -33,7 +33,6 @@ import dream.guys.hotdeskandroid.utils.Utils;
 public class DeskListBookAdapter extends RecyclerView.Adapter<DeskListBookAdapter.viewholder> implements Filterable {
     Context context;
     Activity activity;
-    EditDeskController fragment;
     List<BookingForEditResponse.TeamDeskAvailabilities> deskList;
     List<BookingForEditResponse.TeamDeskAvailabilities> deskListAll;
     public OnChangeSelected onChangeSelected;
@@ -41,11 +40,11 @@ public class DeskListBookAdapter extends RecyclerView.Adapter<DeskListBookAdapte
     EditBookingDetails editBookingDetails;
     int typeId;
     String newEditStatus;
+    String deskRoomName;
     public DeskListBookAdapter(Context context, OnChangeSelected onSelectSelected, Activity activity,
                                       List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse,
-                                      EditDeskController context1, BottomSheetDialog bottomSheetDialog,
-                                      int typeId, EditBookingDetails editBookingDetails,String newEditStatus) {
-        this.fragment=context1;
+                                        BottomSheetDialog bottomSheetDialog,
+                                      int typeId, EditBookingDetails editBookingDetails,String newEditStatus,String deskName) {
         this.context = context;
         this.onChangeSelected =onSelectSelected;
         this.activity = activity;
@@ -55,6 +54,7 @@ public class DeskListBookAdapter extends RecyclerView.Adapter<DeskListBookAdapte
         this.typeId = typeId;
         this.editBookingDetails = editBookingDetails;
         this.newEditStatus=newEditStatus;
+        this.deskRoomName=deskName;
     }
     public interface OnChangeSelected{
         public void onChangeDesk(BookingForEditResponse.TeamDeskAvailabilities deskList,int deskId, String deskName, String request,

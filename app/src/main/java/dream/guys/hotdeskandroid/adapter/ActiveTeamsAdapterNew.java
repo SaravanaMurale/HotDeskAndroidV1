@@ -18,29 +18,28 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
 import dream.guys.hotdeskandroid.model.response.ActiveTeamsResponse;
-import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.ui.book.BookFragment;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 
-public class ActiveTeamsAdapter extends RecyclerView.Adapter<ActiveTeamsAdapter.Viewholder> {
+public class ActiveTeamsAdapterNew extends RecyclerView.Adapter<ActiveTeamsAdapterNew.Viewholder> {
     int typeId;
     Context context;
     Activity activity;
-    BookFragment fragment;
     List<ActiveTeamsResponse> activeTeamsList;
-    public OnActiveTeamsSelected onActiveTeamsSelected;
+    public ActiveTeamsAdapter.OnActiveTeamsSelected onActiveTeamsSelected;
     BottomSheetDialog bottomSheetDialog;
     EditBookingDetails editBookingDetails;
     String newEditStatus;
-    public ActiveTeamsAdapter(Context context, OnActiveTeamsSelected onSelectSelected, FragmentActivity activity, List<ActiveTeamsResponse> bookingForEditResponse,
-                              BookFragment context1, BottomSheetDialog bottomSheetDialog,
-                              int typeId,EditBookingDetails editBookingDetails,String newEditStatus) {
-        this.fragment=context1;
+    int selectedTeamId;
+    public ActiveTeamsAdapterNew(Context context, ActiveTeamsAdapter.OnActiveTeamsSelected onSelectSelected,
+                                 List<ActiveTeamsResponse> bookingForEditResponse,
+                                 BottomSheetDialog bottomSheetDialog,
+                                 int typeId, EditBookingDetails editBookingDetails,
+                                 String newEditStatus, int selectedTeamId) {
         this.context = context;
         this.onActiveTeamsSelected =onSelectSelected;
         this.activity = activity;
@@ -49,6 +48,7 @@ public class ActiveTeamsAdapter extends RecyclerView.Adapter<ActiveTeamsAdapter.
         this.typeId = typeId;
         this.editBookingDetails = editBookingDetails;
         this.newEditStatus= newEditStatus;
+        this.selectedTeamId= selectedTeamId;
     }
     public interface OnActiveTeamsSelected{
         public void onActiveTeamsSelected(int teamId,String teamName,int typeId,
@@ -74,7 +74,7 @@ public class ActiveTeamsAdapter extends RecyclerView.Adapter<ActiveTeamsAdapter.
         }
 
 //        if (((MainActivity) activity).selectedTeamId == activeTeamsList.get(position).getId()){
-        if (fragment.selectedTeamId == activeTeamsList.get(position).getId()){
+        if (selectedTeamId == activeTeamsList.get(position).getId()){
             holder.tick.setVisibility(View.VISIBLE);
         } else {
             holder.tick.setVisibility(View.GONE);
@@ -89,10 +89,10 @@ public class ActiveTeamsAdapter extends RecyclerView.Adapter<ActiveTeamsAdapter.
                         typeId,
                         editBookingDetails,
                         newEditStatus
-                        );
+                );
 //                if (((MainActivity) activity).deskListBottomSheet!=null)
-                if (fragment.deskListBottomSheet!=null)
-                    fragment.deskListBottomSheet.dismiss();
+//                if (fragment.deskListBottomSheet!=null)
+//                    fragment.deskListBottomSheet.dismiss();
                 bottomSheetDialog.dismiss();
             }
         });
@@ -116,3 +116,4 @@ public class ActiveTeamsAdapter extends RecyclerView.Adapter<ActiveTeamsAdapter.
         }
     }
 }
+

@@ -96,6 +96,7 @@ import dream.guys.hotdeskandroid.adapter.ParkingSpotListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.ParticipantNameShowAdapter;
 import dream.guys.hotdeskandroid.adapter.RoomListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
+import dream.guys.hotdeskandroid.controllers.BookDeskController;
 import dream.guys.hotdeskandroid.controllers.EditCarParkController;
 import dream.guys.hotdeskandroid.controllers.EditMeetingRoomController;
 import dream.guys.hotdeskandroid.controllers.OtherBookingController;
@@ -2354,6 +2355,10 @@ public class BookFragment extends Fragment implements
     }
 
     private void newDeskBookingSheet(BookingForEditResponse bookingForEditResponse, String code) {
+      /*  BookDeskController bookDeskController = new BookDeskController(activityContext, context,bookingForEditResponse,
+                AppConstants.BOOKFRAGMENTINSTANCESTRING,isGlobalLocationSetUP,calSelectedDate);
+//        bookDeskController.newDeskBookingSheet(bookingForEditResponse,code);
+*/
         bookingForEditResponseDesk.clear();
         changedTeamId=0;
         changedDeskId=0;
@@ -2363,7 +2368,7 @@ public class BookFragment extends Fragment implements
             for (int i=0; i < bookingDeskList.size(); i++){
 
 //                logic to show booked by else
-                /*if(Utils.compareTwoDate(Utils.convertStringToDateFormet(calSelectedDate),
+                if(Utils.compareTwoDate(Utils.convertStringToDateFormet(calSelectedDate),
                         Utils.getCurrentDate())==2 && bookingDeskList.get(i).isBookedByElse()){
 
                     if(!(Utils.compareTwoDatesandTime(Utils.getYearMonthDateFormat(
@@ -2374,7 +2379,7 @@ public class BookFragment extends Fragment implements
 
                         bookingForEditResponseDesk.add(bookingDeskList.get(i));
                     }
-                }*/
+                }
 
                 if(!bookingDeskList.get(i).isBookedByElse()){
                     bookingForEditResponseDesk.add(bookingDeskList.get(i));
@@ -2383,7 +2388,7 @@ public class BookFragment extends Fragment implements
         } else {
             for (int i=0; i<bookingForEditResponse.getTeamDeskAvailabilities().size(); i++) {
 //                logic to show booked by else
-                /*if(Utils.compareTwoDate(Utils.convertStringToDateFormet(calSelectedDate),
+                if(Utils.compareTwoDate(Utils.convertStringToDateFormet(calSelectedDate),
                         Utils.getCurrentDate())==2 && bookingForEditResponse.getTeamDeskAvailabilities().get(i).isBookedByElse()){
 
                     if(!(Utils.compareTwoDatesandTime(Utils.getYearMonthDateFormat(
@@ -2394,7 +2399,7 @@ public class BookFragment extends Fragment implements
 
                         bookingForEditResponseDesk.add(bookingForEditResponse.getTeamDeskAvailabilities().get(i));
                     }
-                }*/
+                }
 
                 if(!bookingForEditResponse.getTeamDeskAvailabilities().get(i).isBookedByElse()){
                     bookingForEditResponseDesk.add(bookingForEditResponse.getTeamDeskAvailabilities().get(i));
@@ -2541,7 +2546,6 @@ public class BookFragment extends Fragment implements
             editBookingUsingBottomSheet(editBookingDetailsGlobal,
                     1, 0, "new");
         }
-
     }
 
     private void editBookingUsingBottomSheet(EditBookingDetails editDeskBookingDetails, int dskRoomParkStatus, int position,String newEditStatus) {
@@ -4031,8 +4035,7 @@ public class BookFragment extends Fragment implements
         bottomSheetDialog.show();
     }
 
-    private void openIntervalsDialog(String type)
-    {
+    private void openIntervalsDialog(String type) {
 
         Toast.makeText(requireContext(),"openIntervalsDialog==="+type,Toast.LENGTH_LONG).show();
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
@@ -4458,11 +4461,10 @@ public class BookFragment extends Fragment implements
         rvActiveTeams.setHasFixedSize(true);
         selectDesk.setText("Book from another team");
 
-        activeTeamsAdapter =new ActiveTeamsAdapter(getContext(),this,
-                getActivity(),activeTeamsList,this,activeTeamsBottomSheet,id,editBookingDetails,newEditStatus);
+        activeTeamsAdapter =new ActiveTeamsAdapter(getContext(), this,
+                getActivity(),activeTeamsList,this,
+                activeTeamsBottomSheet,id,editBookingDetails,newEditStatus);
         rvActiveTeams.setAdapter(activeTeamsAdapter);
-
-
 
         bsRepeatBack.setOnClickListener(new View.OnClickListener() {
             @Override

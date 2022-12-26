@@ -1332,8 +1332,9 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
             tvTeamNameDisabled=false;
         }
         newdeskListRecyclerAdapter = new DeskListBookAdapter(context,this,
-                activityContext,bookingDeskList,this,deskListBottomSheet,
-                id,editBookingDetails,newEditStatus);
+                activityContext,bookingDeskList,deskListBottomSheet,
+                id,editBookingDetails,newEditStatus,
+                Utils.checkStringParms(deskRoomName.getText().toString()));
         rvDeskRecycler.setAdapter(newdeskListRecyclerAdapter);
 
         tvTeamName.setOnClickListener(new View.OnClickListener() {
