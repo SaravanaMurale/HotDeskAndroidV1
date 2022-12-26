@@ -3282,7 +3282,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             unAvaliableLocate.setText(binding.searchLocate.getText().toString());
         }
         if (code.equalsIgnoreCase("5")) {
-            unAvailableDesc.setText("This car par is unavailable");
+            unAvailableDesc.setText("This car park is unavailable");
         }
         if (deskDescriotion != null && !deskDescriotion.isEmpty() && !deskDescriotion.equals("")) {
             tvDescriptionUnAvaliable.setText(deskDescriotion);
@@ -8209,7 +8209,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 if (status) {
                     //Edit CarParkBooking
-                    bottomSheetDialog.dismiss();
+                    if(bottomSheetDialog!=null) {
+                        bottomSheetDialog.dismiss();
+                    }
                     doEditCarParkBooking(carParkBooking, startTime.getText().toString(), endTime.getText().toString(),etVehicleRegEdit.getText().toString());
                 }
 
