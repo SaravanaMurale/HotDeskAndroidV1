@@ -101,7 +101,7 @@ public class MeetingRoomRecurrence {
             public List<Integer> attendees;
             public String subject;
             @SerializedName("externalAttendees")
-            public List<ExternalAttendees> externalAttendees;
+            public List<String> externalAttendees;
             @SerializedName("recurrenceDetails")
             private RecurrenceDetails recurrenceDetailsList;
             private String recurrence;
@@ -147,11 +147,11 @@ public class MeetingRoomRecurrence {
                 this.subject = subject;
             }
 
-            public List<ExternalAttendees> getExternalAttendees() {
+            public List<String> getExternalAttendees() {
                 return externalAttendees;
             }
 
-            public void setExternalAttendees(List<ExternalAttendees> externalAttendees) {
+            public void setExternalAttendees(List<String> externalAttendees) {
                 this.externalAttendees = externalAttendees;
             }
 

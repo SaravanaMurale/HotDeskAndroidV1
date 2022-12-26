@@ -1178,13 +1178,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             if (CountryName == null && buildingName == null && floorName == null && fullPathLocation == null) {
                 binding.searchLocate.setHint("");
             } else {
-                if (fullPathLocation == null) {
+                if (fullPathLocation == null || fullPathLocation.equals("") || fullPathLocation.isEmpty()) {
                     int l=floorName.length();
                     SpannableString ss1=  new SpannableString(floorName);
                     ss1.setSpan(new RelativeSizeSpan(1.1f), 0,l, 0);
-                    ss1.setSpan(new ForegroundColorSpan(Color.RED), 0, l, 0);// set color
-                    //binding.searchLocate.setText(floorName + "  " + finalFloorName);
-                    binding.searchLocate.setText(ss1 + "  " + finalFloorName);
+                    ss1.setSpan(new ForegroundColorSpan(Color.BLACK), 0, l, 0);// set color
+                    binding.searchLocate.setText(floorName + "  " + finalFloorName);
+                    //binding.searchLocate.setText(ss1 + "  " + finalFloorName);
                 } else {
                     binding.searchLocate.setText(fullPathLocation);
                 }
@@ -4052,7 +4052,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                     endTRoomime.getText().toString(),
                                     subject, comment, isRequest, externalAttendeesEmail);
                         } else {
-                            doRepeatMeetingRoomBookingForWeek();
+                            doRepeatMeetingRoomBookingForWeek(isRequest,externalAttendeesEmail);
                         }
 
                     } else {
@@ -6657,7 +6657,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         bottomSheetDialog.show();
     }
 
-    private void doRepeatMeetingRoomBookingForWeek() {
+    private void doRepeatMeetingRoomBookingForWeek(boolean isRequest, List<String> externalAttendeesEmail) {
 
         String selectedDate = binding.locateCalendearView.getText().toString();
         List<String> dateList = Utils.getCurrentWeekDateList(selectedDate, enableCurrentWeek);
@@ -6688,7 +6688,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             changes.setMyto(getCurrentDate() + "" + "T" + endTRoomime.getText().toString() + ":" + "00" + "." + "000" + "Z");
             changes.setSubject("");
             changes.setRecurrence("True");
-            changes.setRequest(false);
+            if(isRequest) {
+                changes.setRequest(true);
+            }else {
+                changes.setRequest(false);
+            }
 
             changeset.setChanges(changes);
 
@@ -6704,8 +6708,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             changes.setAttendees(attendeesList);
 
-            List<MeetingRoomRecurrence.Changeset.Changes.ExternalAttendees> externalAttendees = new ArrayList<>();
-            changes.setExternalAttendees(externalAttendees);
+            //List<MeetingRoomRecurrence.Changeset.Changes.ExternalAttendees> externalAttendees = new ArrayList<>();
+            changes.setExternalAttendees(externalAttendeesEmail);
 
             //List<MeetingRoomRecurrence.Changeset.Changes.RecurrenceDetails> recurrenceDetailsList=new ArrayList<>();
 
@@ -6728,7 +6732,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         List<MeetingRoomRecurrence.DeleteIds> deleteIdsList = new ArrayList<>();
         meetingRoomRecurrence.setDeletedIds(deleteIdsList);
 
-        System.out.println("MeetingRoomRecurrence " + meetingRoomRecurrence);
+        //System.out.println("MeetingRoomRecurrence " + meetingRoomRecurrence);
 
         if (Utils.isNetworkAvailable(getActivity())) {
             binding.locateProgressBar.setVisibility(View.VISIBLE);
@@ -7864,7 +7868,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     locateResponseHandler(response, getResources().getString(R.string.booking_updated));
 
-                    locateEditBottomSheet.dismiss();
+                    if(locateEditBottomSheet!=null) {
+                        locateEditBottomSheet.dismiss();
+                    }
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
                 }
@@ -8754,7 +8760,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 new RelativeLayout(activity)));
 
         TimePicker simpleTimePicker24Hours = bottomSheetDialog.findViewById(R.id.simpleTimePicker);
-        //simpleTimePicker24Hours.setIs24HourView(false);
+        simpleTimePicker24Hours.setIs24HourView(true);
         TextView titleTv = bottomSheetDialog.findViewById(R.id.title);
         TextView dateTv = bottomSheetDialog.findViewById(R.id.date);
         TextView continueTv = bottomSheetDialog.findViewById(R.id.continue_tv);

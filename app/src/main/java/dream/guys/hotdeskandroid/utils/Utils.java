@@ -200,7 +200,7 @@ public class Utils {
                 new RelativeLayout(activity)));
 
         TimePicker simpleTimePicker24Hours = bottomSheetDialog.findViewById(R.id.simpleTimePicker);
-        //simpleTimePicker24Hours.setIs24HourView(false);
+        simpleTimePicker24Hours.setIs24HourView(true);
         TextView titleTv = bottomSheetDialog.findViewById(R.id.title);
         TextView dateTv = bottomSheetDialog.findViewById(R.id.date);
         TextView continueTv = bottomSheetDialog.findViewById(R.id.continue_tv);
