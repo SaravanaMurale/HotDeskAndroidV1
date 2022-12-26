@@ -385,7 +385,7 @@ public class Utils {
 
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(date);
-                    cal.add(Calendar.MINUTE, 30);
+//                    cal.add(Calendar.MINUTE, 30);
 //                    String endTime = Utils.setStartNearestFiveMinToMeeting(f24hours.format(cal.getTime()));
                     String endTime = Utils.setStartNearestThirtyMinToMeeting(f24hours.format(cal.getTime()));
 

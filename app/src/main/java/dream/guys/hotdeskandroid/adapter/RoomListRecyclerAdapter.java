@@ -192,6 +192,26 @@ public class RoomListRecyclerAdapter extends RecyclerView.Adapter<RoomListRecycl
                         }
                     }
                 }
+                manager:
+                for (int x=0; x<rooms.get(position).getManagers().size(); x++) {
+                    if(rooms.get(position).getManagers().get(x).getId() ==
+                            SessionHandler.getInstance().getInt(context,AppConstants.USER_ID)) {
+                            holder.capacityNo.setText(""+Utils.checkStringParms(rooms.get(position).getNoOfPeople()));
+                            if (rooms.get(position).getLocationMeeting()!=null)
+                                holder.locationDetails.setText(Utils.checkStringParms(rooms.get(position).getLocationMeeting().getLocationDetails().getBuildingName())
+                                +", "+Utils.checkStringParms(rooms.get(position).getLocationMeeting().getLocationDetails().getFloorName()));
+                            else
+                                holder.locationDetails.setVisibility(View.GONE);
+
+                            holder.card.setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
+                            holder.select.setVisibility(View.VISIBLE);
+
+                            holder.deskStatus.setText("Available");
+                            holder.deskIconStatus.setColorFilter(context.getColor(R.color.figmaLiteGreen));
+                            break manager;
+
+                    }
+                }
 
 
 

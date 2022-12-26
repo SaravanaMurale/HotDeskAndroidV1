@@ -639,9 +639,16 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
             public void onClick(View v) {
                 if (!startDisabled){
                     if(dskRoomParkStatus==2){
-                        Utils.bottomSheetTimePickerMeetingRoom(context,
-                                activityContext,startTime,endTime,"Start Time",
-                                Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
+                        if (editDeskBookingDetails.getMeetingRoomBookingType()!=null
+                                &&editDeskBookingDetails.getMeetingRoomBookingType().equalsIgnoreCase("REQGRN"))
+                            Utils.bottomSheetTimePicker24Hrs(context,
+                                    activityContext,startTime,"Start Time",
+                                    Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
+                        else
+                            Utils.bottomSheetTimePicker24Hrs(context,
+                                    activityContext,startTime,"Start Time",
+                                    Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
+
                     } else {
 
                         if (dskRoomParkStatus == 1
@@ -695,8 +702,13 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
                                     Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
                         }
                     } else
-                        Utils.bottomSheetTimePicker24Hrs(context,activityContext,endTime,"End Time",
-                                Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
+                        if (editDeskBookingDetails.getMeetingRoomBookingType()!=null
+                                && editDeskBookingDetails.getMeetingRoomBookingType().equalsIgnoreCase("REQGRN"))
+                            Utils.bottomSheetTimePicker24Hrs(context,activityContext,endTime,"End Time",
+                                Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
+                        else
+                            Utils.bottomSheetTimePicker24Hrs(context,activityContext,endTime,"End Time",
+                                    Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
 
                 }
 //                    Utils.popUpTimePicker(activityContext,endTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));

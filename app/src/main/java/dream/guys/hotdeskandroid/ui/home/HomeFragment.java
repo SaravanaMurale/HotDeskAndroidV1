@@ -1187,7 +1187,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         editDeskBookingDetails.setDeskCode(bookings.getDeskCode());
         editDeskBookingDetails.setComments(bookings.getComments());
         editDeskBookingDetails.setDescription(Utils.checkStringParms(bookings.getDescription()));
-        if (bookings.getDeskLocation()!=null)
+        if (bookings.getDeskLocation()!=null && bookings.getDeskLocation().getBuildingName()!=null)
             editDeskBookingDetails.setLocationAddress(Utils.checkStringParms(bookings.getDeskLocation().getBuildingName())
                     +", " + Utils.checkStringParms(bookings.getDeskLocation().getfLoorName()));
         else if (bookings.getRequestedDeskLocation()!=null)
@@ -1352,7 +1352,6 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         MeetingListToEditResponse.Status status = meetingListToEditResponse.getStatus();
         editDeskBookingDetails.setMeetingRoomBookingType(status.getBookingType());
 
-
         //New...
         editDeskBookingDetails.setAttendeesList(meetingListToEditResponse.getAttendeesList());
         editDeskBookingDetails.setExternalAttendeesList(meetingListToEditResponse.getExternalAttendeesList());
@@ -1371,15 +1370,12 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         MeetingListToEditResponse.Status status = meetingListToEditResponse.getStatus();
         editBookingDetails.setMeetingRoomBookingType(status.getBookingType());
 
-
         //New...
         editBookingDetails.setAttendeesList(meetingListToEditResponse.getAttendeesList());
         editBookingDetails.setExternalAttendeesList(meetingListToEditResponse.getExternalAttendeesList());
         editBookingDetails.setComments(meetingListToEditResponse.getComments());
         editBookingDetails.setSubject(meetingListToEditResponse.getSubject());
         selectedDeskId = meetingListToEditResponse.getMeetingRoomId();
-
-
 
         EditMeetingRoomController editMeetingRoomController = new EditMeetingRoomController(
                 AppConstants.HOMEFRAGMENTINSTANCESTRING,
@@ -1481,7 +1477,9 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         } else if (click.equals(AppConstants.EDIT)) {
             //Edit
             System.out.println("CarParkingEditClicked");
-            /*EditBookingDetails editDeskBookingDetails = new EditBookingDetails();
+            Toast.makeText(context, "jansdj asdasd", Toast.LENGTH_SHORT).show();
+            /*
+            EditBookingDetails editDeskBookingDetails = new EditBookingDetails();
             editDeskBookingDetails.setCalId(carParkingEntriesModel.getId());
             editDeskBookingDetails.setParkingSlotId(carParkingEntriesModel.getParkingSlotId());
             editDeskBookingDetails.setEditStartTTime(Utils.splitTime(carParkingEntriesModel.getFrom()));
@@ -1491,6 +1489,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             editDeskBookingDetails.setParkingSlotCode(carParkingEntriesModel.getParkingSlotCode());
             editBookingUsingBottomSheet(editDeskBookingDetails, 3, position);
             */
+
             getCarParListToEdit(date,date,carParkingEntriesModel.getId());
 
 

@@ -264,6 +264,7 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
         TextView tv_comment=deskBottomSheet.findViewById(R.id.tv_comment);
         TextView tv_repeat=deskBottomSheet.findViewById(R.id.tv_repeat);
         TextView tv_delete=deskBottomSheet.findViewById(R.id.delete_text);
+        TextView descStatic=deskBottomSheet.findViewById(R.id.tvDesc);
         locationAddress=deskBottomSheet.findViewById(R.id.locationAddress);
         tv_delete.setVisibility(View.VISIBLE);
         repeat = deskBottomSheet.findViewById(R.id.repeat);
@@ -414,8 +415,13 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
                 locationAddress.setText(""+editDeskBookingDetails.getLocationAddress());
 
             tv_description.setText(editDeskBookingDetails.getDescription());
+            if (editDeskBookingDetails.getDescription().equalsIgnoreCase("")
+                    || editDeskBookingDetails.getDescription().isEmpty())
+                descStatic.setVisibility(View.GONE);
+            else
+                descStatic.setVisibility(View.VISIBLE);
 
-            if (newEditStatus.equalsIgnoreCase("edit")){
+            if (newEditStatus.equalsIgnoreCase("edit")) {
                 if (editDeskBookingDetails.getDate()!=null)
                     date.setText(""+Utils.calendarDay10thMonthYearformat(editDeskBookingDetails.getDate()));
                 repeatBlock.setVisibility(View.GONE);

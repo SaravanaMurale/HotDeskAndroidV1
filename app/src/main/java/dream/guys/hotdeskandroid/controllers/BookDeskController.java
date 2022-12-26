@@ -300,7 +300,6 @@ public class BookDeskController implements
                 editBookingDetailsGlobal.setDeskTeamId(bookingForEditResponseDesk.get(i).getTeamId());
                 selectedDeskId = bookingForEditResponseDesk.get(i).getTeamDeskId();
                 editBookingDetailsGlobal.setDeskStatus(0);
-                Log.d(TAG," desk id check if "+bookingForEditResponseDesk.get(i).getTeamDeskId());
                 break loop;
             } else {
                 int pos =0;
@@ -840,7 +839,7 @@ public class BookDeskController implements
             @Override
             public void onClick(View v) {
                 if (repeatActvieStatus) {
-                    doRepeatDeskBookingForAWeek(editDeskBookingDetails);
+                    doRepeatDeskBookingForAWeek(editDeskBookingDetails,newEditStatus);
                     
                 } else {
                     if (newEditStatus.equalsIgnoreCase("new"))
@@ -1680,7 +1679,7 @@ public class BookDeskController implements
         });
         popDialog.show();
     }
-    private void doRepeatDeskBookingForAWeek(EditBookingDetails editBookingDetails) {
+    private void doRepeatDeskBookingForAWeek(EditBookingDetails editBookingDetails, String newEditStatus) {
 
         String selectedDate = calSelectedDate.toString();
         List<String> dateList=Utils.getCurrentWeekDateList(calSelectedDate,enableCurrentWeek);
@@ -1691,7 +1690,7 @@ public class BookDeskController implements
 
         List<LocateBookingRequest.ChangeSets> changeSetsList= new ArrayList<>();
 
-
+//        Toast.makeText(context, "adadas"+editBookingDetails.getRequestedTeamId(), Toast.LENGTH_SHORT).show();
         for (int i = 0; i <dateList.size() ; i++) {
             ////System.out.println("AddedDateList "+dateList.get(i));
 
@@ -1702,19 +1701,39 @@ public class BookDeskController implements
             changeSets.setChangeSetDate(dateList.get(i) + "T" + "00:00:00.000" + "Z");
 
             LocateBookingRequest.ChangeSets.Changes changes = changeSets.new Changes();
-            changes.setUsageTypeId(2);
 
             changes.setFrom(getCurrentDate() + "" + "T" + startTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
             changes.setTo(getCurrentDate() + "" + "T" + endTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
             changes.setTimeZoneId(""+editBookingDetails.getTimeZone());
-            if (editBookingDetails.getRequestedTeamId()>0){
-                changes.setRequestedTeamDeskId(editBookingDetails.getRequestedTeamDeskId());
-                changes.setRequestedTeamId(editBookingDetails.getRequestedTeamId());
+
+
+            if (changedDeskId>0){
+                if (changedTeamId!=SessionHandler.getInstance().getInt(context,AppConstants.TEAM_ID)){
+                    changes.setRequestedTeamDeskId(changedDeskId);
+                    changes.setRequestedTeamId(changedTeamId);
+                    changes.setUsageTypeId(7);
+                } else {
+                    changes.setRequestedTeamDeskId(null);
+                    changes.setRequestedTeamId(null);
+                    changes.setTeamDeskId(changedDeskId);
+                    changes.setUsageTypeId(2);
+
+                }
             } else {
-                changes.setRequestedTeamDeskId(null);
-                changes.setRequestedTeamId(null);
-                changes.setTeamDeskId(selectedDeskId);
+                if (newEditStatus.equalsIgnoreCase("new")){
+                    changes.setRequestedTeamDeskId(null);
+                    changes.setRequestedTeamId(null);
+                    changes.setTeamDeskId(selectedDeskId);
+                    changes.setUsageTypeId(2);
+
+                } else {
+                    changes.setRequestedTeamDeskId(selectedDeskId);
+                    changes.setRequestedTeamId(selectedTeamId);
+                    changes.setUsageTypeId(7);
+                }
+
             }
+
 //            changes.setTeamDeskId(teamDeskIdForBooking);
 
             changes.setTypeOfCheckIn(1);
@@ -1754,8 +1773,9 @@ public class BookDeskController implements
         }else {
             Utils.toastMessage(activityContext, activityContext.getResources().getString(R.string.enable_internet));
         }
-        
+
     }
+
     private void locateResponseHandler(Response<BaseResponse> response, String string) {
 
         String resultString = "";

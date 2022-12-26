@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -471,14 +472,14 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     holder.bookingIvEdit.setVisibility(View.GONE);
                     holder.bookingIvLocation.setVisibility(View.GONE);
                     holder.tv_change.setVisibility(View.GONE);
-
                 } else {
                     enableColorUpdate(holder);
                     holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
                     if (list.get(position).getMeetingBookingsModel().getBookedByUserId()
                             == SessionHandler.getInstance().getInt(context,AppConstants.USER_ID)) {
                         holder.bookingIvEdit.setVisibility(View.VISIBLE);
-                        Glide.with(context).load(R.drawable.ic_home_io_edit).into(holder.bookingIvEdit);
+                        Glide.with(context).load(R.drawable.ic_edit)
+                                .into(holder.bookingIvEdit);
                     } else {
                         Log.d(TAG, "onBindViewHolder: "+list.get(position).getMeetingBookingsModel().getMeetingRoomName());
                         Log.d(TAG, "onBindViewHolder: "+list.get(position).getMeetingBookingsModel().getBookedByUserId());
@@ -644,10 +645,9 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         holder.bookingBtnCheckIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel()!=null){
+                if (list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel()!=null) {
                     String clickedStatus="CHECKIN";
-                onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(), AppConstants.CHECKIN, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
+                    onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(), AppConstants.CHECKIN, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
 //                    fragment.changeCheckIn(list.get(holder.getAbsoluteAdapterPosition()));
 //                    Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
                 }
@@ -666,20 +666,21 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         holder.bookingIvEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                Toast.makeText(context, "CAR CLICKED", Toast.LENGTH_SHORT).show();
 
                 if (list.get(holder.getAbsoluteAdapterPosition()).getCalDeskStatus() ==1){
                     String clickedStatus="EDIT";
                     onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(),
                             AppConstants.EDIT,list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
-                    //Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
                 }else if(list.get(holder.getAbsoluteAdapterPosition()).getCalDeskStatus() ==2){
                     String clickedStatus="EDIT";
                     onCheckInClickable.onCheckInMeetingRoomClick(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel(),AppConstants.EDIT, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
-                    //Toast.makeText(context, "ROOM CLICKED", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "ROOM CLICKED", Toast.LENGTH_SHORT).show();
                 }else if(list.get(holder.getAbsoluteAdapterPosition()).getCalDeskStatus() ==3){
                     String clickedStatus="EDIT";
                     onCheckInClickable.onCheckInCarParkingClick(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel(),AppConstants.EDIT, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
-                    //Toast.makeText(context, "CAR CLICKED", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "CAR CLICKED", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -687,7 +688,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         holder.tv_change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /**/
+
                 if (list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel() != null &&
                         (list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel()
                                 .getUsageTypeAbbreviation().equalsIgnoreCase("TR") ||
@@ -709,29 +710,32 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                         String clickedStatus = "EDIT";
                         onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(), AppConstants.EDIT,
                                 list.get(holder.getAbsoluteAdapterPosition()).getDate(), holder.getAbsoluteAdapterPosition());
-                        //Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
                     } else if (list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel() != null) {
                         String clickedStatus = "EDIT";
                         onCheckInClickable.onCheckInMeetingRoomClick(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel(), AppConstants.EDIT, list.get(holder.getAbsoluteAdapterPosition()).getDate(), holder.getAbsoluteAdapterPosition());
-                        //Toast.makeText(context, "ROOM CLICKED", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context, "ROOM CLICKED", Toast.LENGTH_SHORT).show();
                     } else if (list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel() != null) {
                         String clickedStatus = "EDIT";
                         onCheckInClickable.onCheckInCarParkingClick(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel(), AppConstants.EDIT, list.get(holder.getAbsoluteAdapterPosition()).getDate(), holder.getAbsoluteAdapterPosition());
-                        //Toast.makeText(context, "CAR CLICKED", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context, "CAR CLICKED", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     if (list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel() != null) {
-                        String clickedStatus = "REMOTE";
-                        onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(), AppConstants.REMOTE,
+                        String clickedStatus = "EDIT";
+                        onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(),
+                                clickedStatus,
                                 list.get(holder.getAbsoluteAdapterPosition()).getDate(), holder.getAbsoluteAdapterPosition());
                         //Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
                     } else if (list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel() != null) {
-                        String clickedStatus = "REMOTE";
-                        onCheckInClickable.onCheckInMeetingRoomClick(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel(), AppConstants.REMOTE, list.get(holder.getAbsoluteAdapterPosition()).getDate(), holder.getAbsoluteAdapterPosition());
+                        String clickedStatus = "EDIT";
+                        onCheckInClickable.onCheckInMeetingRoomClick(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel(),
+                                clickedStatus, list.get(holder.getAbsoluteAdapterPosition()).getDate(), holder.getAbsoluteAdapterPosition());
                         //Toast.makeText(context, "ROOM CLICKED", Toast.LENGTH_SHORT).show();
                     } else if (list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel() != null) {
-                        String clickedStatus = "REMOTE";
-                        onCheckInClickable.onCheckInCarParkingClick(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel(), AppConstants.REMOTE, list.get(holder.getAbsoluteAdapterPosition()).getDate(), holder.getAbsoluteAdapterPosition());
+                        String clickedStatus = "EDIT";
+                        onCheckInClickable.onCheckInCarParkingClick(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel(),
+                                clickedStatus, list.get(holder.getAbsoluteAdapterPosition()).getDate(), holder.getAbsoluteAdapterPosition());
                         //Toast.makeText(context, "CAR CLICKED", Toast.LENGTH_SHORT).show();
                     }
                 }
