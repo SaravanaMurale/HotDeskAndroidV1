@@ -542,15 +542,14 @@
 
                     <TextView
                         android:id="@+id/help_icon"
+                        style="@style/TextRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_2sdp"
-                        android:layout_centerInParent="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
                         android:layout_toStartOf="@id/about"
-                        style="@style/TextRegular"
-                        android:theme="@style/TextRegular"
-                        />
+                        android:theme="@style/TextRegular" />
 
                     <ImageView
                         android:id="@+id/about"

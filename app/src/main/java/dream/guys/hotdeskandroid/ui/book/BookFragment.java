@@ -2148,7 +2148,7 @@ public class BookFragment extends Fragment implements
                             }
 
 
-                        Utils.toastMessage(getActivity(),"welcom bala "+editDeskBookingDetails.getMeetingRoomStatus());
+//                        Utils.toastMessage(getActivity(),"welcom bala "+editDeskBookingDetails.getMeetingRoomStatus());
                             editDeskBookingDetails.setAmenities(amenitiesStringList);
 //                        Log.d(TAG, "onResponse: amenitySize"+editDeskBookingDetails.getAmenities().size());
 

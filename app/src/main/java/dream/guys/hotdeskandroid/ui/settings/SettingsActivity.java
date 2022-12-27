@@ -108,6 +108,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         try {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+//            String version = pInfo.versionName+"("+pInfo.versionCode+")";
             String version = pInfo.versionName;
             //int num = pInfo.versionCode;
              binding.helpIcon.setText("Version " + String.valueOf(version));
@@ -190,6 +191,7 @@ public class SettingsActivity extends AppCompatActivity {
                 SessionHandler.getInstance().remove(context, AppConstants.PARENT_ID);
                 SessionHandler.getInstance().remove(context, AppConstants.TEAM_ID);
                 SessionHandler.getInstance().remove(context,AppConstants.FINAL_FLOOR);
+                SessionHandler.getInstance().remove(context,AppConstants.CURRENT_TEAM);
 
                 //To Load Defaul Location
                 SessionHandler.getInstance().remove(context, AppConstants.PARENT_ID_CHECK);

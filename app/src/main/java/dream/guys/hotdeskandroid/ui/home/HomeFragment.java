@@ -742,7 +742,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
                 @Override
                 public void onFailure(Call<BaseResponse> call, Throwable t) {
-                    Toast.makeText(getActivity(), "fail Bala" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
                     System.out.println("resps" + t.getMessage());
                     dialog.dismiss();
                 }
@@ -1477,7 +1477,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         } else if (click.equals(AppConstants.EDIT)) {
             //Edit
             System.out.println("CarParkingEditClicked");
-            Toast.makeText(context, "jansdj asdasd", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "jansdj asdasd", Toast.LENGTH_SHORT).show();
             /*
             EditBookingDetails editDeskBookingDetails = new EditBookingDetails();
             editDeskBookingDetails.setCalId(carParkingEntriesModel.getId());
@@ -2141,7 +2141,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         }
 
         if (state) {
-            Toast.makeText(target, "Dark", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(target, "Dark", Toast.LENGTH_SHORT).show();
             uiManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
         } else {
             uiManager.setNightMode(UiModeManager.MODE_NIGHT_NO);

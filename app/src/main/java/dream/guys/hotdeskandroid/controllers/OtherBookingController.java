@@ -386,13 +386,14 @@ public class OtherBookingController {
         TextView tvClose = addEditBottomSheet.findViewById(R.id.tvClose);
         TextView tvBook = addEditBottomSheet.findViewById(R.id.tvBook);
         RelativeLayout repeatBlock = addEditBottomSheet.findViewById(R.id.repeatBlock);
+        repeatBlock.setVisibility(View.GONE);
 
         tvBook.setText("Save changes");
         tvDate.setText(Utils.calendarDay10thMonthYearformat(date));
 
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
+/*
         try {
             Date objDate = dateFormat.parse(calSelectedDate);
             if (Utils.compareTwoDate(objDate, Utils.getCurrentDate()) == 2) {
@@ -402,7 +403,7 @@ public class OtherBookingController {
             }
         } catch (ParseException e) {
             e.printStackTrace();
-        }
+        }*/
 
 
         startTime.setOnClickListener(new View.OnClickListener() {
