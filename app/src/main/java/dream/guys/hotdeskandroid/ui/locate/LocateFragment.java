@@ -685,7 +685,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         String startTime = binding.locateStartTime.getText().toString() + ":00.000Z";
 
         String dateWithTime = binding.locateCalendearView.getText().toString() + "T" + startTime;
-        System.out.println("StartTimeForamt " + dateWithTime);
+        //System.out.println("StartTimeForamt " + dateWithTime);
 
         //2022-09-20T10:51:17.830Z
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -1169,11 +1169,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             String fullPathLocation = SessionHandler.getInstance().get(getContext(), AppConstants.FULLPATHLOCATION);
 
 
-            System.out.println("LocateLocationCountry "+CountryName);
-            System.out.println("LocateLocationBuildingName "+buildingName);
-            System.out.println("LocateLocationFloorName "+floorName);
-            System.out.println("LocateLocationFinalFloorName "+finalFloorName);
-            System.out.println("LocateLocationfullPathLocation "+fullPathLocation);
+            //System.out.println("LocateLocationCountry "+CountryName);
+            //System.out.println("LocateLocationBuildingName "+buildingName);
+            //System.out.println("LocateLocationFloorName "+floorName);
+            //System.out.println("LocateLocationFinalFloorName "+finalFloorName);
+            //System.out.println("LocateLocationfullPathLocation "+fullPathLocation);
 
             if (CountryName == null && buildingName == null && floorName == null && fullPathLocation == null) {
                 binding.searchLocate.setHint("");
@@ -1628,7 +1628,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             int floorPosition = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION);
-            System.out.println("SelectedFloorPositionInLocate " + floorPosition);
+            //.println("SelectedFloorPositionInLocate " + floorPosition);
             Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(parentId);
             call.enqueue(new Callback<List<LocateCountryRespose>>() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -3423,13 +3423,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 capacity = userAllowedMeetingResponseList.get(i).getNoOfPeople();
 
                 for (int j = 0; j < userAllowedMeetingResponseList.get(i).getAmenities().size(); j++) {
-                    System.out.println("MeetingAmenities " + userAllowedMeetingResponseList.get(i).getAmenities().get(j).getId());
+                    //System.out.println("MeetingAmenities " + userAllowedMeetingResponseList.get(i).getAmenities().get(j).getId());
 
                     for (int k = 0; k < amenitiesListToShowInMeetingRoomList.size(); k++) {
 
                         if (userAllowedMeetingResponseList.get(i).getAmenities().get(j).getId() == amenitiesListToShowInMeetingRoomList.get(k).getId()) {
                             amenitiesList.add(amenitiesListToShowInMeetingRoomList.get(k).getName());
-                            System.out.println("TotalAmenitiesForThisRoom " + amenitiesListToShowInMeetingRoomList.get(k).getName());
+                            //System.out.println("TotalAmenitiesForThisRoom " + amenitiesListToShowInMeetingRoomList.get(k).getName());
 
                         }
 
@@ -3510,7 +3510,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //Set All Amenities Here
         for (int i = 0; i < amenitiesList.size(); i++) {
 
-            System.out.println("RoomAmenitiesList " + amenitiesList.get(i));
+            //System.out.println("RoomAmenitiesList " + amenitiesList.get(i));
             Chip chip = new Chip(getContext());
             chip.setText(amenitiesList.get(i));
 
@@ -3985,7 +3985,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     child_layout.setVisibility(View.GONE);
 
                     String startTime = showtvRoomStartTime.getText().toString();
-                    System.out.println("StartRoomFormat " + startTime);
+                    //System.out.println("StartRoomFormat " + startTime);
                     String[] startTimeToSplit = startTime.split("•");
                     String startWithAMOrPM = startTimeToSplit[1];
 
@@ -4375,7 +4375,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
                         for (int i = 0; i <carParkingForEditResponse.getCarParkBookings().size() ; i++) {
-                            System.out.println("CarParkingEditListVeHicleNumber"+carParkingForEditResponse.getCarParkBookings().get(i).getVehicleRegNumber());
+                            //System.out.println("CarParkingEditListVeHicleNumber"+carParkingForEditResponse.getCarParkBookings().get(i).getVehicleRegNumber());
 
                             if(id==carParkingForEditResponse.getCarParkBookings().get(i).getParkingSlotId()){
 
@@ -4686,7 +4686,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             //System.out.println("DateAndStatTimeAndEndTime"+toDate+" "+fromTime+" "+toTime);
 
             int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
-            System.out.println("parent Booking cje" + parentId);
+            //System.out.println("parent Booking cje" + parentId);
             //Call<DeskAvaliabilityResponse> call = apiService.getAvaliableDeskDetails(parentId, now, now, now);
             Call<DeskAvaliabilityResponse> call = apiService.getAvaliableDeskDetails(parentId, toDate, fromTime, toTime);
 
@@ -4875,7 +4875,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //SetLanguage
         back.setText(appKeysPage.getBack());
         bsApply.setText(appKeysPage.getApply());
-        bsGeneralSearch.setText(appKeysPage.getSearch());
+        bsGeneralSearch.setHint(appKeysPage.getSearch());
 
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -5182,7 +5182,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 int x = supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(0);
                 int y = supportZoneLayoutItemsList.get(i).getSupportZoneCoordinates().get(j).get(1);
 
-                System.out.println("Posotion " + supportZoneLayoutItemsList.get(i).getTitle() + " " + x + " " + y);
+                //System.out.println("Posotion " + supportZoneLayoutItemsList.get(i).getTitle() + " " + x + " " + y);
 
                 SubZonePoint.SubPoint subPoint = subZone.new SubPoint(x, y);
 
@@ -5204,7 +5204,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         for (int i = 0; i < subZoneLayoutPointList.size(); i++) {
 
-            System.out.println("FinalAllCoordinates " + subZoneLayoutPointList.get(i).getTitle());
+            //System.out.println("FinalAllCoordinates " + subZoneLayoutPointList.get(i).getTitle());
 
             for (int j = 0; j < subZoneLayoutPointList.get(i).getSubPoint().size(); j++) {
 
@@ -6933,7 +6933,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         List<LocateCarParkBookingRequest.CarParkingDeleteIds> deleteIdsList = new ArrayList<>();
         locateCarParkBookingRequest.setDeleteIdsList(deleteIdsList);
 
-        System.out.println("RepeatModuleCarRequestData " + locateCarParkBookingRequest);
+        //System.out.println("RepeatModuleCarRequestData " + locateCarParkBookingRequest);
 
         if (Utils.isNetworkAvailable(getActivity())) {
             binding.locateProgressBar.setVisibility(View.VISIBLE);
@@ -6963,7 +6963,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     private void doRepeatBookingForAWeek() {
 
         String selectedDate = binding.locateCalendearView.getText().toString();
-        System.out.println("Seelcteddate " + selectedDate + " " + enableCurrentWeek);
+        //System.out.println("Seelcteddate " + selectedDate + " " + enableCurrentWeek);
         List<String> dateList = Utils.getCurrentWeekDateList(selectedDate, enableCurrentWeek);
 
         LocateBookingRequest locateBookingRequest = new LocateBookingRequest();
@@ -7016,7 +7016,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         List<LocateBookingRequest.DeleteIds> deleteIdsList = new ArrayList<>();
         locateBookingRequest.setDeleteIdsList(deleteIdsList);
 
-        System.out.println("RepeatModuleRequestData " + locateBookingRequest);
+        //System.out.println("RepeatModuleRequestData " + locateBookingRequest);
 
         if (Utils.isNetworkAvailable(getActivity())) {
             binding.locateProgressBar.setVisibility(View.VISIBLE);
@@ -8041,7 +8041,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 if (carCode != null && carCode.size() != 0) {
                     for (int i = 0; i < carCode.size(); i++) {
 
-                        System.out.println("SelectedCode " + carCode.get(i).getId() + " " + carCode.get(i).getCode());
+                        //System.out.println("SelectedCode " + carCode.get(i).getId() + " " + carCode.get(i).getCode());
                         SelectCode allCarCode = new SelectCode(carCode.get(i).getId(), carCode.get(i).getCode());
                         code.add(allCarCode);
                     }
@@ -8228,7 +8228,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         // System.out.println("CarDeleteRequest"+carParkBooking.getId()+" "+carParkBooking.getParkingSlotId()+" "+carParkBooking.getDate()+" "+carParkBooking.getBookingCreatedUserId()+" "+carParkBooking.getBookedForUser());
 
-        System.out.println("CarDeleteRequest" + carParkBooking.getFrom() + " " + carParkBooking.getMyto() + " " + carParkBooking.getFromUtc() + " " + carParkBooking.getToUtc());
+        //System.out.println("CarDeleteRequest" + carParkBooking.getFrom() + " " + carParkBooking.getMyto() + " " + carParkBooking.getFromUtc() + " " + carParkBooking.getToUtc());
         binding.locateProgressBar.setVisibility(View.VISIBLE);
 
         CarParkingDeleteRequest carParkingDeleteRequest = new CarParkingDeleteRequest();
@@ -8419,7 +8419,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 for (int i = 0; i < userAllowedMeetingResponseList.size(); i++) {
 
-                    System.out.println("AllDetailsInUserAllowedMeetings " + userAllowedMeetingResponseList.get(i).getName());
+                    //System.out.println("AllDetailsInUserAllowedMeetings " + userAllowedMeetingResponseList.get(i).getName());
 
                     for (int j = 0; j < meetingStatusModelList.size(); j++) {
 
@@ -8563,10 +8563,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }
 
         if (amenitiesMatchCount == userSelectedTrueCount) {
-            System.out.println("AllUserSelectedAmenitiesAvaliableHInThisRoom " + meetingStatusModel.getId());
+            //System.out.println("AllUserSelectedAmenitiesAvaliableHInThisRoom " + meetingStatusModel.getId());
 
         } else {
-            System.out.println("UserSelectedAmenityIsNotAvaliableHInThisRoom " + meetingStatusModel.getId());
+            //System.out.println("UserSelectedAmenityIsNotAvaliableHInThisRoom " + meetingStatusModel.getId());
             MeetingAmenityStatus meetingAmenityStatus = new MeetingAmenityStatus(meetingStatusModel.getId());
             meetingAmenityStatusList.add(meetingAmenityStatus);
         }
@@ -8889,13 +8889,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 capacity = userAllowedMeetingResponseList.get(i).getNoOfPeople();
 
                 for (int j = 0; j < userAllowedMeetingResponseList.get(i).getAmenities().size(); j++) {
-                    System.out.println("MeetingAmenities " + userAllowedMeetingResponseList.get(i).getAmenities().get(j).getId());
+                    //System.out.println("MeetingAmenities " + userAllowedMeetingResponseList.get(i).getAmenities().get(j).getId());
 
                     for (int k = 0; k < amenitiesListToShowInMeetingRoomList.size(); k++) {
 
                         if (userAllowedMeetingResponseList.get(i).getAmenities().get(j).getId() == amenitiesListToShowInMeetingRoomList.get(k).getId()) {
                             amenitiesList.add(amenitiesListToShowInMeetingRoomList.get(k).getName());
-                            System.out.println("TotalAmenitiesForThisRoom " + amenitiesListToShowInMeetingRoomList.get(k).getName());
+                            //System.out.println("TotalAmenitiesForThisRoom " + amenitiesListToShowInMeetingRoomList.get(k).getName());
 
                         }
 
@@ -9154,7 +9154,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         for (int i = 0; i < meetingListToEditResponse.getAttendeesList().size(); i++) {
 
 
-            System.out.println("AttendeesListInLoop " + meetingListToEditResponse.getAttendeesList().get(i).getEmail());
+            //System.out.println("AttendeesListInLoop " + meetingListToEditResponse.getAttendeesList().get(i).getEmail());
             //System.out.println("AttendeesListInChipList " + chipList.get(i).getEmail());
 
             ParticipantDetsilResponse participantDetsilResponse = new ParticipantDetsilResponse(meetingListToEditResponse.getAttendeesList().get(i).getId(), meetingListToEditResponse.getAttendeesList().get(i).getFirstName(), meetingListToEditResponse.getAttendeesList().get(i).getLastName(), meetingListToEditResponse.getAttendeesList().get(i).getFullName(), meetingListToEditResponse.getAttendeesList().get(i).getEmail(), meetingListToEditResponse.getAttendeesList().get(i).isActive());
@@ -9203,7 +9203,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         List<String> externalAttendeesEmail = new ArrayList<>();
 
         for (int i = 0; i < meetingListToEditResponse.getExternalAttendeesList().size(); i++) {
-            System.out.println("ExternalAttendeesListInLoop " + meetingListToEditResponse.getExternalAttendeesList().get(i));
+            //System.out.println("ExternalAttendeesListInLoop " + meetingListToEditResponse.getExternalAttendeesList().get(i));
 
             Chip chip = new Chip(getContext());
             chip.setText(meetingListToEditResponse.getExternalAttendeesList().get(i));
@@ -9533,7 +9533,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
                     String startTime = showtvRoomStartTime.getText().toString();
-                    System.out.println("StartRoomFormat " + startTime);
+                    //System.out.println("StartRoomFormat " + startTime);
                     String[] startTimeToSplit = startTime.split("•");
                     String startWithAMOrPM = startTimeToSplit[1];
 
@@ -9674,7 +9674,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
             List<Integer> addedList = LogicHandler.getNewlyAdded(attendeesListForEdit, chipList);
-            System.out.println("NewellyAddedParticipant " + addedList);
+            //System.out.println("NewellyAddedParticipant " + addedList);
 
             if (addedList != null && addedList.size() > 0) {
 
@@ -9685,7 +9685,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
 
             List<Integer> removedList = LogicHandler.getRemoved(attendeesListForEdit, chipList);
-            System.out.println("RemovedParticipant " + removedList);
+            //System.out.println("RemovedParticipant " + removedList);
             if (removedList != null && removedList.size() > 0) {
                 for (int i = 0; i < removedList.size(); i++) {
                     attendeesList.add(removedList.get(i));
@@ -9758,12 +9758,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     public void onDeskSelect(int id, String code, String desk) {
 
         if (desk.equals(AppConstants.DESK)) {
-            System.out.println("BottomSelected " + id + " " + code);
+            //System.out.println("BottomSelected " + id + " " + code);
             tv_desk_room_name.setText(code);
         } else if (desk.equals(AppConstants.CAR_PARKING)) {
             carSelectedName.setText(code);
             selectedCarId = id;
-            System.out.println("CarSelectedName " + id + " " + code);
+            //System.out.println("CarSelectedName " + id + " " + code);
         }
 
     }
@@ -9832,10 +9832,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         getUserContactDetails(name);
 
         //binding.locateMyTeamList.set
-        binding.myTeamHeader.setVisibility(View.GONE);
-        binding.myTeamContactBlock.setVisibility(View.VISIBLE);
+        //binding.myTeamHeader.setVisibility(View.GONE);
+        //binding.myTeamContactBlock.setVisibility(View.VISIBLE);
 
-        binding.bookNearByBlock.setVisibility(View.VISIBLE);
+        //binding.bookNearByBlock.setVisibility(View.VISIBLE);
 
         //myteamBottomSheetBehavior.setPeekHeight(600);
 
@@ -9902,19 +9902,17 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
                 if (selectedFloorId == parentId) {
 
+                    binding.myTeamHeader.setVisibility(View.GONE);
 
-
-
-                    byte[] decodedString = Base64.decode(profileImage, Base64.DEFAULT);
-                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    //make visible contact and book near by block
+                    binding.myTeamContactBlock.setVisibility(View.VISIBLE);
+                    binding.bookNearByBlock.setVisibility(View.VISIBLE);
 
                     Glide.with(getContext())
                             .load(profileImage)
                             .placeholder(R.drawable.avatar)
                             .into(binding.locateMyTeamProfile);
 
-                    //binding.locateMyTeamProfile.setImageDrawable(profileImage);
-                    //binding.locateMyTeamProfile.setImageBitmap(decodedByte);
                     binding.locateMyTeamUserName.setText(name);
                     binding.tvLocateMyTeamLocationView.setText(calendarEntry.getBooking().getLocationBuildingFloor().getBuildingName() + "," + calendarEntry.getBooking().getLocationBuildingFloor().getfLoorName());
                     binding.locateMyTeamDeskName.setText(calendarEntry.getBooking().getDeskCode());
@@ -10074,7 +10072,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                         if (deskId == locateCountryResposeList.get(i).getLocationItemLayout().getDesks().get(j).getDesksId()) {
                             SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
-                            System.out.println("SelectedFloorPositionInLocate " + i);
+                            //System.out.println("SelectedFloorPositionInLocate " + i);
 
                             //used to check default location
                             defaultLocationcheck = 1;
@@ -10170,7 +10168,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                             List<String> coordinateList = new ArrayList<>();
                                             coordinateList = locateCountryResposeList.get(getSelectTeamFloorPosition).getItems().get(key);
 
-                                            System.out.println("CoordinatesSlected " + coordinateList.get(0) + " " + coordinateList.get(1));
+                                            //System.out.println("CoordinatesSlected " + coordinateList.get(0) + " " + coordinateList.get(1));
 
                                             relativeLayout.leftMargin = Integer.parseInt(coordinateList.get(0))+10;
                                             relativeLayout.topMargin = Integer.parseInt(coordinateList.get(1))+7;
@@ -10268,9 +10266,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     if (locationItemLayout.getDesks().get(i).getDesksId() == deskStatusModelList.get(j).getId()) {
                         if (deskStatusModelList.get(j).getStatus() == 1) {
                             selctedCode = locationItemLayout.getDesks().get(i).getDeskCode();
-                            System.out.println("BookNearBy " + deskStatusModelList.get(j).getId());
+                            //System.out.println("BookNearBy " + deskStatusModelList.get(j).getId());
                             checkStatus = false;
-                            System.out.println("AvaliableAllDesk " + deskStatusModelList.get(j).getKey() + " " + deskStatusModelList.get(j).getId() + " " + deskStatusModelList.get(j).getStatus() + " " + deskStatusModelList.get(j).getCode());
+                            //System.out.println("AvaliableAllDesk " + deskStatusModelList.get(j).getKey() + " " + deskStatusModelList.get(j).getId() + " " + deskStatusModelList.get(j).getStatus() + " " + deskStatusModelList.get(j).getCode());
                             //77_3 77 1 3
 
                             //callDeskBookingnBottomSheet(selctedCode, key, id, code, 0, 0, 1);

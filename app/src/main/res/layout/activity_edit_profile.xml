@@ -533,7 +533,7 @@
                     android:id="@+id/editDefaultLocaton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="4oth Bank Street"
+                    android:hint="Choose Location"
                     android:focusable="false"
                     android:background="@drawable/edittext_bg"
                     android:padding="@dimen/_7sdp"
