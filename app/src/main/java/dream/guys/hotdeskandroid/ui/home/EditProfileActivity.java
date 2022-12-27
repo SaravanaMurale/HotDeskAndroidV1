@@ -49,6 +49,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.ByteArrayOutputStream;
@@ -172,12 +173,10 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.tvUpdateImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-/*
                 if (Utils.checkCameraPermission(EditProfileActivity.this))
                     CropImage.activity()
                             .setGuidelines(CropImageView.Guidelines.ON)
                             .start(EditProfileActivity.this);
-*/
 
                 selectImage();
             }
@@ -356,8 +355,15 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.editDeskChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (binding.editDesk.getText().toString() != null)
-                    getDeskName(binding.editDesk.getText().toString());
+                int teamId = SessionHandler.getInstance().getInt(EditProfileActivity.this, AppConstants.TEAM_ID);
+                if (teamId <= 0) {
+                    Utils.toastMessage(EditProfileActivity.this, "Not assigned to a team.Please contact administrator!");
+                }else{
+                    if (binding.editDesk.getText().toString() != null)
+                        getDeskName(binding.editDesk.getText().toString());
+                }
+
+
             }
         });
 
@@ -565,11 +571,15 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         binding.editParkChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Intent intent = new Intent(EditProfileActivity.this, DefaultLocationActivity.class);
-                intent.putExtra(AppConstants.FROM, AppConstants.ParkingLocation);
-                resultLauncher.launch(intent);
-                //startActivity(intent);
+                int teamId = SessionHandler.getInstance().getInt(EditProfileActivity.this, AppConstants.TEAM_ID);
+                if (teamId <= 0) {
+                    Utils.toastMessage(EditProfileActivity.this, "Not assigned to a team.Please contact administrator!");
+                }else {
+                    Intent intent = new Intent(EditProfileActivity.this, DefaultLocationActivity.class);
+                    intent.putExtra(AppConstants.FROM, AppConstants.ParkingLocation);
+                    resultLauncher.launch(intent);
+                    //startActivity(intent);
+                }
             }
         });
 
@@ -622,6 +632,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         profileData.setPhoneNumber(phone);
         profileData.setDeskPhoneNumber(deskPhone);
         profileData.setEmail(email);
+        if(profileData.getCurrentTeam()!= null)
         profileData.getCurrentTeam().setCurrentTeamName(teams);
         profileData.setWorkHoursFrom("2000-01-01T" + startTime + ":00.000Z");
         profileData.setWorkHoursTo("2000-01-01T" + endTime + ":00.000Z");
@@ -642,7 +653,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                 public void onResponse(Call<BookingListResponse> call, Response<BookingListResponse> response) {
                     if (response.code() == 200) {
                         BookingListResponse bookingListResponse = response.body();
-                        calculateSchedule(bookingListResponse);
+                        //calculateSchedule(bookingListResponse);
                     } else if (response.code() == 401) {
                         //Handle if token got expired
                         SessionHandler.getInstance().saveBoolean(EditProfileActivity.this, AppConstants.LOGIN_CHECK, false);
@@ -1310,18 +1321,19 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         });
 
         List<DefaultAssetResponse> defaultAssetResponseList = new ArrayList<>();
-        for (int i = 0; i < teamDeskResponseList.size(); i++) {
-            DefaultAssetResponse defaultAssetResponse = new DefaultAssetResponse(teamDeskResponseList.get(i).getId(),
-                    teamDeskResponseList.get(i).getDeskId(), teamDeskResponseList.get(i).getTeamId(),
-                    teamDeskResponseList.get(i).getDesk().getCode());
-            defaultAssetResponseList.add(defaultAssetResponse);
+        if(teamDeskResponseList != null) {
+            for (int i = 0; i < teamDeskResponseList.size(); i++) {
+                DefaultAssetResponse defaultAssetResponse = new DefaultAssetResponse(teamDeskResponseList.get(i).getId(),
+                        teamDeskResponseList.get(i).getDeskId(), teamDeskResponseList.get(i).getTeamId(),
+                        teamDeskResponseList.get(i).getDesk().getCode());
+                defaultAssetResponseList.add(defaultAssetResponse);
 
+            }
+
+            editDefaultAssetAdapter = new EditDefaultAssetAdapter(EditProfileActivity.this, defaultAssetResponseList,
+                    bottomSheetDialog, this, selectedItem);
+            rvDeskRecycler.setAdapter(editDefaultAssetAdapter);
         }
-
-        editDefaultAssetAdapter = new EditDefaultAssetAdapter(EditProfileActivity.this, defaultAssetResponseList,
-                bottomSheetDialog, this, selectedItem);
-        rvDeskRecycler.setAdapter(editDefaultAssetAdapter);
-
         bottomSheetDialog.show();
 
     }

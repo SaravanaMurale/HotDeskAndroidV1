@@ -63,6 +63,7 @@
                         android:padding="@dimen/_5sdp">
 
                         <ImageView
+                            android:id="@+id/ivCovid"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
                             android:layout_marginRight="@dimen/_10sdp"
