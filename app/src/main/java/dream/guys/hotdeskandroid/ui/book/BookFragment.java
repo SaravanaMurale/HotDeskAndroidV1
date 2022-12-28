@@ -1750,7 +1750,7 @@ public class BookFragment extends Fragment implements
         View view = View.inflate(getContext(), R.layout.dialog_calendar_edit_booking_bottomsheet, null);
         bookEditBottomSheet.setContentView(view);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
-        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+//        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
         rvCarEditList = bookEditBottomSheet.findViewById(R.id.rvEditList);
@@ -1899,7 +1899,7 @@ public class BookFragment extends Fragment implements
         View view = View.inflate(getContext(), R.layout.dialog_calendar_edit_booking_bottomsheet, null);
         bookEditBottomSheet.setContentView(view);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
-        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+//        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
 
@@ -2112,9 +2112,11 @@ public class BookFragment extends Fragment implements
                                     for (int x=0; x<allMeetingRoomList.get(i).getTeams().size(); x++){
                                         if(allMeetingRoomList.get(i).getTeams().get(x).getId() == myTeamId){
                                             editDeskBookingDetails.setMeetingRoomStatus(1);
+                                            isMeetingRequest=false;
                                             break team;
                                         } else {
                                             editDeskBookingDetails.setMeetingRoomStatus(2);
+                                            isMeetingRequest=true;
                                         }
                                     }
                                     manager:
@@ -2122,11 +2124,14 @@ public class BookFragment extends Fragment implements
                                         if(allMeetingRoomList.get(i).getManagers().get(x).getId()
                                                 == SessionHandler.getInstance().getInt(context,AppConstants.USER_ID)){
                                             editDeskBookingDetails.setMeetingRoomStatus(1);
+                                            isMeetingRequest=false;
                                             break manager;
                                         }
                                     }
-                                    if(allMeetingRoomList.get(i).getAutomaticApprovalStatus()==2)
+                                    if(allMeetingRoomList.get(i).getAutomaticApprovalStatus()==2){
                                         editDeskBookingDetails.setMeetingRoomStatus(1);
+                                        isMeetingRequest=false;
+                                    }
 
 
                                     if (allMeetingRoomList.get(i).getAmenities()!=null){
@@ -2336,7 +2341,7 @@ public class BookFragment extends Fragment implements
         View view = View.inflate(getContext(), R.layout.dialog_calendar_edit_booking_bottomsheet, null);
         bookEditBottomSheet.setContentView(view);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
-        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+//        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
 
@@ -2596,7 +2601,7 @@ public class BookFragment extends Fragment implements
         View view = View.inflate(getContext(), R.layout.dialog_calendar_bottom_sheet_edit_booking, null);
         roomBottomSheet.setContentView(view);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
-        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+//        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
         //Language
@@ -3219,13 +3224,11 @@ public class BookFragment extends Fragment implements
 
                 if (selectedicon==2 && newEditStatus.equalsIgnoreCase("new")) {
                     if (editDeskBookingDetails.getMeetingRoomStatus() == 2) {
-                        isMeetingRequest = true;
                         callMeetingRoomBookingBottomSheet(editDeskBookingDetails,
                                 startTime, endTime, selectedDeskId,
                                 deskRoomName.getText().toString(), isMeetingRequest,
                                 editDeskBookingDetails.getCalId(), newEditStatus);
                     } else {
-                        isMeetingRequest = false;
                         callMeetingRoomBookingBottomSheet(editDeskBookingDetails,
                                 startTime, endTime, selectedDeskId,
                                 deskRoomName.getText().toString(), isMeetingRequest,
@@ -3233,13 +3236,11 @@ public class BookFragment extends Fragment implements
                     }
                 } else if (selectedicon==2) {
                     if (newEditStatus.equalsIgnoreCase("request")) {
-                        isMeetingRequest=true;
                         callMeetingRoomBookingBottomSheet(editDeskBookingDetails,
                                 startTime,
                                 endTime,
                                 selectedDeskId, deskRoomName.getText().toString(), isMeetingRequest, editDeskBookingDetails.getCalId(), newEditStatus);
                     } else if(newEditStatus.equalsIgnoreCase("edit")){
-                        isMeetingRequest = true;
                         if(editDeskBookingDetails.getMeetingRoomBookingType().equalsIgnoreCase("req")) {
                             callMeetingRoomBookingBottomSheet(editDeskBookingDetails,
                                     startTime,
@@ -3247,7 +3248,6 @@ public class BookFragment extends Fragment implements
                                     selectedDeskId, deskRoomName.getText().toString(), isMeetingRequest, editDeskBookingDetails.getCalId(), newEditStatus);
                         }
                         else {
-                            isMeetingRequest = false;
                             callMeetingRoomBookingBottomSheet(editDeskBookingDetails,
                                     startTime,
                                     endTime,
@@ -4375,7 +4375,7 @@ public class BookFragment extends Fragment implements
         View view = View.inflate(getContext(), R.layout.dialog_bottom_sheet_edit_select_desk_new, null);
         deskListBottomSheet.setContentView(view);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
-        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+//        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
 
@@ -4529,7 +4529,7 @@ public class BookFragment extends Fragment implements
         View view = View.inflate(getContext(), R.layout.dialog_bottom_sheet_edit_select_desk, null);
         bottomSheetDialog.setContentView(view);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
-        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+//        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
 
@@ -5012,6 +5012,13 @@ public class BookFragment extends Fragment implements
         editDeskBookingDetails.setVehicleRegNumber(carParkBooking.getVehicleRegNumber());
         editDeskBookingDetails.setParkingSlotCode(carParkBooking.getParkingSlotName());
 
+        EditBookingDetails.Status status = new EditBookingDetails.Status();
+        status.setBookingType(carParkBooking.getStatus().getBookingType());
+        status.setBookingStatus(carParkBooking.getStatus().getBookingStatus());
+        status.setTimeStatus(carParkBooking.getStatus().getTimeStatus());
+        status.setToday(carParkBooking.getStatus().isToday());
+        editDeskBookingDetails.setStatus(status);
+
 
         EditCarParkController editCarParkController = new EditCarParkController(activityContext, context,
                 editDeskBookingDetails,AppConstants.BOOKFRAGMENTINSTANCESTRING,calSelectedDate);
@@ -5144,7 +5151,7 @@ public class BookFragment extends Fragment implements
         View view = View.inflate(getContext(), R.layout.dialog_bottom_sheet_room_participant_booking, null);
         bottomSheetDialog.setContentView(view);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
-        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+//        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
 
@@ -7497,7 +7504,7 @@ public class BookFragment extends Fragment implements
         View view = View.inflate(getContext(), R.layout.dialog_bottom_sheet_locate_filter, null);
         bottomSheetDialog.setContentView(view);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
-        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+//        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
         RelativeLayout layout = bottomSheetDialog.findViewById(R.id.amenitiesViewBlock);

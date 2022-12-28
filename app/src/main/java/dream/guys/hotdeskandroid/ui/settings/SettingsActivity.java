@@ -108,8 +108,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         try {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-//            String version = pInfo.versionName+"("+pInfo.versionCode+")";
-            String version = pInfo.versionName;
+            String version = pInfo.versionName+" ("+pInfo.versionCode+")";
+//            String version = pInfo.versionName;
             //int num = pInfo.versionCode;
              binding.helpIcon.setText("Version " + String.valueOf(version));
 //            binding.helpIcon.setText(String.valueOf(version));
@@ -598,13 +598,13 @@ public class SettingsActivity extends AppCompatActivity {
             binding.tvDarkMode.setText(wellBeingPage.getDarkMode());
             binding.tvPhone.setText(wellBeingPage.getWhatsnew());
             binding.tvDesk.setText(wellBeingPage.getFeedback());
-            binding.tvPreference.setText(wellBeingPage.getPreference()+"s");
+            binding.tvPreference.setText(wellBeingPage.getPreference());
             binding.tvLang.setText(wellBeingPage.getLanguage());
             binding.tvNoti.setText(wellBeingPage.getNotifications());
             binding.tvApp.setText(wellBeingPage.getApp());
             binding.tvPin.setText(wellBeingPage.getSetUpPin());
             binding.tvBio.setText(wellBeingPage.getSetUpBiometric());
-            binding.tvReset.setText(wellBeingPage.getResetPassword()+"s");
+            binding.tvReset.setText(wellBeingPage.getResetPassword());
             binding.tvReport.setText(wellBeingPage.getHelp());
             binding.tvHelp.setText(wellBeingPage.getAbout());
             binding.tvLogout.setText(wellBeingPage.getLogOut());

@@ -235,6 +235,17 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
                                             editDeskBookingDetails.setMeetingRoomStatus(2);
                                         }
                                     }
+                                    manager:
+                                    for (int x=0; x<allMeetingRoomList.get(i).getManagers().size(); x++){
+                                        if(allMeetingRoomList.get(i).getManagers().get(x).getId()
+                                                == SessionHandler.getInstance().getInt(context,AppConstants.USER_ID)){
+                                            editDeskBookingDetails.setMeetingRoomStatus(1);
+                                            break manager;
+                                        }
+                                    }
+                                    if(allMeetingRoomList.get(i).getAutomaticApprovalStatus()==2)
+                                        editDeskBookingDetails.setMeetingRoomStatus(1);
+
                                     if (allMeetingRoomList.get(i).getAmenities()!=null){
                                         for (int j=0;j<allMeetingRoomList.get(i).getAmenities().size();j++){
                                             amenitiesIntList.add(allMeetingRoomList.get(i).getAmenities().get(j).getId());

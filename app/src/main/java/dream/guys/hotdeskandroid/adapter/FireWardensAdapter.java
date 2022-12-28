@@ -57,10 +57,16 @@ public class FireWardensAdapter extends RecyclerView.Adapter<FireWardensAdapter.
 
         holder.firewandensName.setText(firstAidResponseList.get(position).getFullName());
 
-        Glide.with(context)
+        if(description.equalsIgnoreCase("Firewardenss"))
+            Glide.with(context)
                 .load(R.drawable.fire)
                 .placeholder(R.drawable.fire)
                 .into(holder.firewardensImage);
+        else
+            Glide.with(context)
+                    .load(R.drawable.plus)
+                    .placeholder(R.drawable.plus)
+                    .into(holder.firewardensImage);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

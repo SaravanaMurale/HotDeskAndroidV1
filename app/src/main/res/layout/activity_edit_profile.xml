@@ -579,7 +579,7 @@
                         android:id="@+id/editDesk"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Desk-001"
+                        tools:text="Desk-001"
                         android:textColor="@color/black"
 
                         />
@@ -616,7 +616,7 @@
                         android:id="@+id/editPark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Space-001"
+                        tools:text="Space-001"
                         android:textColor="@color/black"
 
                         />

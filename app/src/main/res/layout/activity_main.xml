@@ -46,8 +46,9 @@
 
                 <EditText
                     android:id="@+id/serach_bar"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_alignLeft="@id/close"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@id/close"
@@ -59,13 +60,13 @@
 
                 <ImageView
                     android:id="@+id/close"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:src="@drawable/close_circle"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     />
             </RelativeLayout>
 

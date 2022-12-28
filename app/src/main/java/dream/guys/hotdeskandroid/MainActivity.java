@@ -225,6 +225,7 @@ public class MainActivity extends AppCompatActivity implements
         binding.close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                binding.serachBar.setText("");
                 binding.serachBar.clearComposingText();
                 binding.searchLayout.setVisibility(View.GONE);
             }
@@ -1304,6 +1305,7 @@ public class MainActivity extends AppCompatActivity implements
         binding.serachBar.requestFocus();
         Utils.openKeyBoard(MainActivity.this,binding.serachBar);
         binding.searchLayout.setVisibility(View.VISIBLE);
+        binding.serachBar.setSelected(true);
     }
 
     private void nightModeConfig() {
