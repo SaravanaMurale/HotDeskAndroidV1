@@ -602,9 +602,9 @@ public class SettingsActivity extends AppCompatActivity {
             binding.tvLang.setText(wellBeingPage.getLanguage());
             binding.tvNoti.setText(wellBeingPage.getNotifications());
             binding.tvApp.setText(wellBeingPage.getApp());
-            //binding.tvPin.setText(wellBeingPage.getSetUpPin());
+            binding.tvPin.setText(wellBeingPage.getSetUpPin());
             binding.tvBio.setText(wellBeingPage.getSetUpBiometric());
-          //  binding.tvReset.setText(wellBeingPage.getResetPassword()+"s");
+            binding.tvReset.setText(wellBeingPage.getResetPassword()+"s");
             binding.tvReport.setText(wellBeingPage.getHelp());
             binding.tvHelp.setText(wellBeingPage.getAbout());
             binding.tvLogout.setText(wellBeingPage.getLogOut());

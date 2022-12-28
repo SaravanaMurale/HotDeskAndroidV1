@@ -42,6 +42,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CalendarView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -2738,6 +2739,12 @@ public class Utils {
         ss1.setSpan(new RelativeSizeSpan(0.8f), start,end, 0);// set size
         //ss1.setSpan(new ForegroundColorSpan(Color.RED), 0, 5, 0);// set color
         textView.setHint(ss1);
+    }
+
+    public static void openKeyBoard(Context context, EditText editText){
+        InputMethodManager imm = (InputMethodManager) context.getSystemService
+                (Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
 
 

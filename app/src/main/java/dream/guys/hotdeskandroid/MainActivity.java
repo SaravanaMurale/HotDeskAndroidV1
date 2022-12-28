@@ -1300,6 +1300,9 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void showSearch() {
+        binding.serachBar.setText("");
+        binding.serachBar.requestFocus();
+        Utils.openKeyBoard(MainActivity.this,binding.serachBar);
         binding.searchLayout.setVisibility(View.VISIBLE);
     }
 

@@ -690,7 +690,9 @@ public class WellbeingFragment extends Fragment {
             //New...
             binding.title.setText(wellBeingPage.getTabTitle());
             binding.txtHealthsaf.setText(appKeysPage.getHealthAndSafety());
+            binding.txtMenu.setText(appKeysPage.getMenu());
             binding.tvHealthTips.setText(appKeysPage.getHealthTips());
+            binding.tvMenu.setText(appKeysPage.getMenu());
             binding.firewar.setText(appKeysPage.getFireWardens());
             binding.fireaid.setText(appKeysPage.getFirstAid());
             binding.mentalHealth.setText(appKeysPage.getMentalHealth());

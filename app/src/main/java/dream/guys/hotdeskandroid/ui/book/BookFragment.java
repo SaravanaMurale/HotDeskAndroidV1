@@ -943,15 +943,15 @@ public class BookFragment extends Fragment implements
         switch (i) {
             case 1:
                 if (selectedicon==4)
-                    binding.profileBack.setText("Working Remotely");
+                    binding.profileBack.setText(appKeysPage.getWorkingRemotely());
                 else if (selectedicon==5)
-                    binding.profileBack.setText("Log sickness");
+                    binding.profileBack.setText(appKeysPage.getLogSickness());
                 else if (selectedicon==6)
-                    binding.profileBack.setText("Book holiday");
+                    binding.profileBack.setText(appKeysPage.getBookHoliday());
                 else if (selectedicon==7)
-                    binding.profileBack.setText("Book training");
+                    binding.profileBack.setText(appKeysPage.getBookTraining());
                 else
-                    binding.profileBack.setText("Book a workspace");
+                    binding.profileBack.setText(appKeysPage.getBookWorkSpace());
 
                 if (selectedicon>3){
                     binding.searchGlobal.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.line_gray));
@@ -991,7 +991,7 @@ public class BookFragment extends Fragment implements
                 }
                 break;
             case 2:
-                binding.profileBack.setText("Book a Room");
+                binding.profileBack.setText(appKeysPage.getBookRoom());
                 binding.searchGlobal.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBackground));
                 binding.rlTime.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
 
@@ -1076,15 +1076,15 @@ public class BookFragment extends Fragment implements
                 break;
             default:
                 if (selectedicon==4)
-                    binding.profileBack.setText("Working Remotely");
+                    binding.profileBack.setText(appKeysPage.getWorkingRemotely());
                 else if (selectedicon==5)
-                    binding.profileBack.setText("Log sickness");
+                    binding.profileBack.setText(appKeysPage.getLogSickness());
                 else if (selectedicon==6)
-                    binding.profileBack.setText("Book holiday");
+                    binding.profileBack.setText(appKeysPage.getBookHoliday());
                 else if (selectedicon==7)
-                    binding.profileBack.setText("Book training");
+                    binding.profileBack.setText(appKeysPage.getBookTraining());
                 else
-                    binding.profileBack.setText("Book a workspace");
+                    binding.profileBack.setText(appKeysPage.getBookWorkSpace());
 
                 binding.rlTime.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
                 binding.deskLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
@@ -1927,7 +1927,7 @@ public class BookFragment extends Fragment implements
             tvActive.setText("No active bookings");
         }
 
-        bookingName.setText("Book a room");
+        bookingName.setText(appKeysPage.getBookRoom());
         editClose.setText("Cancel");
 
 
@@ -2369,9 +2369,9 @@ public class BookFragment extends Fragment implements
         }
 
         if (code.equals("3")) {
-            bookingName.setText("Book a workspace");
+            bookingName.setText(appKeysPage.getBookWorkSpace());
         }else if (code.equals("5")) {
-            bookingName.setText("Book a room");
+            bookingName.setText(appKeysPage.getBookRoom());
         }else if (code.equals("7")) {
             bookingName.setText("Book parking");
         }
@@ -2830,7 +2830,7 @@ public class BookFragment extends Fragment implements
             selectedDeskId=editDeskBookingDetails.getDesktId();
             if(newEditStatus.equalsIgnoreCase("new") || newEditStatus.equalsIgnoreCase("new_deep_link")
                     || newEditStatus.equalsIgnoreCase("request")) {
-                title.setText("Book a workspace");
+                title.setText(appKeysPage.getBookWorkSpace());
                 continueEditBook.setText("Book");
                 back.setText("Close");
             } else {
@@ -2904,7 +2904,7 @@ public class BookFragment extends Fragment implements
             }
             if(newEditStatus.equalsIgnoreCase("new") || newEditStatus.equalsIgnoreCase("new_deep_link")
                     || newEditStatus.equalsIgnoreCase("request")){
-                title.setText("Book a room");
+                title.setText(appKeysPage.getBookRoom());
                 continueEditBook.setText("Continue");
                 back.setText("Cancel");
             } else {
@@ -4408,7 +4408,7 @@ public class BookFragment extends Fragment implements
                     deskListBottomSheet,allMeetingRoomList,Utils.checkStringParms(deskRoomName.getText().toString()));
             rvDeskRecycler.setAdapter(roomListRecyclerAdapter);
         }else {
-            selectDesk.setText("Book a workspace");
+            selectDesk.setText(appKeysPage.getBookWorkSpace());
             tvTeamName.setText(selectedTeamName);
             if (newEditStatus.equalsIgnoreCase("edit")){
                 if (editBookingDetails.getUsageTypeId()==2){
@@ -4561,7 +4561,7 @@ public class BookFragment extends Fragment implements
                     Utils.checkStringParms(deskRoomName.getText().toString()));
             rvDeskRecycler.setAdapter(parkingSpotListRecyclerAdapter);
         }else if (selectedicon==2) {
-            selectDesk.setText("Book a room");
+            selectDesk.setText(appKeysPage.getBookRoom());
             tvCapacityFilter.setVisibility(View.VISIBLE);
             linera.setVisibility(View.VISIBLE);
 
@@ -4570,7 +4570,7 @@ public class BookFragment extends Fragment implements
                     getContext(),bottomSheetDialog,allMeetingRoomList,Utils.checkStringParms(deskRoomName.getText().toString()));
             rvDeskRecycler.setAdapter(roomListRecyclerAdapter);
         }else {
-            selectDesk.setText("Book a workspace");
+            selectDesk.setText(appKeysPage.getBookWorkSpace());
             deskListRecyclerAdapter =new DeskListRecyclerAdapter(getContext(),this,
                     getActivity(),bookingForEditResponseDesk,getContext(),bottomSheetDialog);
             rvDeskRecycler.setAdapter(deskListRecyclerAdapter);
@@ -7763,6 +7763,7 @@ public class BookFragment extends Fragment implements
         //System.out.println("lang check" + binding.tvStartLocate);
         binding.tvStartLocate.setText(appKeysPage.getStart());
         binding.tvLocateEndTime.setText(appKeysPage.getEnd());
+        binding.profileBack.setText(appKeysPage.getBookWorkSpace());
 
 
     }
@@ -8034,31 +8035,31 @@ public class BookFragment extends Fragment implements
             assertModel.setId(i);
             switch (i){
                 case 1:
-                    assertModel.setAssertName("Workspace");
+                    assertModel.setAssertName(appKeysPage.getWorkSpace());
                     assertModel.setImage(R.drawable.chair);
                     break;
                 case 2:
-                    assertModel.setAssertName("Room");
+                    assertModel.setAssertName(appKeysPage.getRoom());
                     assertModel.setImage(R.drawable.room);
                     break;
                 case 3:
-                    assertModel.setAssertName("Parking");
+                    assertModel.setAssertName(appKeysPage.getParking());
                     assertModel.setImage(R.drawable.car);
                     break;
                 case 4:
-                    assertModel.setAssertName("Remote");
+                    assertModel.setAssertName(appKeysPage.getRemote());
                     assertModel.setImage(R.drawable.home);
                     break;
                 case 5:
-                    assertModel.setAssertName("Sick");
+                    assertModel.setAssertName(appKeysPage.getSick());
                     assertModel.setImage(R.drawable.sick_plus);
                     break;
                 case 6:
-                    assertModel.setAssertName("Holiday");
+                    assertModel.setAssertName(appKeysPage.getHoliday());
                     assertModel.setImage(R.drawable.plane);
                     break;
                 case 7:
-                    assertModel.setAssertName("Training");
+                    assertModel.setAssertName(appKeysPage.getTrainingStr());
                     assertModel.setImage(R.drawable.training_book);
                     break;
                 default:
