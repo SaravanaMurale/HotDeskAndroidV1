@@ -733,7 +733,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         binding.rvLocateMyTeam.setLayoutManager(linearLayoutManager);
         binding.rvLocateMyTeam.setHasFixedSize(true);*/
 
-
+        if (locateMyTeamMemberStatusList!=null && locateMyTeamMemberStatusList.size()>0) {
+            locateMyTeamMemberStatusList.clear();
+        }
         locateMyTeamMemberStatusList = new ArrayList<>();
         for (int i = 0; i < daoTeamMemberList.size(); i++) {
 
@@ -747,8 +749,24 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     ArrayList<DAOTeamMember.DayGroup.MeetingBooking> meetingEntries = null;
                     ArrayList<DAOTeamMember.DayGroup.CarParkBooking> carParkEntries = null;
 
-                    if (daoTeamMemberList.get(i).getDayGroups().get(0).getCalendarEntries() != null) {
-                        calendarEntries = daoTeamMemberList.get(i).getDayGroups().get(0).getCalendarEntries();
+                    if (daoTeamMemberList.get(i).getDayGroups().get(j).getCalendarEntries() != null && daoTeamMemberList.get(i).getDayGroups().get(j).getCalendarEntries().size()>0) {
+                        calendarEntries = daoTeamMemberList.get(i).getDayGroups().get(j).getCalendarEntries();
+                    }else {
+                        /*DAOTeamMember.DayGroup momdel = new DAOTeamMember.DayGroup();
+                        DAOTeamMember daoTeamMember = new DAOTeamMember();
+                        //daoTeamMember=daoTeamMemberList.get(i);
+                        daoTeamMember.setFirstName(daoTeamMemberList.get(i).getFirstName());
+                        daoTeamMember.setLastName(daoTeamMemberList.get(i).getLastName());
+                        daoTeamMember.setProfileImage(daoTeamMemberList.get(i).getProfileImage());
+
+                        ArrayList<DAOTeamMember.DayGroup> dayGroupList = new ArrayList<>();
+
+
+                        //momdel.setCalendarEntriesModel(calendarEntries.get(k));
+
+                        dayGroupList.add(momdel);
+                        daoTeamMember.setDayGroups(dayGroupList);*/
+                        locateMyTeamMemberStatusList.add(daoTeamMemberList.get(i));
                     }
                     /*if (bookingListResponses.getDayGroups().get(i).getMeetingBookings()!=null){
                         meetingEntries =
@@ -759,7 +777,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 bookingListResponses.getDayGroups().get(i).getCarParkBookings();
                     }*/
 
-                    if (calendarEntries != null) {
+                    if (calendarEntries != null && calendarEntries.size()>0) {
                         for (int k = 0; k < calendarEntries.size(); k++) {
 
                             //if(calendarEntries.get(k).getBooking()!=null) {
@@ -848,7 +866,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         }
 
-        binding.rvLocateMyTeam.setHasFixedSize(true);
+        //binding.rvLocateMyTeam.setHasFixedSize(true);
 
 
         //For FirstAid
