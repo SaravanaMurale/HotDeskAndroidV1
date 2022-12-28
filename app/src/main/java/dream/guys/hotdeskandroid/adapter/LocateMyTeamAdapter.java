@@ -140,7 +140,6 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
                     holder.locateMyTeamLocation.setVisibility(View.VISIBLE);
                     holder.locateMyTeamNameCheckInIcon.setVisibility(View.VISIBLE);
                     holder.locateMyTeamCheckOutIcon.setVisibility(View.VISIBLE);
-
                     holder.locateMyTeamCheckInTime.setText(Utils.splitTime(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel().getFrom()));
                     holder.locateMyTeamCheckOutTime.setText(Utils.splitTime(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel().getMyto()));
 
