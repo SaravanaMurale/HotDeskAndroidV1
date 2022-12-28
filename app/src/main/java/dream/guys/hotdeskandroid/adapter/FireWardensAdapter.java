@@ -32,6 +32,7 @@ public class FireWardensAdapter extends RecyclerView.Adapter<FireWardensAdapter.
 
     public interface ViewPersonDetailCliclable{
         public void  viewPersonClick(FirstAidResponse.Persons persons);
+        public void  loadLocateFromFireWardens();
     }
 
     public FireWardensAdapter(Context context, List<FirstAidResponse.Persons> firstAidResponseList, String description,ViewPersonDetailCliclable viewPersonDetailCliclable) {
@@ -67,9 +68,17 @@ public class FireWardensAdapter extends RecyclerView.Adapter<FireWardensAdapter.
 
                 viewPersonDetailCliclable.viewPersonClick(firstAidResponseList.get(holder.getAbsoluteAdapterPosition()));
 
+            }
+        });
 
 
+        holder.locateMyTeamLocationFireWarden.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                firstAidResponseList.get(holder.getAbsoluteAdapterPosition());
+
+                viewPersonDetailCliclable.loadLocateFromFireWardens();
             }
         });
 
@@ -94,6 +103,10 @@ public class FireWardensAdapter extends RecyclerView.Adapter<FireWardensAdapter.
         TextView firwardensStatus;
         @BindView(R.id.firwardensAddress)
         TextView firwardensAddress;
+
+        @BindView(R.id.locateMyTeamLocation)
+        ImageView locateMyTeamLocationFireWarden;
+
 
         public FireWandensViewHolder(@NonNull View itemView) {
             super(itemView);
