@@ -284,7 +284,7 @@ public class EditBookingDetails {
         this.date = date;
     }
 
-    public class Status {
+    public static class Status {
         public String timeStatus;
         public String bookingStatus;
         public String bookingType;

@@ -738,26 +738,12 @@ public class EditCarParkController {
             @Override
             public void onClick(View v) {
                 if (!startDisabled){
-                    if(dskRoomParkStatus==2){
-                        Utils.bottomSheetTimePickerMeetingRoom(context,
-                                activityContext,startTime,endTime,"Start Time",
-                                Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
-                    } else {
-
-                        if (dskRoomParkStatus == 1
-                                && newEditStatus.equalsIgnoreCase("edit")){
-                            if (editDeskBookingDetails.getUsageTypeId()==2
-                                    && editDeskBookingDetails.getRequestedTeamId()>0) {
-                                Utils.bottomSheetTimePicker24Hrs(context,activityContext,startTime,"Start Time",
-                                        Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
-                            } else {
-
-                                Utils.bottomSheetTimePicker24Hrs(context,activityContext,startTime,"Start Time",
-                                        Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
-                            }
-                        } else
-                            Utils.bottomSheetTimePicker24Hrs(context,activityContext,startTime,"Start Time",
-                                    Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
+                    if(editDeskBookingDetails.getStatus().getBookingType().equalsIgnoreCase("REQ"))
+                        Utils.bottomSheetTimePicker24Hrs(context,activityContext,startTime,"Start Time",
+                            Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
+                    else
+                        Utils.bottomSheetTimePicker24Hrs(context,activityContext,startTime,"Start Time",
+                                Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
 
 /*
                         if (editDeskBookingDetails.getDeskBookingType()!=null
@@ -775,7 +761,7 @@ public class EditCarParkController {
 //                Toast.makeText(context, "fsf"+editDeskBookingDetails.getRequestedTeamDeskId(), Toast.LENGTH_SHORT).show();
 
 //                    Utils.popUpTimePicker(activityContext,startTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
-            }
+
         });
 
         endTime.setOnClickListener(new View.OnClickListener() {

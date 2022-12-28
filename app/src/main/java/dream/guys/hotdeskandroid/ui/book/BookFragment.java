@@ -1750,7 +1750,7 @@ public class BookFragment extends Fragment implements
         View view = View.inflate(getContext(), R.layout.dialog_calendar_edit_booking_bottomsheet, null);
         bookEditBottomSheet.setContentView(view);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
-        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+//        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
         rvCarEditList = bookEditBottomSheet.findViewById(R.id.rvEditList);
@@ -1899,7 +1899,7 @@ public class BookFragment extends Fragment implements
         View view = View.inflate(getContext(), R.layout.dialog_calendar_edit_booking_bottomsheet, null);
         bookEditBottomSheet.setContentView(view);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
-        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+//        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
 
@@ -2336,7 +2336,7 @@ public class BookFragment extends Fragment implements
         View view = View.inflate(getContext(), R.layout.dialog_calendar_edit_booking_bottomsheet, null);
         bookEditBottomSheet.setContentView(view);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
-        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+//        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
 
@@ -2596,7 +2596,7 @@ public class BookFragment extends Fragment implements
         View view = View.inflate(getContext(), R.layout.dialog_calendar_bottom_sheet_edit_booking, null);
         roomBottomSheet.setContentView(view);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
-        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+//        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
         //Language
@@ -4375,7 +4375,7 @@ public class BookFragment extends Fragment implements
         View view = View.inflate(getContext(), R.layout.dialog_bottom_sheet_edit_select_desk_new, null);
         deskListBottomSheet.setContentView(view);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
-        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+//        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
 
@@ -4529,7 +4529,7 @@ public class BookFragment extends Fragment implements
         View view = View.inflate(getContext(), R.layout.dialog_bottom_sheet_edit_select_desk, null);
         bottomSheetDialog.setContentView(view);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
-        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+//        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
 
@@ -5012,6 +5012,13 @@ public class BookFragment extends Fragment implements
         editDeskBookingDetails.setVehicleRegNumber(carParkBooking.getVehicleRegNumber());
         editDeskBookingDetails.setParkingSlotCode(carParkBooking.getParkingSlotName());
 
+        EditBookingDetails.Status status = new EditBookingDetails.Status();
+        status.setBookingType(carParkBooking.getStatus().getBookingType());
+        status.setBookingStatus(carParkBooking.getStatus().getBookingStatus());
+        status.setTimeStatus(carParkBooking.getStatus().getTimeStatus());
+        status.setToday(carParkBooking.getStatus().isToday());
+        editDeskBookingDetails.setStatus(status);
+
 
         EditCarParkController editCarParkController = new EditCarParkController(activityContext, context,
                 editDeskBookingDetails,AppConstants.BOOKFRAGMENTINSTANCESTRING,calSelectedDate);
@@ -5144,7 +5151,7 @@ public class BookFragment extends Fragment implements
         View view = View.inflate(getContext(), R.layout.dialog_bottom_sheet_room_participant_booking, null);
         bottomSheetDialog.setContentView(view);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
-        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+//        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
 
@@ -7497,7 +7504,7 @@ public class BookFragment extends Fragment implements
         View view = View.inflate(getContext(), R.layout.dialog_bottom_sheet_locate_filter, null);
         bottomSheetDialog.setContentView(view);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
-        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+//        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
         RelativeLayout layout = bottomSheetDialog.findViewById(R.id.amenitiesViewBlock);

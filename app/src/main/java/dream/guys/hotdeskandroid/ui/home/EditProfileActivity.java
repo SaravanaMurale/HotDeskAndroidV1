@@ -174,11 +174,13 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             @Override
             public void onClick(View v) {
                 if (Utils.checkCameraPermission(EditProfileActivity.this))
-                    CropImage.activity()
-                            .setGuidelines(CropImageView.Guidelines.ON)
-                            .start(EditProfileActivity.this);
+                    selectImage();
 
-                selectImage();
+
+//                    CropImage.activity()
+//                            .setGuidelines(CropImageView.Guidelines.ON)
+//                            .start(EditProfileActivity.this);
+
             }
         });
         binding.profileEdit.setOnClickListener(new View.OnClickListener() {
@@ -1519,7 +1521,6 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     }
 */
     private void selectImage() {
-
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(EditProfileActivity.this);
         builder.setTitle("Select Photo");
         builder.setItems(items, new DialogInterface.OnClickListener() {

@@ -1542,6 +1542,14 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         editDeskBookingDetails.setVehicleRegNumber(carParkBooking.getVehicleRegNumber());
         editDeskBookingDetails.setParkingSlotCode(carParkBooking.getParkingSlotName());
 
+        EditBookingDetails.Status status = new EditBookingDetails.Status();
+        status.setBookingType(carParkBooking.getStatus().getBookingType());
+        status.setBookingStatus(carParkBooking.getStatus().getBookingStatus());
+        status.setTimeStatus(carParkBooking.getStatus().getTimeStatus());
+        status.setToday(carParkBooking.getStatus().isToday());
+        editDeskBookingDetails.setStatus(status);
+
+
 
         EditCarParkController editCarParkController = new EditCarParkController(activityContext, context,
                 editDeskBookingDetails,AppConstants.HOMEFRAGMENTINSTANCESTRING,
