@@ -84,9 +84,11 @@
                 android:layout_height="@dimen/_18sdp"
                 android:layout_below="@+id/firewandensName"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:src="@drawable/blue_location" />
+                android:layout_marginRight="@dimen/_5sdp"
+                android:src="@drawable/blue_location"
+                android:visibility="gone"
+                />
 
 
 

@@ -184,6 +184,11 @@ public class FireWardensActivity extends AppCompatActivity implements FireWarden
 
     }
 
+    @Override
+    public void loadLocateFromFireWardens() {
+
+    }
+
     private void setLanguage() {
         wellBeingPage = getWellBeingScreenData(this);
         appKeysPage = getAppKeysPageScreenData(this);

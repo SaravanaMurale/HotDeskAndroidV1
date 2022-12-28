@@ -1721,15 +1721,20 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                     int x = getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(j).get(0);
                                     int y = getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(j).get(1);
 
-                                    Point point = new Point(x + 40, y + 40);
+                                    Point point = new Point(x + 40, y+20 );
                                     pointList.add(point);
                                 }
 
-                                addDottedLine(pointList);
+                                if(pointList!=null && pointList.size()>0) {
+                                    addDottedLine(pointList);
+                                }
 
                                 //To Write Title
-                                //toWriteTitle(xCoordinatesList,yCoordinatesList,getSupportZoneLayoutForCanvas.get(i).getTitle());
 
+                                if(xCoordinatesList!=null && xCoordinatesList.size()>0 && yCoordinatesList!=null && yCoordinatesList.size()>0) {
+                                    toWriteTitle(xCoordinatesList, yCoordinatesList, getSupportZoneLayoutForCanvas.get(i).getTitle(), getSupportZoneLayoutForCanvas.get(i).getFontSize());
+
+                                }
 
 
                             }
@@ -1830,7 +1835,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }
     }
 
-    private void toWriteTitle(List<Integer> xCoordinatesList, List<Integer> yCoordinatesList, String title) {
+    private void toWriteTitle(List<Integer> xCoordinatesList, List<Integer> yCoordinatesList, String title,int fontSize) {
 
         Collections.sort(xCoordinatesList);
         Collections.sort(yCoordinatesList);
@@ -1848,10 +1853,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         int titleX=xCoordinatesList.get(xCoordinatesList.size()-1)-xCoordinatesList.get(0);
         int titleY=yCoordinatesList.get(yCoordinatesList.size()-1)-yCoordinatesList.get(0);
 
-        System.out.println("BefireFinalXAndYTitleCoor "+titleX+" "+titleY);
+        //System.out.println("BefireFinalXAndYTitleCoor "+titleX+" "+titleY);
 
         int xxx=titleX/2;
-        int yyy=(titleY/2)+40;
+        int yyy=titleY/2;
 
         View roomTitleView = getLayoutInflater().inflate(R.layout.layout_room_title, null, false);
         TextView roormTitle = roomTitleView.findViewById(R.id.roomTileCanvas);
@@ -1860,18 +1865,22 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
 
-        System.out.println("FinalXAndYTitleCoor "+xxx+" "+yyy);
+        //System.out.println("FinalXAndYTitleCoor "+xxx+" "+yyy);
 
-        relativeLayout.leftMargin=xxx;
-        relativeLayout.topMargin=yyy;
+        relativeLayout.leftMargin=xxx+xCoordinatesList.get(0);
+        relativeLayout.topMargin=yyy+yCoordinatesList.get(0);
 
+        //System.out.println("AfterFinalXAndYTitleCoor "+xxx+" "+yyy);
 
-
-        relativeLayout.width = 60;
-        relativeLayout.height = 60;
+        relativeLayout.width = 100;
+        relativeLayout.height = 100;
+        //roormTitle.setTextSize(fontSize);
         roormTitle.setText(title);
         roormTitle.setLayoutParams(relativeLayout);
         binding.firstLayout.addView(roomTitleView);
+
+        xCoordinatesList.clear();
+        yCoordinatesList.clear();
 
     }
 
