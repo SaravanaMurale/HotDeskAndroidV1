@@ -4414,10 +4414,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                             //If start time greater than end time means need to add 30 min in end time
                             if (workHour > workHourEnd) {
-                                endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
+                                endTRoomime.setText(Utils.setMeetingRoundOfValue8thTime(startRoomTime.getText().toString()));
                             }else if(workHour == workHourEnd) {
                                 if(workMinute>workMinuteEnd){
-                                    endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
+                                    endTRoomime.setText(Utils.setMeetingRoundOfValue8thTime(startRoomTime.getText().toString()));
                                 }
                             }
 
@@ -4435,10 +4435,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                         //If start time greater than end time means need to add 30 min in end time
                         if (workHour > workHourEnd) {
-                            endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
+                            endTRoomime.setText(Utils.setMeetingRoundOfValue8thTime(startRoomTime.getText().toString()));
                         }else if(workHour == workHourEnd) {
                             if(workMinute>workMinuteEnd){
-                                endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
+                                endTRoomime.setText(Utils.setMeetingRoundOfValue8thTime(startRoomTime.getText().toString()));
                             }
                         }
 
