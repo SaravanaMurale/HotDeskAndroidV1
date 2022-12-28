@@ -87,8 +87,8 @@ public class WellbeingFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentWellbeingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        getWellBeingConfigData();
-        //checkTeamsCheckBox();
+//        getWellBeingConfigData();
+        checkTeamsCheckBox();
 
         binding.healthTipsBlock.setOnClickListener(new View.OnClickListener() {
             @Override
