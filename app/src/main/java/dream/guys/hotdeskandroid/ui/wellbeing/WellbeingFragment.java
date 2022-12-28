@@ -87,7 +87,7 @@ public class WellbeingFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentWellbeingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
+//        getWellBeingConfigData();
         checkTeamsCheckBox();
 
         binding.healthTipsBlock.setOnClickListener(new View.OnClickListener() {
@@ -471,33 +471,32 @@ public class WellbeingFragment extends Fragment {
             binding.tvWorkspace.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
             binding.imgWorkAss.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey), android.graphics.PorterDuff.Mode.SRC_IN);
         }
-            binding.covidCertifcatetBlock.setEnabled(val);
-            binding.fireWardensBlock.setEnabled(val);
-            binding.firstAidBlock.setEnabled(val);
-            binding.mentalHealthBlock.setEnabled(val);
-            binding.traininBlock.setEnabled(val);
-            binding.eventBlock.setEnabled(val);
-            binding.healthTipsBlock.setEnabled(val);
-            binding.menuBlock.setEnabled(val);
-            binding.noticesBlock.setEnabled(val);
-            binding.personalBlock.setEnabled(val);
-            binding.reportAnIssueBlock.setEnabled(val);
-            binding.healthBlock.setEnabled(val);
-            binding.leaveBlock.setEnabled(val);
-            binding.rewardsBlock.setEnabled(val);
-            binding.workspaceSurveyBlock.setEnabled(val);
-            binding.workspaceBlock.setEnabled(val);
-        }
+        binding.covidCertifcatetBlock.setEnabled(val);
+        binding.fireWardensBlock.setEnabled(val);
+        binding.firstAidBlock.setEnabled(val);
+        binding.mentalHealthBlock.setEnabled(val);
+        binding.traininBlock.setEnabled(val);
+        binding.eventBlock.setEnabled(val);
+        binding.healthTipsBlock.setEnabled(val);
+        binding.menuBlock.setEnabled(val);
+        binding.noticesBlock.setEnabled(val);
+        binding.personalBlock.setEnabled(val);
+        binding.reportAnIssueBlock.setEnabled(val);
+        binding.healthBlock.setEnabled(val);
+        binding.leaveBlock.setEnabled(val);
+        binding.rewardsBlock.setEnabled(val);
+        binding.workspaceSurveyBlock.setEnabled(val);
+        binding.workspaceBlock.setEnabled(val);
+    }
 
-        private void getWellBeingConfigData ()
-        {
-            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<List<WellbeingConfigResponse>> call = apiService.getWellbeingSectionConfig();
-            call.enqueue(new Callback<List<WellbeingConfigResponse>>() {
-                @Override
-                public void onResponse(Call<List<WellbeingConfigResponse>> call, Response<List<WellbeingConfigResponse>> response) {
+    private void getWellBeingConfigData() {
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<WellbeingConfigResponse>> call = apiService.getWellbeingSectionConfig();
+        call.enqueue(new Callback<List<WellbeingConfigResponse>>() {
+            @Override
+            public void onResponse(Call<List<WellbeingConfigResponse>> call, Response<List<WellbeingConfigResponse>> response) {
 
-                    if (response.body() != null) {
+                if (response.body() != null) {
 
                     /*Training - type 1
                     Events = type 2
@@ -513,79 +512,80 @@ public class WellbeingFragment extends Fragment {
                     Workspace survey - 12
                     Workspace assessment - 13*/
 
-                        if (response.body().size() > 0) {
+                    if (response.body().size() > 0) {
 
-                            setEnableDisable(response.body());
+                        setEnableDisable(response.body());
 
-                            benefits = response.body().get(0).getDescription();
-                            events = response.body().get(1).getDescription();
-                            healthtips = response.body().get(2).getDescription();
-                            health = response.body().get(5).getDescription();
-                            notice = response.body().get(7).getDescription();
-                            rewards = response.body().get(10).getDescription();
+                        benefits = response.body().get(0).getDescription();
+                        events = response.body().get(1).getDescription();
+                        healthtips = response.body().get(2).getDescription();
+                        health = response.body().get(5).getDescription();
+                        notice = response.body().get(7).getDescription();
+                        rewards = response.body().get(10).getDescription();
 
-                            personalData = response.body().get(8).getDescription();
-                            menu = response.body().get(6).getDescription();
+                        personalData = response.body().get(8).getDescription();
+                        menu = response.body().get(6).getDescription();
 
 //                Toast.makeText(getActivity(), ""+response.body().size(), Toast.LENGTH_SHORT).show();
-                            for (int i = 0; i < response.body().get(0).getLinks().size(); i++) {
-                                Log.d(TAG, "onResponse: " + response.body().get(0).getLinks().size());
-                                linksArrayBenefits.add(response.body().get(0).getLinks().get(i));
-                            }
+                        for (int i = 0; i < response.body().get(0).getLinks().size(); i++) {
+                            Log.d(TAG, "onResponse: " + response.body().get(0).getLinks().size());
+                            linksArrayBenefits.add(response.body().get(0).getLinks().get(i));
+                        }
 
-                            for (int i = 0; i < response.body().get(1).getLinks().size(); i++) {
-                                Log.d(TAG, "onResponse: " + response.body().get(1).getLinks().size());
-                                linksArrayEvents.add(response.body().get(1).getLinks().get(i));
-                            }
+                        for (int i = 0; i < response.body().get(1).getLinks().size(); i++) {
+                            Log.d(TAG, "onResponse: " + response.body().get(1).getLinks().size());
+                            linksArrayEvents.add(response.body().get(1).getLinks().get(i));
+                        }
 
-                            for (int i = 0; i < response.body().get(2).getLinks().size(); i++) {
-                                Log.d(TAG, "onResponse: " + response.body().get(2).getLinks().size());
-                                linksArrayHealthTips.add(response.body().get(2).getLinks().get(i));
-                            }
-
-
-                            for (int i = 0; i < response.body().get(5).getLinks().size(); i++) {
-                                Log.d(TAG, "onResponse: " + response.body().get(5).getLinks().size());
-                                linksArrayHealth.add(response.body().get(5).getLinks().get(i));
-                            }
-
-                            for (int i = 0; i < response.body().get(6).getLinks().size(); i++) {
-                                Log.d(TAG, "onResponse: " + response.body().get(6).getLinks().size());
-                                linksArrayMenu.add(response.body().get(6).getLinks().get(i));
-                            }
-
-                            for (int i = 0; i < response.body().get(7).getLinks().size(); i++) {
-                                Log.d(TAG, "onResponse: " + response.body().get(7).getLinks().size());
-                                linksArrayNotice.add(response.body().get(7).getLinks().get(i));
-                            }
-
-                            for (int i = 0; i < response.body().get(10).getLinks().size(); i++) {
-                                Log.d(TAG, "onResponse: " + response.body().get(10).getLinks().size());
-                                linksArrayRewards.add(response.body().get(10).getLinks().get(i));
-                            }
-
-                            for (int i = 0; i < response.body().get(8).getLinks().size(); i++) {
-                                Log.d(TAG, "onResponse: " + response.body().get(8).getLinks().size());
-                                linksArrayPersonal.add(response.body().get(8).getLinks().get(i));
-                            }
-
+                        for (int i = 0; i < response.body().get(2).getLinks().size(); i++) {
+                            Log.d(TAG, "onResponse: " + response.body().get(2).getLinks().size());
+                            linksArrayHealthTips.add(response.body().get(2).getLinks().get(i));
                         }
 
 
+                        for (int i = 0; i < response.body().get(5).getLinks().size(); i++) {
+                            Log.d(TAG, "onResponse: " + response.body().get(5).getLinks().size());
+                            linksArrayHealth.add(response.body().get(5).getLinks().get(i));
+                        }
+
+                        for (int i = 0; i < response.body().get(6).getLinks().size(); i++) {
+                            Log.d(TAG, "onResponse: " + response.body().get(6).getLinks().size());
+                            linksArrayMenu.add(response.body().get(6).getLinks().get(i));
+                        }
+
+                        for (int i = 0; i < response.body().get(7).getLinks().size(); i++) {
+                            Log.d(TAG, "onResponse: " + response.body().get(7).getLinks().size());
+                            linksArrayNotice.add(response.body().get(7).getLinks().get(i));
+                        }
+
+                        for (int i = 0; i < response.body().get(10).getLinks().size(); i++) {
+                            Log.d(TAG, "onResponse: " + response.body().get(10).getLinks().size());
+                            linksArrayRewards.add(response.body().get(10).getLinks().get(i));
+                        }
+
+                        for (int i = 0; i < response.body().get(8).getLinks().size(); i++) {
+                            Log.d(TAG, "onResponse: " + response.body().get(8).getLinks().size());
+                            linksArrayPersonal.add(response.body().get(8).getLinks().get(i));
+                        }
+
                     }
 
+
                 }
 
-                @Override
-                public void onFailure(Call<List<WellbeingConfigResponse>> call, Throwable t) {
-                    System.out.println("on failure weill" + t.getMessage());
+            }
+
+            @Override
+            public void onFailure(Call<List<WellbeingConfigResponse>> call, Throwable t) {
+                System.out.println("on failure weill" + t.getMessage());
 //                Toast.makeText(getActivity(), "onFailure", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+            }
+        });
+    }
 
-        private void setEnableDisable (List < WellbeingConfigResponse > body) {
+    private void setEnableDisable(List<WellbeingConfigResponse> body) {
 
+        try {
             if (!(body.get(0).isActive())) {
                 binding.tvTraining.setEnabled(false);
                 binding.tvTraining.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
@@ -651,144 +651,153 @@ public class WellbeingFragment extends Fragment {
                 binding.tvWorkspace.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
                 binding.imgWorkAss.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey), android.graphics.PorterDuff.Mode.SRC_IN);
             }
-
-        }
-
-        public void setLanguage () {
-
-            LanguagePOJO.WellBeing wellBeingPage = getWellBeingScreenData(getActivity());
-            appKeysPage = getAppKeysPageScreenData(getActivity());
-
-            if (wellBeingPage != null) {
-
-                binding.profileBack.setText("");
-                binding.tvContact.setText(wellBeingPage.getDefault());
-                binding.tvEmail.setText(wellBeingPage.getWorkSchedule());
-                binding.tvTeams.setText(wellBeingPage.getWorkHours());
-                binding.tvPhone.setText(wellBeingPage.getLocation());
-                binding.tvDesk.setText(wellBeingPage.getDesks());
-                binding.tvPreference.setText(wellBeingPage.getPreference());
-                binding.tvLang.setText(wellBeingPage.getLanguage());
-                binding.tvNoti.setText(wellBeingPage.getNotifications());
-                binding.tvApp.setText(wellBeingPage.getApp());
-                binding.tvPin.setText(wellBeingPage.getSetUpPin());
-                binding.tvBio.setText(wellBeingPage.getSetUpBiometric());
-                binding.tvReset.setText(wellBeingPage.getResetPassword());
-                binding.tvReport.setText(wellBeingPage.getReportAnIssue());
-                binding.tvHelp.setText(wellBeingPage.getHelp());
-                binding.tvLogout.setText(wellBeingPage.getLogOut());
-
-                //New...
-                binding.title.setText(wellBeingPage.getTabTitle());
-                binding.txtHealthsaf.setText(appKeysPage.getHealthAndSafety());
-                binding.tvHealthTips.setText(appKeysPage.getHealthTips());
-                binding.firewar.setText(appKeysPage.getFireWardens());
-                binding.fireaid.setText(appKeysPage.getFirstAid());
-                binding.mentalHealth.setText(appKeysPage.getMentalHealth());
-                binding.txtHr.setText(appKeysPage.getHumanResources());
-                binding.tvLeave.setText(appKeysPage.getLeave());
-                binding.tvReportIssue.setText(appKeysPage.getReportAnIssue());
-                binding.txtPlaces.setText(appKeysPage.getPlaces());
-                binding.txtBenefits.setText(appKeysPage.getBenefits());
-                binding.tvTraining.setText(appKeysPage.getBenefits());
-                binding.txtEvents.setText(appKeysPage.getEvents());
-                binding.tvEvents.setText(appKeysPage.getEvents());
-                binding.txtHealtheat.setText(appKeysPage.getHealthEating());
-                binding.tvHealth.setText(appKeysPage.getHealthEating());
-                binding.txtNotices.setText(appKeysPage.getNotices());
-                binding.tvNotification.setText(appKeysPage.getNotices());
-                binding.tvCovid.setText(appKeysPage.getCovid());
-                binding.txtCovid.setText(wellBeingPage.getCovidCertification());
-                binding.txtPHelp.setText(appKeysPage.getPersonalHelp());
-                binding.tvPersonal.setText(appKeysPage.getPersonalHelp());
-                binding.txtRewards.setText(wellBeingPage.getRewards());
-                binding.tvRewards.setText(wellBeingPage.getRewards());
-                binding.txtWork.setText(wellBeingPage.getWorkPlaceAssessment());
-                binding.tvWorkspace.setText(wellBeingPage.getWorkPlaceAssessment());
-                binding.txtWorksur.setText(appKeysPage.getWorkSpaceSurvey());
-                binding.tvWorkspaceSurvey.setText(appKeysPage.getWorkSpaceSurvey());
-
+            if (!(body.get(13).isActive())) {
+                binding.covidCertifcatetBlock.setEnabled(false);
+                binding.tvCovid.setTextColor(getResources().getColor(R.color.grey, getActivity().getTheme()));
+                binding.ivCovid.setColorFilter(ContextCompat.getColor(getActivity(), R.color.grey), android.graphics.PorterDuff.Mode.SRC_IN);
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        private void checkPinPopUp () {
-            final Dialog dialog = new Dialog(getActivity());
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            int width = (int) (getActivity().getResources().getDisplayMetrics().widthPixels * 0.80);
-            int height = (int) (getActivity().getResources().getDisplayMetrics().heightPixels * 0.20);
-            dialog.setCancelable(false);
-            dialog.setContentView(R.layout.dialog_pin_pop_up);
-            dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            TextView text = dialog.findViewById(R.id.tv_err_msg);
-            text.setText("The option to login using a pin is now available. \n To enable please select continue");
-            TextView dialogButton = dialog.findViewById(R.id.tv_ok);
-            TextView dialogButtonCancel = dialog.findViewById(R.id.tv_cancel);
-            dialogButton.setOnClickListener(new View.OnClickListener() {
+    }
+
+    public void setLanguage() {
+
+        LanguagePOJO.WellBeing wellBeingPage = getWellBeingScreenData(getActivity());
+        appKeysPage = getAppKeysPageScreenData(getActivity());
+
+        if (wellBeingPage != null) {
+
+            binding.profileBack.setText("");
+            binding.tvContact.setText(wellBeingPage.getDefault());
+            binding.tvEmail.setText(wellBeingPage.getWorkSchedule());
+            binding.tvTeams.setText(wellBeingPage.getWorkHours());
+            binding.tvPhone.setText(wellBeingPage.getLocation());
+            binding.tvDesk.setText(wellBeingPage.getDesks());
+            binding.tvPreference.setText(wellBeingPage.getPreference());
+            binding.tvLang.setText(wellBeingPage.getLanguage());
+            binding.tvNoti.setText(wellBeingPage.getNotifications());
+            binding.tvApp.setText(wellBeingPage.getApp());
+            binding.tvPin.setText(wellBeingPage.getSetUpPin());
+            binding.tvBio.setText(wellBeingPage.getSetUpBiometric());
+            binding.tvReset.setText(wellBeingPage.getResetPassword());
+            binding.tvReport.setText(wellBeingPage.getReportAnIssue());
+            binding.tvHelp.setText(wellBeingPage.getHelp());
+            binding.tvLogout.setText(wellBeingPage.getLogOut());
+
+            //New...
+            binding.title.setText(wellBeingPage.getTabTitle());
+            binding.txtHealthsaf.setText(appKeysPage.getHealthAndSafety());
+            binding.tvHealthTips.setText(appKeysPage.getHealthTips());
+            binding.firewar.setText(appKeysPage.getFireWardens());
+            binding.fireaid.setText(appKeysPage.getFirstAid());
+            binding.mentalHealth.setText(appKeysPage.getMentalHealth());
+            binding.txtHr.setText(appKeysPage.getHumanResources());
+            binding.tvLeave.setText(appKeysPage.getLeave());
+            binding.tvReportIssue.setText(appKeysPage.getReportAnIssue());
+            binding.txtPlaces.setText(appKeysPage.getPlaces());
+            binding.txtBenefits.setText(appKeysPage.getBenefits());
+            binding.tvTraining.setText(appKeysPage.getBenefits());
+            binding.txtEvents.setText(appKeysPage.getEvents());
+            binding.tvEvents.setText(appKeysPage.getEvents());
+            binding.txtHealtheat.setText(appKeysPage.getHealthEating());
+            binding.tvHealth.setText(appKeysPage.getHealthEating());
+            binding.txtNotices.setText(appKeysPage.getNotices());
+            binding.tvNotification.setText(appKeysPage.getNotices());
+            binding.tvCovid.setText(appKeysPage.getCovid());
+            binding.txtCovid.setText(wellBeingPage.getCovidCertification());
+            binding.txtPHelp.setText(appKeysPage.getPersonalHelp());
+            binding.tvPersonal.setText(appKeysPage.getPersonalHelp());
+            binding.txtRewards.setText(wellBeingPage.getRewards());
+            binding.tvRewards.setText(wellBeingPage.getRewards());
+            binding.txtWork.setText(wellBeingPage.getWorkPlaceAssessment());
+            binding.tvWorkspace.setText(wellBeingPage.getWorkPlaceAssessment());
+            binding.txtWorksur.setText(appKeysPage.getWorkSpaceSurvey());
+            binding.tvWorkspaceSurvey.setText(appKeysPage.getWorkSpaceSurvey());
+
+        }
+
+    }
+
+    private void checkPinPopUp() {
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        int width = (int) (getActivity().getResources().getDisplayMetrics().widthPixels * 0.80);
+        int height = (int) (getActivity().getResources().getDisplayMetrics().heightPixels * 0.20);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog_pin_pop_up);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        TextView text = dialog.findViewById(R.id.tv_err_msg);
+        text.setText("The option to login using a pin is now available. \n To enable please select continue");
+        TextView dialogButton = dialog.findViewById(R.id.tv_ok);
+        TextView dialogButtonCancel = dialog.findViewById(R.id.tv_cancel);
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CreatePinActivity.class);
+                getActivity().startActivity(intent);
+                dialog.dismiss();
+            }
+        });
+        dialogButtonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+    }
+
+    public void disableToast() {
+        Toast.makeText(getActivity(), "This setting disabled in admin", Toast.LENGTH_SHORT).show();
+    }
+
+
+    public void checkTeamsCheckBox() {
+        if (Utils.isNetworkAvailable(getContext())) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<String> call = apiService.getSettingData("HideMobileWellbeingTab");
+            call.enqueue(new Callback<String>() {
                 @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), CreatePinActivity.class);
-                    getActivity().startActivity(intent);
-                    dialog.dismiss();
-                }
-            });
-            dialogButtonCancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-            dialog.show();
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-        }
-
-        public void disableToast () {
-            Toast.makeText(getActivity(), "This setting disabled in admin", Toast.LENGTH_SHORT).show();
-        }
-
-
-        public void checkTeamsCheckBox () {
-            if (Utils.isNetworkAvailable(getContext())) {
-                ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-                Call<String> call = apiService.getSettingData("HideMobileWellbeingTab");
-                call.enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        try {
-                            if (response.code() == 200) {
-                                if (response.body().equalsIgnoreCase("true")) {
-                                    wellbeingStatus = true;
-                                    Utils.toastShortMessage(getActivity(), "This wellbeing section disabled in Admin");
-                                    setEnabled(false);
-                                } else {
-                                    wellbeingStatus = false;
-                                    setEnabled(true);
-                                    getWellBeingConfigData();
-                                }
-                            } else if (response.code() == 403) {
-                                wellbeingStatus = false;
-                                setEnabled(true);
-                                getWellBeingConfigData();
+                public void onResponse(Call<String> call, Response<String> response) {
+                    try {
+                        if (response.code() == 200) {
+                            if (response.body().equalsIgnoreCase("true")) {
+                                wellbeingStatus = true;
+                                Utils.toastShortMessage(getActivity(), "This wellbeing section disabled in Admin");
+                                setEnabled(false);
                             } else {
                                 wellbeingStatus = false;
                                 setEnabled(true);
                                 getWellBeingConfigData();
                             }
-                        } catch (Exception exception) {
-                            exception.printStackTrace();
+                        } else if (response.code() == 403) {
+                            wellbeingStatus = false;
+                            setEnabled(true);
+                            getWellBeingConfigData();
+                        } else {
+                            wellbeingStatus = false;
+                            setEnabled(true);
+                            getWellBeingConfigData();
                         }
-
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
                     }
 
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                    }
-                });
+                }
 
-            } else {
-                Utils.toastMessage(getContext(), "Please Enable Internet");
-            }
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getContext(), "Please Enable Internet");
         }
-
     }
+
+}
