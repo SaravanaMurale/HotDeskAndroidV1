@@ -133,19 +133,10 @@ public class FireWardensActivity extends AppCompatActivity implements FireWarden
                                 System.out.println("FirstAidFullName" + firstAidResponseList.get(i).getPersonsList().get(j).getFullName());
                             }
                         }
-
-
                     }
                 }
 
-                for (int i = 0; i < personsList.size(); i++) {
-                    System.out.println("OnlyPersonList" + personsList.get(i).getFullName());
-                }
-
-
                 callSetAdapter(personsList, description);
-
-
             }
 
             @Override
