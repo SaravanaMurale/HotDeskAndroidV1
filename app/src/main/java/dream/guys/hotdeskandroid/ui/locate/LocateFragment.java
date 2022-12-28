@@ -72,6 +72,7 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
@@ -761,7 +762,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     if (calendarEntries != null) {
                         for (int k = 0; k < calendarEntries.size(); k++) {
 
-                            if(calendarEntries.get(k).getBooking()!=null) {
+                            //if(calendarEntries.get(k).getBooking()!=null) {
 
                                 DAOTeamMember.DayGroup momdel = new DAOTeamMember.DayGroup();
                                 DAOTeamMember daoTeamMember = new DAOTeamMember();
@@ -772,13 +773,35 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                 ArrayList<DAOTeamMember.DayGroup> dayGroupList = new ArrayList<>();
 
+
                                 momdel.setCalendarEntriesModel(calendarEntries.get(k));
 
                                 dayGroupList.add(momdel);
                                 daoTeamMember.setDayGroups(dayGroupList);
                                 locateMyTeamMemberStatusList.add(daoTeamMember);
 
-                            }
+                            //}
+                        /*else if(calendarEntries.get(k).getBooking() ==null){
+
+                                DAOTeamMember.DayGroup momdel = new DAOTeamMember.DayGroup();
+                                DAOTeamMember daoTeamMember = new DAOTeamMember();
+                                //daoTeamMember=daoTeamMemberList.get(i);
+                                daoTeamMember.setFirstName(daoTeamMemberList.get(i).getFirstName());
+                                daoTeamMember.setLastName(daoTeamMemberList.get(i).getLastName());
+                                daoTeamMember.setProfileImage(daoTeamMemberList.get(i).getProfileImage());
+
+                                ArrayList<DAOTeamMember.DayGroup> dayGroupList = new ArrayList<>();
+
+                                calendarEntries.get(k).setFrom(calendarEntries.get(k).getFrom());
+                                calendarEntries.get(k).setMyto(calendarEntries.get(k).getMyto());
+
+                                momdel.setCalendarEntriesModel(calendarEntries.get(k));
+                                dayGroupList.add(momdel);
+                                daoTeamMember.setDayGroups(dayGroupList);
+                                locateMyTeamMemberStatusList.add(daoTeamMember);
+
+                            }*/
+
 
                         }
 
@@ -1674,8 +1697,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                         //List<Point> pointList = new ArrayList<>();
 
-                        List<Point> pointList;
 
+                        //To Write Title
+                        List<Integer> xCoordinatesList=new ArrayList<>();
+                        List<Integer> yCoordinatesList=new ArrayList<>();
+
+                        List<Point> pointList;
                         //support zone canvas
                         if (getSupportZoneLayoutForCanvas != null && getSupportZoneLayoutForCanvas.size() > 0) {
 
@@ -1686,6 +1713,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                 for (int j = 0; j < getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().size(); j++) {
 
+                                    //To Write Title
+                                    xCoordinatesList.add(getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(j).get(0));
+                                    yCoordinatesList.add(getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(j).get(1));
+
+                                    //To Draw support line(Dotted Line)
                                     int x = getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(j).get(0);
                                     int y = getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(j).get(1);
 
@@ -1694,11 +1726,18 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 }
 
                                 addDottedLine(pointList);
+
+                                //To Write Title
+                                //toWriteTitle(xCoordinatesList,yCoordinatesList,getSupportZoneLayoutForCanvas.get(i).getTitle());
+
+
+
                             }
 
 
+
                             //Draw Title
-                            for (int i = 0; i <getSupportZoneLayoutForCanvas.size() ; i++) {
+                         /*   for (int i = 0; i <getSupportZoneLayoutForCanvas.size() ; i++) {
                                 System.out.println("FloorNameSuppportZoneee "+getSupportZoneLayoutForCanvas.get(i).getTitle());
                                 View roomTitleView = getLayoutInflater().inflate(R.layout.layout_room_title, null, false);
                                 TextView roormTitle = roomTitleView.findViewById(R.id.roomTileCanvas);
@@ -1715,7 +1754,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 roormTitle.setText(getSupportZoneLayoutForCanvas.get(i).getTitle());
                                 roormTitle.setLayoutParams(relativeLayout);
                                 //binding.firstLayout.addView(roomTitleView);
-                            }
+                            }*/
 
                         }
 
@@ -1789,6 +1828,51 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         } else {
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
+    }
+
+    private void toWriteTitle(List<Integer> xCoordinatesList, List<Integer> yCoordinatesList, String title) {
+
+        Collections.sort(xCoordinatesList);
+        Collections.sort(yCoordinatesList);
+
+
+        for (int i = 0; i <xCoordinatesList.size() ; i++) {
+            System.out.println("xCoordinatesList "+xCoordinatesList.get(i));
+        }
+
+        for (int i = 0; i <yCoordinatesList.size() ; i++) {
+            System.out.println("yCoordinatesList "+yCoordinatesList.get(i));
+        }
+
+
+        int titleX=xCoordinatesList.get(xCoordinatesList.size()-1)-xCoordinatesList.get(0);
+        int titleY=yCoordinatesList.get(yCoordinatesList.size()-1)-yCoordinatesList.get(0);
+
+        System.out.println("BefireFinalXAndYTitleCoor "+titleX+" "+titleY);
+
+        int xxx=titleX/2;
+        int yyy=(titleY/2)+40;
+
+        View roomTitleView = getLayoutInflater().inflate(R.layout.layout_room_title, null, false);
+        TextView roormTitle = roomTitleView.findViewById(R.id.roomTileCanvas);
+        RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        roormTitle.setVisibility(View.VISIBLE);
+
+
+
+        System.out.println("FinalXAndYTitleCoor "+xxx+" "+yyy);
+
+        relativeLayout.leftMargin=xxx;
+        relativeLayout.topMargin=yyy;
+
+
+
+        relativeLayout.width = 60;
+        relativeLayout.height = 60;
+        roormTitle.setText(title);
+        roormTitle.setLayoutParams(relativeLayout);
+        binding.firstLayout.addView(roomTitleView);
+
     }
 
     private void getLayoutCode(List<LocateCountryRespose.LocationItemLayout.Desks> desks) {
@@ -2627,7 +2711,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 } else if (carParkingStatusModelList.get(i).getStatus() == 2) {
                                     //EditCarParking
                                     //getCarBookingEditList(id, code,selctedCode);
-                                    getCarBookingEditList(selctedCode, key, id, code, requestTeamId, requestTeamDeskId, 1);
+                                    //getCarBookingEditList(selctedCode, key, id, code, requestTeamId, requestTeamDeskId, 1);
+                                    getCarBookingEditListFromDailyBookings(selctedCode, key, id, code, requestTeamId, requestTeamDeskId, 1);
 
                                 } else if (carParkingStatusModelList.get(i).getStatus() == 3) {
                                     //Booked
@@ -2744,6 +2829,502 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         }catch (Exception e){
             e.printStackTrace();
+        }
+
+
+
+    }
+
+    private void getCarBookingEditListFromDailyBookings(String selctedCode, String key, int id, String code, int requestTeamId, int requestTeamDeskId, int i) {
+
+        //close when myteam bottom sheet open
+        closeAndClearMyTeamList(locateMyTeamMemberStatusList);
+
+        if (Utils.isNetworkAvailable(getActivity())) {
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            String startDate = binding.locateCalendearView.getText().toString() + " " + binding.locateStartTime.getText().toString() + ":00.000Z";
+            String endDate = binding.locateCalendearView.getText().toString() + " " + binding.locateEndTime.getText().toString() + ":00.000Z";
+            Call<List<CarParkListToEditResponse>> call = apiService.getCarParkListToEdit(startDate,endDate);
+            call.enqueue(new Callback<List<CarParkListToEditResponse>>() {
+                @Override
+                public void onResponse(Call<List<CarParkListToEditResponse>> call, Response<List<CarParkListToEditResponse>> response) {
+                    List<CarParkListToEditResponse> carParkingForEditResponse = response.body();
+
+                    if(carParkingForEditResponse!=null && carParkingForEditResponse.size()>0){
+
+
+                        for (int i = 0; i <carParkingForEditResponse.size() ; i++) {
+
+                            if(id==carParkingForEditResponse.get(i).getParkingSlotId()){
+
+                                onCarEditClickDailyBookings(carParkingForEditResponse.get(i),selctedCode);
+                                break;
+                            }
+
+                        }
+
+                    }
+
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+                }
+
+                @Override
+                public void onFailure(Call<List<CarParkListToEditResponse>> call, Throwable t) {
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
+
+        }else {
+            Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
+        }
+
+
+    }
+
+    private void onCarEditClickDailyBookings(CarParkListToEditResponse carParkListToEditResponse, String selctedCode) {
+
+        System.out.println("CarParkEditClickedBasedId "+carParkListToEditResponse.getFrom()+" "+carParkListToEditResponse.getMyto());
+
+
+        TextView startTime, endTime, date, editBookingBack, tv_location_details,title,deskDelete,editLocation;
+        LinearLayout status_check_layout, capacity_layout,bookedByBlock;
+        RelativeLayout selectDeskEditBlock,bookingVechicleRegtBlock;
+        ChipGroup list_item;
+        EditText etVehicleRegEdit;
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_edit_booking,
+                new RelativeLayout(getContext()))));
+
+
+        title=bottomSheetDialog.findViewById(R.id.title);
+        deskDelete=bottomSheetDialog.findViewById(R.id.deskDelete);
+
+
+        bookingVechicleRegtBlock=bottomSheetDialog.findViewById(R.id.bookingVechicleRegtBlock);
+        editLocation=bottomSheetDialog.findViewById(R.id.editLocation);
+        bookedByBlock=bottomSheetDialog.findViewById(R.id.bookedByBlock);
+        list_item = bottomSheetDialog.findViewById(R.id.list_item);
+        tv_location_details = bottomSheetDialog.findViewById(R.id.tv_location_details);
+        startTime = bottomSheetDialog.findViewById(R.id.start_time);
+        endTime = bottomSheetDialog.findViewById(R.id.end_time);
+        date = bottomSheetDialog.findViewById(R.id.date);
+        deskRoomName = bottomSheetDialog.findViewById(R.id.tv_desk_room_name);
+        capacity_layout = bottomSheetDialog.findViewById(R.id.capacity_layout);
+        TextView continueEditBook = bottomSheetDialog.findViewById(R.id.editBookingContinue);
+        LinearLayout llDeskLayout = bottomSheetDialog.findViewById(R.id.ll_desk_layout);
+        status_check_layout = bottomSheetDialog.findViewById(R.id.status_check_layout);
+        RelativeLayout repeatBlock = bottomSheetDialog.findViewById(R.id.rl_repeat_block);
+        RelativeLayout teamsBlock = bottomSheetDialog.findViewById(R.id.rl_teams_layout);
+        TextView tvComments = bottomSheetDialog.findViewById(R.id.tv_comments);
+        EditText commentRegistration = bottomSheetDialog.findViewById(R.id.ed_registration);
+        EditText etBookedBy = bottomSheetDialog.findViewById(R.id.etBookedBy);
+        editBookingBack = bottomSheetDialog.findViewById(R.id.editBookingBack);
+        selectDeskEditBlock = bottomSheetDialog.findViewById(R.id.selectDeskEditBlock);
+        TextView select = bottomSheetDialog.findViewById(R.id.select_desk_room);
+        carSelectedName = bottomSheetDialog.findViewById(R.id.tv_desk_room_name);
+        etVehicleRegEdit=bottomSheetDialog.findViewById(R.id.etVehicleRegEdit);
+
+        carSelectedName.setText(selctedCode);
+
+        //cr2
+        deskDelete.setVisibility(View.VISIBLE);
+        bookedByBlock.setVisibility(View.VISIBLE);
+        commentRegistration.setVisibility(View.GONE);
+        date.setVisibility(View.VISIBLE);
+        bookingVechicleRegtBlock.setVisibility(View.VISIBLE);
+        editLocation.setVisibility(View.VISIBLE);
+
+        editLocation.setText(binding.searchLocate.getText().toString());
+        title.setText(selctedCode);
+        etVehicleRegEdit.setText(carParkListToEditResponse.getVehicleRegNumber());
+
+
+        //setLang
+        deskDelete.setText(appKeysPage.getDelete());
+
+
+
+        //System.out.println("PrintedDataHere "+carParkBooking.getParkingSlotName()+" "+carParkBooking.getParkingSlotId()+" "+carParkBooking.getId());
+
+        deskDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //onCarDeleteClick(carParkBooking);
+                onCarDeleteClickDailyBookings(carParkListToEditResponse);
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+
+        //New...
+        String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
+        String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
+        String CountryName = SessionHandler.getInstance().get(getContext(), AppConstants.COUNTRY_NAME);
+        if (CountryName == null && buildingName == null && floorName == null) {
+
+            tv_location_details.setText(buildingName + "," + floorName);
+            //meetingRoomLocation.setText(buildingName + "," + floorName);
+
+        } else {
+            tv_location_details.setText(CountryName + "," + buildingName + "," + floorName);
+            //meetingRoomLocation.setText(CountryName + "," + buildingName + "," + floorName);
+
+        }
+
+
+        list_item.setVisibility(View.GONE);
+        capacity_layout.setVisibility(View.GONE);
+        select.setVisibility(View.GONE);
+        repeatBlock.setVisibility(View.GONE);
+        teamsBlock.setVisibility(View.GONE);
+        llDeskLayout.setVisibility(View.VISIBLE);
+        status_check_layout.setVisibility(View.VISIBLE);
+        selectDeskEditBlock.setVisibility(View.GONE);
+
+        etBookedBy.setVisibility(View.GONE);
+        //etBookedBy.setText(carParkBooking.getBookedForUserName());
+        tvComments.setVisibility(View.GONE);
+        //tvComments.setText("Registration number");
+        //System.out.println("REceivedCarRegNumber " + carParkBooking.getVehicleRegNumber());
+        //commentRegistration.setText(carParkBooking.getVehicleRegNumber());
+
+
+        startTime.setText(Utils.splitTime(carParkListToEditResponse.getFrom()));
+        endTime.setText(Utils.splitTime(carParkListToEditResponse.getMyto()));
+        select.setVisibility(View.GONE);
+        select.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                List<SelectCode> code = new ArrayList<>();
+
+                if (carCode != null && carCode.size() != 0) {
+                    for (int i = 0; i < carCode.size(); i++) {
+
+                        //System.out.println("SelectedCode " + carCode.get(i).getId() + " " + carCode.get(i).getCode());
+                        SelectCode allCarCode = new SelectCode(carCode.get(i).getId(), carCode.get(i).getCode());
+                        code.add(allCarCode);
+                    }
+                }
+
+                callBottomSheetToSelectDesk(code, AppConstants.CAR_PARKING);
+
+            }
+        });
+
+        //New...
+        //I commended on 16-12-2022
+        /*String sDate = binding.locateCalendearView.getText().toString();
+        if (!(sDate.equalsIgnoreCase(""))) {
+            String dateTime = Utils.dateWithDayString(sDate);
+            if (dateTime.equalsIgnoreCase("")) {
+                date.setText(binding.locateCalendearView.getText().toString());
+            } else {
+                date.setText(dateTime);
+            }
+        } else {
+            date.setText(binding.locateCalendearView.getText().toString());
+        }*/
+
+        date.setText(Utils.showCalendarDate(binding.locateCalendearView.getText().toString()));
+
+        orgSTime = "";
+        orgETime = "";
+        orgSTime = Utils.splitTime(carParkListToEditResponse.getFrom());
+        orgETime = Utils.splitTime(carParkListToEditResponse.getMyto());
+
+        //New...
+        startTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (carParkListToEditResponse.getStatus() != null) {
+                    if (carParkListToEditResponse.getStatus().getBookingType().equalsIgnoreCase("REQGRN")) {
+                        if (orgSTime.equalsIgnoreCase(startTime.getText().toString())) {
+
+                        } else {
+
+                            if (!(orgSTime.equals("")) && !(orgETime.equals(""))) {
+
+                                boolean b = Utils.checkEditTime(orgSTime, orgETime, startTime.getText().toString());
+
+                                if (!b) {
+                                    Toast.makeText(getActivity(), "You can't exceed approved booking time period", Toast.LENGTH_SHORT).show();
+                                    startTime.setText(orgSTime);
+                                }
+
+                            }
+
+                        }
+                    }
+                }
+            }
+        });
+
+        endTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (carParkListToEditResponse.getStatus() != null) {
+                    if (carParkListToEditResponse.getStatus().getBookingType().equalsIgnoreCase("REQGRN")) {
+                        if (orgETime.equalsIgnoreCase(endTime.getText().toString())) {
+
+                        } else {
+
+                            if (!(orgSTime.equals("")) && !(orgETime.equals(""))) {
+
+                                boolean b = Utils.checkEditTime(orgSTime, orgETime, endTime.getText().toString());
+
+                                if (!b) {
+                                    Toast.makeText(getActivity(), "You can't exceed approved booking time period", Toast.LENGTH_SHORT).show();
+                                    endTime.setText(orgETime);
+                                }
+
+                            }
+
+                        }
+                    }
+                }
+            }
+        });
+
+        startTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), startTime, "Start", binding.locateCalendearView.getText().toString());
+                //Utils.bottomSheetTimePicker(getContext(),getActivity(),startTime,"Start Time","");
+            }
+        });
+
+        endTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.bottomSheetTimePickerInBooking(getContext(), getActivity(), endTime, "End", binding.locateCalendearView.getText().toString());
+                //Utils.bottomSheetTimePicker(getContext(),getActivity(),endTime,"End Time","");
+
+            }
+        });
+
+        editBookingBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        continueEditBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                boolean status = true;
+
+                if (startTime.getText().toString().equals("")) {
+                    Toast.makeText(getContext(), "Please Select Start Time", Toast.LENGTH_LONG).show();
+                    status = false;
+                    return;
+                }
+                if (endTime.getText().toString().equals("")) {
+                    Toast.makeText(getContext(), "Please Select End Time", Toast.LENGTH_LONG).show();
+                    status = false;
+                    return;
+                }
+
+                if (Utils.compareStartEndTime(startTime.getText().toString(), endTime.getText().toString())) {
+
+
+                } else {
+                    Toast.makeText(getContext(), "End time must be after the start time", Toast.LENGTH_LONG).show();
+                    status = false;
+                    return;
+                }
+
+                if (isVehicleReg) {
+
+                    if (etVehicleRegEdit.getText().toString().isEmpty()) {
+                        Toast.makeText(getActivity(), "Enter Registration Number", Toast.LENGTH_SHORT).show();
+                        status = false;
+                        return;
+                    }
+
+                }
+
+                if (status) {
+                    //Edit CarParkBooking
+                    if(bottomSheetDialog!=null) {
+                        bottomSheetDialog.dismiss();
+                    }
+                    doEditCarParkBookingForDailyBookings(carParkListToEditResponse, startTime.getText().toString(), endTime.getText().toString(),etVehicleRegEdit.getText().toString());
+                }
+
+
+            }
+        });
+
+        bottomSheetDialog.show();
+
+
+
+    }
+
+    private void onCarDeleteClickDailyBookings(CarParkListToEditResponse carParkListToEditResponse) {
+
+        // System.out.println("CarDeleteRequest"+carParkBooking.getId()+" "+carParkBooking.getParkingSlotId()+" "+carParkBooking.getDate()+" "+carParkBooking.getBookingCreatedUserId()+" "+carParkBooking.getBookedForUser());
+
+        //System.out.println("CarDeleteRequest" + carParkBooking.getFrom() + " " + carParkBooking.getMyto() + " " + carParkBooking.getFromUtc() + " " + carParkBooking.getToUtc());
+        binding.locateProgressBar.setVisibility(View.VISIBLE);
+
+        CarParkingDeleteRequest carParkingDeleteRequest = new CarParkingDeleteRequest();
+        carParkingDeleteRequest.setParkingSlotId(carParkListToEditResponse.getParkingSlotId());
+
+        CarParkingDeleteRequest.Changesets changesets = carParkingDeleteRequest.new Changesets();
+        //changesets.setId(0);
+        // changesets.setDate(binding.locateCalendearView.getText().toString()+"T00:00:00.000Z");
+        //changesets.setDate(""+carParkBooking.getDate());
+
+        //CarParkingDeleteRequest.Changesets.Changes changes=changesets.new Changes();
+
+        /*System.out.println("2000-01-01T18:00:00Z");
+        //String fromReplace=carParkBooking.getFrom().replace("00Z","00.000Z");
+        String fromReplace=Utils.MonthAndDateAndTwithZString(carParkBooking.getFrom());
+        changes.setFrom(fromReplace);
+        //String toReplace=carParkBooking.getMyto().replace("00Z","00.000Z");
+        String toReplace=Utils.MonthAndDateAndTwithZString(carParkBooking.getMyto());
+        changes.setTo(toReplace);
+
+        changes.setComments(carParkBooking.getComments());
+        changes.setBookedForUser(carParkBooking.getBookingCreatedUserId());
+        changes.setVehicleRegNumber(carParkBooking.getVehicleRegNumber());
+
+        changesets.setChanges(changes);*/
+
+        List<CarParkingDeleteRequest.Changesets> changesetsList = new ArrayList<>();
+        //changesetsList.add(changesets);
+        carParkingDeleteRequest.setChangesetsList(changesetsList);
+
+        List<Integer> deIntegerList = new ArrayList<>();
+        deIntegerList.add(carParkListToEditResponse.getId());
+        carParkingDeleteRequest.setDeIntegerList(deIntegerList);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<BaseResponse> call = apiService.doDeleteCarParking(carParkingDeleteRequest);
+        call.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                if(locateCarEditBottomSheet!=null) {
+                    locateCarEditBottomSheet.dismiss();
+                }
+                locateResponseHandler(response, getResources().getString(R.string.desk_book_deleted));
+
+
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                if(locateCarEditBottomSheet!=null) {
+                    locateCarEditBottomSheet.dismiss();
+                }
+            }
+        });
+
+
+    }
+
+    private void doEditCarParkBookingForDailyBookings(CarParkListToEditResponse carParkListToEditResponse, String startTime, String endTime,String vechNum) {
+
+
+        if (Utils.isNetworkAvailable(getActivity())) {
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+
+            //From Calender
+            //String startDate="2022-07-25T11:00:00.000Z";
+            String startDate = binding.locateCalendearView.getText().toString() + " " + binding.locateStartTime.getText().toString() + ":00.000Z";
+            //String endDate=binding.locateCalendearView.getText().toString()+" "+binding.locateEndTime.getText().toString()+":00";
+
+
+            LocateCarParkEditRequest locateCarParkEditRequest = new LocateCarParkEditRequest();
+
+            if (selectedCarId > 0) {
+                locateCarParkEditRequest.setParkingSlotId(selectedCarId);
+            } else {
+                locateCarParkEditRequest.setParkingSlotId(carParkListToEditResponse.getParkingSlotId());
+            }
+
+            List<LocateCarParkEditRequest.CarParkingChangeSets> carParkingChangeSetsList = new ArrayList<>();
+
+            LocateCarParkEditRequest.CarParkingChangeSets carParkingChangeSets = locateCarParkEditRequest.new CarParkingChangeSets();
+            carParkingChangeSets.setId(carParkListToEditResponse.getId());
+            carParkingChangeSets.setDate(startDate);
+
+            LocateCarParkEditRequest.CarParkingChangeSets.CarParkingChanges carParkingChanges = carParkingChangeSets.new CarParkingChanges();
+            carParkingChanges.setVehicleRegNumber(vechNum);
+            carParkingChanges.setFrom("2000-01-01T" + startTime + ":00.000Z");
+            carParkingChanges.setTo("2000-01-01T" + endTime + ":00.000Z");
+            carParkingChangeSets.setCarParkingChanges(carParkingChanges);
+
+            carParkingChangeSetsList.add(carParkingChangeSets);
+
+            locateCarParkEditRequest.setCarParkingChangeSetsList(carParkingChangeSetsList);
+
+            LocateCarParkEditRequest.CarParkingDeleteIds carParkingDeleteIds = locateCarParkEditRequest.new CarParkingDeleteIds();
+            List<LocateCarParkEditRequest.CarParkingDeleteIds> deleteIdsList = new ArrayList<>();
+            //deleteIdsList.add(carParkingDeleteIds);
+
+            locateCarParkEditRequest.setDeleteIdsList(deleteIdsList);
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BaseResponse> call = apiService.doCarParkingEdit(locateCarParkEditRequest);
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                    if(locateCarEditBottomSheet!=null){
+                        locateCarEditBottomSheet.dismiss();
+                    }
+
+
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    selectedCarId = 0;
+                    locateResponseHandler(response, getResources().getString(R.string.booking_updated));
+
+
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    if(locateCarEditBottomSheet!=null){
+                        locateCarEditBottomSheet.dismiss();
+                    }
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
 
 
@@ -4052,7 +4633,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                     endTRoomime.getText().toString(),
                                     subject, comment, isRequest, externalAttendeesEmail);
                         } else {
-                            doRepeatMeetingRoomBookingForWeek(isRequest,externalAttendeesEmail);
+                            doRepeatMeetingRoomBookingForWeek(isRequest,externalAttendeesEmail,comment,subject);
                         }
 
                     } else {
@@ -4319,7 +4900,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 @Override
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
-                    chipList.clear();
+                    if(chipList!=null && chipList.size()>0) {
+                        chipList.clear();
+                    }
 
                     if (response.code() == 200) {
                         page = 1;
@@ -6657,7 +7240,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         bottomSheetDialog.show();
     }
 
-    private void doRepeatMeetingRoomBookingForWeek(boolean isRequest, List<String> externalAttendeesEmail) {
+    private void doRepeatMeetingRoomBookingForWeek(boolean isRequest, List<String> externalAttendeesEmail,String comments,String subject) {
 
         String selectedDate = binding.locateCalendearView.getText().toString();
         List<String> dateList = Utils.getCurrentWeekDateList(selectedDate, enableCurrentWeek);
@@ -6683,10 +7266,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             changeset.setDate(dateList.get(i) + "T" + "00:00:00.000" + "Z");
 
             MeetingRoomRecurrence.Changeset.Changes changes = changeset.new Changes();
-            changes.setComments("");
+            changes.setComments(comments);
             changes.setFrom(getCurrentDate() + "" + "T" + startRoomTime.getText().toString() + ":" + "00" + "." + "000" + "Z");
             changes.setMyto(getCurrentDate() + "" + "T" + endTRoomime.getText().toString() + ":" + "00" + "." + "000" + "Z");
-            changes.setSubject("");
+            changes.setSubject(subject);
             changes.setRecurrence("True");
             if(isRequest) {
                 changes.setRequest(true);
@@ -7434,7 +8017,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         TextView startTime, endTime, date, editBookingBack, tv_comment,title,deskDelete,editLocation,editdesccription;
         LinearLayout status_check_layout,bookedByBlock;
-        RelativeLayout selectDeskEditBlock;
+        RelativeLayout selectDeskEditBlock,bookingVechicleRegtBlock;
         EditText et_comment_desk;
 
         //setLang
@@ -7446,6 +8029,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         //getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
+        bookingVechicleRegtBlock=bottomSheetDialog.findViewById(R.id.bookingVechicleRegtBlock);
         title=bottomSheetDialog.findViewById(R.id.title);
         deskDelete=bottomSheetDialog.findViewById(R.id.deskDelete);
         editLocation=bottomSheetDialog.findViewById(R.id.editLocation);
@@ -7574,7 +8158,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             teamsBlock.setVisibility(View.GONE);
             tvComments.setVisibility(View.GONE);
             commentRegistration.setVisibility(View.GONE);
-
+            bookingVechicleRegtBlock.setVisibility(View.GONE);
             startTime.setText(Utils.splitTime(bookings.getFrom()));
             endTime.setText(Utils.splitTime(bookings.getMyto()));
             // date.setText(""+Utils.dayDateMonthFormat(bookings.getDate()));
