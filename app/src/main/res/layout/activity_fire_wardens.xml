@@ -7,11 +7,11 @@
     tools:context=".ui.wellbeing.FireWardensActivity">
 
     <LinearLayout
+        android:id="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:id="@+id/tool_bar">
+        android:orientation="horizontal">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -29,21 +29,21 @@
         </RelativeLayout>
 
         <ImageView
+            android:id="@+id/profile_update"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
-            android:src="@drawable/fire"
-            android:id="@+id/profile_update"
-            />
+            android:src="@drawable/fire" />
+
         <TextView
             android:id="@+id/activityTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/fire_wardens"
             android:layout_marginLeft="@dimen/_10sdp"
+            android:text="@string/fire_wardens"
             android:textColor="@color/black"
-            android:theme="@style/TextBold"
             android:textSize="@dimen/_15sdp"
             android:textStyle="bold"
+            android:theme="@style/TextBold"
 
             />
 
@@ -55,12 +55,12 @@
         android:id="@+id/reportHazzardBlock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="@dimen/_5sdp"
-        android:background="@drawable/button_white_bg"
-        app:cardElevation="@dimen/_5sdp"
         android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_60sdp"
         android:layout_marginRight="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_60sdp">
+        android:background="@drawable/button_white_bg"
+        app:cardCornerRadius="@dimen/_5sdp"
+        app:cardElevation="@dimen/_5sdp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -87,12 +87,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/reportHazzardBlock"
-        app:cardCornerRadius="@dimen/_5sdp"
-        android:background="@drawable/button_white_bg"
-        app:cardElevation="@dimen/_5sdp"
         android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_10sdp">
+        android:background="@drawable/button_white_bg"
+        app:cardCornerRadius="@dimen/_5sdp"
+        app:cardElevation="@dimen/_5sdp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -104,10 +104,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:padding="@dimen/_5sdp"
-                android:theme="@style/TextRegular"
                 android:text="@string/eva_plan"
                 android:textColor="@color/black"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                android:theme="@style/TextRegular" />
 
         </RelativeLayout>
 
@@ -120,31 +120,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/evacuationBlock"
-        android:layout_marginTop="@dimen/_30sdp"
         android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_30sdp"
         android:orientation="vertical"
-        android:visibility="gone"
-        >
+        android:visibility="gone">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/your_fire_warden"
-        android:theme="@style/TextRegular"
-        />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/TextRegular"
+            android:text="@string/your_fire_warden"
+            android:theme="@style/TextRegular" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/today"
-            />
+            android:theme="@style/TextRegular" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="@style/TextRegular"
             android:text="Wed,6 June"
-            />
+            android:theme="@style/TextRegular" />
 
     </LinearLayout>
 
@@ -155,8 +152,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/evacuationBlock"
-        android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_15sdp"
         android:orientation="vertical"
 
         >
@@ -166,39 +163,43 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Your Fire wardens"
-            android:theme="@style/TextBold"
-            />
+            android:theme="@style/TextBold" />
+
         <TextView
             android:id="@+id/titleFire"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/today"
             android:layout_marginTop="@dimen/_2sdp"
-            android:theme="@style/TextRegular"
-            />
+            android:text="@string/today"
+            android:theme="@style/TextRegular" />
 
         <TextView
             android:id="@+id/subTitleFire"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Wed,6 June"
-            android:theme="@style/TextRegular"
-            />
+            android:theme="@style/TextRegular" />
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_2sdp"
+        android:layout_below="@id/textBlock"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@color/figmaBgGrey" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvFireWardens"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textBlock"
-        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="10"
-        tools:listitem="@layout/layout_firewardens_adapter"
-        />
+        tools:listitem="@layout/layout_firewardens_adapter" />
 
 
 </RelativeLayout>
