@@ -7932,14 +7932,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     resultString = "COVID_SYMPTOMS";
                 } else if (response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")) {
                     resultString = "Desk is Unavailable";
-                } else {
+                }else {
                     resultString = response.body().getResultCode().toString();
                 }
                 //Utils.showCustomAlertDialog(getActivity(), "Booking Not Updated " + resultString);
                 Utils.showCustomAlertDialog(getActivity(), resultString);
             }
         } else if (response.code() == 500) {
-            Utils.showCustomAlertDialog(getActivity(), "" + response.message());
+            //Utils.showCustomAlertDialog(getActivity(), "" + response.message());
         } else if (response.code() == 401) {
             Utils.showCustomTokenExpiredDialog(getActivity(), "401 Error Response");
         } else {
