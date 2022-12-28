@@ -164,7 +164,7 @@
                             <ImageView
                                 android:id="@+id/imgFAid"
                                 android:layout_width="30dp"
-                                android:layout_height="30dp"
+                                android:layout_height="31dp"
                                 android:layout_gravity="center_horizontal"
                                 android:src="@drawable/plus" />
 

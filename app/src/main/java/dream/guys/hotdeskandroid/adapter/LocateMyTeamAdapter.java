@@ -129,14 +129,17 @@ public class LocateMyTeamAdapter extends RecyclerView.Adapter<LocateMyTeamAdapte
 
                 holder.locateMyTeamCheckInTime.setText(Utils.splitTime(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel().getFrom()));
                 holder.locateMyTeamCheckOutTime.setText(Utils.splitTime(daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel().getMyto()));
+                holder.locateMyTeamCheckInTime.setVisibility(View.VISIBLE);
+                holder.locateMyTeamCheckOutTime.setVisibility(View.VISIBLE);
+                holder.locateMyTeamLocation.setVisibility(View.VISIBLE);
 
             } else if (daoTeamMemberList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().get(0).getCalendarEntriesModel().getBooking() == null) {
                 //holder.locateMyTeamDeskName.setText("No Booking Avaliable");
-                holder.locateMyTeamCheckInTime.setVisibility(View.GONE);
-                holder.locateMyTeamCheckOutTime.setVisibility(View.GONE);
-                holder.locateMyTeamLocation.setVisibility(View.GONE);
-                holder.locateMyTeamNameCheckInIcon.setVisibility(View.GONE);
-                holder.locateMyTeamCheckOutIcon.setVisibility(View.GONE);
+                //holder.locateMyTeamCheckInTime.setVisibility(View.GONE);
+                //holder.locateMyTeamCheckOutTime.setVisibility(View.GONE);
+               // holder.locateMyTeamLocation.setVisibility(View.GONE);
+                //holder.locateMyTeamNameCheckInIcon.setVisibility(View.GONE);
+               // holder.locateMyTeamCheckOutIcon.setVisibility(View.GONE);
             }
 
         }

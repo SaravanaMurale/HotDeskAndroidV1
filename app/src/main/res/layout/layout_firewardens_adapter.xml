@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -13,9 +12,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_3sdp"
-            android:padding="@dimen/_10sdp"
-            >
+            android:gravity="center"
+            android:paddingTop="@dimen/_4sdp"
+            android:paddingBottom="@dimen/_4sdp">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/firewardensProfilePic"
@@ -31,90 +30,98 @@
                 android:layout_alignRight="@+id/firewardensProfilePic"
                 android:layout_alignBottom="@+id/firewardensProfilePic"
                 android:layout_marginBottom="@dimen/_2sdp"
-                android:visibility="gone"
-                android:src="@drawable/online" />
+                android:src="@drawable/online"
+                android:visibility="gone" />
 
-
-            <TextView
-                android:id="@+id/firewandensName"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/nameLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_toRightOf="@+id/firewardensProfilePic"
-                tools:text="Space-001"
-                android:textStyle="bold"
-                android:theme="@style/TextBold" />
+                android:layout_centerInParent="true"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_toEndOf="@+id/firewardensProfilePic"
+                android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/firewardensImage"
-                android:layout_width="@dimen/_13sdp"
-                android:layout_height="@dimen/_13sdp"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_marginTop="1dp"
-                android:layout_toRightOf="@id/firewandensName"
-                android:src="@drawable/plus" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:id="@+id/firewandensName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:textStyle="bold"
+                        android:theme="@style/TextBold"
+                        tools:text="Space-001" />
 
-            <ImageView
-                android:id="@+id/ivAvaliable"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_below="@+id/firewandensName"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:visibility="gone"
-                android:layout_toRightOf="@+id/firewardensProfilePic"
-                android:src="@drawable/online" />
-
-            <TextView
-                android:id="@+id/firwardensStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/firewandensName"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:layout_toRightOf="@+id/ivAvaliable"
-                tools:text="In Office"
-                android:theme="@style/TextRegular"
-                android:textColor="@color/figmaBlack" />
-
-            <ImageView
-                android:id="@+id/locateMyTeamLocation"
-                android:layout_width="@dimen/_18sdp"
-                android:layout_height="@dimen/_18sdp"
-                android:layout_below="@+id/firewandensName"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:src="@drawable/blue_location" />
+                    <ImageView
+                        android:id="@+id/firewardensImage"
+                        android:layout_width="@dimen/_13sdp"
+                        android:layout_height="@dimen/_13sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="1dp"
+                        android:src="@drawable/plus" />
 
 
+                    <ImageView
+                        android:id="@+id/ivAvaliable"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:src="@drawable/online"
+                        android:visibility="gone" />
+                </LinearLayout>
 
-            <TextView
-                android:id="@+id/firwardensAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/firwardensStatus"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:theme="@style/TextRegular"
-                android:layout_toRightOf="@+id/firewardensProfilePic"
-                tools:text="40th Bank Street-30th Floor"
-                android:textColor="@color/figmaBlack"
-                android:textSize="@dimen/_10sdp"
-                />
+                <TextView
+                    android:id="@+id/firwardensStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_toRightOf="@id/firewardensProfilePic"
+                    android:textColor="@color/figmaBlack"
+                    android:theme="@style/TextRegular"
+                    android:visibility="gone"
+                    tools:text="In Office" />
+
+                <ImageView
+                    android:id="@+id/locateMyTeamLocation"
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:src="@drawable/blue_location"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/firwardensAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/firwardensStatus"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_toRightOf="@+id/firewardensProfilePic"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="@dimen/_10sdp"
+                    android:theme="@style/TextRegular"
+                    android:visibility="gone"
+                    tools:text="40th Bank Street-30th Floor" />
+
+            </LinearLayout>
+
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_2sdp"
-                android:layout_below="@+id/firwardensAddress"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_below="@+id/firewardensProfilePic"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:background="@color/figmaBgGrey"/>
-
+                android:background="@color/figmaBgGrey" />
 
         </RelativeLayout>
-
-
 
 
     </androidx.cardview.widget.CardView>

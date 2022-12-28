@@ -32,6 +32,7 @@ public class FireWardensAdapter extends RecyclerView.Adapter<FireWardensAdapter.
 
     public interface ViewPersonDetailCliclable{
         public void  viewPersonClick(FirstAidResponse.Persons persons);
+        public void  loadLocateFromFireWardens();
     }
 
     public FireWardensAdapter(Context context, List<FirstAidResponse.Persons> firstAidResponseList, String description,ViewPersonDetailCliclable viewPersonDetailCliclable) {
@@ -56,10 +57,16 @@ public class FireWardensAdapter extends RecyclerView.Adapter<FireWardensAdapter.
 
         holder.firewandensName.setText(firstAidResponseList.get(position).getFullName());
 
-        Glide.with(context)
+        if(description.equalsIgnoreCase("Firewardenss"))
+            Glide.with(context)
                 .load(R.drawable.fire)
                 .placeholder(R.drawable.fire)
                 .into(holder.firewardensImage);
+        else
+            Glide.with(context)
+                    .load(R.drawable.plus)
+                    .placeholder(R.drawable.plus)
+                    .into(holder.firewardensImage);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,9 +74,17 @@ public class FireWardensAdapter extends RecyclerView.Adapter<FireWardensAdapter.
 
                 viewPersonDetailCliclable.viewPersonClick(firstAidResponseList.get(holder.getAbsoluteAdapterPosition()));
 
+            }
+        });
 
 
+        holder.locateMyTeamLocationFireWarden.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                firstAidResponseList.get(holder.getAbsoluteAdapterPosition());
+
+                viewPersonDetailCliclable.loadLocateFromFireWardens();
             }
         });
 
@@ -94,6 +109,10 @@ public class FireWardensAdapter extends RecyclerView.Adapter<FireWardensAdapter.
         TextView firwardensStatus;
         @BindView(R.id.firwardensAddress)
         TextView firwardensAddress;
+
+        @BindView(R.id.locateMyTeamLocation)
+        ImageView locateMyTeamLocationFireWarden;
+
 
         public FireWandensViewHolder(@NonNull View itemView) {
             super(itemView);

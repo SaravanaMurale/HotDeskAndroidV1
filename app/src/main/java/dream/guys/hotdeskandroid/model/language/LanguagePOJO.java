@@ -4365,12 +4365,36 @@ public class LanguagePOJO {
         @SerializedName("Parking")
         @Expose
         private String parking;
+        @SerializedName("Remote")
+        @Expose
+        private String Remote;
+        @SerializedName("Sick")
+        @Expose
+        private String Sick;
+        @SerializedName("Holiday")
+        @Expose
+        private String Holiday;
+        @SerializedName("TrainingStr")
+        @Expose
+        private String TrainingStr;
         @SerializedName("More")
         @Expose
         private String more;
         @SerializedName("BookWorkSpace")
         @Expose
         private String bookWorkSpace;
+        @SerializedName("workingRemotely")
+        @Expose
+        private String workingRemotely;
+        @SerializedName("logSickness")
+        @Expose
+        private String logSickness;
+        @SerializedName("BookHoliday")
+        @Expose
+        private String BookHoliday;
+        @SerializedName("BookTraining")
+        @Expose
+        private String BookTraining;
         @SerializedName("BookRoom")
         @Expose
         private String bookRoom;
@@ -4422,6 +4446,9 @@ public class LanguagePOJO {
         @SerializedName("HealthTips")
         @Expose
         private String healthTips;
+        @SerializedName("Menu")
+        @Expose
+        private String menu;
         @SerializedName("FireWardens")
         @Expose
         private String fireWardens;
@@ -5160,6 +5187,70 @@ public class LanguagePOJO {
         @SerializedName("Signinwithpin")
         String Signinwithpin;
 
+        public String getRemote() {
+            return Remote;
+        }
+
+        public void setRemote(String remote) {
+            Remote = remote;
+        }
+
+        public String getSick() {
+            return Sick;
+        }
+
+        public void setSick(String sick) {
+            Sick = sick;
+        }
+
+        public String getHoliday() {
+            return Holiday;
+        }
+
+        public void setHoliday(String holiday) {
+            Holiday = holiday;
+        }
+
+        public String getTrainingStr() {
+            return TrainingStr;
+        }
+
+        public void setTrainingStr(String trainingStr) {
+            TrainingStr = trainingStr;
+        }
+
+        public String getWorkingRemotely() {
+            return workingRemotely;
+        }
+
+        public void setWorkingRemotely(String workingRemotely) {
+            this.workingRemotely = workingRemotely;
+        }
+
+        public String getLogSickness() {
+            return logSickness;
+        }
+
+        public void setLogSickness(String logSickness) {
+            this.logSickness = logSickness;
+        }
+
+        public String getBookHoliday() {
+            return BookHoliday;
+        }
+
+        public void setBookHoliday(String bookHoliday) {
+            BookHoliday = bookHoliday;
+        }
+
+        public String getBookTraining() {
+            return BookTraining;
+        }
+
+        public void setBookTraining(String bookTraining) {
+            BookTraining = bookTraining;
+        }
+
         public String getSigninwithpin() {
             return Signinwithpin;
         }
@@ -5390,6 +5481,14 @@ public class LanguagePOJO {
 
         public void setRequestTraining(String requestTraining) {
             this.requestTraining = requestTraining;
+        }
+
+        public String getMenu() {
+            return menu;
+        }
+
+        public void setMenu(String menu) {
+            this.menu = menu;
         }
 
         public String getActiveNotices() {
