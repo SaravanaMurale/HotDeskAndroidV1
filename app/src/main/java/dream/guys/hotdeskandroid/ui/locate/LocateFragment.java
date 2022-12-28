@@ -792,11 +792,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 ArrayList<DAOTeamMember.DayGroup> dayGroupList = new ArrayList<>();
 
 
-                                momdel.setCalendarEntriesModel(calendarEntries.get(k));
+                                momdel.setCalendarEntriesModel(calendarEntries.get(0));
 
                                 dayGroupList.add(momdel);
                                 daoTeamMember.setDayGroups(dayGroupList);
                                 locateMyTeamMemberStatusList.add(daoTeamMember);
+                                break;
 
                             //}
                         /*else if(calendarEntries.get(k).getBooking() ==null){
