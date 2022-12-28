@@ -315,9 +315,9 @@ public class EditCarParkController {
 
         deskRoomName=roomBottomSheet.findViewById(R.id.tv_desk_room_name);
         TextView locationAddressTop=roomBottomSheet.findViewById(R.id.locationAddress);
+        TextView desc=roomBottomSheet.findViewById(R.id.tvDesc);
         locationAddress=roomBottomSheet.findViewById(R.id.tv_location_details);
         //New...
-        locationAddress.setVisibility(View.VISIBLE);
 
         date=roomBottomSheet.findViewById(R.id.date);
         TextView title=roomBottomSheet.findViewById(R.id.title);
@@ -345,6 +345,11 @@ public class EditCarParkController {
 
         showcheckInDate.setText(Utils.showBottomSheetDate(calSelectedDate));
         checkInDate.setText("");
+
+        locationAddress.setVisibility(View.GONE);
+        desc.setVisibility(View.GONE);
+        tv_description.setVisibility(View.GONE);
+
 
         if (editDeskBookingDetails.getDeskStatus() == 1){
             startTime.setTextColor(activityContext.getResources().getColor(R.color.figmaGrey));
@@ -533,6 +538,18 @@ public class EditCarParkController {
         }else if (dskRoomParkStatus==2) {
             
         }else {
+            try {
+
+                if (editDeskBookingDetails.getStatus().getBookingType().equalsIgnoreCase("REQ")) {
+                    deskStatusText.setText("Available For Request");
+                    deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(activityContext,R.color.figma_orange));
+                } else {
+                    deskStatusText.setText("Available");
+                    deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(activityContext,R.color.figmaLiteGreen));
+                }
+            } catch (Exception e){
+
+            }
             if (newEditStatus.equalsIgnoreCase("edit")){
                 if (editDeskBookingDetails.getDate()!=null)
                     date.setText(""+Utils.calendarDay10thMonthYearformat(editDeskBookingDetails.getDate()));
@@ -737,13 +754,14 @@ public class EditCarParkController {
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!startDisabled){
-                    if(editDeskBookingDetails.getStatus().getBookingType().equalsIgnoreCase("REQ"))
-                        Utils.bottomSheetTimePicker24Hrs(context,activityContext,startTime,"Start Time",
-                            Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
-                    else
-                        Utils.bottomSheetTimePicker24Hrs(context,activityContext,startTime,"Start Time",
-                                Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
+                try {
+                    if (!startDisabled){
+                        if(editDeskBookingDetails.getStatus().getBookingType().equalsIgnoreCase("REQ"))
+                            Utils.bottomSheetTimePicker24Hrs(context,activityContext,startTime,"Start Time",
+                                    Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
+                        else
+                            Utils.bottomSheetTimePicker24Hrs(context,activityContext,startTime,"Start Time",
+                                    Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
 
 /*
                         if (editDeskBookingDetails.getDeskBookingType()!=null
@@ -754,9 +772,11 @@ public class EditCarParkController {
                                     Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
 */
 
-
                     }
+                } catch (Exception e){
+
                 }
+            }
 
 //                Toast.makeText(context, "fsf"+editDeskBookingDetails.getRequestedTeamDeskId(), Toast.LENGTH_SHORT).show();
 
@@ -767,25 +787,19 @@ public class EditCarParkController {
         endTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!endDisabled) {
-                    if (dskRoomParkStatus == 1
-                            && newEditStatus.equalsIgnoreCase("edit")) {
-                        if (editDeskBookingDetails.getUsageTypeId()==2
-                                && editDeskBookingDetails.getRequestedTeamId()>0) {
-
+                try {
+                    if(!endDisabled) {
+                        if (editDeskBookingDetails.getStatus().getBookingType().equalsIgnoreCase("REQ"))
                             Utils.bottomSheetTimePicker24Hrs(context,activityContext,endTime,"End Time",
                                     Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
-                        } else {
-
+                        else
                             Utils.bottomSheetTimePicker24Hrs(context,activityContext,endTime,"End Time",
-                                    Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
-                        }
-                    } else
-                        Utils.bottomSheetTimePicker24Hrs(context,activityContext,endTime,"End Time",
-                                Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
+                                    Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
+                    }
+                } catch (Exception c){
 
                 }
-//                    Utils.popUpTimePicker(activityContext,endTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
+
             }
         });
         repeat.setOnClickListener(new View.OnClickListener() {

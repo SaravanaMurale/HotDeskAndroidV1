@@ -2112,9 +2112,11 @@ public class BookFragment extends Fragment implements
                                     for (int x=0; x<allMeetingRoomList.get(i).getTeams().size(); x++){
                                         if(allMeetingRoomList.get(i).getTeams().get(x).getId() == myTeamId){
                                             editDeskBookingDetails.setMeetingRoomStatus(1);
+                                            isMeetingRequest=false;
                                             break team;
                                         } else {
                                             editDeskBookingDetails.setMeetingRoomStatus(2);
+                                            isMeetingRequest=true;
                                         }
                                     }
                                     manager:
@@ -2122,11 +2124,14 @@ public class BookFragment extends Fragment implements
                                         if(allMeetingRoomList.get(i).getManagers().get(x).getId()
                                                 == SessionHandler.getInstance().getInt(context,AppConstants.USER_ID)){
                                             editDeskBookingDetails.setMeetingRoomStatus(1);
+                                            isMeetingRequest=false;
                                             break manager;
                                         }
                                     }
-                                    if(allMeetingRoomList.get(i).getAutomaticApprovalStatus()==2)
+                                    if(allMeetingRoomList.get(i).getAutomaticApprovalStatus()==2){
                                         editDeskBookingDetails.setMeetingRoomStatus(1);
+                                        isMeetingRequest=false;
+                                    }
 
 
                                     if (allMeetingRoomList.get(i).getAmenities()!=null){
@@ -3219,13 +3224,11 @@ public class BookFragment extends Fragment implements
 
                 if (selectedicon==2 && newEditStatus.equalsIgnoreCase("new")) {
                     if (editDeskBookingDetails.getMeetingRoomStatus() == 2) {
-                        isMeetingRequest = true;
                         callMeetingRoomBookingBottomSheet(editDeskBookingDetails,
                                 startTime, endTime, selectedDeskId,
                                 deskRoomName.getText().toString(), isMeetingRequest,
                                 editDeskBookingDetails.getCalId(), newEditStatus);
                     } else {
-                        isMeetingRequest = false;
                         callMeetingRoomBookingBottomSheet(editDeskBookingDetails,
                                 startTime, endTime, selectedDeskId,
                                 deskRoomName.getText().toString(), isMeetingRequest,
@@ -3233,13 +3236,11 @@ public class BookFragment extends Fragment implements
                     }
                 } else if (selectedicon==2) {
                     if (newEditStatus.equalsIgnoreCase("request")) {
-                        isMeetingRequest=true;
                         callMeetingRoomBookingBottomSheet(editDeskBookingDetails,
                                 startTime,
                                 endTime,
                                 selectedDeskId, deskRoomName.getText().toString(), isMeetingRequest, editDeskBookingDetails.getCalId(), newEditStatus);
                     } else if(newEditStatus.equalsIgnoreCase("edit")){
-                        isMeetingRequest = true;
                         if(editDeskBookingDetails.getMeetingRoomBookingType().equalsIgnoreCase("req")) {
                             callMeetingRoomBookingBottomSheet(editDeskBookingDetails,
                                     startTime,
@@ -3247,7 +3248,6 @@ public class BookFragment extends Fragment implements
                                     selectedDeskId, deskRoomName.getText().toString(), isMeetingRequest, editDeskBookingDetails.getCalId(), newEditStatus);
                         }
                         else {
-                            isMeetingRequest = false;
                             callMeetingRoomBookingBottomSheet(editDeskBookingDetails,
                                     startTime,
                                     endTime,
