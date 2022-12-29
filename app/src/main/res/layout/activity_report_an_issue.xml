@@ -130,7 +130,6 @@
                 android:paddingStart="@dimen/_5sdp"
                 android:hint="Add"
                 android:enabled="false"
-                android:textColorHint="@color/figmaBlueText"
                 android:background="@drawable/button_white_bg"
                 android:backgroundTint="@color/figmaBgGrey" />
 
