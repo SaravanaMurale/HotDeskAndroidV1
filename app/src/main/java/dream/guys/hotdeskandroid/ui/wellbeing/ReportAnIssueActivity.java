@@ -635,8 +635,11 @@ public class ReportAnIssueActivity extends AppCompatActivity implements AdapterV
         calBack.setText(appKeysPage.getBack());
         tvSelectDate.setText(appKeysPage.getSelectDate());
 
-        Calendar c = Calendar.getInstance();
-        calendarView.setMinDate(c.getTimeInMillis() - 1000);
+
+        if (title.equalsIgnoreCase("To Date")) {
+            Calendar c = Calendar.getInstance();
+            calendarView.setMaxDate(c.getTimeInMillis() - 1000);
+        }
 
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
