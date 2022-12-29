@@ -35,10 +35,9 @@
 #-allowaccessmodification
 
 
--obfuscationdictionary "D:\Projects\Backup\hotdesk_master_before_CR_06_12_2022\dic.txt"
--classobfuscationdictionary "D:\Projects\Backup\hotdesk_master_before_CR_06_12_2022\dic.txt"
--packageobfuscationdictionary "D:\Projects\Backup\hotdesk_master_before_CR_06_12_2022\dic.txt"
-
+-obfuscationdictionary "C:\Users\Dreamsuser\AndroidStudioProjects\hotdesk_android\dic.txt"
+-classobfuscationdictionary "C:\Users\Dreamsuser\AndroidStudioProjects\hotdesk_android\dic.txt"
+-packageobfuscationdictionary "C:\Users\Dreamsuser\AndroidStudioProjects\hotdesk_android\dic.txt"
 
 -mergeinterfacesaggressively
 -overloadaggressively
