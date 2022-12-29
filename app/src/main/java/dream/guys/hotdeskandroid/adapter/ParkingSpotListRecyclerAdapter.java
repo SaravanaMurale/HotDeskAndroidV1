@@ -87,7 +87,6 @@ public class ParkingSpotListRecyclerAdapter extends RecyclerView.Adapter<Parking
 
             return results;
         }
-
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
 

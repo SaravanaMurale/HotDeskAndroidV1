@@ -127,7 +127,7 @@ public class Utils {
     }
 
     public static String checkStringParms(String text) {
-        if (text != null)
+        if (text != null && !text.equalsIgnoreCase("null"))
             return text;
         else
             return "";
@@ -382,6 +382,7 @@ public class Utils {
 
                 SimpleDateFormat f24hours = new SimpleDateFormat("HH:mm");
                 try {
+                    float oldsttime= Float.parseFloat(""+oldHour+"."+oldMinutes);
                     float sttime= Float.parseFloat(""+hour+"."+minutes);
                     float ettime= Float.parseFloat(et.getText().toString().replace(":","."));
 
@@ -393,9 +394,9 @@ public class Utils {
 //                    cal.add(Calendar.MINUTE, 30);
 //                    String endTime = Utils.setStartNearestFiveMinToMeeting(f24hours.format(cal.getTime()));
 //                    String endTime = Utils.setStartNearestThirtyMinToMeeting(f24hours.format(cal.getTime()));
-                    if(sttime>ettime){
-//                        cal.add(Calendar.MINUTE, 30);
-                        String endTime = Utils.setStartNearestThirtyMinToMeetingElango(f24hours.format(cal.getTime()));
+                    if(sttime>ettime || sttime<oldsttime){
+                        cal.add(Calendar.MINUTE, 30);
+                        String endTime = Utils.setStartNearestFiveMinToMeeting(f24hours.format(cal.getTime()));
                         et.setText("" + f24hours.format(f24hours.parse(endTime)));
 //                        updateEndtTimeforMeeting(et,sttime,ettime);
                     }
@@ -2497,7 +2498,7 @@ public class Utils {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss'Z'");
         LocalDateTime ldt = LocalDateTime.parse(time).truncatedTo(ChronoUnit.MINUTES);
         int minute = ldt.getMinute();
-        int remainder = minute % 5;
+        int remainder = minute % 15;
         if (remainder != 0) {
             ldt = ldt.withMinute(minute - remainder);
         }
@@ -2549,21 +2550,24 @@ public class Utils {
 
             int min = Integer.parseInt(orgSTime[1]);
 
-            if (min >= 0 && min <= 15) {
+            if (min >= 0 && min < 15) {
 
                 fTime = cTime.replace(orgSTime[1], "30");
 
-            } else if (min > 15 && min <= 30) {
+            } else if (min >= 15 && min < 30) {
 
-                fTime = roundOffHour(cTime.replace(orgSTime[1], "45"));
+                fTime = cTime.replace(orgSTime[1], "45");
+//                fTime = roundOffHour(cTime.replace(orgSTime[1], "45"));
 
-            } else if (min > 30 && min <= 45) {
+            } else if (min >= 30 && min < 45) {
 
-                fTime = roundOffHour(cTime.replace(orgSTime[1], "00"));
+                fTime = cTime.replace(orgSTime[1], "00");
+//                fTime = roundOffHour(cTime.replace(orgSTime[1], "00"));
 
-            } else if (min > 45 && min <= 59) {
+            } else if (min >= 45 && min <= 59) {
 
-                fTime = roundOffHour(cTime.replace(orgSTime[1], "15"));
+                fTime = cTime.replace(orgSTime[1], "15");
+//                fTime = roundOffHour(cTime.replace(orgSTime[1], "15"));
 
             }
 
@@ -2660,6 +2664,35 @@ public class Utils {
 
                 cal.setTime(d);
                 cal.add(Calendar.HOUR, 1);
+
+                newTime = tFormat.format(cal.getTime());
+
+                return newTime;
+
+            } else {
+                return newTime;
+            }
+        } catch (ParseException e) {
+            return newTime;
+        }
+
+    }
+    public static String roundOffHour30(String selectedTime) {
+
+        SimpleDateFormat tFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        //Date currentTime = Calendar.getInstance().getTime();
+        String time = selectedTime; //tFormat.format(currentTime);
+
+        Date d = null;
+        String newTime = "";
+
+        try {
+            d = tFormat.parse(time);
+            Calendar cal = Calendar.getInstance();
+            if (d != null) {
+
+                cal.setTime(d);
+                cal.add(Calendar.MINUTE, 30);
 
                 newTime = tFormat.format(cal.getTime());
 

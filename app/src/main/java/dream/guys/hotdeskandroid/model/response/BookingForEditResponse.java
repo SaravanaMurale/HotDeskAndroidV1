@@ -123,6 +123,7 @@ public class BookingForEditResponse {
         private boolean isPartiallyAvailable;
         @SerializedName("isBookedByElse")
         private boolean isBookedByElse;
+
         @SerializedName("locationDetails")
         private Location locationDetails;
 
