@@ -733,7 +733,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         binding.rvLocateMyTeam.setLayoutManager(linearLayoutManager);
         binding.rvLocateMyTeam.setHasFixedSize(true);*/
 
-
+        if (locateMyTeamMemberStatusList!=null && locateMyTeamMemberStatusList.size()>0) {
+            locateMyTeamMemberStatusList.clear();
+        }
         locateMyTeamMemberStatusList = new ArrayList<>();
         for (int i = 0; i < daoTeamMemberList.size(); i++) {
 
@@ -747,8 +749,24 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     ArrayList<DAOTeamMember.DayGroup.MeetingBooking> meetingEntries = null;
                     ArrayList<DAOTeamMember.DayGroup.CarParkBooking> carParkEntries = null;
 
-                    if (daoTeamMemberList.get(i).getDayGroups().get(0).getCalendarEntries() != null) {
-                        calendarEntries = daoTeamMemberList.get(i).getDayGroups().get(0).getCalendarEntries();
+                    if (daoTeamMemberList.get(i).getDayGroups().get(j).getCalendarEntries() != null && daoTeamMemberList.get(i).getDayGroups().get(j).getCalendarEntries().size()>0) {
+                        calendarEntries = daoTeamMemberList.get(i).getDayGroups().get(j).getCalendarEntries();
+                    }else {
+                        /*DAOTeamMember.DayGroup momdel = new DAOTeamMember.DayGroup();
+                        DAOTeamMember daoTeamMember = new DAOTeamMember();
+                        //daoTeamMember=daoTeamMemberList.get(i);
+                        daoTeamMember.setFirstName(daoTeamMemberList.get(i).getFirstName());
+                        daoTeamMember.setLastName(daoTeamMemberList.get(i).getLastName());
+                        daoTeamMember.setProfileImage(daoTeamMemberList.get(i).getProfileImage());
+
+                        ArrayList<DAOTeamMember.DayGroup> dayGroupList = new ArrayList<>();
+
+
+                        //momdel.setCalendarEntriesModel(calendarEntries.get(k));
+
+                        dayGroupList.add(momdel);
+                        daoTeamMember.setDayGroups(dayGroupList);*/
+                        locateMyTeamMemberStatusList.add(daoTeamMemberList.get(i));
                     }
                     /*if (bookingListResponses.getDayGroups().get(i).getMeetingBookings()!=null){
                         meetingEntries =
@@ -759,7 +777,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 bookingListResponses.getDayGroups().get(i).getCarParkBookings();
                     }*/
 
-                    if (calendarEntries != null) {
+                    if (calendarEntries != null && calendarEntries.size()>0) {
                         for (int k = 0; k < calendarEntries.size(); k++) {
 
                             //if(calendarEntries.get(k).getBooking()!=null) {
@@ -774,11 +792,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 ArrayList<DAOTeamMember.DayGroup> dayGroupList = new ArrayList<>();
 
 
-                                momdel.setCalendarEntriesModel(calendarEntries.get(k));
+                                momdel.setCalendarEntriesModel(calendarEntries.get(0));
 
                                 dayGroupList.add(momdel);
                                 daoTeamMember.setDayGroups(dayGroupList);
                                 locateMyTeamMemberStatusList.add(daoTeamMember);
+                                break;
 
                             //}
                         /*else if(calendarEntries.get(k).getBooking() ==null){
@@ -848,7 +867,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         }
 
-        binding.rvLocateMyTeam.setHasFixedSize(true);
+        //binding.rvLocateMyTeam.setHasFixedSize(true);
 
 
         //For FirstAid
@@ -1687,15 +1706,25 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
                         int totalDeskSize = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks().size();
-                        //System.out.println("TotalSize" + totalDeskSize);
 
 
-                        //ProgressDialog.dismisProgressBar(getContext(), dialog);
-                        //getAvaliableDeskDetails(locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks(),0);
+                        //To set desk,car and meeting icon
+                        List<String> valueList = new ArrayList<>();
+                        if (locateCountryResposeList.get(floorPosition).getItems() != null) {
 
-                        //if (canvasDrawId == 1) {
+                            int itemTotalSize = locateCountryResposeList.get(floorPosition).getItems().size();
 
-                        //List<Point> pointList = new ArrayList<>();
+                            for (String key : locateCountryResposeList.get(floorPosition).getItems().keySet()) {
+
+                                valueList = locateCountryResposeList.get(floorPosition).getItems().get(key);
+
+                                addView(valueList, key, floorPosition, itemTotalSize);
+
+                            }
+
+                        } else {
+                            Toast.makeText(getContext(), "No Data", Toast.LENGTH_LONG).show();
+                        }
 
 
                         //To Write Title
@@ -1738,66 +1767,25 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
                             }
-
-
-
-                            //Draw Title
-                         /*   for (int i = 0; i <getSupportZoneLayoutForCanvas.size() ; i++) {
-                                System.out.println("FloorNameSuppportZoneee "+getSupportZoneLayoutForCanvas.get(i).getTitle());
-                                View roomTitleView = getLayoutInflater().inflate(R.layout.layout_room_title, null, false);
-                                TextView roormTitle = roomTitleView.findViewById(R.id.roomTileCanvas);
-                                RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                                roormTitle.setVisibility(View.VISIBLE);
-                                int a=getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(0).get(0);
-                                int b=getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(0).get(1);;
-                                System.out.println("FloorNameSuppportZoneeePoint "+a+" "+b);
-
-                                relativeLayout.leftMargin=getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(0).get(0)+5;
-                                relativeLayout.topMargin=getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(0).get(1)+40;;
-                                relativeLayout.width = 60;
-                                relativeLayout.height = 60;
-                                roormTitle.setText(getSupportZoneLayoutForCanvas.get(i).getTitle());
-                                roormTitle.setLayoutParams(relativeLayout);
-                                //binding.firstLayout.addView(roomTitleView);
-                            }*/
-
                         }
 
                         //Final API canvas
                         List<List<Integer>> coordinateList = locateCountryResposeList.get(floorPosition).getCoordinates();
-
                         if (coordinateList != null && coordinateList.size() > 0) {
 
                             pointList = new ArrayList<>();
-
                             for (int i = 0; i < coordinateList.size(); i++) {
-                                System.out.println("CoordinateData" + i + "position" + "size " + coordinateList.get(i).size());
-
+                                //System.out.println("CoordinateData" + i + "position" + "size " + coordinateList.get(i).size());
                                 Point point = new Point(coordinateList.get(i).get(0) + 40, coordinateList.get(i).get(1) + 20);
                                 pointList.add(point);
-
                             }
-
                             addDottedLine(pointList);
 
                         }
 
-                        //pointList.clear();
-
-                        /*if (pointList.size() > 0) {
-                            MyCanvasDraw myCanvasDraw = new MyCanvasDraw(getContext(), pointList);
-
-                            binding.secondLayout.addView(myCanvasDraw);
-
-                        }*/
 
 
-                   /* } else {
-                        getFloorCoordinates(locateCountryResposeList.get(floorPosition).getCoordinates());
-                    }*/
-
-
-                        List<String> valueList = new ArrayList<>();
+                       /* List<String> valueList = new ArrayList<>();
                         if (locateCountryResposeList.get(floorPosition).getItems() != null) {
 
                             int itemTotalSize = locateCountryResposeList.get(floorPosition).getItems().size();
@@ -1812,7 +1800,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                         } else {
                             Toast.makeText(getContext(), "No Data", Toast.LENGTH_LONG).show();
-                        }
+                        }*/
 
                     }
 
@@ -1841,13 +1829,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         Collections.sort(yCoordinatesList);
 
 
-        for (int i = 0; i <xCoordinatesList.size() ; i++) {
+        /*for (int i = 0; i <xCoordinatesList.size() ; i++) {
             System.out.println("xCoordinatesList "+xCoordinatesList.get(i));
         }
 
         for (int i = 0; i <yCoordinatesList.size() ; i++) {
             System.out.println("yCoordinatesList "+yCoordinatesList.get(i));
-        }
+        }*/
 
 
         int titleX=xCoordinatesList.get(xCoordinatesList.size()-1)-xCoordinatesList.get(0);
@@ -1868,7 +1856,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //System.out.println("FinalXAndYTitleCoor "+xxx+" "+yyy);
 
         relativeLayout.leftMargin=xxx+xCoordinatesList.get(0);
-        relativeLayout.topMargin=yyy+yCoordinatesList.get(0);
+        relativeLayout.topMargin=yyy+yCoordinatesList.get(0)+15;
 
         //System.out.println("AfterFinalXAndYTitleCoor "+xxx+" "+yyy);
 
@@ -4426,10 +4414,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                             //If start time greater than end time means need to add 30 min in end time
                             if (workHour > workHourEnd) {
-                                endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
+                                endTRoomime.setText(Utils.setMeetingRoundOfValue8thTime(startRoomTime.getText().toString()));
                             }else if(workHour == workHourEnd) {
                                 if(workMinute>workMinuteEnd){
-                                    endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
+                                    endTRoomime.setText(Utils.setMeetingRoundOfValue8thTime(startRoomTime.getText().toString()));
                                 }
                             }
 
@@ -4447,10 +4435,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                         //If start time greater than end time means need to add 30 min in end time
                         if (workHour > workHourEnd) {
-                            endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
+                            endTRoomime.setText(Utils.setMeetingRoundOfValue8thTime(startRoomTime.getText().toString()));
                         }else if(workHour == workHourEnd) {
                             if(workMinute>workMinuteEnd){
-                                endTRoomime.setText(Utils.selectedTimeWithExtraMins(startRoomTime.getText().toString(), 30));
+                                endTRoomime.setText(Utils.setMeetingRoundOfValue8thTime(startRoomTime.getText().toString()));
                             }
                         }
 
@@ -7944,14 +7932,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     resultString = "COVID_SYMPTOMS";
                 } else if (response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")) {
                     resultString = "Desk is Unavailable";
-                } else {
+                }else {
                     resultString = response.body().getResultCode().toString();
                 }
                 //Utils.showCustomAlertDialog(getActivity(), "Booking Not Updated " + resultString);
                 Utils.showCustomAlertDialog(getActivity(), resultString);
             }
         } else if (response.code() == 500) {
-            Utils.showCustomAlertDialog(getActivity(), "" + response.message());
+            //Utils.showCustomAlertDialog(getActivity(), "" + response.message());
         } else if (response.code() == 401) {
             Utils.showCustomTokenExpiredDialog(getActivity(), "401 Error Response");
         } else {

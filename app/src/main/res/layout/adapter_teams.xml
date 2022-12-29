@@ -110,16 +110,6 @@
 
                 </FrameLayout>
 
-                <ImageView
-                    android:id="@+id/bookingIvEdit"
-                    android:layout_width="@dimen/_18sdp"
-                    android:layout_height="@dimen/_18sdp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/_6sdp"
-                    android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-                    app:tint="@color/figmaBlueText" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -229,6 +219,16 @@
                             android:textSize="@dimen/_10sdp" />
                     </LinearLayout>
                 </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/bookingIvEdit"
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/_6sdp"
+                    android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+                    app:tint="@color/figmaBlueText" />
 
 
                 <ImageView
