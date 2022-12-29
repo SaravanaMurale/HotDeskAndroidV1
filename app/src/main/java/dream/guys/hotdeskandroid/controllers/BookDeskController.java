@@ -40,6 +40,7 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
@@ -94,7 +95,7 @@ public class BookDeskController implements
     boolean endDisabled = false;
     boolean selectDisabled = false;
     boolean tvTeamNameDisabled = false;
-    TextView startTime,endTime,repeat,date,deskRoomName,tv_description,locationAddress,continueEditBook;
+    TextView startTime,endTime,repeat,date,deskRoomName,tv_description,desc,locationAddress,continueEditBook;
     TextView country, state, street, floor, back, bsApply,deskStatusText,deskStatusDot;
     TextView tvRepeat, tvTeamName,tvcapacityCount;
     EditText bsGeneralSearch;
@@ -237,26 +238,55 @@ public class BookDeskController implements
                     bookingForEditResponseDesk.add(bookingDeskList.get(i));
                 }
             }
-        } else {
-            for (int i=0; i<bookingForEditResponse.getTeamDeskAvailabilities().size(); i++) {
+        }
+        else {
+            try{
+                if (bookingDeskList!=null && bookingDeskList.size()>0){
+                    for (int i=0; i<bookingDeskList.size(); i++) {
 //                logic to show booked by else
-                /*if(Utils.compareTwoDate(Utils.convertStringToDateFormet(calSelectedDate),
-                        Utils.getCurrentDate())==2 && bookingForEditResponse.getTeamDeskAvailabilities().get(i).isBookedByElse()){
+                        if(Utils.compareTwoDate(Utils.convertStringToDateFormet(calSelectedDate),
+                                Utils.getCurrentDate())==2 && bookingDeskList.get(i).isBookedByElse()){
 
-                    if(!(Utils.compareTwoDatesandTime(Utils.getYearMonthDateFormat(
-                            Utils.convertStringToDateFormet(calSelectedDate))+"T"+Utils.getCurrentTime()+":00Z",
-                            bookingForEditResponse.getTeamDeskAvailabilities().get(i).getAvailableTimeSlots()
-                                    .get(bookingForEditResponse.getTeamDeskAvailabilities().get(i).getAvailableTimeSlots().size() - 1)
-                                    .getFrom())==1)){
+                            if(!(Utils.compareTwoDatesandTime(Utils.getYearMonthDateFormat(
+                                    Utils.convertStringToDateFormet(calSelectedDate))+"T"+Utils.getCurrentTime()+":00Z",
+                                    bookingDeskList.get(i).getAvailableTimeSlots()
+                                            .get(bookingDeskList.get(i).getAvailableTimeSlots().size() - 1)
+                                            .getFrom())==1)){
 
-                        bookingForEditResponseDesk.add(bookingForEditResponse.getTeamDeskAvailabilities().get(i));
+                                bookingForEditResponseDesk.add(bookingDeskList.get(i));
+                            }
+                        }
+
+                        if(!bookingDeskList.get(i).isBookedByElse()){
+                            bookingForEditResponseDesk.add(bookingDeskList.get(i));
+                        }
                     }
-                }*/
+                } else {
+                    for (int i=0; i<bookingForEditResponse.getTeamDeskAvailabilities().size(); i++) {
+//                logic to show booked by else
+                        if(Utils.compareTwoDate(Utils.convertStringToDateFormet(calSelectedDate),
+                                Utils.getCurrentDate())==2 && bookingForEditResponse.getTeamDeskAvailabilities().get(i).isBookedByElse()){
 
-                if(!bookingForEditResponse.getTeamDeskAvailabilities().get(i).isBookedByElse()){
-                    bookingForEditResponseDesk.add(bookingForEditResponse.getTeamDeskAvailabilities().get(i));
+                            if(!(Utils.compareTwoDatesandTime(Utils.getYearMonthDateFormat(
+                                    Utils.convertStringToDateFormet(calSelectedDate))+"T"+Utils.getCurrentTime()+":00Z",
+                                    bookingForEditResponse.getTeamDeskAvailabilities().get(i).getAvailableTimeSlots()
+                                            .get(bookingForEditResponse.getTeamDeskAvailabilities().get(i).getAvailableTimeSlots().size() - 1)
+                                            .getFrom())==1)){
+
+                                bookingForEditResponseDesk.add(bookingForEditResponse.getTeamDeskAvailabilities().get(i));
+                            }
+                        }
+
+                        if(!bookingForEditResponse.getTeamDeskAvailabilities().get(i).isBookedByElse()){
+                            bookingForEditResponseDesk.add(bookingForEditResponse.getTeamDeskAvailabilities().get(i));
+                        }
+                    }
                 }
+            }catch (Exception e){
+
             }
+
+
         }
 
 
@@ -421,6 +451,7 @@ public class BookDeskController implements
         TextView tv_comment=deskBottomSheet.findViewById(R.id.tv_comment);
         TextView tv_repeat=deskBottomSheet.findViewById(R.id.tv_repeat);
         tv_description=deskBottomSheet.findViewById(R.id.tv_description);
+        desc=deskBottomSheet.findViewById(R.id.tvDesc);
         repeat = deskBottomSheet.findViewById(R.id.repeat);
         deskStatusText = deskBottomSheet.findViewById(R.id.desk_status_text);
         deskStatusDot = deskBottomSheet.findViewById(R.id.user_status_dot);
@@ -576,6 +607,10 @@ public class BookDeskController implements
                     && !editDeskBookingDetails.getLocationAddress().equalsIgnoreCase(""))
                 locationAddress.setText(""+editDeskBookingDetails.getLocationAddress());
             tv_description.setText(editDeskBookingDetails.getDescription());
+            if (tv_description.getText().toString().equalsIgnoreCase("") || tv_description.getText().toString().isEmpty()){
+                tv_description.setVisibility(View.GONE);
+                desc.setVisibility(View.GONE);
+            }
 
             if (newEditStatus.equalsIgnoreCase("edit")){
                 if (editDeskBookingDetails.getDate()!=null)
@@ -2287,6 +2322,8 @@ public class BookDeskController implements
                     Utils.checkStringParms(deskList.getLocationDetails().getfLoorName()));
         if (tv_description!=null)
             tv_description.setText(Utils.checkStringParms(deskList.getDescription()));
+        if (desc != null &&tv_description.getText().toString().equalsIgnoreCase(""))
+            desc.setVisibility(View.GONE);
 
 //        Toast.makeText(context, "dsj"+changedDeskId, Toast.LENGTH_SHORT).show();
         if (typeId == 0) {
