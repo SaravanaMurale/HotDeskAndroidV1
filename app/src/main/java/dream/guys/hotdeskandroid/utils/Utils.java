@@ -38,6 +38,7 @@ import android.os.Build;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.RelativeSizeSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
@@ -381,6 +382,9 @@ public class Utils {
 
                 SimpleDateFormat f24hours = new SimpleDateFormat("HH:mm");
                 try {
+                    float sttime= Float.parseFloat(""+hour+"."+minutes);
+                    float ettime= Float.parseFloat(et.getText().toString().replace(":","."));
+
                     Date date = f24hours.parse(time);
                     SimpleDateFormat f12hours = new SimpleDateFormat("hh:mm aa");
 
@@ -388,15 +392,21 @@ public class Utils {
                     cal.setTime(date);
 //                    cal.add(Calendar.MINUTE, 30);
 //                    String endTime = Utils.setStartNearestFiveMinToMeeting(f24hours.format(cal.getTime()));
-                    String endTime = Utils.setStartNearestThirtyMinToMeeting(f24hours.format(cal.getTime()));
+//                    String endTime = Utils.setStartNearestThirtyMinToMeeting(f24hours.format(cal.getTime()));
+                    if(sttime>ettime){
+//                        cal.add(Calendar.MINUTE, 30);
+                        String endTime = Utils.setStartNearestThirtyMinToMeetingElango(f24hours.format(cal.getTime()));
+                        et.setText("" + f24hours.format(f24hours.parse(endTime)));
+//                        updateEndtTimeforMeeting(et,sttime,ettime);
+                    }
 
 //                            return String.valueOf(f12hours.format(date));
                     st.setText("" + f24hours.format(date));
-                    et.setText("" + f24hours.format(f24hours.parse(endTime)));
                     System.out.println("ReceivedDate" + f12hours.format(date));
                     bottomSheetDialog.dismiss();
 
                 } catch (ParseException e) {
+                    Log.d("Utils", "onClick: Meeting Lofic"+e.getLocalizedMessage());
                     e.printStackTrace();
                 }
 
@@ -404,6 +414,10 @@ public class Utils {
         });
 
         bottomSheetDialog.show();
+    }
+
+    private static void updateEndtTimeforMeeting(TextView et, float sttime, float ettime) {
+
     }
 
     //Bottom Sheet TimePicker
@@ -2525,6 +2539,40 @@ public class Utils {
 
         return fTime;
     }
+    public static String setStartNearestThirtyMinToMeetingElango(String cTime) {
+//        System.out.println("cTime bala"+ cTime);
+
+        String fTime = "";
+        String[] orgSTime = cTime.split(":");
+
+        if (orgSTime.length > 0) {
+
+            int min = Integer.parseInt(orgSTime[1]);
+
+            if (min >= 0 && min <= 15) {
+
+                fTime = cTime.replace(orgSTime[1], "30");
+
+            } else if (min > 15 && min <= 30) {
+
+                fTime = roundOffHour(cTime.replace(orgSTime[1], "45"));
+
+            } else if (min > 30 && min <= 45) {
+
+                fTime = roundOffHour(cTime.replace(orgSTime[1], "00"));
+
+            } else if (min > 45 && min <= 59) {
+
+                fTime = roundOffHour(cTime.replace(orgSTime[1], "15"));
+
+            }
+
+        } else {
+            fTime = cTime;
+        }
+
+        return fTime;
+    }
 
 
     public static String setNearestThirtyMinToMeeting(String cTime) {
@@ -2723,6 +2771,7 @@ public class Utils {
                 SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.Administrator)
                 ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.FacilityManager)
                 ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.TeamManager)
+                ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.Manager)
                 ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.MeetingManager)){
             return true;
         }else {

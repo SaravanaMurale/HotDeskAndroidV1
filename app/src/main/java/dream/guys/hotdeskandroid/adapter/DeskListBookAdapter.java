@@ -118,7 +118,7 @@ public class DeskListBookAdapter extends RecyclerView.Adapter<DeskListBookAdapte
                 holder.deskStatus.setText("Booked by Other");
                 holder.deskIconStatus.setColorFilter(context.getColor(R.color.figmaGrey));
 
-            } else if (deskList.get(position).getTeamId() != SessionHandler.getInstance()
+            } /*else if (deskList.get(position).getTeamId() != SessionHandler.getInstance()
                     .getInt(context, AppConstants.TEAM_ID)
                     && deskList.get(position).getAutomaticApprovalStatus() != 2){
                 holder.card.setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
@@ -133,7 +133,7 @@ public class DeskListBookAdapter extends RecyclerView.Adapter<DeskListBookAdapte
                 holder.deskStatus.setText("Available");
                 holder.deskIconStatus.setColorFilter(context.getColor(R.color.figmaLiteGreen));
             }
-
+*/
         }
 
         if (deskList.get(position).isBookedByUser()) {
@@ -143,6 +143,7 @@ public class DeskListBookAdapter extends RecyclerView.Adapter<DeskListBookAdapte
 
             holder.deskIconStatus.setColorFilter(context.getColor(R.color.figmaBlue));
         }
+
         holder.select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
