@@ -1454,7 +1454,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 System.out.println("CarParkingRequest");
                                 //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_request));
                                 break;
-                            } else if (carParkAvalibilityResponse.isBookedByElse() == false && carParkAvalibilityResponse.isBookedByUser() == false && (carParkAvalibilityResponse.isAvailable() == false || carParkingslots.get(i).getParkingSlotAvailability() == 1)) {
+                            }else if (carParkAvalibilityResponse.isBookedByElse() == false && carParkAvalibilityResponse.isBookedByUser() == false && carParkAvalibilityResponse.isAvailable() == true && carParkingslots.get(i).getParkingSlotAvailability() == 2 && (carParkingslots.get(i).getAssignessList().size() == 0 || !checkCurrentUserStatus(carParkingslots.get(i).getAssignessList()))) {
+                                //NewAdded
+                                carParkingStatusModel = new CarParkingStatusModel(carParkingslotsResponse.getCarParkingSlotId(), carParkingslotsResponse.getCode(), 4);
+                                System.out.println("CarParkingRequest");
+                                //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_request));
+                                break;
+                            }
+                            else if (carParkAvalibilityResponse.isBookedByElse() == false && carParkAvalibilityResponse.isBookedByUser() == false && (carParkAvalibilityResponse.isAvailable() == false || carParkingslots.get(i).getParkingSlotAvailability() == 1)) {
                                 carParkingStatusModel = new CarParkingStatusModel(carParkingslotsResponse.getCarParkingSlotId(), carParkingslotsResponse.getCode(), 0);
                                 System.out.println("CarParkUnAvaliable");
                                 //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
@@ -1750,7 +1757,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                     int x = getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(j).get(0);
                                     int y = getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(j).get(1);
 
-                                    Point point = new Point(x + 40, y+20 );
+                                    Point point = new Point(x + 40, y+30 );
                                     pointList.add(point);
                                 }
 
@@ -1776,7 +1783,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                             pointList = new ArrayList<>();
                             for (int i = 0; i < coordinateList.size(); i++) {
                                 //System.out.println("CoordinateData" + i + "position" + "size " + coordinateList.get(i).size());
-                                Point point = new Point(coordinateList.get(i).get(0) + 40, coordinateList.get(i).get(1) + 20);
+                                Point point = new Point(coordinateList.get(i).get(0) + 40, coordinateList.get(i).get(1) + 30);
                                 pointList.add(point);
                             }
                             addDottedLine(pointList);
@@ -2418,18 +2425,28 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
             //Amenities Filter
-            for (int i = 0; i < meetingAmenityStatusList.size(); i++) {
+
+            boolean alreadyHasId = meetingAmenityStatusList.stream().anyMatch(m -> m.getId() == id);
+            if(alreadyHasId){
+                ivDesk.setVisibility(View.GONE);
+            }else {
+                ivDesk.setVisibility(View.VISIBLE);
+            }
+
+            /*for (int i = 0; i < meetingAmenityStatusList.size(); i++) {
 
                 System.out.println("AllAmenitiesDataHere " + meetingAmenityStatusList.get(i).getId());
 
-                int idValue = meetingAmenityStatusList.get(i).getId();
-                if (id == idValue) {
+
+
+                //int idValue = meetingAmenityStatusList.get(i).getId();
+                if (id == meetingAmenityStatusList.get(i).getId()) {
                     ivDesk.setVisibility(View.GONE);
                     System.out.println("VisibleGoneAmenitiesIdAndID " + meetingAmenityStatusList.get(i).getId() + " " + id + " " + amenitiesApplyStatus);
                 } else {
                     ivDesk.setVisibility(View.VISIBLE);
                 }
-            }
+            }*/
 
 
         }
@@ -2834,6 +2851,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void getCarBookingEditListFromDailyBookings(String selctedCode, String key, int id, String code, int requestTeamId, int requestTeamDeskId, int i) {
 
+        //If user comes from another fragment and clicks book or edit to avoid loading default location
+        // we should set like below
+        defaultLocationcheck=1;
+
         //close when myteam bottom sheet open
         closeAndClearMyTeamList(locateMyTeamMemberStatusList);
 
@@ -2882,7 +2903,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void onCarEditClickDailyBookings(CarParkListToEditResponse carParkListToEditResponse, String selctedCode) {
 
-        System.out.println("CarParkEditClickedBasedId "+carParkListToEditResponse.getFrom()+" "+carParkListToEditResponse.getMyto());
+        //System.out.println("CarParkEditClickedBasedId "+carParkListToEditResponse.getFrom()+" "+carParkListToEditResponse.getMyto());
 
 
         TextView startTime, endTime, date, editBookingBack, tv_location_details,title,deskDelete,editLocation;
@@ -3186,6 +3207,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
     private void onCarDeleteClickDailyBookings(CarParkListToEditResponse carParkListToEditResponse) {
+
+        //If user comes from another fragment and clicks book or edit to avoid loading default location
+        // we should set like below
+        defaultLocationcheck=1;
 
         // System.out.println("CarDeleteRequest"+carParkBooking.getId()+" "+carParkBooking.getParkingSlotId()+" "+carParkBooking.getDate()+" "+carParkBooking.getBookingCreatedUserId()+" "+carParkBooking.getBookedForUser());
 
@@ -3649,6 +3674,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void getMeetingBookingListToEdit(int meetingRoomId, String meetingRoomName, boolean isReqduest) {
 
+        //If user comes from another fragment and clicks book or edit to avoid loading default location
+        // we should set like below
+        defaultLocationcheck=1;
+
 
         //close when myteam bottom sheet open
         closeAndClearMyTeamList(locateMyTeamMemberStatusList);
@@ -3860,7 +3889,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             unAvaliableLocate.setText(binding.searchLocate.getText().toString());
         }
         if (code.equalsIgnoreCase("5")) {
-            unAvailableDesc.setText("This car park is unavailable");
+            unAvailableDesc.setText("Can't book since the parking slot is assigned to a user.");
+        }else if(code.equalsIgnoreCase("3")){
+            unAvailableDesc.setText("Can't book since the desk is inactive.");
+        }else if(code.equalsIgnoreCase("4")){
+            unAvailableDesc.setText("This room is unavailable for cleaning");
         }
         if (deskDescriotion != null && !deskDescriotion.isEmpty() && !deskDescriotion.equals("")) {
             tvDescriptionUnAvaliable.setText(deskDescriotion);
@@ -3981,6 +4014,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void callMeetingRoomBookingBottomSheet(int meetingRoomId, String meetingRoomName,
                                                    boolean isRequest, String action) {
+
+        //If user comes from another fragment and clicks book or edit to avoid loading default location
+        // we should set like below
+        defaultLocationcheck=1;
 
 
         //close when myteam bottom sheet open
@@ -5183,6 +5220,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void getBookingListToEdit(String selctedCode, String key, int id, String code, int requestTeamId, int requestTeamDeskId, int i) {
 
+        //If user comes from another fragment and clicks book or edit to avoid loading default location
+        // we should set like below
+        defaultLocationcheck=1;
 
         //close when myteam bottom sheet open
         closeAndClearMyTeamList(locateMyTeamMemberStatusList);
@@ -5977,6 +6017,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     //BookBottomSheet
     private void callDeskBookingnBottomSheet(String selctedCode, String key, int id, String code, int requestTeamId, int requestTeamDeskId, int statusCode, int getAutoApproveStatus) {
+
+        //If user comes from another fragment and clicks book or edit to avoid loading default location
+        // we should set like below
+        defaultLocationcheck=1;
 
         //close when myteam bottom sheet open
         closeAndClearMyTeamList(locateMyTeamMemberStatusList);
@@ -8315,6 +8359,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     @Override
     public void ondeskDeleteClick(BookingForEditResponse.Bookings bookings, String code, List<BookingForEditResponse.TeamDeskAvailabilities> teamDeskAvailabilities) {
 
+        //If user comes from another fragment and clicks book or edit to avoid loading default location
+        // we should set like below
+        defaultLocationcheck=1;
+
         if (Utils.isNetworkAvailable(getActivity())) {
             binding.locateProgressBar.setVisibility(View.VISIBLE);
 
@@ -9006,14 +9054,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
                         if (userAllowedMeetingResponseList.get(i).getId() == meetingStatusModelList.get(j).getId()) {
-                            if (meetingStatusModelList.get(j).getStatus() == 1) {
+                            //if (meetingStatusModelList.get(j).getStatus() == 1) {
 
                                 List<UserAllowedMeetingResponse.Amenity> amenityList = userAllowedMeetingResponseList.get(i).getAmenities();
 
                                 doCheckAppliedAminitiesWithMeetingRoom(amenityList, meetingStatusModelList.get(j));
 
 
-                            }
+                            //}
 
                         }
 
@@ -10180,6 +10228,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     @Override
     public void onMeetingDeleteClick(MeetingListToEditResponse meetingListToEditResponse) {
+
+        //If user comes from another fragment and clicks book or edit to avoid loading default location
+        // we should set like below
+        defaultLocationcheck=1;
 
         if (Utils.isNetworkAvailable(getActivity())) {
             binding.locateProgressBar.setVisibility(View.VISIBLE);
