@@ -94,8 +94,7 @@
             android:layout_below="@+id/tvUnaValibale"
             android:layout_marginTop="@dimen/_10sdp"
             android:text="This desk is unavliable"
-            android:textColor="@color/figma_dark_black"
-            />
+            android:textColor="@color/figma_dark_black" />
 
     </RelativeLayout>
 
