@@ -143,6 +143,7 @@ public class AppConstants {
     public static final String FacilityManager = "Facility Manager";
     public static final String MeetingManager = "Meeting Room Manager";
     public static final String TeamManager = "Team Manager";
+    public static final String Manager = "Manager";
 
     public static final String DefaultLocation = "DefaultLocation";
     public static final String ParkingLocation = "ParkingLocation";

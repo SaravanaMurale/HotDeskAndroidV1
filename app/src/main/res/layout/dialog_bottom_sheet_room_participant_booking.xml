@@ -4,7 +4,7 @@
     android:id="@+id/design_bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/_10sdp"
+    android:padding="@dimen/_15sdp"
     android:background="@drawable/login_background_corner_white"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 

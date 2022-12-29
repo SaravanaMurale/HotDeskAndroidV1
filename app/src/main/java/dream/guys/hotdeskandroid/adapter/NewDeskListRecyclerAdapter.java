@@ -120,7 +120,8 @@ public class NewDeskListRecyclerAdapter extends RecyclerView.Adapter<NewDeskList
             holder.deskIconStatus.setColorFilter(context.getColor(R.color.figmaLiteGreen));
         }
 
-        if (deskList.get(position).isBookedByElse()) {
+        if (!(deskList.get(holder.getAbsoluteAdapterPosition()).getAutomaticApprovalStatus() == 3)
+                && deskList.get(position).isBookedByElse()) {
 
             if(Utils.compareTwoDatesandTime(Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z",
                     deskList.get(position).getAvailableTimeSlots()
