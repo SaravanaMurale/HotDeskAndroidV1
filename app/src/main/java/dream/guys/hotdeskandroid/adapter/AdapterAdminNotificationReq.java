@@ -107,6 +107,7 @@ public class AdapterAdminNotificationReq extends RecyclerView.Adapter<AdapterAdm
                 }else {
                     holder.txt_title.setText("Incoming ");
                 }
+                holder.profile_layout.setVisibility(View.VISIBLE);
                 holder.btn_layout.setVisibility(View.VISIBLE);
                 holder.txt_title_count.setText("(" + String.valueOf(cIncoming) + ")");
             }else {

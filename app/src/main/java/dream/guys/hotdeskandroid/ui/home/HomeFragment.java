@@ -282,6 +282,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 SessionHandler.getInstance().get(getActivity(), AppConstants.ROLE).equalsIgnoreCase(AppConstants.Administrator)
                 || SessionHandler.getInstance().get(getActivity(), AppConstants.ROLE).equalsIgnoreCase(AppConstants.FacilityManager)
                 || SessionHandler.getInstance().get(getActivity(), AppConstants.ROLE).equalsIgnoreCase(AppConstants.TeamManager)
+                || SessionHandler.getInstance().get(getActivity(), AppConstants.ROLE).equalsIgnoreCase(AppConstants.Manager)
                 || SessionHandler.getInstance().get(getActivity(), AppConstants.ROLE).equalsIgnoreCase(AppConstants.MeetingManager)) {
             loadNotification();
         } else {
@@ -318,6 +319,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     if (profileData.getHighestRole().equalsIgnoreCase(AppConstants.Administrator)
                             || profileData.getHighestRole().equalsIgnoreCase(AppConstants.FacilityManager)
                             || profileData.getHighestRole().equalsIgnoreCase(AppConstants.TeamManager)
+                            || profileData.getHighestRole().equalsIgnoreCase(AppConstants.Manager)
                             || profileData.getHighestRole().equalsIgnoreCase(AppConstants.MeetingManager)) {
                         intent = new Intent(getActivity(), NotificationCenterActivity.class);
                     } else {
