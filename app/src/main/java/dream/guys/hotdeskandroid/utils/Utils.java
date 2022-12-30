@@ -1418,7 +1418,7 @@ public class Utils {
             e.printStackTrace();
         }
 
-        if (date1.getDate() == date2.getDate()) {
+       /* if (date1.getDate() == date2.getDate()) {
             System.out.println("BothDateEqual");
             dateSelectedStatus = 1;
         } else if (date1.getDate() < date2.getDate()) {
@@ -1428,7 +1428,20 @@ public class Utils {
             System.out.println("SelecctedDateIsLow");
             dateSelectedStatus = 0;
 
+        }*/
+
+
+        if (date1.compareTo(date2) < 0) {
+            System.out.println("SelecctedDateIsLow-yesterday");
+            dateSelectedStatus = 2;
+        } else if (date1.compareTo(date2) > 0) {
+            System.out.println("SelecctedDateIsHigh-Tomorrow");
+            dateSelectedStatus = 0;
+        } else if (date1.compareTo(date2) == 0) {
+            dateSelectedStatus = 1;
+            System.out.println("BothDateEqual-Today");
         }
+
 
         return dateSelectedStatus;
 
@@ -1449,7 +1462,7 @@ public class Utils {
             e.printStackTrace();
         }
 
-        if (currrentDate.getDate() == selectedDate.getDate()) {
+      /*  if (currrentDate.getDate() == selectedDate.getDate()) {
             System.out.println("BothDateEqual");
             dateSelectedStatus = 1;
         } else if (currrentDate.getDate() < selectedDate.getDate()) {
@@ -1459,12 +1472,61 @@ public class Utils {
             System.out.println("SelecctedDateIsLow");
             dateSelectedStatus = 0;
 
+        }*/
+
+
+        if (selectedDate.compareTo(currrentDate) < 0) {
+            System.out.println("SelecctedDateIsLow-Yesterday");
+            dateSelectedStatus = 0;
+        } else if (selectedDate.compareTo(currrentDate) > 0) {
+            System.out.println("SelecctedDateIsHigh-Tomorrow");
+            dateSelectedStatus = 1;
+        } else if (selectedDate.compareTo(currrentDate) == 0) {
+            dateSelectedStatus = 2;
+            System.out.println("BothDateEqual-Today");
         }
+
+
 
         return dateSelectedStatus;
 
 
     }
+
+
+    public static int compareCurrentDateWithSelectedDate(String startDate) {
+        SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date calDate, currrentDate = null;
+        int dateComparsionResult = -1;
+        try {
+            calDate = sdformat.parse(startDate);
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = new Date();
+            currrentDate = formatter.parse(formatter.format(date));
+
+            System.out.println("DateFormatInDate" + calDate + " " + currrentDate);
+            System.out.println("GetDateAlsoeInDeskChecking" + calDate.getDate() + " " + currrentDate.getDate());
+
+            if (calDate.compareTo(currrentDate) < 0) {
+                System.out.println("D1IsLess");
+                System.out.println("SelecctedDateIsLow-yesterday");
+                dateComparsionResult = 1;
+            } else if (calDate.compareTo(currrentDate) > 0) {
+                System.out.println("D2IsLess");
+                System.out.println("SelecctedDateIsHigh-Tomorrow");
+            } else if (calDate.compareTo(currrentDate) == 0) {
+                dateComparsionResult = 2;
+                System.out.println("BothDateEqual-Today");
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return dateComparsionResult;
+    }
+
 
     //New...
     public static String dateWithDayString(String d) {
@@ -1483,37 +1545,6 @@ public class Utils {
 
         return date;
     }
-
-    public static int compareCurrentDateWithSelectedDate(String startDate) {
-        SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date calDate, currrentDate = null;
-        int dateComparsionResult = -1;
-        try {
-            calDate = sdformat.parse(startDate);
-
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = new Date();
-            currrentDate = formatter.parse(formatter.format(date));
-
-            System.out.println("DateFormatInDate" + calDate + " " + currrentDate);
-            System.out.println("GetDateAlsoeInDeskChecking" + calDate.getDate() + " " + currrentDate.getDate());
-
-            if (calDate.compareTo(currrentDate) < 0) {
-                System.out.println("D1IsLess");
-                dateComparsionResult = 1;
-            } else if (calDate.compareTo(currrentDate) > 0) {
-                System.out.println("D2IsLess");
-            } else if (calDate.compareTo(currrentDate) == 0) {
-                dateComparsionResult = 2;
-            }
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return dateComparsionResult;
-    }
-
 
     public static boolean checkCameraPermission(final Context context) {
         int currentAPIVersion = Build.VERSION.SDK_INT;

@@ -1578,6 +1578,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     private void checkCarParkAvalibilityAndUnAvalibility() {
 
         int dateStatus = Utils.doDateCompareHere(binding.locateCalendearView.getText().toString());
+        //String startDate = binding.locateCalendearView.getText().toString() + " " + binding.locateStartTime.getText().toString() + ":00";
+        //int dateStatus = Utils.compareCurrentDateWithSelectedDate(startDate);
         if (dateStatus == 0) {
             //unavaliable
 
@@ -9171,7 +9173,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
             for (int j = 0; j < amenityList.size(); j++) {
-
                 if (userSelectedAmenities.get(0).getNestedList().get(i).isChecked()) {
                     if (userSelectedAmenities.get(0).getNestedList().get(i).getId() == amenityList.get(j).getId()) {
                         amenitiesMatchCount = amenitiesMatchCount + 1;
