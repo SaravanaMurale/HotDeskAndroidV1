@@ -1759,7 +1759,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                     int x = getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(j).get(0);
                                     int y = getSupportZoneLayoutForCanvas.get(i).getSupportZoneCoordinates().get(j).get(1);
 
-                                    Point point = new Point(x + 40, y+30 );
+                                    Point point = new Point(x + 40, y+40 );
                                     pointList.add(point);
                                 }
 
@@ -1785,7 +1785,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                             pointList = new ArrayList<>();
                             for (int i = 0; i < coordinateList.size(); i++) {
                                 //System.out.println("CoordinateData" + i + "position" + "size " + coordinateList.get(i).size());
-                                Point point = new Point(coordinateList.get(i).get(0) + 40, coordinateList.get(i).get(1) + 30);
+                                Point point = new Point(coordinateList.get(i).get(0) + 40, coordinateList.get(i).get(1) + 40);
                                 pointList.add(point);
                             }
                             addDottedLine(pointList);
