@@ -9,14 +9,21 @@ android {
         applicationId "dream.guys.hotdeskandroid"
         minSdk 26
         targetSdk 31
-        versionCode 48
+        versionCode 50
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
         config {
-            //storeFile file('C:\\Users\\Dreamsuser\\AndroidStudioProjects\\hotdesk_android\\app\\hotdeskKey.jks')
-            storeFile file('D:\\Projects\\Backup\\hotdesk_master_before_CR_06_12_2022\\app\\hotdeskKey.jks')
+            storeFile file('C:\\Users\\Dreamsuser\\AndroidStudioProjects\\hotdesk_android\\app\\hotdeskKey.jks')
+//            storeFile file('D:\\Projects\\Backup\\hotdesk_master_before_CR_06_12_2022\\app\\hotdeskKey.jks')
+            storePassword 'hybridhero'
+            keyAlias 'key'
+            keyPassword 'hybridhero'
+        }
+        release {
+            storeFile file('C:\\Users\\Dreamsuser\\AndroidStudioProjects\\hotdesk_android\\app\\hotdeskKey.jks')
+//            storeFile file('D:\\Projects\\Backup\\hotdesk_master_before_CR_06_12_2022\\app\\hotdeskKey.jks')
             storePassword 'hybridhero'
             keyAlias 'key'
             keyPassword 'hybridhero'
@@ -24,15 +31,14 @@ android {
     }
     buildTypes {
         release {
-           // minifyEnabled true
-            shrinkResources true
-            minifyEnabled true
+            shrinkResources false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
-
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
+            debuggable false
+            signingConfig signingConfigs.release
         }
+
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

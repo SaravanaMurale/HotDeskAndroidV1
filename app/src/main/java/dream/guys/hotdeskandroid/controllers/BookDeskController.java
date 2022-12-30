@@ -299,9 +299,9 @@ public class BookDeskController implements
                 if (bookingForEditResponse.getBookings().size() > 0){
                     editBookingDetailsGlobal.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
                             .getMyto()));
-
-                    editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
-                            .getMyto(),2)));
+                    editBookingDetailsGlobal.setEditEndTime("23:59");
+//                    editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
+//                            .getMyto(),2)));
                 } else {
                     editBookingDetailsGlobal.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursFrom()));
                     editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
@@ -373,11 +373,11 @@ public class BookDeskController implements
 
             editBookingDetailsGlobal.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
                     .getMyto()));
-
-            editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(
-                    Utils.addingHoursToDate(bookingForEditResponse.getBookings().get(
-                            bookingForEditResponse.getBookings().size()-1)
-                            .getMyto(),2)));
+            editBookingDetailsGlobal.setEditEndTime("23:59");
+//            editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(
+//                    Utils.addingHoursToDate(bookingForEditResponse.getBookings().get(
+//                            bookingForEditResponse.getBookings().size()-1)
+//                            .getMyto(),2)));
         }
 
         if (bookingForEditResponse.getBookings().size()==0) {

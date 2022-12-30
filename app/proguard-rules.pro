@@ -34,12 +34,38 @@
 #-repackageclasses 'myobfuscated'
 #-allowaccessmodification
 
-
--obfuscationdictionary "D:\Projects\Backup\hotdesk_master_before_CR_06_12_2022\dic.txt"
--classobfuscationdictionary "D:\Projects\Backup\hotdesk_master_before_CR_06_12_2022\dic.txt"
--packageobfuscationdictionary "D:\Projects\Backup\hotdesk_master_before_CR_06_12_2022\dic.txt"
+-obfuscationdictionary "C:\Users\Dreamsuser\AndroidStudioProjects\hotdesk_android\dic.txt"
+-classobfuscationdictionary "C:\Users\Dreamsuser\AndroidStudioProjects\hotdesk_android\dic.txt"
+-packageobfuscationdictionary "C:\Users\Dreamsuser\AndroidStudioProjects\hotdesk_android\dic.txt"
 
 
 -mergeinterfacesaggressively
 -overloadaggressively
--repackageclasses "dream.guys.hotdeskandroid"
+#-repackageclasses "dream.guys.hotdeskandroid"
+-repackageclasses 'myobfuscated'
+
+
+# Retrofit
+-dontwarn retrofit2.**
+-dontwarn org.codehaus.mojo.**
+-keep class retrofit2.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+-keepattributes *Annotation*
+
+-keepattributes RuntimeVisibleAnnotations
+-keepattributes RuntimeInvisibleAnnotations
+-keepattributes RuntimeVisibleParameterAnnotations
+-keepattributes RuntimeInvisibleParameterAnnotations
+
+-keepattributes EnclosingMethod
+-keepclassmembers,allowobfuscation class * {
+  @com.google.gson.annotations.SerializedName <fields>;
+}
+-keepclasseswithmembers class * {
+    @retrofit2.* <methods>;
+}
+
+-keepclasseswithmembers interface * {
+    @retrofit2.* <methods>;
+}

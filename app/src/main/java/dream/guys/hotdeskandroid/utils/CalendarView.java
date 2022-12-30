@@ -254,114 +254,116 @@ public class CalendarView extends LinearLayout
 
         @Override
         public View getView(int position, View view, ViewGroup parent) {
-            Date date = getItem(position);
-            int day = date.getDate();
-            int month = date.getMonth();
-            int year = date.getYear();
-            int maxNumberOfDays = currentDate.getActualMaximum(Calendar.DAY_OF_MONTH);
-            Date today = new Date();
-            TextView dateBox, count;
+            try {
+                Date date = getItem(position);
+                int day = date.getDate();
+                int month = date.getMonth();
+                int year = date.getYear();
+                int maxNumberOfDays = currentDate.getActualMaximum(Calendar.DAY_OF_MONTH);
+                Date today = new Date();
+                TextView dateBox, count;
 
-            if (view == null)
-                view = inflater.inflate(R.layout.control_calendar_day, parent, false);
-            dateBox = view.findViewById(R.id.cal_text_view);
-            count = view.findViewById(R.id.tv_count);
-            view.setBackgroundResource(0);
-            if (eventDays != null) {
-                for (DeskRoomCountResponse eventDate : eventDays) {
-                    if (Utils.compareTwoDate(Utils.convertStringToDateFormet(eventDate.getDate()),
+                if (view == null)
+                    view = inflater.inflate(R.layout.control_calendar_day, parent, false);
+                dateBox = view.findViewById(R.id.cal_text_view);
+                count = view.findViewById(R.id.tv_count);
+                view.setBackgroundResource(0);
+                if (eventDays != null) {
+                    for (DeskRoomCountResponse eventDate : eventDays) {
+                        if (Utils.compareTwoDate(Utils.convertStringToDateFormet(eventDate.getDate()),
+                                Utils.getCurrentDate())==1){
+                            if (count!=null && dateBox!=null){
+                                ((TextView) count).setVisibility(GONE);
+                                ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
+                                ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGreyCalDisable));
+                            }
+                        } else if (Utils.compareTwoDate(Utils.convertStringToDateFormet(eventDate.getDate()),
+                                Utils.getCurrentDate())==2){
+                            if (count!=null && dateBox!=null) {
+                                if (selectedPosition>3)
+                                    ((TextView) count).setVisibility(GONE);
+                                else
+                                    ((TextView) count).setVisibility(VISIBLE);
+                                ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
+                                ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
+                            }
+                        }else if (Utils.compareTwoDate(Utils.convertStringToDateFormet(eventDate.getDate()),
+                                Utils.getCurrentDate())==3){
+                            if (count!=null && dateBox!=null) {
+
+                                if (selectedPosition>3)
+                                    ((TextView) count).setVisibility(GONE);
+                                else
+                                    ((TextView) count).setVisibility(VISIBLE);
+//                            ((TextView) count).setVisibility(VISIBLE);
+                                ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
+                                ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
+                            }
+                        } else {
+                            if (count!=null && dateBox!=null) {
+                                ((TextView) count).setVisibility(GONE);
+                                ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
+                                ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGreyCalDisable));
+                            }
+                        }
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        Date d = new Date(); //Get system date
+                        try {
+                            d = sdf.parse(eventDate.getDate());
+                            if (d.getDate() == day &&
+                                    d.getMonth() == month &&
+                                    d.getYear() == year) {
+                                if (eventDate.getAvailableCount()>0)
+                                    ((TextView) count).setText("" + eventDate.getAvailableCount());
+                                else if (eventDate.getAssignedCount()>0)
+                                    ((TextView) count).setText("" + (eventDate.getAssignedCount() - eventDate.getUsedCount()));
+                                else
+                                    ((TextView) count).setText("" + eventDate.getAvailableCount());
+
+                                Log.d("CalendarView", "getView: "+eventDate.getAvailableCount());
+                                break;
+                            } else {
+                                if (count!=null && dateBox!=null) {
+                                    ((TextView) count).setVisibility(GONE);
+                                    ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGreyCalDisable));
+                                    ((TextView) count).setText(" ");
+                                }
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                else {
+                    if (Utils.compareTwoDate(date,
                             Utils.getCurrentDate())==1){
                         if (count!=null && dateBox!=null){
                             ((TextView) count).setVisibility(GONE);
                             ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
                             ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGreyCalDisable));
                         }
-                    } else if (Utils.compareTwoDate(Utils.convertStringToDateFormet(eventDate.getDate()),
-                            Utils.getCurrentDate())==2){
-                        if (count!=null && dateBox!=null) {
-                            if (selectedPosition>3)
-                                ((TextView) count).setVisibility(GONE);
-                            else
-                                ((TextView) count).setVisibility(VISIBLE);
-                            ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
-                            ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
-                        }
-                    }else if (Utils.compareTwoDate(Utils.convertStringToDateFormet(eventDate.getDate()),
-                            Utils.getCurrentDate())==3){
-                        if (count!=null && dateBox!=null) {
-
-                            if (selectedPosition>3)
-                                ((TextView) count).setVisibility(GONE);
-                            else
-                                ((TextView) count).setVisibility(VISIBLE);
-//                            ((TextView) count).setVisibility(VISIBLE);
-                            ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
-                            ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
-                        }
-                    } else {
-                        if (count!=null && dateBox!=null) {
-                            ((TextView) count).setVisibility(GONE);
-                            ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
-                            ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGreyCalDisable));
-                        }
-                    }
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    Date d = new Date(); //Get system date
-                    try {
-                        d = sdf.parse(eventDate.getDate());
-                        if (d.getDate() == day &&
-                                d.getMonth() == month &&
-                                d.getYear() == year) {
-                            if (eventDate.getAvailableCount()>0)
-                                ((TextView) count).setText("" + eventDate.getAvailableCount());
-                            else if (eventDate.getAssignedCount()>0)
-                                ((TextView) count).setText("" + (eventDate.getAssignedCount() - eventDate.getUsedCount()));
-                            else
-                                ((TextView) count).setText("" + eventDate.getAvailableCount());
-
-                            Log.d("CalendarView", "getView: "+eventDate.getAvailableCount());
-                            break;
-                        } else {
-                            if (count!=null && dateBox!=null) {
-                                ((TextView) count).setVisibility(GONE);
-                                ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGreyCalDisable));
-                                ((TextView) count).setText(" ");
-                            }
-                        }
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } else {
-                if (Utils.compareTwoDate(date,
-                        Utils.getCurrentDate())==1){
-                    if (count!=null && dateBox!=null){
-                        ((TextView) count).setVisibility(GONE);
+                    }else {
                         ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
-                        ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGreyCalDisable));
+                        ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
                     }
-                }else {
-                    ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
-                    ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
                 }
-            }
 
-            ((TextView) dateBox).setTypeface(null, Typeface.NORMAL);
+                ((TextView) dateBox).setTypeface(null, Typeface.NORMAL);
 //            ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
 
 //            if (month !=  currentDate.get(Calendar.MONTH) || year !=  currentDate.get(Calendar.YEAR)) {
 //                ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGreyCalDisable));
 //            }
 //            System.out.println("mont check"+month+" "+today.getMonth());
-            if (day == today.getDate() && month==today.getMonth()) {
+                if (day == today.getDate() && month==today.getMonth()) {
 //                ((TextView) dateBox).setTypeface(null, Typeface.BOLD);
-                ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
-                ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.figmaBlack));
-            } else {
-                ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.figmaBackground));
-            }
+                    ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
+                    ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.figmaBlack));
+                } else {
+                    ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.figmaBackground));
+                }
 
-            ((TextView) dateBox).setText(String.valueOf(date.getDate()));
+                ((TextView) dateBox).setText(String.valueOf(date.getDate()));
 
             /*
             if (selectedPosition != -1 && position == selectedPosition) {
@@ -370,34 +372,34 @@ public class CalendarView extends LinearLayout
             }
             */
 
-            //below if condition greys out previous dates of past month
-            if(month!=Integer.parseInt(currentMonth)) {
+                //below if condition greys out previous dates of past month
+                if(month!=Integer.parseInt(currentMonth)) {
 //                Toast.makeText(getContext(), ""+firstDayOfMonth, Toast.LENGTH_SHORT).show();
-                if (position < firstDayOfMonth){
-                    Log.d(TAG, "getView: date else"+currentDay+"==="+month);
+                    if (position < firstDayOfMonth){
+                        Log.d(TAG, "getView: date else"+currentDay+"==="+month);
 
-                    int value = this.previousMonthMaxDays - firstDayOfMonth + position + 1;
+                        int value = this.previousMonthMaxDays - firstDayOfMonth + position + 1;
 //                date.setText(String.valueOf(value));
 //                    dateBox.setTextColor(Color.rgb(166, 166, 166));
 
-                    dateBox.setTextColor(getResources().getColor(R.color.figmaGreyCalDisable));
-                    ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.white));
-                    count.setVisibility(GONE);
-                }
+                        dateBox.setTextColor(getResources().getColor(R.color.figmaGreyCalDisable));
+                        ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.white));
+                        count.setVisibility(GONE);
+                    }
 
-            } else {
-                if (position < firstDayOfMonth){
-                    Log.d(TAG, "getView: date else"+currentDay+"==="+month);
+                } else {
+                    if (position < firstDayOfMonth){
+                        Log.d(TAG, "getView: date else"+currentDay+"==="+month);
 
-                    int value = this.previousMonthMaxDays - firstDayOfMonth + position + 1;
+                        int value = this.previousMonthMaxDays - firstDayOfMonth + position + 1;
 //                date.setText(String.valueOf(value));
 //                    dateBox.setTextColor(Color.rgb(166, 166, 166));
 
-                    dateBox.setTextColor(getResources().getColor(R.color.figmaGreyCalDisable));
-                    ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.white));
-                    count.setVisibility(GONE);
+                        dateBox.setTextColor(getResources().getColor(R.color.figmaGreyCalDisable));
+                        ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.white));
+                        count.setVisibility(GONE);
+                    }
                 }
-            }
 
             /*if (position >= firstDayOfMonth && position < maxNumberOfDays + firstDayOfMonth) {
                 int value = position - firstDayOfMonth + 1;
@@ -413,13 +415,17 @@ public class CalendarView extends LinearLayout
                 }
             }*/
 
-            if (position >= maxNumberOfDays + firstDayOfMonth) {
-                int value = position - (maxNumberOfDays + firstDayOfMonth - 1);
-                dateBox.setTextColor(Color.rgb(166, 166, 166));
-                ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.white));
-                dateBox.setVisibility(GONE);
-                count.setVisibility(GONE);
+                if (position >= maxNumberOfDays + firstDayOfMonth) {
+                    int value = position - (maxNumberOfDays + firstDayOfMonth - 1);
+                    dateBox.setTextColor(Color.rgb(166, 166, 166));
+                    ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.white));
+                    dateBox.setVisibility(GONE);
+                    count.setVisibility(GONE);
+                }
+            } catch (Exception e) {
+
             }
+
             return view;
         }
     }

@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/_2sdp"
                     android:textColor="@color/light_black"
-                    android:text="Location1Location2"
+                    android:text=""
                     />
 
 

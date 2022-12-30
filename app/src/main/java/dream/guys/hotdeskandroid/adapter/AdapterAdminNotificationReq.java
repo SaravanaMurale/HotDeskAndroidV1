@@ -93,6 +93,7 @@ public class AdapterAdminNotificationReq extends RecyclerView.Adapter<AdapterAdm
             holder.txt_title.setText("Outgoing ");
             holder.txt_title_count.setText("(" + String.valueOf(cOutGoing) + ")");
         }else {
+
             if (notiList.get(pos).getIncoming().equalsIgnoreCase("incoming") &&
                     notiList.get(pos).getStatus().equals(0)){
 
@@ -271,7 +272,6 @@ public class AdapterAdminNotificationReq extends RecyclerView.Adapter<AdapterAdm
                 SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.Administrator)
                 ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.FacilityManager)
                 ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.TeamManager)
-                ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.Manager)
                 ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.MeetingManager)) {
 
         } else {
