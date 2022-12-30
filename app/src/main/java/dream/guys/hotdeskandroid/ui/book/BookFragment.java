@@ -926,6 +926,7 @@ public class BookFragment extends Fragment implements
 
         assertSpinner = view.findViewById(R.id.assertSpinner);
         loadAssertSpinner();
+        companyDefaults();
         loadDefaultLocation();
 //        Toast.makeText(context, "hit"+assertSpinner.getSelectedItemPosition(), Toast.LENGTH_SHORT).show();
 
@@ -3033,8 +3034,9 @@ public class BookFragment extends Fragment implements
 
                 if (editDeskBookingDetails.getEditStartTTime()!=null) {
 //                    startTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()));
-                    startTime.setText(editDeskBookingDetails.getEditStartTTime());
-//                    endTime.setText(Utils.convert24HrsTO12Hrs(Utils.setStartNearestThirtyMinToMeeting(Utils.convert12HrsTO24Hrs(startTime.getText().toString()))));
+                    startTime.setText(Utils.setNearestThirtyMinToMeeting(Utils.splitTime(companyDefaultDeskStartTime)));
+//                    startTime.setText(Utils.splitTime(companyDefaultDeskStartTime));
+                    endTime.setText(Utils.selectedTimeWithExtraMins(startTime.getText().toString(),30));
                     if(!newEditStatus.equalsIgnoreCase("edit") &&
                             Utils.compareTimeIfCheckInEnable(Utils.getCurrentTime(),
                                     editDeskBookingDetails.getEditStartTTime())
@@ -3045,7 +3047,7 @@ public class BookFragment extends Fragment implements
 
                 if (editDeskBookingDetails.getEditEndTime()!=null) {
 //                    endTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditEndTime()));
-                    endTime.setText(editDeskBookingDetails.getEditEndTime());
+//                    endTime.setText(editDeskBookingDetails.getEditEndTime());
                     if(!newEditStatus.equalsIgnoreCase("edit") &&
                             Utils.compareTimeIfCheckInEnable(""+startTime.getText(),
                                     editDeskBookingDetails.getEditEndTime())) {
@@ -8012,7 +8014,9 @@ public class BookFragment extends Fragment implements
                         if (response.code()==200){
                             CompanyDefaultResponse companyDefaultResponse = response.body();
                             companyDefaultDeskStartTime = companyDefaultResponse.getDeskAvailabilityHours().getFrom();
-                            companyDefaultDeskStartTime = companyDefaultResponse.getDeskAvailabilityHours().getMyto();
+                            companyDefaultDeskEndTime = companyDefaultResponse.getDeskAvailabilityHours().getMyto();
+                            binding.locateStartTime.setText(Utils.splitTime(companyDefaultDeskStartTime));
+                            binding.locateEndTime.setText(Utils.splitTime(companyDefaultDeskEndTime));
                         }
 
                     } catch (Exception exception){
