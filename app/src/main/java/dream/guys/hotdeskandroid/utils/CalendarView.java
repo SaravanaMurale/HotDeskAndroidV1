@@ -255,9 +255,17 @@ public class CalendarView extends LinearLayout
         @Override
         public View getView(int position, View view, ViewGroup parent) {
             Date date = getItem(position);
-            int day = date.getDate();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+
+            int day = cal.get(Calendar.DATE);
+            int month = cal.get(Calendar.MONTH);
+            int year = cal.get(Calendar.YEAR);
+
+            /*int day = date.getDate();
             int month = date.getMonth();
             int year = date.getYear();
+            */
             int maxNumberOfDays = currentDate.getActualMaximum(Calendar.DAY_OF_MONTH);
             Date today = new Date();
             TextView dateBox, count;
@@ -283,8 +291,8 @@ public class CalendarView extends LinearLayout
                                 ((TextView) count).setVisibility(GONE);
                             else
                                 ((TextView) count).setVisibility(VISIBLE);
-                            ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
-                            ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
+                            ((TextView) count).setTextColor(ContextCompat.getColor(getContext(),R.color.teal_200));
+                            ((TextView) dateBox).setTextColor(ContextCompat.getColor(getContext(),R.color.figmaBlack));
                         }
                     }else if (Utils.compareTwoDate(Utils.convertStringToDateFormet(eventDate.getDate()),
                             Utils.getCurrentDate())==3){
@@ -295,23 +303,26 @@ public class CalendarView extends LinearLayout
                             else
                                 ((TextView) count).setVisibility(VISIBLE);
 //                            ((TextView) count).setVisibility(VISIBLE);
-                            ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
-                            ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaBlack));
+                            ((TextView) count).setTextColor(ContextCompat.getColor(getContext(),R.color.teal_200));
+                            ((TextView) dateBox).setTextColor(ContextCompat.getColor(getContext(),R.color.figmaBlack));
                         }
                     } else {
                         if (count!=null && dateBox!=null) {
                             ((TextView) count).setVisibility(GONE);
-                            ((TextView) count).setTextColor(getResources().getColor(R.color.teal_200));
-                            ((TextView) dateBox).setTextColor(getResources().getColor(R.color.figmaGreyCalDisable));
+                            ((TextView) count).setTextColor(ContextCompat.getColor(getContext(),R.color.teal_200));
+                            ((TextView) dateBox).setTextColor(ContextCompat.getColor(getContext(),R.color.figmaGreyCalDisable));
                         }
                     }
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     Date d = new Date(); //Get system date
+                    Calendar cal2 = Calendar.getInstance();
+                    cal2.setTime(date);
+
                     try {
                         d = sdf.parse(eventDate.getDate());
-                        if (d.getDate() == day &&
-                                d.getMonth() == month &&
-                                d.getYear() == year) {
+                        if (cal2.get(Calendar.DATE) == day &&
+                                cal2.get(Calendar.MONTH) == month &&
+                                cal2.get(Calendar.YEAR) == year) {
                             if (eventDate.getAvailableCount()>0)
                                 ((TextView) count).setText("" + eventDate.getAvailableCount());
                             else if (eventDate.getAssignedCount()>0)
@@ -361,7 +372,7 @@ public class CalendarView extends LinearLayout
                 ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.figmaBackground));
             }
 
-            ((TextView) dateBox).setText(String.valueOf(date.getDate()));
+            ((TextView) dateBox).setText(String.valueOf(cal.get(Calendar.DATE)));
 
             /*
             if (selectedPosition != -1 && position == selectedPosition) {
@@ -393,7 +404,7 @@ public class CalendarView extends LinearLayout
 //                date.setText(String.valueOf(value));
 //                    dateBox.setTextColor(Color.rgb(166, 166, 166));
 
-                    dateBox.setTextColor(getResources().getColor(R.color.figmaGreyCalDisable));
+                    dateBox.setTextColor(ContextCompat.getColor(getContext(),R.color.figmaGreyCalDisable));
                     ((TextView) dateBox).setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.white));
                     count.setVisibility(GONE);
                 }
