@@ -1869,9 +1869,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         //System.out.println("AfterFinalXAndYTitleCoor "+xxx+" "+yyy);
 
-        relativeLayout.width = 100;
-        relativeLayout.height = 100;
-        //roormTitle.setTextSize(fontSize);
+        //relativeLayout.width = ;
+        //relativeLayout.height = 100;
+        roormTitle.setTextSize(fontSize);
         roormTitle.setText(title);
         roormTitle.setLayoutParams(relativeLayout);
         binding.firstLayout.addView(roomTitleView);
