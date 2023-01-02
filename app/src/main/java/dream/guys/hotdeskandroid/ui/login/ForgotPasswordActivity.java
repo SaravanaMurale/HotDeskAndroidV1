@@ -1,5 +1,9 @@
 package dream.guys.hotdeskandroid.ui.login;
 
+import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getLoginScreenData;
+import static dream.guys.hotdeskandroid.utils.Utils.getResetPasswordPageScreencreenData;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
@@ -13,6 +17,7 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.ForgotPasswordRequest;
 import dream.guys.hotdeskandroid.model.request.GetTokenRequest;
 import dream.guys.hotdeskandroid.model.response.GetTokenResponse;
@@ -43,6 +48,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forgot_password);
         ButterKnife.bind(this);
         dialog = new Dialog(ForgotPasswordActivity.this);
+
+        LanguagePOJO.AppKeys appKeysPage = getAppKeysPageScreenData(this);
+        LanguagePOJO.ResetPassword resetPage = getResetPasswordPageScreencreenData(this);
+
+        etCompanyName.setHint(resetPage.getCompany());
+        etEmail.setHint(appKeysPage.getEmailAddress());
+        gobacktoSignIn.setText(appKeysPage.getGoBackToSignIn());
 
         gobacktoSignIn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -448,9 +448,9 @@ public class ShowProfileActivity extends AppCompatActivity {
         else
             binding.tvEditEmail.setText(results.getEmail());
 
-        if (results.getPhoneNumber() == null
-                || results.getPhoneNumber().equalsIgnoreCase("")
-                || results.getPhoneNumber().isEmpty())
+        if (results.getMobile() == null
+                || results.getMobile().equalsIgnoreCase("")
+                || results.getMobile().isEmpty())
             binding.tvEditPhone.setText("Phone");
         else
             binding.tvEditPhone.setText(results.getMobile());
