@@ -280,7 +280,7 @@
     "MySettings": "My Settings"
   },
   "ResetPassword": {
-    "Company": "Companyy",
+    "Company": "Company",
     "Email": "E-mail",
     "SubmittedText": "You will receive an email shortly with the instructions on how to reset your password.",
     "SubmitErrorText": "An error occured while submitting your request. Please try again.",
