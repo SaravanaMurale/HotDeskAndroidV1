@@ -3023,79 +3023,86 @@ public class BookFragment extends Fragment implements
         }
 
         //Logic for start time and end time of DESK and MEETING ROOM
-        if(dskRoomParkStatus==2) {
-            if(Utils.compareTwoDate(editDeskBookingDetails.getDate(),Utils.getCurrentDate())==2){
+        try {
+            if(dskRoomParkStatus==2) {
+                if(Utils.compareTwoDate(editDeskBookingDetails.getDate(),Utils.getCurrentDate())==2){
 //                startTime.setText(Utils.convert24HrsTO12Hrs(Utils.currentTimeWithExtraMins(2)));
-                startTime.setText(Utils.setNearestThirtyMinToMeeting(Utils.getCurrentTime()));
+                    startTime.setText(Utils.setNearestThirtyMinToMeeting(Utils.getCurrentTime()));
 //                endTime.setText(Utils.setStartNearestFiveMinToMeeting(Utils.currentTimeWithExtraMins(32)));
-                endTime.setText(Utils.selectedTimeWithExtraMins(startTime.getText().toString(),30));
-//                endTime.setText(Utils.convert24HrsTO12Hrs(Utils.setStartNearestFiveMinToMeeting(Utils.currentTimeWithExtraMins(32))));
-            } else {
-
-                if (editDeskBookingDetails.getEditStartTTime()!=null) {
-//                    startTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()));
-                    startTime.setText(Utils.setNearestThirtyMinToMeeting(Utils.splitTime(companyDefaultDeskStartTime)));
-//                    startTime.setText(Utils.splitTime(companyDefaultDeskStartTime));
                     endTime.setText(Utils.selectedTimeWithExtraMins(startTime.getText().toString(),30));
-                    if(!newEditStatus.equalsIgnoreCase("edit") &&
-                            Utils.compareTimeIfCheckInEnable(Utils.getCurrentTime(),
-                                    editDeskBookingDetails.getEditStartTTime())
-                    ){
-//                        startTime.setText(Utils.convert24HrsTO12Hrs(Utils.currentTimeWithExtraMins(30)));
-                    }
-                }
+//                endTime.setText(Utils.convert24HrsTO12Hrs(Utils.setStartNearestFiveMinToMeeting(Utils.currentTimeWithExtraMins(32))));
+                } else {
 
-                if (editDeskBookingDetails.getEditEndTime()!=null) {
+                    if (editDeskBookingDetails.getEditStartTTime()!=null) {
+//                    startTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()));
+
+                        startTime.setText(Utils.splitTime(profileData.getWorkHoursFrom()));
+//                    startTime.setText(Utils.splitTime(companyDefaultDeskStartTime));
+//                    startTime.setText(Utils.splitTime(companyDefaultDeskStartTime));
+                        endTime.setText(Utils.selectedTimeWithExtraMins(startTime.getText().toString(),30));
+                        if(!newEditStatus.equalsIgnoreCase("edit") &&
+                                Utils.compareTimeIfCheckInEnable(Utils.getCurrentTime(),
+                                        editDeskBookingDetails.getEditStartTTime())
+                        ){
+//                        startTime.setText(Utils.convert24HrsTO12Hrs(Utils.currentTimeWithExtraMins(30)));
+                        }
+                    }
+
+                    if (editDeskBookingDetails.getEditEndTime()!=null) {
 //                    endTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditEndTime()));
 //                    endTime.setText(editDeskBookingDetails.getEditEndTime());
-                    if(!newEditStatus.equalsIgnoreCase("edit") &&
-                            Utils.compareTimeIfCheckInEnable(""+startTime.getText(),
-                                    editDeskBookingDetails.getEditEndTime())) {
+                        if(!newEditStatus.equalsIgnoreCase("edit") &&
+                                Utils.compareTimeIfCheckInEnable(""+startTime.getText(),
+                                        editDeskBookingDetails.getEditEndTime())) {
 //                        if (Utils.compareTimeIfCheckInEnable(Utils.convert12HrsTO24Hrs(""+startTime.getText()),
 //                                Utils.addHoursToSelectedTimeWithMinutes(Utils.convert12HrsTO24Hrs(""+startTime.getText()), 30))) {
 //                            endTime.setText(Utils.convert24HrsTO12Hrs("23:59"));
 //                        } else {
 //                            endTime.setText(Utils.convert24HrsTO12Hrs(Utils.addHoursToSelectedTimeWithMinutes(Utils.convert12HrsTO24Hrs(""+startTime.getText()), 30)));
 //                        }
+                        }
                     }
                 }
-            }
 
-        } else {
-            if(Utils.compareTwoDate(editDeskBookingDetails.getDate(),Utils.getCurrentDate())==2){
+            }
+            else {
+                if(Utils.compareTwoDate(editDeskBookingDetails.getDate(),Utils.getCurrentDate())==2){
 //                startTime.setText(Utils.convert24HrsTO12Hrs(Utils.currentTimeWithExtraMins(2)));
 //                startTime.setText(Utils.currentTimeWithExtraMins(2));
-                startTime.setText(Utils.setStartNearestThirtyMinToMeeting(Utils.getCurrentTime()));
+                    startTime.setText(Utils.setStartNearestThirtyMinToMeeting(Utils.getCurrentTime()));
 //                endTime.setText(Utils.convert24HrsTO12Hrs(Utils.setStartNearestFiveMinToMeeting(Utils.currentTimeWithExtraMins(32))));
-                endTime.setText(Utils.setStartNearestThirtyMinToMeeting(startTime.getText().toString()));
+                    endTime.setText(Utils.setStartNearestThirtyMinToMeeting(startTime.getText().toString()));
 
-            }
+                }
 //            Toast.makeText(context, " ssd "+editDeskBookingDetails.getEditStartTTime(), Toast.LENGTH_SHORT).show();
-            if (editDeskBookingDetails.getEditStartTTime()!=null) {
+                if (editDeskBookingDetails.getEditStartTTime()!=null) {
 //                startTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditStartTTime()));
-                startTime.setText(editDeskBookingDetails.getEditStartTTime());
-                if(!newEditStatus.equalsIgnoreCase("edit") &&
-                        Utils.compareTimeIfCheckInEnable(Utils.getCurrentTime(),
-                                editDeskBookingDetails.getEditStartTTime())
-                        && Utils.compareTwoDate(editDeskBookingDetails.getDate(),Utils.getCurrentDate())==2)
-                    startTime.setText(Utils.currentTimeWithExtraMins(2));
-            }
-            if (editDeskBookingDetails.getEditEndTime()!=null) {
+                    startTime.setText(editDeskBookingDetails.getEditStartTTime());
+                    if(!newEditStatus.equalsIgnoreCase("edit") &&
+                            Utils.compareTimeIfCheckInEnable(Utils.getCurrentTime(),
+                                    editDeskBookingDetails.getEditStartTTime())
+                            && Utils.compareTwoDate(editDeskBookingDetails.getDate(),Utils.getCurrentDate())==2)
+                        startTime.setText(Utils.currentTimeWithExtraMins(2));
+                }
+                if (editDeskBookingDetails.getEditEndTime()!=null) {
 //                endTime.setText(Utils.convert24HrsTO12Hrs(editDeskBookingDetails.getEditEndTime()));
-                endTime.setText(editDeskBookingDetails.getEditEndTime());
-                if(!newEditStatus.equalsIgnoreCase("edit") &&
-                        Utils.compareTimeIfCheckInEnable(""+startTime.getText(),
-                                editDeskBookingDetails.getEditEndTime())) {
-                    if (Utils.compareTimeIfCheckInEnable(""+startTime.getText(),
-                            Utils.addHoursToSelectedTime(""+startTime.getText(), 4))){
-                        endTime.setText("23:59");
-                    } else {
-                        endTime.setText(Utils.addHoursToSelectedTime(""+startTime.getText(), 4));
+                    endTime.setText(editDeskBookingDetails.getEditEndTime());
+                    if(!newEditStatus.equalsIgnoreCase("edit") &&
+                            Utils.compareTimeIfCheckInEnable(""+startTime.getText(),
+                                    editDeskBookingDetails.getEditEndTime())) {
+                        if (Utils.compareTimeIfCheckInEnable(""+startTime.getText(),
+                                Utils.addHoursToSelectedTime(""+startTime.getText(), 4))){
+                            endTime.setText("23:59");
+                        } else {
+                            endTime.setText(Utils.addHoursToSelectedTime(""+startTime.getText(), 4));
+                        }
                     }
                 }
             }
-        }
 
+        } catch (Exception e){
+
+        }
 
         if (editDeskBookingDetails.getAmenities()!=null)
             //System.out.println("chip check"+editDeskBookingDetails.getAmenities().size());
