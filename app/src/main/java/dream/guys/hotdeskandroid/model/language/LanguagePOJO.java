@@ -2245,7 +2245,6 @@ public class LanguagePOJO {
         }
 
 
-
     }
 
     public class Login {
@@ -2604,6 +2603,28 @@ public class LanguagePOJO {
         @SerializedName("FloorMaxUtilization")
         @Expose
         private String floorMaxUtilization;
+        @SerializedName("NotAvailableForRequest")
+        @Expose
+        private String NotAvailableForRequest;
+        @SerializedName("AvailableForRequest")
+        @Expose
+        private String AvailableForRequest;
+
+        public String getNotAvailableForRequest() {
+            return NotAvailableForRequest;
+        }
+
+        public void setNotAvailableForRequest(String notAvailableForRequest) {
+            NotAvailableForRequest = notAvailableForRequest;
+        }
+
+        public String getAvailableForRequest() {
+            return AvailableForRequest;
+        }
+
+        public void setAvailableForRequest(String availableForRequest) {
+            AvailableForRequest = availableForRequest;
+        }
 
         public String getTabTitle() {
             return tabTitle;
@@ -3779,6 +3800,7 @@ public class LanguagePOJO {
         }
 
     }
+
     public class AppFeedback {
 
         @SerializedName("Title")
@@ -4147,7 +4169,6 @@ public class LanguagePOJO {
         }
 
     }
-
 
 
     public class AppKeys {
@@ -5186,6 +5207,56 @@ public class LanguagePOJO {
         String Commentsoptional;
         @SerializedName("Signinwithpin")
         String Signinwithpin;
+
+        @SerializedName("EditWorkingRemotely")
+        String EditWorkingRemotely;
+        @SerializedName("EditSickness")
+        String EditSickness;
+        @SerializedName("EditHoliday")
+        String EditHoliday;
+        @SerializedName("EditTraining")
+        String EditTraining; @SerializedName("SettingsTitle")
+        String SettingsTitle;
+
+        public String getSettingsTitle() {
+            return SettingsTitle;
+        }
+
+        public void setSettingsTitle(String settingsTitle) {
+            SettingsTitle = settingsTitle;
+        }
+
+        public String getEditWorkingRemotely() {
+            return EditWorkingRemotely;
+        }
+
+        public void setEditWorkingRemotely(String editWorkingRemotely) {
+            EditWorkingRemotely = editWorkingRemotely;
+        }
+
+        public String getEditSickness() {
+            return EditSickness;
+        }
+
+        public void setEditSickness(String editSickness) {
+            EditSickness = editSickness;
+        }
+
+        public String getEditHoliday() {
+            return EditHoliday;
+        }
+
+        public void setEditHoliday(String editHoliday) {
+            EditHoliday = editHoliday;
+        }
+
+        public String getEditTraining() {
+            return EditTraining;
+        }
+
+        public void setEditTraining(String editTraining) {
+            EditTraining = editTraining;
+        }
 
         public String getRemote() {
             return Remote;

@@ -679,9 +679,12 @@ public class BookDeskController implements
             selectedDeskId=editDeskBookingDetails.getDesktId();
             if(newEditStatus.equalsIgnoreCase("new") || newEditStatus.equalsIgnoreCase("new_deep_link")
                     || newEditStatus.equalsIgnoreCase("request")) {
-                title.setText("Book a workspace");
-                continueEditBook.setText("Book");
-                back.setText("Close");
+//                title.setText("Book a workspace");
+//                continueEditBook.setText("Book");
+//                back.setText("Close");
+                title.setText(appKeysPage.getBookWorkSpace());
+                continueEditBook.setText(appKeysPage.getBook());
+                back.setText(appKeysPage.getClose());
             } else {
                 if (editDeskBookingDetails.getComments() != null &&
                         !editDeskBookingDetails.getComments().equalsIgnoreCase("")&&

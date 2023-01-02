@@ -910,6 +910,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         //SetLang
         binding.myTeamClose.setText(appKeysPage.getClose());
+        binding.tvMyTeam.setText(appKeysPage.getMYTeam());
         binding.locateMyTeamSearch.setHint(appKeysPage.getSearch());
 
         binding.myTeamClose.setOnClickListener(new View.OnClickListener() {
@@ -6326,6 +6327,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         tvLocateCheckInStartLang = locateCheckInBottomSheet.findViewById(R.id.tvLocateCheckInStart);
         tvLocateCheckoutLang = locateCheckInBottomSheet.findViewById(R.id.tvLocateCheckout);
         tv_repeatLang = locateCheckInBottomSheet.findViewById(R.id.tv_repeat);
+        TextView tvReg = locateCheckInBottomSheet.findViewById(R.id.tvReg);
 
         tv_repeatLang.setText(appKeysPage.getRepeat());
         tvLocateCheckInDateLang.setText(appKeysPage.getDate());
@@ -6335,6 +6337,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         editBookingBack.setText(appKeysPage.getCancel());
         editBookingContinue.setText(appKeysPage.getBook());
         tvRepeat.setText(appKeysPage.getNone());
+        tvReg.setText(appKeysPage.getRegistration());
         //tvDescription.setText(appKeysPage.getDescription());
 
 

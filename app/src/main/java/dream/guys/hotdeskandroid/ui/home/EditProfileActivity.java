@@ -1234,6 +1234,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             if (profileData.getHighestRole().equalsIgnoreCase(AppConstants.Administrator)
                     || profileData.getHighestRole().equalsIgnoreCase(AppConstants.FacilityManager)
                     || profileData.getHighestRole().equalsIgnoreCase(AppConstants.TeamManager)
+                    || profileData.getHighestRole().equalsIgnoreCase(AppConstants.Manager)
                     || profileData.getHighestRole().equalsIgnoreCase(AppConstants.MeetingManager)) {
 
                 binding.editDisplayName.setEnabled(false);

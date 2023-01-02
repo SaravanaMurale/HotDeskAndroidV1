@@ -108,6 +108,7 @@ public class AdapterAdminNotificationReq extends RecyclerView.Adapter<AdapterAdm
                 }else {
                     holder.txt_title.setText("Incoming ");
                 }
+                holder.profile_layout.setVisibility(View.VISIBLE);
                 holder.btn_layout.setVisibility(View.VISIBLE);
                 holder.txt_title_count.setText("(" + String.valueOf(cIncoming) + ")");
             }else {
@@ -271,6 +272,7 @@ public class AdapterAdminNotificationReq extends RecyclerView.Adapter<AdapterAdm
                 SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.Administrator)
                 ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.FacilityManager)
                 ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.TeamManager)
+                ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.Manager)
                 ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.MeetingManager)) {
 
         } else {
