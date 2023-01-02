@@ -4,9 +4,27 @@ public class HorizontalCalendarModel {
     private String date;
     private String day;
     private String month;
+    private String shortMonth;
+    private String year;
     private String dayDate;
     private boolean isSelected;
     private boolean isToday;
+
+    public String getShortMonth() {
+        return shortMonth;
+    }
+
+    public void setShortMonth(String shortMonth) {
+        this.shortMonth = shortMonth;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
 
     public boolean isToday() {
         return isToday;

@@ -2187,6 +2187,32 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             Utils.toastMessage(getContext(), "Please Enable Internet");
         }
     }
+    public void currentBookings() {
+        if (Utils.isNetworkAvailable(getContext())) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<BookingListResponse.DayGroup.CalendarEntry> call = apiService.getCurrentBookingStatus();
+            call.enqueue(new Callback<BookingListResponse.DayGroup.CalendarEntry>() {
+                @Override
+                public void onResponse(Call<BookingListResponse.DayGroup.CalendarEntry> call, Response<BookingListResponse.DayGroup.CalendarEntry> response) {
+                    if (response.code() == 200) {
+                        BookingListResponse.DayGroup.CalendarEntry calendarEntry = response.body();
+                        userCurrentStatus.setText("");
+                    } else if (response.code() == 403) {
+//                        teamsCheckBoxStatus = false;
+                    } else {
+//                        teamsCheckBoxStatus = false;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<BookingListResponse.DayGroup.CalendarEntry> call, Throwable t) {
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getContext(), "Please Enable Internet");
+        }
+    }
 
     public void bookingExpiryGraceTimeInMinutes() {
         if (Utils.isNetworkAvailable(getContext())) {

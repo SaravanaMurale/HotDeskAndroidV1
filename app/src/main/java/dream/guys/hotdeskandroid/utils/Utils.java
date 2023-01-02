@@ -444,7 +444,10 @@ public class Utils {
         TextView dateTv = bottomSheetDialog.findViewById(R.id.date);
         TextView continueTv = bottomSheetDialog.findViewById(R.id.continue_tv);
         TextView backTv = bottomSheetDialog.findViewById(R.id.tv_back);
-        titleTv.setText(title);
+        if (title.equalsIgnoreCase("start time"))
+            titleTv.setText("Start");
+        else
+            titleTv.setText("End");
         LanguagePOJO.AppKeys appKeysPage = getAppKeysPageScreenData(mContext);
         continueTv.setText(appKeysPage.getContinue());
         backTv.setText(appKeysPage.getBack());
@@ -884,12 +887,12 @@ public class Utils {
     }
 
     public static String getDateFromDate(Date date) {
-        DateFormat df = new SimpleDateFormat("d");
+        DateFormat df = new SimpleDateFormat("dd");
         return df.format(date);
     }
 
     public static String getDayAndDate(Date date) {
-        DateFormat df = new SimpleDateFormat("EEE,d");
+        DateFormat df = new SimpleDateFormat("EEE,dd");
         return df.format(date);
     }
 
@@ -902,17 +905,17 @@ public class Utils {
         if(!((day>10) && (day<19))) {
             switch (day % 10) {
                 case 1:
-                    return new SimpleDateFormat("EEE, d'st' MMMM, yyyy").format(date);
+                    return new SimpleDateFormat("EEE, dd'st' MMMM, yyyy").format(date);
                 case 2:
-                    return new SimpleDateFormat("EEE, d'nd' MMMM, yyyy").format(date);
+                    return new SimpleDateFormat("EEE, dd'nd' MMMM, yyyy").format(date);
                 case 3:
-                    return new SimpleDateFormat("EEE, d'rd'  MMMM, yyyy").format(date);
+                    return new SimpleDateFormat("EEE, dd'rd'  MMMM, yyyy").format(date);
                 default:
-                    return new SimpleDateFormat("EEE, d'th' MMMM, yyyy").format(date);
+                    return new SimpleDateFormat("EEE, dd'th' MMMM, yyyy").format(date);
 
             }
         }
-        return new SimpleDateFormat("EEE, d'th' MMMM, yyyy").format(date);
+        return new SimpleDateFormat("EEE, dd'th' MMMM, yyyy").format(date);
 
     }
     public static String calendarDay10thMonthformat(Date date) {
@@ -924,20 +927,20 @@ public class Utils {
         if(!((day>10) && (day<19))){
             switch (day % 10) {
                 case 1:
-                    return new SimpleDateFormat("EEE, d'st' MMMM").format(date);
+                    return new SimpleDateFormat("EEE, dd'st' MMMM").format(date);
                 case 2:
-                    return new SimpleDateFormat("EEE, d'nd' MMMM").format(date);
+                    return new SimpleDateFormat("EEE, dd'nd' MMMM").format(date);
                 case 3:
-                    return new SimpleDateFormat("EEE, d'rd' MMMM").format(date);
+                    return new SimpleDateFormat("EEE, dd'rd' MMMM").format(date);
                 default:
-                    return new SimpleDateFormat("EEE, d'th' MMMM").format(date);
+                    return new SimpleDateFormat("EEE, dd'th' MMMM").format(date);
             }
         }
-        return new SimpleDateFormat("EEE, d'th' MMMM").format(date);
+        return new SimpleDateFormat("EEE, dd'th' MMMM").format(date);
 
     }
     public static String dayDateMonthFormat(Date date) {
-        DateFormat df = new SimpleDateFormat("EEE,d MMMM yyyy");
+        DateFormat df = new SimpleDateFormat("EEE,dd MMMM yyyy");
         return df.format(date);
     }
 

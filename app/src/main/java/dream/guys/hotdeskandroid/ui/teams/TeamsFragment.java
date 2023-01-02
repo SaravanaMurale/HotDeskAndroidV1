@@ -282,7 +282,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     private void setUpCalendarData() {
         // Inflate the layout for this fragment
         horizontalCalendarModels = new ArrayList<>();
-        DateFormat fullDateformat = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat fullDateformat = new SimpleDateFormat("yyyy-M-d");
         DateFormat dayFormat = new SimpleDateFormat("EEE");
         DateFormat monthFormat = new SimpleDateFormat("MMMM");
         DateFormat dateFormat = new SimpleDateFormat("dd");
@@ -802,6 +802,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         horizontalCalendarModels.get(newSelectedPos).setSelected(true);
         horizontalCalTeamsAdapter.notifyItemChanged(oldSelectedPos);
         horizontalCalTeamsAdapter.notifyItemChanged(newSelectedPos);
+
 
         currendate = date;
 

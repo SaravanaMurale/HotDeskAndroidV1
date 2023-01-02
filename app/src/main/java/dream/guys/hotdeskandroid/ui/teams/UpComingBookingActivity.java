@@ -3,6 +3,7 @@ package dream.guys.hotdeskandroid.ui.teams;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,9 +29,12 @@ import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.HorizontalCalendarView;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.adapter.HorizontalCalMonthAdapter;
+import dream.guys.hotdeskandroid.adapter.HorizontalCalTeamsAdapter;
 import dream.guys.hotdeskandroid.adapter.UpComingBookingAdapter;
 import dream.guys.hotdeskandroid.adapter.UpComingMonthlyBookingAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityUpComingBookingBinding;
+import dream.guys.hotdeskandroid.model.HorizontalCalendarModel;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.DAOUpcomingBooking;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
@@ -43,7 +48,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UpComingBookingActivity extends AppCompatActivity {
+public class UpComingBookingActivity extends AppCompatActivity implements HorizontalCalMonthAdapter.CalendarSelectedInterface{
 
     int day, month, year;
     HorizontalCalendar horizontalCalendar;
@@ -71,7 +76,12 @@ public class UpComingBookingActivity extends AppCompatActivity {
     UpComingMonthlyBookingAdapter upComingBookingAdapter;
     ArrayList<TeamMembersResponse.DayGroup> recyclerModelArrayList = new ArrayList();
     ArrayList<DAOUpcomingBooking.PersonDayViewEntry.CalendarEntry> upcomingArrayList = new ArrayList();
+    ArrayList<HorizontalCalendarModel> horizontalCalendarModels;
     int getUserID;
+
+    RecyclerView.LayoutManager horizontalLayoutManager;
+    HorizontalCalMonthAdapter horizontalCalMonthAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,9 +93,7 @@ public class UpComingBookingActivity extends AppCompatActivity {
         context = UpComingBookingActivity.this;
 
         uiInit();
-
         try {
-
             Intent intent = getIntent();
 
             if (intent!=null){
@@ -100,18 +108,17 @@ public class UpComingBookingActivity extends AppCompatActivity {
                 date = intent.getStringExtra("DATE");
 
                 if (daoTeamMember!=null){
-
                     fName = daoTeamMember.getFirstName();
                     lName = daoTeamMember.getLastName();
                     userID = daoTeamMember.getUserId();
 //                    Toast.makeText(context, ""+daoTeamMember.getUserId(), Toast.LENGTH_SHORT).show();
                     callTeamMemberStatus(Utils.splitDate(date),daoTeamMember.getTeamId());
-
                 }
 
             }
+            setUpCalendarData();
 
-        }catch (Exception e){
+        } catch (Exception e){
 
         }
 
@@ -153,6 +160,64 @@ public class UpComingBookingActivity extends AppCompatActivity {
         });
 
     }
+    private void setUpCalendarData() {
+        // Inflate the layout for this fragment
+        horizontalCalendarModels = new ArrayList<>();
+        DateFormat fullDateformat = new SimpleDateFormat("yyyy-M-d");
+        DateFormat shortMonthFormat = new SimpleDateFormat("MMM");
+        DateFormat yearFormat = new SimpleDateFormat("yyyy");
+        DateFormat monthFormat = new SimpleDateFormat("MMMM");
+        DateFormat dateFormat = new SimpleDateFormat("dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+
+        String day="";
+        String date="";
+        for (int i = 0; i < 12; i++)
+        {
+            HorizontalCalendarModel horizontalCalendar = new HorizontalCalendarModel();
+            horizontalCalendar.setDate(fullDateformat.format(calendar.getTime()));
+            horizontalCalendar.setShortMonth(shortMonthFormat.format(calendar.getTime()));
+            horizontalCalendar.setMonth(monthFormat.format(calendar.getTime()));
+            horizontalCalendar.setYear(yearFormat.format(calendar.getTime()));
+            horizontalCalendar.setDayDate(dateFormat.format(calendar.getTime()));
+            if (i==0){
+                horizontalCalendar.setSelected(true);
+                horizontalCalendar.setToday(true);
+            } else {
+                horizontalCalendar.setSelected(false);
+                horizontalCalendar.setToday(false);
+            }
+
+            horizontalCalendarModels.add(horizontalCalendar);
+
+            calendar.add(Calendar.MONTH, 1);
+        }
+
+        horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        binding.horizontalRecycler.setLayoutManager(horizontalLayoutManager);
+        binding.horizontalRecycler.setHasFixedSize(true);
+        horizontalCalMonthAdapter = new HorizontalCalMonthAdapter(horizontalCalendarModels,
+                this,null,this);
+        binding.horizontalRecycler.setAdapter(horizontalCalMonthAdapter);
+
+//        if (horizontalCalendarModels.size() > 0)
+//            updateDate(horizontalCalendarModels.get(0).getDate());
+
+    }
+
+    private void updateDate(String date) {
+        try {
+            currendate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new SimpleDateFormat("yyyy-M-d").parse(date));
+            selectedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new SimpleDateFormat("yyyy-M-d").parse(date));
+            callTeamMemberStatus(currendate, daoTeamMember.getTeamId());
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void uiInit() {
 
@@ -563,5 +628,14 @@ public class UpComingBookingActivity extends AppCompatActivity {
         }
 
     }
-    
+
+    @Override
+    public void calendarSelectedDate(String date, int oldSelectedPos, int newSelectedPos) {
+        horizontalCalendarModels.get(oldSelectedPos).setSelected(false);
+        horizontalCalendarModels.get(newSelectedPos).setSelected(true);
+        horizontalCalMonthAdapter.notifyItemChanged(oldSelectedPos);
+        horizontalCalMonthAdapter.notifyItemChanged(newSelectedPos);
+
+        updateDate(date);
+    }
 }
