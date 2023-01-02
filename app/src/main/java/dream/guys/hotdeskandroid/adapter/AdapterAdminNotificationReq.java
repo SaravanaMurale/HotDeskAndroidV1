@@ -272,6 +272,7 @@ public class AdapterAdminNotificationReq extends RecyclerView.Adapter<AdapterAdm
                 SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.Administrator)
                 ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.FacilityManager)
                 ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.TeamManager)
+                ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.Manager)
                 ||SessionHandler.getInstance().get(context,AppConstants.ROLE).equalsIgnoreCase(AppConstants.MeetingManager)) {
 
         } else {
