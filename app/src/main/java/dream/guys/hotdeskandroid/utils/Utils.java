@@ -207,7 +207,15 @@ public class Utils {
         TextView dateTv = bottomSheetDialog.findViewById(R.id.date);
         TextView continueTv = bottomSheetDialog.findViewById(R.id.continue_tv);
         TextView backTv = bottomSheetDialog.findViewById(R.id.tv_back);
-        titleTv.setText(title);
+
+        LanguagePOJO.AppKeys appKeysPage = getAppKeysPageScreenData(mContext);
+        continueTv.setText(appKeysPage.getContinue());
+        backTv.setText(appKeysPage.getBack());
+
+        if(title.equalsIgnoreCase("start"))
+            titleTv.setText(appKeysPage.getStart());
+        else
+            titleTv.setText(appKeysPage.getEnd());
         //New...
         if (!(date.equalsIgnoreCase(""))) {
             String dateTime = Utils.dateWithDayString(date);
@@ -337,6 +345,9 @@ public class Utils {
         TextView continueTv = bottomSheetDialog.findViewById(R.id.continue_tv);
         TextView backTv = bottomSheetDialog.findViewById(R.id.tv_back);
         titleTv.setText(title);
+        LanguagePOJO.AppKeys appKeysPage = getAppKeysPageScreenData(mContext);
+        continueTv.setText(appKeysPage.getContinue());
+        backTv.setText(appKeysPage.getBack());
         //New...
         if (!(date.equalsIgnoreCase(""))) {
             String dateTime = Utils.dateWithDayString(date);
@@ -434,6 +445,9 @@ public class Utils {
         TextView continueTv = bottomSheetDialog.findViewById(R.id.continue_tv);
         TextView backTv = bottomSheetDialog.findViewById(R.id.tv_back);
         titleTv.setText(title);
+        LanguagePOJO.AppKeys appKeysPage = getAppKeysPageScreenData(mContext);
+        continueTv.setText(appKeysPage.getContinue());
+        backTv.setText(appKeysPage.getBack());
         //New...
         if (!(date.equalsIgnoreCase(""))) {
             String dateTime = Utils.dateWithDayString(date);
@@ -2881,11 +2895,17 @@ public class Utils {
     public static void setSPannableStringForParticipants(TextView textView,String s,int start,int end){
         //Set Font Size
         //String s= "Internal participants optional";
-        SpannableString ss1=  new SpannableString(s);
-        ss1.setSpan(new RelativeSizeSpan(1.1f), 0,start, 0);
-        ss1.setSpan(new RelativeSizeSpan(0.8f), start,end, 0);// set size
-        //ss1.setSpan(new ForegroundColorSpan(Color.RED), 0, 5, 0);// set color
-        textView.setHint(ss1);
+        try {
+            SpannableString ss1=  new SpannableString(s);
+            ss1.setSpan(new RelativeSizeSpan(1.1f), 0,start, 0);
+            ss1.setSpan(new RelativeSizeSpan(0.8f), start,end, 0);// set size
+            //ss1.setSpan(new ForegroundColorSpan(Color.RED), 0, 5, 0);// set color
+            textView.setHint(ss1);
+        }catch (Exception e){
+            e.printStackTrace();
+            textView.setHint(s);
+        }
+
     }
 
     public static void openKeyBoard(Context context, EditText editText){

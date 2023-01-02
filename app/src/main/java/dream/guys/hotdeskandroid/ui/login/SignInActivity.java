@@ -428,19 +428,19 @@ public class SignInActivity extends AppCompatActivity {
         String key = SessionHandler.getInstance().get(SignInActivity.this, AppConstants.LANGUAGE_KEY); //= key+".json";
 
         //if (key == null) {
-        if (key.isEmpty()) {
+        if (key == null || key.isEmpty()) {
             SessionHandler.getInstance().save(SignInActivity.this, AppConstants.LANGUAGE_KEY, "en");
             SessionHandler.getInstance().save(SignInActivity.this, AppConstants.LANGUAGE, "English");
-
-            String json = LoadJsonFromAsset("en" + ".json");
-            Gson gson = new Gson();
-            Type listUserType = new TypeToken<LanguagePOJO>() {
-            }.getType();
-            LanguagePOJO langPOJO = gson.fromJson(json, listUserType);
-            Utils.setLangInPref(langPOJO, SignInActivity.this);
-        } else {
+            key = SessionHandler.getInstance().get(SignInActivity.this, AppConstants.LANGUAGE_KEY);
 
         }
+
+        String json = LoadJsonFromAsset(key + ".json");
+        Gson gson = new Gson();
+        Type listUserType = new TypeToken<LanguagePOJO>() {
+        }.getType();
+        LanguagePOJO langPOJO = gson.fromJson(json, listUserType);
+        Utils.setLangInPref(langPOJO, SignInActivity.this);
 
         LanguagePOJO.Login logoinPage = getLoginScreenData(this);
         LanguagePOJO.AppKeys appKeysPage = getAppKeysPageScreenData(this);

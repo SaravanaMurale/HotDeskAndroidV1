@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
 import dream.guys.hotdeskandroid.controllers.OtherBookingController;
 import dream.guys.hotdeskandroid.utils.Utils;
@@ -23,10 +24,12 @@ public class OtherBookingAdapter extends RecyclerView.Adapter<OtherBookingAdapte
     private int selectedIcon;
     private List<BookingForEditResponse.Bookings> bookingsList;
     private OtherBookingController otherBookingController;
+    private LanguagePOJO.AppKeys appKeysPage;
 
     public OtherBookingAdapter(Context context, int selectedIcon, List<BookingForEditResponse.Bookings> bookings,
                                OtherBookingController otherBookingController) {
         this.context = context;
+        appKeysPage = Utils.getAppKeysPageScreenData(context);
         this.selectedIcon = selectedIcon;
         this.bookingsList = bookings;
         this.otherBookingController = otherBookingController;
@@ -49,16 +52,16 @@ public class OtherBookingAdapter extends RecyclerView.Adapter<OtherBookingAdapte
         try {
             if (selectedIcon == 4) {
                 holder.bookTypeImage.setBackgroundResource(R.drawable.home);
-                holder.tvBookType.setText("Remote");
+                holder.tvBookType.setText(appKeysPage.getRemote());
             } else if (selectedIcon == 5) {
                 holder.bookTypeImage.setBackgroundResource(R.drawable.sick_plus);
-                holder.tvBookType.setText("Sickness");
+                holder.tvBookType.setText(appKeysPage.getSick());
             } else if (selectedIcon == 6) {
                 holder.bookTypeImage.setBackgroundResource(R.drawable.plane);
-                holder.tvBookType.setText("Holiday");
+                holder.tvBookType.setText(appKeysPage.getHoliday());
             } else if (selectedIcon == 7) {
                 holder.bookTypeImage.setBackgroundResource(R.drawable.training_book);
-                holder.tvBookType.setText("Training");
+                holder.tvBookType.setText(appKeysPage.getTraining());
             }
 
             holder.tvCheckInTime.setText(Utils.splitTime(bookingsList.get(position).getFrom()));
@@ -104,6 +107,10 @@ public class OtherBookingAdapter extends RecyclerView.Adapter<OtherBookingAdapte
             tvCheckOutTime = itemView.findViewById(R.id.tvCheckOutTime);
             editDelete = itemView.findViewById(R.id.editDelete);
             editTextEdit = itemView.findViewById(R.id.editTextEdit);
+
+            editDelete.setText(appKeysPage.getDelete());
+            editTextEdit.setText(appKeysPage.getEdit());
+
         }
     }
 }

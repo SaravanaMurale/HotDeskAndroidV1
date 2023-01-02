@@ -68,6 +68,7 @@ public class OtherBookingController {
 
     public OtherBookingController(Context context, int selectedIcon, String calSelectedDate) {
         this.context = context;
+        appKeysPage = Utils.getAppKeysPageScreenData(context);
         this.selectedIcon = selectedIcon;
         this.calSelectedDate = calSelectedDate;
         this.isFrom = "book";
@@ -78,6 +79,7 @@ public class OtherBookingController {
                                   BookingListResponse.DayGroup.CalendarEntry calendarEntry,
                                   Date date, String isFrom) {
         this.context = context;
+        appKeysPage = Utils.getAppKeysPageScreenData(context);
         this.calendarEntry = calendarEntry;
         this.date = date;
         this.isFrom = isFrom;
@@ -189,8 +191,22 @@ public class OtherBookingController {
         TextView tvClose = addEditBottomSheet.findViewById(R.id.tvClose);
         TextView tvBook = addEditBottomSheet.findViewById(R.id.tvBook);
         TextView tvRepeat = addEditBottomSheet.findViewById(R.id.tv_repeat);
+        TextView tv_start = addEditBottomSheet.findViewById(R.id.tv_start);
+        TextView tv_end = addEditBottomSheet.findViewById(R.id.tv_end);
+
         tvRepeatTxt = addEditBottomSheet.findViewById(R.id.repeat);
         RelativeLayout repeatBlock = addEditBottomSheet.findViewById(R.id.repeatBlock);
+
+        try {
+            editDelete.setText(appKeysPage.getDelete());
+            tv_start.setText(appKeysPage.getStart());
+            tv_end.setText(appKeysPage.getEnd());
+            tvRepeat.setText(appKeysPage.getRepeat());
+            tvClose.setText(appKeysPage.getClose());
+            tvBook.setText(appKeysPage.getBook());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -236,16 +252,16 @@ public class OtherBookingController {
        7 == 8 - training*/
         if (from.equalsIgnoreCase("new")) {
             if (selectedIcon == 4) {
-                bookingName.setText("Working remotely");
+                bookingName.setText(appKeysPage.getWorkingRemotely());
                 type = 9;
             } else if (selectedIcon == 5) {
-                bookingName.setText("Log sickness");
+                bookingName.setText(appKeysPage.getLogSickness());
                 type = 18;
             } else if (selectedIcon == 6) {
-                bookingName.setText("Book holiday");
+                bookingName.setText(appKeysPage.getBookHoliday());
                 type = 6;
             } else if (selectedIcon == 7) {
-                bookingName.setText("Book training");
+                bookingName.setText(appKeysPage.getBookTraining());
                 type = 8;
             }
 
@@ -292,20 +308,20 @@ public class OtherBookingController {
                 editBookingSheet.dismiss();
 
             if (selectedIcon == 4) {
-                bookingName.setText("Edit working remotely");
+                bookingName.setText(appKeysPage.getEditWorkingRemotely());
                 type = 9;
             } else if (selectedIcon == 5) {
-                bookingName.setText("Edit sickness");
+                bookingName.setText(appKeysPage.getEditSickness());
                 type = 18;
             } else if (selectedIcon == 6) {
-                bookingName.setText("Edit holiday");
+                bookingName.setText(appKeysPage.getEditHoliday());
                 type = 6;
             } else if (selectedIcon == 7) {
-                bookingName.setText("Edit training");
+                bookingName.setText(appKeysPage.getEditTraining());
                 type = 8;
             }
 
-            tvBook.setText("Save changes");
+            tvBook.setText(appKeysPage.getSaveChanges());
             startTime.setText(startTimeStr);
             endTime.setText(endTimeStr);
             editDelete.setVisibility(View.VISIBLE);
@@ -351,6 +367,10 @@ public class OtherBookingController {
         TextView tvClose = editBookingSheet.findViewById(R.id.tvClose);
         TextView tvAddNew = editBookingSheet.findViewById(R.id.tvAddNew);
 
+        bookingName.setText(appKeysPage.getActiveBookings());
+        tvClose.setText(appKeysPage.getClose());
+        tvAddNew.setText(appKeysPage.getAddNew());
+
         tvDate.setText(Utils.calendarDay10thMonthYearformat
                 (Utils.convertStringToDateFormet(calSelectedDate)));
         setAdapter(bookedListRecycler, bookingsList);
@@ -388,7 +408,7 @@ public class OtherBookingController {
         RelativeLayout repeatBlock = addEditBottomSheet.findViewById(R.id.repeatBlock);
         repeatBlock.setVisibility(View.GONE);
 
-        tvBook.setText("Save changes");
+        tvBook.setText(appKeysPage.getSaveChanges());
         tvDate.setText(Utils.calendarDay10thMonthYearformat(date));
 
 
@@ -432,16 +452,16 @@ public class OtherBookingController {
         });
 
         if (selectedIcon == 4) {
-            bookingName.setText("Edit working remotely");
+            bookingName.setText(appKeysPage.getEditWorkingRemotely());
             type = 9;
         } else if (selectedIcon == 5) {
-            bookingName.setText("Edit sickness");
+            bookingName.setText(appKeysPage.getEditSickness());
             type = 18;
         } else if (selectedIcon == 6) {
-            bookingName.setText("Edit holiday");
+            bookingName.setText(appKeysPage.getEditHoliday());
             type = 6;
         } else if (selectedIcon == 7) {
-            bookingName.setText("Edit training");
+            bookingName.setText(appKeysPage.getEditTraining());
             type = 8;
         }
 

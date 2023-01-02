@@ -747,8 +747,12 @@
     "Capacity": "क्षमता",
     "Internalparticipantsoptional":"आंतरिक प्रतिभागी वैकल्पिक",
     "Externalparticipantsoptional": "बाहरी प्रतिभागी वैकल्पिक",
-    "Commentsoptional":"टिप्पणियां (वैकल्पिक"
-
+    "Commentsoptional":"टिप्पणियां (वैकल्पिक",
+    "EditWorkingRemotely": "दूर से काम करना संपादित करें",
+    "EditSickness": "बीमारी संपादित करें",
+    "EditHoliday": "अवकाश संपादित करें",
+    "EditTraining": "प्रशिक्षण संपादित करें",
+    "SettingsTitle": "समायोजन"
 
 
 

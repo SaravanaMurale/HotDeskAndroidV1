@@ -588,7 +588,7 @@ public class SettingsActivity extends AppCompatActivity {
         global = Utils.getGlobalScreenData(this);
         settings = Utils.getSettingsPageScreenData(this);
 
-
+        binding.tvTitle.setText(appKeysPage.getSettingsTitle());
         binding.settingViewProfile.setText(settings.getViewProfile());
 
         if (wellBeingPage != null) {
