@@ -48,11 +48,19 @@
             android:visibility="gone" />
 
     </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/horizontal_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/hdr_layout"
+        />
+
     <devs.mulham.horizontalcalendar.HorizontalCalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/hdr_layout"
+        android:visibility="gone"
+        android:layout_below="@+id/horizontal_recycler"
         android:layout_marginTop="@dimen/_8sdp"
         app:textColorNormal="@color/figmaBlack"
         app:textColorSelected="@color/white" />

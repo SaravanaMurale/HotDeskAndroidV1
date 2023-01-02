@@ -6,6 +6,7 @@ import static dream.guys.hotdeskandroid.utils.Utils.getBookingPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getMeScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getResetPasswordPageScreencreenData;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,12 +39,14 @@ import devs.mulham.horizontalcalendar.HorizontalCalendarView;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.adapter.HorizontalCalTeamsAdapter;
 import dream.guys.hotdeskandroid.adapter.SearchRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.TeamsAdapter;
 import dream.guys.hotdeskandroid.adapter.TeamsContactsAdapter;
 import dream.guys.hotdeskandroid.adapter.TeamsFloorListAdapter;
 import dream.guys.hotdeskandroid.databinding.FragmentTeamsBinding;
 import dream.guys.hotdeskandroid.model.FloorListModel;
+import dream.guys.hotdeskandroid.model.HorizontalCalendarModel;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.DAOUpcomingBooking;
@@ -63,7 +67,7 @@ import retrofit2.Response;
 
 public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberInterface,
         TeamsContactsAdapter.OnProfileClickable,
-        TeamsFloorListAdapter.FloorListener {
+        TeamsFloorListAdapter.FloorListener, HorizontalCalTeamsAdapter.CalendarSelectedInterface {
 
     FragmentTeamsBinding binding;
     int day, month, year;
@@ -101,7 +105,12 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     LanguagePOJO.Booking bookindata;
 
     public boolean expandStatus = false;
+    RecyclerView horizontalRecycler;
+    RecyclerView.LayoutManager horizontalLayoutManager;
+    RecyclerView.Adapter horizontalCalTeamsAdapter;
+    ArrayList<HorizontalCalendarModel> horizontalCalendarModels;
 
+    Activity activityContext;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,7 +124,9 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         // Inflate the layout for this fragment
         binding = FragmentTeamsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        activityContext = getActivity();
 
+        setUpCalendarData();
         uiInit(root);
 
         setLanguage();
@@ -266,6 +277,51 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         binding.searchRecycler.setAdapter(searchRecyclerAdapter);
 
         return root;
+    }
+
+    private void setUpCalendarData() {
+        // Inflate the layout for this fragment
+        horizontalCalendarModels = new ArrayList<>();
+        DateFormat fullDateformat = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat dayFormat = new SimpleDateFormat("EEE");
+        DateFormat monthFormat = new SimpleDateFormat("MMMM");
+        DateFormat dateFormat = new SimpleDateFormat("dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+
+        String day="";
+        String date="";
+        for (int i = 0; i < 30; i++)
+        {
+            HorizontalCalendarModel horizontalCalendar = new HorizontalCalendarModel();
+            horizontalCalendar.setDate(fullDateformat.format(calendar.getTime()));
+            horizontalCalendar.setDay(dayFormat.format(calendar.getTime()));
+            horizontalCalendar.setMonth(monthFormat.format(calendar.getTime()));
+            horizontalCalendar.setDayDate(dateFormat.format(calendar.getTime()));
+            if (i==0){
+                horizontalCalendar.setSelected(true);
+                horizontalCalendar.setToday(true);
+            } else {
+                horizontalCalendar.setSelected(false);
+                horizontalCalendar.setToday(false);
+            }
+
+            horizontalCalendarModels.add(horizontalCalendar);
+
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
+
+        horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        binding.horizontalRecycler.setLayoutManager(horizontalLayoutManager);
+        binding.horizontalRecycler.setHasFixedSize(true);
+        horizontalCalTeamsAdapter = new HorizontalCalTeamsAdapter(horizontalCalendarModels,
+                activityContext,this,this);
+        binding.horizontalRecycler.setAdapter(horizontalCalTeamsAdapter);
+
+        if (horizontalCalendarModels.size()>0)
+            updateDate(horizontalCalendarModels.get(0).getDate());
+
     }
 
     private void getBookingUsageTypes() {
@@ -738,6 +794,33 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             dynamicAdapters = new ArrayList<>();
         else
             dynamicAdapters.add(teamsContactsAdapter);
+    }
+
+    @Override
+    public void calendarSelectedDate(String date, int oldSelectedPos, int newSelectedPos) {
+        horizontalCalendarModels.get(oldSelectedPos).setSelected(false);
+        horizontalCalendarModels.get(newSelectedPos).setSelected(true);
+        horizontalCalTeamsAdapter.notifyItemChanged(oldSelectedPos);
+        horizontalCalTeamsAdapter.notifyItemChanged(newSelectedPos);
+
+        currendate = date;
+
+        updateDate(currendate);
+
+    }
+
+    private void updateDate(String currendate) {
+        try {
+            currendate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new SimpleDateFormat("yyyy-M-d").parse(currendate));
+            selectedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new SimpleDateFormat("yyyy-M-d").parse(currendate));
+            binding.tvExapnd.setVisibility(View.VISIBLE);
+            expandStatus = false;
+            if (dynamicAdapters != null)
+                dynamicAdapters.clear();
+            getTeamMembers();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public static class OverlapDecoration extends RecyclerView.ItemDecoration {

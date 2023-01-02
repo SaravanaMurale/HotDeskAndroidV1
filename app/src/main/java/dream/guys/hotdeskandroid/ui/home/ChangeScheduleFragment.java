@@ -105,8 +105,7 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
         String day="";
         String date="";
         daysListHash.clear();
-        for (int i = 0; i < 7; i++)
-        {
+        for (int i = 0; i < 7; i++) {
             System.out.println("days check bala"+dayFormat.format(calendar.getTime()));
             switch (dayFormat.format(calendar.getTime())){
                 case "Mon":
