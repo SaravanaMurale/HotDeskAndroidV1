@@ -36,8 +36,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:theme="@style/TextBold"
                     android:text="My team"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="@dimen/_18sdp"
+                    android:theme="@style/TextBold"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/view_teams_back"
                     />

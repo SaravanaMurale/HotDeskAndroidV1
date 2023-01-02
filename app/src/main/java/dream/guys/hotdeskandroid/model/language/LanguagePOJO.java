@@ -3991,6 +3991,17 @@ public class LanguagePOJO {
         @SerializedName("DarkMode")
         @Expose
         private String darkMode;
+        @SerializedName("SetUpPinEditPin")
+        @Expose
+        private String SetUpPinEditPin;
+
+        public String getSetUpPinEditPin() {
+            return SetUpPinEditPin;
+        }
+
+        public void setSetUpPinEditPin(String setUpPinEditPin) {
+            SetUpPinEditPin = setUpPinEditPin;
+        }
 
         public String getWorkSchedule() {
             return workSchedule;
