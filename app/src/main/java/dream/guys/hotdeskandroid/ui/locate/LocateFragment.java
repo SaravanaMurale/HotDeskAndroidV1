@@ -380,9 +380,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
     //SupportZonelayout canvas
-    List<LocateCountryRespose.SupportZoneLayoutItems> getSupportZoneLayoutForCanvas;
+    List<LocateCountryRespose.SupportZoneLayoutItems> getSupportZoneLayoutForCanvas = new ArrayList<>();
 
-
+    List<Integer> xArrayList=new ArrayList<>();
+    List<Integer> yArrayList=new ArrayList<>();
     //New...
     ImageView img_bsCountry,img_bsState,img_bsStreet;
 
@@ -1732,6 +1733,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                             }
 
+                           /* if(getSupportZoneLayoutForCanvas != null && getSupportZoneLayoutForCanvas.size()==0){
+                                Collections.sort(xArrayList);
+                                Collections.sort(yArrayList);
+                                binding.zoomView.scrollTo(xArrayList.get(0)+100, yArrayList.get(0)+100);
+                            }*/
+
+//                            binding.firstLayout.scrollTo(-1200,-1200);
+                            binding.firstLayout.scrollTo(-600,-950);
                         } else {
                             Toast.makeText(getContext(), "No Data", Toast.LENGTH_LONG).show();
                         }
@@ -1772,7 +1781,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                 if(xCoordinatesList!=null && xCoordinatesList.size()>0 && yCoordinatesList!=null && yCoordinatesList.size()>0) {
                                     toWriteTitle(xCoordinatesList, yCoordinatesList, getSupportZoneLayoutForCanvas.get(i).getTitle(), getSupportZoneLayoutForCanvas.get(i).getFontSize());
-
                                 }
 
 
@@ -1838,6 +1846,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         Collections.sort(xCoordinatesList);
         Collections.sort(yCoordinatesList);
 
+//        binding.firstLayout.scrollTo(xCoordinatesList.get(0), yCoordinatesList.get(0));
+//        binding.secondLayout.scrollTo(xCoordinatesList.get(0), yCoordinatesList.get(0));
+//        binding.zoomView.scrollTo(xCoordinatesList.get(0), yCoordinatesList.get(0));
 
         /*for (int i = 0; i <xCoordinatesList.size() ; i++) {
             System.out.println("xCoordinatesList "+xCoordinatesList.get(i));
@@ -2490,6 +2501,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //Set Image Based on Position
         int x = Integer.parseInt(valueList.get(0));
         int y = Integer.parseInt(valueList.get(1));
+
+        xArrayList.add(x);
+        yArrayList.add(y);
 
         relativeLayout.leftMargin = x;
         relativeLayout.topMargin = y;
@@ -5257,7 +5271,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         //callBottomSheetToEdit(bookingForEditResponse, selctedCode, key, id, code, requestTeamId, requestTeamDeskId, i);
 
                         //No List direct UI
-                        if(bookingForEditResponse.getBookings().size()>0 && bookingForEditResponse.getBookings()!=null)
+                        if(bookingForEditResponse.getBookings() != null && bookingForEditResponse.getBookings().size()>0)
                         for (int i = 0; i <bookingForEditResponse.getBookings().size() ; i++) {
 
                             if(id==bookingForEditResponse.getBookings().get(i).getDeskId()){
