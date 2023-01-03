@@ -63,7 +63,7 @@ public class ReportIssueRequest
         @SerializedName("metric")
         private int metric;
         @SerializedName("comments")
-        private String comments;
+        private String comments="";
 
         public Metric(int score, int metric, String comments)
         {

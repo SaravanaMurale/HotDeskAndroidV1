@@ -376,11 +376,11 @@ public class ReportAnIssueActivity extends AppCompatActivity implements AdapterV
             Toast.makeText(getApplicationContext(), "From Date must not be Empty",Toast.LENGTH_LONG).show();
         }else if(reportToDate.getText().toString().isEmpty()){
             Toast.makeText(getApplicationContext(), "To Date must not be Empty",Toast.LENGTH_LONG).show();
-        }/*else if(reportFromTime.getText().toString().isEmpty()){
+        }else if(reportFromTime.getText().toString().isEmpty()){
             Toast.makeText(getApplicationContext(), "From Time must not be Empty",Toast.LENGTH_LONG).show();
         }else if(reportToTime.getText().toString().isEmpty()){
             Toast.makeText(getApplicationContext(), "To Time must not be Empty",Toast.LENGTH_LONG).show();
-        }*/else if(reportDescr.getText().toString().isEmpty()){
+        }else if(reportDescr.getText().toString().isEmpty()){
             Toast.makeText(getApplicationContext(), "Description must not be Empty",Toast.LENGTH_LONG).show();
         }else {
 
@@ -542,7 +542,7 @@ public class ReportAnIssueActivity extends AppCompatActivity implements AdapterV
                 new RelativeLayout(activity)));
 
         TimePicker simpleTimePicker24Hours = bottomSheetDialog.findViewById(R.id.simpleTimePicker);
-        //simpleTimePicker24Hours.setIs24HourView(false);
+        simpleTimePicker24Hours.setIs24HourView(true);
         TextView titleTv = bottomSheetDialog.findViewById(R.id.title);
         TextView dateTv = bottomSheetDialog.findViewById(R.id.date);
         TextView continueTv = bottomSheetDialog.findViewById(R.id.continue_tv);

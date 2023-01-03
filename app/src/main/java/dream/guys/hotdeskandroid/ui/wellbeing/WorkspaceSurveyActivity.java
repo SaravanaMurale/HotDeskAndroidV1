@@ -566,8 +566,8 @@ public class WorkspaceSurveyActivity extends AppCompatActivity {
             feedBack.setDeskId(deskId);
             feedBack.setLocationId(20);
 
-            feedBack.setEffectedFrom(reportFromDate.getText().toString());
-            feedBack.setEffectedTo(reportToDate.getText().toString());
+            feedBack.setEffectedFrom(reportFromDate.getText().toString() + 'T' + Utils.getCurrentTime() + ":00.000Z");
+            feedBack.setEffectedTo(reportToDate.getText().toString() + 'T' + Utils.getCurrentTime() + ":00.000Z");
             reportIssueRequest.setComments(etDescription.getText().toString());
             reportIssueRequest.setAnonymous(cb_anonymous.isChecked());
 
