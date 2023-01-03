@@ -224,11 +224,12 @@
                             android:background="@color/figmaGrey" />
 
                         <ImageView
+                            android:id="@+id/tenantProfile"
                             android:layout_width="@dimen/_50sdp"
                             android:layout_height="@dimen/_50sdp"
                             android:layout_centerInParent="true"
                             android:layout_weight="1"
-                            android:src="@drawable/default_company_logo" />
+                            tools:src="@drawable/default_company_logo" />
                     </RelativeLayout>
 
                 </LinearLayout>

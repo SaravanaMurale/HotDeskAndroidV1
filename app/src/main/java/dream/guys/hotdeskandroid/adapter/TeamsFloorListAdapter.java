@@ -76,28 +76,42 @@ public class TeamsFloorListAdapter extends RecyclerView.Adapter<TeamsFloorListAd
         holder.floorLocationImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(int i=0; i < floorListModels.get(holder.getAbsoluteAdapterPosition()).getDaoTeamMembers().size(); i++){
+                try{
+                    int pos=0;
+                    loop:
+                    for(int i=0; i < floorListModels.get(holder.getAbsoluteAdapterPosition()).getDaoTeamMembers().get(0).getDayGroups().get(0).getCalendarEntries().size(); i++){
+                        if (floorListModels.get(holder.getAbsoluteAdapterPosition()).getDaoTeamMembers()
+                                .get(0).getDayGroups()
+                                .get(0).getCalendarEntries().get(i).getBooking().getLocationBuildingFloor() !=null){
+                            pos = i;
+                            break loop;
+                        }
 
+                    }
+
+                    String floorName=floorListModels.get(holder.getAbsoluteAdapterPosition()).getDaoTeamMembers()
+                            .get(0).getDayGroups()
+                            .get(0).getCalendarEntries().get(pos).getBooking().getLocationBuildingFloor().getBuildingName()+","
+                            +floorListModels.get(holder.getAbsoluteAdapterPosition()).getDaoTeamMembers()
+                            .get(0).getDayGroups()
+                            .get(0).getCalendarEntries().get(pos).getBooking().getLocationBuildingFloor().getfLoorName();
+
+
+                    SessionHandler.getInstance().save(getContext(),AppConstants.FULLPATHLOCATION,floorName);
+
+
+
+                    floorListener.floorListenerClick(
+                            floorListModels.get(holder.getAbsoluteAdapterPosition()).getFloorId(),
+                            floorListModels.get(holder.getAbsoluteAdapterPosition()).getDaoTeamMembers()
+                                    .get(0).getDayGroups()
+                                    .get(0).getCalendarEntries().get(0).getBooking().getDeskId(),
+                            AppConstants.DESK
+                    );
+
+                } catch (Exception e){
 
                 }
-
-                String floorName=floorListModels.get(holder.getAbsoluteAdapterPosition()).getDaoTeamMembers()
-                        .get(0).getDayGroups()
-                        .get(0).getCalendarEntries().get(0).getBooking().getLocationBuildingFloor().getBuildingName()+","+floorListModels.get(holder.getAbsoluteAdapterPosition()).getDaoTeamMembers()
-                        .get(0).getDayGroups()
-                        .get(0).getCalendarEntries().get(0).getBooking().getLocationBuildingFloor().getfLoorName();
-
-                SessionHandler.getInstance().save(getContext(),AppConstants.FULLPATHLOCATION,floorName);
-
-
-
-                floorListener.floorListenerClick(
-                        floorListModels.get(holder.getAbsoluteAdapterPosition()).getFloorId(),
-                        floorListModels.get(holder.getAbsoluteAdapterPosition()).getDaoTeamMembers()
-                                .get(0).getDayGroups()
-                                .get(0).getCalendarEntries().get(0).getBooking().getDeskId(),
-                        AppConstants.DESK
-                        );
 
 
                 //floorListModels.get(position).getDaoTeamMembers().get(position).getDayGroups().get(position).get

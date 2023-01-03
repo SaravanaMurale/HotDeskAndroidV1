@@ -4,9 +4,12 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +37,7 @@ import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.databinding.FragmentBookingDetailBinding;
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.ImageResponse;
 import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
 import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
 import dream.guys.hotdeskandroid.ui.notify.NotificationCenterActivity;
@@ -139,6 +143,7 @@ public class BookingDetailFragment extends Fragment {
             fragmentBookingDetailBinding.notiIcon.setVisibility(View.VISIBLE);
         }
 
+        loadTenantImage();
         fragmentBookingDetailBinding.tvSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -270,7 +275,7 @@ public class BookingDetailFragment extends Fragment {
                             .into(fragmentBookingDetailBinding.ivWorkingRemote);
                     break;
                 case "TR":
-                    fragmentBookingDetailBinding.remoteText.setText("You're in training");
+                    fragmentBookingDetailBinding.remoteText.setText("You're training");
                     Glide.with(this)
                             .load(R.drawable.building)
                             .placeholder(R.drawable.building)
@@ -284,7 +289,7 @@ public class BookingDetailFragment extends Fragment {
                             .into(fragmentBookingDetailBinding.ivWorkingRemote);
                     break;
                 case "SL":
-                    fragmentBookingDetailBinding.remoteText.setText("You're on Sick Leave");
+                    fragmentBookingDetailBinding.remoteText.setText("You're Sick");
                     Glide.with(this)
                             .load(R.drawable.sick_remote)
                             .placeholder(R.drawable.sick_remote)
@@ -490,6 +495,55 @@ public class BookingDetailFragment extends Fragment {
 
             }
         });
+    }
+
+    private void loadTenantImage() {
+        if (Utils.isNetworkAvailable(getActivity())) {
+
+//            dialog= ProgressDialog.showProgressBar(getContext());
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<ImageResponse> call = apiService.getTenantImage();
+            call.enqueue(new Callback<ImageResponse>() {
+                @Override
+                public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
+                    try {
+
+                        if (response.code() == 200) {
+                            ImageResponse imageResponse = response.body();
+                            if (imageResponse.getMessage() != null && !imageResponse.isStatus()) {
+//                            Utils.toastMessage(getContext(),imageResponse.getMessage().getCode());
+                                fragmentBookingDetailBinding.tenantProfile.setImageDrawable(ContextCompat.getDrawable(getContext(),
+                                        R.drawable.default_company_logo));
+                            }
+                            if (imageResponse.getImage() != null) {
+                                String cleanImage = imageResponse.getImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,", "");
+                                SessionHandler.getInstance().save(getActivity(), AppConstants.TENANTIMAGE
+                                        , cleanImage);
+                                byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
+                                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                                fragmentBookingDetailBinding.tenantProfile.setImageBitmap(decodedByte);
+                            }
+                        } else if (response.code() == 401) {
+//                        Utils.toastMessage(getActivity(),"Token Expired");
+                            SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK, false);
+                            Utils.showCustomTokenExpiredDialog(getActivity(), "Token Expired");
+//                        Utils.finishAllActivity(getContext());
+                        }
+                    } catch (Exception e){
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ImageResponse> call, Throwable t) {
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
     }
 
 }
