@@ -376,11 +376,11 @@ public class ReportAnIssueActivity extends AppCompatActivity implements AdapterV
             Toast.makeText(getApplicationContext(), "From Date must not be Empty",Toast.LENGTH_LONG).show();
         }else if(reportToDate.getText().toString().isEmpty()){
             Toast.makeText(getApplicationContext(), "To Date must not be Empty",Toast.LENGTH_LONG).show();
-        }else if(reportFromTime.getText().toString().isEmpty()){
+        }/*else if(reportFromTime.getText().toString().isEmpty()){
             Toast.makeText(getApplicationContext(), "From Time must not be Empty",Toast.LENGTH_LONG).show();
         }else if(reportToTime.getText().toString().isEmpty()){
             Toast.makeText(getApplicationContext(), "To Time must not be Empty",Toast.LENGTH_LONG).show();
-        }else if(reportDescr.getText().toString().isEmpty()){
+        }*/else if(reportDescr.getText().toString().isEmpty()){
             Toast.makeText(getApplicationContext(), "Description must not be Empty",Toast.LENGTH_LONG).show();
         }else {
 
