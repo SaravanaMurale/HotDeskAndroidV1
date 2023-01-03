@@ -183,14 +183,14 @@ public class UpComingBookingAdapter extends RecyclerView.Adapter<UpComingBooking
             );*/
             switch (list.get(position).getCalendarEntriesModel().getUsageTypeAbbreviation()){
                 case "RQ":
-                    holder.tvBookingWorkingRemote.setText("Request for Desk In Progress");
+//                    holder.tvBookingWorkingRemote.setText("Request for Desk In Progress");
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("Request for Desk In Progress");
                     if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
                         SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Request for Desk");
                     }
                     break;
                 case "WFH":
-                    holder.tvBookingWorkingRemote.setText("You’re working remotely");
+//                    holder.tvBookingWorkingRemote.setText("You’re working remotely");
                     holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom()));
                     holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
 
@@ -205,7 +205,7 @@ public class UpComingBookingAdapter extends RecyclerView.Adapter<UpComingBooking
 
                     break;
                 case "WOO":
-                    holder.tvBookingWorkingRemote.setText("You're Working in alternative office");
+//                    holder.tvBookingWorkingRemote.setText("You're Working in alternative office");
 
                     /*holder.tvSubBookingWorkingRemote.setText(""
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom())
@@ -221,7 +221,7 @@ public class UpComingBookingAdapter extends RecyclerView.Adapter<UpComingBooking
                     }*/
                     break;
                 case "TR":
-                    holder.tvBookingWorkingRemote.setText("You're in training");
+//                    holder.tvBookingWorkingRemote.setText("You're in training");
                     holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom()));
                     holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
 
@@ -236,7 +236,7 @@ public class UpComingBookingAdapter extends RecyclerView.Adapter<UpComingBooking
                     }*/
                     break;
                 case "OO":
-                    holder.tvBookingWorkingRemote.setText("Out of office");
+//                    holder.tvBookingWorkingRemote.setText("Out of office");
                     holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom()));
                     holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
 
@@ -250,7 +250,7 @@ public class UpComingBookingAdapter extends RecyclerView.Adapter<UpComingBooking
                     }*/
                     break;
                 case "SL":
-                    holder.tvBookingWorkingRemote.setText("You're on Sick Leave");
+//                    holder.tvBookingWorkingRemote.setText("You're on Sick Leave");
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("You're on Sick Leave");
                     if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
                         SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Sick Leave");

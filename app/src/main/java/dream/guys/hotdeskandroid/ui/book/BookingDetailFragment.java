@@ -2,6 +2,7 @@ package dream.guys.hotdeskandroid.ui.book;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -25,11 +26,19 @@ import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
+import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.databinding.FragmentBookingDetailBinding;
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
+import dream.guys.hotdeskandroid.model.response.IncomingRequestResponse;
+import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
+import dream.guys.hotdeskandroid.ui.notify.NotificationCenterActivity;
+import dream.guys.hotdeskandroid.ui.notify.UserNotificationActivity;
+import dream.guys.hotdeskandroid.ui.settings.SettingsActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ProgressDialog;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
@@ -88,6 +97,10 @@ public class BookingDetailFragment extends Fragment {
     String action, bookName, bookAdddress, bookChecInTime, bookCheckOutTime, date;
     int teamId, deskId, teamMembershipId, calendarId;
 
+    //New...
+    UserDetailsResponse profileData;
+    ArrayList<IncomingRequestResponse.Result> notiList;
+
 
     View view;
 
@@ -105,7 +118,7 @@ public class BookingDetailFragment extends Fragment {
         dialog = new Dialog(getContext());
         fragmentBookingDetailBinding.bookDetailUserName.setText(
                 SessionHandler.getInstance().get(getContext(), AppConstants.USERNAME));
-
+        fragmentBookingDetailBinding.teamName.setText(SessionHandler.getInstance().get(getContext(), AppConstants.CURRENT_TEAM));
         if (SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS) != null && SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked in")) {
             userCurrentStatus.setText("Checked In");
         } else if (SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS) != null && SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked out")) {
@@ -133,13 +146,65 @@ public class BookingDetailFragment extends Fragment {
                 navController.navigate(R.id.navigation_home);
             }
         });
-        fragmentBookingDetailBinding.tvChangeSchedule.setOnClickListener(new View.OnClickListener() {
+        fragmentBookingDetailBinding.tvSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NavController navController = Navigation.findNavController(view);
-                navController.navigate(R.id.action_change_schedule);
+                navController.navigate(R.id.navigation_home);
             }
         });
+        fragmentBookingDetailBinding.settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
+        fragmentBookingDetailBinding.search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).showSearch();
+            }
+        });
+        fragmentBookingDetailBinding.bookDetailNotificationIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (profileData != null) {
+
+                    Intent intent;
+                    if (profileData.getHighestRole().equalsIgnoreCase(AppConstants.Administrator)
+                            || profileData.getHighestRole().equalsIgnoreCase(AppConstants.FacilityManager)
+                            || profileData.getHighestRole().equalsIgnoreCase(AppConstants.TeamManager)
+                            || profileData.getHighestRole().equalsIgnoreCase(AppConstants.Manager)
+                            || profileData.getHighestRole().equalsIgnoreCase(AppConstants.MeetingManager)) {
+                        intent = new Intent(getActivity(), NotificationCenterActivity.class);
+                    } else {
+                        intent = new Intent(getActivity(), UserNotificationActivity.class);
+                    }
+                    intent.putExtra(AppConstants.SHOWNOTIFICATION, notiList);
+                    startActivity(intent);
+
+                } else {
+                    Intent intent = new Intent(getActivity(), UserNotificationActivity.class);
+                    intent.putExtra(AppConstants.SHOWNOTIFICATION, notiList);
+                    startActivity(intent);
+                }
+
+            }
+        });
+
+        if (SessionHandler.getInstance().get(getActivity(), AppConstants.ROLE) != null &&
+                SessionHandler.getInstance().get(getActivity(), AppConstants.ROLE).equalsIgnoreCase(AppConstants.Administrator)
+                || SessionHandler.getInstance().get(getActivity(), AppConstants.ROLE).equalsIgnoreCase(AppConstants.FacilityManager)
+                || SessionHandler.getInstance().get(getActivity(), AppConstants.ROLE).equalsIgnoreCase(AppConstants.TeamManager)
+                || SessionHandler.getInstance().get(getActivity(), AppConstants.ROLE).equalsIgnoreCase(AppConstants.Manager)
+                || SessionHandler.getInstance().get(getActivity(), AppConstants.ROLE).equalsIgnoreCase(AppConstants.MeetingManager)) {
+            loadNotification();
+        } else {
+            callOutGoingNotification();
+        }
+
+
         Bundle bundle = getArguments();
         if (bundle != null) {
             action = bundle.getString("ACTION", null);
@@ -332,6 +397,99 @@ public class BookingDetailFragment extends Fragment {
 
         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CODE);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //binding.homeUserName.setText(SessionHandler.getInstance().get(getContext(),AppConstants.USERNAME));
+        profileData = Utils.getLoginData(getActivity());
+
+    }
+
+    private void loadNotification() {
+        if (Utils.isNetworkAvailable(getActivity())) {
+
+//            dialog= ProgressDialog.showProgressBar(getContext());
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<IncomingRequestResponse> call = apiService.getIncomingRequest(true);
+            call.enqueue(new Callback<IncomingRequestResponse>() {
+                @Override
+                public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {
+                    try {
+                        if (response.code() == 200) {
+                            notiList = new ArrayList<>();
+                            if (response.body() != null && response.body().getResults() != null) {
+                                notiList.addAll(response.body().getResults());
+                                loo:
+                                for (int i = 0; i < notiList.size(); i++) {
+                                    if (notiList.get(i).getStatus() == 0) {
+                                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.SHOWNOTIFICATION, true);
+                                        notiIcon.setVisibility(View.VISIBLE);
+                                        break loo;
+                                    }
+                                    SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.SHOWNOTIFICATION, false);
+                                }
+                            }
+                        } else if (response.code() == 401) {
+                            Utils.showCustomTokenExpiredDialog(getActivity(), "Token Expired");
+                            SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK, false);
+//                        Utils.finishAllActivity(getContext());
+                        }
+                    } catch (Exception e){
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<IncomingRequestResponse> call, Throwable t) {
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
+    }
+
+    private void callOutGoingNotification() {
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<IncomingRequestResponse> call = apiService.getOutgoingRequest(true);
+        call.enqueue(new Callback<IncomingRequestResponse>() {
+            @Override
+            public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {
+                try {
+                    if (response.code() == 200) {
+
+                        notiList = new ArrayList<>();
+                        if (response.body() != null && response.body().getResults() != null) {
+
+                            notiList.addAll(response.body().getResults());
+                            loo:
+                            for (int i = 0; i < notiList.size(); i++) {
+                                if (notiList.get(i).getStatus() == 0) {
+                                    SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.SHOWNOTIFICATION, true);
+                                    notiIcon.setVisibility(View.VISIBLE);
+                                    break loo;
+                                }
+                                SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.SHOWNOTIFICATION, false);
+                            }
+
+                        } else {
+                        }
+                    }
+                } catch (Exception e){
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<IncomingRequestResponse> call, Throwable t) {
+
+            }
+        });
     }
 
 }

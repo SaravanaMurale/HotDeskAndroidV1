@@ -1254,7 +1254,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
 //        System.out.println("tets vals : bj"+list.get(0).getDeskAvailability());
 //        System.out.println("tets vals : bj"+list.get(1).getDeskAvailability());
-        teamsFloorListAdapter = new TeamsFloorListAdapter(getActivity(), list, this, this, this);
+        teamsFloorListAdapter = new TeamsFloorListAdapter(getActivity(),
+                list, this, this, this);
         binding.recyclerView.setAdapter(teamsFloorListAdapter);
 
     }

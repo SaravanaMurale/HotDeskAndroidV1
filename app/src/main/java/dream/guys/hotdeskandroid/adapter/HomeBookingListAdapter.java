@@ -333,8 +333,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
 
                     Glide.with(context)
-                            .load(R.drawable.chair)
-                            .placeholder(R.drawable.chair)
+                            .load(R.drawable.ic_home_notification_bell)
+                            .placeholder(R.drawable.ic_home_notification_bell)
                             .into(holder.bookingRemoteHome);
 
 //                    holder.tv_change.setVisibility(View.GONE);
@@ -626,8 +626,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     +Utils.splitTime(list.get(position).getCarParkBookingsModel().getMyto()));
 
             Glide.with(context)
-                    .load(R.drawable.car)
-                    .placeholder(R.drawable.car)
+                    .load(R.drawable.ic_home_notification_bell)
+                    .placeholder(R.drawable.ic_home_notification_bell)
                     .into(holder.bookingRemoteHome);
         } else {
             holder.tv_change.setVisibility(View.GONE);

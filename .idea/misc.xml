@@ -23,10 +23,12 @@
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_main.xml" value="0.3" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_notifications_list.xml" value="0.3" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_settings.xml" value="0.25" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_show_profile.xml" value="0.3" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_signin.xml" value="0.3" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/activity_up_coming_booking.xml" value="0.3" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/adapter_notify_center.xml" value="0.3" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/adapter_old_req_list.xml" value="0.3" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/adapter_upcoming_booking.xml" value="0.3" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/assert_list.xml" value="0.4662698412698413" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/booking_list_recycler_layout.xml" value="0.33" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/cal_month_item.xml" value="0.5" />
@@ -46,6 +48,7 @@
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_locate_booked_bottomsheet.xml" value="0.3" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_locate_checkin_bottomsheet.xml" value="0.3" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_locate_edit_booking_bottomsheet.xml" value="0.25" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_locate_unavalible_bottomsheet.xml" value="0.3" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/floor_layout_recycler.xml" value="0.3" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/fragment_book.xml" value="0.33" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/fragment_booking_detail.xml" value="0.3" />
