@@ -31,7 +31,6 @@ import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.util.Base64;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -387,6 +386,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     List<Integer> yArrayList=new ArrayList<>();
     //New...
     ImageView img_bsCountry,img_bsState,img_bsStreet;
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
