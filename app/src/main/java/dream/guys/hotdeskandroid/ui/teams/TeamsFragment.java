@@ -1195,11 +1195,11 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 //        System.out.println("check cala"+horizontalCalendar.getSelectedDate().getTime());
 
-            String toDate = Utils.getYearMonthDateFormat(horizontalCalendar.getSelectedDate().getTime())
+            String toDate = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(selectedDate))
                     + "T00:00:00Z";
-            String fromTime = Utils.getYearMonthDateFormat(horizontalCalendar.getSelectedDate().getTime())
-                    + "T" + Utils.getCurrentTime() + ":00Z";
-            String toTime = Utils.getYearMonthDateFormat(horizontalCalendar.getSelectedDate().getTime())
+            String fromTime = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(selectedDate))
+                    + "T" + "08:00" + ":00Z";
+            String toTime = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(selectedDate))
                     + "T23:59:00Z";
 
             int parentId = floorListModelArrayList.get(i).getFloorId();

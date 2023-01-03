@@ -1872,7 +1872,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         //relativeLayout.width = ;
         //relativeLayout.height = 100;
-        roormTitle.setTextSize(fontSize-10);
+        if(fontSize == 12)
+            fontSize = fontSize - 6;
+        else if(fontSize >= 15)
+            fontSize = fontSize - 15;
+        roormTitle.setTextSize(fontSize);
+
         roormTitle.setText(title);
         roormTitle.setLayoutParams(relativeLayout);
         binding.firstLayout.addView(roomTitleView);

@@ -387,7 +387,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             .into(holder.bookingRemoteHome);
                     break;
                 case "TR":
-                    holder.tvBookingWorkingRemote.setText("You're in training");
+                    holder.tvBookingWorkingRemote.setText("You're training");
                    /* holder.tvSubBookingWorkingRemote.setText(""
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom())
                             +" - "
@@ -399,7 +399,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     holder.endTime.setText(""
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
 
-                    list.get(position).getCalendarEntriesModel().setUsageTypeName("You're in training");
+                    list.get(position).getCalendarEntriesModel().setUsageTypeName("You're training");
                     if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
                         SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Training");
                     }
