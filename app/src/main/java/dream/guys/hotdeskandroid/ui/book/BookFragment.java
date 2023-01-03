@@ -1522,6 +1522,7 @@ public class BookFragment extends Fragment implements
                                     }
                                 }
                             }
+
                             boolean checkIsRequest=false;
                             if (parkingSpotModelList!=null && parkingSpotModelList.size()>0){
                                 loo :
@@ -1537,7 +1538,8 @@ public class BookFragment extends Fragment implements
 
                             if (parkingSpotModelList.size() > 0) {
                                 if (newEdit.equalsIgnoreCase("new"))
-                                    if (parkingSpotModelList!=null && parkingSpotModelList.size()>0 && parkingSpotModelList.get(0).getParkingSlotAvailability()==2)
+                                    if (parkingSpotModelList!=null && parkingSpotModelList.size()>0
+                                            && parkingSpotModelList.get(0).getParkingSlotAvailability()==2)
                                         editBookingUsingBottomSheet(editBookingDetails,3,0,"request");
                                     else
                                         editBookingUsingBottomSheet(editBookingDetails,3,0,"request");

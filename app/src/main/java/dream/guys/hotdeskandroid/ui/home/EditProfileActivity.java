@@ -1165,13 +1165,18 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 //        Toast.makeText(EditProfileActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
         //please add this for calendar default locations #Bala
-        SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.LOCATION_ID, locationID);
-        SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.PARENT_ID_CHECK, floorParentID);
-        SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.FLOOR_POSITION_CHECK, floorPositon);
+        if(locationID > 0)
+            SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.LOCATION_ID, locationID);
+        if (floorParentID > 0)
+            SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.PARENT_ID_CHECK, floorParentID);
+        if (floorPositon > 0)
+            SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.FLOOR_POSITION_CHECK, floorPositon);
 
         //New...
-        SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.PARENT_ID, floorParentID);
-        SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.FLOOR_POSITION, floorPositon);
+        if (floorParentID > 0)
+            SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.PARENT_ID, floorParentID);
+        if (floorPositon > 0)
+            SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.FLOOR_POSITION, floorPositon);
 
         Log.d("floorParentID", String.valueOf(floorParentID));
         Log.d("floorPositon", String.valueOf(floorPositon));

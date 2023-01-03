@@ -1084,7 +1084,7 @@ public class Utils {
         startTime = startTime.replace(":", ".");
         endTime = endTime.replace(":", ".");
 
-        System.out.println(startTime + " balas " + endTime);
+        System.out.println(startTime + " compareTimeIfCheckInEnable " + endTime);
         if (Double.parseDouble(startTime) >= Double.parseDouble(endTime))
             return true;
         else

@@ -299,7 +299,15 @@ public class BookDeskController implements
                 if (bookingForEditResponse.getBookings().size() > 0){
                     editBookingDetailsGlobal.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
                             .getMyto()));
-                    editBookingDetailsGlobal.setEditEndTime("23:59");
+                    if (Utils.compareTimeIfCheckInEnable(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()),
+                            Utils.splitTime(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
+                            .getMyto())
+                            )){
+                        editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
+
+                    } else {
+                        editBookingDetailsGlobal.setEditEndTime("23:59");
+                    }
 //                    editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
 //                            .getMyto(),2)));
                 } else {
@@ -373,7 +381,16 @@ public class BookDeskController implements
 
             editBookingDetailsGlobal.setEditStartTTime(Utils.splitTime(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
                     .getMyto()));
-            editBookingDetailsGlobal.setEditEndTime("23:59");
+
+            if (Utils.compareTimeIfCheckInEnable(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()),
+                    Utils.splitTime(bookingForEditResponse.getBookings().get(bookingForEditResponse.getBookings().size()-1)
+                            .getMyto())
+                    )){
+                editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
+            } else {
+                editBookingDetailsGlobal.setEditEndTime("23:59");
+            }
+//            editBookingDetailsGlobal.setEditEndTime("23:59");
 //            editBookingDetailsGlobal.setEditEndTime(Utils.splitTime(
 //                    Utils.addingHoursToDate(bookingForEditResponse.getBookings().get(
 //                            bookingForEditResponse.getBookings().size()-1)
@@ -1880,6 +1897,7 @@ public class BookDeskController implements
         sheetDate= deskListBottomSheet.findViewById(R.id.sheet_date);
         sheetTime= deskListBottomSheet.findViewById(R.id.sheet_time);
         tvTeamName= deskListBottomSheet.findViewById(R.id.tv_team_name);
+        TextView tvLocationAddress= deskListBottomSheet.findViewById(R.id.tv_location_address);
         bsRepeatBack=deskListBottomSheet.findViewById(R.id.bsDeskBack);
 
         linearLayoutManager = new LinearLayoutManager(activityContext, LinearLayoutManager.VERTICAL, false);
@@ -1895,7 +1913,20 @@ public class BookDeskController implements
 
         }else {
             selectDesk.setText("Book a workspace");
-            tvTeamName.setText(selectedTeamName);
+            if (selectedTeamId == SessionHandler.getInstance().getInt(context,AppConstants.TEAM_ID)){
+                tvTeamName.setText(selectedTeamName+" (default)");
+            } else {
+                tvTeamName.setText(selectedTeamName);
+            }
+            if (editBookingDetails.getLocationAddress()!=null
+                    && !editBookingDetails.getLocationAddress().equalsIgnoreCase("")
+                    && !editBookingDetails.getLocationAddress().isEmpty()){
+                tvLocationAddress.setVisibility(View.VISIBLE);
+                tvLocationAddress.setText(editBookingDetails.getLocationAddress());
+            } else {
+                tvLocationAddress.setVisibility(View.GONE);
+            }
+            tvLocationAddress.setText(editBookingDetails.getLocationAddress());
             if (newEditStatus.equalsIgnoreCase("edit")){
                 if (editBookingDetails.getUsageTypeId()==2){
                     tvTeamName.setTextColor(context.getResources().getColor(R.color.figmaGrey));
