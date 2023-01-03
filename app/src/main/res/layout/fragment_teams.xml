@@ -48,12 +48,13 @@
             android:visibility="gone" />
 
     </RelativeLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/horizontal_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/hdr_layout"
-        />
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_below="@+id/hdr_layout" />
 
     <devs.mulham.horizontalcalendar.HorizontalCalendarView
         android:id="@+id/calendarView"
@@ -230,6 +231,33 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewRemote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/lightGrey"
+                android:paddingStart="@dimen/_12sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_12sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:visibility="invisible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <TextView
+                android:id="@+id/tvWorkTraining"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:layout_toStartOf="@+id/tv_exapnd"
+                android:text="Training"
+                android:textColor="@color/figmaBlack"
+                android:textSize="@dimen/_14sdp"
+                android:theme="@style/TextRegular"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewTraining"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/lightGrey"

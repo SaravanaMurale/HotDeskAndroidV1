@@ -78,12 +78,13 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     ArrayList<DAOTeamMember> teamMembersList = new ArrayList<>();
     ArrayList<DAOTeamMember> teamMembersInOfficeList = new ArrayList<>();
     ArrayList<DAOTeamMember> teamMembersRemoteList = new ArrayList<>();
+    ArrayList<DAOTeamMember> teamMembersTrainingList = new ArrayList<>();
     ArrayList<DAOTeamMember> teamMembersUnknownList = new ArrayList<>();
     ArrayList<DAOTeamMember> teamMembersHolidayList = new ArrayList<>();
     ArrayList<DAOTeamMember> teamMembersOutOfOffice = new ArrayList<>();
     ArrayList<DAOTeamMember> copyTeamMembersList = new ArrayList<>();
     ArrayList<TeamsContactsAdapter> dynamicAdapters = new ArrayList<>();
-    TeamsContactsAdapter teamsContactsAdapter, teamsContactsRemoteAdapter, teamsContactsHolidaysAdapter,
+    TeamsContactsAdapter teamsContactsAdapter, teamsContactsRemoteAdapter,teamsContactsTrainingAdapter, teamsContactsHolidaysAdapter,
             teamsContactsOutOfOfficeAdapter, teamsContactsUnknownAdapter;
     TeamsAdapter teamsAdapter;
     TeamsFloorListAdapter teamsFloorListAdapter;
@@ -91,7 +92,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     List<GlobalSearchResponse.Results> list = new ArrayList<>();
     SearchRecyclerAdapter searchRecyclerAdapter;
     LinearLayoutManager linearLayoutManager, contactUnknownLinearLayout, contactLinearLayout,
-            contactHolidayLinearLayout, contactOutOfOfficeLinearLayout, contactRemoteLinearLayout;
+            contactHolidayLinearLayout, contactOutOfOfficeLinearLayout, contactRemoteLinearLayout, contactTrainingLinearLayout;
 
     public HashMap<Integer, Boolean> firewardenList;
     public HashMap<Integer, Boolean> firstAidList;
@@ -210,6 +211,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+                if (teamsContactsTrainingAdapter != null)
+                    teamsContactsTrainingAdapter.getFilter().filter(s.toString());
                 if (teamsContactsRemoteAdapter != null)
                     teamsContactsRemoteAdapter.getFilter().filter(s.toString());
                 if (teamsContactsHolidaysAdapter != null)
@@ -287,8 +290,6 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         DateFormat monthFormat = new SimpleDateFormat("MMMM");
         DateFormat dateFormat = new SimpleDateFormat("dd");
         Calendar calendar = Calendar.getInstance();
-        calendar.setFirstDayOfWeek(Calendar.MONDAY);
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
         String day="";
         String date="";
@@ -460,6 +461,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                             binding.expandRecyclerView.setVisibility(View.GONE);
                             teamMembersUnknownList.clear();
                             teamMembersRemoteList.clear();
+                            teamMembersTrainingList.clear();
                             teamMembersHolidayList.clear();
                             teamMembersOutOfOffice.clear();
                             teamMembersInOfficeList.clear();
@@ -496,8 +498,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                                             case "OO":
                                                 teamMembersOutOfOffice.add(teamMembersList.get(i));
                                                 break;
-                                            case "WOO":
-//                                                teamMembersRemoteList.add(teamMembersList.get(i));
+                                            case "TR":
+                                                teamMembersTrainingList.add(teamMembersList.get(i));
                                                 break;
                                             case "SL":
                                                 teamMembersHolidayList.add(teamMembersList.get(i));
@@ -631,6 +633,13 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     }
 
     private void setValueToAdapter(ArrayList<DAOTeamMember> teamMembersList) {
+        if (teamMembersTrainingList.size() > 0) {
+            binding.tvWorkTraining.setVisibility(View.VISIBLE);
+            binding.recyclerViewTraining.setVisibility(View.VISIBLE);
+        } else {
+            binding.tvWorkTraining.setVisibility(View.GONE);
+            binding.recyclerViewTraining.setVisibility(View.GONE);
+        }
         if (teamMembersRemoteList.size() > 0) {
             binding.tvWorkRemote.setVisibility(View.VISIBLE);
             binding.recyclerViewRemote.setVisibility(View.VISIBLE);
@@ -638,6 +647,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             binding.tvWorkRemote.setVisibility(View.GONE);
             binding.recyclerViewRemote.setVisibility(View.GONE);
         }
+
         if (teamMembersUnknownList.size() > 0) {
             binding.tvUnknown.setVisibility(View.VISIBLE);
             binding.recyclerViewUnkown.setVisibility(View.VISIBLE);
@@ -687,6 +697,15 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
 //        teamsContactsAdapter = new TeamsContactsAdapter(getActivity(),teamMembersInOfficeList,this);
 //        binding.recyclerView.setAdapter(teamsContactsAdapter);
+
+        if (expandStatus)
+            binding.recyclerViewTraining.setLayoutManager(new LinearLayoutManager(getActivity(),
+                    LinearLayoutManager.VERTICAL, false));
+        else
+            binding.recyclerViewTraining.setLayoutManager(new LinearLayoutManager(getActivity(),
+                    LinearLayoutManager.HORIZONTAL, false));
+        teamsContactsTrainingAdapter = new TeamsContactsAdapter(getActivity(), teamMembersTrainingList, this, this);
+        binding.recyclerViewTraining.setAdapter(teamsContactsTrainingAdapter);
 
         if (expandStatus)
             binding.recyclerViewRemote.setLayoutManager(new LinearLayoutManager(getActivity(),
@@ -851,6 +870,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                 LinearLayoutManager.VERTICAL, false);
         contactUnknownLinearLayout = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.HORIZONTAL, false);
+        contactTrainingLinearLayout = new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.HORIZONTAL, false);
         contactRemoteLinearLayout = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.HORIZONTAL, false);
         contactOutOfOfficeLinearLayout = new LinearLayoutManager(getActivity(),
@@ -858,16 +879,19 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         contactHolidayLinearLayout = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.HORIZONTAL, false);
         binding.recyclerView.setLayoutManager(contactLinearLayout);
+        binding.recyclerViewTraining.setLayoutManager(contactTrainingLinearLayout);
         binding.recyclerViewRemote.setLayoutManager(contactRemoteLinearLayout);
         binding.recyclerViewOutOfOffice.setLayoutManager(contactOutOfOfficeLinearLayout);
         binding.recyclerViewHoliday.setLayoutManager(contactHolidayLinearLayout);
         binding.recyclerViewUnkown.setLayoutManager(contactUnknownLinearLayout);
 //        binding.recyclerView.addItemDecoration(new OverlapDecoration());
+        binding.recyclerViewTraining.addItemDecoration(new OverlapDecoration());
         binding.recyclerViewRemote.addItemDecoration(new OverlapDecoration());
         binding.recyclerViewOutOfOffice.addItemDecoration(new OverlapDecoration());
         binding.recyclerViewHoliday.addItemDecoration(new OverlapDecoration());
         binding.recyclerViewUnkown.addItemDecoration(new OverlapDecoration());
         binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerViewTraining.setHasFixedSize(true);
         binding.recyclerViewRemote.setHasFixedSize(true);
         binding.recyclerViewOutOfOffice.setHasFixedSize(true);
         binding.recyclerViewHoliday.setHasFixedSize(true);
@@ -875,6 +899,9 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
 //        teamsContactsAdapter = new TeamsContactsAdapter(getActivity(),teamMembersInOfficeList, this);
 //        binding.recyclerView.setAdapter(teamsContactsAdapter);
+
+        teamsContactsTrainingAdapter = new TeamsContactsAdapter(getActivity(), teamMembersTrainingList, this, this);
+        binding.recyclerViewTraining.setAdapter(teamsContactsTrainingAdapter);
 
         teamsContactsRemoteAdapter = new TeamsContactsAdapter(getActivity(), teamMembersRemoteList, this, this);
         binding.recyclerViewRemote.setAdapter(teamsContactsRemoteAdapter);

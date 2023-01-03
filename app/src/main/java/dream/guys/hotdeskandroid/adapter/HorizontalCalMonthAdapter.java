@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -87,7 +88,7 @@ public class HorizontalCalMonthAdapter extends RecyclerView.Adapter<HorizontalCa
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.top_layout)
-        RelativeLayout dateLayout;
+        LinearLayout dateLayout;
         @BindView(R.id.month)
         TextView month;
         @BindView(R.id.day)
