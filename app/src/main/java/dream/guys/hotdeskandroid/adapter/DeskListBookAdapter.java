@@ -76,6 +76,13 @@ public class DeskListBookAdapter extends RecyclerView.Adapter<DeskListBookAdapte
     public void onBindViewHolder(@NonNull viewholder holder, int position) {
 //        fragment.selectedTeamId
         holder.desk_name.setText(deskList.get(position).getDeskCode());
+        if (deskRoomName.equalsIgnoreCase(deskList.get(position).getDeskCode())){
+            holder.select.setText("Selected");
+            holder.select.setTextColor(ContextCompat.getColor(context, R.color.figmaBlack));
+        } else {
+            holder.select.setText("Select");
+            holder.select.setTextColor(ContextCompat.getColor(context, R.color.figmaBlueText));
+        }
         holder.tvLocationAddress.setText(Utils.checkStringParms(deskList.get(position).getLocationDetails().getBuildingName())+
                 ", "+
                 Utils.checkStringParms(deskList.get(position).getLocationDetails().getfLoorName()));

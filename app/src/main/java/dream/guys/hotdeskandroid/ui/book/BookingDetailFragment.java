@@ -120,7 +120,7 @@ public class BookingDetailFragment extends Fragment {
         View root = fragmentBookingDetailBinding.getRoot();
 
         dialog = new Dialog(getContext());
-        fragmentBookingDetailBinding.bookDetailUserName.setText(
+        fragmentBookingDetailBinding.bookDetailUserName.setText("Hi, "+
                 SessionHandler.getInstance().get(getContext(), AppConstants.USERNAME));
         fragmentBookingDetailBinding.teamName.setText(SessionHandler.getInstance().get(getContext(), AppConstants.CURRENT_TEAM));
         if (SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS) != null && SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked in")) {
@@ -253,7 +253,7 @@ public class BookingDetailFragment extends Fragment {
 
             switch (bookName) {
                 case "RQ":
-                    fragmentBookingDetailBinding.remoteText.setText("Request for Desk In Progress");
+                    fragmentBookingDetailBinding.remoteText.setText("Request for desk");
                     Glide.with(this)
                             .load(R.drawable.building)
                             .placeholder(R.drawable.building)

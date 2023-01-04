@@ -1165,35 +1165,45 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 //        Toast.makeText(EditProfileActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
         //please add this for calendar default locations #Bala
-        SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.LOCATION_ID, locationID);
-        SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.PARENT_ID_CHECK, floorParentID);
-        SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.FLOOR_POSITION_CHECK, floorPositon);
+        if(locationID > 0)
+            SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.LOCATION_ID, locationID);
+        if (floorParentID > 0)
+            SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.PARENT_ID_CHECK, floorParentID);
+        if (floorPositon > 0)
+            SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.FLOOR_POSITION_CHECK, floorPositon);
 
         //New...
-        SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.PARENT_ID, floorParentID);
-        SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.FLOOR_POSITION, floorPositon);
+        if (floorParentID > 0)
+            SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.PARENT_ID, floorParentID);
+        if (floorPositon > 0)
+            SessionHandler.getInstance().saveInt(EditProfileActivity.this, AppConstants.FLOOR_POSITION, floorPositon);
 
         Log.d("floorParentID", String.valueOf(floorParentID));
         Log.d("floorPositon", String.valueOf(floorPositon));
 
 
         //To load Default location
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.COUNTRY_NAME_CHECK, CountryName);
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.BUILDING_CHECK, buildingName);
+        if (CountryName!=null &&!CountryName.equalsIgnoreCase("") && !CountryName.isEmpty())
+            SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.COUNTRY_NAME_CHECK, CountryName);
+        if (buildingName!=null &&!buildingName.equalsIgnoreCase("") && !buildingName.isEmpty())
+            SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.BUILDING_CHECK, buildingName);
+        if (buildingName!=null &&!buildingName.equalsIgnoreCase("") && !buildingName.isEmpty())
+            SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FLOOR_CHECK, buildingName);
+        if (finFloorName!=null &&!finFloorName.equalsIgnoreCase("") && !finFloorName.isEmpty())
+            SessionHandler.getInstance().save(EditProfileActivity.this,AppConstants.FINAL_FLOOR_CHECK,finFloorName);
+        if (fullPathLocation!=null &&!fullPathLocation.equalsIgnoreCase("") && !fullPathLocation.isEmpty())
+            SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FULLPATHLOCATION_CHECK, fullPathLocation);
 
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FLOOR_CHECK, buildingName);
-        SessionHandler.getInstance().save(EditProfileActivity.this,AppConstants.FINAL_FLOOR_CHECK,finFloorName);
-
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FULLPATHLOCATION_CHECK, fullPathLocation);
-
-
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.COUNTRY_NAME, CountryName);
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.BUILDING, buildingName);
-
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FLOOR, buildingName);
-        SessionHandler.getInstance().save(EditProfileActivity.this,AppConstants.FINAL_FLOOR,finFloorName);
-
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FULLPATHLOCATION, fullPathLocation);
+        if (CountryName!=null &&!CountryName.equalsIgnoreCase("") && !CountryName.isEmpty())
+            SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.COUNTRY_NAME, CountryName);
+        if (buildingName!=null &&!buildingName.equalsIgnoreCase("") && !buildingName.isEmpty())
+            SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.BUILDING, buildingName);
+        if (buildingName!=null &&!buildingName.equalsIgnoreCase("") && !buildingName.isEmpty())
+            SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FLOOR, buildingName);
+        if (finFloorName!=null &&!finFloorName.equalsIgnoreCase("") && !finFloorName.isEmpty())
+            SessionHandler.getInstance().save(EditProfileActivity.this,AppConstants.FINAL_FLOOR,finFloorName);
+        if (fullPathLocation!=null &&!fullPathLocation.equalsIgnoreCase("") && !fullPathLocation.isEmpty())
+            SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FULLPATHLOCATION, fullPathLocation);
 
     }
 

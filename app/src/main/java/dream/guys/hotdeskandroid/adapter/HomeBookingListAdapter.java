@@ -338,10 +338,10 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             .into(holder.bookingRemoteHome);
 
 //                    holder.tv_change.setVisibility(View.GONE);
-                    holder.tvBookingWorkingRemote.setText("Request for Desk In Progress");
-                    list.get(position).getCalendarEntriesModel().setUsageTypeName("Request for Desk In Progress");
+                    holder.tvBookingWorkingRemote.setText("Request for desk");
+                    list.get(position).getCalendarEntriesModel().setUsageTypeName("Request for desk");
                     if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
-                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Request for Desk");
+                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Request for desk");
                     }
                     break;
                 case "WFH":

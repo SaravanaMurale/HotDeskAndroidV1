@@ -247,7 +247,7 @@
         android:layout_above="@+id/centerLayoutBlock"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/_10sdp"
-        android:text="You are in the office today"
+        android:text="You're in the office today"
         android:textColor="@color/black"
         android:textSize="@dimen/_13sdp"
         android:theme="@style/TextBold" />
