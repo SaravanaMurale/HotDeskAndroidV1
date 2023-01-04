@@ -57,12 +57,16 @@ public class TeamsFloorListAdapter extends RecyclerView.Adapter<TeamsFloorListAd
         holder.floorName.setText(floorListModels.get(position).getFloorName());
         holder.tvAvailableCount.setText(floorListModels.get(position).getDeskAvailability());
 
-        if (fragment.expandStatus)
+        if (fragment.expandStatus) {
             holder.recyclerViewFloor.setLayoutManager(new LinearLayoutManager(context,
-                    LinearLayoutManager.VERTICAL,false));
-        else
+                    LinearLayoutManager.VERTICAL, false));
+            holder.tvAvailableCount.setVisibility(View.GONE);
+        }
+        else {
             holder.recyclerViewFloor.setLayoutManager(new LinearLayoutManager(context,
-                    LinearLayoutManager.HORIZONTAL,false));
+                    LinearLayoutManager.HORIZONTAL, false));
+            holder.tvAvailableCount.setVisibility(View.VISIBLE);
+        }
         holder.recyclerViewFloor.addItemDecoration(new TeamsFragment.OverlapDecoration());
         holder.recyclerViewFloor.setHasFixedSize(true);
 

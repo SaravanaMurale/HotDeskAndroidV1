@@ -1221,7 +1221,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                     if (deskAvaliabilityResponseList != null) {
                         for (int i = 0; i < deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size(); i++) {
                             if (!deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).isBookedByElse()
-                                    && !deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).isBookedByUser()) {
+                                    || !deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).isBookedByUser()) {
                                 teamAvailableCount++;
                             }
                         }
