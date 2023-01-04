@@ -58,6 +58,7 @@ public class BookingListResponse {
         private ArrayList<CalendarEntry> calendarEntries;
         private ArrayList<MeetingBooking> meetingBookings;
         private ArrayList<CarParkBooking> carParkBookings;
+        private CalendarEntry calendarEntry;
         private CalendarEntry calendarEntriesModel;
         private MeetingBooking meetingBookingsModel;
         private CarParkBooking carParkBookingsModel;
@@ -65,6 +66,14 @@ public class BookingListResponse {
 
         public LocationBuildingFloor getLocationBuildingFloor() {
             return locationBuildingFloor;
+        }
+
+        public CalendarEntry getCalendarEntry() {
+            return calendarEntry;
+        }
+
+        public void setCalendarEntry(CalendarEntry calendarEntry) {
+            this.calendarEntry = calendarEntry;
         }
 
         public void setLocationBuildingFloor(LocationBuildingFloor locationBuildingFloor) {

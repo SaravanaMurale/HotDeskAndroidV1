@@ -202,6 +202,8 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
 
+        currentBookings();
+/*
         if (SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS) != null
                 && SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked in")) {
             userCurrentStatus.setText("Checked In");
@@ -214,14 +216,14 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             userStatus.setVisibility(View.GONE);
             userCurrentStatus.setVisibility(View.GONE);
 
-            /*if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null){
+            *//*if (SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS)!=null){
                 userCurrentStatus.setText(SessionHandler.getInstance().get(getActivity(),AppConstants.USER_CURRENT_STATUS));
                 userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
             }else {
                 userCurrentStatus.setText("In Office");
                 userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaBlueText), android.graphics.PorterDuff.Mode.MULTIPLY);
-            }*/
-        }
+            }*//*
+        }*/
 
         binding.searchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -773,9 +775,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     BookingListResponse.DayGroup.CalendarEntry.Booking.Status calendarEntry = recyclerModelArrayList.get(pos).getCalendarEntriesModel().getBooking().getStatus();
                     calendarEntry.setId(1);
                     homeBookingListAdapter.notifyItemChanged(pos);
-                    SessionHandler.getInstance().save(getActivity(), AppConstants.USER_CURRENT_STATUS, "Checked Out");
-                    userCurrentStatus.setText("Checked Out");
-                    userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
+//                    SessionHandler.getInstance().save(getActivity(), AppConstants.USER_CURRENT_STATUS, "Checked Out");
+//                    userCurrentStatus.setText("Checked Out");
+                    currentBookings();
+//                    userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
 
                     openCheckoutDialog("Check-out successful");
                 }
@@ -2190,22 +2193,53 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     public void currentBookings() {
         if (Utils.isNetworkAvailable(getContext())) {
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<BookingListResponse.DayGroup.CalendarEntry> call = apiService.getCurrentBookingStatus();
-            call.enqueue(new Callback<BookingListResponse.DayGroup.CalendarEntry>() {
+            Call<BookingListResponse.DayGroup> call = apiService.getCurrentBookingStatus();
+            call.enqueue(new Callback<BookingListResponse.DayGroup>() {
                 @Override
-                public void onResponse(Call<BookingListResponse.DayGroup.CalendarEntry> call, Response<BookingListResponse.DayGroup.CalendarEntry> response) {
-                    if (response.code() == 200) {
-                        BookingListResponse.DayGroup.CalendarEntry calendarEntry = response.body();
-                        userCurrentStatus.setText("");
-                    } else if (response.code() == 403) {
+                public void onResponse(Call<BookingListResponse.DayGroup> call, Response<BookingListResponse.DayGroup> response) {
+                    try {
+                        if (response.code() == 200) {
+                            BookingListResponse.DayGroup.CalendarEntry calendarEntry = response.body().getCalendarEntry();
+                            SessionHandler.getInstance().save(getContext(),AppConstants.USER_CURRENT_STATUS,calendarEntry.getBooking().getStatus().getName());
+                            if (calendarEntry.getBooking().getStatus().getName().equalsIgnoreCase("Checked In")){
+                                userStatus.setVisibility(View.VISIBLE);
+                                userCurrentStatus.setVisibility(View.VISIBLE);
+                                userCurrentStatus.setText(""+calendarEntry.getBooking().getStatus().getName());
+                                userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.teal_200),
+                                        android.graphics.PorterDuff.Mode.MULTIPLY);
+                            }else if (calendarEntry.getBooking().getStatus().getName().equalsIgnoreCase("Checked out")){
+                                userStatus.setVisibility(View.VISIBLE);
+                                userCurrentStatus.setVisibility(View.VISIBLE);
+                                userCurrentStatus.setText("Checked Out");
+                                userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
+                            } else {
+                                userStatus.setVisibility(View.VISIBLE);
+                                userCurrentStatus.setVisibility(View.VISIBLE);
+
+                                userCurrentStatus.setText(""+calendarEntry.getBooking().getStatus().getName());
+                                userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaBlueText), android.graphics.PorterDuff.Mode.MULTIPLY);
+                            }
+
+                        } else if (response.code() == 403) {
+                            userStatus.setVisibility(View.GONE);
+                            userCurrentStatus.setVisibility(View.GONE);
 //                        teamsCheckBoxStatus = false;
-                    } else {
+                        } else {
+
+                            userStatus.setVisibility(View.GONE);
+                            userCurrentStatus.setVisibility(View.GONE);
 //                        teamsCheckBoxStatus = false;
+                        }
+                    }catch (Exception e){
+
                     }
                 }
 
                 @Override
-                public void onFailure(Call<BookingListResponse.DayGroup.CalendarEntry> call, Throwable t) {
+                public void onFailure(Call<BookingListResponse.DayGroup> call, Throwable t) {
+
+                    userStatus.setVisibility(View.GONE);
+                    userCurrentStatus.setVisibility(View.GONE);
                 }
             });
 

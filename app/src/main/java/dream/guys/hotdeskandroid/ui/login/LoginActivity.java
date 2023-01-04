@@ -659,7 +659,8 @@ public class LoginActivity extends AppCompatActivity {
                             SessionHandler.getInstance().saveBoolean(LoginActivity.this, AppConstants.USER_DETAILS_SAVED_STATUS, true);
                             SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.TEAMMEMBERSHIP_ID, Utils.checkStringParms(userDetailsResponse.getTeamMembershipId()));
 
-                            SessionHandler.getInstance().saveBoolean(LoginActivity.this, AppConstants.PIN_SETUP_DONE, userDetailsResponse.isHasPinSetup());
+                            SessionHandler.getInstance().saveBoolean(LoginActivity.this, AppConstants.PIN_SETUP_DONE,
+                                    userDetailsResponse.isHasPinSetup());
 
                             if(userDetailsResponse.isHasPinSetup()){
                                 SessionHandler.getInstance().saveBoolean(LoginActivity.this,AppConstants.PIN_ACTIVE_STATUS_AFTER_LOGOUT,true);

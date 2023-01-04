@@ -1183,22 +1183,27 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
 
 
         //To load Default location
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.COUNTRY_NAME_CHECK, CountryName);
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.BUILDING_CHECK, buildingName);
+        if (CountryName!=null &&!CountryName.equalsIgnoreCase("") && !CountryName.isEmpty())
+            SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.COUNTRY_NAME_CHECK, CountryName);
+        if (buildingName!=null &&!buildingName.equalsIgnoreCase("") && !buildingName.isEmpty())
+            SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.BUILDING_CHECK, buildingName);
+        if (buildingName!=null &&!buildingName.equalsIgnoreCase("") && !buildingName.isEmpty())
+            SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FLOOR_CHECK, buildingName);
+        if (finFloorName!=null &&!finFloorName.equalsIgnoreCase("") && !finFloorName.isEmpty())
+            SessionHandler.getInstance().save(EditProfileActivity.this,AppConstants.FINAL_FLOOR_CHECK,finFloorName);
+        if (fullPathLocation!=null &&!fullPathLocation.equalsIgnoreCase("") && !fullPathLocation.isEmpty())
+            SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FULLPATHLOCATION_CHECK, fullPathLocation);
 
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FLOOR_CHECK, buildingName);
-        SessionHandler.getInstance().save(EditProfileActivity.this,AppConstants.FINAL_FLOOR_CHECK,finFloorName);
-
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FULLPATHLOCATION_CHECK, fullPathLocation);
-
-
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.COUNTRY_NAME, CountryName);
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.BUILDING, buildingName);
-
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FLOOR, buildingName);
-        SessionHandler.getInstance().save(EditProfileActivity.this,AppConstants.FINAL_FLOOR,finFloorName);
-
-        SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FULLPATHLOCATION, fullPathLocation);
+        if (CountryName!=null &&!CountryName.equalsIgnoreCase("") && !CountryName.isEmpty())
+            SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.COUNTRY_NAME, CountryName);
+        if (buildingName!=null &&!buildingName.equalsIgnoreCase("") && !buildingName.isEmpty())
+            SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.BUILDING, buildingName);
+        if (buildingName!=null &&!buildingName.equalsIgnoreCase("") && !buildingName.isEmpty())
+            SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FLOOR, buildingName);
+        if (finFloorName!=null &&!finFloorName.equalsIgnoreCase("") && !finFloorName.isEmpty())
+            SessionHandler.getInstance().save(EditProfileActivity.this,AppConstants.FINAL_FLOOR,finFloorName);
+        if (fullPathLocation!=null &&!fullPathLocation.equalsIgnoreCase("") && !fullPathLocation.isEmpty())
+            SessionHandler.getInstance().save(EditProfileActivity.this, AppConstants.FULLPATHLOCATION, fullPathLocation);
 
     }
 

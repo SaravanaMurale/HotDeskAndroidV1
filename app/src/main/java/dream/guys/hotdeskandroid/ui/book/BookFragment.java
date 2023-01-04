@@ -1143,7 +1143,8 @@ public class BookFragment extends Fragment implements
             }
             call.enqueue(new Callback<List<DeskRoomCountResponse>>() {
                 @Override
-                public void onResponse(Call<List<DeskRoomCountResponse>> call, Response<List<DeskRoomCountResponse>> response) {
+                public void onResponse(Call<List<DeskRoomCountResponse>> call,
+                                       Response<List<DeskRoomCountResponse>> response) {
                     dialog.dismiss();
                     try {
 
