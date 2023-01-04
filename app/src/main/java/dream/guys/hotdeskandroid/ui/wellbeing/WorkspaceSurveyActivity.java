@@ -4,7 +4,9 @@ import static dream.guys.hotdeskandroid.utils.Utils.getAppKeysPageScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getGlobalScreenData;
 import static dream.guys.hotdeskandroid.utils.Utils.getWellBeingScreenData;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
@@ -18,16 +20,24 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.ReportIssueRequest;
+import dream.guys.hotdeskandroid.model.response.DAOActiveLocation;
+import dream.guys.hotdeskandroid.model.response.DeskResponse;
 import dream.guys.hotdeskandroid.model.response.DeskResponseNew;
+import dream.guys.hotdeskandroid.ui.home.DefaultLocationActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.SessionHandler;
 import dream.guys.hotdeskandroid.utils.Utils;
@@ -527,14 +537,61 @@ public class WorkspaceSurveyActivity extends AppCompatActivity {
             }
         });
 
-        getLocationRI();
+        reportPastBooking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(WorkspaceSurveyActivity.this, DefaultLocationActivity.class);
+                intent.putExtra(AppConstants.FROM,AppConstants.DefaultLocation);
+                resultLauncher.launch(intent);
+            }
+        });
+
+        String loc = SessionHandler.getInstance().get(WorkspaceSurveyActivity.this, AppConstants.DEFAULT_LOCATION_NAME);
+        if (!loc.isEmpty()) {
+          //  getLocationRI();
+            reportPastBooking.setText(SessionHandler.getInstance().
+                    get(WorkspaceSurveyActivity.this, AppConstants.DEFAULT_LOCATION_NAME));
+            reportPastBooking.setEnabled(true);
+        }else{
+            reportPastBooking.setEnabled(true);
+        }
     }
+
+    ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+
+                        ArrayList<DAOActiveLocation> finalLocationArrayList = new ArrayList<>();
+                        ArrayList<DAOActiveLocation> cityPlaceFloorArrayList = new ArrayList<>();
+
+                        Intent intent = result.getData();
+
+                        if (intent!=null){
+
+                            if (intent.getStringExtra("sFrom")!=null) {
+
+                                String from = intent.getStringExtra("sFrom");
+                                int position = intent.getIntExtra("Position",0);
+                                String floorName = intent.getStringExtra("floorName");
+
+                                reportPastBooking.setText(floorName);
+                            }
+
+                        }
+                    }
+
+                }
+            });
 
 
     private void validateData() {
         if (reportPastBooking.getText().toString().isEmpty()) {
             Toast.makeText(getApplicationContext(), "Floor must not be Empty", Toast.LENGTH_LONG).show();
-        } else if (reportFromDate.getText().toString().isEmpty()) {
+        } else
+        if (reportFromDate.getText().toString().isEmpty()) {
             Toast.makeText(getApplicationContext(), "Please select from date", Toast.LENGTH_LONG).show();
         } else if (reportToDate.getText().toString().isEmpty()) {
             Toast.makeText(getApplicationContext(), "Please select to date", Toast.LENGTH_LONG).show();
@@ -652,7 +709,8 @@ public class WorkspaceSurveyActivity extends AppCompatActivity {
 
     private void getLocationRI() {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-//        Call<DeskResponse> call = apiService.getDesk(AppConstants.BASE_URL+"api/wellness/desks"+"?locationId="+ SessionHandler.getInstance().get(ReportAnIssueActivity.this,AppConstants.DEFAULT_LOCATION_ID));
+//        Call<DeskResponseNew> call = apiService.getDesk(AppConstants.BASE_URL+"api/wellness/desks"+"?locationId="+
+//                SessionHandler.getInstance().get(WorkspaceSurveyActivity.this, AppConstants.DEFAULT_LOCATION_ID));
         Call<DeskResponseNew> call = apiService.getDesk(AppConstants.BASE_URL + "api/wellness/desks" + "?locationId=20");
         call.enqueue(new Callback<DeskResponseNew>() {
             @Override

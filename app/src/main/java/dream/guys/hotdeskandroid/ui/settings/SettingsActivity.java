@@ -192,6 +192,8 @@ public class SettingsActivity extends AppCompatActivity {
                 SessionHandler.getInstance().remove(context, AppConstants.TEAM_ID);
                 SessionHandler.getInstance().remove(context,AppConstants.FINAL_FLOOR);
                 SessionHandler.getInstance().remove(context,AppConstants.CURRENT_TEAM);
+                SessionHandler.getInstance().remove(context,AppConstants.DEFAULT_LOCATION_NAME);
+                SessionHandler.getInstance().remove(context,AppConstants.DEFAULT_LOCATION_ID);
 
                 //To Load Defaul Location
                 SessionHandler.getInstance().remove(context, AppConstants.PARENT_ID_CHECK);
