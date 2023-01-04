@@ -97,13 +97,23 @@ public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.viewHolder> 
                                 .getCalendarEntries().size()-1).getBooking().getLocationBuildingFloor().getfLoorName());
             }
 
-            holder.mbookingCheckInTime.setText(Utils.splitTime(teamMembersList.get(position).getDayGroups().get(0)
+            try{
+                if (teamMembersList.get(position).getTeamFromTIme() != null)
+                    holder.mbookingCheckInTime.setText(Utils.splitTime(teamMembersList.get(position).getTeamFromTIme()));
+
+                if (teamMembersList.get(position).getTeamToTime() != null)
+                    holder.mbookingCheckOutTime.setText(Utils.splitTime(teamMembersList.get(position).getTeamToTime()));
+            } catch (Exception e){
+
+            }
+
+            /*holder.mbookingCheckInTime.setText(Utils.splitTime(teamMembersList.get(position).getDayGroups().get(0)
                     .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
                             .getCalendarEntries().size()-1).getMyto()));
 
             holder.mbookingCheckOutTime.setText(Utils.splitTime(teamMembersList.get(position).getDayGroups().get(0)
                     .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
-                            .getCalendarEntries().size()-1).getFrom()));
+                            .getCalendarEntries().size()-1).getFrom()));*/
         } else {
             holder.mbookingAddress.setText("");
             holder.mbookingCheckInTime.setVisibility(View.GONE);

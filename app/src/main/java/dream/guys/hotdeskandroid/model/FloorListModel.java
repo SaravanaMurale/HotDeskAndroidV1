@@ -9,7 +9,15 @@ public class FloorListModel {
     private String floorName;
     private String deskAvailability;
     ArrayList<DAOTeamMember> daoTeamMembers;
+    ArrayList<TeamsMemberListDataModel> daoTeamMembersNew;
 
+    public ArrayList<TeamsMemberListDataModel> getDaoTeamMembersNew() {
+        return daoTeamMembersNew;
+    }
+
+    public void setDaoTeamMembersNew(ArrayList<TeamsMemberListDataModel> daoTeamMembersNew) {
+        this.daoTeamMembersNew = daoTeamMembersNew;
+    }
 
     public String getDeskAvailability() {
         return deskAvailability;
