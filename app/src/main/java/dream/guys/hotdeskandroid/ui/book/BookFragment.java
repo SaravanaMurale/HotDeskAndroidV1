@@ -2925,7 +2925,6 @@ public class BookFragment extends Fragment implements
                 back.setText("Cancel");
             }
         } else {
-
             if (newEditStatus.equalsIgnoreCase("edit")){
                 if (editDeskBookingDetails.getDate()!=null)
                     date.setText(""+Utils.calendarDay10thMonthYearformat(editDeskBookingDetails.getDate()));
@@ -2935,7 +2934,11 @@ public class BookFragment extends Fragment implements
                 select.setVisibility(View.GONE);
                 commentBlock.setVisibility(View.GONE);
                 edRegistration.setText(editDeskBookingDetails.getVehicleRegNumber());
-            }else{
+            } else {
+                edRegistration.setHint("Registration");
+                if (profileData != null)
+                    edRegistration.setText(profileData.getVehicleRegNumber());
+
                 if (editDeskBookingDetails.getDate()!=null)
                     date.setText(""+Utils.calendarDay10thMonthformat(editDeskBookingDetails.getDate()));
 
@@ -2951,7 +2954,6 @@ public class BookFragment extends Fragment implements
             llDeskLayout.setVisibility(View.VISIBLE);
 //            repeatBlock.setVisibility(View.VISIBLE);
             teamsBlock.setVisibility(View.GONE);
-            edRegistration.setHint("Registration");
 //            commentBlock.setVisibility(View.GONE);
 //            commentRegistration.setHint("Registration Number");
 //            tvComments.setText("Regitration Number");

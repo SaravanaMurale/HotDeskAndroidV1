@@ -49,7 +49,6 @@ public class TeamsFloorListAdapter extends RecyclerView.Adapter<TeamsFloorListAd
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View floorImageLayout = LayoutInflater.from(context).inflate(R.layout.floor_layout_recycler, parent, false);
         return new TeamsFloorListAdapter.viewHolder(floorImageLayout);
-
     }
 
     @Override

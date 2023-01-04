@@ -479,6 +479,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                                                 .getCalendarEntries().get(x)
                                                 .getUsageTypeAbbreviation()) {
                                             case "IO":
+//                                                DAOTeamMember daoTeamMember = teamMembersList.get(i);
                                                 teamMembersInOfficeList.add(teamMembersList.get(i));
 //                                                for (int j=0; j<teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries().size();j++){
                                                 if (teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
