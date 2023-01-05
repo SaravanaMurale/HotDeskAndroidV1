@@ -58,7 +58,7 @@
       "NoBooking": "No booking specified",
       "Types": "Type",
       "InvalidTimeZoneId": "Invalid timezone.",
-      "InvalidTimePeriod": "Invalid timeperiod.",
+      "InvalidTimePeriod": "Invalid time period.",
       "InvalidDeskBooking": "Invalid desk.",
       "InvalidRequest": "Invalid request.",
       "UserTimeOverlap": "Time overlaps another booking.",

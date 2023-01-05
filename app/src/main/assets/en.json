@@ -55,13 +55,16 @@
     "InvalidTo": "Invalid booking end time.",
     "InvalidTeamDeskId": "Invalid desk id.",
     "TimePassed": "The time passed.",
+    "TimeOverlap": "Time overlaps with another booking",
+    "COVID_SYMPTOMS": "COVID_SYMPTOMS",
     "DeskUnavailable": "Desk is unavailable.",
     "BookingSaved": "Booking saved.",
     "DefaultError": "Something went wrong updating your settings, try again",
     "DeskZoneMaxUtilization": "Maximum capacity % for desk booking exceeded",
     "FloorMaxUtilization": "Maximum capacity % for desk booking exceeded",
     "NotAvailableForRequest": "Not Available For Request",
-    "AvailableForRequest": "Available For Request"
+    "AvailableForRequest": "Available For Request",
+    "PastDate": "Bookings cannot be made for dates in the past"
   },
   "WellBeing": {
     "TabTitle": "Wellbeing",
@@ -364,7 +367,7 @@
   },
   "AppKeys": {
       "SignIn": "Sign in",
-      "SignInWithPin": "Sign in with PIN",
+      "SignInWithPin": "Sign in with pin",
       "SignInWithSso": "Sign in with SSO",
       "Tenant": "Tenant",
       "Username": "Username",

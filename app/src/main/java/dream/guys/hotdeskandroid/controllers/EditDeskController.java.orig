@@ -1143,7 +1143,11 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
 //                            openCheckoutDialog("Booking Updated");
                             }else {
                                 if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
+<<<<<<< HEAD
+                                    resultString = "Invalid booking start time.";
+=======
                                     resultString = bookindata.getInvalidFrom();
+>>>>>>> 111bcc6ff209df6e5f26ffe149f35a74f8a40502
                                 } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
                                     resultString = bookindata.getInvalidTo();
                                 } else if (response.body().getResultCode().toString().equals("INVALID_TIMEZONE_ID")) {

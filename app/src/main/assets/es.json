@@ -390,7 +390,7 @@
   },
   "AppKeys": {
       "SignIn":"Iniciar sesión",
-      "SignInWithPin":"Iniciar sesión con PIN",
+      "SignInWithPin":"Iniciar sesión con pin",
       "Tenant":"Inquilino",
       "Username":"Nombre de usuario",
       "Password":"Clave",

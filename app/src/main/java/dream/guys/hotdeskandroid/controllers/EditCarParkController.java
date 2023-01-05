@@ -1096,19 +1096,19 @@ public class EditCarParkController {
 //                            openCheckoutDialog("Booking Updated");
                             }else {
                                 if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
-                                    resultString = "Invalid booking start time";
+                                    resultString = bookindata.getInvalidFrom();
                                 } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
-                                    resultString = "Invalid booking end time";
+                                    resultString = bookindata.getInvalidTo();
                                 } else if (response.body().getResultCode().toString().equals("INVALID_TIMEZONE_ID")) {
-                                    resultString = "Invalid timezone";
+                                    resultString = bookindata.getInvalidTimeZoneId();
                                 } else if (response.body().getResultCode().toString().equals("INVALID_TIMEPERIOD")) {
-                                    resultString = "Invalid timeperiod";
+                                    resultString = bookindata.getInvalidTimePeriod();
                                 } else if (response.body().getResultCode().toString().equals("USER_TIME_OVERLAP")) {
-                                    resultString = "Time overlaps with another booking";
+                                    resultString =  bookindata.getTimeOverlap();
                                 } else if(response.body().getResultCode().toString().equals("COVID_SYMPTOMS")){
-                                    resultString = "COVID_SYMPTOMS";
+                                    resultString = bookindata.getCOVID_SYMPTOMS();
                                 }else if(response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")){
-                                    resultString = "Desk is Unavailable";
+                                    resultString =  bookindata.getDeskUnavailable();
                                 }else {
                                     resultString = response.body().getResultCode().toString();
                                 }

@@ -68,6 +68,7 @@ import dream.guys.hotdeskandroid.adapter.RoomListRecyclerAdapter;
 import dream.guys.hotdeskandroid.adapter.SearchRecyclerAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityMainBinding;
 import dream.guys.hotdeskandroid.example.MyCanvasDraw;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.BookingsRequest;
 import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
 import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
@@ -167,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements
 
     public HashMap<Integer, Boolean> firstAidList;
     public HashMap<Integer, Boolean> firewardenList;
+    LanguagePOJO.Booking bookindata ;
 
     private static final int TIME_INTERVAL = 2000; // # milliseconds, desired time passed between two back presses.
     private long mBackPressed;
@@ -276,6 +278,7 @@ public class MainActivity extends AppCompatActivity implements
 
             }
         });
+        bookindata = Utils.getBookingPageScreenData(this);
 
     }
 
@@ -1157,21 +1160,22 @@ public class MainActivity extends AppCompatActivity implements
 //                            openCheckoutDialog("Booking Updated");
                         } else {
 
+
                             if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
-                                resultString = "Invalid booking start time";
+                                resultString = bookindata.getInvalidFrom();
                             } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
-                                resultString = "Invalid booking end time";
+                                resultString = bookindata.getInvalidTo();
                             } else if (response.body().getResultCode().toString().equals("INVALID_TIMEZONE_ID")) {
-                                resultString = "Invalid timezone";
+                                resultString = bookindata.getInvalidTimeZoneId();
                             } else if (response.body().getResultCode().toString().equals("INVALID_TIMEPERIOD")) {
-                                resultString = "Invalid timeperiod";
+                                resultString = bookindata.getInvalidTimePeriod();
                             } else if (response.body().getResultCode().toString().equals("USER_TIME_OVERLAP")) {
-                                resultString = "Time overlaps with another booking";
-                            } else if (response.body().getResultCode().toString().equals("COVID_SYMPTOMS")) {
-                                resultString = "COVID_SYMPTOMS";
-                            } else if (response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")) {
-                                resultString = "Desk is Unavailable";
-                            } else {
+                                resultString =  bookindata.getTimeOverlap();
+                            } else if(response.body().getResultCode().toString().equals("COVID_SYMPTOMS")){
+                                resultString = bookindata.getCOVID_SYMPTOMS();
+                            }else if(response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")){
+                                resultString =  bookindata.getDeskUnavailable();
+                            }else {
                                 resultString = response.body().getResultCode().toString();
                             }
                             Utils.toastShortMessage(MainActivity.this, resultString);
