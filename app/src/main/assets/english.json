@@ -42,7 +42,7 @@
         "NO_BOOKING": "No booking specified",
         "Types": "Type",
         "INVALID_TIMEZONE_ID": "Invalid timezone.",
-        "INVALID_TIMEPERIOD": "Invalid timeperiod.",
+        "INVALID_TIMEPERIOD": "Invalid time period.",
         "INVALID_DESK_BOOKING": "Invalid desk.",
         "INVALID_REQUEST": "Invalid request.",
         "USER_TIME_OVERLAP": "Time overlaps another booking.",

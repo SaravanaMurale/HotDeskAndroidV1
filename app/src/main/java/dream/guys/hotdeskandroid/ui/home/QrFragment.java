@@ -31,6 +31,7 @@ import butterknife.BindView;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.databinding.FragmentBookingDetailBinding;
 import dream.guys.hotdeskandroid.databinding.FragmentQrBinding;
+import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.request.BookingStatusRequest;
 import dream.guys.hotdeskandroid.model.response.BaseResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
@@ -57,6 +58,7 @@ public class QrFragment extends Fragment {
     Dialog dialog;
     View view;
     NavController navController;
+    LanguagePOJO.Booking bookindata ;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +71,7 @@ public class QrFragment extends Fragment {
         fragmentQrBinding = FragmentQrBinding.inflate(inflater, container, false);
         View root = fragmentQrBinding.getRoot();
         dialog = new Dialog(getContext());
+        bookindata = Utils.getBookingPageScreenData(activity);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -196,19 +199,19 @@ public class QrFragment extends Fragment {
                             SessionHandler.getInstance().save(getActivity(), AppConstants.USER_CURRENT_STATUS,"Checked IN");
                         }else {
                             if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
-                                resultString = "Invalid booking start time";
+                                resultString = bookindata.getInvalidFrom();
                             } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
-                                resultString = "Invalid booking end time";
+                                resultString = bookindata.getInvalidTo();
                             } else if (response.body().getResultCode().toString().equals("INVALID_TIMEZONE_ID")) {
-                                resultString = "Invalid timezone";
+                                resultString = bookindata.getInvalidTimeZoneId();
                             } else if (response.body().getResultCode().toString().equals("INVALID_TIMEPERIOD")) {
-                                resultString = "Invalid timeperiod";
+                                resultString = bookindata.getInvalidTimePeriod();
                             } else if (response.body().getResultCode().toString().equals("USER_TIME_OVERLAP")) {
-                                resultString = "Time overlaps with another booking";
+                                resultString =  bookindata.getTimeOverlap();
                             } else if(response.body().getResultCode().toString().equals("COVID_SYMPTOMS")){
-                                resultString = "COVID_SYMPTOMS";
+                                resultString = bookindata.getCOVID_SYMPTOMS();
                             }else if(response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")){
-                                resultString = "Desk is Unavailable";
+                                resultString =  bookindata.getDeskUnavailable();
                             }else {
                                 resultString = response.body().getResultCode().toString();
                             }

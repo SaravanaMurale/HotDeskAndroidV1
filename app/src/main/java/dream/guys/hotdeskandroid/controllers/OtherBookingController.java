@@ -65,10 +65,11 @@ public class OtherBookingController {
     private boolean repeatActiveStatus = false;
     private BottomSheetDialog repeatBottomSheetDialog;
     private String repeatType = "none";
-
+    LanguagePOJO.Booking bookindata ;
     public OtherBookingController(Context context, int selectedIcon, String calSelectedDate) {
         this.context = context;
         appKeysPage = Utils.getAppKeysPageScreenData(context);
+        bookindata = Utils.getBookingPageScreenData(context);
         this.selectedIcon = selectedIcon;
         this.calSelectedDate = calSelectedDate;
         this.isFrom = "book";
@@ -80,6 +81,7 @@ public class OtherBookingController {
                                   Date date, String isFrom) {
         this.context = context;
         appKeysPage = Utils.getAppKeysPageScreenData(context);
+        bookindata = Utils.getBookingPageScreenData(context);
         this.calendarEntry = calendarEntry;
         this.date = date;
         this.isFrom = isFrom;
@@ -1219,22 +1221,22 @@ public class OtherBookingController {
                     else
                         openCheckoutDeleteDialog("Booking Deleted");
                 } else {
-                    if (response.body().getResultCode().equals("INVALID_FROM")) {
-                        resultString = "Invalid booking start time";
-                    } else if (response.body().getResultCode().equals("INVALID_TO")) {
-                        resultString = "Invalid booking end time";
-                    } else if (response.body().getResultCode().equals("INVALID_TIMEZONE_ID")) {
-                        resultString = "Invalid timezone";
-                    } else if (response.body().getResultCode().equals("INVALID_TIMEPERIOD")) {
-                        resultString = "Invalid timeperiod";
-                    } else if (response.body().getResultCode().equals("USER_TIME_OVERLAP")) {
-                        resultString = "Time overlaps with another booking";
-                    } else if (response.body().getResultCode().equals("COVID_SYMPTOMS")) {
-                        resultString = "COVID_SYMPTOMS";
-                    } else if (response.body().getResultCode().equals("DESK_UNAVAILABLE")) {
-                        resultString = "Desk is Unavailable";
-                    } else {
-                        resultString = response.body().getResultCode();
+                    if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
+                        resultString = bookindata.getInvalidFrom();
+                    } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
+                        resultString = bookindata.getInvalidTo();
+                    } else if (response.body().getResultCode().toString().equals("INVALID_TIMEZONE_ID")) {
+                        resultString = bookindata.getInvalidTimeZoneId();
+                    } else if (response.body().getResultCode().toString().equals("INVALID_TIMEPERIOD")) {
+                        resultString = bookindata.getInvalidTimePeriod();
+                    } else if (response.body().getResultCode().toString().equals("USER_TIME_OVERLAP")) {
+                        resultString =  bookindata.getTimeOverlap();
+                    } else if(response.body().getResultCode().toString().equals("COVID_SYMPTOMS")){
+                        resultString = bookindata.getCOVID_SYMPTOMS();
+                    }else if(response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")){
+                        resultString =  bookindata.getDeskUnavailable();
+                    }else {
+                        resultString = response.body().getResultCode().toString();
                     }
                     Utils.showCustomAlertDialog((Activity) context, resultString);
                 }

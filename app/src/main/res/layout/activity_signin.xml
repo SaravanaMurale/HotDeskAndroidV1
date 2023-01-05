@@ -49,7 +49,7 @@
             android:layout_marginRight="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_60sdp"
             android:background="@drawable/button_round_corner"
-            android:text="Sign in with PIN"
+            android:text="Sign in with pin"
             android:theme="@style/TextBoldButton"
             android:textSize="18sp"
             android:textAllCaps="false"

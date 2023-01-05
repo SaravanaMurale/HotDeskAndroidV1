@@ -2564,6 +2564,12 @@ public class LanguagePOJO {
         @SerializedName("InvalidTimePeriod")
         @Expose
         private String invalidTimePeriod;
+        @SerializedName("TimeOverlap")
+        @Expose
+        private String TimeOverlap;
+        @SerializedName("COVID_SYMPTOMS")
+        @Expose
+        private String COVID_SYMPTOMS;
         @SerializedName("InvalidDeskBooking")
         @Expose
         private String invalidDeskBooking;
@@ -2609,6 +2615,17 @@ public class LanguagePOJO {
         @SerializedName("AvailableForRequest")
         @Expose
         private String AvailableForRequest;
+        @SerializedName("PastDate")
+        @Expose
+        private String PastDate;
+
+        public String getPastDate() {
+            return PastDate;
+        }
+
+        public void setPastDate(String pastDate) {
+            PastDate = pastDate;
+        }
 
         public String getNotAvailableForRequest() {
             return NotAvailableForRequest;
@@ -2784,6 +2801,22 @@ public class LanguagePOJO {
 
         public void setInvalidTimeZoneId(String invalidTimeZoneId) {
             this.invalidTimeZoneId = invalidTimeZoneId;
+        }
+
+        public String getCOVID_SYMPTOMS() {
+            return COVID_SYMPTOMS;
+        }
+
+        public void setCOVID_SYMPTOMS(String COVID_SYMPTOMS) {
+            this.COVID_SYMPTOMS = COVID_SYMPTOMS;
+        }
+
+        public String getTimeOverlap() {
+            return TimeOverlap;
+        }
+
+        public void setTimeOverlap(String timeOverlap) {
+            TimeOverlap = timeOverlap;
         }
 
         public String getInvalidTimePeriod() {
