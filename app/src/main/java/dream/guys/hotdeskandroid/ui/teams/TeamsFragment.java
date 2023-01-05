@@ -276,7 +276,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
         //NewNew
         getBookingUsageTypes();
-        getCalendarEntryTeam();
+//        getCalendarEntryTeam();
 
 
         //New...
@@ -405,6 +405,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     }
 
 
+/*
     private void getCalendarEntryTeam() {
 
         if (Utils.isNetworkAvailable(getActivity())) {
@@ -445,6 +446,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             Utils.toastMessage(getActivity(), "Please Enable Internet");
         }
     }
+*/
 
 
     private void getTeamMembers() {

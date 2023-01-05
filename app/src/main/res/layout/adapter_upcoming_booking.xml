@@ -205,14 +205,15 @@
                     android:textColor="@color/figmaGrey"
                     android:layout_alignParentStart="true"
                     android:layout_toStartOf="@+id/bookingIvLocation"/>
+
                 <ImageView
                     android:id="@+id/bookingIvLocation"
                     android:layout_width="@dimen/_15sdp"
                     android:layout_height="@dimen/_15sdp"
-                    android:layout_marginTop="1dp"
-                    android:src="@drawable/blue_location"
                     android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"/>
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="1dp"
+                    android:src="@drawable/blue_location" />
 
             </RelativeLayout>
 

@@ -498,8 +498,11 @@ public interface ApiInterface {
     @POST("api/requests/approvemr")
     Call<BaseResponse> acceptMeeting(@Body String params);
 
-    @GET("api/calendar/entries")
-    Call<ArrayList<DAOUpcomingBooking>> getMonthBookings(@Query("month") String s, @Query("userId") int userId, @Query("teamId") int teamId);
+//    @GET("api/calendar/entries")
+    @GET("api/Booking/UserBookings")
+    Call<ArrayList<DAOUpcomingBookingNew>> getMonthBookings(@Query("fromDate") String f,
+                                                         @Query("toDate") String t,
+                                                         @Query("userId") int userId);
 
     @GET("api/Booking/UsageTypes")
     Call<List<UsageTypeResponse>>  getBookingUsageTypes();
