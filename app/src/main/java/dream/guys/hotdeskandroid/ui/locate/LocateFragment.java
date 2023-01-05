@@ -8003,11 +8003,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 }else {
                     resultString = response.body().getResultCode().toString();
                 }
-                //Utils.showCustomAlertDialog(getActivity(), "Booking Not Updated " + resultString);
-                Utils.showCustomAlertDialog(getActivity(), resultString);
+                //Utils.toastShortMessage(getActivity(), "Booking Not Updated " + resultString);
+                Utils.toastShortMessage(getActivity(), resultString);
             }
         } else if (response.code() == 500) {
-            //Utils.showCustomAlertDialog(getActivity(), "" + response.message());
+            //Utils.toastShortMessage(getActivity(), "" + response.message());
         } else if (response.code() == 401) {
             Utils.showCustomTokenExpiredDialog(getActivity(), "401 Error Response");
         } else {

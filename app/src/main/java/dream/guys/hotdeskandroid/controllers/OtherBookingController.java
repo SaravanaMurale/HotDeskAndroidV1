@@ -1236,10 +1236,10 @@ public class OtherBookingController {
                     } else {
                         resultString = response.body().getResultCode();
                     }
-                    Utils.showCustomAlertDialog((Activity) context, resultString);
+                    Utils.toastShortMessage((Activity) context, resultString);
                 }
             } else if (response.code() == 500) {
-                Utils.showCustomAlertDialog((Activity) context, "" + response.message());
+                Utils.toastShortMessage((Activity) context, "" + response.message());
             } else if (response.code() == 401) {
                 Utils.showCustomTokenExpiredDialog((Activity) context, "401 Error Response");
                 SessionHandler.getInstance().saveBoolean(context, AppConstants.LOGIN_CHECK, false);

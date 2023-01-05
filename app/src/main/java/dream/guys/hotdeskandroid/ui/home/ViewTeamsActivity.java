@@ -95,14 +95,14 @@ public class ViewTeamsActivity extends AppCompatActivity {
                     } else {
                         ProgressDialog.dismisProgressBar(ViewTeamsActivity.this,dialog);
                         Log.d("Search", "onResponse: else");
-                        Utils.showCustomAlertDialog(ViewTeamsActivity.this,"Api Issue Code: "+response.code());
+                        Utils.toastShortMessage(ViewTeamsActivity.this,"Api Issue Code: "+response.code());
                     }
 
                 }
                 @Override
                 public void onFailure(Call<List<TeamMembersResponse>> call, Throwable t) {
 //                    Toast.makeText(ViewTeamsActivity.this, "on fail", Toast.LENGTH_SHORT).show();
-                    Utils.showCustomAlertDialog(ViewTeamsActivity.this,"Response Failure: "+t.getMessage());
+                    Utils.toastShortMessage(ViewTeamsActivity.this,"Response Failure: "+t.getMessage());
                     ProgressDialog.dismisProgressBar(ViewTeamsActivity.this,dialog);
                     Log.d("Search", "onResponse: fail"+t.getMessage());
                 }

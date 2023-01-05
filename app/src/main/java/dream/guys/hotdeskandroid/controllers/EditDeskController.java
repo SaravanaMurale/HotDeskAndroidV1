@@ -1113,7 +1113,7 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
                     String resultString="";
                     try {
                         if (response.code()==200 && response.body().getResultCode()!=null){
-//                        Utils.showCustomAlertDialog(activityContext,"Update Success");
+//                        Utils.toastShortMessage(activityContext,"Update Success");
 //                        Toast.makeText(activityContext, "Success Bala", Toast.LENGTH_SHORT).show();
                             if (response.body().getResultCode().equalsIgnoreCase("ok")){
                                 if (newEditDelete.equalsIgnoreCase("new")
@@ -1143,7 +1143,7 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
 //                            openCheckoutDialog("Booking Updated");
                             }else {
                                 if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
-                                    resultString = "Invalid booking start time";
+                                    resultString = "Invalid booking start time.";
                                 } else if (response.body().getResultCode().toString().equals("INVALID_TO")) {
                                     resultString = "Invalid booking end time";
                                 } else if (response.body().getResultCode().toString().equals("INVALID_TIMEZONE_ID")) {
@@ -1159,10 +1159,10 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
                                 }else {
                                     resultString = response.body().getResultCode().toString();
                                 }
-                                Utils.showCustomAlertDialog(activityContext, resultString);
+                                Utils.toastShortMessage(activityContext, resultString);
                             }
                         }else if (response.code() == 500){
-                            Utils.showCustomAlertDialog(activityContext,""+response.message());
+                            Utils.toastShortMessage(activityContext,""+response.message());
                         }else if (response.code() == 401){
                             Utils.showCustomTokenExpiredDialog(activityContext,"401 Error Response");
                             SessionHandler.getInstance().saveBoolean(activityContext, AppConstants.LOGIN_CHECK,false);

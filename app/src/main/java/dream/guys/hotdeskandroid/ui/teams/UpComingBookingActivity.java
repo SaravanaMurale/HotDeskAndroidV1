@@ -485,14 +485,14 @@ public class UpComingBookingActivity extends AppCompatActivity implements Horizo
 
                     } else {
                         Log.d("Search", "onResponse: else");
-                        Utils.showCustomAlertDialog(UpComingBookingActivity.this,"Api Issue Code: "+response.code());
+                        Utils.toastShortMessage(UpComingBookingActivity.this,"Api Issue Code: "+response.code());
                     }
 
                 }
                 @Override
                 public void onFailure(Call<ArrayList<DAOUpcomingBooking>> call, Throwable t) {
 //                    Toast.makeText(context, "on fail", Toast.LENGTH_SHORT).show();
-                    Utils.showCustomAlertDialog(UpComingBookingActivity.this,"Response Failure: "+t.getMessage());
+                    Utils.toastShortMessage(UpComingBookingActivity.this,"Response Failure: "+t.getMessage());
                     Log.d("Search", "onResponse: fail"+t.getMessage());
                 }
             });

@@ -139,18 +139,17 @@
         <TextView
             android:id="@+id/show_calendar"
             android:layout_width="@dimen/_116sdp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_31sdp"
             android:layout_below="@+id/searchLocate"
             android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_12sdp"
             android:background="@drawable/rectangle_bg_with_corner"
             android:drawableRight="@drawable/drawble_calendar"
+            android:minHeight="@dimen/_33sdp"
             android:paddingStart="@dimen/_11sdp"
             android:paddingTop="@dimen/_7sdp"
-
             android:paddingEnd="@dimen/_11sdp"
             android:paddingBottom="@dimen/_7sdp"
-
             android:text="Wed 4"
             android:textColor="@color/figmaBlack"
             android:textSize="@dimen/_11sdp"
@@ -162,16 +161,17 @@
         <!--StartAndEndTime-->
         <RelativeLayout
             android:layout_width="@dimen/_147sdp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_31sdp"
             android:layout_below="@+id/searchLocate"
             android:layout_alignParentRight="true"
             android:layout_marginLeft="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginEnd="@dimen/_19sdp"
             android:background="@drawable/rectangle_bg_with_corner"
+            android:minHeight="@dimen/_33sdp"
             android:paddingStart="@dimen/_11sdp"
-            android:paddingEnd="@dimen/_11sdp"
             android:paddingTop="@dimen/_7sdp"
+            android:paddingEnd="@dimen/_11sdp"
             android:paddingBottom="@dimen/_7sdp"
             tools:ignore="MissingConstraints">
 

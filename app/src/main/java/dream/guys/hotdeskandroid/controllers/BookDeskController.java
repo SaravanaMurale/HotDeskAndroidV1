@@ -1595,7 +1595,7 @@ public class BookDeskController implements
                     String resultString="";
                     try {
                         if (response.code()==200 && response.body().getResultCode()!=null){
-//                        Utils.showCustomAlertDialog(activityContext,"Update Success");
+//                        Utils.toastShortMessage(activityContext,"Update Success");
 //                        Toast.makeText(activityContext, "Success Bala", Toast.LENGTH_SHORT).show();
                             if (response.body().getResultCode().equalsIgnoreCase("ok")){
                                 if (newEditDelete.equalsIgnoreCase("new")
@@ -1641,10 +1641,10 @@ public class BookDeskController implements
                                 }else {
                                     resultString = response.body().getResultCode().toString();
                                 }
-                                Utils.showCustomAlertDialog(activityContext, resultString);
+                                Utils.toastShortMessage(activityContext, resultString);
                             }
                         }else if (response.code() == 500){
-                            Utils.showCustomAlertDialog(activityContext,""+response.message());
+                            Utils.toastShortMessage(activityContext,""+response.message());
                         }else if (response.code() == 401){
                             Utils.showCustomTokenExpiredDialog(activityContext,"401 Error Response");
                             SessionHandler.getInstance().saveBoolean(activityContext, AppConstants.LOGIN_CHECK,false);
@@ -1857,11 +1857,11 @@ public class BookDeskController implements
                 } else {
                     resultString = response.body().getResultCode().toString();
                 }
-                //Utils.showCustomAlertDialog(activityContext, "Booking Not Updated " + resultString);
-                Utils.showCustomAlertDialog(activityContext, resultString);
+                //Utils.toastShortMessage(activityContext, "Booking Not Updated " + resultString);
+                Utils.toastShortMessage(activityContext, resultString);
             }
         } else if (response.code() == 500) {
-            Utils.showCustomAlertDialog(activityContext, ""+response.message());
+            Utils.toastShortMessage(activityContext, ""+response.message());
         } else if (response.code() == 401) {
             Utils.showCustomTokenExpiredDialog(activityContext, "401 Error Response");
         } else {

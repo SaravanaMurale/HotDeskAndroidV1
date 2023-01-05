@@ -488,7 +488,7 @@ public class BookFragment extends Fragment implements
                         } else {
                         }
                     }else
-                        Toast.makeText(getContext(), "Please Select current Date", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Bookings cannot be made for dates in the past", Toast.LENGTH_SHORT).show();
                 } else{
                     if (selectedicon == 4 || selectedicon == 5 || selectedicon == 6 ||
                             selectedicon == 7) {
@@ -1036,7 +1036,7 @@ public class BookFragment extends Fragment implements
                 }
                 break;
             case 3:
-                binding.profileBack.setText("Book Parking");
+                binding.profileBack.setText(appKeysPage.getBookParking());
                 binding.searchGlobal.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBackground));
                 binding.rlTime.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
                 binding.parkingLayout.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(),R.color.figmaBlue));
@@ -1770,7 +1770,7 @@ public class BookFragment extends Fragment implements
         //New...
         editDate.setText(Utils.dateWithDayString(calSelectedDate));
 
-        bookingName.setText("Book parking");
+        bookingName.setText(appKeysPage.getBookParking());
         if(carParkingForEditResponse !=null && carParkingForEditResponse.size()>0){
             tvActive.setText("Active bookings");
         } else {
@@ -2382,7 +2382,7 @@ public class BookFragment extends Fragment implements
         }else if (code.equals("5")) {
             bookingName.setText(appKeysPage.getBookRoom());
         }else if (code.equals("7")) {
-            bookingName.setText("Book parking");
+            bookingName.setText(appKeysPage.getBookParking());
         }
 
 
@@ -2963,7 +2963,7 @@ public class BookFragment extends Fragment implements
             capacitylayout.setVisibility(View.GONE);
             if(newEditStatus.equalsIgnoreCase("new") ||newEditStatus.equalsIgnoreCase("new_deep_link")
                     || newEditStatus.equalsIgnoreCase("request")){
-                title.setText("Book Parking");
+                title.setText(appKeysPage.getBookParking());
                 continueEditBook.setText("Book");
                 back.setText("Close");
             } else {
@@ -4568,7 +4568,7 @@ public class BookFragment extends Fragment implements
         sheetTime.setText(""+startTime.getText()+" to "+endTime.getText());
 
         if (selectedicon == 3) {
-            selectDesk.setText("Book parking");
+            selectDesk.setText(appKeysPage.getBookParking());
             filter_layout.setVisibility(View.GONE);
             linera.setVisibility(View.VISIBLE);
             parkingSpotListRecyclerAdapter =new ParkingSpotListRecyclerAdapter(getContext(),this,getActivity(),parkingSpotModelList,getContext(),bottomSheetDialog,
@@ -4700,7 +4700,7 @@ public class BookFragment extends Fragment implements
                     String resultString="";
                     try {
                         if (response.code()==200 && response.body().getResultCode()!=null){
-//                        Utils.showCustomAlertDialog(getActivity(),"Update Success");
+//                        Utils.toastShortMessage(getActivity(),"Update Success");
 //                        Toast.makeText(getActivity(), "Success Bala", Toast.LENGTH_SHORT).show();
                             if (response.body().getResultCode().equalsIgnoreCase("ok")){
                                 if (newEditDelete.equalsIgnoreCase("new")
@@ -4746,10 +4746,10 @@ public class BookFragment extends Fragment implements
                                 }else {
                                     resultString = response.body().getResultCode().toString();
                                 }
-                                Utils.showCustomAlertDialog(getActivity(), resultString);
+                                Utils.toastShortMessage(getActivity(), resultString);
                             }
                         }else if (response.code() == 500){
-                            Utils.showCustomAlertDialog(getActivity(),""+response.message());
+                            Utils.toastShortMessage(getActivity(),""+response.message());
                         }else if (response.code() == 401){
                             Utils.showCustomTokenExpiredDialog(getActivity(),"401 Error Response");
                             SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
@@ -5715,7 +5715,7 @@ public class BookFragment extends Fragment implements
                             openCheckoutDialog("Booking Updated",2);
                     }else if(response.code()==500){
                         resultString = response.body().toString();
-                        Utils.showCustomAlertDialog(getActivity(), resultString);
+                        Utils.toastShortMessage(getActivity(), resultString);
                     } else {
                         if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
                             resultString = "Invalid booking start time";
@@ -5733,7 +5733,7 @@ public class BookFragment extends Fragment implements
                             resultString = response.body().getResultCode().toString();
                         }
                         roomBottomSheet.dismiss();
-                        Utils.showCustomAlertDialog(getActivity(), resultString);
+                        Utils.toastShortMessage(getActivity(), resultString);
                     }
 
                 } catch (Exception exception){
@@ -7182,11 +7182,11 @@ public class BookFragment extends Fragment implements
                 } else {
                     resultString = response.body().getResultCode().toString();
                 }
-                //Utils.showCustomAlertDialog(getActivity(), "Booking Not Updated " + resultString);
-                Utils.showCustomAlertDialog(getActivity(), resultString);
+                //Utils.toastShortMessage(getActivity(), "Booking Not Updated " + resultString);
+                Utils.toastShortMessage(getActivity(), resultString);
             }
         } else if (response.code() == 500) {
-            Utils.showCustomAlertDialog(getActivity(), ""+response.message());
+            Utils.toastShortMessage(getActivity(), ""+response.message());
         } else if (response.code() == 401) {
             Utils.showCustomTokenExpiredDialog(getActivity(), "401 Error Response");
         } else {
