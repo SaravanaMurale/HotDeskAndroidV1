@@ -26,6 +26,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import dream.guys.hotdeskandroid.R;
+import dream.guys.hotdeskandroid.model.TeamsMemberListDataModel;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.ui.teams.TeamsFragment;
 import dream.guys.hotdeskandroid.utils.Utils;
@@ -34,7 +35,9 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     Context context;
     ArrayList<DAOTeamMember> teamMembersList;
-    ArrayList<DAOTeamMember> teamMembersListAll;
+    ArrayList<TeamsMemberListDataModel> teamMembersListNew;
+    ArrayList<TeamsMemberListDataModel> teamMembersListAll;
+    ArrayList<TeamsMemberListDataModel> teamMembersListAllNew;
     OnProfileClickable onProfileClickable;
     TeamsFragment fragment;
     HashMap<Integer, Boolean> fireWarden;
@@ -49,14 +52,14 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
 
-            List<DAOTeamMember> filteredList = new ArrayList<>();
+            List<TeamsMemberListDataModel> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.toString().isEmpty() || constraint.length() == 0 || constraint == "") {
                 filteredList.addAll(teamMembersListAll);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for (DAOTeamMember dskl : teamMembersListAll) {
+                for (TeamsMemberListDataModel dskl : teamMembersListAll) {
 
                     if (dskl.getFirstName().toLowerCase().contains(filterPattern)
                             || dskl.getFirstName().toLowerCase().contains(filterPattern)) {
@@ -76,8 +79,8 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            teamMembersList.clear();
-            teamMembersList.addAll((List) results.values);
+            teamMembersListNew.clear();
+            teamMembersListNew.addAll((List) results.values);
             notifyDataSetChanged();
 
         }
@@ -89,10 +92,11 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
         void clickEvent(DAOTeamMember daoTeamMember);
     }
 
-    public TeamsContactsAdapter(Context context, ArrayList<DAOTeamMember> teamMembersList, OnProfileClickable onProfileClickable, Fragment fragment) {
+    public TeamsContactsAdapter(Context context, ArrayList<DAOTeamMember> teamMembersList,ArrayList<TeamsMemberListDataModel> teamMembersListNew, OnProfileClickable onProfileClickable, Fragment fragment) {
         this.context = context;
         this.teamMembersList = teamMembersList;
-        this.teamMembersListAll = new ArrayList<>(teamMembersList);
+        this.teamMembersListNew = teamMembersListNew;
+        this.teamMembersListAll = new ArrayList<>(teamMembersListNew);
         this.onProfileClickable = onProfileClickable;
         this.fragment = (TeamsFragment) fragment;
 
@@ -132,7 +136,7 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 if (position > 4) {
                     if (position == 5) {
                         holder.relative.setVisibility(View.VISIBLE);
-                        holder.tvCount.setText(" + " + String.valueOf(teamMembersList.size() - 6));
+                        holder.tvCount.setText(" + " + String.valueOf(teamMembersListNew.size() - 6));
                     } else {
                         holder.profile_image.setVisibility(View.GONE);
                         holder.relative.setVisibility(View.GONE);
@@ -143,9 +147,9 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
                     holder.relative.setVisibility(View.GONE);
                 }
 
-                if (teamMembersList.get(position).getProfileImage() != null
-                        && !teamMembersList.get(position).getProfileImage().equalsIgnoreCase("")) {
-                    String cleanImage = teamMembersList.get(position).getProfileImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,", "");
+                if (teamMembersListNew.get(position).getProfileImage() != null
+                        && !teamMembersListNew.get(position).getProfileImage().equalsIgnoreCase("")) {
+                    String cleanImage = teamMembersListNew.get(position).getProfileImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,", "");
                     byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     holder.profile_image.setImageBitmap(decodedByte);
@@ -157,8 +161,8 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 holder.profile_image.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                Toast.makeText(context, "sds"+teamMembersList.get(holder.getAbsoluteAdapterPosition()).getDayGroups().size(), Toast.LENGTH_SHORT).show();
-                        onProfileClickable.onProfileClick(teamMembersList.get(holder.getAbsoluteAdapterPosition()));
+//                Toast.makeText(context, "sds"+teamMembersListNew.get(holder.getAbsoluteAdapterPosition()).getDayGroups().size(), Toast.LENGTH_SHORT).show();
+                        onProfileClickable.onProfileClick(teamMembersListNew.get(holder.getAbsoluteAdapterPosition()).getDaoTeamMember());
                     }
                 });
                 holder.tvCount.setOnClickListener(new View.OnClickListener() {
@@ -172,10 +176,10 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
             case 1:
                 viewHolderList holderList = (viewHolderList) viewholder;
 
-                String fName = teamMembersList.get(position).getFirstName();
-                String lName = teamMembersList.get(position).getLastName();
+                String fName = teamMembersListNew.get(position).getFirstName();
+                String lName = teamMembersListNew.get(position).getLastName();
                 if (fragment.firewardenList != null) {
-                    if (fragment.firewardenList.containsKey(teamMembersList.get(position).getUserId())) {
+                    if (fragment.firewardenList.containsKey(teamMembersListNew.get(position).getUserId())) {
                         holderList.fireWardenIcon.setVisibility(View.VISIBLE);
                     } else {
                         holderList.fireWardenIcon.setVisibility(View.GONE);
@@ -185,7 +189,7 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
 
                 if (fragment.firstAidList != null) {
-                    if (fragment.firstAidList.containsKey(teamMembersList.get(position).getUserId())) {
+                    if (fragment.firstAidList.containsKey(teamMembersListNew.get(position).getUserId())) {
                         holderList.firstAidWardenIcon.setVisibility(View.VISIBLE);
                     } else {
                         holderList.firstAidWardenIcon.setVisibility(View.GONE);
@@ -196,36 +200,28 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
 
                 holderList.mTxtName.setText(fName + " " + lName);
-                if (teamMembersList.get(position).getDayGroups().size() > 0
-                        && teamMembersList.get(position).getDayGroups().get(0).getCalendarEntries().size() > 0
-                        && teamMembersList.get(position).getDayGroups().get(0)
-                        .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
-                                .getCalendarEntries().size() - 1).getBooking() != null
-                ) {
+                if (teamMembersListNew.get(position).getCalendarEntriesModel()!=null
+                        && teamMembersListNew.get(position).getCalendarEntriesModel().getBooking() != null) {
 
                     /*holderList.mbookingCheckInTime.setVisibility(View.VISIBLE);
                     holderList.mbookingCheckOutTime.setVisibility(View.VISIBLE);
                     holderList.ivCheckIn.setVisibility(View.VISIBLE);
                     holderList.ivCheckOut.setVisibility(View.VISIBLE);*/
-                    if (teamMembersList.get(position).getDayGroups().get(0)
-                            .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
-                                    .getCalendarEntries().size() - 1).getBooking().getLocationBuildingFloor() != null) {
+                    if (teamMembersListNew.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor() != null) {
                         holderList.mbookingAddress.setVisibility(View.VISIBLE);
 
-                        holderList.mbookingAddress.setText("" + teamMembersList.get(position).getDayGroups().get(0)
-                                .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
-                                        .getCalendarEntries().size() - 1).getBooking().getLocationBuildingFloor().getBuildingName() + "-"
-                                + teamMembersList.get(position).getDayGroups().get(0)
-                                .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
-                                        .getCalendarEntries().size() - 1).getBooking().getLocationBuildingFloor().getfLoorName());
+                        holderList.mbookingAddress.setText("" + teamMembersListNew.get(position).getCalendarEntriesModel()
+                                .getBooking().getLocationBuildingFloor().getBuildingName() + "-"
+                                + teamMembersListNew.get(position).getCalendarEntriesModel()
+                                .getBooking().getLocationBuildingFloor().getfLoorName());
                     }
 
-                   /* holderList.mbookingCheckInTime.setText(Utils.splitTime(teamMembersList.get(position).getDayGroups().get(0)
-                            .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
+                   /* holderList.mbookingCheckInTime.setText(Utils.splitTime(teamMembersListNew.get(position).getDayGroups().get(0)
+                            .getCalendarEntries().get(teamMembersListNew.get(position).getDayGroups().get(0)
                                     .getCalendarEntries().size()-1).getFrom()));
 
-                    holderList.mbookingCheckOutTime.setText(Utils.splitTime(teamMembersList.get(position).getDayGroups().get(0)
-                            .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
+                    holderList.mbookingCheckOutTime.setText(Utils.splitTime(teamMembersListNew.get(position).getDayGroups().get(0)
+                            .getCalendarEntries().get(teamMembersListNew.get(position).getDayGroups().get(0)
                                     .getCalendarEntries().size()-1).getMyto()));*/
                 } else {
                     holderList.mbookingAddress.setText("");
@@ -237,21 +233,27 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
                     holderList.ivCheckOut.setVisibility(View.GONE);*/
                 }
 
-                if (teamMembersList.get(position).getDayGroups().size() > 0
-                        && teamMembersList.get(position).getDayGroups().get(0).getCalendarEntries().size() > 0) {
+                if (teamMembersListNew.get(position).getCalendarEntriesModel()!=null) {
                     holderList.timeLayout.setVisibility(View.VISIBLE);
                     holderList.mbookingCheckInTime.setVisibility(View.VISIBLE);
                     holderList.mbookingCheckOutTime.setVisibility(View.VISIBLE);
                     holderList.ivCheckIn.setVisibility(View.VISIBLE);
                     holderList.ivCheckOut.setVisibility(View.VISIBLE);
 
-                    holderList.mbookingCheckInTime.setText(Utils.splitTime(teamMembersList.get(position).getDayGroups().get(0)
-                            .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
-                                    .getCalendarEntries().size() - 1).getFrom()));
+                    try{
 
-                    holderList.mbookingCheckOutTime.setText(Utils.splitTime(teamMembersList.get(position).getDayGroups().get(0)
-                            .getCalendarEntries().get(teamMembersList.get(position).getDayGroups().get(0)
-                                    .getCalendarEntries().size() - 1).getMyto()));
+                        if (teamMembersListNew.get(position).getCalendarEntriesModel().getFrom() != null)
+                            holderList.mbookingCheckInTime.setText(Utils.splitTime(teamMembersListNew.get(position).getCalendarEntriesModel().getFrom()));
+
+                        if (teamMembersListNew.get(position).getCalendarEntriesModel() != null)
+                            holderList.mbookingCheckOutTime.setText(Utils.splitTime(teamMembersListNew.get(position).getCalendarEntriesModel().getMyto()));
+                    } catch (Exception e){
+
+                    }
+
+//                    holderList.mbookingCheckOutTime.setText(Utils.splitTime(teamMembersListNew.get(position).getDayGroups().get(0)
+//                            .getCalendarEntries().get(teamMembersListNew.get(position).getDayGroups().get(0)
+//                                    .getCalendarEntries().size() - 1).getMyto()));
                 } else {
                     holderList.timeLayout.setVisibility(View.GONE);
                     holderList.mbookingCheckInTime.setVisibility(View.GONE);
@@ -261,9 +263,9 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
 
                 System.out.println("bala check teams out");
-                if (teamMembersList.get(position).getProfileImage() != null
-                        && !teamMembersList.get(position).getProfileImage().equalsIgnoreCase("")) {
-                    String cleanImage = teamMembersList.get(position).getProfileImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,", "");
+                if (teamMembersListNew.get(position).getProfileImage() != null
+                        && !teamMembersListNew.get(position).getProfileImage().equalsIgnoreCase("")) {
+                    String cleanImage = teamMembersListNew.get(position).getProfileImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,", "");
                     byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     holderList.teamMemberImage.setImageBitmap(decodedByte);
@@ -274,7 +276,7 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 holderList.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        onProfileClickable.clickEvent(teamMembersList.get(holderList.getAbsoluteAdapterPosition()));
+                        onProfileClickable.clickEvent(teamMembersListNew.get(holderList.getAbsoluteAdapterPosition()).getDaoTeamMember());
                     }
                 });
 
@@ -290,7 +292,7 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemCount() {
-        return teamMembersList.size();
+        return teamMembersListNew.size();
     }
 
     public class viewHolder extends RecyclerView.ViewHolder {

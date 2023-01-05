@@ -151,7 +151,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                 list.get(position).getCalendarEntriesModel()
                         .getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
             if (Utils.compareTwoDate(list.get(position).getDate(), Utils.getCurrentDate())==2){
-                SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Booked");
+//                SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Booked");
             }
 
             holder.rlBookingRemoteBlock.setVisibility(View.GONE);
@@ -162,7 +162,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                         .append(list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getBuildingName())
                         .append(" - ").append(list.get(position).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getfLoorName()).toString()
                 );
-            }catch (Exception e){
+            } catch (Exception e){
 
             }
 
@@ -341,7 +341,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     holder.tvBookingWorkingRemote.setText("Request for desk");
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("Request for desk");
                     if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
-                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Request for desk");
+//                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Request for desk");
                     }
                     break;
                 case "WFH":
@@ -357,7 +357,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("You’re working remotely");
                     if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
-                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Working remotely");
+//                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Working remotely");
                     }
 
                     Glide.with(context)
@@ -379,7 +379,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("You're Working in alternative office");
                     if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
-                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Alternative Office");
+//                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Alternative Office");
                     }
                     Glide.with(context)
                             .load(R.drawable.home)
@@ -401,7 +401,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("You're training");
                     if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
-                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Training");
+//                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Training");
                     }
                     Glide.with(context)
                             .load(R.drawable.training_book)
@@ -417,7 +417,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("Out of office");
                     if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
-                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Out of Office");
+//                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Out of Office");
                     }
                     Glide.with(context)
                             .load(R.drawable.out_of_office_plane)
@@ -433,7 +433,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("You’re off sick");
                     if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
-                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Sick Leave");
+//                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Sick Leave");
                     }
                     Glide.with(context)
                             .load(R.drawable.sick_plus)

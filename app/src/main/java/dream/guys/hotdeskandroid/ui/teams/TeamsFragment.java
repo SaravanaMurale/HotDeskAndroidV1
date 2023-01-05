@@ -47,6 +47,7 @@ import dream.guys.hotdeskandroid.adapter.TeamsFloorListAdapter;
 import dream.guys.hotdeskandroid.databinding.FragmentTeamsBinding;
 import dream.guys.hotdeskandroid.model.FloorListModel;
 import dream.guys.hotdeskandroid.model.HorizontalCalendarModel;
+import dream.guys.hotdeskandroid.model.TeamsMemberListDataModel;
 import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.DAOUpcomingBooking;
@@ -76,15 +77,22 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     HorizontalCalendarView calendarView;
     HashMap<Integer, String> floorList = new HashMap<>();
     ArrayList<DAOTeamMember> teamMembersList = new ArrayList<>();
+    ArrayList<TeamsMemberListDataModel> teamMembersInOfficeListNew = new ArrayList<>();
     ArrayList<DAOTeamMember> teamMembersInOfficeList = new ArrayList<>();
     ArrayList<DAOTeamMember> teamMembersRemoteList = new ArrayList<>();
+    ArrayList<TeamsMemberListDataModel> teamMembersRemoteListNew = new ArrayList<>();
     ArrayList<DAOTeamMember> teamMembersTrainingList = new ArrayList<>();
+    ArrayList<TeamsMemberListDataModel> teamMembersTrainingListNew = new ArrayList<>();
     ArrayList<DAOTeamMember> teamMembersUnknownList = new ArrayList<>();
+    ArrayList<TeamsMemberListDataModel> teamMembersUnknownListNew = new ArrayList<>();
     ArrayList<DAOTeamMember> teamMembersHolidayList = new ArrayList<>();
+    ArrayList<TeamsMemberListDataModel> teamMembersHolidayListNew = new ArrayList<>();
     ArrayList<DAOTeamMember> teamMembersOutOfOffice = new ArrayList<>();
+    ArrayList<TeamsMemberListDataModel> teamMembersOutOfOfficeNew = new ArrayList<>();
     ArrayList<DAOTeamMember> copyTeamMembersList = new ArrayList<>();
     ArrayList<TeamsContactsAdapter> dynamicAdapters = new ArrayList<>();
-    TeamsContactsAdapter teamsContactsAdapter, teamsContactsRemoteAdapter,teamsContactsTrainingAdapter, teamsContactsHolidaysAdapter,
+    TeamsContactsAdapter teamsContactsAdapter, teamsContactsRemoteAdapter,
+            teamsContactsTrainingAdapter, teamsContactsHolidaysAdapter,
             teamsContactsOutOfOfficeAdapter, teamsContactsUnknownAdapter;
     TeamsAdapter teamsAdapter;
     TeamsFloorListAdapter teamsFloorListAdapter;
@@ -465,52 +473,237 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                             teamMembersHolidayList.clear();
                             teamMembersOutOfOffice.clear();
                             teamMembersInOfficeList.clear();
+                            teamMembersUnknownListNew.clear();
+                            teamMembersRemoteListNew.clear();
+                            teamMembersTrainingListNew.clear();
+                            teamMembersHolidayListNew.clear();
+                            teamMembersOutOfOfficeNew.clear();
+                            teamMembersInOfficeListNew.clear();
                             teamMembersList = response.body();
                             copyTeamMembersList = response.body();
                             floorList.clear();
-                            System.out.println("bala check team outer" + teamMembersList.size());
+
                             for (int i = 0; i < teamMembersList.size(); i++) {
+
                                 if (teamMembersList.get(i).getDayGroups().size() > 0
                                         && teamMembersList.get(i).getDayGroups().get(0)
                                         .getCalendarEntries().size() > 0) {
                                     for (int x = 0; x < teamMembersList.get(i).getDayGroups().get(0)
                                             .getCalendarEntries().size(); x++) {
+
                                         switch (teamMembersList.get(i).getDayGroups().get(0)
                                                 .getCalendarEntries().get(x)
                                                 .getUsageTypeAbbreviation()) {
                                             case "IO":
-                                                teamMembersInOfficeList.add(teamMembersList.get(i));
+                                                try {
+                                                    TeamsMemberListDataModel daoTeamMember = new TeamsMemberListDataModel();
+                                                    TeamsMemberListDataModel.CalendarEntry calendarEntry = new TeamsMemberListDataModel.CalendarEntry();
+                                                    TeamsMemberListDataModel.CalendarEntry.Booking calendarEntryBooking = new TeamsMemberListDataModel.CalendarEntry.Booking();
+                                                    TeamsMemberListDataModel.CalendarEntry.Booking.Status calendarEntryBookingStatus = new TeamsMemberListDataModel.CalendarEntry.Booking.Status();
+                                                    TeamsMemberListDataModel.LocationBuildingFloor locationBuildingFloor = new TeamsMemberListDataModel.LocationBuildingFloor();
+
+                                                    daoTeamMember.setDaoTeamMember(teamMembersList.get(i));
+                                                    daoTeamMember.setTeamId(teamMembersList.get(i).getTeamId());
+                                                    daoTeamMember.setTeamMembershipId(teamMembersList.get(i).getTeamMembershipId());
+                                                    daoTeamMember.setIfFirstAidStatus(teamMembersList.get(i).isIfFirstAidStatus());
+                                                    daoTeamMember.setFireStatus(teamMembersList.get(i).isFireStatus());
+                                                    daoTeamMember.setFirstName(teamMembersList.get(i).getFirstName());
+                                                    daoTeamMember.setLastName(teamMembersList.get(i).getLastName());
+                                                    daoTeamMember.setProfileImage(teamMembersList.get(i).getProfileImage());
+                                                    daoTeamMember.setProfileImageUrl(teamMembersList.get(i).getProfileImageUrl());
+                                                    daoTeamMember.setUserId(teamMembersList.get(i).getUserId());
+
+                                                    calendarEntry.setFrom(teamMembersList.get(i).getDayGroups().get(0)
+                                                            .getCalendarEntries().get(x).getFrom());
+                                                    calendarEntry.setMyto(teamMembersList.get(i).getDayGroups().get(0)
+                                                            .getCalendarEntries().get(x).getMyto());
+
+                                                    calendarEntryBooking.setDeskCode(teamMembersList.get(i).getDayGroups().get(0)
+                                                            .getCalendarEntries().get(x).getBooking().getDeskCode());
+
+                                                    locationBuildingFloor.setBuildingID(teamMembersList.get(i).getDayGroups().get(0)
+                                                            .getCalendarEntries().get(x).getBooking().getLocationBuildingFloor().getBuildingID());
+                                                    locationBuildingFloor.setFloorID(teamMembersList.get(i).getDayGroups().get(0)
+                                                            .getCalendarEntries().get(x).getBooking().getLocationBuildingFloor().getFloorID());
+                                                    locationBuildingFloor.setBuildingName(teamMembersList.get(i).getDayGroups().get(0)
+                                                            .getCalendarEntries().get(x).getBooking().getLocationBuildingFloor().getBuildingName());
+                                                    locationBuildingFloor.setfLoorName(teamMembersList.get(i).getDayGroups().get(0)
+                                                            .getCalendarEntries().get(x).getBooking().getLocationBuildingFloor().getfLoorName());
+
+                                                    calendarEntryBookingStatus.setId(teamMembersList.get(i).getDayGroups().get(0)
+                                                            .getCalendarEntries().get(x).getBooking().getStatus().getId());
+                                                    calendarEntryBookingStatus.setName(teamMembersList.get(i).getDayGroups().get(0)
+                                                            .getCalendarEntries().get(x).getBooking().getStatus().getName());
+
+                                                    calendarEntryBooking.setLocationBuildingFloor(locationBuildingFloor);
+                                                    calendarEntryBooking.setStatus(calendarEntryBookingStatus);
+                                                    calendarEntry.setBooking(calendarEntryBooking);
+                                                    daoTeamMember.setCalendarEntriesModel(calendarEntry);
+
+                                                    teamMembersList.get(i);
+                                                    teamMembersInOfficeList.add(teamMembersList.get(i));
+                                                    teamMembersInOfficeListNew.add(daoTeamMember);
+                                                    /*daoTeamMember.setTeamFromTIme(teamMembersList.get(i).getDayGroups().get(0)
+                                                            .getCalendarEntries().get(x).getFrom());
+                                                    daoTeamMember.setTeamToTime(teamMembersList.get(i).getDayGroups().get(0)
+                                                            .getCalendarEntries().get(x).getMyto());
+*/
+
 //                                                for (int j=0; j<teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries().size();j++){
-                                                if (teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
-                                                        .get(x).getBooking() != null
-                                                        && !floorList.containsKey(teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
-                                                        .get(x).getBooking().getLocationBuildingFloor().getFloorID())) {
-                                                    floorList.put(teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
-                                                                    .get(x).getBooking().getLocationBuildingFloor().getFloorID(),
-                                                            teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
-                                                                    .get(x).getBooking().getLocationBuildingFloor().getfLoorName());
+                                                    if (teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
+                                                            .get(x).getBooking() != null
+                                                            && !floorList.containsKey(teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
+                                                            .get(x).getBooking().getLocationBuildingFloor().getFloorID())) {
+                                                        floorList.put(teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
+                                                                        .get(x).getBooking().getLocationBuildingFloor().getFloorID(),
+                                                                teamMembersList.get(i).getDayGroups().get(0).getCalendarEntries()
+                                                                        .get(x).getBooking().getLocationBuildingFloor().getfLoorName());
+                                                    }
+                                                } catch (Exception e){
+
                                                 }
-//                                                }
                                                 break;
                                             case "WFH":
-                                                teamMembersRemoteList.add(teamMembersList.get(i));
+                                                try {
+                                                    TeamsMemberListDataModel daoTeamMember = new TeamsMemberListDataModel();
+                                                    TeamsMemberListDataModel.CalendarEntry calendarEntry = new TeamsMemberListDataModel.CalendarEntry();
+                                                    daoTeamMember.setDaoTeamMember(teamMembersList.get(i));
+
+                                                    daoTeamMember.setTeamId(teamMembersList.get(i).getTeamId());
+                                                    daoTeamMember.setTeamMembershipId(teamMembersList.get(i).getTeamMembershipId());
+                                                    daoTeamMember.setIfFirstAidStatus(teamMembersList.get(i).isIfFirstAidStatus());
+                                                    daoTeamMember.setFireStatus(teamMembersList.get(i).isFireStatus());
+                                                    daoTeamMember.setFirstName(teamMembersList.get(i).getFirstName());
+                                                    daoTeamMember.setLastName(teamMembersList.get(i).getLastName());
+                                                    daoTeamMember.setProfileImage(teamMembersList.get(i).getProfileImage());
+                                                    daoTeamMember.setProfileImageUrl(teamMembersList.get(i).getProfileImageUrl());
+                                                    daoTeamMember.setUserId(teamMembersList.get(i).getUserId());
+
+                                                    calendarEntry.setFrom(teamMembersList.get(i).getDayGroups().get(0)
+                                                            .getCalendarEntries().get(x).getFrom());
+                                                    calendarEntry.setMyto(teamMembersList.get(i).getDayGroups().get(0)
+                                                            .getCalendarEntries().get(x).getMyto());
+
+                                                    daoTeamMember.setCalendarEntriesModel(calendarEntry);
+
+                                                    teamMembersRemoteList.add(teamMembersList.get(i));
+                                                    teamMembersRemoteListNew.add(daoTeamMember);
+                                                }catch (Exception e){
+
+                                                }
                                                 break;
                                             case "OO":
-                                                teamMembersOutOfOffice.add(teamMembersList.get(i));
+                                                try {
+                                                    TeamsMemberListDataModel daoTeamMember = new TeamsMemberListDataModel();
+                                                    TeamsMemberListDataModel.CalendarEntry calendarEntry = new TeamsMemberListDataModel.CalendarEntry();
+                                                    daoTeamMember.setDaoTeamMember(teamMembersList.get(i));
+
+                                                    daoTeamMember.setTeamId(teamMembersList.get(i).getTeamId());
+                                                    daoTeamMember.setTeamMembershipId(teamMembersList.get(i).getTeamMembershipId());
+                                                    daoTeamMember.setIfFirstAidStatus(teamMembersList.get(i).isIfFirstAidStatus());
+                                                    daoTeamMember.setFireStatus(teamMembersList.get(i).isFireStatus());
+                                                    daoTeamMember.setFirstName(teamMembersList.get(i).getFirstName());
+                                                    daoTeamMember.setLastName(teamMembersList.get(i).getLastName());
+                                                    daoTeamMember.setProfileImage(teamMembersList.get(i).getProfileImage());
+                                                    daoTeamMember.setProfileImageUrl(teamMembersList.get(i).getProfileImageUrl());
+                                                    daoTeamMember.setUserId(teamMembersList.get(i).getUserId());
+
+                                                    calendarEntry.setFrom(teamMembersList.get(i).getDayGroups().get(0)
+                                                            .getCalendarEntries().get(x).getFrom());
+                                                    calendarEntry.setMyto(teamMembersList.get(i).getDayGroups().get(0)
+                                                            .getCalendarEntries().get(x).getMyto());
+
+                                                    daoTeamMember.setCalendarEntriesModel(calendarEntry);
+                                                    teamMembersOutOfOffice.add(teamMembersList.get(i));
+                                                    teamMembersOutOfOfficeNew.add(daoTeamMember);
+                                                } catch (Exception e){
+
+                                                }
                                                 break;
                                             case "TR":
-                                                teamMembersTrainingList.add(teamMembersList.get(i));
+                                                try {
+                                                    TeamsMemberListDataModel daoTeamMember = new TeamsMemberListDataModel();
+                                                    TeamsMemberListDataModel.CalendarEntry calendarEntry = new TeamsMemberListDataModel.CalendarEntry();
+                                                    daoTeamMember.setDaoTeamMember(teamMembersList.get(i));
+
+                                                    daoTeamMember.setTeamId(teamMembersList.get(i).getTeamId());
+                                                    daoTeamMember.setTeamMembershipId(teamMembersList.get(i).getTeamMembershipId());
+                                                    daoTeamMember.setIfFirstAidStatus(teamMembersList.get(i).isIfFirstAidStatus());
+                                                    daoTeamMember.setFireStatus(teamMembersList.get(i).isFireStatus());
+                                                    daoTeamMember.setFirstName(teamMembersList.get(i).getFirstName());
+                                                    daoTeamMember.setLastName(teamMembersList.get(i).getLastName());
+                                                    daoTeamMember.setProfileImage(teamMembersList.get(i).getProfileImage());
+                                                    daoTeamMember.setProfileImageUrl(teamMembersList.get(i).getProfileImageUrl());
+                                                    daoTeamMember.setUserId(teamMembersList.get(i).getUserId());
+
+                                                    calendarEntry.setFrom(teamMembersList.get(i).getDayGroups().get(0)
+                                                            .getCalendarEntries().get(x).getFrom());
+                                                    calendarEntry.setMyto(teamMembersList.get(i).getDayGroups().get(0)
+                                                            .getCalendarEntries().get(x).getMyto());
+
+                                                    daoTeamMember.setCalendarEntriesModel(calendarEntry);
+
+                                                    teamMembersTrainingList.add(teamMembersList.get(i));
+                                                    teamMembersTrainingListNew.add(daoTeamMember);
+                                                }catch (Exception e){
+
+                                                }
                                                 break;
                                             case "SL":
-                                                teamMembersHolidayList.add(teamMembersList.get(i));
+                                                try {
+                                                    TeamsMemberListDataModel daoTeamMember = new TeamsMemberListDataModel();
+                                                    TeamsMemberListDataModel.CalendarEntry calendarEntry = new TeamsMemberListDataModel.CalendarEntry();
+                                                    daoTeamMember.setDaoTeamMember(teamMembersList.get(i));
+
+                                                    daoTeamMember.setTeamId(teamMembersList.get(i).getTeamId());
+                                                    daoTeamMember.setTeamMembershipId(teamMembersList.get(i).getTeamMembershipId());
+                                                    daoTeamMember.setIfFirstAidStatus(teamMembersList.get(i).isIfFirstAidStatus());
+                                                    daoTeamMember.setFireStatus(teamMembersList.get(i).isFireStatus());
+                                                    daoTeamMember.setFirstName(teamMembersList.get(i).getFirstName());
+                                                    daoTeamMember.setLastName(teamMembersList.get(i).getLastName());
+                                                    daoTeamMember.setProfileImage(teamMembersList.get(i).getProfileImage());
+                                                    daoTeamMember.setProfileImageUrl(teamMembersList.get(i).getProfileImageUrl());
+                                                    daoTeamMember.setUserId(teamMembersList.get(i).getUserId());
+
+                                                    calendarEntry.setFrom(teamMembersList.get(i).getDayGroups().get(0)
+                                                            .getCalendarEntries().get(x).getFrom());
+                                                    calendarEntry.setMyto(teamMembersList.get(i).getDayGroups().get(0)
+                                                            .getCalendarEntries().get(x).getMyto());
+
+                                                    daoTeamMember.setCalendarEntriesModel(calendarEntry);
+
+                                                    teamMembersHolidayList.add(teamMembersList.get(i));
+                                                    teamMembersHolidayListNew.add(daoTeamMember);
+                                                }catch (Exception e){
+
+                                                }
                                                 break;
                                             default:
 
                                         }
                                     }
+                                } else {
+                                    try {
+                                        TeamsMemberListDataModel daoTeamMember = new TeamsMemberListDataModel();
+                                        daoTeamMember.setDaoTeamMember(teamMembersList.get(i));
 
-                                } else
-                                    teamMembersUnknownList.add(teamMembersList.get(i));
+                                        daoTeamMember.setTeamId(teamMembersList.get(i).getTeamId());
+                                        daoTeamMember.setTeamMembershipId(teamMembersList.get(i).getTeamMembershipId());
+                                        daoTeamMember.setIfFirstAidStatus(teamMembersList.get(i).isIfFirstAidStatus());
+                                        daoTeamMember.setFireStatus(teamMembersList.get(i).isFireStatus());
+                                        daoTeamMember.setFirstName(teamMembersList.get(i).getFirstName());
+                                        daoTeamMember.setLastName(teamMembersList.get(i).getLastName());
+                                        daoTeamMember.setProfileImage(teamMembersList.get(i).getProfileImage());
+                                        daoTeamMember.setProfileImageUrl(teamMembersList.get(i).getProfileImageUrl());
+                                        daoTeamMember.setUserId(teamMembersList.get(i).getUserId());
+
+
+                                        teamMembersUnknownList.add(teamMembersList.get(i));
+                                        teamMembersUnknownListNew.add(daoTeamMember);
+                                    }catch (Exception e){
+
+                                    }
+                                }
                             }
 
                             if (teamMembersList != null && teamMembersList.size() > 0) {
@@ -582,16 +775,27 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                             key.equals(teamMembersInOfficeList.get(i).getDayGroups().get(0).getCalendarEntries()
                                     .get(j).getBooking().getLocationBuildingFloor()
                                     .getFloorID())) {
-                        System.out.println("team add" + teamMembersInOfficeList.get(i).getDayGroups().get(0).getCalendarEntries().size());
+
                         teamMembersFloorList.add(teamMembersInOfficeList.get(i));
                         break loopu;
                     }
+                }
+            }
+            ArrayList<TeamsMemberListDataModel> teamMembersFloorListnew = new ArrayList<>();
+            for (int i = 0; i < teamMembersInOfficeListNew.size(); i++) {
+                if (teamMembersInOfficeListNew.get(i).getCalendarEntriesModel().getBooking() != null
+                        &&
+                        key.equals(teamMembersInOfficeListNew.get(i).getCalendarEntriesModel().getBooking().getLocationBuildingFloor()
+                                .getFloorID())) {
+                    teamMembersFloorListnew.add(teamMembersInOfficeListNew.get(i));
+
                 }
             }
 
             floorListModel.setFloorId(key);
             floorListModel.setFloorName(value);
             floorListModel.setDaoTeamMembers(teamMembersFloorList);
+            floorListModel.setDaoTeamMembersNew(teamMembersFloorListnew);
             floorListModels.add(floorListModel);
 
 //            getAvaliableDeskDetails(key, tvAvailableCount);
@@ -633,14 +837,14 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     }
 
     private void setValueToAdapter(ArrayList<DAOTeamMember> teamMembersList) {
-        if (teamMembersTrainingList.size() > 0) {
+        if (teamMembersTrainingListNew.size() > 0) {
             binding.tvWorkTraining.setVisibility(View.VISIBLE);
             binding.recyclerViewTraining.setVisibility(View.VISIBLE);
         } else {
             binding.tvWorkTraining.setVisibility(View.GONE);
             binding.recyclerViewTraining.setVisibility(View.GONE);
         }
-        if (teamMembersRemoteList.size() > 0) {
+        if (teamMembersRemoteListNew.size() > 0) {
             binding.tvWorkRemote.setVisibility(View.VISIBLE);
             binding.recyclerViewRemote.setVisibility(View.VISIBLE);
         } else {
@@ -648,14 +852,14 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             binding.recyclerViewRemote.setVisibility(View.GONE);
         }
 
-        if (teamMembersUnknownList.size() > 0) {
+        if (teamMembersUnknownListNew.size() > 0) {
             binding.tvUnknown.setVisibility(View.VISIBLE);
             binding.recyclerViewUnkown.setVisibility(View.VISIBLE);
         } else {
             binding.tvUnknown.setVisibility(View.GONE);
             binding.recyclerViewUnkown.setVisibility(View.GONE);
         }
-        if (teamMembersOutOfOffice.size() > 0) {
+        if (teamMembersOutOfOfficeNew.size() > 0) {
             binding.tvOutOfOffice.setVisibility(View.VISIBLE);
             binding.recyclerViewOutOfOffice.setVisibility(View.VISIBLE);
         } else {
@@ -663,14 +867,14 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             binding.recyclerViewOutOfOffice.setVisibility(View.GONE);
         }
 
-        if (teamMembersHolidayList.size() > 0) {
+        if (teamMembersHolidayListNew.size() > 0) {
             binding.tvHoliday.setVisibility(View.VISIBLE);
             binding.recyclerViewHoliday.setVisibility(View.VISIBLE);
         } else {
             binding.tvHoliday.setVisibility(View.GONE);
             binding.recyclerViewHoliday.setVisibility(View.GONE);
         }
-        if (teamMembersInOfficeList.size() > 0) {
+        if (teamMembersInOfficeListNew.size() > 0) {
 //            binding.tvFloorName.setVisibility(View.VISIBLE);
             binding.tvAdddress.setVisibility(View.GONE);
             binding.listTitle.setVisibility(View.VISIBLE);
@@ -680,12 +884,10 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 //            binding.tvFloorName.setText(""+teamMembersInOfficeList.get(0).getDayGroups()
 //                    .get(0).getCalendarEntries()
 //                    .get(0).getBooking().getLocationBuildingFloor().getfLoorName());
-            if (teamMembersInOfficeList.get(0).getDayGroups()
-                    .get(0).getCalendarEntries()
-                    .get(0).getBooking() != null)
-                binding.tvAdddress.setText("" + teamMembersInOfficeList.get(0).getDayGroups()
-                        .get(0).getCalendarEntries()
-                        .get(0).getBooking().getLocationBuildingFloor().getBuildingName());
+            if (teamMembersInOfficeListNew.get(0).getCalendarEntriesModel().getBooking()!= null)
+                binding.tvAdddress.setText("" + teamMembersInOfficeListNew.get(0)
+                        .getCalendarEntriesModel()
+                        .getBooking().getLocationBuildingFloor().getBuildingName());
         } else {
 //            binding.tvFloorName.setVisibility(View.GONE);
             binding.tvAdddress.setVisibility(View.GONE);
@@ -704,7 +906,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         else
             binding.recyclerViewTraining.setLayoutManager(new LinearLayoutManager(getActivity(),
                     LinearLayoutManager.HORIZONTAL, false));
-        teamsContactsTrainingAdapter = new TeamsContactsAdapter(getActivity(), teamMembersTrainingList, this, this);
+        teamsContactsTrainingAdapter = new TeamsContactsAdapter(getActivity(), teamMembersTrainingList,teamMembersTrainingListNew, this, this);
         binding.recyclerViewTraining.setAdapter(teamsContactsTrainingAdapter);
 
         if (expandStatus)
@@ -713,7 +915,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         else
             binding.recyclerViewRemote.setLayoutManager(new LinearLayoutManager(getActivity(),
                     LinearLayoutManager.HORIZONTAL, false));
-        teamsContactsRemoteAdapter = new TeamsContactsAdapter(getActivity(), teamMembersRemoteList, this, this);
+        teamsContactsRemoteAdapter = new TeamsContactsAdapter(getActivity(), teamMembersRemoteList,teamMembersRemoteListNew, this, this);
         binding.recyclerViewRemote.setAdapter(teamsContactsRemoteAdapter);
 
 
@@ -723,7 +925,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         else
             binding.recyclerViewOutOfOffice.setLayoutManager(new LinearLayoutManager(getActivity(),
                     LinearLayoutManager.HORIZONTAL, false));
-        teamsContactsOutOfOfficeAdapter = new TeamsContactsAdapter(getActivity(), teamMembersOutOfOffice,
+        teamsContactsOutOfOfficeAdapter = new TeamsContactsAdapter(getActivity(), teamMembersOutOfOffice,teamMembersOutOfOfficeNew,
                 this, this);
         binding.recyclerViewOutOfOffice.setAdapter(teamsContactsOutOfOfficeAdapter);
 
@@ -733,7 +935,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         else
             binding.recyclerViewHoliday.setLayoutManager(new LinearLayoutManager(getActivity(),
                     LinearLayoutManager.HORIZONTAL, false));
-        teamsContactsHolidaysAdapter = new TeamsContactsAdapter(getActivity(), teamMembersHolidayList, this, this);
+        teamsContactsHolidaysAdapter = new TeamsContactsAdapter(getActivity(), teamMembersHolidayList,teamMembersHolidayListNew, this, this);
         binding.recyclerViewHoliday.setAdapter(teamsContactsHolidaysAdapter);
 
         if (expandStatus)
@@ -742,7 +944,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         else
             binding.recyclerViewUnkown.setLayoutManager(new LinearLayoutManager(getActivity(),
                     LinearLayoutManager.HORIZONTAL, false));
-        teamsContactsUnknownAdapter = new TeamsContactsAdapter(getActivity(), teamMembersUnknownList, this, this);
+        teamsContactsUnknownAdapter = new TeamsContactsAdapter(getActivity(), teamMembersUnknownList,teamMembersUnknownListNew, this, this);
         binding.recyclerViewUnkown.setAdapter(teamsContactsUnknownAdapter);
     }
 
@@ -900,19 +1102,19 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 //        teamsContactsAdapter = new TeamsContactsAdapter(getActivity(),teamMembersInOfficeList, this);
 //        binding.recyclerView.setAdapter(teamsContactsAdapter);
 
-        teamsContactsTrainingAdapter = new TeamsContactsAdapter(getActivity(), teamMembersTrainingList, this, this);
+        teamsContactsTrainingAdapter = new TeamsContactsAdapter(getActivity(), teamMembersTrainingList,teamMembersTrainingListNew, this, this);
         binding.recyclerViewTraining.setAdapter(teamsContactsTrainingAdapter);
 
-        teamsContactsRemoteAdapter = new TeamsContactsAdapter(getActivity(), teamMembersRemoteList, this, this);
+        teamsContactsRemoteAdapter = new TeamsContactsAdapter(getActivity(), teamMembersRemoteList,teamMembersRemoteListNew, this, this);
         binding.recyclerViewRemote.setAdapter(teamsContactsRemoteAdapter);
 
-        teamsContactsOutOfOfficeAdapter = new TeamsContactsAdapter(getActivity(), teamMembersOutOfOffice, this, this);
+        teamsContactsOutOfOfficeAdapter = new TeamsContactsAdapter(getActivity(), teamMembersOutOfOffice,teamMembersOutOfOfficeNew, this, this);
         binding.recyclerViewOutOfOffice.setAdapter(teamsContactsOutOfOfficeAdapter);
 
-        teamsContactsHolidaysAdapter = new TeamsContactsAdapter(getActivity(), teamMembersHolidayList, this, this);
+        teamsContactsHolidaysAdapter = new TeamsContactsAdapter(getActivity(), teamMembersHolidayList,teamMembersHolidayListNew, this, this);
         binding.recyclerViewHoliday.setAdapter(teamsContactsHolidaysAdapter);
 
-        teamsContactsUnknownAdapter = new TeamsContactsAdapter(getActivity(), teamMembersUnknownList, this, this);
+        teamsContactsUnknownAdapter = new TeamsContactsAdapter(getActivity(), teamMembersUnknownList,teamMembersUnknownListNew, this, this);
         binding.recyclerViewHoliday.setAdapter(teamsContactsUnknownAdapter);
 
         Calendar startDate = Calendar.getInstance();
@@ -1221,7 +1423,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                     if (deskAvaliabilityResponseList != null) {
                         for (int i = 0; i < deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size(); i++) {
                             if (!deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).isBookedByElse()
-                                    && !deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).isBookedByUser()) {
+                                    || !deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).isBookedByUser()) {
                                 teamAvailableCount++;
                             }
                         }

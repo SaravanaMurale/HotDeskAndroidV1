@@ -52,9 +52,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text=""
-                        android:visibility="gone"
                         android:textSize="14sp"
-                        android:theme="@style/TextSmall" />
+                        android:theme="@style/TextSmall"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <TextView
@@ -344,18 +344,18 @@
                 android:id="@+id/registrationLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:background="@drawable/rectangle_greybg_with_corner"
-                android:layout_marginTop="@dimen/_5sdp">
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
                     android:text="Registration"
-                    android:layout_centerInParent="true"
                     android:textColor="@color/figmaBlack"
                     android:textSize="16sp"
                     android:theme="@style/TextBold" />
@@ -365,14 +365,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:gravity="end"
-                    android:textColor="@color/figmaBlack"
                     android:background="@color/transparent"
+                    android:gravity="end"
                     android:paddingHorizontal="@dimen/_15sdp"
                     android:paddingVertical="@dimen/_10sdp"
+                    android:textColor="@color/figmaBlack"
                     android:visibility="visible" />
             </RelativeLayout>
-
 
 
             <!--SelectDesk-->
@@ -386,8 +385,10 @@
 
                 <LinearLayout
                     android:id="@+id/ll_desk_layout"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_toLeftOf="@+id/change_layout"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:orientation="horizontal">
 
@@ -480,24 +481,27 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/select_desk_room"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:layout_marginEnd="@dimen/_5sdp"
-                            android:text="Change"
-                            android:textColor="@color/figmaBlueText"
-                            android:textSize="18sp"
-                            android:theme="@style/TextBold" />
-                    </RelativeLayout>
                 </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/change_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/select_desk_room"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:text="Change"
+                        android:textColor="@color/figmaBlueText"
+                        android:textSize="18sp"
+                        android:theme="@style/TextBold" />
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -553,8 +557,6 @@
 
 
             </RelativeLayout>
-
-
 
 
             <!--<TextView

@@ -49,7 +49,6 @@ public class TeamsFloorListAdapter extends RecyclerView.Adapter<TeamsFloorListAd
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View floorImageLayout = LayoutInflater.from(context).inflate(R.layout.floor_layout_recycler, parent, false);
         return new TeamsFloorListAdapter.viewHolder(floorImageLayout);
-
     }
 
     @Override
@@ -57,18 +56,23 @@ public class TeamsFloorListAdapter extends RecyclerView.Adapter<TeamsFloorListAd
         holder.floorName.setText(floorListModels.get(position).getFloorName());
         holder.tvAvailableCount.setText(floorListModels.get(position).getDeskAvailability());
 
-        if (fragment.expandStatus)
+        if (fragment.expandStatus) {
             holder.recyclerViewFloor.setLayoutManager(new LinearLayoutManager(context,
-                    LinearLayoutManager.VERTICAL,false));
-        else
+                    LinearLayoutManager.VERTICAL, false));
+            holder.tvAvailableCount.setVisibility(View.GONE);
+        }
+        else {
             holder.recyclerViewFloor.setLayoutManager(new LinearLayoutManager(context,
-                    LinearLayoutManager.HORIZONTAL,false));
+                    LinearLayoutManager.HORIZONTAL, false));
+            holder.tvAvailableCount.setVisibility(View.VISIBLE);
+        }
         holder.recyclerViewFloor.addItemDecoration(new TeamsFragment.OverlapDecoration());
         holder.recyclerViewFloor.setHasFixedSize(true);
 
 
         TeamsContactsAdapter floorAdapter = new TeamsContactsAdapter(context,
                 floorListModels.get(position).getDaoTeamMembers(),
+                floorListModels.get(position).getDaoTeamMembersNew(),
                 onProfileClickable,fragment);
         holder.recyclerViewFloor.setAdapter(floorAdapter);
         floorListener.updateAdapterList(floorAdapter);

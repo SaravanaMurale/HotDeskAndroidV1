@@ -25,6 +25,12 @@ public class DAOTeamMember implements Serializable {
     @SerializedName("firstName")
     @Expose
     private String firstName;
+
+    @SerializedName("positionData")
+    @Expose
+    private int positionData;
+    private String teamFromTIme;
+    private String teamToTime;
     @SerializedName("lastName")
     @Expose
     private String lastName;
@@ -38,6 +44,31 @@ public class DAOTeamMember implements Serializable {
     @SerializedName("dayGroups")
     @Expose
     private ArrayList<DayGroup> dayGroups;
+
+
+    public int getPositionData() {
+        return positionData;
+    }
+
+    public void setPositionData(int positionData) {
+        this.positionData = positionData;
+    }
+
+    public String getTeamFromTIme() {
+        return teamFromTIme;
+    }
+
+    public void setTeamFromTIme(String teamFromTIme) {
+        this.teamFromTIme = teamFromTIme;
+    }
+
+    public String getTeamToTime() {
+        return teamToTime;
+    }
+
+    public void setTeamToTime(String teamToTime) {
+        this.teamToTime = teamToTime;
+    }
 
     public boolean isFireStatus() {
         return isFireStatus;

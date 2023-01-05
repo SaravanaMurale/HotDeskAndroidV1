@@ -79,7 +79,7 @@ public class UpComingBookingAdapter extends RecyclerView.Adapter<UpComingBooking
                 list.get(position).getCalendarEntriesModel()
                         .getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
             if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
-                SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Booked");
+//                SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Booked");
             }
 
             //holder.rlBookingRemoteBlock.setVisibility(View.GONE);
@@ -186,7 +186,7 @@ public class UpComingBookingAdapter extends RecyclerView.Adapter<UpComingBooking
 //                    holder.tvBookingWorkingRemote.setText("Request for Desk In Progress");
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("Request for Desk In Progress");
                     if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
-                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Request for Desk");
+//                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Request for Desk");
                     }
                     break;
                 case "WFH":
@@ -253,7 +253,7 @@ public class UpComingBookingAdapter extends RecyclerView.Adapter<UpComingBooking
 //                    holder.tvBookingWorkingRemote.setText("You're on Sick Leave");
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("You're on Sick Leave");
                     if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
-                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Sick Leave");
+//                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Sick Leave");
                     }
                     holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom()));
                     holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));

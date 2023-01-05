@@ -1,6 +1,7 @@
 package dream.guys.hotdeskandroid.ui.book;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -59,6 +60,7 @@ public class BookingDetailFragment extends Fragment {
     FragmentBookingDetailBinding fragmentBookingDetailBinding;
     private static final int PERMISSION_REQUEST_CODE = 1;
 
+    Activity activityContext;
     @BindView(R.id.bookDetailUserName)
     TextView bookDetailUserName;
 
@@ -123,21 +125,6 @@ public class BookingDetailFragment extends Fragment {
         fragmentBookingDetailBinding.bookDetailUserName.setText("Hi, "+
                 SessionHandler.getInstance().get(getContext(), AppConstants.USERNAME));
         fragmentBookingDetailBinding.teamName.setText(SessionHandler.getInstance().get(getContext(), AppConstants.CURRENT_TEAM));
-        if (SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS) != null && SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked in")) {
-            userCurrentStatus.setText("Checked In");
-        } else if (SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS) != null && SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked out")) {
-            userCurrentStatus.setText("Checked Out");
-            userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
-//            holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
-        } else {
-            if (SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS) != null) {
-                fragmentBookingDetailBinding.userCurrentStatus.setText(SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS));
-                fragmentBookingDetailBinding.userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
-            } else {
-                fragmentBookingDetailBinding.userCurrentStatus.setText("In Office");
-                fragmentBookingDetailBinding.userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaBlueText), android.graphics.PorterDuff.Mode.MULTIPLY);
-            }
-        }
 
         if (SessionHandler.getInstance().getBoolean(getActivity(), AppConstants.SHOWNOTIFICATION)) {
             fragmentBookingDetailBinding.notiIcon.setVisibility(View.VISIBLE);
@@ -323,6 +310,48 @@ public class BookingDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
+        this.activityContext=getActivity();
+
+        try {
+            loadUserImage();
+            if (SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS) != null
+                    && SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked in")) {
+                fragmentBookingDetailBinding.userStatus.setVisibility(View.VISIBLE);
+                fragmentBookingDetailBinding.userCurrentStatus.setVisibility(View.VISIBLE);
+                fragmentBookingDetailBinding.userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.teal_200), android.graphics.PorterDuff.Mode.MULTIPLY);
+                fragmentBookingDetailBinding.userCurrentStatus.setText("Checked In");
+            } else if (SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS) != null
+                    && SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("checked out")) {
+                fragmentBookingDetailBinding.userStatus.setVisibility(View.VISIBLE);
+                fragmentBookingDetailBinding.userCurrentStatus.setVisibility(View.VISIBLE);
+
+                fragmentBookingDetailBinding.userCurrentStatus.setText("Checked Out");
+                fragmentBookingDetailBinding.userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
+//            holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
+            }else if (SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS) != null
+                    && SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS).equalsIgnoreCase("new booking")) {
+                fragmentBookingDetailBinding.userStatus.setVisibility(View.VISIBLE);
+                fragmentBookingDetailBinding.userCurrentStatus.setVisibility(View.VISIBLE);
+
+                fragmentBookingDetailBinding.userCurrentStatus.setText("New booking");
+                fragmentBookingDetailBinding.userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaBlueText), android.graphics.PorterDuff.Mode.MULTIPLY);
+//            holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
+            } else {
+                fragmentBookingDetailBinding.userStatus.setVisibility(View.GONE);
+                fragmentBookingDetailBinding.userCurrentStatus.setVisibility(View.GONE);
+
+                if (SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS) != null) {
+                    fragmentBookingDetailBinding.userCurrentStatus.setText(SessionHandler.getInstance().get(getActivity(), AppConstants.USER_CURRENT_STATUS));
+                    fragmentBookingDetailBinding.userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
+                } else {
+                    fragmentBookingDetailBinding.userCurrentStatus.setText("In Office");
+                    fragmentBookingDetailBinding.userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaBlueText), android.graphics.PorterDuff.Mode.MULTIPLY);
+                }
+            }
+        } catch (Exception e){
+
+        }
+
     }
 
     public void changeCheckIn() {
@@ -410,6 +439,54 @@ public class BookingDetailFragment extends Fragment {
         //binding.homeUserName.setText(SessionHandler.getInstance().get(getContext(),AppConstants.USERNAME));
         profileData = Utils.getLoginData(getActivity());
 
+    }
+
+    private void loadUserImage() {
+        if (Utils.isNetworkAvailable(activityContext)) {
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<ImageResponse> call = apiService.getUserImage();
+            call.enqueue(new Callback<ImageResponse>() {
+                @Override
+                public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
+                    if (response.code() == 200) {
+                        ImageResponse imageResponse = response.body();
+                        if (imageResponse.getMessage() != null && !imageResponse.isStatus()) {
+//                            Utils.toastMessage(getContext(),imageResponse.getMessage().getCode());
+                            fragmentBookingDetailBinding.bookDetailUserProfilePic.setImageDrawable(ContextCompat.getDrawable(activityContext, R.drawable.avatar));
+                        }
+
+                        try {
+                            if (imageResponse.getImage() != null && !imageResponse.getImage().equalsIgnoreCase("") && !imageResponse.getImage().isEmpty()) {
+                                String cleanImage = imageResponse.getImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,", "");
+                                SessionHandler.getInstance().save(activityContext, AppConstants.USERIMAGE
+                                        , cleanImage);
+                                byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
+                                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                                fragmentBookingDetailBinding.bookDetailUserProfilePic.setImageBitmap(decodedByte);
+                            } else {
+                                fragmentBookingDetailBinding.bookDetailUserProfilePic.setImageDrawable(activityContext.getResources().getDrawable(R.drawable.avatar));
+                            }
+                        } catch (Exception e) {
+                            fragmentBookingDetailBinding.bookDetailUserProfilePic.setImageDrawable(activityContext.getResources().getDrawable(R.drawable.avatar));
+                        }
+
+                    } else if (response.code() == 401) {
+                        Utils.showCustomTokenExpiredDialog(getActivity(), "Token Expired");
+                        SessionHandler.getInstance().saveBoolean(activityContext, AppConstants.LOGIN_CHECK, false);
+//                        Utils.finishAllActivity(getContext());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ImageResponse> call, Throwable t) {
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
     }
 
     private void loadNotification() {
