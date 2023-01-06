@@ -102,12 +102,12 @@
             android:layout_marginStart="@dimen/_4sdp"/>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/notification_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/notification_recyclerview"
             android:layout_below="@+id/txt_outgoing"
             android:layout_marginTop="@dimen/_8sdp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </RelativeLayout>
 

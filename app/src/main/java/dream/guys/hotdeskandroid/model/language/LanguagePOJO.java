@@ -4244,6 +4244,9 @@ public class LanguagePOJO {
         @SerializedName("TenantName")
         @Expose
         private String tenantName;
+        @SerializedName("PastEvents")
+        @Expose
+        private String PastEvents;
         @SerializedName("EmailAddress")
         @Expose
         private String emailAddress;
@@ -5261,6 +5264,14 @@ public class LanguagePOJO {
         @SerializedName("EditTraining")
         String EditTraining; @SerializedName("SettingsTitle")
         String SettingsTitle;
+
+        public String getPastEvents() {
+            return PastEvents;
+        }
+
+        public void setPastEvents(String pastEvents) {
+            PastEvents = pastEvents;
+        }
 
         public String getSettingsTitle() {
             return SettingsTitle;

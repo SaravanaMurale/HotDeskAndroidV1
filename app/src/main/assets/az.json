@@ -389,10 +389,12 @@
         
         "SignIn": "Daxil olun",
         "SignInWithSso": "SSO ilə daxil olun",
-        "SignInWithPin": "PIN ilə daxil olun",
+        "SignInWithPin": "pin ilə daxil olun",
         "Tenant": "Kirayəçi",
         "Username": "İstifadəçi adı",
         "Password": "parol",
+        "PastEvents": "Keçmiş hadisələri göstərin",
+
         "ForgotPassword": "Şifrəni unutmusan",
         "OrSignInWith": "Və ya ilə daxil olun",
         "TenantName": "Kirayəçi adı",
@@ -607,7 +609,7 @@
         "EmailOrCompanyInvalid": "E-poçt və ya şirkət etibarsızdır.",
         "ResetPasswordAlert": "Qısa müddətdə parolunuzu necə sıfırlayacağınıza dair təlimatlarla bir e-poçt alacaqsınız.",
         "IncompletePinEntry": "Natamam Pin Girişi",
-        "InvalidPIN": "Yanlış PIN",
+        "InvalidPIN": "Yanlış pin",
         "EnterYourOldPin": "Köhnə pin kodunu daxil edin",
         "EnterYourNewPin": "Yeni pin kodunu daxil edin",
         "ReEnterNewPin": "Yeni pin kodunu yenidən daxil edin",

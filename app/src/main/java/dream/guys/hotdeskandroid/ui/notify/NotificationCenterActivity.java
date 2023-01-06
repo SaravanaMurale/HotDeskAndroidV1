@@ -79,6 +79,7 @@ public class NotificationCenterActivity extends AppCompatActivity {
         if (Utils.isNetworkAvailable(context)) {
             notificationList = new ArrayList<>();
             callIncomingNotification();
+            callOutGoingNotification();
 
         } else {
             Utils.toastMessage(context, "Please Enable Internet");
@@ -93,7 +94,7 @@ public class NotificationCenterActivity extends AppCompatActivity {
         call.enqueue(new Callback<IncomingRequestResponse>() {
             @Override
             public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {
-                if(response.code()==200){
+                if(response.code()==200) {
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
                     outGoingNotificationList = new ArrayList<>();
                     if (response.body()!=null && response.body().getResults()!=null){
@@ -135,7 +136,8 @@ public class NotificationCenterActivity extends AppCompatActivity {
         }
 
 
-        adapterNotificationList = new AdapterNotificationCenter(context,notificationList,count,notiList,outGoingNotificationList);
+        adapterNotificationList = new AdapterNotificationCenter(context,notificationList,
+                count,notiList,outGoingNotificationList);
         binding.notificationRecyclerview.setAdapter(adapterNotificationList);
 
     }

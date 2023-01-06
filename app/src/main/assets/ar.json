@@ -391,12 +391,13 @@
   
   "AppKeys": {
       "SignIn": "تسجيل الدخول",
-      "SignInWithPin": "قم بتسجيل الدخول باستخدام PIN",
+      "SignInWithPin": "قم بتسجيل الدخول باستخدام pin",
       "SignInWithSso": "تسجيل الدخول باستخدام SSO",
       "Tenant": "مستأجر",
       "Username": "اسم المستخدم",
       "Password": "كلمة المرور",
-      "ForgotPassword": "نسيت رقمك السري",
+    "PastEvents": "عرض الأحداث الماضية",
+    "ForgotPassword": "نسيت رقمك السري",
       "OrSignInWith": "أو قم بتسجيل الدخول باستخدام",
       "TenantName": "اسم المستأجر",
       "EmailAddress": "عنوان البريد الالكترونى",

@@ -382,12 +382,14 @@
     "AppKeys": {
         
         "SignIn": "Registrazione",
-        "SignInWithPin": "Accedi con il PIN",
+        "SignInWithPin": "Accedi con il pin",
         "Tenant": "Inquilino",
         "Username": "Nome utente",
         "Password": "Parola d'ordine",
         "ForgotPassword": "Hai dimenticato la password",
-        "OrSignInWith": "Oppure accedi con",
+      "PastEvents": "Mostra eventi passati",
+
+      "OrSignInWith": "Oppure accedi con",
         "TenantName": "Nome inquilino",
         "EmailAddress": "Indirizzo e-mail",
         "SubmitPasswordReset": "Invia reimpostazione password",
@@ -600,7 +602,7 @@
         "EmailOrCompanyInvalid": "L'e-mail o l'azienda non sono valide.",
         "ResetPasswordAlert": "Riceverai a breve un'e-mail con le istruzioni su come reimpostare la tua password.",
         "IncompletePinEntry": "Inserimento pin incompleto",
-        "InvalidPIN": "PIN non valido",
+        "InvalidPIN": "pin non valido",
         "EnterYourOldPin": "Inserisci il tuo vecchio pin",
         "EnterYourNewPin": "Inserisci il tuo nuovo pin",
         "ReEnterNewPin": "Reinserisci il tuo nuovo pin",

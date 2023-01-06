@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
             android:drawableTint="@color/figmaBlueText"
-            android:text="show Past Events"
+            android:text="Show past Events"
             android:gravity="center_vertical"
             android:theme="@style/TextRegular"
             android:textSize="14sp"

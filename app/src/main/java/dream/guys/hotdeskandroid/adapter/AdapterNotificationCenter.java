@@ -84,7 +84,6 @@ public class AdapterNotificationCenter extends RecyclerView.Adapter<AdapterNotif
         }
 
         if (notiList.get(position).getStatus() == 0) {
-
             holder.txt_count.setText("+" + String.valueOf(count) + " more");
             holder.date_time_lay.setVisibility(View.GONE);
             holder.pending_count_lay.setVisibility(View.VISIBLE);

@@ -396,7 +396,9 @@
       "Username": "उपयोगकर्ता नाम",
       "Password": "पासवर्ड",
       "ForgotPassword": "पासवर्ड भूल गए हैं",
-      "OrSignInWith": "या इसके साथ साइन इन करें",
+    "PastEvents": "पिछली घटनाएँ दिखाएँ",
+
+    "OrSignInWith": "या इसके साथ साइन इन करें",
       "TenantName": "किरायेदार का नाम",
       "EmailAddress": "ईमेल पता",
       "SubmitPasswordReset": "पासवर्ड रीसेट सबमिट करें",
