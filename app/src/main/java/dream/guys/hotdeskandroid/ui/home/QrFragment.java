@@ -195,7 +195,7 @@ public class QrFragment extends Fragment {
                     if (response.code()==200){
                         if (response.body().getResultCode()!=null && response.body().getResultCode().equalsIgnoreCase("ok")){
 //                        Toast.makeText(getActivity(), ""+response.body().getResultCode(), Toast.LENGTH_SHORT).show();
-                            Utils.showCustomAlertDialog(getActivity(), "Checked IN");
+                            Utils.toastShortMessage(getActivity(), "Checked IN");
                             SessionHandler.getInstance().save(getActivity(), AppConstants.USER_CURRENT_STATUS,"Checked IN");
                         }else {
                             if (response.body().getResultCode().toString().equals("INVALID_FROM")) {
@@ -215,10 +215,10 @@ public class QrFragment extends Fragment {
                             }else {
                                 resultString = response.body().getResultCode().toString();
                             }
-                            Utils.showCustomAlertDialog(getActivity(), resultString);
+                            Utils.toastShortMessage(getActivity(), resultString);
                         }
                     } else if (response.code() == 500){
-                        Utils.showCustomAlertDialog(getActivity(),""+response.message());
+                        Utils.toastShortMessage(getActivity(),""+response.message());
                     }else if (response.code() == 401){
                         Utils.showCustomTokenExpiredDialog(getActivity(),"401 Error Response");
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);

@@ -732,10 +732,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                             }else {
                                 resultString = response.body().getResultCode().toString();
                             }
-                            Utils.showCustomAlertDialog(getActivity(), resultString);
+                            Utils.toastShortMessage(getActivity(), resultString);
                         }
                     } else if (response.code() == 500) {
-                        Utils.showCustomAlertDialog(getActivity(), "error_code: 1999");
+                        Utils.toastShortMessage(getActivity(), "error_code: 1999");
                     } else if (response.code() == 401) {
                         Utils.showCustomTokenExpiredDialog(getActivity(), "401 Error Response");
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK, false);

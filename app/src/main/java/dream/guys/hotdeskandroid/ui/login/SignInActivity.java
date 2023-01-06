@@ -91,7 +91,7 @@ public class SignInActivity extends AppCompatActivity {
 
         if (getIntent().getExtras() != null &&
                 getIntent().getExtras().getBoolean("qr_deep_link")) {
-            Utils.showCustomAlertDialog(this, "Please Login then scan the Qr Code for booking.");
+            Utils.toastShortMessage(this, "Please Login then scan the Qr Code for booking.");
         }
         boolean tokenStatus =
                 SessionHandler.getInstance().getBoolean(

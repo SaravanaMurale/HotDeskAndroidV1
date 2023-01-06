@@ -212,7 +212,7 @@ public class GDPRActivity extends AppCompatActivity {
 
                     }else {
                         ProgressDialog.dismisProgressBar(GDPRActivity.this,dialog);
-                        Utils.showCustomAlertDialog(GDPRActivity.this,"SSO Login is not setup for this email contact admin.");
+                        Utils.toastShortMessage(GDPRActivity.this,"SSO Login is not setup for this email contact admin.");
                     }
                 }
                 @Override

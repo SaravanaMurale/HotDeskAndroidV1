@@ -744,8 +744,14 @@ public class Utils {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
     }
 
+    public static void clearSessionItems(final Activity mContext, String aMessage) {
+
+    }
     public static void showCustomTokenExpiredDialog(final Activity mContext, String aMessage) {
-        final Dialog dialog = new Dialog(mContext);
+
+        Utils.finishAllActivity(mContext);
+
+        /*final Dialog dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.dialog_validation);
@@ -761,8 +767,9 @@ public class Utils {
             }
         });
         dialog.show();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));*/
     }
+
 
 
     public static void bottomSheetEditYourBooking(Context mContext, Activity activity, String title, String date) {

@@ -276,7 +276,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
         //NewNew
         getBookingUsageTypes();
-        getCalendarEntryTeam();
+//        getCalendarEntryTeam();
 
 
         //New...
@@ -405,6 +405,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     }
 
 
+/*
     private void getCalendarEntryTeam() {
 
         if (Utils.isNetworkAvailable(getActivity())) {
@@ -445,6 +446,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             Utils.toastMessage(getActivity(), "Please Enable Internet");
         }
     }
+*/
 
 
     private void getTeamMembers() {
@@ -728,11 +730,11 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                         } else {
                             binding.locateProgressBar.setVisibility(View.INVISIBLE);
                             Log.d("Search", "onResponse: else");
-                            Utils.showCustomAlertDialog(getActivity(), "Api Issue Code: " + response.code());
+                            Utils.toastShortMessage(getActivity(), "Api Issue Code: " + response.code());
                         }
                     } else {
                         binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                        Utils.showCustomAlertDialog(getActivity(), "No Response");
+                        Utils.toastShortMessage(getActivity(), "No Response");
                     }
 
                 }
@@ -740,7 +742,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                 @Override
                 public void onFailure(Call<ArrayList<DAOTeamMember>> call, Throwable t) {
 //                    Toast.makeText(getActivity(), "on fail", Toast.LENGTH_SHORT).show();
-                    Utils.showCustomAlertDialog(getActivity(), "Response Failure: " + t.getMessage());
+                    Utils.toastShortMessage(getActivity(), "Response Failure: " + t.getMessage());
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
                     Log.d("Search", "onResponse: fail" + t.getMessage());
                 }
@@ -1304,14 +1306,14 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
                     } else {
                         Log.d("Search", "onResponse: else");
-                        Utils.showCustomAlertDialog(getActivity(),"Api Issue Code: "+response.code());
+                        Utils.toastShortMessage(getActivity(),"Api Issue Code: "+response.code());
                     }
 
                 }
                 @Override
                 public void onFailure(Call<List<TeamMembersResponse>> call, Throwable t) {
 //                    Toast.makeText(getActivity(), "on fail", Toast.LENGTH_SHORT).show();
-                    Utils.showCustomAlertDialog(getActivity(),"Response Failure: "+t.getMessage());
+                    Utils.toastShortMessage(getActivity(),"Response Failure: "+t.getMessage());
                     ProgressDialog.dismisProgressBar(getActivity(),dialog);
                     Log.d("Search", "onResponse: fail"+t.getMessage());
                 }
@@ -1423,7 +1425,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                     if (deskAvaliabilityResponseList != null) {
                         for (int i = 0; i < deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size(); i++) {
                             if (!deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).isBookedByElse()
-                                    || !deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).isBookedByUser()) {
+                                    && !deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).isBookedByUser()) {
                                 teamAvailableCount++;
                             }
                         }

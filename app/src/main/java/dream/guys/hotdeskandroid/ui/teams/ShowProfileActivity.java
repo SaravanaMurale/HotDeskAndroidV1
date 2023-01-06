@@ -309,7 +309,7 @@ public class ShowProfileActivity extends AppCompatActivity {
 
                     } else {
                         Log.d("Search", "onResponse: else");
-                        Utils.showCustomAlertDialog(ShowProfileActivity.this, "Api Issue Code: " + response.code());
+                        Utils.toastShortMessage(ShowProfileActivity.this, "Api Issue Code: " + response.code());
                     }
 
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
@@ -319,7 +319,7 @@ public class ShowProfileActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<List<TeamMembersResponse>> call, Throwable t) {
 //                    Toast.makeText(context, "on fail", Toast.LENGTH_SHORT).show();
-                    Utils.showCustomAlertDialog(ShowProfileActivity.this, "Response Failure: " + t.getMessage());
+                    Utils.toastShortMessage(ShowProfileActivity.this, "Response Failure: " + t.getMessage());
                     Log.d("Search", "onResponse: fail" + t.getMessage());
 
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);

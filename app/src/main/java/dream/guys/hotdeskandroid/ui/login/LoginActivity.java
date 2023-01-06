@@ -253,7 +253,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (typeOfLoginResponse.getTypeOfLogin() == 1) {
                             SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.TYPE_OF_LOGIN, typeOfLoginResponse.getTypeOfLogin());
                             ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
-                            Utils.showCustomAlertDialog(LoginActivity.this, "SSO Login has not been set up, please contact Admin to Setup");
+                            Utils.toastShortMessage(LoginActivity.this, "SSO Login has not been set up, please contact Admin to Setup");
                         } else {
                             ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
 
@@ -294,7 +294,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     } else {
                         ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
-                        Utils.showCustomAlertDialog(LoginActivity.this, "SSO Login is not setup for this email contact admin.");
+                        Utils.toastShortMessage(LoginActivity.this, "SSO Login is not setup for this email contact admin.");
                     }
                 }
 
@@ -525,7 +525,7 @@ public class LoginActivity extends AppCompatActivity {
                         signOutAccounts();
 
                         ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
-                        Utils.showCustomAlertDialog(LoginActivity.this, "SSO Login is not setup for this email contact admin.");
+                        Utils.toastShortMessage(LoginActivity.this, "SSO Login is not setup for this email contact admin.");
                     }
                 }
 

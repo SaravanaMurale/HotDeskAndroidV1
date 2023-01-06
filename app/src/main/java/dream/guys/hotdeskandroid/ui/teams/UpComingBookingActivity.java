@@ -37,6 +37,7 @@ import dream.guys.hotdeskandroid.databinding.ActivityUpComingBookingBinding;
 import dream.guys.hotdeskandroid.model.HorizontalCalendarModel;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.DAOUpcomingBooking;
+import dream.guys.hotdeskandroid.model.response.DAOUpcomingBookingNew;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ExtendedDataHolder;
@@ -68,14 +69,16 @@ public class UpComingBookingActivity extends AppCompatActivity implements Horizo
     int selectedicon = 0;
     Context context;
 
-    ArrayList<DAOUpcomingBooking> teamMembersResponses = new ArrayList<>();
+//    ArrayList<DAOUpcomingBooking> teamMembersResponses = new ArrayList<>();
+    ArrayList<DAOUpcomingBookingNew> teamMembersResponses = new ArrayList<>();
     List<String> arrayString= new ArrayList<>();
     DAOTeamMember daoTeamMember;
     String date = "",fName = "",lName ="";int userID;
     LinearLayoutManager linearLayoutManager;
     UpComingMonthlyBookingAdapter upComingBookingAdapter;
     ArrayList<TeamMembersResponse.DayGroup> recyclerModelArrayList = new ArrayList();
-    ArrayList<DAOUpcomingBooking.PersonDayViewEntry.CalendarEntry> upcomingArrayList = new ArrayList();
+//    ArrayList<DAOUpcomingBooking.PersonDayViewEntry.CalendarEntry> upcomingArrayList = new ArrayList();
+    ArrayList<DAOUpcomingBookingNew> upcomingArrayList = new ArrayList();
     ArrayList<HorizontalCalendarModel> horizontalCalendarModels;
     int getUserID;
 
@@ -448,27 +451,43 @@ public class UpComingBookingActivity extends AppCompatActivity implements Horizo
     private void callTeamMemberStatus(String date,int teamID) {
         if (Utils.isNetworkAvailable(context)) {
 
+            String toDate = "";
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date convertedDate = dateFormat.parse(date);
+                Calendar c = Calendar.getInstance();
+                c.setTime(convertedDate);
+                c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+                toDate = dateFormat.format(c.getTime());
+            } catch (Exception e){
+
+            }
+
+
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<ArrayList<DAOUpcomingBooking>> call = apiService.getMonthBookings(date,userID,teamID);
-            call.enqueue(new Callback<ArrayList<DAOUpcomingBooking>>() {
+            Call<ArrayList<DAOUpcomingBookingNew>> call = apiService.getMonthBookings(date,toDate,userID);
+            call.enqueue(new Callback<ArrayList<DAOUpcomingBookingNew>>() {
                 @Override
-                public void onResponse(Call<ArrayList<DAOUpcomingBooking>> call, Response<ArrayList<DAOUpcomingBooking>> response) {
-//                    Toast.makeText(MainActivity.this, "on res", Toast.LENGTH_SHORT).show();
-                    if(response.code()==200){
+                public void onResponse(Call<ArrayList<DAOUpcomingBookingNew>> call, Response<ArrayList<DAOUpcomingBookingNew>> response) {
+
+                    if(response.code()==200) {
 
                         teamMembersResponses = new ArrayList<>();
                         teamMembersResponses = response.body();
-                        if (teamMembersResponses!=null &&
-                                teamMembersResponses.size()>0){
-                            for (int i=0; i < teamMembersResponses.size(); i++) {
-                                if (teamMembersResponses.get(i).getUser().getId()
+                        if (teamMembersResponses!=null){
+                            recyclerModelArrayList = new ArrayList<>();
+                            createUpcomingRecyclerList(teamMembersResponses);
+
+                            /*for (int i=0; i < teamMembersResponses.size(); i++) {
+
+                                *//*if (teamMembersResponses.get(i).getUser().getId()
                                         == userID) {
                                    // Toast.makeText(UpComingBookingActivity.this, ""+daoTeamMember.getUserId(), Toast.LENGTH_SHORT).show();
-                                    recyclerModelArrayList = new ArrayList<>();
-                                    createUpcomingRecyclerList(teamMembersResponses.get(i).getPersonDayViewEntries());
-                                }
+
+                                }*//*
                             }
-/*                            recyclerModelArrayList = new ArrayList<>();
+*/
+/*                          recyclerModelArrayList = new ArrayList<>();
                             createUpcomingRecyclerList(teamMembersResponses.get(0).getPersonDayViewEntries());*/
 
                             /*for (int i=0;i<teamMembersResponses.size();i++){
@@ -485,14 +504,14 @@ public class UpComingBookingActivity extends AppCompatActivity implements Horizo
 
                     } else {
                         Log.d("Search", "onResponse: else");
-                        Utils.showCustomAlertDialog(UpComingBookingActivity.this,"Api Issue Code: "+response.code());
+                        Utils.toastShortMessage(UpComingBookingActivity.this,"Api Issue Code: "+response.code());
                     }
 
                 }
                 @Override
-                public void onFailure(Call<ArrayList<DAOUpcomingBooking>> call, Throwable t) {
+                public void onFailure(Call<ArrayList<DAOUpcomingBookingNew>> call, Throwable t) {
 //                    Toast.makeText(context, "on fail", Toast.LENGTH_SHORT).show();
-                    Utils.showCustomAlertDialog(UpComingBookingActivity.this,"Response Failure: "+t.getMessage());
+                    Utils.toastShortMessage(UpComingBookingActivity.this,"Response Failure: "+t.getMessage());
                     Log.d("Search", "onResponse: fail"+t.getMessage());
                 }
             });
@@ -596,11 +615,11 @@ public class UpComingBookingActivity extends AppCompatActivity implements Horizo
 
     }*/
 
-    private void createUpcomingRecyclerList(ArrayList<DAOUpcomingBooking.PersonDayViewEntry>
+    private void createUpcomingRecyclerList(ArrayList<DAOUpcomingBookingNew>
                                                     bookingListResponses) {
         upcomingArrayList.clear();
-        
-        for (int i=0; i<bookingListResponses.size(); i++){
+        upcomingArrayList.addAll(bookingListResponses);
+        /*for (int i=0; i<bookingListResponses.size(); i++){
 
             if (bookingListResponses.get(i).getCalendarEntries()!=null &&
             bookingListResponses.get(i).getCalendarEntries().size()>0 ){
@@ -608,10 +627,8 @@ public class UpComingBookingActivity extends AppCompatActivity implements Horizo
                     if (!(bookingListResponses.get(i).getCalendarEntries().get(y).getId()==0))
                         upcomingArrayList.add(bookingListResponses.get(i).getCalendarEntries().get(y));
                 }
-
             }
-
-        }
+        }*/
 
         if (upcomingArrayList!=null && upcomingArrayList.size()>0){
             linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);

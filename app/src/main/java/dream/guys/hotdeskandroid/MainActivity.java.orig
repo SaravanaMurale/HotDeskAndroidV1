@@ -1079,7 +1079,7 @@ public class MainActivity extends AppCompatActivity implements
                     openCheckoutDialog("Booking Succcessfull",2);
                 }else {
                     roomBottomSheet.dismiss();
-                    Utils.showCustomAlertDialog(MainActivity.this, "Booking Not Successfull");
+                    Utils.toastShortMessage(MainActivity.this, "Booking Not Successfull");
                 }
 
                 ProgressDialog.dismisProgressBar(MainActivity.this,dialog);
@@ -1122,7 +1122,7 @@ public class MainActivity extends AppCompatActivity implements
                     dialog.dismiss();
                     String resultString="";
                     if (response.code()==200){
-//                        Utils.showCustomAlertDialog(getActivity(),"Update Success");
+//                        Utils.toastShortMessage(getActivity(),"Update Success");
 //                        Toast.makeText(getActivity(), "Success Bala", Toast.LENGTH_SHORT).show();
                         if (response.body().getResultCode()!=null && response.body().getResultCode().equalsIgnoreCase("ok")){
                             if (newEditDelete.equalsIgnoreCase("new"))
@@ -1166,10 +1166,10 @@ public class MainActivity extends AppCompatActivity implements
                             }else {
                                 resultString = response.body().getResultCode().toString();
                             }
-                            Utils.showCustomAlertDialog(MainActivity.this, resultString);
+                            Utils.toastShortMessage(MainActivity.this, resultString);
                         }
                     }else if (response.code() == 500){
-                        Utils.showCustomAlertDialog(MainActivity.this,"500 Response");
+                        Utils.toastShortMessage(MainActivity.this,"500 Response");
                     }else if (response.code() == 401){
                         Utils.showCustomTokenExpiredDialog(MainActivity.this,"401 Error Response");
                         SessionHandler.getInstance().saveBoolean(MainActivity.this, AppConstants.LOGIN_CHECK,false);

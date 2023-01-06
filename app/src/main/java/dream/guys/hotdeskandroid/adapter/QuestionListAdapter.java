@@ -98,7 +98,7 @@ public class QuestionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             @Override
             public void onClick(View view)
             {
-                //Utils.showCustomAlertDialog(mActivity, itemsData.get(position).getThingsToConsider());
+                //Utils.toastShortMessage(mActivity, itemsData.get(position).getThingsToConsider());
                 if(questionListListener!=null)
                     questionListListener.showThingsToConsider(categoryPosition, position
                             , itemsData.get(position).getThingsToConsider());

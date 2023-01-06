@@ -94,7 +94,7 @@ public class TeamMembersActivity extends AppCompatActivity {
 
                     } else {
                         Log.d("Search", "onResponse: else");
-                        Utils.showCustomAlertDialog(TeamMembersActivity.this,"Api Issue Code: "+response.code());
+                        Utils.toastShortMessage(TeamMembersActivity.this,"Api Issue Code: "+response.code());
                     }
 
                 }
@@ -102,7 +102,7 @@ public class TeamMembersActivity extends AppCompatActivity {
                 public void onFailure(Call<List<TeamMembersResponse>> call, Throwable t) {
 //                    Toast.makeText(context, "on fail", Toast.LENGTH_SHORT).show();
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                    Utils.showCustomAlertDialog(TeamMembersActivity.this,"Response Failure: "+t.getMessage());
+                    Utils.toastShortMessage(TeamMembersActivity.this,"Response Failure: "+t.getMessage());
                     Log.d("Search", "onResponse: fail"+t.getMessage());
                 }
             });

@@ -33,7 +33,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:gravity="center_horizontal|center_vertical"
-			android:textSize="9sp"
+			android:textSize="@dimen/_9sdp"
 			android:theme="@style/TextRegular"
 			android:layout_marginTop="@dimen/_1sdp"
 			android:textAppearance="@android:style/TextAppearance.Small"
