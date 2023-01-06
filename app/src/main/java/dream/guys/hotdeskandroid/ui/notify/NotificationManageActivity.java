@@ -409,6 +409,7 @@ public class NotificationManageActivity extends AppCompatActivity {
         call.enqueue(new Callback<IncomingRequestResponse>() {
             @Override
             public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {
+                binding.locateProgressBar.setVisibility(View.INVISIBLE);
                 if(response.code()==200){
                     if (response.body()!=null && response.body().getResults()!=null){
                         incomingList = new ArrayList<>();
@@ -427,6 +428,8 @@ public class NotificationManageActivity extends AppCompatActivity {
                         if (notiList.size()>0){
                             cIncoming = Collections.frequency(notiList, result);
                             setAdapter();
+                        }else {
+                            finish();
                         }
 
 
