@@ -454,7 +454,8 @@ public interface ApiInterface {
     //https://dev-api.hotdeskplus.com/api/requests/outgoing?includePastRequests=true
 
     @GET("api/requests/outgoing")
-    Call<IncomingRequestResponse> getOutgoingRequest(@Query("includePastRequests") boolean includePastRequests);
+    Call<IncomingRequestResponse> getOutgoingRequest(@Query("includePastRequests") boolean includePastRequests,
+                                                     @Query("fromMobile") boolean fromMobile);
     @GET
     Call<DeskResponseNew> getDesk(@Url String url);
 
