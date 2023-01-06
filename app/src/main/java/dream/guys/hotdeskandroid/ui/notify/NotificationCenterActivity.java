@@ -6,6 +6,7 @@ import androidx.collection.ArraySet;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -78,8 +79,8 @@ public class NotificationCenterActivity extends AppCompatActivity {
 
         if (Utils.isNetworkAvailable(context)) {
             notificationList = new ArrayList<>();
-            callIncomingNotification();
-            callOutGoingNotification();
+            callIncomingNotification();//247
+//            callOutGoingNotification();//9
 
         } else {
             Utils.toastMessage(context, "Please Enable Internet");
@@ -94,7 +95,7 @@ public class NotificationCenterActivity extends AppCompatActivity {
         call.enqueue(new Callback<IncomingRequestResponse>() {
             @Override
             public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {
-                if(response.code()==200) {
+                if(response.code()==200){
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
                     outGoingNotificationList = new ArrayList<>();
                     if (response.body()!=null && response.body().getResults()!=null){
@@ -125,15 +126,17 @@ public class NotificationCenterActivity extends AppCompatActivity {
     }
 
     private void setAdapter() {
-
-        //notificationList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
+        
+        // do not remove this line sorting is done because we call 2 api and merge them so sorting is needed
+        notificationList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
 
         int count = 0;
         //if (outGoingNotificationList!=null && outGoingNotificationList.size()>0) {
-         if (notiList!=null && notiList.size()>0) {
+         if (notificationList!=null && notificationList.size()>0) {
             IncomingRequestResponse.Result result = new IncomingRequestResponse.Result(0);
-            count = Collections.frequency(notiList, result);
+            count = Collections.frequency(notificationList, result);
         }
+
 
 
         adapterNotificationList = new AdapterNotificationCenter(context,notificationList,
@@ -185,11 +188,15 @@ public class NotificationCenterActivity extends AppCompatActivity {
                     Utils.showCustomTokenExpiredDialog(NotificationCenterActivity.this,"Token Expired");
                     SessionHandler.getInstance().saveBoolean(context, AppConstants.LOGIN_CHECK,false);
 //                        Utils.finishAllActivity(getContext());
+                    callOutGoingNotification();
+                } else {
+                    callOutGoingNotification();
                 }
             }
             @Override
             public void onFailure(Call<IncomingRequestResponse> call, Throwable t) {
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                callOutGoingNotification();
             }
         });
     }
