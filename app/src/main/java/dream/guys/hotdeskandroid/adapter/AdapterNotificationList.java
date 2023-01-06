@@ -283,7 +283,15 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
             }
         });
 
-        holder.checkBox.setChecked(notiList.get(pos).isCheckBoxStatus());
+        //holder.checkBox.setChecked(notiList.get(pos).isCheckBoxStatus());
+
+        if (cBoxPos == pos) {
+            holder.checkBox.setChecked(true);
+            notiList.get(pos).setCheckBoxStatus(true);
+        }else {
+            notiList.get(pos).setCheckBoxStatus(false);
+            holder.checkBox.setChecked(false);
+        }
 
         /*holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -299,7 +307,7 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
         });*/
 
 
-        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        /*holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
@@ -318,7 +326,7 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
 
 
             }
-        });
+        });*/
 
 
 
@@ -378,6 +386,43 @@ public class AdapterNotificationList extends RecyclerView.Adapter<AdapterNotific
             tvDesk = itemView.findViewById(R.id.tvDesk);
             profile_layout = itemView.findViewById(R.id.profile_layout);
             line_view = itemView.findViewById(R.id.line_view);
+
+
+            checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(checkBox.isChecked()){
+                        cBoxPos = getAbsoluteAdapterPosition();
+                        notiList.get(getAbsoluteAdapterPosition()).setCheckBoxStatus(true);
+                        notifyDataSetChanged();
+                    }else{
+                        cBoxPos = -1;
+                        notiList.get(getAbsoluteAdapterPosition()).setCheckBoxStatus(false);
+                        notifyDataSetChanged();
+                    }
+                }
+            });
+
+           /* checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                    if(isChecked){
+
+                        //holder.checkBox.isChecked();
+
+                        cBoxPos = getAbsoluteAdapterPosition();
+                        notiList.get(getAbsoluteAdapterPosition()).setCheckBoxStatus(isChecked);
+                        notifyDataSetChanged();
+                    }else {
+                        cBoxPos = -1;
+                        notiList.get(getAbsoluteAdapterPosition()).setCheckBoxStatus(isChecked);
+                        notifyDataSetChanged();
+                    }
+
+
+                }
+            });*/
 
         }
     }
