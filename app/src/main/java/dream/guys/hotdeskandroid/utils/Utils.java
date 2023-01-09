@@ -2058,6 +2058,8 @@ public class Utils {
         TextView calContinue = bottomSheetDatePicker.findViewById(R.id.calenderContinue);
         TextView calBack = bottomSheetDatePicker.findViewById(R.id.calenderBack);
         CalendarView calendarView = bottomSheetDatePicker.findViewById(R.id.datePicker);
+        Calendar c = Calendar.getInstance();
+        calendarView.setMaxDate(c.getTimeInMillis() - 1000);
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
