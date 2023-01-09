@@ -55,49 +55,55 @@ public class AdapterNotificationCenter extends RecyclerView.Adapter<AdapterNotif
     @Override
     public void onBindViewHolder(@NonNull viewholder holder, int position) {
 
-        holder.tvUserName.setText(notiList.get(position).getRequesterName());
-        holder.tvUserTeam.setText(notiList.get(position).getRequesterTeam());
+        try {
+            holder.tvUserName.setText(notiList.get(position).getRequesterName());
+            holder.tvUserTeam.setText(notiList.get(position).getRequesterTeam());
 //        holder.txt_date.setText(Utils.dateWithDayString(Utils.splitDate(notiList.get(position).getRequestedDate())));
-        holder.txt_date.setText(Utils.dateWithDayString(Utils.splitDate(notiList.get(position).getDate())));
-        holder.CheckInTime.setText(Utils.splitTime(notiList.get(position).getFrom()));
-        holder.CheckOutTime.setText(Utils.splitTime(notiList.get(position).getTo()));
+            holder.txt_date.setText(Utils.dateWithDayString(Utils.splitDate(notiList.get(position).getDate())));
+            holder.CheckInTime.setText(Utils.splitTime(notiList.get(position).getFrom()));
+            holder.CheckOutTime.setText(Utils.splitTime(notiList.get(position).getTo()));
 
-        switch (notiList.get(position).getStatus()){
-            case 0:
-                holder.rel_status.setBackgroundColor(context.getResources().getColor(R.color.figma_byrequest, context.getTheme()));
-                break;
-            case 1:
-                holder.rel_status.setBackgroundColor(context.getResources().getColor(R.color.figmaLiteGreen, context.getTheme()));
-                break;
-            case 2:
-                holder.rel_status.setBackgroundColor(context.getResources().getColor(R.color.figma_unavaliable, context.getTheme()));
-                break;
-            case 3:
-                holder.rel_status.setBackgroundColor(context.getResources().getColor(R.color.line_gray, context.getTheme()));
-                break;
+            switch (notiList.get(position).getStatus()){
+                case 0:
+                    holder.rel_status.setBackgroundColor(context.getResources().getColor(R.color.figma_byrequest, context.getTheme()));
+                    break;
+                case 1:
+                    holder.rel_status.setBackgroundColor(context.getResources().getColor(R.color.figmaLiteGreen, context.getTheme()));
+                    break;
+                case 2:
+                    holder.rel_status.setBackgroundColor(context.getResources().getColor(R.color.figma_unavaliable, context.getTheme()));
+                    break;
+                case 3:
+                    holder.rel_status.setBackgroundColor(context.getResources().getColor(R.color.line_gray, context.getTheme()));
+                    break;
             /*case 4:
                 holder.rel_status.setBackgroundColor(context.getResources().getColor(R.color.figma_byrequest, context.getTheme()));
                 break;
             case 5:
                 holder.rel_status.setBackgroundColor(context.getResources().getColor(R.color.figma_byrequest, context.getTheme()));
                 break;*/
-        }
-
-        if (notiList.get(position).getStatus() == 0 || (position==0 && count>0)) {
-            holder.txt_count.setText("+" + String.valueOf(count) + " more");
-            holder.date_time_lay.setVisibility(View.GONE);
-            holder.pending_count_lay.setVisibility(View.VISIBLE);
-
-            if (position<1){
-                holder.cardBookingNotify.setVisibility(View.VISIBLE);
-            }else {
-                holder.cardBookingNotify.setVisibility(View.GONE);
             }
+            if (holder.getAbsoluteAdapterPosition()==0 && count>0){
+                holder.rel_status.setBackgroundColor(context.getResources().getColor(R.color.figma_byrequest, context.getTheme()));
+            }
+            if (notiList.get(position).getStatus() == 0 || (position==0 && count>0)) {
+                holder.txt_count.setText("+" + String.valueOf(count) + " more");
+                holder.date_time_lay.setVisibility(View.GONE);
+                holder.pending_count_lay.setVisibility(View.VISIBLE);
 
-        }else {
-            holder.cardBookingNotify.setVisibility(View.VISIBLE);
-            holder.date_time_lay.setVisibility(View.VISIBLE);
-            holder.pending_count_lay.setVisibility(View.GONE);
+                if (position<1){
+                    holder.cardBookingNotify.setVisibility(View.VISIBLE);
+                }else {
+                    holder.cardBookingNotify.setVisibility(View.GONE);
+                }
+
+            }else {
+                holder.cardBookingNotify.setVisibility(View.VISIBLE);
+                holder.date_time_lay.setVisibility(View.VISIBLE);
+                holder.pending_count_lay.setVisibility(View.GONE);
+            }
+        } catch (Exception e){
+
         }
 
         //holder.req_lay

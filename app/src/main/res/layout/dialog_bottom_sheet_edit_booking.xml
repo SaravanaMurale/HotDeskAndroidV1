@@ -457,78 +457,87 @@
                             app:tint="@color/figmaBlueText" />
 
                     </RelativeLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2.5"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tv_desk_room_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:textColor="@color/figmaBlack"
-                            android:textSize="18sp"
-                            android:theme="@style/TextBold" />
-
-                        <TextView
-                            android:id="@+id/tv_location_details"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginVertical="@dimen/_3sdp"
-                            android:text=""
-                            android:textColor="@color/figmaBlack"
-                            android:textSize="14sp" />
-
-                        <LinearLayout
-                            android:id="@+id/capacity_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Capacity"
-                                android:textSize="14sp"
-                                android:theme="@style/TextRegular" />
-
-                            <TextView
-                                android:layout_width="@dimen/_6sdp"
-                                android:layout_height="@dimen/_6sdp"
-                                android:layout_marginHorizontal="@dimen/_3sdp"
-                                android:background="@drawable/bg_circle_vector"
-                                android:backgroundTint="@color/figmaGrey" />
-
-                            <TextView
-                                android:id="@+id/tv_capacity_no"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="5"
-                                android:textSize="14sp"
-                                android:theme="@style/TextRegular" />
-                        </LinearLayout>
-                    </LinearLayout>
-
                     <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.5">
+                        android:layout_weight="2.5">
 
-                        <TextView
-                            android:id="@+id/select_desk_room"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:layout_marginTop="@dimen/_10sdp"
+                            android:orientation="vertical"
+                            android:layout_alignParentStart="true"
+                            android:layout_toStartOf="@id/chnge_relative"
+                            >
+
+                            <TextView
+                                android:id="@+id/tv_desk_room_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textColor="@color/figmaBlack"
+                                android:textSize="18sp"
+                                android:theme="@style/TextBold" />
+
+                            <TextView
+                                android:id="@+id/tv_location_details"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginVertical="@dimen/_3sdp"
+                                android:text=""
+                                android:textColor="@color/figmaBlack"
+                                android:textSize="14sp" />
+
+                            <LinearLayout
+                                android:id="@+id/capacity_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Capacity"
+                                    android:textSize="14sp"
+                                    android:theme="@style/TextRegular" />
+
+                                <TextView
+                                    android:layout_width="@dimen/_6sdp"
+                                    android:layout_height="@dimen/_6sdp"
+                                    android:layout_marginHorizontal="@dimen/_3sdp"
+                                    android:background="@drawable/bg_circle_vector"
+                                    android:backgroundTint="@color/figmaGrey" />
+
+                                <TextView
+                                    android:id="@+id/tv_capacity_no"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="5"
+                                    android:textSize="14sp"
+                                    android:theme="@style/TextRegular" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/chnge_relative"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:layout_marginEnd="@dimen/_3sdp"
-                            android:text="Change"
-                            android:textColor="@color/figmaBlueText"
-                            android:textSize="18sp"
-                            android:theme="@style/TextBold" />
+                            >
+
+                            <TextView
+                                android:id="@+id/select_desk_room"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="Change"
+                                android:textColor="@color/figmaBlueText"
+                                android:textSize="18sp"
+                                android:theme="@style/TextBold" />
+                        </RelativeLayout>
                     </RelativeLayout>
                 </LinearLayout>
 
