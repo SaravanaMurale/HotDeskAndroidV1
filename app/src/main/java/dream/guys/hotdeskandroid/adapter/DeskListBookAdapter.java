@@ -86,7 +86,18 @@ public class DeskListBookAdapter extends RecyclerView.Adapter<DeskListBookAdapte
         holder.tvLocationAddress.setText(Utils.checkStringParms(deskList.get(position).getLocationDetails().getBuildingName())+
                 ", "+
                 Utils.checkStringParms(deskList.get(position).getLocationDetails().getfLoorName()));
-        holder.tvDescription.setText(Utils.checkStringParms(deskList.get(position).getDescription()));
+
+        if (deskList.get(position).getDescription()==null ||
+                deskList.get(position).getDescription().equalsIgnoreCase("") ||
+                deskList.get(position).getDescription().isEmpty()){
+            holder.tvDescriptionText.setVisibility(View.GONE);
+            holder.tvDescription.setText(Utils.checkStringParms(deskList.get(position).getDescription()));
+        }else {
+            holder.tvDescriptionText.setVisibility(View.VISIBLE);
+            holder.tvDescription.setText(Utils.checkStringParms(deskList.get(position).getDescription()));
+        }
+//        holder.tvDescription.setText(Utils.checkStringParms(deskList.get(position).getDescription()));
+
 
         if (deskList.get(position).getTeamId() != SessionHandler.getInstance()
                 .getInt(context, AppConstants.TEAM_ID)
@@ -250,6 +261,8 @@ public class DeskListBookAdapter extends RecyclerView.Adapter<DeskListBookAdapte
         TextView select;
         @BindView(R.id.desk_status)
         TextView deskStatus;
+        @BindView(R.id.description_text)
+        TextView tvDescriptionText;
         @BindView(R.id.tv_description)
         TextView tvDescription;
         @BindView(R.id.tv_location_address)

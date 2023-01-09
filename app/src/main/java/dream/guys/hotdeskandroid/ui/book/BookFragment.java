@@ -2403,7 +2403,8 @@ public class BookFragment extends Fragment implements
 
     private void newDeskBookingSheet(BookingForEditResponse bookingForEditResponse, String code) {
         BookDeskController bookDeskController = new BookDeskController(activityContext, context,bookingForEditResponse,
-                AppConstants.BOOKFRAGMENTINSTANCESTRING,isGlobalLocationSetUP,calSelectedDate);
+                AppConstants.BOOKFRAGMENTINSTANCESTRING,isGlobalLocationSetUP,calSelectedDate,
+                binding.searchGlobal.getText().toString());
 //        bookDeskController.newDeskBookingSheet(bookingForEditResponse,code);
       /*  bookingForEditResponseDesk.clear();
         changedTeamId=0;

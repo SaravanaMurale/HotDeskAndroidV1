@@ -223,7 +223,7 @@
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:layout_marginBottom="@dimen/_4sdp"
                 android:layout_toStartOf="@+id/tv_exapnd"
-                android:text="Working Remotely"
+                android:text="Working remotely"
                 android:textColor="@color/figmaBlack"
                 android:textSize="@dimen/_14sdp"
                 android:theme="@style/TextRegular"

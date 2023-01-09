@@ -113,6 +113,7 @@ public class BookDeskController implements
     DeskListBookAdapter newdeskListRecyclerAdapter;
     ActiveTeamsAdapterNew activeTeamsAdapter;
     String calSelectedDate;
+    String locationGlobal;
 
     LanguagePOJO.Login logoinPage;
     LanguagePOJO.AppKeys appKeysPage;
@@ -129,9 +130,10 @@ public class BookDeskController implements
     EditBookingDetails editBookingDetailsGlobal;
     public BookDeskController(Activity activityContext, Context context,BookingForEditResponse bookingForEditResponse,
                               String isFrom,
-                              boolean isGlobalLocationSetUP, String calSelectedDate) {
+                              boolean isGlobalLocationSetUP, String calSelectedDate,String locationGlobal) {
         this.activityContext = activityContext;
         this.context = context;
+        this.locationGlobal = locationGlobal;
         this.isFrom = isFrom;
         this.calSelectedDate = calSelectedDate;
         this.isGlobalLocationSetUP = isGlobalLocationSetUP;
@@ -493,6 +495,11 @@ public class BookDeskController implements
         locationAddress=deskBottomSheet.findViewById(R.id.tv_location_details);
         //New...
 //        locationAddress.setVisibility(View.GONE);
+        locationAddress.setVisibility(View.VISIBLE);
+        locationAddressTop.setVisibility(View.VISIBLE);
+        if (locationGlobal!=null &&
+                !locationGlobal.equalsIgnoreCase("choose location from the list"))
+            locationAddressTop.setText(""+locationGlobal);
 
         date=deskBottomSheet.findViewById(R.id.date);
         TextView title=deskBottomSheet.findViewById(R.id.title);
@@ -623,6 +630,7 @@ public class BookDeskController implements
                     !editDeskBookingDetails.getLocationAddress().isEmpty()
                     && !editDeskBookingDetails.getLocationAddress().equalsIgnoreCase(""))
                 locationAddress.setText(""+editDeskBookingDetails.getLocationAddress());
+
             tv_description.setText(editDeskBookingDetails.getDescription());
             if (tv_description.getText().toString().equalsIgnoreCase("") || tv_description.getText().toString().isEmpty()){
                 tv_description.setVisibility(View.GONE);
