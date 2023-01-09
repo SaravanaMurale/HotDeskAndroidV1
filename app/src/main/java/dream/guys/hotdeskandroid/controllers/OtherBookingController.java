@@ -1084,7 +1084,7 @@ public class OtherBookingController {
                         changes.setUsageTypeId(type);
                         changes.setFrom("2000-01-01T" + startTimeStr + ":00.000Z");
                         changes.setTo("2000-01-01T" + endTimeStr + ":00.000Z");
-                        String timeZone = "India Standard Time";
+                        String timeZone =  Utils.getTimeZone();;
                         if (!SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID).isEmpty())
                             changes.setTimeZoneId(SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID));
                         else
