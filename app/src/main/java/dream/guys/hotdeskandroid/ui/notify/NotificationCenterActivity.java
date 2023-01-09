@@ -128,7 +128,7 @@ public class NotificationCenterActivity extends AppCompatActivity {
     private void setAdapter() {
         
         // do not remove this line sorting is done because we call 2 api and merge them so sorting is needed
-        notificationList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
+//        notificationList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
 
         int count = 0;
         //if (outGoingNotificationList!=null && outGoingNotificationList.size()>0) {
@@ -151,7 +151,7 @@ public class NotificationCenterActivity extends AppCompatActivity {
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 //        Call<IncomingRequestResponse> call = apiService.getIncomingRequest(true);
-        Call<IncomingRequestResponse> call = apiService.getIncomingRequest(true);
+        Call<IncomingRequestResponse> call = apiService.getIncomingRequest(true,true);
         call.enqueue(new Callback<IncomingRequestResponse>() {
             @Override
             public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {

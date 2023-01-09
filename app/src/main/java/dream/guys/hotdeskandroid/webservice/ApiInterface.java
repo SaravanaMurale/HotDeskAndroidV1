@@ -198,7 +198,8 @@ public interface ApiInterface {
     Call<Boolean> requestPasswordReset(@Body ForgotPasswordRequest forgotPasswordRequest);
 
     @GET("api/requests/incoming")
-    Call<IncomingRequestResponse> getIncomingRequest(@Query("includePastRequests") boolean includePastRequests);
+    Call<IncomingRequestResponse> getIncomingRequest(@Query("includePastRequests") boolean includePastRequests,
+                                                     @Query("fromMobile") boolean fromMobile);
 
     @GET("api/Account/LoggedInUser")
     Call<UserDetailsResponse> getLoginUserDetails();

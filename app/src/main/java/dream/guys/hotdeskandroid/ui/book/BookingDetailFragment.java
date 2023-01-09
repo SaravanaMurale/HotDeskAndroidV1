@@ -495,7 +495,7 @@ public class BookingDetailFragment extends Fragment {
 //            dialog= ProgressDialog.showProgressBar(getContext());
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<IncomingRequestResponse> call = apiService.getIncomingRequest(true);
+            Call<IncomingRequestResponse> call = apiService.getIncomingRequest(true,true);
             call.enqueue(new Callback<IncomingRequestResponse>() {
                 @Override
                 public void onResponse(Call<IncomingRequestResponse> call, Response<IncomingRequestResponse> response) {

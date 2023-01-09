@@ -83,7 +83,7 @@ public class AdapterNotificationCenter extends RecyclerView.Adapter<AdapterNotif
                 break;*/
         }
 
-        if (notiList.get(position).getStatus() == 0) {
+        if (notiList.get(position).getStatus() == 0 || (position==0 && count>0)) {
             holder.txt_count.setText("+" + String.valueOf(count) + " more");
             holder.date_time_lay.setVisibility(View.GONE);
             holder.pending_count_lay.setVisibility(View.VISIBLE);
@@ -159,7 +159,7 @@ public class AdapterNotificationCenter extends RecyclerView.Adapter<AdapterNotif
             holder.hdr_lay.setVisibility(View.GONE);
         }*/
 
-        if (notiList.get(0).getStatus() == 0){
+        if (count > 0){
             if (position == 1) {
                 holder.hdr_lay.setVisibility(View.VISIBLE);
             }else {
