@@ -75,8 +75,7 @@
             android:layout_width="@dimen/_10sdp"
             android:layout_height="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_3sdp"
-            android:src="@drawable/status_unavaliable"
-            />
+            android:src="@drawable/new_booked" />
 
         <TextView
             android:id="@+id/tvUnaValibale"

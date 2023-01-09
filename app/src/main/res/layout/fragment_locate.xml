@@ -38,7 +38,7 @@
                 android:background="@color/figmaBgGrey"
                 app:gest_doubleTapEnabled="false"
                 app:gest_maxZoom="8.0"
-                app:gest_minZoom="2.5">
+                app:gest_minZoom="1">
 
 
                 <RelativeLayout
@@ -287,7 +287,7 @@
 
         <RelativeLayout
             android:id="@+id/statusUnAvaliable"
-            android:layout_width="@dimen/_80sdp"
+            android:layout_width="@dimen/_85sdp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
@@ -295,10 +295,10 @@
             android:background="@drawable/rectangle_bg_with_corner">
 
             <ImageView
-                android:layout_width="@dimen/_8sdp"
-                android:layout_height="@dimen/_8sdp"
-                android:src="@drawable/status_unavaliable"
-                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:src="@drawable/new_booked"
+                android:layout_centerInParent="true"
                 android:paddingLeft="@dimen/_2sdp"
                 android:layout_toLeftOf="@+id/unavaliableTxt"
                 />
@@ -308,10 +308,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
                 android:layout_marginLeft="@dimen/_2sdp"
                 android:paddingRight="@dimen/_6sdp"
                 android:text=" unavaliable"
-                android:textColor="@color/figma_unavaliable" />
+                android:textColor="@color/grey" />
 
 
 
@@ -335,7 +336,7 @@
             <ImageView
                 android:layout_width="@dimen/_8sdp"
                 android:layout_height="@dimen/_8sdp"
-                android:src="@drawable/status_booked_byme"
+                android:src="@drawable/new_booked_byme"
                 android:layout_marginTop="@dimen/_4sdp"
                 android:paddingLeft="@dimen/_2sdp"
                 android:layout_toLeftOf="@+id/bookedByMeTxt"
@@ -345,12 +346,11 @@
                 android:id="@+id/bookedByMeTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_2sdp"
-                android:text=" booked by me"
-                android:paddingRight="@dimen/_6sdp"
                 android:layout_alignParentRight="true"
-                android:textColor="@color/figmaBlueText"
-                />
+                android:layout_marginLeft="@dimen/_2sdp"
+                android:paddingRight="@dimen/_6sdp"
+                android:text=" booked by me"
+                android:textColor="@color/figmaBlueText" />
 
         </RelativeLayout>
 
@@ -371,7 +371,7 @@
             <ImageView
                 android:layout_width="@dimen/_8sdp"
                 android:layout_height="@dimen/_8sdp"
-                android:src="@drawable/status_booked"
+                android:src="@drawable/new_unavaliable"
                 android:layout_marginTop="@dimen/_4sdp"
                 android:paddingLeft="@dimen/_2sdp"
                 android:layout_toLeftOf="@+id/bookedTxt"
@@ -381,18 +381,18 @@
                 android:id="@+id/bookedTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_2sdp"
-                android:text=" booked"
-                android:paddingRight="@dimen/_6sdp"
                 android:layout_alignParentRight="true"
-                android:textColor="@color/grey" />
+                android:layout_marginLeft="@dimen/_2sdp"
+                android:paddingRight="@dimen/_6sdp"
+                android:text=" booked"
+                android:textColor="@color/figma_unavaliable" />
 
         </RelativeLayout>
 
 
         <RelativeLayout
             android:id="@+id/statusByRequest"
-            android:layout_width="@dimen/_75sdp"
+            android:layout_width="@dimen/_80sdp"
             android:layout_height="wrap_content"
             android:layout_above="@id/statusUnAvaliable"
             android:layout_toLeftOf="@+id/statusBooked"
@@ -405,7 +405,7 @@
             <ImageView
                 android:layout_width="@dimen/_8sdp"
                 android:layout_height="@dimen/_8sdp"
-                android:src="@drawable/byrequest"
+                android:src="@drawable/new_request"
                 android:layout_marginTop="@dimen/_4sdp"
                 android:paddingLeft="@dimen/_2sdp"
                 android:layout_toLeftOf="@+id/byRequestTxt"
@@ -430,24 +430,23 @@
             android:layout_width="@dimen/_69sdp"
             android:layout_height="wrap_content"
             android:layout_above="@id/statusUnAvaliable"
-            android:layout_toLeftOf="@+id/statusByRequest"
-            android:background="@drawable/rectangle_bg_with_corner"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_toLeftOf="@+id/statusByRequest"
+            android:background="@drawable/rectangle_bg_with_corner"
             android:padding="@dimen/_2sdp"
 
             >
 
 
             <ImageView
-                android:layout_width="@dimen/_8sdp"
-                android:layout_height="@dimen/_8sdp"
-                android:src="@drawable/status_avaliable"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_6sdp"
+                android:layout_toLeftOf="@+id/avaliableTxt"
                 android:paddingLeft="@dimen/_3sdp"
                 android:paddingBottom="@dimen/_3sdp"
-                android:layout_toLeftOf="@+id/avaliableTxt"
-                />
+                android:src="@drawable/new_avaliable" />
 
             <TextView
                 android:id="@+id/avaliableTxt"

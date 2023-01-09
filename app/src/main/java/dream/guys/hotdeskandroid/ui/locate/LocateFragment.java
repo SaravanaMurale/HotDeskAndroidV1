@@ -1739,8 +1739,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 binding.zoomView.scrollTo(xArrayList.get(0)+100, yArrayList.get(0)+100);
                             }*/
 
+                            //binding.firstLayout.scrollTo(100,100);
+
 //                            binding.firstLayout.scrollTo(-1200,-1200);
-                            binding.firstLayout.scrollTo(-600,-950);
+                            //binding.firstLayout.scrollTo(-600,-950);
                         } else {
                             Toast.makeText(getContext(), "No Data", Toast.LENGTH_LONG).show();
                         }
@@ -2074,7 +2076,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                 if (dateComparsionResult == 1) {
                                     System.out.println("BookingUnavaliable");
-                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                    //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
                                     deskAddedStatus = true;
                                     deskStatusModel = new DeskStatusModel(key, id, code, 0);
 
@@ -2087,7 +2090,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                     } else if (teamDeskAvaliability.isBookedByElse() == true) {
                                         System.out.println("BookingBookedOther");
-                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
+                                        //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
                                         deskStatusModel = new DeskStatusModel(key, id, code, 3);
 
                                     } else if (teamsResponse.getDeskCount() != 0 && teamsResponse.getAutomaticApprovalStatus() == 2) {
@@ -2103,7 +2107,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                         if (teamsResponse != null && teamsResponse.getAutomaticApprovalStatus() == 3) {
                                             System.out.println("BookingUnavaliable");
-                                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                            //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
+
+
                                             deskStatusModel = new DeskStatusModel(key, id, code, 0);
                                         } else {
                                             ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_request));
@@ -2124,7 +2131,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                         deskAddedStatus = true;
                                     } else if (teamDeskAvaliability.isBookedByElse() == true) {
                                         System.out.println("BookingBookedOther");
-                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
+                                        //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
+                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
                                         deskStatusModel = new DeskStatusModel(key, id, code, 3);
                                         deskAddedStatus = true;
 
@@ -2151,7 +2159,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             } else {
                 System.out.println("BookingUnavaliable");
-                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
+                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
                 deskStatusModel = new DeskStatusModel(key, id, code, 0);
                 if(deskStatusModel!=null) {
                     deskStatusModelList.add(deskStatusModel);
@@ -2182,7 +2191,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                         if (carParkingStatusModelList.get(i).getStatus() == 0) {
                             System.out.println("Unavaliable");
-                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.car_unavaliable));
+                            //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.car_unavaliable));
+                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.locate_car_booked));
                         } else if (carParkingStatusModelList.get(i).getStatus() == 1) {
                             System.out.println("Avaliable");
                             ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.car_available));
@@ -2192,7 +2202,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                         } else if (carParkingStatusModelList.get(i).getStatus() == 3) {
                             System.out.println("BookingBookedOther");
-                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.locate_car_booked));
+                           // ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.locate_car_booked));
+                            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.car_unavaliable));
                         } else if (carParkingStatusModelList.get(i).getStatus() == 4) {
                             System.out.println("Request");
                             ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.car_request));
@@ -2212,7 +2223,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         if (code.equals(AppConstants.MEETING)) {
 
             //ByDefault Set Meeting Image
-            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
+            ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_booked));
 
 
             int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
@@ -2272,7 +2283,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                                     //28,27,26
                                                     System.out.println("MeetingBookingUnavaliable");
                                                     meetingStatusModel = new MeetingStatusModel(key, id, code, 0);
-                                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
+                                                    //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
+                                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_booked));
 
                                                 } else {
                                                     //29,30
@@ -2342,7 +2354,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                                                 } else {
                                                                     meetingStatusModel = new MeetingStatusModel(key, id, code, 3);
-                                                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_booked));
+                                                                    //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_booked));
+                                                                    ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
                                                                     System.out.println("MeetingBookedOther");
                                                                     meetingStatusModelList.add(meetingStatusModel);
                                                                     break outerloop;
@@ -2352,7 +2365,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                                             } else if (lMatches.getAutomaticApprovalStatus() == 3 && !lMatches.isAllowedForBooking()) {
                                                                 meetingStatusModel = new MeetingStatusModel(key, id, code, 0);
                                                                 System.out.println("MeetingUnavaliable");
-                                                                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
+                                                                //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
+                                                                ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_booked));
                                                                 meetingStatusModelList.add(meetingStatusModel);
                                                                 break outerloop;
 
@@ -2378,7 +2392,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                                     } else if (lMatches.getAutomaticApprovalStatus() == 3 && !locationWithMR.getMatchesList().get(j).isAllowedForBooking()) {
                                                         System.out.println("MeetingBookingUnavaliable");
                                                         meetingStatusModel = new MeetingStatusModel(key, id, code, 0);
-                                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
+                                                        //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_unavalible));
+                                                        ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_booked));
                                                         meetingStatusModelList.add(meetingStatusModel);
                                                         break outerloop;
                                                     } else if (lMatches.getAutomaticApprovalStatus() == 2 || locationWithMR.getMatchesList().get(j).isAllowedForBooking()) {

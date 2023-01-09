@@ -2926,5 +2926,10 @@ public class Utils {
         imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
 
+    public static String getTimeZone() {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat simpleFormat = new SimpleDateFormat("zzzz");
 
+        return simpleFormat.format(cal.getTime());
+    }
 }
