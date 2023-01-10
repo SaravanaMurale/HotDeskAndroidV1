@@ -1935,15 +1935,16 @@ public class BookDeskController implements
             } else {
                 tvTeamName.setText(selectedTeamName);
             }
-            if (editBookingDetails.getLocationAddress()!=null
-                    && !editBookingDetails.getLocationAddress().equalsIgnoreCase("")
-                    && !editBookingDetails.getLocationAddress().isEmpty()){
+
+            if (locationGlobal!=null
+                    && !locationGlobal.equalsIgnoreCase("")
+                    && !locationGlobal.isEmpty()){
                 tvLocationAddress.setVisibility(View.VISIBLE);
-                tvLocationAddress.setText(editBookingDetails.getLocationAddress());
+                tvLocationAddress.setText(""+locationGlobal);
             } else {
                 tvLocationAddress.setVisibility(View.GONE);
             }
-            tvLocationAddress.setText(editBookingDetails.getLocationAddress());
+
             if (newEditStatus.equalsIgnoreCase("edit")){
                 if (editBookingDetails.getUsageTypeId()==2){
                     tvTeamName.setTextColor(context.getResources().getColor(R.color.figmaGrey));
