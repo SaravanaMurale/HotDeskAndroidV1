@@ -8150,7 +8150,7 @@ public class BookFragment extends Fragment implements
         if (tv_description!=null)
             tv_description.setText(Utils.checkStringParms(deskList.getDescription()));
 
-        Toast.makeText(context, "dsj"+request, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "dsj"+request, Toast.LENGTH_SHORT).show();
         if (typeId == 0) {
             editBookingDetailsGlobal.setDeskCode(deskName);
             editBookingDetailsGlobal.setTimeZone(timeZone);

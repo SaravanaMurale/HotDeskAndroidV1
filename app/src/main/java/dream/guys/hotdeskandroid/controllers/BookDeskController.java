@@ -639,9 +639,13 @@ public class BookDeskController implements
                 locationAddress.setText(""+editDeskBookingDetails.getLocationAddress());
 
             tv_description.setText(editDeskBookingDetails.getDescription());
-            if (tv_description.getText().toString().equalsIgnoreCase("") || tv_description.getText().toString().isEmpty()){
+            if (tv_description.getText().toString().equalsIgnoreCase("")
+                    || tv_description.getText().toString().isEmpty()){
                 tv_description.setVisibility(View.GONE);
                 desc.setVisibility(View.GONE);
+            } else {
+                tv_description.setVisibility(View.VISIBLE);
+                desc.setVisibility(View.VISIBLE);
             }
 
             if (newEditStatus.equalsIgnoreCase("edit")){
@@ -1938,7 +1942,8 @@ public class BookDeskController implements
 
             if (locationGlobal!=null
                     && !locationGlobal.equalsIgnoreCase("")
-                    && !locationGlobal.isEmpty()){
+                    && !locationGlobal.isEmpty()
+                    && !locationGlobal.equalsIgnoreCase("choose location from the list")){
                 tvLocationAddress.setVisibility(View.VISIBLE);
                 tvLocationAddress.setText(""+locationGlobal);
             } else {
@@ -2373,8 +2378,12 @@ public class BookDeskController implements
             locationAddress.setText(Utils.checkStringParms(deskList.getLocationDetails().getBuildingName())+
                     ", "+
                     Utils.checkStringParms(deskList.getLocationDetails().getfLoorName()));
-        if (tv_description!=null)
+        if (tv_description!=null){
             tv_description.setText(Utils.checkStringParms(deskList.getDescription()));
+            tv_description.setVisibility(View.VISIBLE);
+            desc.setVisibility(View.VISIBLE);
+        }
+
         if (desc != null &&tv_description.getText().toString().equalsIgnoreCase(""))
             desc.setVisibility(View.GONE);
 
