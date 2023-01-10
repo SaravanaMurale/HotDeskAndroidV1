@@ -182,31 +182,8 @@ public class SettingsActivity extends AppCompatActivity {
                     signOutAccounts();
                 }
 
-                SessionHandler.getInstance().saveBoolean(context, AppConstants.LOGIN_CHECK, false);
-                Utils.finishAllActivity(context);
-                SessionHandler.getInstance().remove(context, AppConstants.COUNTRY_NAME);
-                SessionHandler.getInstance().remove(context, AppConstants.BUILDING);
-                SessionHandler.getInstance().remove(context, AppConstants.FLOOR);
-                SessionHandler.getInstance().remove(context, AppConstants.FULLPATHLOCATION);
-                SessionHandler.getInstance().remove(context, AppConstants.PARENT_ID);
-                SessionHandler.getInstance().remove(context, AppConstants.TEAM_ID);
-                SessionHandler.getInstance().remove(context,AppConstants.FINAL_FLOOR);
-                SessionHandler.getInstance().remove(context,AppConstants.CURRENT_TEAM);
-                SessionHandler.getInstance().remove(context,AppConstants.DEFAULT_LOCATION_NAME);
-                SessionHandler.getInstance().remove(context,AppConstants.DEFAULT_LOCATION_ID);
 
-                //To Load Defaul Location
-                SessionHandler.getInstance().remove(context, AppConstants.PARENT_ID_CHECK);
-                SessionHandler.getInstance().remove(context, AppConstants.FLOOR_POSITION_CHECK);
-
-                SessionHandler.getInstance().remove(context, AppConstants.COUNTRY_NAME_CHECK);
-                SessionHandler.getInstance().remove(context, AppConstants.BUILDING_CHECK);
-                SessionHandler.getInstance().remove(context, AppConstants.FLOOR_CHECK);
-                SessionHandler.getInstance().remove(context, AppConstants.FULLPATHLOCATION_CHECK);
-                SessionHandler.getInstance().remove(context,AppConstants.FINAL_FLOOR_CHECK);
-
-                SessionHandler.getInstance().remove(context,AppConstants.PIN_SETUP_DONE);
-
+               Utils.clearSession(context);
 
 
             }
