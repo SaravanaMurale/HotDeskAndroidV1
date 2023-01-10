@@ -739,6 +739,7 @@ public class LoginActivity extends AppCompatActivity {
         String tokenInSharedPreference = SessionHandler.getInstance().get(getApplicationContext(), AppConstants.SAVETOKEN);
         System.out.println("SharedPreferenceToken"+tokenInSharedPreference);
         if (tokenInSharedPreference != null) {
+            //System.out.println("tokenInSharedPreferenceInLoginActivity "+tokenInSharedPreference);
             FirebaseNotificationService.saveTokenInserver(tokenInSharedPreference);
         }
     }
@@ -832,6 +833,7 @@ public class LoginActivity extends AppCompatActivity {
                     activeLocationArrayList = response.body();
 
                     floorParentID = defaultLocation.getParentLocationId();
+
                     defaultLocationIdForCalendar = defaultLocation.getId();
                     Integer id = defaultLocation.getId();
                     floorName = defaultLocation.getName();
@@ -841,6 +843,18 @@ public class LoginActivity extends AppCompatActivity {
                     ArrayList<DAOActiveLocation> selectFloors = new ArrayList<>();
                     selectFloors = (ArrayList<DAOActiveLocation>) activeLocationArrayList.stream().filter(val -> val.getParentLocationId() == floorParentID).collect(Collectors.toList());
                     String finFloorName="";
+
+
+                    ArrayList<DAOActiveLocation> getSupportZoneList = new ArrayList<>();
+                    getSupportZoneList = (ArrayList<DAOActiveLocation>)activeLocationArrayList.stream().filter(m -> m.getId() == floorParentID).collect(Collectors.toList());
+
+
+                    SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.SUPPORT_ZONE_ID, getSupportZoneList.get(0).getParentLocationId());
+
+                    //System.out.println("LoggedInSupportZoneParentLocatinId "+getSupportZoneList.get(0).getParentLocationId());
+
+
+
 
                     for (int i = 0; i < selectFloors.size(); i++) {
 

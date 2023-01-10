@@ -60,6 +60,7 @@ public class AppConstants {
     public static final String FLOOR="FLOOR";
     public static final String FINAL_FLOOR="FINAL_FLOOR";
     public static final String FULLPATHLOCATION="FULLPATHLOCATION";
+    public static final String SUPPORT_ZONE_ID="SUPPORT_ZONE_ID";
     public static final String DESK="3";
     public static final String MEETING="4";
     public static final String CAR_PARKING="5";

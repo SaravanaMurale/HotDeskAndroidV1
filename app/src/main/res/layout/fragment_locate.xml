@@ -281,7 +281,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/_30sdp"
         android:layout_toLeftOf="@+id/endBlock"
-        android:visibility="gone">
+        android:visibility="visible">
 
 
 
@@ -291,12 +291,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:padding="@dimen/_2sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
             android:background="@drawable/rectangle_bg_with_corner">
 
             <ImageView
-                android:layout_width="@dimen/_10sdp"
-                android:layout_height="@dimen/_10sdp"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:src="@drawable/new_booked"
                 android:layout_centerInParent="true"
                 android:paddingLeft="@dimen/_2sdp"
@@ -329,13 +330,14 @@
             android:layout_toLeftOf="@+id/statusUnAvaliable"
             android:background="@drawable/rectangle_bg_with_corner"
             android:layout_marginRight="@dimen/_5sdp"
-            android:padding="@dimen/_2sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
             >
 
 
             <ImageView
-                android:layout_width="@dimen/_8sdp"
-                android:layout_height="@dimen/_8sdp"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:src="@drawable/new_booked_byme"
                 android:layout_marginTop="@dimen/_4sdp"
                 android:paddingLeft="@dimen/_2sdp"
@@ -347,6 +349,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
                 android:layout_marginLeft="@dimen/_2sdp"
                 android:paddingRight="@dimen/_6sdp"
                 android:text=" booked by me"
