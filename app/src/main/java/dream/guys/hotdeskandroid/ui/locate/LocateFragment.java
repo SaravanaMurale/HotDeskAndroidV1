@@ -1168,9 +1168,15 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         int parentIdCheck = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID_CHECK);
         int selecctedFloorFromHome = SessionHandler.getInstance().getInt(getContext(), AppConstants.SELECTED_LOCATION_FROM_HOME);
 
+
+
         binding.firstLayout.removeAllViews();
 
         if (parentIdCheck > 0 && defaultLocationcheck == 0 && selecctedFloorFromHome == 0) {
+
+            //Get support zone data for default location from final before API
+            callImediateChildLocationTogetSupportZone(parentIdCheck);
+
             int floorPositionCheck = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION_CHECK);
 
             SessionHandler.getInstance().saveInt(getContext(), AppConstants.PARENT_ID, parentIdCheck);
@@ -5411,6 +5417,55 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     }
 
+
+    private void callImediateChildLocationTogetSupportZone(int parentIdCheck){
+        int supportZoneParentId=SessionHandler.getInstance().getInt(getContext(),AppConstants.SUPPORT_ZONE_ID);
+        System.out.println("SupportZoneInLocate "+parentIdCheck+" "+supportZoneParentId);
+
+        if (Utils.isNetworkAvailable(getContext())) {
+            binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(supportZoneParentId);
+            call.enqueue(new Callback<List<LocateCountryRespose>>() {
+                @Override
+                public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
+
+                    if (response.body() != null) {
+                        List<LocateCountryRespose> locateCountryResposes = response.body();
+
+                        if(locateCountryResposes!=null && locateCountryResposes.size()>0) {
+                            for (int i = 0; i < locateCountryResposes.size(); i++) {
+                                if (parentIdCheck == locateCountryResposes.get(i).getLocateCountryId() && supportZoneParentId == locateCountryResposes.get(i).getParentLocationId()) {
+
+                                    if(locateCountryResposes.get(i).getSupportZoneLayoutItemsList()!=null && locateCountryResposes.get(i).getSupportZoneLayoutItemsList().size()>0) {
+                                        getSupportZoneLayoutForCanvas.clear();
+                                        getSupportZoneLayoutForCanvas = locateCountryResposes.get(i).getSupportZoneLayoutItemsList();
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+
+                    } else {
+                       // Utils.toastMessage(getActivity(), "No Data");
+                    }
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+                }
+
+                @Override
+                public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
+
+                    binding.locateProgressBar.setVisibility(View.INVISIBLE);
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
+        }
+
+    }
 
     private void getLocateCountryList() {
 

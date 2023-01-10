@@ -773,6 +773,8 @@ public class Utils {
         SessionHandler.getInstance().remove(context,AppConstants.FINAL_FLOOR_CHECK);
 
         SessionHandler.getInstance().remove(context,AppConstants.PIN_SETUP_DONE);
+
+        SessionHandler.getInstance().remove(context,AppConstants.SUPPORT_ZONE_ID);
     }
 
     public static void showCustomTokenExpiredDialog(final Activity mContext, String aMessage) {
