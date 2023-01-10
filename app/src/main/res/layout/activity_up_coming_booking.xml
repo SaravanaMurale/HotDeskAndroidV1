@@ -30,9 +30,8 @@
             android:textColor="@color/figmaBlack"
             android:textSize="@dimen/_18sdp"
             android:theme="@style/TextBold" />
-
-
     </RelativeLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/horizontal_recycler"
         android:layout_width="match_parent"

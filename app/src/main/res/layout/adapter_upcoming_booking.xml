@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/list_item"
                 android:layout_marginVertical="@dimen/_5sdp"
-                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -42,6 +42,7 @@
                     android:id="@+id/user_status"
                     android:layout_width="@dimen/_10sdp"
                     android:layout_height="@dimen/_10sdp"
+                    android:visibility="gone"
                     android:background="@drawable/bg_circle_vector"
                     android:backgroundTint="@color/teal_200" />
 
@@ -51,12 +52,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_3sdp"
                     tools:text="Checked In"
-                    android:theme="@style/TextRegular" />
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/black"
+                    android:theme="@style/TextBold" />
             </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+
                 <ImageView
                     android:id="@+id/bookingCheckInIcon"
                     android:layout_width="@dimen/_13sdp"
@@ -197,14 +201,16 @@
                     android:id="@+id/bookingAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxLines="2"
                     android:layout_below="@+id/bookingDeskName"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_3sdp"
-                    android:layout_toRightOf="@+id/bookingIvIcon"
-                    tools:text="40 Bank Street -30th Floor"
-                    android:textColor="@color/figmaGrey"
                     android:layout_alignParentStart="true"
-                    android:layout_toStartOf="@+id/bookingIvLocation"/>
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:textSize="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_toStartOf="@+id/bookingIvLocation"
+                    android:layout_toRightOf="@+id/bookingIvIcon"
+                    android:textColor="@color/figmaBlack"
+                    tools:text="40 Bank Street -30th Floor" />
 
                 <ImageView
                     android:id="@+id/bookingIvLocation"

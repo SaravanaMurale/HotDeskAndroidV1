@@ -2169,6 +2169,23 @@ public class Utils {
 
         return date;
     }
+//New...
+    public static String upcomingDateFormat(String d) {
+        String date = "";
+        SimpleDateFormat spf = new SimpleDateFormat("yyyy-MM-dd");
+        Date newDate = null;
+        try {
+            newDate = spf.parse(d);
+            spf = new SimpleDateFormat("EEE, MMM, dd");
+            if (newDate != null) {
+                date = spf.format(newDate);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return date;
+    }
 
 
     public static String MonthAndDateAndTwithZString(String d) {

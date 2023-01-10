@@ -172,8 +172,6 @@ public class UpComingBookingActivity extends AppCompatActivity implements Horizo
         DateFormat monthFormat = new SimpleDateFormat("MMMM");
         DateFormat dateFormat = new SimpleDateFormat("dd");
         Calendar calendar = Calendar.getInstance();
-        calendar.setFirstDayOfWeek(Calendar.MONDAY);
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
         String day="";
         String date="";
@@ -221,9 +219,7 @@ public class UpComingBookingActivity extends AppCompatActivity implements Horizo
         }
     }
 
-
     private void uiInit() {
-
         calendarView = binding.calendarView;
         /*Calendar startDate = Calendar.getInstance();
 
@@ -647,7 +643,9 @@ public class UpComingBookingActivity extends AppCompatActivity implements Horizo
     }
 
     @Override
-    public void calendarSelectedDate(String date, int oldSelectedPos, int newSelectedPos) {
+    public void calendarSelectedDate(String date,
+                                     int oldSelectedPos,
+                                     int newSelectedPos) {
         horizontalCalendarModels.get(oldSelectedPos).setSelected(false);
         horizontalCalendarModels.get(newSelectedPos).setSelected(true);
         horizontalCalMonthAdapter.notifyItemChanged(oldSelectedPos);

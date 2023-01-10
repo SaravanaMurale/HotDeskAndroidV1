@@ -83,7 +83,7 @@ public class UpComingMonthlyBookingAdapter extends RecyclerView.Adapter<UpComing
 
         holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getFrom()));
         holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getTo()));
-        holder.tvBookingWorkingRemote.setText(Utils.MonthAndDateString(Utils.splitDate(list.get(position).getDate())));
+        holder.tvBookingWorkingRemote.setText(Utils.upcomingDateFormat(Utils.splitDate(list.get(position).getDate())));
 
     }
 

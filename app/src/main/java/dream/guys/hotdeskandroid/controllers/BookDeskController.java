@@ -499,8 +499,12 @@ public class BookDeskController implements
         locationAddress.setVisibility(View.VISIBLE);
         locationAddressTop.setVisibility(View.VISIBLE);
         if (locationGlobal!=null &&
-                !locationGlobal.equalsIgnoreCase("choose location from the list"))
-            locationAddressTop.setText(""+locationGlobal);
+                !locationGlobal.equalsIgnoreCase("choose location from the list")) {
+            locationAddressTop.setText("" + locationGlobal);
+            locationAddressTop.setVisibility(View.VISIBLE);
+        } else {
+            locationAddressTop.setVisibility(View.GONE);
+        }
 
         date=deskBottomSheet.findViewById(R.id.date);
         TextView title=deskBottomSheet.findViewById(R.id.title);
@@ -620,10 +624,12 @@ public class BookDeskController implements
         if (isGlobalLocationSetUP)
             select.setVisibility(View.VISIBLE);
 
+/*
         if (editDeskBookingDetails.getLocationAddress()!=null &&
                 !editDeskBookingDetails.getLocationAddress().isEmpty()
                 && !editDeskBookingDetails.getLocationAddress().equalsIgnoreCase(""))
             locationAddressTop.setText(""+editDeskBookingDetails.getLocationAddress());
+*/
 
         if (dskRoomParkStatus == 1) {
 //            Toast.makeText(context, ""+editDeskBookingDetails.getLocationAddress(), Toast.LENGTH_SHORT).show();

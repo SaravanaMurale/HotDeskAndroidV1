@@ -49,20 +49,27 @@ public class UpComingBookingAdapter extends RecyclerView.Adapter<UpComingBooking
         //holder.rlInOffice.setVisibility(View.VISIBLE);
 
         //conditon is to display date and line accordingly
-        if (list.get(position).isDateStatus()){
-            //holder.dateLayout.setVisibility(View.VISIBLE);
-            System.out.println("DateFormatPrintHere"+list.get(position).getDate());
+        try {
+            if (list.get(position).isDateStatus()){
+                //holder.dateLayout.setVisibility(View.VISIBLE);
+                holder.tvBookingWorkingRemote.setText(Utils.upcomingDateFormat(Utils.getYearMonthDateFormat(list.get(position).getDate())));
+                System.out.println("DateFormatPrintHere" + holder.tvBookingWorkingRemote.getText());
 //            System.out.println("DayInTextAndNumber"+Utils.getDayAndDateFromDateFormat(list.get(position).getDate()));
-            //holder.today_date.setText(""+Utils.getDayAndDateFromDateFormat(list.get(position).getDate()));
-            //holder.lineLayout.setVisibility(View.GONE);
-        }
-        else {
-            //holder.dateLayout.setVisibility(View.GONE);
-            //holder.lineLayout.setVisibility(View.VISIBLE);
+                //holder.today_date.setText(""+Utils.getDayAndDateFromDateFormat(list.get(position).getDate()));
+                //holder.lineLayout.setVisibility(View.GONE);
+            }
+            else {
+                holder.tvBookingWorkingRemote.setText(Utils.upcomingDateFormat(Utils.getYearMonthDateFormat(list.get(position).getDate())));
+                //holder.dateLayout.setVisibility(View.GONE);
+                //holder.lineLayout.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e){
+
         }
 
         //condition displays today string instead od date and disable previous date
-        /*if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate()) == 1){
+        /*
+        if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate()) == 1){
             holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.figmaBgGrey));
             holder.bookingIvEdit.setVisibility(View.GONE);
             System.out.println("date check Balaaaa"+list.get(position).getDate()+" : "+Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate()));
@@ -73,7 +80,8 @@ public class UpComingBookingAdapter extends RecyclerView.Adapter<UpComingBooking
         }else {
             holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
             holder.bookingIvEdit.setVisibility(View.VISIBLE);
-        }*/
+        }
+        */
 
         if (list.get(position).getCalDeskStatus() ==1 &&
                 list.get(position).getCalendarEntriesModel()
