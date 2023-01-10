@@ -458,6 +458,7 @@ public class BookDeskController implements
         deskBottomSheet = new BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme);
 //        deskBottomSheet.setContentView((getLayoutInflater().inflate(R.layout.dialog_calendar_bottom_sheet_edit_booking,
 //                new RelativeLayout(context))));
+
         View view = View.inflate(context, R.layout.dialog_calendar_bottom_sheet_edit_booking, null);
         deskBottomSheet.setContentView(view);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
