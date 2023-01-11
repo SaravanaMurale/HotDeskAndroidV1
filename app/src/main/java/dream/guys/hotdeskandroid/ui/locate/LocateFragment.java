@@ -18,8 +18,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -30,7 +28,6 @@ import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -562,7 +559,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         callLocateFilterBottomSheet(null);
                     }*/
                     meetingAmenityStatusList.clear();
-                    getLocateAmenitiesFilterData(true);
+                    
+                    CallAllMeetingRoomAndItsAmenities(true);
+                    
+                   // getLocateAmenitiesFilterData(true);
 
 
                 } else {
@@ -597,6 +597,36 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         return root;
+    }
+
+    private void CallAllMeetingRoomAndItsAmenities(boolean b) {
+
+        if (Utils.isNetworkAvailable(getActivity())) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<UserAllowedMeetingResponse>> call = apiService.getAllMeetings();
+            call.enqueue(new Callback<List<UserAllowedMeetingResponse>>() {
+                @Override
+                public void onResponse(Call<List<UserAllowedMeetingResponse>> call, Response<List<UserAllowedMeetingResponse>> response) {
+
+                    if(response.body()!=null){
+                        List<UserAllowedMeetingResponse> userAllowedMeetingResponseList=response.body();
+                        if(b){
+                            getLocateAmenitiesFilterData(b,userAllowedMeetingResponseList);
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<List<UserAllowedMeetingResponse>> call, Throwable t) {
+
+                }
+            });
+
+        }else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
+
     }
 
     private void getFirAidAndFirwarndsReport() {
@@ -1398,7 +1428,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     //ToGetAmenities DataHere
                     amenitiesListToShowInMeetingRoomList.clear();
-                    getLocateAmenitiesFilterData(false);
+                    getLocateAmenitiesFilterData(false,null);
 
                     //Final Call To Set Desk,Car and Meeting Room
                     getLocateDeskRoomCarDesign(parentId, canvasDrawStatus);
@@ -9088,7 +9118,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
 
-    private void callLocateFilterBottomSheet(List<AmenitiesResponse> amenitiesResponseList) {
+    private void callLocateFilterBottomSheet(List<AmenitiesResponse> amenitiesResponseList, List<UserAllowedMeetingResponse> userAllowedMeetingResponseLists) {
 
         RecyclerView locateFilterMainRV;
         ValuesPOJO valuesPOJO;
@@ -9139,17 +9169,19 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 filterClickedStatus = 1;
 
-                for (int i = 0; i < userAllowedMeetingResponseList.size(); i++) {
+                //locationWithMR_response.get(0).getMatchesList().get(0).get
+
+                for (int i = 0; i < userAllowedMeetingResponseLists.size(); i++) {
 
                     //System.out.println("AllDetailsInUserAllowedMeetings " + userAllowedMeetingResponseList.get(i).getName());
 
                     for (int j = 0; j < meetingStatusModelList.size(); j++) {
 
 
-                        if (userAllowedMeetingResponseList.get(i).getId() == meetingStatusModelList.get(j).getId()) {
+                        if (userAllowedMeetingResponseLists.get(i).getId() == meetingStatusModelList.get(j).getId()) {
                             //if (meetingStatusModelList.get(j).getStatus() == 1) {
 
-                                List<UserAllowedMeetingResponse.Amenity> amenityList = userAllowedMeetingResponseList.get(i).getAmenities();
+                                List<UserAllowedMeetingResponse.Amenity> amenityList = userAllowedMeetingResponseLists.get(i).getAmenities();
 
                                 doCheckAppliedAminitiesWithMeetingRoom(amenityList, meetingStatusModelList.get(j));
 
@@ -9164,17 +9196,17 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 }
 
 
-                for (int i = 0; i <meetingStatusModelList.size() ; i++) {
+           /*     for (int i = 0; i <meetingStatusModelList.size() ; i++) {
 
                     //boolean mystatus=false;
 
-                    for (int j = 0; j <userAllowedMeetingResponseList.size() ; j++) {
+                    for (int j = 0; j < userAllowedMeetingResponseLists.size() ; j++) {
 
-                        if(meetingStatusModelList.get(i).getId()==userAllowedMeetingResponseList.get(j).getId()){
+                        if(meetingStatusModelList.get(i).getId()== userAllowedMeetingResponseLists.get(j).getId()){
                             break;
                             //mystatus=true;
                         }else {
-                            if(j==userAllowedMeetingResponseList.size()-1){
+                            if(j== userAllowedMeetingResponseLists.size()-1){
                                 MeetingAmenityStatus meetingAmenityStatus = new MeetingAmenityStatus(meetingStatusModelList.get(i).getId());
                                 meetingAmenityStatusList.add(meetingAmenityStatus);
                             }
@@ -9183,7 +9215,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         }
 
                     }
-                }
+                }*/
 
 
 
@@ -11048,7 +11080,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }*/
     }
 
-    private void getLocateAmenitiesFilterData(boolean calledFromFilter) {
+    private void getLocateAmenitiesFilterData(boolean calledFromFilter, List<UserAllowedMeetingResponse> userAllowedMeetingResponseList) {
         if (Utils.isNetworkAvailable(getContext())) {
             binding.locateProgressBar.setVisibility(View.VISIBLE);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -11068,7 +11100,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     if (calledFromFilter) {
 
                         meetingAmenityStatusList.clear();
-                        callLocateFilterBottomSheet(amenitiesResponseList);
+                        callLocateFilterBottomSheet(amenitiesResponseList,userAllowedMeetingResponseList);
                     }
 
 
