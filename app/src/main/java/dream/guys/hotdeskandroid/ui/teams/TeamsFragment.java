@@ -1486,4 +1486,21 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                 == null ? "" : SessionHandler.getInstance().get(getActivity(), AppConstants.CURRENT_TEAM));
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        boolean clickedStatus=SessionHandler.getInstance().getBoolean(getContext(),AppConstants.SHOW_PROFILE_CLICKED_STATUS);
+        System.out.println("CalledAfterShowProfileFinishOnResume");
+        if(clickedStatus){
+            SessionHandler.getInstance().saveBoolean(getContext(),AppConstants.SHOW_PROFILE_CLICKED_STATUS,false);
+            ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
+        }
+
+    }
+
+
+
+
 }

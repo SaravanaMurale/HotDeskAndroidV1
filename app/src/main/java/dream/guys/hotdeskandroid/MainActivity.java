@@ -182,6 +182,9 @@ public class MainActivity extends AppCompatActivity implements
         dialog = new Dialog(this);
 
 
+
+
+
         if (SessionHandler.getInstance().getBoolean(MainActivity.this, AppConstants.LOGIN_CHECK)) {
 //            Toast.makeText(this, "toast daaaa", Toast.LENGTH_SHORT).show();
             uiInit();

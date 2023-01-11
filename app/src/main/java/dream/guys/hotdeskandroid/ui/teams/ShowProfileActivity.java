@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import dream.guys.hotdeskandroid.MainActivity;
 import dream.guys.hotdeskandroid.R;
 import dream.guys.hotdeskandroid.adapter.UpComingBookingAdapter;
 import dream.guys.hotdeskandroid.databinding.ActivityShowProfileBinding;
@@ -31,8 +32,8 @@ import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.FirstAidResponse;
 import dream.guys.hotdeskandroid.model.response.GlobalSearchResponse;
+import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
-import dream.guys.hotdeskandroid.ui.home.EditProfileActivity;
 import dream.guys.hotdeskandroid.ui.home.ViewTeamsActivity;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ExtendedDataHolder;
@@ -44,7 +45,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ShowProfileActivity extends AppCompatActivity {
+public class ShowProfileActivity extends AppCompatActivity implements UpComingBookingAdapter.OnLocationIconClick {
 
 
     ActivityShowProfileBinding binding;
@@ -569,7 +570,7 @@ public class ShowProfileActivity extends AppCompatActivity {
             binding.samUpcomingRecycler.setLayoutManager(linearLayoutManager);
             binding.samUpcomingRecycler.setHasFixedSize(true);
 
-            upComingBookingAdapter = new UpComingBookingAdapter(context, recyclerModelArrayList, "Sample");
+            upComingBookingAdapter = new UpComingBookingAdapter(context, recyclerModelArrayList, "Sample",this);
             binding.samUpcomingRecycler.setAdapter(upComingBookingAdapter);
         } else {
             binding.notAvailable.setVisibility(View.VISIBLE);
@@ -599,4 +600,88 @@ public class ShowProfileActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onLocationIconClicked(int parentLocationId, String selctedBuildingName, String selectedFloorName, int getID, String deskCode,String desk,int deskId) {
+        onLocationIconClick(parentLocationId, selctedBuildingName, selectedFloorName,getID,deskCode,desk,deskId);
+    }
+
+    private void onLocationIconClick(int parentLocationId, String selctedBuildingName, String selectedFloorName, int getID, String deskCode,String desk,int deskId) {
+
+        SessionHandler.getInstance().saveInt(ShowProfileActivity.this, AppConstants.PARENT_ID, parentLocationId);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(parentLocationId);
+        call.enqueue(new Callback<List<LocateCountryRespose>>() {
+            @Override
+            public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
+
+                List<LocateCountryRespose> locateCountryResposeList = response.body();
+
+                for (int i = 0; i < locateCountryResposeList.size(); i++) {
+
+                    if (desk.equals(AppConstants.DESK)) {
+
+                        for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getDesks().size(); j++) {
+
+                            if (deskId == locateCountryResposeList.get(i).getLocationItemLayout().getDesks().get(j).getDesksId()) {
+                                SessionHandler.getInstance().saveInt(ShowProfileActivity.this, AppConstants.FLOOR_POSITION, i);
+
+                                System.out.println("SelectedDeskFloorInLocate " + i + " " + desk + " ");
+
+                                SessionHandler.getInstance().saveBoolean(context,AppConstants.SHOW_PROFILE_CLICKED_STATUS,true);
+                                finish();
+                                break;
+
+                            }
+                        }
+                    } else if (desk.equals(AppConstants.MEETING)) {
+
+                       /* for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getMeetingRoomsList().size(); j++) {
+
+                            if (identifierId == locateCountryResposeList.get(i).getLocationItemLayout().getMeetingRoomsList().get(j).getMeetingRoomId()) {
+                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
+
+                                System.out.println("SelectedMeetingFloorInLocate " + i + " " + desk + " ");
+
+                                ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
+//                                navController.navigate(R.id.navigation_locate);
+                            }
+
+                        }*/
+
+
+                    } else if (desk.equals(AppConstants.CAR_PARKING)) {
+
+                        /*for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getParkingSlotsList().size(); j++) {
+
+                            if (identifierId == locateCountryResposeList.get(i).getLocationItemLayout().getParkingSlotsList().get(j).getId()) {
+                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
+
+                                System.out.println("SelectedCarFloorInLocate " + i + " " + desk + " ");
+                                ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
+//                                navController.navigate(R.id.navigation_locate);
+                            }
+                        }*/
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        boolean clickedStatus=SessionHandler.getInstance().getBoolean(context,AppConstants.SHOW_PROFILE_CLICKED_STATUS);
+        System.out.println("CalledAfterShowProfileFinishOnResume");
+        if(clickedStatus){
+            finish();
+        }
+    }
 }

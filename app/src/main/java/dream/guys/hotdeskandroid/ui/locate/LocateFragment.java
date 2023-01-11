@@ -2465,7 +2465,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
             //Amenities Filter
-
             boolean alreadyHasId = meetingAmenityStatusList.stream().anyMatch(m -> m.getId() == id);
             if(alreadyHasId){
                 ivDesk.setVisibility(View.GONE);
@@ -9163,6 +9162,30 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     }
 
                 }
+
+
+                for (int i = 0; i <meetingStatusModelList.size() ; i++) {
+
+                    //boolean mystatus=false;
+
+                    for (int j = 0; j <userAllowedMeetingResponseList.size() ; j++) {
+
+                        if(meetingStatusModelList.get(i).getId()==userAllowedMeetingResponseList.get(j).getId()){
+                            break;
+                            //mystatus=true;
+                        }else {
+                            if(j==userAllowedMeetingResponseList.size()-1){
+                                MeetingAmenityStatus meetingAmenityStatus = new MeetingAmenityStatus(meetingStatusModelList.get(i).getId());
+                                meetingAmenityStatusList.add(meetingAmenityStatus);
+                            }
+
+
+                        }
+
+                    }
+                }
+
+
 
                 callInitView();
 

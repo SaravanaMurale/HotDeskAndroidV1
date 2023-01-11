@@ -31,10 +31,20 @@ public class UpComingMonthlyBookingAdapter extends RecyclerView.Adapter<UpComing
     ArrayList<DAOUpcomingBookingNew> list;
     String sample = "";
 
-    public UpComingMonthlyBookingAdapter(Context context, ArrayList<DAOUpcomingBookingNew> recyclerModelArrayList, String sample) {
+    OnUpComingLocationIconClick onUpComingLocationIconClick;
+
+    public interface OnUpComingLocationIconClick{
+
+        public void onUpcomingLocationIconClick(int parentId, String sFloor, String sBName, int deskId,String desk);
+
+    }
+
+    public UpComingMonthlyBookingAdapter(Context context, ArrayList<DAOUpcomingBookingNew> recyclerModelArrayList, String sample,OnUpComingLocationIconClick onUpComingLocationIconClick) {
         this.context = context;
         this.list = recyclerModelArrayList;
         this.sample = sample;
+        this.onUpComingLocationIconClick=onUpComingLocationIconClick;
+
     }
 
     @NonNull
@@ -84,6 +94,34 @@ public class UpComingMonthlyBookingAdapter extends RecyclerView.Adapter<UpComing
         holder.bookingCheckInTime.setText(Utils.splitTime(list.get(position).getFrom()));
         holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getTo()));
         holder.tvBookingWorkingRemote.setText(Utils.upcomingDateFormat(Utils.splitDate(list.get(position).getDate())));
+
+
+        holder.bookingIvLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //int selectedFloorId =list.get(holder.getAbsoluteAdapterPosition()).getRequestedDeskLocation().getFloorID();
+                //String selctedBuildingName=list.get(holder.getAbsoluteAdapterPosition()).getRequestedDeskLocation().getBuildingName();
+                //String selectedFloorName=list.get(holder.getAbsoluteAdapterPosition()).getRequestedDeskLocation().getfLoorName();
+                // buidlingID=list.get(holder.getAbsoluteAdapterPosition()).getRequestedDeskLocation().getBuildingID();
+                int deskId=list.get(holder.getAbsoluteAdapterPosition()).getDeskId();
+
+                //int thinkParendId=list.get(position).getId();
+                int parentId=list.get(position).getDeskLocation().getFloorID();
+                String sFloor=list.get(position).getDeskLocation().getfLoorName();
+                String sBName=list.get(position).getDeskLocation().getBuildingName();
+                //int bId=list.get(position).getDeskLocation().getBuildingID();
+
+                //System.out.println("UpcomingBookingIdSSS "+parentId+" "+sFloor+" "+sBName+""+bId);
+
+
+                //System.out.println("UpcomingBookingId "+selectedFloorId+" "+selctedBuildingName+" "+selectedFloorName+" "+buidlingID+" "+deskId);
+
+                onUpComingLocationIconClick.onUpcomingLocationIconClick(parentId,sFloor,sBName,deskId,"3");
+
+
+            }
+        });
 
     }
 
