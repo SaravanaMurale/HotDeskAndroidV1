@@ -53,10 +53,8 @@ import retrofit2.Response;
 
 public class SignInActivity extends AppCompatActivity {
 
-
     BiometricPrompt biometricPrompt;
     BiometricPrompt.PromptInfo promptInfo;
-
 
     @BindView(R.id.signInRoot)
     RelativeLayout signInRoot;
@@ -420,8 +418,7 @@ public class SignInActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+
     }
 
     public void setLang() {

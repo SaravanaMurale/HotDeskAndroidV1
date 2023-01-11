@@ -8179,7 +8179,8 @@ public class BookFragment extends Fragment implements
                         1,0,"new");
             else
                 editBookingUsingBottomSheet(editBookingDetailsGlobal,
-                        1,0,"request");*/
+                        1,0,"request");
+                        */
         } else {
             if (newEditStatus.equalsIgnoreCase("edit")){
                 selectedDeskId = deskId;

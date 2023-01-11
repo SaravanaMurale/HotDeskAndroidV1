@@ -179,13 +179,13 @@ public class SettingsActivity extends AppCompatActivity {
 //                SessionHandler.getInstance().removeAll(getContext());
                 if (SessionHandler.getInstance().getInt(SettingsActivity.this,
                         AppConstants.TYPE_OF_LOGIN) != 1) {
+                    
                     signOutAccounts();
+
                 }
 
-
-               Utils.clearSession(context);
-
-
+                Utils.clearSession(context);
+                finish();
             }
         });
         binding.btnResetPin.setOnClickListener(new View.OnClickListener() {
