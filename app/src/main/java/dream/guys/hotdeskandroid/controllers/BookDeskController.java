@@ -1427,7 +1427,9 @@ public class BookDeskController implements
                     bookingDeskList.clear();
                     bookingDeskList = response.body();
 //                    //System.out.println("Selecrt id"+selectedTeamId + bookingDeskList.get(0).getDeskCode());
-                    callDeskListBottomSheetDialog(1,editBookingDetails,newEditStatus);
+                    if(deskListBottomSheet == null ||
+                            (deskListBottomSheet != null && !deskListBottomSheet.isShowing()))
+                        callDeskListBottomSheetDialog(1,editBookingDetails,newEditStatus);
 
                 }
 
