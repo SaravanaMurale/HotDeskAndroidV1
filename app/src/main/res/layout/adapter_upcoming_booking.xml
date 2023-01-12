@@ -201,15 +201,15 @@
                     android:id="@+id/bookingAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxLines="2"
                     android:layout_below="@+id/bookingDeskName"
                     android:layout_alignParentStart="true"
                     android:layout_marginLeft="@dimen/_10sdp"
-                    android:textSize="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:layout_toStartOf="@+id/bookingIvLocation"
                     android:layout_toRightOf="@+id/bookingIvIcon"
+                    android:maxLines="2"
                     android:textColor="@color/figmaBlack"
+                    android:textSize="@dimen/_10sdp"
                     tools:text="40 Bank Street -30th Floor" />
 
                 <ImageView

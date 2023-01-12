@@ -38,6 +38,7 @@ import dream.guys.hotdeskandroid.model.HorizontalCalendarModel;
 import dream.guys.hotdeskandroid.model.response.DAOTeamMember;
 import dream.guys.hotdeskandroid.model.response.DAOUpcomingBooking;
 import dream.guys.hotdeskandroid.model.response.DAOUpcomingBookingNew;
+import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
 import dream.guys.hotdeskandroid.model.response.TeamMembersResponse;
 import dream.guys.hotdeskandroid.utils.AppConstants;
 import dream.guys.hotdeskandroid.utils.ExtendedDataHolder;
@@ -49,7 +50,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UpComingBookingActivity extends AppCompatActivity implements HorizontalCalMonthAdapter.CalendarSelectedInterface{
+public class UpComingBookingActivity extends AppCompatActivity implements HorizontalCalMonthAdapter.CalendarSelectedInterface, UpComingMonthlyBookingAdapter.OnUpComingLocationIconClick {
 
     int day, month, year;
     HorizontalCalendar horizontalCalendar;
@@ -631,7 +632,7 @@ public class UpComingBookingActivity extends AppCompatActivity implements Horizo
             binding.upbookingRecyclerview.setLayoutManager(linearLayoutManager);
             binding.upbookingRecyclerview.setHasFixedSize(true);
 
-            upComingBookingAdapter=new UpComingMonthlyBookingAdapter(context,upcomingArrayList,"");
+            upComingBookingAdapter=new UpComingMonthlyBookingAdapter(context,upcomingArrayList,"",this);
             binding.upbookingRecyclerview.setAdapter(upComingBookingAdapter);
         } else {
             if (binding.upbookingRecyclerview.getAdapter()!=null){
@@ -652,5 +653,80 @@ public class UpComingBookingActivity extends AppCompatActivity implements Horizo
         horizontalCalMonthAdapter.notifyItemChanged(newSelectedPos);
 
         updateDate(date);
+    }
+
+    @Override
+    public void onUpcomingLocationIconClick(int parentId, String sFloor, String sBName, int deskId,String desk) {
+        onLocationIconClick(parentId, sFloor, sBName,deskId,desk);
+    }
+
+    private void onLocationIconClick(int parentId, String sFloor, String sBName, int deskId,String desk) {
+
+        SessionHandler.getInstance().saveInt(UpComingBookingActivity.this, AppConstants.PARENT_ID, parentId);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(parentId);
+        call.enqueue(new Callback<List<LocateCountryRespose>>() {
+            @Override
+            public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
+
+                List<LocateCountryRespose> locateCountryResposeList = response.body();
+
+                for (int i = 0; i < locateCountryResposeList.size(); i++) {
+
+                    if (desk.equals(AppConstants.DESK)) {
+
+                        for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getDesks().size(); j++) {
+
+                            if (deskId == locateCountryResposeList.get(i).getLocationItemLayout().getDesks().get(j).getDesksId()) {
+                                SessionHandler.getInstance().saveInt(UpComingBookingActivity.this, AppConstants.FLOOR_POSITION, i);
+
+                                System.out.println("SelectedDeskFloorInLocate " + i + " " + desk + " ");
+
+                                SessionHandler.getInstance().saveBoolean(context,AppConstants.SHOW_PROFILE_CLICKED_STATUS,true);
+                                finish();
+                                break;
+
+                            }
+                        }
+                    } else if (desk.equals(AppConstants.MEETING)) {
+
+                       /* for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getMeetingRoomsList().size(); j++) {
+
+                            if (identifierId == locateCountryResposeList.get(i).getLocationItemLayout().getMeetingRoomsList().get(j).getMeetingRoomId()) {
+                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
+
+                                System.out.println("SelectedMeetingFloorInLocate " + i + " " + desk + " ");
+
+                                ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
+//                                navController.navigate(R.id.navigation_locate);
+                            }
+
+                        }*/
+
+
+                    } else if (desk.equals(AppConstants.CAR_PARKING)) {
+
+                        /*for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getParkingSlotsList().size(); j++) {
+
+                            if (identifierId == locateCountryResposeList.get(i).getLocationItemLayout().getParkingSlotsList().get(j).getId()) {
+                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
+
+                                System.out.println("SelectedCarFloorInLocate " + i + " " + desk + " ");
+                                ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
+//                                navController.navigate(R.id.navigation_locate);
+                            }
+                        }*/
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
+
+            }
+        });
+
+
     }
 }

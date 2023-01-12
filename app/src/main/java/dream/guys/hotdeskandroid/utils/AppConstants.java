@@ -68,6 +68,8 @@ public class AppConstants {
     public static final String LOGIN_RESPONSE = "LOGIN_RESPONSE";
     public static final String SAVETOKEN="SAVETOKEN";
 
+    public static final String SHOW_PROFILE_CLICKED_STATUS="SHOW_PROFILE_CLICKED_STATUS";
+
     public static final String COUNTRY_NAME_CHECK="COUNTRY_NAME_CHECK";
     public static final String BUILDING_CHECK="BUILDING_CHECK";
     public static final String FLOOR_CHECK="FLOOR_CHECK";

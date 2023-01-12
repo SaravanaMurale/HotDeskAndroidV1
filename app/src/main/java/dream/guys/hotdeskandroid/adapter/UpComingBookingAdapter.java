@@ -1,16 +1,16 @@
 package dream.guys.hotdeskandroid.adapter;
 
+import static dream.guys.hotdeskandroid.utils.MyApp.getContext;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,10 +29,18 @@ public class UpComingBookingAdapter extends RecyclerView.Adapter<UpComingBooking
     ArrayList<TeamMembersResponse.DayGroup> list;
     String sample = "";
 
-    public UpComingBookingAdapter(Context context, ArrayList<TeamMembersResponse.DayGroup> recyclerModelArrayList,String sample) {
+    OnLocationIconClick onLocationIconClick;
+
+    public interface OnLocationIconClick{
+
+        public void onLocationIconClicked(int selectedFloorId, String selctedBuildingName, String selectedFloorName, int getID, String deskCode,String desk,int deskIddd);
+    }
+
+    public UpComingBookingAdapter(Context context, ArrayList<TeamMembersResponse.DayGroup> recyclerModelArrayList,String sample,OnLocationIconClick onLocationIconClick) {
         this.context = context;
         this.list = recyclerModelArrayList;
         this.sample = sample;
+        this.onLocationIconClick=onLocationIconClick;
     }
 
     @NonNull
@@ -343,6 +351,63 @@ public class UpComingBookingAdapter extends RecyclerView.Adapter<UpComingBooking
             holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getCarParkBookingsModel().getMyto()));
         }
 
+        holder.bookingIvLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel()!=null){
+
+                    if(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking()!=null){
+
+                        int selectedFloorId=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getFloorID();
+                        String selctedBuildingName=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getBuildingName();
+                        String selectedFloorName=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getfLoorName();
+                        int getID=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getId();
+                        String deskCode=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getDeskCode();
+
+                        int deskIddd=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getDeskId();
+
+                        String floorName=selctedBuildingName+" "+selectedFloorName;
+
+                        SessionHandler.getInstance().save(getContext(), AppConstants.FULLPATHLOCATION,floorName);
+
+                        //System.out.println("TeamsLocateDetailsDesk "+selectedFloorId+" "+selctedBuildingName+" "+selectedFloorName+" "+getID+" "+deskCode+" "+deskIddd);
+
+                        onLocationIconClick.onLocationIconClicked(selectedFloorId,selctedBuildingName,selectedFloorName,getID,deskCode,"3",deskIddd);
+
+
+
+                    }
+
+                }else if(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel()!=null){
+
+                    int selectedFloorId=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getFloorID();
+                    String selctedBuildingName=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getBuildingName();
+                    String selectedFloorName=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getfLoorName();
+                    int getID=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getId();
+                    String deskCode=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getDeskCode();
+
+                    System.out.println("TeamsLocateDetailsCar "+selectedFloorId+" "+selctedBuildingName+" "+selectedFloorName+" "+getID+" "+deskCode);
+
+
+
+                }else if(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel()!=null){
+
+                    int selectedFloorId=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getFloorID();
+                    String selctedBuildingName=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getBuildingName();
+                    String selectedFloorName=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getfLoorName();
+                    int getID=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getId();
+                    String deskCode=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getDeskCode();
+
+                    System.out.println("TeamsLocateDetailsMeetingRoom "+selectedFloorId+" "+selctedBuildingName+" "+selectedFloorName+" "+getID+" "+deskCode);
+
+                }
+
+
+
+            }
+        });
+
     }
 
     @Override
@@ -363,6 +428,7 @@ public class UpComingBookingAdapter extends RecyclerView.Adapter<UpComingBooking
     public class viewHolder extends RecyclerView.ViewHolder{
 
         TextView bookingCheckInTime,bookingCheckOutTime,bookingDeskName,bookingAddress,tvBookingWorkingRemote;
+        ImageView bookingIvLocation;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
@@ -372,6 +438,7 @@ public class UpComingBookingAdapter extends RecyclerView.Adapter<UpComingBooking
             bookingDeskName = itemView.findViewById(R.id.bookingDeskName);
             bookingAddress = itemView.findViewById(R.id.bookingAddress);
             tvBookingWorkingRemote = itemView.findViewById(R.id.tvBookingWorkingRemote);
+            bookingIvLocation=itemView.findViewById(R.id.bookingIvLocation);
 
         }
     }
