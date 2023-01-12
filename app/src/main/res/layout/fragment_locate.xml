@@ -38,7 +38,8 @@
                 android:background="@color/figmaBgGrey"
                 app:gest_doubleTapEnabled="false"
                 app:gest_maxZoom="8.0"
-                app:gest_minZoom="1">
+                app:gest_minZoom="2.3"
+                >
 
 
                 <RelativeLayout

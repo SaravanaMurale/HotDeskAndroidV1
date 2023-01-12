@@ -12,9 +12,10 @@
         android:layout_height="match_parent"
         android:fillViewport="true"
         >
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             >
             <!--Profile and Head Block-->
             <LinearLayout
@@ -249,15 +250,20 @@
 
             </LinearLayout>
 
+            <view
+                class="android.widget.LinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
             <!--Office,Remote,Not working text here-->
             <TextView
                 android:id="@+id/checkInText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/centerLayoutBlock"
-                android:layout_below="@id/bookDetailHeadBlock"
                 android:layout_centerHorizontal="true"
-                android:gravity="center_vertical"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:text="You're in the office today"
                 android:textColor="@color/black"
@@ -325,7 +331,7 @@
             <!-- Booking Detail-->
             <RelativeLayout
                 android:id="@+id/bookingDetailsBlock"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/check_in_layout"
                 android:layout_centerHorizontal="true"
@@ -405,6 +411,12 @@
 
             </RelativeLayout>
 
+            <view
+                class="android.widget.LinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
             <!--Button CheckIn-->
             <LinearLayout
                 android:id="@+id/check_in_layout"
@@ -484,7 +496,7 @@
             </RelativeLayout>
 
 
-        </RelativeLayout>
+        </LinearLayout>
     </ScrollView>
 
 </RelativeLayout>

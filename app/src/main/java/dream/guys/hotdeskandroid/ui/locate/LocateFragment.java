@@ -1748,7 +1748,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                             //binding.firstLayout.scrollTo(100,100);
 
 //                            binding.firstLayout.scrollTo(-1200,-1200);
-                            //binding.firstLayout.scrollTo(-600,-950);
+                            binding.firstLayout.scrollTo(-600,-950);
                         } else {
                             Toast.makeText(getContext(), "No Data", Toast.LENGTH_LONG).show();
                         }
