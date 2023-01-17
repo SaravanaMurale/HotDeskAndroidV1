@@ -53,7 +53,7 @@
             android:layout_marginHorizontal="@dimen/_18sdp"
             >
 
-            <dream.guys.hotdeskandroid.utils.CustomSpinner
+            <com.brickendon.hdplus.utils.CustomSpinner
                 android:id="@+id/assertSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -472,7 +472,7 @@
 
         </LinearLayout>
 
-        <dream.guys.hotdeskandroid.utils.CalendarView
+        <com.brickendon.hdplus.utils.CalendarView
             android:id="@+id/calendar_view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_285sdp"

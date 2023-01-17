@@ -1,42 +1,43 @@
 {
   "project_info": {
-    "project_number": "904606653175",
-    "project_id": "hybrid-hero-hd",
-    "storage_bucket": "hybrid-hero-hd.appspot.com"
+    "project_number": "1083717111124",
+    "firebase_url": "https://hotdeskplus-231512.firebaseio.com",
+    "project_id": "hotdeskplus-231512",
+    "storage_bucket": "hotdeskplus-231512.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:904606653175:android:d2e8dd765474da2cf751f2",
+        "mobilesdk_app_id": "1:1083717111124:android:820c7d38e39d7601",
         "android_client_info": {
-          "package_name": "dream.guys.hotdeskandroid"
+          "package_name": "com.brickendon.hdplus"
         }
       },
       "oauth_client": [
         {
-          "client_id": "904606653175-gk4brdk09n3bqr5tudqthu14se3kkru5.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "dream.guys.hotdeskandroid",
-            "certificate_hash": "277a9a62aa299f5a7d72264b5fca3a1837c0b725"
-          }
-        },
-        {
-          "client_id": "904606653175-24jp5n13fq3el7rjpo8l764udqpedat1.apps.googleusercontent.com",
+          "client_id": "1083717111124-6v7st46ebv7q9rislro31gv37v9evj1n.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCcYo5qTAs-4F3ujW7k4EhmaC8vzEZbxwA"
+          "current_key": "AIzaSyBHaiXBcxD_8BCSuYLrQvtAQXo2_GBTn4Y"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "904606653175-24jp5n13fq3el7rjpo8l764udqpedat1.apps.googleusercontent.com",
+              "client_id": "1083717111124-6v7st46ebv7q9rislro31gv37v9evj1n.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1083717111124-0gj0busm4aol9g167stfdvsep7jvvt4d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.brickendon.hdplus",
+                "app_store_id": "1449140281"
+              }
             }
           ]
         }

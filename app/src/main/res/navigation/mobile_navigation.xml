@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="dream.guys.hotdeskandroid.ui.home.HomeFragment"
+        android:name="com.brickendon.hdplus.ui.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -39,30 +39,30 @@
 
     <fragment
         android:id="@+id/navigation_locate"
-        android:name="dream.guys.hotdeskandroid.ui.locate.LocateFragment"
+        android:name="com.brickendon.hdplus.ui.locate.LocateFragment"
         android:label="fragment_locate"
         tools:layout="@layout/fragment_locate" />
 
     <fragment
         android:id="@+id/navigation_book"
-        android:name="dream.guys.hotdeskandroid.ui.book.BookFragment"
+        android:name="com.brickendon.hdplus.ui.book.BookFragment"
         android:label="fragment_book"
         tools:layout="@layout/fragment_book"/>
 
     <fragment
         android:id="@+id/navigation_teams"
-        android:name="dream.guys.hotdeskandroid.ui.teams.TeamsFragment"
+        android:name="com.brickendon.hdplus.ui.teams.TeamsFragment"
         android:label="fragment_teams"
         tools:layout="@layout/fragment_teams" />
     <fragment
         android:id="@+id/navigation_wellbeing"
-        android:name="dream.guys.hotdeskandroid.ui.wellbeing.WellbeingFragment"
+        android:name="com.brickendon.hdplus.ui.wellbeing.WellbeingFragment"
         android:label="fragment_wellbeing"
         tools:layout="@layout/fragment_wellbeing" />
 
     <fragment
         android:id="@+id/bookingDetailFragment"
-        android:name="dream.guys.hotdeskandroid.ui.book.BookingDetailFragment"
+        android:name="com.brickendon.hdplus.ui.book.BookingDetailFragment"
         android:label="fragment_booking_detail"
         tools:layout="@layout/fragment_booking_detail" >
         <action
@@ -76,12 +76,12 @@
     </fragment>
     <fragment
         android:id="@+id/changeScheduleFragment"
-        android:name="dream.guys.hotdeskandroid.ui.home.ChangeScheduleFragment"
+        android:name="com.brickendon.hdplus.ui.home.ChangeScheduleFragment"
         android:label="fragment_change_schedule"
         tools:layout="@layout/fragment_change_schedule" />
     <fragment
         android:id="@+id/qrFragment"
-        android:name="dream.guys.hotdeskandroid.ui.home.QrFragment"
+        android:name="com.brickendon.hdplus.ui.home.QrFragment"
         android:label="qr_fragment"
         tools:layout="@layout/fragment_qr" >
         <action

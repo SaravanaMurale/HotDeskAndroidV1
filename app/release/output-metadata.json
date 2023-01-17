@@ -4,15 +4,15 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "dream.guys.hotdeskandroid",
+  "applicationId": "com.brickendon.hdplus",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 52,
-      "versionName": "1.0",
+      "versionCode": 18374,
+      "versionName": "1.0.8374",
       "outputFile": "app-release.apk"
     }
   ],

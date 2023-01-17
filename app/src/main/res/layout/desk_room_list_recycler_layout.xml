@@ -125,7 +125,7 @@
                     android:layout_width="@dimen/_10sdp"
                     android:layout_height="@dimen/_10sdp"
                     android:src="@drawable/bg_circle_vector"
-                    app:tint="@color/figmaBlueText" />
+                    app:tint="@color/figmaLiteGreen" />
                 <TextView
                     android:id="@+id/desk_status"
                     android:layout_width="match_parent"

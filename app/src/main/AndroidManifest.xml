@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="dream.guys.hotdeskandroid">
+    package="com.brickendon.hdplus">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -23,7 +23,7 @@
         android:required="true" />
 
     <application
-        android:name=".utils.MyApp"
+        android:name="com.brickendon.hdplus.utils.MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_new_hh_v2"
         android:label="@string/app_name"
@@ -33,102 +33,102 @@
         android:theme="@style/Theme.HotDeskAndroid"
         tools:replace="android:allowBackup">
         <activity
-            android:name=".ui.home.DefaultLocationActivity"
+            android:name="com.brickendon.hdplus.ui.home.DefaultLocationActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.settings.WhatsNewActiviy"
+            android:name="com.brickendon.hdplus.ui.settings.WhatsNewActiviy"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.settings.HelpPdfViewActivity"
+            android:name="com.brickendon.hdplus.ui.settings.HelpPdfViewActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.chat.FreshChatActivity"
+            android:name="com.brickendon.hdplus.ui.chat.FreshChatActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.teams.TeamMembersActivity"
+            android:name="com.brickendon.hdplus.ui.teams.TeamMembersActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.settings.CountryListActivity"
+            android:name="com.brickendon.hdplus.ui.settings.CountryListActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DeepLinkActivity"
+            android:name="com.brickendon.hdplus.DeepLinkActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.notify.UserNotifyReqActivity"
+            android:name="com.brickendon.hdplus.ui.notify.UserNotifyReqActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.teams.TeamsUserActivity"
+            android:name="com.brickendon.hdplus.ui.teams.TeamsUserActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.notify.UserNotificationActivity"
+            android:name="com.brickendon.hdplus.ui.notify.UserNotificationActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".ui.teams.ShowProfileActivity"
+            android:name="com.brickendon.hdplus.ui.teams.ShowProfileActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".ui.notify.NotificationManageActivity"
+            android:name="com.brickendon.hdplus.ui.notify.NotificationManageActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".ui.notify.NotificationRequestActivity"
+            android:name="com.brickendon.hdplus.ui.notify.NotificationRequestActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.notify.NotificationCenterActivity"
+            android:name="com.brickendon.hdplus.ui.notify.NotificationCenterActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.wellbeing.NotificationsListActivity"
+            android:name="com.brickendon.hdplus.ui.wellbeing.NotificationsListActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.wellbeing.CovidCertificationActivity"
+            android:name="com.brickendon.hdplus.ui.wellbeing.CovidCertificationActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.wellbeing.LeaveActivity"
+            android:name="com.brickendon.hdplus.ui.wellbeing.LeaveActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.wellbeing.CreateNoticeActivity"
+            android:name="com.brickendon.hdplus.ui.wellbeing.CreateNoticeActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.wellbeing.TrainingActivity"
+            android:name="com.brickendon.hdplus.ui.wellbeing.TrainingActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.teams.UpComingBookingActivity"
+            android:name="com.brickendon.hdplus.ui.teams.UpComingBookingActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.wellbeing.ReportAnIssueActivity"
+            android:name="com.brickendon.hdplus.ui.wellbeing.ReportAnIssueActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.wellbeing.FireWardensActivity"
+            android:name="com.brickendon.hdplus.ui.wellbeing.FireWardensActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.settings.SettingsActivity"
+            android:name="com.brickendon.hdplus.ui.settings.SettingsActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LanguageListActivity"
+            android:name="com.brickendon.hdplus.LanguageListActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -146,55 +146,55 @@
         </provider>
 
         <activity
-            android:name=".ui.wellbeing.NotificationActivity"
+            android:name="com.brickendon.hdplus.ui.wellbeing.NotificationActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.wellbeing.PersonalHelpActivity"
+            android:name="com.brickendon.hdplus.ui.wellbeing.PersonalHelpActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.wellbeing.WorkspaceAssessmentActivity"
+            android:name="com.brickendon.hdplus.ui.wellbeing.WorkspaceAssessmentActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.wellbeing.WorkspaceSurveyActivity"
+            android:name="com.brickendon.hdplus.ui.wellbeing.WorkspaceSurveyActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.wellbeing.WellbeingCommonActivity"
+            android:name="com.brickendon.hdplus.ui.wellbeing.WellbeingCommonActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.home.ImagePickerActivity"
+            android:name="com.brickendon.hdplus.ui.home.ImagePickerActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.home.EditProfileActivity"
+            android:name="com.brickendon.hdplus.ui.home.EditProfileActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.home.ViewTeamsActivity"
+            android:name="com.brickendon.hdplus.ui.home.ViewTeamsActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.login.pin.LoginPinActivity"
+            android:name="com.brickendon.hdplus.ui.login.pin.LoginPinActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.login.pin.CreatePinActivity"
+            android:name="com.brickendon.hdplus.ui.login.pin.CreatePinActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.login.GDPRActivity"
+            android:name="com.brickendon.hdplus.ui.login.GDPRActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.home.ProfileActivity"
+            android:name="com.brickendon.hdplus.ui.home.ProfileActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.login.sso.WebViewActivity"
+            android:name="com.brickendon.hdplus.ui.login.sso.WebViewActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <!--
@@ -245,23 +245,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".example.BottomFilterActivity"
+            android:name="com.brickendon.hdplus.example.BottomFilterActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.login.ForgotPasswordActivity"
+            android:name="com.brickendon.hdplus.ui.login.ForgotPasswordActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.login.WelcomeActivity"
+            android:name="com.brickendon.hdplus.ui.login.WelcomeActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.login.LoginActivity"
+            android:name="com.brickendon.hdplus.ui.login.LoginActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SearchResultsActivity"
+            android:name="com.brickendon.hdplus.SearchResultsActivity"
             android:exported="false"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -269,7 +269,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.brickendon.hdplus.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -294,11 +294,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".example.DummyActivity"
+            android:name="com.brickendon.hdplus.example.DummyActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.login.SignInActivity"
+            android:name="com.brickendon.hdplus.ui.login.SignInActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -310,7 +310,7 @@
         </activity>
 
         <service
-            android:name=".utils.FirebaseNotificationService"
+            android:name="com.brickendon.hdplus.utils.FirebaseNotificationService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

@@ -6,27 +6,31 @@ plugins {
 android {
     compileSdk 31
     defaultConfig {
-        applicationId "dream.guys.hotdeskandroid"
+        applicationId "com.brickendon.hdplus"
         minSdk 26
         targetSdk 31
-        versionCode 55
-        versionName "2.0"
+        versionCode 18374
+        versionName "1.0.8374"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
         config {
-            storeFile file('C:\\Users\\Dreamguys\\AndroidStudioProjects\\hotdesk_android\\app\\hotdeskKey.jks')
+//            storeFile file('C:\\Users\\Dreamguys\\AndroidStudioProjects\\hotdesk_android\\app\\hotdeskKey.jks')
+            storeFile file('C:\\Users\\Dreamsuser\\Downloads\\Android KeyStore\\Android KeyStore\\release.jks')
 //            storeFile file('D:\\Projects\\Backup\\hotdesk_master_before_CR_06_12_2022\\app\\hotdeskKey.jks')
-            storePassword 'hybridhero'
-            keyAlias 'key'
-            keyPassword 'hybridhero'
+            storePassword 'HDPlus90'
+            keyAlias 'hdplus'
+            keyPassword 'HDPlus90'
         }
+
         release {
-            storeFile file('C:\\Users\\\\Dreamguys\\AndroidStudioProjects\\hotdesk_android\\app\\hotdeskKey.jks')
+//            storeFile file('C:\\Users\\\\Dreamguys\\AndroidStudioProjects\\hotdesk_android\\app\\hotdeskKey.jks')
+//            C:\Users\Dreamsuser\Downloads\Android KeyStore\Android KeyStore\release.jks
+            storeFile file('C:\\Users\\Dreamsuser\\Downloads\\Android KeyStore\\Android KeyStore\\release.jks')
 //            storeFile file('D:\\Projects\\Backup\\hotdesk_master_before_CR_06_12_2022\\app\\hotdeskKey.jks')
-            storePassword 'hybridhero'
-            keyAlias 'key'
-            keyPassword 'hybridhero'
+            storePassword 'HDPlus90'
+            keyAlias 'hdplus'
+            keyPassword 'HDPlus90'
         }
     }
     buildTypes {

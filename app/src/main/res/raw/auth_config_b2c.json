@@ -1,29 +1,13 @@
 {
-  "client_id" : "3558aa69-9b0b-442d-b81b-d30defd1c72a",
+  "client_id" : "50a561a4-a467-4768-b36c-78a9414e39ac",
   "redirect_uri" : "com.brickendon.hdplus://oauth/redirect",
   "account_mode" : "MULTIPLE",
   "broker_redirect_uri_registered": true,
   "authorities": [
     {
       "type": "B2C",
-      "authority_url": "https://hdplusdev.b2clogin.com/tfp/hdplusdev.onmicrosoft.com/B2C_1A_signup_signin_Multitenant",
+      "authority_url": "https://hotdeskplus.b2clogin.com/tfp/hotdeskplus.onmicrosoft.com/b2c_1a_signup_signin_multitenant",
       "default": true
-    },
-    {
-      "type": "B2C",
-      "authority_url": "https://hdplusdev.b2clogin.com/tfp/hdplusdev.google.com/B2C_1A_signup_signin_Multitenant"
-    },
-    {
-      "type": "B2C",
-      "authority_url": "https://hdplusdev.b2clogin.com/tfp/hdplusdev.okta.com/B2C_1A_signup_signin_Multitenant"
-    },
-    {
-      "type": "B2C",
-      "authority_url": "https://hdplusdev.b2clogin.com/tfp/hdplusdev.onmicrosoft.com/b2c_1_edit_profile/"
-    },
-    {
-      "type": "B2C",
-      "authority_url": "https://hdplusdev.b2clogin.com/tfp/hdplusdev.onmicrosoft.com/b2c_1_reset/"
     }
   ]
 }
