@@ -4,13 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/linearHead"
-        android:layout_width="match_parent"
+    <ProgressBar
+        android:id="@+id/locateProgressBarInBs"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingHorizontal="@dimen/_10sdp"
-        >
+        android:layout_centerInParent="true"
+        android:outlineAmbientShadowColor="@color/black"
+        android:outlineSpotShadowColor="@color/figmaGrey"
+        android:visibility="invisible" />
+
+
         <TextView
             android:id="@+id/select_desk"
             android:layout_width="wrap_content"

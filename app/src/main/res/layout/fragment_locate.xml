@@ -28,7 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:scrollbars="none">
+            android:scrollbars="none"
+            >
 
 
             <com.alexvasilkov.gestures.views.GestureFrameLayout
@@ -38,14 +39,13 @@
                 android:background="@color/figmaBgGrey"
                 app:gest_doubleTapEnabled="false"
                 app:gest_maxZoom="8.0"
-                app:gest_minZoom="2.3"
-                >
+                app:gest_minZoom="1.3">
 
 
                 <RelativeLayout
                     android:id="@+id/firstLayout"
-                    android:layout_width="1000dp"
-                    android:layout_height="1500dp"
+                    android:layout_width="2000dp"
+                    android:layout_height="2000dp"
                     android:layout_marginTop="@dimen/_80sdp">
 
 
@@ -109,9 +109,9 @@
             android:gravity="center_vertical"
             android:hint="Choose Location"
             android:paddingStart="@dimen/_11sdp"
-            android:paddingTop="@dimen/_6sdp"
-            android:paddingEnd="@dimen/_13sdp"
-            android:paddingBottom="@dimen/_7sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_11sdp"
+            android:paddingBottom="@dimen/_5sdp"
             android:textColorHint="@color/figmaBlack"
             android:textSize="@dimen/_11sdp" />
 
@@ -148,9 +148,9 @@
             android:drawableRight="@drawable/drawble_calendar"
             android:minHeight="@dimen/_33sdp"
             android:paddingStart="@dimen/_11sdp"
-            android:paddingTop="@dimen/_7sdp"
             android:paddingEnd="@dimen/_11sdp"
-            android:paddingBottom="@dimen/_7sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:text="Wed 4"
             android:text="Wed 4"
             android:textColor="@color/figmaBlack"
             android:textSize="@dimen/_11sdp"
@@ -165,14 +165,14 @@
             android:layout_height="@dimen/_31sdp"
             android:layout_below="@+id/searchLocate"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginEnd="@dimen/_19sdp"
+            android:layout_marginEnd="@dimen/_19sdp"
             android:background="@drawable/rectangle_bg_with_corner"
-            android:minHeight="@dimen/_33sdp"
             android:paddingStart="@dimen/_11sdp"
-            android:paddingTop="@dimen/_7sdp"
+            android:paddingTop="@dimen/_5sdp"
             android:paddingEnd="@dimen/_11sdp"
+            android:paddingBottom="@dimen/_5sdp"
             android:paddingBottom="@dimen/_7sdp"
             tools:ignore="MissingConstraints">
 
@@ -190,7 +190,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_4sdp"
                 android:layout_toRightOf="@id/tvStartLocate"
                 android:text="8:00"
                 android:textColor="@color/figmaBlack"
@@ -203,8 +203,8 @@
                 android:layout_width="@dimen/_1sdp"
                 android:layout_height="14dp"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_11sdp"
+                android:layout_marginEnd="@dimen/_11sdp"
                 android:layout_toRightOf="@id/locateStartTime"
                 android:background="@color/grey"
 
@@ -215,8 +215,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/_6sdp"
-                android:layout_toLeftOf="@+id/locateEndTime"
+                android:layout_toRightOf="@id/views"
                 android:text="End"
                 android:textSize="@dimen/_9sdp"
 

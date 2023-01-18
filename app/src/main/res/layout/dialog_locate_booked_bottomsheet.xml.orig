@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/booked_design_bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/_10sdp"
+    android:background="@drawable/login_background_corner_white"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/bookedDeskTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_3sdp"
+                    android:text="Room Booking"
+                    android:textSize="26dp"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/bookedDeskDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:textColor="@color/light_black"
+                    android:text="Mon, 10th August, 2022"
+                    />
+
+
+                <TextView
+                    android:id="@+id/bookedLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:textColor="@color/light_black"
+                    android:text=""
+                    />
+
+
+
+
+                <RelativeLayout
+                    android:id="@+id/capacityRoomBlock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    >
+
+                    <TextView
+                        android:id="@+id/tv_cap"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_2sdp"
+                        android:text="Capacity"
+                        android:textColor="@color/light_black"
+                        android:visibility="visible" />
+
+                    <ImageView
+                        android:id="@+id/meetingDotLine"
+                        android:layout_width="@dimen/_5sdp"
+                        android:layout_height="@dimen/_5sdp"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_toRightOf="@+id/tv_cap"
+                        android:src="@drawable/dot" />
+
+                    <TextView
+                        android:id="@+id/tv_cap_size"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_2sdp"
+                        android:layout_toRightOf="@+id/meetingDotLine"
+                        android:text="5"
+                        android:textColor="@color/light_black"
+                        android:visibility="visible" />
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/BookedAmenitiesBlock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_6sdp">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/bookedAmenitiesChipGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/_5sdp"
+                        app:chipSpacingHorizontal="@dimen/_1sdp"
+                        app:chipSpacingVertical="-13dp"
+
+                        />
+
+                </RelativeLayout>
+
+
+                <TextView
+                    android:id="@+id/meetingRoomDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Description:"
+                    android:textColor="@color/figma_dark_black"
+                    android:visibility="gone"
+                    />
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/list_item"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/tv_user_status_room"
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp"
+                        android:background="@drawable/new_unavaliable"
+                        />
+
+                    <TextView
+                        android:id="@+id/meetingAvaliable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Booked"
+                        android:layout_marginStart="@dimen/_6sdp"
+                        android:theme="@style/TextBold"
+                        android:textColor="@color/figmaBlack"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:id="@+id/child_layout">
+
+
+                    <RelativeLayout
+                        android:id="@+id/startTimeLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:padding="@dimen/_3sdp"
+                        android:background="@drawable/rectangle_greybg_with_corner"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvRoomStart"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginHorizontal="@dimen/_5sdp"
+                            android:layout_marginVertical="@dimen/_5sdp"
+                            android:text="Start"
+                            android:textColor="@color/figmaBlack"
+                            android:theme="@style/TextBold" />
+
+                        <TextView
+                            android:id="@+id/tvBookedRoomStartTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:layout_marginVertical="@dimen/_5sdp"
+                            android:text=""
+                            android:textColor="@color/figmaBlueText"
+                            android:theme="@style/TextBold" />
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:id="@+id/endTimeLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/rectangle_greybg_with_corner"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_3sdp"
+                        >
+
+                        <TextView
+                            android:id="@+id/tvRoomEnd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginHorizontal="@dimen/_5sdp"
+                            android:layout_marginVertical="@dimen/_5sdp"
+                            android:text="End"
+                            android:textColor="@color/figmaBlack"
+                            android:theme="@style/TextBold" />
+
+                        <TextView
+                            android:id="@+id/tvBookedRoomEndTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:layout_marginVertical="@dimen/_5sdp"
+                            android:text=""
+                            android:textColor="@color/figmaBlueText"
+                            android:theme="@style/TextBold"
+                            />
+
+
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_35sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/bookedCancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:text="Cancel"
+                    android:textSize="@dimen/_14sdp"
+                    android:theme="@style/TextBold" />
+
+                <TextView
+                    android:id="@+id/editRoomBookingContinue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:text="Continue"
+                    android:textColor="@color/figmaBlueText"
+                    android:textSize="@dimen/_14sdp"
+                    android:theme="@style/TextBold"
+                    android:visibility="gone"
+                    />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+
+
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

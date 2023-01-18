@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottomBookCoordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+<!--    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="@dimen/_24sdp"
+            >
+
+            <TextView
+                android:id="@+id/locateDeskName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:text="Desk-001"
+                android:textSize="@dimen/_20sdp"
+                android:textColor="@color/black"
+                 />
+
+            <TextView
+                android:id="@+id/deskBookDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="date comer here"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tvLocateDeskBookLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:textSize="@dimen/_11sdp"
+                android:text=""
+                 />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                >
+
+                <TextView
+                    android:id="@+id/firstFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/figmaBgGrey"
+                    android:padding="@dimen/_3sdp"
+                    android:text="Monitor" />
+
+                <TextView
+                    android:id="@+id/secondFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Standing Desk"
+                    android:background="@color/figmaBgGrey"
+                    android:padding="@dimen/_3sdp"
+                    android:layout_toRightOf="@+id/firstFilter"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    />
+
+                <TextView
+                    android:id="@+id/thirdFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Adjustable Height"
+                    android:background="@color/figmaBgGrey"
+                    android:padding="@dimen/_3sdp"
+                    android:layout_toRightOf="@+id/secondFilter"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_1sdp"
+                >
+
+                <TextView
+                    android:id="@+id/tvDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Description"
+                    android:textColor="@color/figma_dark_black" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp">
+
+                <ImageView
+                    android:id="@+id/ivOnline"
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:src="@drawable/online" />
+
+                <TextView
+                    android:id="@+id/statusText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_toRightOf="@+id/ivOnline"
+                    android:text="Available"
+                    android:textColor="@color/black" />
+
+            </RelativeLayout>
+
+
+
+            <!--Date-->
+            <RelativeLayout
+                android:id="@+id/bookingDateBlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_31sdp"
+                android:background="@drawable/rectangle_greybg_with_corner"
+                android:orientation="horizontal"
+                android:padding="@dimen/_3sdp"
+                android:visibility="gone"
+                >
+
+                <TextView
+                    android:id="@+id/tvLocateCheckInDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:paddingLeft="@dimen/_11sdp"
+                    android:text="Date"
+                    android:textSize="@dimen/_14sdp"
+                    android:textColor="@color/light_black"
+                    />
+
+                <TextView
+                    android:id="@+id/locateCheckInDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:text="10 Aug"
+                    android:textColor="@color/figmaBlueText"
+                    android:theme="@style/TextBold"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/showlocateCheckInDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:text="10 Aug"
+                    android:textSize="@dimen/_14sdp"
+                    android:textColor="@color/figmaBlueText"
+                    />
+
+            </RelativeLayout>
+
+            <!--Start-->
+            <RelativeLayout
+                android:id="@+id/bookingStartBlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_31sdp"
+                android:background="@drawable/rectangle_greybg_with_corner"
+                android:orientation="horizontal"
+                android:padding="@dimen/_3sdp"
+                >
+
+                <TextView
+                    android:id="@+id/tvLocateCheckInStart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:paddingLeft="@dimen/_11sdp"
+                    android:text="Start"
+                    android:textColor="@color/light_black"
+                    android:textSize="@dimen/_14sdp" />
+
+                <TextView
+                    android:id="@+id/locateCheckInTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:text=""
+                    android:textColor="@color/figmaBlueText"
+                    android:textSize="@dimen/_14sdp" />
+            </RelativeLayout>
+
+            <!--End-->
+            <RelativeLayout
+                android:id="@+id/bookingEndBlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@drawable/rectangle_greybg_with_corner"
+                android:padding="@dimen/_1sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvLocateCheckout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:paddingLeft="@dimen/_11sdp"
+                    android:text="End"
+                    android:textColor="@color/light_black"
+                    android:textSize="@dimen/_14sdp" />
+
+                <TextView
+                    android:id="@+id/locateCheckoutTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:text=""
+                    android:textColor="@color/figmaBlueText"
+                    android:textSize="@dimen/_14sdp" />
+            </RelativeLayout>
+
+            <!--Repeat-->
+            <RelativeLayout
+                android:id="@+id/bsRepeatBlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@drawable/rectangle_greybg_with_corner"
+                android:orientation="horizontal"
+                android:padding="@dimen/_3sdp"
+                >
+
+                <TextView
+                    android:id="@+id/tv_repeat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:paddingLeft="@dimen/_11sdp"
+                    android:text="Repeat"
+                    android:textColor="@color/light_black"
+                    android:textSize="@dimen/_14sdp" />
+
+                <TextView
+                    android:id="@+id/tvRepeat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:text="None"
+                    android:textColor="@color/none_blue"
+                    android:textSize="@dimen/_14sdp" />
+            </RelativeLayout>
+
+            <!--select desk-->
+            <RelativeLayout
+                android:id="@+id/selectDeskBlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@drawable/rectangle_bg_with_corner"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                >
+
+                <LinearLayout
+                    android:id="@+id/ll_selcted_desk_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5">
+
+                        <ImageView
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="@dimen/_15sdp"
+                            android:layout_centerInParent="true"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:src="@drawable/info_circle"
+                            app:tint="@color/figmaBlueText" />
+
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_desk_room_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Room - 001"
+                            android:theme="@style/TextBold"
+                            android:textSize="18dp"
+                            android:textColor="@color/black"
+                            />
+
+                        <TextView
+                            android:id="@+id/selectedLocation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+<<<<<<< .merge_file_7mPHVM
+                            android:layout_marginVertical="@dimen/_3sdp"
+                            android:text=""
+=======
+                            android:layout_marginVertical="@dimen/_5sdp"
+                            android:text="location1, location 2"
+                            android:textColor="@color/black"
+>>>>>>> .merge_file_DG7D5H
+                            android:theme="@style/TextRegular" />
+
+                        <LinearLayout
+                            android:id="@+id/capacityBlockInDesk"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Capacity"
+                                android:theme="@style/TextRegular" />
+
+                            <TextView
+                                android:layout_width="@dimen/_6sdp"
+                                android:layout_height="@dimen/_6sdp"
+                                android:layout_marginHorizontal="@dimen/_3sdp"
+                                android:background="@drawable/bg_circle_vector"
+                                android:backgroundTint="@color/figmaGrey" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="5"
+                                android:theme="@style/TextRegular" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/tv_select_desk_room"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:text="Select"
+                            android:textColor="@color/figmaBlueText"
+                            android:textSize="18dp" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/tvDescriptionInChangeBlock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ll_selcted_desk_layout"
+                    android:layout_marginLeft="@dimen/_32sdp"
+                    android:text="Description"
+                    android:textColor="@color/figma_dark_black" />
+
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/list_item_selected"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvDescriptionInChangeBlock"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_5sdp">
+
+                    <!-- Chips can be declared here, or added dynamically. -->
+
+                </com.google.android.material.chip.ChipGroup>
+
+                <LinearLayout
+                    android:id="@+id/status_check_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/list_item_selected"
+                    android:layout_marginStart="@dimen/_32sdp"
+                    android:gravity="center_vertical"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/user_status"
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp"
+                        android:background="@drawable/bg_circle_vector"
+                        android:backgroundTint="@color/teal_200"
+                        />
+
+                    <TextView
+                        android:id="@+id/changeBlockStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Avaliable"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:textSize="14dp"
+                        android:textColor="@color/black"
+                         />
+                </LinearLayout>
+            </RelativeLayout>
+
+
+            <!--Comment-->
+            <RelativeLayout
+                android:id="@+id/bookingCommentBlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@drawable/rectangle_greybg_with_corner"
+                android:padding="@dimen/_1sdp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                >
+
+                <EditText
+                    android:id="@+id/etComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_60sdp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:hint="Comment"
+                    android:background="@null"
+                    android:textColor="@color/figmaBlack"
+                    android:theme="@style/TextBold" />
+
+            </RelativeLayout>
+
+
+            <!--Vechicle Reg Number-->
+
+            <RelativeLayout
+                android:id="@+id/bookingVechicleRegtBlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@drawable/rectangle_greybg_with_corner"
+                android:padding="@dimen/_1sdp"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                >
+
+                <TextView
+                    android:id="@+id/tvReg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:layout_marginStart="10dp"
+                    android:paddingLeft="@dimen/_11sdp"
+                    android:text="@string/reg"
+                    android:textSize="@dimen/_14sdp" />
+
+                <EditText
+                    android:id="@+id/etVehicleReg"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:layout_toEndOf="@+id/tvReg"
+                    android:background="@null"
+                    android:gravity="end|center"
+                    android:paddingLeft="@dimen/_11sdp"
+                    android:paddingEnd="@dimen/_5sdp"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="@dimen/_14sdp"
+                    tools:text="sdfsdf" />
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+
+
+    <!--</androidx.core.widget.NestedScrollView>-->
+
+    <!--Continue and Book-->
+
+
+    <RelativeLayout
+        android:id="@+id/bottomBook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:layout_marginEnd="@dimen/_39sdp"
+        android:layout_marginStart="@dimen/_39sdp"
+       >
+
+
+        <TextView
+            android:id="@+id/editBookingBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_40sdp"
+            android:text="Cancel"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp" />
+
+        <TextView
+            android:id="@+id/editBookingContinue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_8sdp"
+            android:text="Book"
+            android:textColor="@color/figmaBlueText"
+            android:textSize="@dimen/_14sdp" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

@@ -56,6 +56,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alexvasilkov.gestures.GestureController;
+import com.alexvasilkov.gestures.State;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -149,6 +151,7 @@ import retrofit2.Response;
 
 public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSelectListener, BookingListToEditAdapter.OnEditClickable, DeskListRecyclerAdapter.OnSelectSelected, CarListToEditAdapter.CarEditClickable, MeetingListToEditAdapter.OnMeetingEditClickable, DeskSelectListAdapter.OnDeskSelectClickable, ParticipantNameShowAdapter.OnParticipantSelectable,
         RepeateDataAdapter.repeatInterface, LocateMyTeamAdapter.ShowMyTeamLocationClickable, ItemAdapter.selectItemInterface {
+
 
     @BindView(R.id.locateProgressBar)
     ProgressBar progressBar;
@@ -384,6 +387,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     //New...
     ImageView img_bsCountry,img_bsState,img_bsStreet;
 
+    //Zoom
+    boolean zoomAppliedStatus=false;
+
 
 
     @Override
@@ -559,9 +565,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         callLocateFilterBottomSheet(null);
                     }*/
                     meetingAmenityStatusList.clear();
-                    
+
                     CallAllMeetingRoomAndItsAmenities(true);
-                    
+
                    // getLocateAmenitiesFilterData(true);
 
 
@@ -1172,6 +1178,25 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     public void initLoadFloorDetails(int canvasDrawStatus) {
 
+
+        if(zoomAppliedStatus) {
+            //binding.firstLayout.removeAllViews();
+
+            //float getMinZoom = binding.zoomView.getController().getSettings().getMinZoom();
+            //System.out.println("BeforeGetMinZoomDataHere "+getMinZoom);
+
+            binding.zoomView.getController().getSettings().setMinZoom(1.3f);
+            float getMinZoom1 = binding.zoomView.getController().getSettings().getMinZoom();
+            System.out.println("AfterGetMinZoomDataHere "+getMinZoom1);
+            zoomAppliedStatus=false;
+            binding.zoomView.getController().resetState();
+            binding.zoomView.getController().updateState();
+
+            //binding.firstLayout.scrollTo(-200,-400);
+
+
+        }
+
         ProgressDialog.touchLock(getContext(), getActivity());
 
         afterBookingDisableRepeat();
@@ -1769,16 +1794,30 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                             }
 
-                           /* if(getSupportZoneLayoutForCanvas != null && getSupportZoneLayoutForCanvas.size()==0){
-                                Collections.sort(xArrayList);
-                                Collections.sort(yArrayList);
-                                binding.zoomView.scrollTo(xArrayList.get(0)+100, yArrayList.get(0)+100);
-                            }*/
+                            binding.zoomView.getController().addOnStateChangeListener(new GestureController.OnStateChangeListener() {
+                                @Override
+                                public void onStateChanged(State state) {
 
-                            //binding.firstLayout.scrollTo(100,100);
+                                    zoomAppliedStatus=true;
+                                    System.out.println("GetZoomZixed "+ state.getZoom());
+                                    if(state.getZoom()>=1 && state.getZoom()<=1.3) {
+                                        binding.zoomView.getController().getSettings()
+                                                .setZoomEnabled(true)
+                                                .setMinZoom(1);
+                                        // binding.firstLayout.scrollTo(-200,-550);
+                                        System.out.println("MinZoomSet");
+                                    }
 
-//                            binding.firstLayout.scrollTo(-1200,-1200);
-                            binding.firstLayout.scrollTo(-600,-950);
+                                }
+
+                                @Override
+                                public void onStateReset(State oldState, State newState) {
+                                    System.out.println("GetZoomZixedOld "+ oldState.getZoom());
+                                    System.out.println("GetZoomZixedNew "+ newState.getZoom());
+                                }
+                            });
+
+                            binding.firstLayout.scrollTo(-200,-400);
                         } else {
                             Toast.makeText(getContext(), "No Data", Toast.LENGTH_LONG).show();
                         }
@@ -1996,7 +2035,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         /* View dottView = getLayoutInflater().inflate(R.layout.layout_dotted_line, null, false);
          ImageView ivDesk = dottView.findViewById(R.id.dottedImage);
          RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
- 
+
          relativeLayout.leftMargin =300;
          relativeLayout.topMargin = 500;
          ivDesk.setLayoutParams(relativeLayout);*/
@@ -2803,9 +2842,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 } else if (carParkingStatusModelList.get(i).getStatus() == 3) {
                                     //Booked
                                     //Toast.makeText(getContext(), "Park Is Already Booked", Toast.LENGTH_LONG).show();1
-                                    
+
                                     getCarParkBookedData(selctedCode, key, id, code);
-                                    
+
                                 } else if (carParkingStatusModelList.get(i).getStatus() == 4) {
 
                                     getCarDescriptionUsingCardId(id);
@@ -2848,9 +2887,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                     getMeetingBookingListToEdit(meetingRoomId, meetingRoomName, isReqduest);
                                 } else if (meetingStatusModelList.get(i).getStatus() == 3) {
                                     //Toast.makeText(getContext(), "Meeting Room Is Already Booked", Toast.LENGTH_LONG).show();
-                                    
+
                                     getMeetingBookedData(meetingRoomId, meetingRoomName);
-                                    
+
                                 } else if (meetingStatusModelList.get(i).getStatus() == 4) {
                                     editLastEndTime = "";
                                     boolean isReqduest = true;
@@ -3548,19 +3587,19 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
 
                 BookedCarResponse bookedCarResponse =response.body();
-                
+
                 if(bookedCarResponse!=null){
                     callCarBookedBottomSheet(selctedCode, key, id, code, bookedCarResponse);
                 }
-                
-                
+
+
             }
 
             @Override
             public void onFailure(Call<BookedCarResponse> call, Throwable t) {
 
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
-                
+
             }
         });
 
@@ -4626,6 +4665,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             public void onClick(View v) {
 
                 if (page == 1) {
+                    repeatActvieStatus=false;
                     bottomSheetDialog.dismiss();
                 } else {
                     editRoomBookingContinue.setText(appKeysPage.getContinue());
@@ -6692,6 +6732,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         editBookingBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                repeatActvieStatus=false;
                 locateCheckInBottomSheet.dismiss();
             }
         });
@@ -6857,13 +6898,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View view) {
 
-                if (code.equals("4")) {
+                //Should not set repeat daily status here
+               /* if (code.equals("4")) {
                     //repeat_room.setText("Daily");
                     repeat_room.setText(appKeysPage.getDaily());
                 } else {
                     //tvRepeat.setText("Daily");
                     tvRepeat.setText(appKeysPage.getDaily());
-                }
+                }*/
 
                 type = "daily";
                 iv_none.setVisibility(View.GONE);
@@ -7326,15 +7368,18 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 repeatSelectedDate = "";
 
                 if (code.equals("3")) {
-
+                    //tvRepeat.setText("Daily");
+                    tvRepeat.setText(appKeysPage.getDaily());
                     //DeskBookForWholeWeekFromToday
                     //doRepeatBookingForAWeek();
                 } else if (code.equals("4")) {
                     //Meeting Room Booking For Whole Week From Today
                     //doRepeatMeetingRoomBookingForWeek();
+                    repeat_room.setText(appKeysPage.getDaily());
                 } else if (code.equals("5")) {
                     //CarBooking For Whole Week From Today
                     //doRepeatCarBookingForAWeek();
+                    tvRepeat.setText(appKeysPage.getDaily());
                 }
 
                 bottomSheetDialog.dismiss();
@@ -7384,13 +7429,18 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
                 if (code.equals("3")) {
+                    //tvRepeat.setText("Daily");
+                    tvRepeat.setText(appKeysPage.getDaily());
                     //BookForSelectedDaysInAWeek
                     //doRepeatBookingForAWeek();
                 } else if (code.equals("4")) {
-
+                    //repeat_room.setText("Daily");
+                    repeat_room.setText(appKeysPage.getDaily());
                 } else if (code.equals("5")) {
                     //BookCarForSelectedDaysInAWeek
                     //doRepeatCarBookingForAWeek();
+                    //tvRepeat.setText("Daily");
+                    tvRepeat.setText(appKeysPage.getDaily());
                 }
 
                 bottomSheetDialog.dismiss();

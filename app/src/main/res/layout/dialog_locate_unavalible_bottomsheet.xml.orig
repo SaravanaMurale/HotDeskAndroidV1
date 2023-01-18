@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/login_background_corner_white"
+    app:behavior_peekHeight="100dp">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/_15sdp"
+        >
+
+    <TextView
+        android:id="@+id/unAvalibaleDeskName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/_5sdp"
+        android:text="Desk-001"
+        android:textSize="26dp"
+<<<<<<< .merge_file_WxIBzm
+
+        android:textColor="@color/figmaBlack"
+         />
+
+        <TextView
+            android:id="@+id/unAvaliableDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:theme="@style/TextBold"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:visibility="gone"
+=======
+        android:textColor="@color/figmaBlack"
+        android:textStyle="bold"
+        />
+
+        <TextView
+            android:id="@+id/unavaliableDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"
+            android:textColor="@color/figmaBlack"
+>>>>>>> .merge_file_6LnLSW
+            />
+
+    <TextView
+        android:id="@+id/unAvaliableLocate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_10sdp"
+<<<<<<< .merge_file_WxIBzm
+        android:text=""
+        android:theme="@style/TextBold"
+        android:layout_marginTop="@dimen/_3sdp"
+=======
+        android:text="Location1,Location2"
+        android:textColor="@color/light_black"
+        android:layout_marginTop="@dimen/_5sdp"
+>>>>>>> .merge_file_6LnLSW
+        />
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvDescriptionUnAvaliable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:textSize="14dp"
+            android:textColor="@color/figma_dark_black" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+
+        >
+
+        <ImageView
+            android:id="@+id/ivOnline"
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:src="@drawable/new_booked" />
+
+        <TextView
+            android:id="@+id/tvUnaValibale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_toRightOf="@+id/ivOnline"
+            android:text="Unavaliable"
+<<<<<<< .merge_file_WxIBzm
+            android:textColor="@color/figma_dark_black"
+=======
+            android:textSize="14dp"
+            android:textColor="@color/figmaBlack"
+            android:textStyle="bold"
+>>>>>>> .merge_file_6LnLSW
+            />
+
+        <TextView
+            android:id="@+id/un_available_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvUnaValibale"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="This desk is unavliable"
+            android:textColor="@color/figma_dark_black" />
+
+    </RelativeLayout>
+
+        <!--Continue and Book-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_35sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvUnavaliableBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_marginVertical="@dimen/_5sdp"
+                android:text="Back"
+                android:textColor="@color/figmaBlack"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:layout_marginBottom="@dimen/_10sdp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_marginVertical="@dimen/_5sdp"
+                android:text="Book"
+                android:textColor="@color/figmaBlueText"
+                android:textSize="@dimen/_14sdp"
+                android:theme="@style/TextBold"
+                android:visibility="gone"
+                />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

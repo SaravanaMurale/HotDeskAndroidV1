@@ -91,6 +91,7 @@ import com.brickendon.hdplus.ui.login.SignInActivity;
 public class Utils {
 
 
+
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
     private static int hour;
@@ -2656,22 +2657,27 @@ public class Utils {
 
             if (min >= 0 && min < 15) {
 
-                fTime = cTime.replace(orgSTime[1], "30");
+                //fTime = cTime.replace(orgSTime[1], "30");
+                fTime=orgSTime[0]+":"+"30";
 
             } else if (min >= 15 && min < 30) {
 
-                fTime = cTime.replace(orgSTime[1], "45");
+                //fTime = cTime.replace(orgSTime[1], "45");
 //                fTime = roundOffHour(cTime.replace(orgSTime[1], "45"));
+                fTime=orgSTime[0]+":"+"45";
+
 
             } else if (min >= 30 && min < 45) {
 
-                fTime = cTime.replace(orgSTime[1], "00");
+                //fTime = cTime.replace(orgSTime[1], "00");
 //                fTime = roundOffHour(cTime.replace(orgSTime[1], "00"));
+                fTime=orgSTime[0]+":"+"00";
 
             } else if (min >= 45 && min <= 59) {
 
-                fTime = cTime.replace(orgSTime[1], "15");
+                //fTime = cTime.replace(orgSTime[1], "15");
 //                fTime = roundOffHour(cTime.replace(orgSTime[1], "15"));
+                fTime=orgSTime[0]+":"+"15";
 
             }
 
@@ -2681,6 +2687,7 @@ public class Utils {
 
         return fTime;
     }
+
 
 
     public static String setMeetingRoundOfValue8thTime(String cTime) {
@@ -2694,19 +2701,23 @@ public class Utils {
 
             if (min >= 0 && min <= 14) {
 
-                fTime = cTime.replace(orgSTime[1], "30");
+                //fTime = cTime.replace(orgSTime[1], "30");
+                fTime=orgSTime[0]+":"+"30";
 
             } else if (min > 14 && min <= 29) {
 
-                fTime = cTime.replace(orgSTime[1], "45");
+                //fTime = cTime.replace(orgSTime[1], "45");
+                fTime=orgSTime[0]+":"+"45";
 
             } else if (min > 29 && min <= 44) {
 
-                fTime = roundOffHour(cTime.replace(orgSTime[1], "00"));
+                //fTime = roundOffHour(cTime.replace(orgSTime[1], "00"));
+                fTime=roundOffHour(orgSTime[0]+":"+"00");
 
             } else if (min > 44 && min <= 59) {
 
-                fTime = roundOffHour(cTime.replace(orgSTime[1], "15"));
+                //fTime = roundOffHour(cTime.replace(orgSTime[1], "15"));
+                fTime=roundOffHour(orgSTime[0]+":"+"15");
 
             }
 
@@ -2718,6 +2729,7 @@ public class Utils {
     }
 
 
+    //New 45:45 issue fixed
     public static String setNearestThirtyMinToMeeting(String cTime) {
 
         String fTime = "";
@@ -2729,19 +2741,23 @@ public class Utils {
 
             if (min >= 0 && min <= 10) {
 
-                fTime = cTime.replace(orgSTime[1], "30");
+                //fTime = cTime.replace(orgSTime[1], "30");
+                fTime=orgSTime[0]+":"+"30";
 
             } else if (min > 10 && min <= 29) {
 
-                fTime = cTime.replace(orgSTime[1], "45");
+                //fTime = cTime.replace(cTime.split(":")[1], "45");
+                fTime=orgSTime[0]+":"+"45";
 
             } else if (min > 29 && min <= 44) {
 
-                fTime = roundOffHour(cTime.replace(orgSTime[1], "00"));
+                //fTime = roundOffHour(cTime.replace(orgSTime[1], "00"));
+                fTime=roundOffHour(orgSTime[0]+":"+"00");
 
             } else if (min > 44 && min <= 59) {
 
-                fTime = roundOffHour(cTime.replace(orgSTime[1], "15"));
+                //fTime = roundOffHour(cTime.replace(orgSTime[1], "15"));
+                fTime=roundOffHour(orgSTime[0]+":"+"15");
 
             }
 
@@ -2749,8 +2765,11 @@ public class Utils {
             fTime = cTime;
         }
 
+        System.out.println("FPrintedHere "+fTime);
+
         return fTime;
     }
+
 
     public static String roundOffHour(String selectedTime) {
 

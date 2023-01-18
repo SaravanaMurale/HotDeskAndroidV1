@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parentIdLocate"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_behavior="@string/bottom_sheet_behavior">
+
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_38sdp">
+
+    <LinearLayout
+        android:id="@+id/floorFilterBlock"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_above="@+id/bottomBackAndApply"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/bsLocationSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_9sdp"
+            android:background="@drawable/rectangle_greybg_with_corner"
+            android:drawableRight="@drawable/locate_location"
+            android:gravity="center_vertical"
+            android:hint=""
+            android:paddingLeft="@dimen/_15sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingRight="@dimen/_15sdp"
+            android:textSize="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:textColor="@color/figmaBlack"
+            android:textColorHint="@color/figmaBlack" />
+
+        <EditText
+            android:id="@+id/bsGeneralSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bsLocationSearch"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_9sdp"
+            android:background="@drawable/rectangle_greybg_with_corner"
+            android:drawableLeft="@drawable/search_1px"
+            android:gravity="center_vertical"
+            android:hint="  Search"
+            android:drawablePadding="@dimen/_5sdp"
+            android:paddingLeft="@dimen/_8sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_7sdp"
+            android:textSize="@dimen/_10sdp" />
+
+         <!--Country-->
+        <RelativeLayout
+        android:id="@+id/bsCountryBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_grey"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:padding="@dimen/_5sdp">
+
+            <TextView
+                android:id="@+id/bsCountry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="8dp"
+                android:text="United Kingdom"
+                android:textColor="@color/figma_dark_black"
+                android:textSize="@dimen/_10sdp" />
+
+            <ImageView
+                android:id="@+id/img_bsCountry"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:layout_toLeftOf="@id/bsCountry"
+                android:src="@drawable/world"
+<<<<<<< .merge_file_6e0WHf
+                app:tint="@color/black"/>
+=======
+                app:tint="@color/blue" />
+>>>>>>> .merge_file_MmDceT
+
+    </RelativeLayout>
+
+        <!--RV Country-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCountry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <!--State-->
+        <RelativeLayout
+            android:id="@+id/bsStateBlock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_grey"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:padding="@dimen/_5sdp">
+
+            <TextView
+                android:id="@+id/bsState"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="8dp"
+                android:text="City"
+                android:textColor="@color/figma_dark_black"
+
+                android:textSize="@dimen/_10sdp" />
+
+            <ImageView
+                android:id="@+id/img_bsState"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginTop="5dp"
+<<<<<<< .merge_file_6e0WHf
+                android:layout_marginRight="@dimen/_15sdp"
+=======
+                android:layout_marginRight="20dp"
+>>>>>>> .merge_file_MmDceT
+                android:layout_toLeftOf="@id/bsState"
+                android:src="@drawable/location"
+                app:tint="@color/black"/>
+
+        </RelativeLayout>
+
+        <!--RV state-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <!--Street-->
+        <RelativeLayout
+            android:id="@+id/bsStreetBlock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_grey"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:padding="@dimen/_5sdp">
+
+            <TextView
+                android:id="@+id/bsStreet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="8dp"
+                android:text="Building"
+
+                android:textColor="@color/figma_dark_black"
+                android:textSize="@dimen/_10sdp" />
+
+            <ImageView
+                android:id="@+id/img_bsStreet"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="@dimen/_15sdp"
+<<<<<<< .merge_file_6e0WHf
+                android:layout_toLeftOf="@id/bsStreet"
+                android:src="@drawable/building"
+=======
+>>>>>>> .merge_file_MmDceT
+                app:tint="@color/black"/>
+
+        </RelativeLayout>
+
+        <!--RV Street-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvStreet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <!--Floor-->
+        <RelativeLayout
+            android:id="@+id/bsFloorBlock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_grey"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:padding="@dimen/_5sdp">
+
+            <TextView
+                android:id="@+id/bsfloor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:text="Floor"
+                android:textSize="@dimen/_10sdp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/figma_dark_black"
+
+                />
+
+            <ImageView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/floor"
+                android:layout_toLeftOf="@id/bsfloor"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="@dimen/_15sdp"
+                />
+
+        </RelativeLayout>
+
+
+        <!--RV FloorList-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvFloorList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/bottomBackAndApply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        >
+
+        <TextView
+            android:id="@+id/bsBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_39sdp"
+            android:text="@string/cancel"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_15sdp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/bsApply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:text="Apply"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            android:layout_centerVertical="true"
+            />
+
+    </RelativeLayout>
+
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+

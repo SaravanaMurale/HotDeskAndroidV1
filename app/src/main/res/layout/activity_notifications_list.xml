@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/profile_back"
-            android:text="Requests"
+            android:text="Request"
             android:textColor="@color/figmaBlack"
             android:textSize="26sp"
             android:theme="@style/TextRegular"
