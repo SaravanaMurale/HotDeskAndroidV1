@@ -306,16 +306,14 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 break;
         }
 
-        if (!fragment.expandStatus) {
-
-        } else {
-
-        }
     }
 
     @Override
     public int getItemCount() {
-        return 100;
+        if (teamMembersListNew.size() > 100)
+            return 100;
+        else
+            return teamMembersListNew.size();
     }
 
     public class viewHolder extends RecyclerView.ViewHolder {
