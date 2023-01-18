@@ -479,18 +479,18 @@
                     android:id="@+id/etVehicleReg"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_35sdp"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/tvReg"
-                    android:gravity="end|center"
-                    tools:text="sdfsdf"
-                    android:paddingEnd="@dimen/_5sdp"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:layout_centerVertical="true"
                     android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:layout_toEndOf="@+id/tvReg"
                     android:background="@null"
+                    android:gravity="end|center"
                     android:paddingLeft="@dimen/_11sdp"
+                    android:paddingEnd="@dimen/_5sdp"
                     android:textColor="@color/figmaBlack"
-                    android:textSize="@dimen/_14sdp" />
+                    android:textSize="@dimen/_14sdp"
+                    tools:text="sdfsdf" />
 
             </RelativeLayout>
 
