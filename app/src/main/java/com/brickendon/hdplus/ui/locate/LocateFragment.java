@@ -3979,7 +3979,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
-        unAvaliableDate=locateCheckInBottomSheet.findViewById(R.id.unAvaliableDate);
+        unAvaliableDate=locateCheckInBottomSheet.findViewById(R.id.unavaliableDate);
         unAvalibaleDeskName = locateCheckInBottomSheet.findViewById(R.id.unAvalibaleDeskName);
         tvUnavaliableBack = locateCheckInBottomSheet.findViewById(R.id.tvUnavaliableBack);
         unAvaliableLocate = locateCheckInBottomSheet.findViewById(R.id.unAvaliableLocate);

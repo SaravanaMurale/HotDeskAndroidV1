@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -14,159 +15,164 @@
         android:outlineSpotShadowColor="@color/figmaGrey"
         android:visibility="invisible" />
 
-
-        <TextView
-            android:id="@+id/select_desk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_25sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:text="Select Desk"
-            android:textColor="@color/figmaBlack"
-            android:textSize="26sp"
-            android:theme="@style/TextBold" />
-
-        <LinearLayout
-            android:id="@+id/linera"
+    <LinearLayout
+            android:id="@+id/linearHead"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/select_desk"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/_10sdp"
+            >
             <TextView
-                android:id="@+id/sheet_date"
+                android:id="@+id/select_desk"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_25sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:text="Select Desk"
                 android:textColor="@color/figmaBlack"
-                android:textSize="14sp"
-                android:theme="@style/TextRegular" />
-
-            <ImageView
-                android:layout_width="@dimen/_5sdp"
-                android:layout_height="@dimen/_5sdp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/dot" />
-
-            <TextView
-                android:id="@+id/sheet_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:text=""
-                android:textColor="@color/figmaBlack"
-                android:textSize="14sp"
-                android:theme="@style/TextRegular" />
-            <view class="android.widget.TextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                />
-
-            <ImageView
-                android:layout_width="@dimen/_18sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:src="@drawable/location"
-                android:visibility="gone"
-                app:tint="@color/figmaBlueText" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/filter_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/linera"
-            android:orientation="horizontal"
-            android:padding="@dimen/_10sdp">
-
-            <TextView
-                android:id="@+id/filter"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_weight="1"
-                android:text="Filter"
-                android:textColor="@color/figmaBlueText"
-                android:textSize="18sp"
+                android:textSize="26sp"
                 android:theme="@style/TextBold" />
 
-            <TextView
-                android:id="@+id/capa_tv"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/linera"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:text="Capacity"
-                android:textColor="@color/figmaBlueText"
-                android:textSize="18sp"
-                android:theme="@style/TextBold"
-                android:visibility="visible" />
+                android:layout_below="@id/select_desk"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
-            <view
-                class="android.widget.TextView"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_5sdp"
-                android:layout_weight="1" />
+                <TextView
+                    android:id="@+id/sheet_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:text="Select Desk"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="14sp"
+                    android:theme="@style/TextRegular" />
 
-            <ImageView
-                android:layout_width="@dimen/_18sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:src="@drawable/location"
-                app:tint="@color/figmaBlueText" />
+                <ImageView
+                    android:layout_width="@dimen/_5sdp"
+                    android:layout_height="@dimen/_5sdp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/dot" />
+
+                <TextView
+                    android:id="@+id/sheet_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:text=""
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="14sp"
+                    android:theme="@style/TextRegular" />
+                <view class="android.widget.TextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    />
+
+                <ImageView
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:src="@drawable/location"
+                    android:visibility="gone"
+                    app:tint="@color/figmaBlueText" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/filter_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/linera"
+                android:orientation="horizontal"
+                android:padding="@dimen/_10sdp">
+
+                <TextView
+                    android:id="@+id/filter"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_weight="1"
+                    android:text="Filter"
+                    android:textColor="@color/figmaBlueText"
+                    android:textSize="18sp"
+                    android:theme="@style/TextBold" />
+
+                <TextView
+                    android:id="@+id/capa_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="Capacity"
+                    android:textColor="@color/figmaBlueText"
+                    android:textSize="18sp"
+                    android:theme="@style/TextBold"
+                    android:visibility="visible" />
+
+                <view
+                    class="android.widget.TextView"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_5sdp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:src="@drawable/location"
+                    app:tint="@color/figmaBlueText" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/bsGeneralSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/filter_layout"
+                android:layout_margin="@dimen/_10sdp"
+                android:background="@drawable/rectangle_greybg_with_corner"
+                android:drawableStart="@drawable/search_1px"
+                android:drawablePadding="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:hint="Search"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingStart="@dimen/_8sdp"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_7sdp"
+                android:textSize="@dimen/_10sdp" />
 
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/bsGeneralSearch"
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/desk_list_select_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/filter_layout"
-            android:layout_margin="@dimen/_10sdp"
-            android:background="@drawable/rectangle_greybg_with_corner"
-            android:drawableStart="@drawable/search_1px"
-            android:drawablePadding="@dimen/_10sdp"
-            android:gravity="center_vertical"
-            android:hint="Search"
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:maxLines="1"
-            android:paddingStart="@dimen/_8sdp"
-            android:paddingTop="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_7sdp"
-            android:textSize="@dimen/_10sdp" />
-
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/desk_list_select_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/bsDeskBack"
-        android:layout_below="@id/linearHead" />
+            android:layout_above="@id/bsDeskBack"
+            android:layout_below="@id/linearHead" />
 
     <TextView
-        android:id="@+id/bsDeskBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_20sdp"
-        android:text="@string/back"
-        android:textSize="18sp"
-        android:theme="@style/TextBold" />
-
+            android:id="@+id/bsDeskBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:text="@string/back"
+            android:textSize="18sp"
+            android:theme="@style/TextBold" />
 
 </RelativeLayout>

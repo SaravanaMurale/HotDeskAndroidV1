@@ -151,7 +151,6 @@
             android:paddingEnd="@dimen/_11sdp"
             android:paddingBottom="@dimen/_5sdp"
             android:text="Wed 4"
-            android:text="Wed 4"
             android:textColor="@color/figmaBlack"
             android:textSize="@dimen/_11sdp"
             tools:ignore="MissingConstraints" />
@@ -167,13 +166,11 @@
             android:layout_alignParentRight="true"
             android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginEnd="@dimen/_19sdp"
-            android:layout_marginEnd="@dimen/_19sdp"
             android:background="@drawable/rectangle_bg_with_corner"
             android:paddingStart="@dimen/_11sdp"
             android:paddingTop="@dimen/_5sdp"
             android:paddingEnd="@dimen/_11sdp"
             android:paddingBottom="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_7sdp"
             tools:ignore="MissingConstraints">
 
 
