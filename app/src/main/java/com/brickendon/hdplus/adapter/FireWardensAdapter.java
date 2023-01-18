@@ -25,7 +25,7 @@ public class FireWardensAdapter extends RecyclerView.Adapter<FireWardensAdapter.
 
     Context context;
     List<FirstAidResponse.Persons> firstAidResponseList;
-    String description;
+    int description;
 
     ViewPersonDetailCliclable viewPersonDetailCliclable;
 
@@ -34,7 +34,8 @@ public class FireWardensAdapter extends RecyclerView.Adapter<FireWardensAdapter.
         public void  loadLocateFromFireWardens();
     }
 
-    public FireWardensAdapter(Context context, List<FirstAidResponse.Persons> firstAidResponseList, String description,ViewPersonDetailCliclable viewPersonDetailCliclable) {
+    public FireWardensAdapter(Context context, List<FirstAidResponse.Persons> firstAidResponseList,
+                              int description,ViewPersonDetailCliclable viewPersonDetailCliclable) {
 
         this.context=context;
         this.firstAidResponseList=firstAidResponseList;
@@ -56,7 +57,7 @@ public class FireWardensAdapter extends RecyclerView.Adapter<FireWardensAdapter.
 
         holder.firewandensName.setText(firstAidResponseList.get(position).getFullName());
 
-        if(description.equalsIgnoreCase("Firewardenss"))
+        if(description == 4)
             Glide.with(context)
                 .load(R.drawable.fire)
                 .placeholder(R.drawable.fire)

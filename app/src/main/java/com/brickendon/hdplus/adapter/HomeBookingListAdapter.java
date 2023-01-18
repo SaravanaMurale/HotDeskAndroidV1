@@ -136,7 +136,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingIvLocation.setVisibility(View.VISIBLE);
 
         }else {
-            System.out.println("check date of today future "+list.get(position).getDate());
+//            System.out.println("check date of today future "+list.get(position).getDate());
             holder.tv_past_event.setVisibility(View.GONE);
             holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
             enableColorUpdate(holder);

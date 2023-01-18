@@ -47,7 +47,7 @@ public class DummyActivity extends AppCompatActivity {
                             Date date=f24hours.parse(time);
                             SimpleDateFormat f12hours=new SimpleDateFormat("hh:mm aa");
 
-                            System.out.println("ReceivedDate"+f12hours.format(date));
+//                            System.out.println("ReceivedDate"+f12hours.format(date));
 
                         } catch (ParseException e) {
                             e.printStackTrace();

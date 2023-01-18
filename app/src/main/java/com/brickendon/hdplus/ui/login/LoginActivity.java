@@ -740,6 +740,7 @@ public class LoginActivity extends AppCompatActivity {
     private void sendFCMToken() {
         String tokenInSharedPreference = SessionHandler.getInstance().get(getApplicationContext(), AppConstants.SAVETOKEN);
         System.out.println("SharedPreferenceToken"+tokenInSharedPreference);
+        Log.d(TAG, "SharedPreferenceToken"+tokenInSharedPreference);
         if (tokenInSharedPreference != null) {
             //System.out.println("tokenInSharedPreferenceInLoginActivity "+tokenInSharedPreference);
             FirebaseNotificationService.saveTokenInserver(tokenInSharedPreference);

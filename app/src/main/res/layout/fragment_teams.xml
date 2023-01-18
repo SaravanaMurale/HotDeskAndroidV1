@@ -53,8 +53,8 @@
         android:id="@+id/horizontal_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_5sdp"
-        android:layout_below="@+id/hdr_layout" />
+        android:layout_below="@+id/hdr_layout"
+        android:layout_marginBottom="@dimen/_5sdp" />
 
     <devs.mulham.horizontalcalendar.HorizontalCalendarView
         android:id="@+id/calendarView"
@@ -64,309 +64,321 @@
         android:layout_below="@+id/horizontal_recycler"
         android:layout_marginTop="@dimen/_8sdp"
         app:textColorNormal="@color/figmaBlack"
-        app:textColorSelected="@color/white" />
-
-
-    <androidx.core.widget.NestedScrollView
+        app:textColorSelected="@color/white"
+        />
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/calendarView">
+        android:layout_below="@id/horizontal_recycler"
+        android:orientation="vertical"
+        >
 
         <LinearLayout
+            android:id="@+id/search_block"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="@dimen/_35sdp"
+            android:layout_margin="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@drawable/rectangle_greybg_with_corner"
+            android:orientation="vertical"
+            android:visibility="visible">
 
-            <LinearLayout
-                android:id="@+id/search_block"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_35sdp"
-                android:layout_margin="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:background="@drawable/rectangle_greybg_with_corner"
-                android:orientation="vertical"
-                android:visibility="visible">
-
-                <!--Notification,Search-->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_35sdp"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/search_ic"
-                        android:layout_width="@dimen/_18sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/_5sdp"
-                        android:src="@drawable/search_1px" />
-
-                    <EditText
-                        android:id="@+id/serach_bar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@id/close"
-                        android:layout_toRightOf="@+id/search_ic"
-                        android:backgroundTint="@color/white"
-                        android:hint="Search"
-                        android:inputType="text"
-                        android:theme="@style/TextRegular" />
-
-                    <ImageView
-                        android:id="@+id/close"
-                        android:layout_width="@dimen/_18sdp"
-                        android:layout_height="@dimen/_18sdp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:src="@drawable/close_circle"
-                        android:visibility="gone" />
-                </RelativeLayout>
-            </LinearLayout>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                app:cardBackgroundColor="@android:color/transparent"
-                app:cardElevation="@dimen/_2sdp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/search_recycler"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/_12sdp"
-                android:background="@drawable/bg_transparent_round"
-                android:fillViewport="true"
-                android:paddingHorizontal="@dimen/_10sdp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
+            <!--Notification,Search-->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_5sdp">
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/search_ic"
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:src="@drawable/search_1px" />
+
+                <EditText
+                    android:id="@+id/serach_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/close"
+                    android:layout_toRightOf="@+id/search_ic"
+                    android:backgroundTint="@color/white"
+                    android:hint="Search"
+                    android:inputType="text"
+                    android:theme="@style/TextRegular" />
+
+                <ImageView
+                    android:id="@+id/close"
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:src="@drawable/close_circle"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardElevation="@dimen/_2sdp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/expandRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/horizontal_recycler"
+            android:background="@color/lightGrey"
+            android:paddingStart="@dimen/_12sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_12sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:visibility="visible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:layout_below="@+id/calendarView">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/calendarView"
+                android:orientation="vertical">
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/search_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/_12sdp"
+                    android:background="@drawable/bg_transparent_round"
+                    android:fillViewport="true"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_5sdp">
+
+                    <TextView
+                        android:id="@+id/list_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/tv_exapnd"
+                        android:text="Working from Office"
+                        android:textColor="@color/figmaBlack"
+                        android:textSize="@dimen/_14sdp"
+                        android:theme="@style/TextRegular" />
+
+                    <TextView
+                        android:id="@+id/tv_adddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/list_title"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:text="40 Bank Street (GMT)"
+                        android:visibility="gone"
+                        android:textColor="@color/figmaBlack"
+                        android:textSize="@dimen/_11sdp"
+                        android:theme="@style/TextRegular" />
+
+                    <TextView
+                        android:id="@+id/tv_total_avail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_adddress"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:text="5/15 desks available"
+                        android:textColor="@color/figmaBlack"
+                        android:textSize="@dimen/_10sdp"
+                        android:theme="@style/TextRegular"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/tv_exapnd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:text="Expand"
+                        android:textColor="@color/figmaBlueText"
+                        android:textSize="@dimen/_12sdp"
+                        android:theme="@style/TextRegular" />
+
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:visibility="visible"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 <TextView
-                    android:id="@+id/list_title"
+                    android:id="@+id/tvWorkRemote"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_4sdp"
                     android:layout_toStartOf="@+id/tv_exapnd"
-                    android:text="Working from Office"
+                    android:text="Working remotely"
                     android:textColor="@color/figmaBlack"
                     android:textSize="@dimen/_14sdp"
-                    android:theme="@style/TextRegular" />
-
-                <TextView
-                    android:id="@+id/tv_adddress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/list_title"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginTop="@dimen/_3sdp"
-                    android:text="40 Bank Street (GMT)"
-                    android:visibility="gone"
-                    android:textColor="@color/figmaBlack"
-                    android:textSize="@dimen/_11sdp"
-                    android:theme="@style/TextRegular" />
-
-                <TextView
-                    android:id="@+id/tv_total_avail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_adddress"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginTop="@dimen/_3sdp"
-                    android:text="5/15 desks available"
-                    android:textColor="@color/figmaBlack"
-                    android:textSize="@dimen/_10sdp"
                     android:theme="@style/TextRegular"
                     android:visibility="gone" />
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewRemote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/lightGrey"
+                    android:paddingStart="@dimen/_12sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_12sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:visibility="invisible"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
                 <TextView
-                    android:id="@+id/tv_exapnd"
+                    android:id="@+id/tvWorkTraining"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginStart="@dimen/_4sdp"
-                    android:text="Expand"
-                    android:textColor="@color/figmaBlueText"
-                    android:textSize="@dimen/_12sdp"
-                    android:theme="@style/TextRegular" />
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_4sdp"
+                    android:layout_toStartOf="@+id/tv_exapnd"
+                    android:text="Training"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="@dimen/_14sdp"
+                    android:theme="@style/TextRegular"
+                    android:visibility="gone" />
 
-            </RelativeLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewTraining"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/lightGrey"
+                    android:paddingStart="@dimen/_12sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_12sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:visibility="invisible"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:visibility="visible"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                <TextView
+                    android:id="@+id/tvOutOfOffice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_4sdp"
+                    android:layout_toStartOf="@+id/tv_exapnd"
+                    android:text="Out of Office"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="@dimen/_14sdp"
+                    android:theme="@style/TextRegular"
+                    android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/tvWorkRemote"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_4sdp"
-                android:layout_toStartOf="@+id/tv_exapnd"
-                android:text="Working remotely"
-                android:textColor="@color/figmaBlack"
-                android:textSize="@dimen/_14sdp"
-                android:theme="@style/TextRegular"
-                android:visibility="gone" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewOutOfOffice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/lightGrey"
+                    android:paddingStart="@dimen/_12sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_12sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:visibility="invisible"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewRemote"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/lightGrey"
-                android:paddingStart="@dimen/_12sdp"
-                android:paddingTop="@dimen/_5sdp"
-                android:paddingEnd="@dimen/_12sdp"
-                android:paddingBottom="@dimen/_5sdp"
-                android:visibility="invisible"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                <TextView
+                    android:id="@+id/tvHoliday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_4sdp"
+                    android:layout_toStartOf="@+id/tv_exapnd"
+                    android:text="Sick"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="@dimen/_14sdp"
+                    android:theme="@style/TextRegular"
+                    android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/tvWorkTraining"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_4sdp"
-                android:layout_toStartOf="@+id/tv_exapnd"
-                android:text="Training"
-                android:textColor="@color/figmaBlack"
-                android:textSize="@dimen/_14sdp"
-                android:theme="@style/TextRegular"
-                android:visibility="gone" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewHoliday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/lightGrey"
+                    android:paddingStart="@dimen/_12sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_12sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:visibility="invisible"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewTraining"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/lightGrey"
-                android:paddingStart="@dimen/_12sdp"
-                android:paddingTop="@dimen/_5sdp"
-                android:paddingEnd="@dimen/_12sdp"
-                android:paddingBottom="@dimen/_5sdp"
-                android:visibility="invisible"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                <TextView
+                    android:id="@+id/tvUnknown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_4sdp"
+                    android:layout_toStartOf="@+id/tv_exapnd"
+                    android:text="No Bookings Available"
+                    android:textColor="@color/figmaBlack"
+                    android:textSize="@dimen/_14sdp"
+                    android:theme="@style/TextRegular"
+                    android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/tvOutOfOffice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_4sdp"
-                android:layout_toStartOf="@+id/tv_exapnd"
-                android:text="Out of Office"
-                android:textColor="@color/figmaBlack"
-                android:textSize="@dimen/_14sdp"
-                android:theme="@style/TextRegular"
-                android:visibility="gone" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewUnkown"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/lightGrey"
+                    android:paddingStart="@dimen/_12sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_12sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:visibility="invisible"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewOutOfOffice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/lightGrey"
-                android:paddingStart="@dimen/_12sdp"
-                android:paddingTop="@dimen/_5sdp"
-                android:paddingEnd="@dimen/_12sdp"
-                android:paddingBottom="@dimen/_5sdp"
-                android:visibility="invisible"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-            <TextView
-                android:id="@+id/tvHoliday"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_4sdp"
-                android:layout_toStartOf="@+id/tv_exapnd"
-                android:text="Sick"
-                android:textColor="@color/figmaBlack"
-                android:textSize="@dimen/_14sdp"
-                android:theme="@style/TextRegular"
-                android:visibility="gone" />
+            </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewHoliday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/lightGrey"
-                android:paddingStart="@dimen/_12sdp"
-                android:paddingTop="@dimen/_5sdp"
-                android:paddingEnd="@dimen/_12sdp"
-                android:paddingBottom="@dimen/_5sdp"
-                android:visibility="invisible"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-            <TextView
-                android:id="@+id/tvUnknown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:layout_marginBottom="@dimen/_4sdp"
-                android:layout_toStartOf="@+id/tv_exapnd"
-                android:text="No Bookings Available"
-                android:textColor="@color/figmaBlack"
-                android:textSize="@dimen/_14sdp"
-                android:theme="@style/TextRegular"
-                android:visibility="gone" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewUnkown"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/lightGrey"
-                android:paddingStart="@dimen/_12sdp"
-                android:paddingTop="@dimen/_5sdp"
-                android:paddingEnd="@dimen/_12sdp"
-                android:paddingBottom="@dimen/_5sdp"
-                android:visibility="invisible"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/expandRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/lightGrey"
-                android:paddingStart="@dimen/_12sdp"
-                android:paddingTop="@dimen/_5sdp"
-                android:paddingEnd="@dimen/_12sdp"
-                android:paddingBottom="@dimen/_5sdp"
-                android:visibility="gone"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/locateProgressBar"

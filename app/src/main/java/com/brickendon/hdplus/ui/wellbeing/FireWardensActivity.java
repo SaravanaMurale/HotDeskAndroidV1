@@ -71,7 +71,7 @@ public class FireWardensActivity extends AppCompatActivity implements FireWarden
             //binding.headFire.setText(appKeysPage.getFireWarden());
 
             binding.subTitleFire.setText(dateFormat());
-            getFirstAidPersonsDetails("Firewardenss");
+            getFirstAidPersonsDetails(4);
         } else if (receivedActivity.equals("FIRST_AID")) {
             //binding.activityTitle.setText("First aid");
             binding.activityTitle.setText(appKeysPage.getFirstAid());
@@ -85,7 +85,7 @@ public class FireWardensActivity extends AppCompatActivity implements FireWarden
             binding.headFire.setText("Your First aiders");
            // binding.titleFire.setText("Adminss");
             binding.subTitleFire.setText(dateFormat());
-            getFirstAidPersonsDetails("Adminss");
+            getFirstAidPersonsDetails(5);
 
         } else if (receivedActivity.equals("MENTAL")) {
             //binding.activityTitle.setText("Mental health");
@@ -111,7 +111,7 @@ public class FireWardensActivity extends AppCompatActivity implements FireWarden
     }
 
 
-    private void getFirstAidPersonsDetails(String description) {
+    private void getFirstAidPersonsDetails(int description) {
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<List<FirstAidResponse>> call = apiService.getFirstAidResponse();
@@ -127,7 +127,7 @@ public class FireWardensActivity extends AppCompatActivity implements FireWarden
                 for (int i = 0; i < firstAidResponseList.size(); i++) {
                     if (firstAidResponseList.get(i).getPersonsList().size() > 0) {
 
-                        if (firstAidResponseList.get(i).getDescription().equals(description)) {
+                        if (firstAidResponseList.get(i).getType() == description) {
                             for (int j = 0; j < firstAidResponseList.get(i).getPersonsList().size(); j++) {
                                 personsList.add(firstAidResponseList.get(i).getPersonsList().get(j));
                                 System.out.println("FirstAidFullName" + firstAidResponseList.get(i).getPersonsList().get(j).getFullName());
@@ -147,7 +147,7 @@ public class FireWardensActivity extends AppCompatActivity implements FireWarden
 
     }
 
-    private void callSetAdapter(List<FirstAidResponse.Persons> personsList, String description) {
+    private void callSetAdapter(List<FirstAidResponse.Persons> personsList, int description) {
         FireWardensAdapter fireWardensAdapter = new FireWardensAdapter(FireWardensActivity.this, personsList, description, this);
         binding.rvFireWardens.setAdapter(fireWardensAdapter);
     }

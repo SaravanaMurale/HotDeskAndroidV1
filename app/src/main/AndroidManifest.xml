@@ -25,10 +25,10 @@
     <application
         android:name="com.brickendon.hdplus.utils.MyApp"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher_new_hh_v2"
+        android:icon="@mipmap/ic_launcher_new_hh_v1"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/ic_launcher_new_hh_v2_round"
+        android:roundIcon="@mipmap/ic_launcher_new_hh_v1_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HotDeskAndroid"
         tools:replace="android:allowBackup">

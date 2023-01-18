@@ -29,7 +29,7 @@ public class DeepLinkActivity extends AppCompatActivity {
         Uri appLinkData = appLinkIntent.getData();
         String data1= appLinkData.getQueryParameter("typekey"); // you will get the value "value1" from application 1
         String data2= appLinkData.getQueryParameter("id");
-        System.out.println("deep chevk"+data1+"     "+data2);
+//        System.out.println("deep chevk"+data1+"     "+data2);
         if(appLinkData != null) {
 
             AppConstants.FIRSTREFERAL = true;

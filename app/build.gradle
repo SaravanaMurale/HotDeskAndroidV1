@@ -9,8 +9,8 @@ android {
         applicationId "com.brickendon.hdplus"
         minSdk 26
         targetSdk 31
-        versionCode 18374
-        versionName "1.0.8374"
+        versionCode 18384
+        versionName "1.0.8384"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
@@ -60,6 +60,10 @@ android {
 }
 
 dependencies {
+    def paging_version = '2.1.2'
+    def view_model_version = '1.1.0'
+    def support_version = '27.1.0'
+    def glide_version = '4.3.1'
 
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'
@@ -112,8 +116,6 @@ dependencies {
     //QQR Scanner
     implementation 'com.github.yuriy-budiyev:code-scanner:2.3.2'
 
-    implementation 'com.android.volley:volley:1.1.1'
-
     implementation 'com.microsoft.identity.client:msal:2.+'
     implementation 'com.alexvasilkov:gesture-views:2.8.3'
 
@@ -129,6 +131,20 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.8'
     implementation 'com.google.firebase:firebase-messaging:17.6.0'
 
+    //adding view model
+    implementation "android.arch.lifecycle:extensions:$view_model_version"
+    implementation "android.arch.lifecycle:viewmodel:$view_model_version"
+
+    implementation 'com.android.volley:volley:1.1.1'
+
+    //adding paging
+//    implementation "android.arch.paging:runtime:$paging_version"
+    implementation "androidx.paging:paging-runtime:$paging_version"
+
+    //adding recyclerview and cardview
+    implementation "com.android.support:cardview-v7:$support_version"
+    implementation "com.android.support:recyclerview-v7:$support_version"
+
     //FreshDeskChat
     implementation 'com.github.freshworks:freshchat-android:5.1.0'
 
@@ -136,7 +152,7 @@ dependencies {
 
     //PDFView
     implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
-
+    
     //Facebook Connection
     implementation 'com.facebook.network.connectionclass:connectionclass:1.0.1'
     implementation 'org.altbeacon:android-beacon-library:2+'

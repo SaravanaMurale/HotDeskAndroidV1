@@ -110,7 +110,7 @@ public class BookingListToEditAdapter extends RecyclerView.Adapter<BookingListTo
                 for (int i=0;i<teamDeskAvailabilities.size();i++){
                     if (bookingsListToEdit.get(position).getRequestedTeamDeskId()
                             == teamDeskAvailabilities.get(i).getTeamDeskId()){
-                        System.out.println("teamdeskIF"+teamDeskAvailabilities.get(i).getDeskCode());
+//                        System.out.println("teamdeskIF"+teamDeskAvailabilities.get(i).getDeskCode());
                         holder.editCode.setText("Request for desk");
                     }
                 }

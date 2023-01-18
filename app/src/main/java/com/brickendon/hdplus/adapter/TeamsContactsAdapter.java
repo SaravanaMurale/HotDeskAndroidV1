@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,7 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
     TeamsFragment fragment;
     HashMap<Integer, Boolean> fireWarden;
     HashMap<Integer, Boolean> firstAid;
-
+    int size=50;
     @Override
     public Filter getFilter() {
         return filter;
@@ -92,14 +93,16 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
         void clickEvent(DAOTeamMember daoTeamMember);
     }
 
-    public TeamsContactsAdapter(Context context, ArrayList<DAOTeamMember> teamMembersList,ArrayList<TeamsMemberListDataModel> teamMembersListNew, OnProfileClickable onProfileClickable, Fragment fragment) {
+    public TeamsContactsAdapter(Context context, ArrayList<TeamsMemberListDataModel> teamMembersListNew, OnProfileClickable onProfileClickable, Fragment fragment) {
         this.context = context;
-        this.teamMembersList = teamMembersList;
         this.teamMembersListNew = teamMembersListNew;
         this.teamMembersListAll = new ArrayList<>(teamMembersListNew);
         this.onProfileClickable = onProfileClickable;
         this.fragment = (TeamsFragment) fragment;
-
+        if (teamMembersListNew.size()>50)
+            this.size=50;
+        else
+            this.size=teamMembersListNew.size();
     }
 
     @NonNull
@@ -185,6 +188,7 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
             case 1:
                 viewHolderList holderList = (viewHolderList) viewholder;
 
+                Log.d("TeamsCont", "onBindViewHolder: "+position);
                 String fName = teamMembersListNew.get(position).getFirstName();
                 String lName = teamMembersListNew.get(position).getLastName();
                 if (fragment.firewardenList != null) {
@@ -273,7 +277,6 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
                     holderList.ivCheckOut.setVisibility(View.GONE);
                 }
 
-                System.out.println("bala check teams out");
                 try {
                     if (teamMembersListNew.get(position).getProfileImage() != null
                             && !teamMembersListNew.get(position).getProfileImage().equalsIgnoreCase("")) {
@@ -302,20 +305,17 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                 break;
         }
+
         if (!fragment.expandStatus) {
 
         } else {
 
         }
-
     }
 
     @Override
     public int getItemCount() {
-        if (teamMembersListNew.size() > 100)
-            return 100;
-        else
-            return teamMembersListNew.size();
+        return 100;
     }
 
     public class viewHolder extends RecyclerView.ViewHolder {

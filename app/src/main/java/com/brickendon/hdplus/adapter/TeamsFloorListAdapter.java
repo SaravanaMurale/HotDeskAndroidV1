@@ -69,7 +69,6 @@ public class TeamsFloorListAdapter extends RecyclerView.Adapter<TeamsFloorListAd
 
 
         TeamsContactsAdapter floorAdapter = new TeamsContactsAdapter(context,
-                floorListModels.get(position).getDaoTeamMembers(),
                 floorListModels.get(position).getDaoTeamMembersNew(),
                 onProfileClickable,fragment);
         holder.recyclerViewFloor.setAdapter(floorAdapter);

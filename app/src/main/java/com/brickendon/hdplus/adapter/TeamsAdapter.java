@@ -118,7 +118,7 @@ public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.viewHolder> 
             holder.ivCheckOut.setVisibility(View.GONE);
         }
 
-        System.out.println("bala check teams out");
+//        System.out.println("bala check teams out");
         if (teamMembersList.get(position).getProfileImage()!=null
                 && !teamMembersList.get(position).getProfileImage().equalsIgnoreCase("")){
             String cleanImage = teamMembersList.get(position).getProfileImage().replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");

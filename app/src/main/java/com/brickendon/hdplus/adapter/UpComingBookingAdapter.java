@@ -61,7 +61,7 @@ public class UpComingBookingAdapter extends RecyclerView.Adapter<UpComingBooking
             if (list.get(position).isDateStatus()){
                 //holder.dateLayout.setVisibility(View.VISIBLE);
                 holder.tvBookingWorkingRemote.setText(Utils.upcomingDateFormat(Utils.getYearMonthDateFormat(list.get(position).getDate())));
-                System.out.println("DateFormatPrintHere" + holder.tvBookingWorkingRemote.getText());
+//                System.out.println("DateFormatPrintHere" + holder.tvBookingWorkingRemote.getText());
 //            System.out.println("DayInTextAndNumber"+Utils.getDayAndDateFromDateFormat(list.get(position).getDate()));
                 //holder.today_date.setText(""+Utils.getDayAndDateFromDateFormat(list.get(position).getDate()));
                 //holder.lineLayout.setVisibility(View.GONE);

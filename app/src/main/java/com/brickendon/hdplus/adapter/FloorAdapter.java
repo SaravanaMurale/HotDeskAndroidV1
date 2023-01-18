@@ -100,7 +100,7 @@ public class FloorAdapter extends RecyclerView.Adapter<FloorAdapter.FloorAdapter
                 SessionHandler.getInstance().saveInt(context, AppConstants.LOCATION_ID_TEMP,
                         locateCountryResposeList.get(holder.getAbsoluteAdapterPosition()).getLocateCountryId());
                 SessionHandler.getInstance().save(context,AppConstants.FINAL_FLOOR,locateCountryResposeList.get(holder.getAbsoluteAdapterPosition()).getName());
-                System.out.println("FloorPositionSaved");
+//                System.out.println("FloorPositionSaved");
                 //SessionHandler.getInstance().saveInt(context, AppConstants.FLOOR_POSITION, holder.getAbsoluteAdapterPosition());
                 SessionHandler.getInstance().saveBoolean(context,AppConstants.FLOOR_SELECTED_STATUS,true);
                 pos = holder.getAbsoluteAdapterPosition();
