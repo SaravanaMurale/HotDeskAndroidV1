@@ -46,7 +46,11 @@
                     android:id="@+id/firstLayout"
                     android:layout_width="1000dp"
                     android:layout_height="1000dp"
+<<<<<<< HEAD
+                    android:layout_marginTop="@dimen/_80sdp">
+=======
                     android:layout_marginTop="@dimen/_70sdp">
+>>>>>>> 3e1c1223451f0c2e69df0df069f488e40af623e4
 
 
                     <LinearLayout
@@ -115,8 +119,12 @@
             android:textColorHint="@color/figmaBlack"
             android:textSize="@dimen/_11sdp" />
 
+<<<<<<< HEAD
+=======
 
 
+        <!--Calender-->
+>>>>>>> 3e1c1223451f0c2e69df0df069f488e40af623e4
         <TextView
             android:id="@+id/locateCalendearView"
             android:layout_width="@dimen/_116sdp"

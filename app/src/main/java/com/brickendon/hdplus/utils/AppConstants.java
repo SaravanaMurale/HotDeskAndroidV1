@@ -5,7 +5,7 @@ public class AppConstants {
     //public static final String BASE_URL="https://hotdeskplus-dev-api.azurewebsites.net";
 //    public static final String BASE_URL="https://dev-api.hotdeskplus.com/";
     //Dev url
-//    public static final String BASE_URL="https://dev-api.hybridhero.com/";
+    //public static final String BASE_URL="https://dev-api.hybridhero.com/";
     //Production Url
     public static final String BASE_URL="https://api.hybridhero.com/";
 

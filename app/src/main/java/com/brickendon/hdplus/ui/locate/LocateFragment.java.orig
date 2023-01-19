@@ -1958,10 +1958,20 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //System.out.println("AfterFinalXAndYTitleCoor "+xxx+" "+yyy);
         //relativeLayout.width = ;
         //relativeLayout.height = 100;
-       /* if(fontSize == 12)
+<<<<<<< HEAD
+        if(fontSize >= 12 && fontSize < 17)
             fontSize = 4;
         else if(fontSize >= 17 && fontSize < 20)
+            fontSize = 8;
+        else
+            fontSize=10;
+
+=======
+       /* if(fontSize == 12)
+            fontSize = fontSize - 6;
+        else if(fontSize >= 15)
             fontSize = fontSize - 15;*/
+>>>>>>> 3e1c1223451f0c2e69df0df069f488e40af623e4
         roormTitle.setTextSize(fontSize);
 
         roormTitle.setText(title);
