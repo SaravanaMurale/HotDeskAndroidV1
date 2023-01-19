@@ -1946,10 +1946,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         View roomTitleView = getLayoutInflater().inflate(R.layout.layout_room_title, null, false);
         TextView roormTitle = roomTitleView.findViewById(R.id.roomTileCanvas);
-        RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
         roormTitle.setVisibility(View.VISIBLE);
-
-
 
         //System.out.println("FinalXAndYTitleCoor "+xxx+" "+yyy);
 
@@ -1957,13 +1956,15 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         relativeLayout.topMargin=yyy+yCoordinatesList.get(0)+15;
 
         //System.out.println("AfterFinalXAndYTitleCoor "+xxx+" "+yyy);
-
         //relativeLayout.width = ;
         //relativeLayout.height = 100;
-        if(fontSize == 12)
-            fontSize = fontSize - 6;
-        else if(fontSize >= 15)
-            fontSize = fontSize - 15;
+        if(fontSize >= 12 && fontSize < 17)
+            fontSize = 4;
+        else if(fontSize >= 17 && fontSize < 20)
+            fontSize = 8;
+        else
+            fontSize=10;
+
         roormTitle.setTextSize(fontSize);
 
         roormTitle.setText(title);

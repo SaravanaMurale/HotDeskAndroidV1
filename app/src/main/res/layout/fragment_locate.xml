@@ -44,8 +44,8 @@
 
                 <RelativeLayout
                     android:id="@+id/firstLayout"
-                    android:layout_width="2000dp"
-                    android:layout_height="2000dp"
+                    android:layout_width="1000dp"
+                    android:layout_height="1000dp"
                     android:layout_marginTop="@dimen/_80sdp">
 
 
@@ -115,7 +115,6 @@
             android:textColorHint="@color/figmaBlack"
             android:textSize="@dimen/_11sdp" />
 
-        <!--Calender-->
         <TextView
             android:id="@+id/locateCalendearView"
             android:layout_width="@dimen/_116sdp"
@@ -148,14 +147,13 @@
             android:drawableRight="@drawable/drawble_calendar"
             android:minHeight="@dimen/_33sdp"
             android:paddingStart="@dimen/_11sdp"
+            android:paddingTop="@dimen/_7sdp"
             android:paddingEnd="@dimen/_11sdp"
-            android:paddingBottom="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_7sdp"
             android:text="Wed 4"
             android:textColor="@color/figmaBlack"
             android:textSize="@dimen/_11sdp"
             tools:ignore="MissingConstraints" />
-
-
         <!--StartAndEndTime-->
 
         <!--StartAndEndTime-->

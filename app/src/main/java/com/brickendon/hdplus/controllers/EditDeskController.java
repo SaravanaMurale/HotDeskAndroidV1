@@ -709,19 +709,23 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
                                 activityContext,startTime,endTime,"Start Time",
                                 Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
                     } else {
-                        if (dskRoomParkStatus == 1
-                                && newEditStatus.equalsIgnoreCase("edit")) {
-                            if ((editDeskBookingDetails.getUsageTypeId()==2 || editDeskBookingDetails.getUsageTypeId()==7)
-                                    && editDeskBookingDetails.getRequestedTeamId()>0) {
-                                Utils.bottomSheetTimePicker24Hrs(context,activityContext,startTime,"Start Time",
-                                        Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
-                            } else {
+                        try {
+                            if (dskRoomParkStatus == 1
+                                    && newEditStatus.equalsIgnoreCase("edit")) {
+                                if ((editDeskBookingDetails.getUsageTypeId()==2 || editDeskBookingDetails.getUsageTypeId()==7)
+                                        && editDeskBookingDetails.getRequestedTeamId()>0 && !editDeskBookingDetails.isRequestPending()) {
+                                    Utils.bottomSheetTimePicker24Hrs(context,activityContext,startTime,"Start Time",
+                                            Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
+                                } else {
+                                    Utils.bottomSheetTimePicker24Hrs(context,activityContext,startTime,"Start Time",
+                                            Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
+                                }
+                            } else
                                 Utils.bottomSheetTimePicker24Hrs(context,activityContext,startTime,"Start Time",
                                         Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
-                            }
-                        } else
-                            Utils.bottomSheetTimePicker24Hrs(context,activityContext,startTime,"Start Time",
-                                    Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
+                        } catch (Exception e){
+
+                        }
 
                     }
                 }
@@ -736,22 +740,27 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
             @Override
             public void onClick(View v) {
                 if(!endDisabled){
-                    if (dskRoomParkStatus == 1
-                            && newEditStatus.equalsIgnoreCase("edit")){
-                        if ((editDeskBookingDetails.getUsageTypeId()==2 || editDeskBookingDetails.getUsageTypeId()==7)
-                                && editDeskBookingDetails.getRequestedTeamId()>0) {
+                    try {
+                        if (dskRoomParkStatus == 1
+                                && newEditStatus.equalsIgnoreCase("edit")){
+                            if ((editDeskBookingDetails.getUsageTypeId()==2 || editDeskBookingDetails.getUsageTypeId()==7)
+                                    && editDeskBookingDetails.getRequestedTeamId()>0
+                                    && !editDeskBookingDetails.isRequestPending()) {
 
-                            Utils.bottomSheetTimePicker24Hrs(context,activityContext,endTime,"End Time",
-                                    Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
-                        } else {
+                                Utils.bottomSheetTimePicker24Hrs(context,activityContext,endTime,"End Time",
+                                        Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
+                            } else {
 
+                                Utils.bottomSheetTimePicker24Hrs(context,activityContext,endTime,"End Time",
+                                        Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
+                            }
+                        } else
                             Utils.bottomSheetTimePicker24Hrs(context,activityContext,endTime,"End Time",
                                     Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
-                        }
-                    } else
-                        Utils.bottomSheetTimePicker24Hrs(context,activityContext,endTime,"End Time",
-                                Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
 
+                    } catch (Exception e){
+
+                    }
                 }
 //                    Utils.popUpTimePicker(activityContext,endTime,Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()));
             }

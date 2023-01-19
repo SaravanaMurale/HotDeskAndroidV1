@@ -4826,6 +4826,7 @@ public class BookFragment extends Fragment implements
         editDeskBookingDetails.setEditEndTime(Utils.splitTime(bookings.getMyto()));
         editDeskBookingDetails.setDate(Utils.convertStringToDateFormet(bookings.getDate()));
         editDeskBookingDetails.setCalId(bookings.getId());
+        editDeskBookingDetails.setRequestPending(bookings.isPendingRequest());
         editDeskBookingDetails.setDeskCode(bookings.getDeskCode());
         editDeskBookingDetails.setDescription(Utils.checkStringParms(bookings.getDescription()));
 

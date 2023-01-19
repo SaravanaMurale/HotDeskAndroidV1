@@ -1601,6 +1601,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     }
 
     private void getAvaliableDeskDetails(ArrayList<FloorListModel> floorListModelArrayList) {
+        floorListModelsNewExpand.clear();
         floorListModelsNewExpand = floorListModelArrayList;
         ArrayList<FloorListModel> list = floorListModelArrayList;
         for (int i = 0; i < floorListModelArrayList.size(); i++) {

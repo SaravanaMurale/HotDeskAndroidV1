@@ -106,6 +106,7 @@ public interface ApiInterface {
     @PUT("api/Booking/FullDayBooking")
     Call<BaseResponse> fullDayBooking(@Body JsonObject jsonObject);
 
+//    @POST("api/Account/TokenExchange")
     @POST("api/Account/TokenExchangeV2Mobile")
     Call<GetTokenResponse> tokenExchange(@Body JsonObject jsonObject);
 

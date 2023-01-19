@@ -40,7 +40,16 @@ public class EditBookingDetails {
     boolean isTeamsChecked;
     public int requestedTeamId;
     public int requestedTeamDeskId;
+    public boolean isRequestPending;
     public Status status;
+
+    public boolean isRequestPending() {
+        return isRequestPending;
+    }
+
+    public void setRequestPending(boolean requestPending) {
+        isRequestPending = requestPending;
+    }
 
     public String getDescription() {
         return description;
