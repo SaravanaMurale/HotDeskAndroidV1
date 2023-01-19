@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -42,58 +44,58 @@ public class TeamsExpandedNewAdapter extends RecyclerView.Adapter<RecyclerView.V
     TeamsFragment fragment;
     HashMap<Integer, Boolean> fireWarden;
     HashMap<Integer, Boolean> firstAid;
-    int size=50;
+    int size = 50;
 
     ArrayList<TeamsExpandListModel> list;
+    ArrayList<TeamsExpandListModel> listAll;
 
     public TeamsExpandedNewAdapter(Context context, ArrayList<TeamsExpandListModel> teamMembersListNew,
                                    OnProfileClickable onProfileClickable, Fragment fragment) {
 
         this.context = context;
         this.list = teamMembersListNew;
-//        this.teamMembersListAll = new ArrayList<>(teamMembersListNew);
+        this.listAll = new ArrayList<>(teamMembersListNew);
         this.onProfileClickable = onProfileClickable;
         this.fragment = (TeamsFragment) fragment;
-        if (teamMembersListNew.size()>50)
-            this.size=50;
+        if (teamMembersListNew.size() > 50)
+            this.size = 50;
         else
-            this.size=teamMembersListNew.size();
+            this.size = teamMembersListNew.size();
     }
 
     public interface OnProfileClickable {
-        public void onExpandedProfileClick(DAOTeamMember daoTeamMember);
+        public void OnProfileClickable(DAOTeamMember daoTeamMember);
 
         void clickEvent(DAOTeamMember daoTeamMember);
     }
-
 
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        if (viewType==TYPE_HEADER){
-            View v = inflater.inflate(R.layout.teams_expand_head,parent,false);
+        if (viewType == TYPE_HEADER) {
+            View v = inflater.inflate(R.layout.teams_expand_head, parent, false);
             return new VHHeader(v);
         } else {
-            View v = inflater.inflate(R.layout.adapter_teams,parent,false);
+            View v = inflater.inflate(R.layout.adapter_teams, parent, false);
             return new VHItem(v);
         }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof VHHeader){
+        if (holder instanceof VHHeader) {
             final VHHeader vhHeader = (VHHeader) holder;
             final ExpandHeader expandHeader = (ExpandHeader) list.get(position);
-            vhHeader.headerName.setText(""+expandHeader.getFloorNamae());
+            vhHeader.headerName.setText("" + expandHeader.getFloorNamae());
 
-        } else if (holder instanceof  VHItem){
+        } else if (holder instanceof VHItem) {
             final VHItem vhItemHolder = (VHItem) holder;
             final ExpandItem expandItem = (ExpandItem) list.get(position);
-            TeamsMemberListDataModel listDataModel =expandItem.getTeamsMemberListDataModel();
+            TeamsMemberListDataModel listDataModel = expandItem.getTeamsMemberListDataModel();
 
-            Log.d("TeamsCont", "onBindViewHolder: "+position);
+            Log.d("TeamsCont", "onBindViewHolder: " + position);
             String fName = listDataModel.getFirstName();
             String lName = listDataModel.getLastName();
             if (fragment.firewardenList != null) {
@@ -118,7 +120,7 @@ public class TeamsExpandedNewAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
 
             vhItemHolder.mTxtName.setText(fName + " " + lName);
-            if (listDataModel.getCalendarEntriesModel()!=null
+            if (listDataModel.getCalendarEntriesModel() != null
                     && listDataModel.getCalendarEntriesModel().getBooking() != null) {
 
                     /*vhItemHolder.mbookingCheckInTime.setVisibility(View.VISIBLE);
@@ -153,21 +155,21 @@ public class TeamsExpandedNewAdapter extends RecyclerView.Adapter<RecyclerView.V
                     */
             }
 
-            if (listDataModel.getCalendarEntriesModel()!=null) {
+            if (listDataModel.getCalendarEntriesModel() != null) {
                 vhItemHolder.timeLayout.setVisibility(View.VISIBLE);
                 vhItemHolder.mbookingCheckInTime.setVisibility(View.VISIBLE);
                 vhItemHolder.mbookingCheckOutTime.setVisibility(View.VISIBLE);
                 vhItemHolder.ivCheckIn.setVisibility(View.VISIBLE);
                 vhItemHolder.ivCheckOut.setVisibility(View.VISIBLE);
 
-                try{
+                try {
 
                     if (listDataModel.getCalendarEntriesModel().getFrom() != null)
                         vhItemHolder.mbookingCheckInTime.setText(Utils.splitTime(listDataModel.getCalendarEntriesModel().getFrom()));
 
                     if (listDataModel.getCalendarEntriesModel() != null)
                         vhItemHolder.mbookingCheckOutTime.setText(Utils.splitTime(listDataModel.getCalendarEntriesModel().getMyto()));
-                } catch (Exception e){
+                } catch (Exception e) {
 
                 }
 
@@ -194,15 +196,15 @@ public class TeamsExpandedNewAdapter extends RecyclerView.Adapter<RecyclerView.V
                             .placeholder(R.drawable.avatar)
                             .into(vhItemHolder.teamMemberImage);
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
             vhItemHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     try {
-                        onProfileClickable.clickEvent(teamMembersListNew.get(holder.getAbsoluteAdapterPosition()).getDaoTeamMember());
-                    } catch (Exception e){
+                        onProfileClickable.OnProfileClickable(teamMembersListNew.get(holder.getAbsoluteAdapterPosition()).getDaoTeamMember());
+                    } catch (Exception e) {
 
                     }
                 }
@@ -224,18 +226,67 @@ public class TeamsExpandedNewAdapter extends RecyclerView.Adapter<RecyclerView.V
         return position;
     }
 
-    private boolean isPositionHeader(int position){
+    private boolean isPositionHeader(int position) {
         return list.get(position) instanceof ExpandHeader;
     }
 
-    class VHHeader extends RecyclerView.ViewHolder{
+    public Filter getFilter() {
+        return filter;
+    }
+
+    Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            List<TeamsExpandListModel> filteredList = new ArrayList<>();
+            try {
+
+                if (constraint == null || constraint.toString().isEmpty() || constraint.length() == 0 || constraint == "") {
+                    filteredList.addAll(listAll);
+                } else {
+                    String filterPattern = constraint.toString().toLowerCase().trim();
+
+
+                    for (TeamsExpandListModel dskl : listAll) {
+                        if(dskl instanceof ExpandItem){
+                            ExpandItem expandItem = (ExpandItem) dskl;
+                            TeamsMemberListDataModel listDataModel = expandItem.getTeamsMemberListDataModel();
+                            if (listDataModel.getFirstName().toLowerCase().contains(filterPattern)
+                                    || listDataModel.getLastName().toLowerCase().contains(filterPattern)) {
+                                filteredList.add(dskl);
+                            }
+                        }
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            list.clear();
+            list.addAll((List) results.values);
+            notifyDataSetChanged();
+
+        }
+    };
+
+    class VHHeader extends RecyclerView.ViewHolder {
         TextView headerName;
+
         public VHHeader(@NonNull View itemView) {
             super(itemView);
             headerName = itemView.findViewById(R.id.tvHeaderName);
         }
     }
-    class VHItem extends RecyclerView.ViewHolder{
+
+    class VHItem extends RecyclerView.ViewHolder {
         TextView mTxtName, mbookingAddress, mbookingCheckOutTime, mbookingCheckInTime;
         ImageView ivCheckOut, ivCheckIn, fireWardenIcon, firstAidWardenIcon;
         CircleImageView teamMemberImage;
