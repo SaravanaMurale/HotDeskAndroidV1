@@ -670,7 +670,7 @@ public class BookDeskController implements
 
             if (newEditStatus.equalsIgnoreCase("edit")
                     && !(editDeskBookingDetails.getUsageTypeId()== 2 ||
-                    editDeskBookingDetails.getUsageTypeId()== 7)){
+                    editDeskBookingDetails.getUsageTypeId()== 7)) {
                 select.setVisibility(View.GONE);
             } else {
                 select.setVisibility(View.VISIBLE);
