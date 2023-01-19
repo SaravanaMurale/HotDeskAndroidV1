@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import com.brickendon.hdplus.R;
 import com.brickendon.hdplus.model.FloorListModel;
+import com.brickendon.hdplus.model.TeamsMemberListDataModel;
 import com.brickendon.hdplus.ui.teams.TeamsFragment;
 import com.brickendon.hdplus.utils.AppConstants;
 import com.brickendon.hdplus.utils.SessionHandler;
@@ -67,8 +68,15 @@ public class TeamsFloorListAdapter extends RecyclerView.Adapter<TeamsFloorListAd
         holder.recyclerViewFloor.addItemDecoration(new TeamsFragment.OverlapDecoration());
         holder.recyclerViewFloor.setHasFixedSize(true);
 
+        ArrayList<TeamsMemberListDataModel> tempList = new ArrayList<>();
+        if(floorListModels.get(position).getDaoTeamMembersNew().size()>10){
+            for(int i = 0; i < 10; i++){
+                tempList.add(floorListModels.get(position).getDaoTeamMembersNew().get(i));
+            }
+        }else
+            tempList.addAll(floorListModels.get(position).getDaoTeamMembersNew());
 
-        TeamsContactsAdapter floorAdapter = new TeamsContactsAdapter(context,
+        TeamsContactsAdapter floorAdapter = new TeamsContactsAdapter(context,tempList,
                 floorListModels.get(position).getDaoTeamMembersNew(),
                 onProfileClickable,fragment);
         holder.recyclerViewFloor.setAdapter(floorAdapter);

@@ -17,39 +17,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.brickendon.hdplus.adapter.TeamsExpandedNewAdapter;
-import com.brickendon.hdplus.datasource.ExpandHeader;
-import com.brickendon.hdplus.datasource.ExpandItem;
-import com.brickendon.hdplus.datasource.TeamsExpandListModel;
-import com.google.gson.Gson;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import devs.mulham.horizontalcalendar.HorizontalCalendar;
-import devs.mulham.horizontalcalendar.HorizontalCalendarView;
-import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 import com.brickendon.hdplus.MainActivity;
 import com.brickendon.hdplus.R;
 import com.brickendon.hdplus.adapter.HorizontalCalTeamsAdapter;
 import com.brickendon.hdplus.adapter.SearchRecyclerAdapter;
 import com.brickendon.hdplus.adapter.TeamsAdapter;
 import com.brickendon.hdplus.adapter.TeamsContactsAdapter;
+import com.brickendon.hdplus.adapter.TeamsExpandedNewAdapter;
 import com.brickendon.hdplus.adapter.TeamsFloorListAdapter;
 import com.brickendon.hdplus.databinding.FragmentTeamsBinding;
+import com.brickendon.hdplus.datasource.ExpandHeader;
+import com.brickendon.hdplus.datasource.ExpandItem;
+import com.brickendon.hdplus.datasource.TeamsExpandListModel;
 import com.brickendon.hdplus.model.FloorListModel;
 import com.brickendon.hdplus.model.HorizontalCalendarModel;
 import com.brickendon.hdplus.model.TeamsMemberListDataModel;
@@ -66,6 +50,21 @@ import com.brickendon.hdplus.utils.SessionHandler;
 import com.brickendon.hdplus.utils.Utils;
 import com.brickendon.hdplus.webservice.ApiClient;
 import com.brickendon.hdplus.webservice.ApiInterface;
+import com.google.gson.Gson;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import devs.mulham.horizontalcalendar.HorizontalCalendar;
+import devs.mulham.horizontalcalendar.HorizontalCalendarView;
+import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -103,7 +102,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     TeamsAdapter teamsAdapter;
     TeamsFloorListAdapter teamsFloorListAdapter;
 
-    ArrayList<FloorListModel> floorListModelsNewExpand;
+    ArrayList<FloorListModel> floorListModelsNewExpand = new ArrayList<>();
     List<GlobalSearchResponse.Results> list = new ArrayList<>();
     SearchRecyclerAdapter searchRecyclerAdapter;
     LinearLayoutManager linearLayoutManager, contactUnknownLinearLayout, contactLinearLayout,
@@ -126,7 +125,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     RecyclerView.Adapter horizontalCalTeamsAdapter;
     ArrayList<HorizontalCalendarModel> horizontalCalendarModels;
 
-    ArrayList<TeamsExpandListModel> expandListModelsNew;
+    ArrayList<TeamsExpandListModel> expandListModelsNew = new ArrayList<>();
     Activity activityContext;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -240,6 +239,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                         teamsContactsOutOfOfficeAdapter.getFilter().filter(s.toString());
                     if (teamsContactsUnknownAdapter != null)
                         teamsContactsUnknownAdapter.getFilter().filter(s.toString());
+                    if (newAdapterExapnad != null)
+                        newAdapterExapnad.getFilter().filter(s.toString());
 
                     if (dynamicAdapters != null) {
                         for (int i = 0; i < dynamicAdapters.size(); i++) {
@@ -286,7 +287,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         });
 
 
-        getTeamMembers();
+        //   getTeamMembers();
 
 
         //NewNew
@@ -307,7 +308,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
     private void loadExpandList() {
         expandListModelsNew= new ArrayList<>();
-        if(floorListModelsNewExpand!=null) {
+        if(floorListModelsNewExpand!=null && floorListModelsNewExpand.size() > 0) {
             for (int i=0; i<floorListModelsNewExpand.size(); i++) {
                 ExpandHeader expandHeader = new ExpandHeader();
                 expandHeader.setFloorNamae(floorListModelsNewExpand.get(i).getFloorName());
@@ -329,7 +330,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         }
         if (teamMembersTrainingListNew!=null && teamMembersTrainingListNew.size() > 0){
             ExpandHeader expandHeader = new ExpandHeader();
-            expandHeader.setFloorNamae("Trainng");
+            expandHeader.setFloorNamae("Training");
             expandHeader.setFloor(false);
             expandListModelsNew.add(expandHeader);
             for (TeamsMemberListDataModel dataModel: teamMembersTrainingListNew) {
@@ -340,7 +341,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         }
         if (teamMembersRemoteListNew!=null && teamMembersRemoteListNew.size() > 0){
             ExpandHeader expandHeader = new ExpandHeader();
-            expandHeader.setFloorNamae("Remote");
+            expandHeader.setFloorNamae("Working remotely");
             expandHeader.setFloor(false);
             expandListModelsNew.add(expandHeader);
             for (TeamsMemberListDataModel dataModel: teamMembersRemoteListNew) {
@@ -351,7 +352,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         }
         if (teamMembersOutOfOfficeNew!=null && teamMembersOutOfOfficeNew.size() > 0){
             ExpandHeader expandHeader = new ExpandHeader();
-            expandHeader.setFloorNamae("Out of office");
+            expandHeader.setFloorNamae("Out of Office");
             expandHeader.setFloor(false);
             expandListModelsNew.add(expandHeader);
             for (TeamsMemberListDataModel dataModel: teamMembersOutOfOfficeNew) {
@@ -374,7 +375,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         }
         if (teamMembersUnknownListNew!=null && teamMembersUnknownListNew.size() > 0){
             ExpandHeader expandHeader = new ExpandHeader();
-            expandHeader.setFloorNamae("No booking available");
+            expandHeader.setFloorNamae("No Bookings Available");
             expandHeader.setFloor(false);
             expandListModelsNew.add(expandHeader);
             for (TeamsMemberListDataModel dataModel: teamMembersUnknownListNew) {
@@ -384,70 +385,30 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             }
         }
 
-/*
 
-        if (expandStatus)
-            binding.recyclerViewTraining.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.VERTICAL, false));
-        else
-            binding.recyclerViewTraining.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.HORIZONTAL, false));
-//        teamsContactsTrainingAdapter = new TeamsContactsAdapter(getActivity(),
-//                teamMembersTrainingListNew, this, this);
-//        binding.recyclerViewTraining.setAdapter(teamsContactsTrainingAdapter);
-
-        if (expandStatus)
-            binding.recyclerViewRemote.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.VERTICAL, false));
-        else
-            binding.recyclerViewRemote.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.HORIZONTAL, false));
-//        teamsContactsRemoteAdapter = new TeamsContactsAdapter(getActivity(),teamMembersRemoteListNew, this, this);
-//        binding.recyclerViewRemote.setAdapter(teamsContactsRemoteAdapter);
-
-
-        if (expandStatus)
-            binding.recyclerViewOutOfOffice.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.VERTICAL, false));
-        else
-            binding.recyclerViewOutOfOffice.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.HORIZONTAL, false));
-//        teamsContactsOutOfOfficeAdapter = new TeamsContactsAdapter(getActivity(),teamMembersOutOfOfficeNew,
-//                this, this);
-//        binding.recyclerViewOutOfOffice.setAdapter(teamsContactsOutOfOfficeAdapter);
-
-        if (expandStatus)
-            binding.recyclerViewHoliday.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.VERTICAL, false));
-        else
-            binding.recyclerViewHoliday.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.HORIZONTAL, false));
-//        teamsContactsHolidaysAdapter = new TeamsContactsAdapter(getActivity(),teamMembersHolidayListNew, this, this);
-//        binding.recyclerViewHoliday.setAdapter(teamsContactsHolidaysAdapter);
-
-        if (expandStatus)
-            binding.recyclerViewUnkown.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.VERTICAL, false));
-        else
-            binding.recyclerViewUnkown.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.HORIZONTAL, false));
-//        teamsContactsUnknownAdapter = new TeamsContactsAdapter(getActivity(),
-//                teamMembersUnknownListNew, this, this);
-        newAdapterExapnad = new TeamsExpandedNewAdapter(getActivity(),
-                expandListModelsNew, this, this);
-        binding.recyclerViewUnkown.setAdapter(newAdapterExapnad);
-*/
         binding.expandRecyclerView.setVisibility(View.VISIBLE);
+        binding.tvWorkTraining.setVisibility(View.GONE);
+        binding.recyclerViewTraining.setVisibility(View.GONE);
+        binding.tvWorkRemote.setVisibility(View.GONE);
+        binding.recyclerViewRemote.setVisibility(View.GONE);
+        binding.tvUnknown.setVisibility(View.GONE);
+        binding.recyclerViewUnkown.setVisibility(View.GONE);
+        binding.tvOutOfOffice.setVisibility(View.GONE);
+        binding.recyclerViewOutOfOffice.setVisibility(View.GONE);
+        binding.tvHoliday.setVisibility(View.GONE);
+        binding.recyclerViewHoliday.setVisibility(View.GONE);
+        binding.tvAdddress.setVisibility(View.GONE);
+        binding.listTitle.setVisibility(View.GONE);
+        binding.recyclerView.setVisibility(View.GONE);
+
+
         binding.expandRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false));
         newAdapterExapnad = new TeamsExpandedNewAdapter(getActivity(),
                 expandListModelsNew, this, this);
         binding.expandRecyclerView.setAdapter(newAdapterExapnad);
 
-//        teamsContactsRemoteAdapter.notifyDataSetChanged();
-//        teamsContactsTrainingAdapter.notifyDataSetChanged();
-//        teamsContactsHolidaysAdapter.notifyDataSetChanged();
-//        teamsContactsOutOfOfficeAdapter.notifyDataSetChanged();
+
         newAdapterExapnad.notifyDataSetChanged();
 
     }
@@ -642,7 +603,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                                 teamMembersHolidayListNew.clear();
                                 teamMembersOutOfOfficeNew.clear();
                                 teamMembersInOfficeListNew.clear();
-
+                                floorListModelsNewExpand.clear();
                                 teamMembersList = response.body();
                                 copyTeamMembersList = response.body();
 
@@ -1005,14 +966,31 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     }
 
     private void setValueToAdapter(ArrayList<DAOTeamMember> teamMembersList) {
+        ArrayList<TeamsMemberListDataModel> tempTrainingList = new ArrayList<>();
         if (teamMembersTrainingListNew.size() > 0) {
+            if(teamMembersTrainingListNew.size()>10){
+                for(int i = 0; i<10; i++){
+                    tempTrainingList.add(teamMembersTrainingListNew.get(i));
+                }
+            }else
+                tempTrainingList.addAll(teamMembersTrainingListNew);
+
             binding.tvWorkTraining.setVisibility(View.VISIBLE);
             binding.recyclerViewTraining.setVisibility(View.VISIBLE);
         } else {
             binding.tvWorkTraining.setVisibility(View.GONE);
             binding.recyclerViewTraining.setVisibility(View.GONE);
         }
+
+        ArrayList<TeamsMemberListDataModel> tempRemoteList = new ArrayList<>();
         if (teamMembersRemoteListNew.size() > 0) {
+            if(teamMembersRemoteListNew.size()>10){
+                for(int i = 0; i<10; i++){
+                    tempRemoteList.add(teamMembersRemoteListNew.get(i));
+                }
+            }else
+                tempRemoteList.addAll(teamMembersRemoteListNew);
+
             binding.tvWorkRemote.setVisibility(View.VISIBLE);
             binding.recyclerViewRemote.setVisibility(View.VISIBLE);
         } else {
@@ -1020,14 +998,29 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             binding.recyclerViewRemote.setVisibility(View.GONE);
         }
 
+        ArrayList<TeamsMemberListDataModel> tempUnKnownList = new ArrayList<>();
         if (teamMembersUnknownListNew.size() > 0) {
+            if(teamMembersUnknownListNew.size()>10){
+                for(int i = 0; i<10; i++){
+                    tempUnKnownList.add(teamMembersUnknownListNew.get(i));
+                }
+            }else
+                tempUnKnownList.addAll(teamMembersUnknownListNew);
             binding.tvUnknown.setVisibility(View.VISIBLE);
             binding.recyclerViewUnkown.setVisibility(View.VISIBLE);
         } else {
             binding.tvUnknown.setVisibility(View.GONE);
             binding.recyclerViewUnkown.setVisibility(View.GONE);
         }
+
+        ArrayList<TeamsMemberListDataModel> tempUnOutOfOfficeList = new ArrayList<>();
         if (teamMembersOutOfOfficeNew.size() > 0) {
+            if(teamMembersOutOfOfficeNew.size()>10){
+                for(int i = 0; i<10; i++){
+                    tempUnOutOfOfficeList.add(teamMembersOutOfOfficeNew.get(i));
+                }
+            }else
+                tempUnOutOfOfficeList.addAll(teamMembersOutOfOfficeNew);
             binding.tvOutOfOffice.setVisibility(View.VISIBLE);
             binding.recyclerViewOutOfOffice.setVisibility(View.VISIBLE);
         } else {
@@ -1035,7 +1028,15 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             binding.recyclerViewOutOfOffice.setVisibility(View.GONE);
         }
 
+        ArrayList<TeamsMemberListDataModel> tempUnHolidayList = new ArrayList<>();
         if (teamMembersHolidayListNew.size() > 0) {
+            if(teamMembersHolidayListNew.size()>10){
+                for(int i = 0; i<10; i++){
+                    tempUnHolidayList.add(teamMembersHolidayListNew.get(i));
+                }
+            }else
+                tempUnHolidayList.addAll(teamMembersHolidayListNew);
+
             binding.tvHoliday.setVisibility(View.VISIBLE);
             binding.recyclerViewHoliday.setVisibility(View.VISIBLE);
         } else {
@@ -1064,7 +1065,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 //            binding.tvAvailableCount.setVisibility(View.GONE);
 //            binding.ivLocation.setVisibility(View.GONE);
         }
-
+        binding.expandRecyclerView.setVisibility(View.GONE);
 //        teamsContactsAdapter = new TeamsContactsAdapter(getActivity(),teamMembersInOfficeList,this);
 //        binding.recyclerView.setAdapter(teamsContactsAdapter);
 
@@ -1074,7 +1075,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         else
             binding.recyclerViewTraining.setLayoutManager(new LinearLayoutManager(getActivity(),
                     LinearLayoutManager.HORIZONTAL, false));
-        teamsContactsTrainingAdapter = new TeamsContactsAdapter(getActivity(), teamMembersTrainingListNew, this, this);
+        teamsContactsTrainingAdapter = new TeamsContactsAdapter(getActivity(), tempTrainingList,
+                teamMembersTrainingListNew, this, this);
         binding.recyclerViewTraining.setAdapter(teamsContactsTrainingAdapter);
 
         if (expandStatus)
@@ -1083,7 +1085,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         else
             binding.recyclerViewRemote.setLayoutManager(new LinearLayoutManager(getActivity(),
                     LinearLayoutManager.HORIZONTAL, false));
-        teamsContactsRemoteAdapter = new TeamsContactsAdapter(getActivity(),teamMembersRemoteListNew, this, this);
+        teamsContactsRemoteAdapter = new TeamsContactsAdapter(getActivity(),tempRemoteList,
+                teamMembersRemoteListNew, this, this);
         binding.recyclerViewRemote.setAdapter(teamsContactsRemoteAdapter);
 
 
@@ -1093,8 +1096,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         else
             binding.recyclerViewOutOfOffice.setLayoutManager(new LinearLayoutManager(getActivity(),
                     LinearLayoutManager.HORIZONTAL, false));
-        teamsContactsOutOfOfficeAdapter = new TeamsContactsAdapter(getActivity(),teamMembersOutOfOfficeNew,
-                this, this);
+        teamsContactsOutOfOfficeAdapter = new TeamsContactsAdapter(getActivity(),tempUnOutOfOfficeList,
+                teamMembersOutOfOfficeNew, this, this);
         binding.recyclerViewOutOfOffice.setAdapter(teamsContactsOutOfOfficeAdapter);
 
         if (expandStatus)
@@ -1103,7 +1106,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         else
             binding.recyclerViewHoliday.setLayoutManager(new LinearLayoutManager(getActivity(),
                     LinearLayoutManager.HORIZONTAL, false));
-        teamsContactsHolidaysAdapter = new TeamsContactsAdapter(getActivity(),teamMembersHolidayListNew, this, this);
+        teamsContactsHolidaysAdapter = new TeamsContactsAdapter(getActivity(),tempUnHolidayList,
+                teamMembersHolidayListNew, this, this);
         binding.recyclerViewHoliday.setAdapter(teamsContactsHolidaysAdapter);
 
         if (expandStatus)
@@ -1112,12 +1116,13 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         else
             binding.recyclerViewUnkown.setLayoutManager(new LinearLayoutManager(getActivity(),
                     LinearLayoutManager.HORIZONTAL, false));
-        teamsContactsUnknownAdapter = new TeamsContactsAdapter(getActivity(),teamMembersUnknownListNew, this, this);
+        teamsContactsUnknownAdapter = new TeamsContactsAdapter(getActivity(),tempUnKnownList,
+                teamMembersUnknownListNew, this, this);
         binding.recyclerViewUnkown.setAdapter(teamsContactsUnknownAdapter);
     }
 
     @Override
-    public void onExpandedProfileClick(DAOTeamMember daoTeamMember) {
+    public void OnProfileClickable(DAOTeamMember daoTeamMember) {
         if (daoTeamMember != null) {
 
             Intent intent = new Intent(getActivity(), ShowProfileActivity.class);
@@ -1187,7 +1192,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         } else {
             expandStatus = true;
             binding.tvExapnd.setVisibility(View.GONE);
-            getTeamMembers();
+            loadExpandList();
+//            getTeamMembers();
             /*
             binding.expandRecyclerView.setVisibility(View.VISIBLE);
             binding.recyclerView.setVisibility(View.GONE);
@@ -1309,19 +1315,19 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 //        teamsContactsAdapter = new TeamsContactsAdapter(getActivity(),teamMembersInOfficeList, this);
 //        binding.recyclerView.setAdapter(teamsContactsAdapter);
 
-        teamsContactsTrainingAdapter = new TeamsContactsAdapter(getActivity(), teamMembersTrainingListNew, this, this);
+        teamsContactsTrainingAdapter = new TeamsContactsAdapter(getActivity(),new ArrayList<>(), teamMembersTrainingListNew, this, this);
         binding.recyclerViewTraining.setAdapter(teamsContactsTrainingAdapter);
 
-        teamsContactsRemoteAdapter = new TeamsContactsAdapter(getActivity(), teamMembersRemoteListNew, this, this);
+        teamsContactsRemoteAdapter = new TeamsContactsAdapter(getActivity(), new ArrayList<>(),teamMembersRemoteListNew, this, this);
         binding.recyclerViewRemote.setAdapter(teamsContactsRemoteAdapter);
 
-        teamsContactsOutOfOfficeAdapter = new TeamsContactsAdapter(getActivity(), teamMembersOutOfOfficeNew, this, this);
+        teamsContactsOutOfOfficeAdapter = new TeamsContactsAdapter(getActivity(), new ArrayList<>(),teamMembersOutOfOfficeNew, this, this);
         binding.recyclerViewOutOfOffice.setAdapter(teamsContactsOutOfOfficeAdapter);
 
-        teamsContactsHolidaysAdapter = new TeamsContactsAdapter(getActivity(), teamMembersHolidayListNew, this, this);
+        teamsContactsHolidaysAdapter = new TeamsContactsAdapter(getActivity(), new ArrayList<>(),teamMembersHolidayListNew, this, this);
         binding.recyclerViewHoliday.setAdapter(teamsContactsHolidaysAdapter);
 
-        teamsContactsUnknownAdapter = new TeamsContactsAdapter(getActivity(), teamMembersUnknownListNew, this, this);
+        teamsContactsUnknownAdapter = new TeamsContactsAdapter(getActivity(),new ArrayList<>(), teamMembersUnknownListNew, this, this);
         binding.recyclerViewHoliday.setAdapter(teamsContactsUnknownAdapter);
 
         Calendar startDate = Calendar.getInstance();
@@ -1599,6 +1605,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     }
 
     private void getAvaliableDeskDetails(ArrayList<FloorListModel> floorListModelArrayList) {
+
         floorListModelsNewExpand = floorListModelArrayList;
         ArrayList<FloorListModel> list = floorListModelArrayList;
         for (int i = 0; i < floorListModelArrayList.size(); i++) {
@@ -1703,5 +1710,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         }
 
     }
+
+
+
 
 }

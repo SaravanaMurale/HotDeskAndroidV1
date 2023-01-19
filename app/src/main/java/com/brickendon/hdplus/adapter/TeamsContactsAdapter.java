@@ -37,6 +37,7 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
     Context context;
     ArrayList<DAOTeamMember> teamMembersList;
     ArrayList<TeamsMemberListDataModel> teamMembersListNew;
+    ArrayList<TeamsMemberListDataModel> countList;
     ArrayList<TeamsMemberListDataModel> teamMembersListAll;
     ArrayList<TeamsMemberListDataModel> teamMembersListAllNew;
     OnProfileClickable onProfileClickable;
@@ -63,7 +64,7 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                     for (TeamsMemberListDataModel dskl : teamMembersListAll) {
                         if (dskl.getFirstName().toLowerCase().contains(filterPattern)
-                                || dskl.getFirstName().toLowerCase().contains(filterPattern)) {
+                                || dskl.getLastName().toLowerCase().contains(filterPattern)) {
                             filteredList.add(dskl);
                         }
                     }
@@ -93,9 +94,12 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
         void clickEvent(DAOTeamMember daoTeamMember);
     }
 
-    public TeamsContactsAdapter(Context context, ArrayList<TeamsMemberListDataModel> teamMembersListNew, OnProfileClickable onProfileClickable, Fragment fragment) {
+    public TeamsContactsAdapter(Context context, ArrayList<TeamsMemberListDataModel> teamMembersListNew,
+                                ArrayList<TeamsMemberListDataModel> countList,
+                                OnProfileClickable onProfileClickable, Fragment fragment) {
         this.context = context;
         this.teamMembersListNew = teamMembersListNew;
+        this.countList = countList;
         this.teamMembersListAll = new ArrayList<>(teamMembersListNew);
         this.onProfileClickable = onProfileClickable;
         this.fragment = (TeamsFragment) fragment;
@@ -139,7 +143,7 @@ public class TeamsContactsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 if (position > 4) {
                     if (position == 5) {
                         holder.relative.setVisibility(View.VISIBLE);
-                        holder.tvCount.setText(" + " + String.valueOf(teamMembersListNew.size() - 6));
+                        holder.tvCount.setText(" + " + String.valueOf(countList.size() - 6));
                     } else {
                         holder.profile_image.setVisibility(View.GONE);
                         holder.relative.setVisibility(View.GONE);
