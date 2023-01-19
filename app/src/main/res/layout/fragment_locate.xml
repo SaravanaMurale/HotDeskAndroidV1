@@ -19,7 +19,7 @@
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="1500dp"
+        android:layout_height="1000dp"
         android:fillViewport="true"
         android:scrollbars="none">
 
@@ -39,14 +39,14 @@
                 android:background="@color/figmaBgGrey"
                 app:gest_doubleTapEnabled="false"
                 app:gest_maxZoom="8.0"
-                app:gest_minZoom="1.3">
+                app:gest_minZoom="1.2">
 
 
                 <RelativeLayout
                     android:id="@+id/firstLayout"
-                    android:layout_width="2000dp"
-                    android:layout_height="2000dp"
-                    android:layout_marginTop="@dimen/_80sdp">
+                    android:layout_width="1000dp"
+                    android:layout_height="1000dp"
+                    android:layout_marginTop="@dimen/_70sdp">
 
 
                     <LinearLayout
@@ -115,6 +115,8 @@
             android:textColorHint="@color/figmaBlack"
             android:textSize="@dimen/_11sdp" />
 
+
+
         <!--Calender-->
         <TextView
             android:id="@+id/locateCalendearView"
@@ -127,11 +129,9 @@
             android:background="@drawable/rectangle_bg_with_corner"
             android:drawableRight="@drawable/locate_calender"
             android:paddingLeft="@dimen/_11sdp"
-
             android:paddingRight="@dimen/_11sdp"
             android:paddingTop="@dimen/_7sdp"
             android:paddingBottom="@dimen/_7sdp"
-
             android:text="Wed 4"
             android:textColor="@color/figmaBlack"
             android:textSize="@dimen/_11sdp"
@@ -148,8 +148,9 @@
             android:drawableRight="@drawable/drawble_calendar"
             android:minHeight="@dimen/_33sdp"
             android:paddingStart="@dimen/_11sdp"
+            android:paddingTop="@dimen/_7sdp"
             android:paddingEnd="@dimen/_11sdp"
-            android:paddingBottom="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_7sdp"
             android:text="Wed 4"
             android:textColor="@color/figmaBlack"
             android:textSize="@dimen/_11sdp"
