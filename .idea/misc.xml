@@ -50,7 +50,7 @@
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet_room_booking.xml" value="0.3" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet_room_participant_booking.xml" value="0.2" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_bottom_sheet_until.xml" value="0.3" />
-        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_calendar_bottom_sheet_edit_booking.xml" value="0.4625984251968504" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_calendar_bottom_sheet_edit_booking.xml" value="0.18" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_calendar_edit_booking_bottomsheet.xml" value="0.3" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_locate_booked_bottomsheet.xml" value="0.3" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/dialog_locate_checkin_bottomsheet.xml" value="0.3" />
@@ -71,5 +71,5 @@
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="14" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>

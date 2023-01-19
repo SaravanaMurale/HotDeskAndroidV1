@@ -1958,10 +1958,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //System.out.println("AfterFinalXAndYTitleCoor "+xxx+" "+yyy);
         //relativeLayout.width = ;
         //relativeLayout.height = 100;
-       /* if(fontSize == 12)
+
+        if(fontSize >= 12 && fontSize < 17)
             fontSize = 4;
         else if(fontSize >= 17 && fontSize < 20)
-            fontSize = fontSize - 15;*/
+            fontSize = 8;
+        else
+            fontSize=10;
+
         roormTitle.setTextSize(fontSize);
 
         roormTitle.setText(title);
@@ -4430,7 +4434,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         if (teamsCheckBoxStatus) {
-            rl_teams_layout_room.setVisibility(View.VISIBLE);
+            rl_teams_layout_room.setVisibility(View.GONE);
         } else {
             rl_teams_layout_room.setVisibility(View.GONE);
         }

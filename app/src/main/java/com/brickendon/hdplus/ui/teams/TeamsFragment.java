@@ -306,7 +306,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     }
 
     private void loadExpandList() {
-        /*expandListModelsNew= new ArrayList<>();
+        expandListModelsNew= new ArrayList<>();
         if(floorListModelsNewExpand!=null) {
             for (int i=0; i<floorListModelsNewExpand.size(); i++) {
                 ExpandHeader expandHeader = new ExpandHeader();
@@ -384,72 +384,71 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             }
         }
 
+/*
+
+        if (expandStatus)
+            binding.recyclerViewTraining.setLayoutManager(new LinearLayoutManager(getActivity(),
+                    LinearLayoutManager.VERTICAL, false));
+        else
+            binding.recyclerViewTraining.setLayoutManager(new LinearLayoutManager(getActivity(),
+                    LinearLayoutManager.HORIZONTAL, false));
+//        teamsContactsTrainingAdapter = new TeamsContactsAdapter(getActivity(),
+//                teamMembersTrainingListNew, this, this);
+//        binding.recyclerViewTraining.setAdapter(teamsContactsTrainingAdapter);
+
+        if (expandStatus)
+            binding.recyclerViewRemote.setLayoutManager(new LinearLayoutManager(getActivity(),
+                    LinearLayoutManager.VERTICAL, false));
+        else
+            binding.recyclerViewRemote.setLayoutManager(new LinearLayoutManager(getActivity(),
+                    LinearLayoutManager.HORIZONTAL, false));
+//        teamsContactsRemoteAdapter = new TeamsContactsAdapter(getActivity(),teamMembersRemoteListNew, this, this);
+//        binding.recyclerViewRemote.setAdapter(teamsContactsRemoteAdapter);
+
+
+        if (expandStatus)
+            binding.recyclerViewOutOfOffice.setLayoutManager(new LinearLayoutManager(getActivity(),
+                    LinearLayoutManager.VERTICAL, false));
+        else
+            binding.recyclerViewOutOfOffice.setLayoutManager(new LinearLayoutManager(getActivity(),
+                    LinearLayoutManager.HORIZONTAL, false));
+//        teamsContactsOutOfOfficeAdapter = new TeamsContactsAdapter(getActivity(),teamMembersOutOfOfficeNew,
+//                this, this);
+//        binding.recyclerViewOutOfOffice.setAdapter(teamsContactsOutOfOfficeAdapter);
+
+        if (expandStatus)
+            binding.recyclerViewHoliday.setLayoutManager(new LinearLayoutManager(getActivity(),
+                    LinearLayoutManager.VERTICAL, false));
+        else
+            binding.recyclerViewHoliday.setLayoutManager(new LinearLayoutManager(getActivity(),
+                    LinearLayoutManager.HORIZONTAL, false));
+//        teamsContactsHolidaysAdapter = new TeamsContactsAdapter(getActivity(),teamMembersHolidayListNew, this, this);
+//        binding.recyclerViewHoliday.setAdapter(teamsContactsHolidaysAdapter);
+
+        if (expandStatus)
+            binding.recyclerViewUnkown.setLayoutManager(new LinearLayoutManager(getActivity(),
+                    LinearLayoutManager.VERTICAL, false));
+        else
+            binding.recyclerViewUnkown.setLayoutManager(new LinearLayoutManager(getActivity(),
+                    LinearLayoutManager.HORIZONTAL, false));
+//        teamsContactsUnknownAdapter = new TeamsContactsAdapter(getActivity(),
+//                teamMembersUnknownListNew, this, this);
+        newAdapterExapnad = new TeamsExpandedNewAdapter(getActivity(),
+                expandListModelsNew, this, this);
+        binding.recyclerViewUnkown.setAdapter(newAdapterExapnad);
 */
+        binding.expandRecyclerView.setVisibility(View.VISIBLE);
+        binding.expandRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.VERTICAL, false));
+        newAdapterExapnad = new TeamsExpandedNewAdapter(getActivity(),
+                expandListModelsNew, this, this);
+        binding.expandRecyclerView.setAdapter(newAdapterExapnad);
 
-        if (expandStatus)
-            binding.recyclerViewTraining.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.VERTICAL, false));
-        else
-            binding.recyclerViewTraining.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.HORIZONTAL, false));
-        teamsContactsTrainingAdapter = new TeamsContactsAdapter(getActivity(),
-                teamMembersTrainingListNew, this, this);
-        binding.recyclerViewTraining.setAdapter(teamsContactsTrainingAdapter);
-
-        if (expandStatus)
-            binding.recyclerViewRemote.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.VERTICAL, false));
-        else
-            binding.recyclerViewRemote.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.HORIZONTAL, false));
-        teamsContactsRemoteAdapter = new TeamsContactsAdapter(getActivity(),teamMembersRemoteListNew, this, this);
-        binding.recyclerViewRemote.setAdapter(teamsContactsRemoteAdapter);
-
-
-        if (expandStatus)
-            binding.recyclerViewOutOfOffice.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.VERTICAL, false));
-        else
-            binding.recyclerViewOutOfOffice.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.HORIZONTAL, false));
-        teamsContactsOutOfOfficeAdapter = new TeamsContactsAdapter(getActivity(),teamMembersOutOfOfficeNew,
-                this, this);
-        binding.recyclerViewOutOfOffice.setAdapter(teamsContactsOutOfOfficeAdapter);
-
-        if (expandStatus)
-            binding.recyclerViewHoliday.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.VERTICAL, false));
-        else
-            binding.recyclerViewHoliday.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.HORIZONTAL, false));
-        teamsContactsHolidaysAdapter = new TeamsContactsAdapter(getActivity(),teamMembersHolidayListNew, this, this);
-        binding.recyclerViewHoliday.setAdapter(teamsContactsHolidaysAdapter);
-
-        if (expandStatus)
-            binding.recyclerViewUnkown.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.VERTICAL, false));
-        else
-            binding.recyclerViewUnkown.setLayoutManager(new LinearLayoutManager(getActivity(),
-                    LinearLayoutManager.HORIZONTAL, false));
-        teamsContactsUnknownAdapter = new TeamsContactsAdapter(getActivity(),
-                teamMembersUnknownListNew, this, this);
-
-//        newAdapterExapnad = new TeamsExpandedNewAdapter(getActivity(),
-//                expandListModelsNew, this, this);
-        binding.recyclerViewUnkown.setAdapter(teamsContactsUnknownAdapter);
-        binding.expandRecyclerView.setVisibility(View.GONE);
-
-//        binding.expandRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),
-//                LinearLayoutManager.VERTICAL, false));
-//        newAdapterExapnad = new TeamsExpandedNewAdapter(getActivity(),
-//                expandListModelsNew, this, this);
-//        binding.expandRecyclerView.setAdapter(newAdapterExapnad);
-
-        teamsContactsRemoteAdapter.notifyDataSetChanged();
-        teamsContactsTrainingAdapter.notifyDataSetChanged();
-        teamsContactsHolidaysAdapter.notifyDataSetChanged();
-        teamsContactsOutOfOfficeAdapter.notifyDataSetChanged();
-//        newAdapterExapnad.notifyDataSetChanged();
+//        teamsContactsRemoteAdapter.notifyDataSetChanged();
+//        teamsContactsTrainingAdapter.notifyDataSetChanged();
+//        teamsContactsHolidaysAdapter.notifyDataSetChanged();
+//        teamsContactsOutOfOfficeAdapter.notifyDataSetChanged();
+        newAdapterExapnad.notifyDataSetChanged();
 
     }
 
@@ -1188,8 +1187,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         } else {
             expandStatus = true;
             binding.tvExapnd.setVisibility(View.GONE);
-            loadExpandList();
-//            getTeamMembers();
+            getTeamMembers();
             /*
             binding.expandRecyclerView.setVisibility(View.VISIBLE);
             binding.recyclerView.setVisibility(View.GONE);
@@ -1601,7 +1599,6 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
     }
 
     private void getAvaliableDeskDetails(ArrayList<FloorListModel> floorListModelArrayList) {
-        floorListModelsNewExpand.clear();
         floorListModelsNewExpand = floorListModelArrayList;
         ArrayList<FloorListModel> list = floorListModelArrayList;
         for (int i = 0; i < floorListModelArrayList.size(); i++) {
@@ -1706,8 +1703,5 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         }
 
     }
-
-
-
 
 }
