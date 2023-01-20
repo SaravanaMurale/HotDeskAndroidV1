@@ -1225,6 +1225,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         binding.firstLayout.removeAllViews();
 
+        //If user click location icon from home and teams we need show canvas so loading here
+        if(selecctedFloorFromHome==1){
+            callImediateChildLocationTogetSupportZone(parentIdCheck);
+        }
+
         if (parentIdCheck > 0 && defaultLocationcheck == 0 && selecctedFloorFromHome == 0) {
 
             //Get support zone data for default location from final before API
@@ -1819,9 +1824,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                             });
 
                             binding.firstLayout.scrollTo(-200,-400);
-                        } else {
+                        }/* else {
                             Toast.makeText(getContext(), "No Data", Toast.LENGTH_LONG).show();
-                        }
+                        }*/
 
                         }
 
@@ -1884,6 +1889,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                         }
 
+                    }else {
+                        Toast.makeText(getContext(), "No Data", Toast.LENGTH_LONG).show();
                     }
 
                     //ProgressDialog.dismisProgressBar(getContext(), dialog);
@@ -2483,21 +2490,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }else {
                 ivDesk.setVisibility(View.VISIBLE);
             }
-
-            /*for (int i = 0; i < meetingAmenityStatusList.size(); i++) {
-
-                System.out.println("AllAmenitiesDataHere " + meetingAmenityStatusList.get(i).getId());
-
-
-
-                //int idValue = meetingAmenityStatusList.get(i).getId();
-                if (id == meetingAmenityStatusList.get(i).getId()) {
-                    ivDesk.setVisibility(View.GONE);
-                    System.out.println("VisibleGoneAmenitiesIdAndID " + meetingAmenityStatusList.get(i).getId() + " " + id + " " + amenitiesApplyStatus);
-                } else {
-                    ivDesk.setVisibility(View.VISIBLE);
-                }
-            }*/
 
 
         }
@@ -5646,7 +5638,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         showCountryListInAdapter(locateCountryResposes);
 
 
-        //Without click Global location have toload
+        //Without click Global location have to load
         //Global Location
         statBlock.setVisibility(View.GONE);
         rvState.setVisibility(View.GONE);
@@ -5793,7 +5785,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             case "COUNTRY":
                 floorSearchStatus = false;
 
-                state.setText("City");
+                state.setText("Buildings");
                 stateId = locateCountryRespose.getLocateCountryId();
                 SessionHandler.getInstance().save(getContext(), AppConstants.COUNTRY_NAME, locateCountryRespose.getName());
 
@@ -5817,7 +5809,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 rvState.setVisibility(View.GONE);
                 streetBlock.setVisibility(View.VISIBLE);
                 street.setVisibility(View.VISIBLE);
-                street.setText("Building");
+                street.setText("Floors");
 
                 SessionHandler.getInstance().saveInt(getContext(), AppConstants.SUB_PARENT_ID, locateCountryRespose.getLocateCountryId());
                 getFloorDetails(locateCountryRespose.getLocateCountryId(), false);
@@ -5839,13 +5831,16 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 bsApply.setVisibility(View.VISIBLE);
                 back.setVisibility(View.VISIBLE);
 
-                floorBlock.setVisibility(View.VISIBLE);
-                floor.setVisibility(View.VISIBLE);
+                //floorBlock.setVisibility(View.VISIBLE);
+                //floor.setVisibility(View.VISIBLE);
                 floor.setText(locateCountryRespose.getName());
                 SessionHandler.getInstance().save(getContext(), AppConstants.FLOOR, locateCountryRespose.getName());
                 SessionHandler.getInstance().remove(getContext(), AppConstants.FULLPATHLOCATION);
-                rvStreet.setVisibility(View.GONE);
-                rvFloor.setVisibility(View.VISIBLE);
+
+                //rvStreet.setVisibility(View.GONE);
+
+
+                //rvFloor.setVisibility(View.VISIBLE);
                 System.out.println("KnowParentIdHere "+locateCountryRespose.getLocateCountryId());
                 SessionHandler.getInstance().saveInt(getContext(), AppConstants.PARENT_ID, locateCountryRespose.getLocateCountryId());
 
@@ -10796,7 +10791,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     public void loadMyTeamLocation(int floorID, int deskId) {
 
         int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
-        int floorPosition = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION);
+        //int floorPosition = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION);
 
         boolean floorFoundStatus = false;
 
@@ -10806,13 +10801,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getDesks().size(); j++) {
                     if (deskId == locateCountryResposeList.get(i).getLocationItemLayout().getDesks().get(j).getDesksId()) {
-                        int getFloorPosition = i;
+                       /* int getFloorPosition = i;
                         if (getFloorPosition == floorPosition) {
                             floorFoundStatus = true;
-
                             break;
-                            //myTeamBottomSheet.dismiss();
-                        }
+                        }*/
+
+                        floorFoundStatus = true;
                     }
                 }
 
@@ -10859,7 +10854,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getDesks().size(); j++) {
 
                         if (deskId == locateCountryResposeList.get(i).getLocationItemLayout().getDesks().get(j).getDesksId()) {
-                            SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
+                            //SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
                             //System.out.println("SelectedFloorPositionInLocate " + i);
 
                             //used to check default location
@@ -10923,7 +10918,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         int selectedFloorIdInTeam = booking.getLocationBuildingFloor().getFloorID();
 
         int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
-        int floorPosition = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION);
+        //int floorPosition = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION);
 
         //if(selectedFloorIdInTeam==parentId) {
 
@@ -10944,7 +10939,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                             if (booking.getDeskId() == locateCountryResposeList.get(i).getLocationItemLayout().getDesks().get(j).getDesksId()) {
                                 int getSelectTeamFloorPosition = i;
 
-                                if (floorPosition == getSelectTeamFloorPosition) {
+                                //if (floorPosition == getSelectTeamFloorPosition) {
 
                                     for (String key : locateCountryResposeList.get(getSelectTeamFloorPosition).getItems().keySet()) {
 
@@ -10997,11 +10992,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
                                     }
-                                } else {
+                               /* } else {
                                     Toast.makeText(getContext(), "Selected user is not avaliable in this floor", Toast.LENGTH_LONG).show();
-                                }
+                                }*/
 
-                            }
+                            }/*else {
+                                Toast.makeText(getContext(), "Selected user is not avaliable in this floor", Toast.LENGTH_LONG).show();
+                            }*/
                         }
                     }
 
@@ -11052,7 +11049,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 for (int j = 0; j < deskStatusModelList.size(); j++) {
 
                     if (locationItemLayout.getDesks().get(i).getDesksId() == deskStatusModelList.get(j).getId()) {
-                        if (deskStatusModelList.get(j).getStatus() == 1) {
+                        if (deskStatusModelList.get(j).getStatus() == 1 || deskStatusModelList.get(j).getStatus() == 4 ) {
                             selctedCode = locationItemLayout.getDesks().get(i).getDeskCode();
                             //System.out.println("BookNearBy " + deskStatusModelList.get(j).getId());
                             checkStatus = false;

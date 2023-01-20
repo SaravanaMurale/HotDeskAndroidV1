@@ -21,6 +21,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.brickendon.hdplus.R;
 import com.brickendon.hdplus.model.response.LocateCountryRespose;
+import com.brickendon.hdplus.utils.AppConstants;
+import com.brickendon.hdplus.utils.SessionHandler;
 
 public class ShowCountryAdapter extends RecyclerView.Adapter<ShowCountryAdapter.ShowCountryViewHolder> implements Filterable {
 
@@ -32,6 +34,9 @@ public class ShowCountryAdapter extends RecyclerView.Adapter<ShowCountryAdapter.
 
     //Search
     List<LocateCountryRespose> countryListAll;
+
+    int pos = -1;
+    int sPos = -1;
 
     boolean showBuildingList;
 
@@ -83,12 +88,41 @@ public class ShowCountryAdapter extends RecyclerView.Adapter<ShowCountryAdapter.
             holder.itemCardView.setVisibility(View.GONE);
 
             holder.locateFloorNames.setText(countryList.get(position).getName());
+
             holder.floorBlock.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onSelectListener.onSelect(countryList.get(holder.getAbsoluteAdapterPosition()), identifier);
+
+                    pos=holder.getAbsoluteAdapterPosition();
+                    notifyDataSetChanged();
+
+                    //onSelectListener.onSelect(countryList.get(holder.getAbsoluteAdapterPosition()), identifier);
                 }
             });
+
+            if (pos == position) {
+
+                if (pos >= sPos && sPos == pos) {
+
+                    //SessionHandler.getInstance().remove(context, AppConstants.FLOOR_POSITION);
+                    //SessionHandler.getInstance().saveBoolean(context,AppConstants.FLOOR_SELECTED_STATUS,false);
+                    holder.ivLocateFloors.setImageDrawable(context.getDrawable(R.drawable.floor_disable));
+                    sPos = -1;
+                } else {
+                    holder.ivLocateFloors.setImageDrawable(context.getDrawable(R.drawable.floor_enable));
+                    //SessionHandler.getInstance().saveBoolean(context,AppConstants.FLOOR_SELECTED_STATUS,true);
+
+                    sPos=pos;
+
+                    onSelectListener.onSelect(countryList.get(holder.getAbsoluteAdapterPosition()), identifier);
+                }
+
+            } else {
+
+                holder.ivLocateFloors.setImageDrawable(context.getDrawable(R.drawable.floor_disable));
+                //sPos = -1;
+            }
+
 
         }
 
