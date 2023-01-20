@@ -114,9 +114,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="8dp"
-                android:text="City"
+                android:text="Building"
                 android:textColor="@color/figma_dark_black"
-
                 android:textSize="@dimen/_10sdp" />
 
             <ImageView
@@ -126,7 +125,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="20dp"
                 android:layout_toLeftOf="@id/bsState"
-                android:src="@drawable/location"
+                android:src="@drawable/building"
                 app:tint="@color/black"/>
 
         </RelativeLayout>
@@ -153,8 +152,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="8dp"
-                android:text="Building"
-
+                android:text="Floor"
                 android:textColor="@color/figma_dark_black"
                 android:textSize="@dimen/_10sdp" />
 
@@ -165,7 +163,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="@dimen/_15sdp"
                 android:layout_toLeftOf="@id/bsStreet"
-                android:src="@drawable/building"
+                android:src="@drawable/floor"
                 app:tint="@color/black"/>
 
         </RelativeLayout>

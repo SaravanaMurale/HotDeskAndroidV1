@@ -6097,7 +6097,7 @@ public class BookFragment extends Fragment implements
         rvCountry.setLayoutManager(linearLayoutManager);
         rvCountry.setHasFixedSize(true);
 
-        showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes, this, "COUNTRY");
+        showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes, this, "COUNTRY",false);
         rvCountry.setAdapter(showCountryAdapter);
 
     }
@@ -6146,7 +6146,7 @@ public class BookFragment extends Fragment implements
         rvState.setLayoutManager(linearLayoutManager);
         rvState.setHasFixedSize(true);
 
-        showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes, this, "STATE");
+        showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes, this, "STATE",false);
         rvState.setAdapter(showCountryAdapter);
     }
 
@@ -6198,7 +6198,7 @@ public class BookFragment extends Fragment implements
         rvStreet.setLayoutManager(linearLayoutManager);
         rvStreet.setHasFixedSize(true);
 
-        showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes, this, "FLOOR");
+        showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes, this, "FLOOR",false);
         rvStreet.setAdapter(showCountryAdapter);
 
     }
