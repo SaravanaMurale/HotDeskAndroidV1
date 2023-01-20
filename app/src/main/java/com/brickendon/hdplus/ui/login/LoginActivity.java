@@ -854,7 +854,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.SUPPORT_ZONE_ID, getSupportZoneList.get(0).getParentLocationId());
 
-                    //System.out.println("LoggedInSupportZoneParentLocatinId "+getSupportZoneList.get(0).getParentLocationId());
+                    System.out.println("LoggedInSupportZoneParentLocatinId "+getSupportZoneList.get(0).getParentLocationId());
 
 
 
@@ -910,19 +910,20 @@ public class LoginActivity extends AppCompatActivity {
 
                     //To load Default location
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.COUNTRY_NAME_CHECK, CountryName);
-                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.BUILDING_CHECK, buildingName);
 
+                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.BUILDING_CHECK, CityName);
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FLOOR_CHECK, buildingName);
-                    SessionHandler.getInstance().save(LoginActivity.this,AppConstants.FINAL_FLOOR_CHECK,finFloorName);
 
+                    SessionHandler.getInstance().save(LoginActivity.this,AppConstants.FINAL_FLOOR_CHECK,finFloorName);
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FULLPATHLOCATION_CHECK, fullPathLocation);
 
 
 
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.COUNTRY_NAME, CountryName);
-                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.BUILDING, buildingName);
 
+                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.BUILDING, CityName);
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FLOOR, buildingName);
+
                     SessionHandler.getInstance().save(LoginActivity.this,AppConstants.FINAL_FLOOR,finFloorName);
 
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FULLPATHLOCATION, fullPathLocation);

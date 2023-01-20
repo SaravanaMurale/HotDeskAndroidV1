@@ -1220,14 +1220,18 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //defaultLocationcheck-0-loaded from other fragment
         //defaultLocationcheck-1-loaded within fragment
 
+        //selecctedFloorFromHome-0-loaded from other fragment-without locaion icon click
+        //selecctedFloorFromHome-1-loaded from other fragment-with locaion icon click
+
         int parentIdCheck = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID_CHECK);
         int selecctedFloorFromHome = SessionHandler.getInstance().getInt(getContext(), AppConstants.SELECTED_LOCATION_FROM_HOME);
 
         binding.firstLayout.removeAllViews();
 
-        //If user click location icon from home and teams we need show canvas so loading here
+        //If user clicked location icon from home and teams we need get support zone
         if(selecctedFloorFromHome==1){
-            callImediateChildLocationTogetSupportZone(parentIdCheck);
+            int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+            callImediateChildLocationTogetSupportZone(parentId);
         }
 
         if (parentIdCheck > 0 && defaultLocationcheck == 0 && selecctedFloorFromHome == 0) {
@@ -1268,18 +1272,18 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             //Set Selected Floor In SearchView
             String CountryName = SessionHandler.getInstance().get(getContext(), AppConstants.COUNTRY_NAME);
+
             String buildingName = SessionHandler.getInstance().get(getContext(), AppConstants.BUILDING);
-
             String floorName = SessionHandler.getInstance().get(getContext(), AppConstants.FLOOR);
+
+
             String finalFloorName = SessionHandler.getInstance().get(getContext(), AppConstants.FINAL_FLOOR);
-
-
             String fullPathLocation = SessionHandler.getInstance().get(getContext(), AppConstants.FULLPATHLOCATION);
 
 
             //System.out.println("LocateLocationCountry "+CountryName);
-            //System.out.println("LocateLocationBuildingName "+buildingName);
-            //System.out.println("LocateLocationFloorName "+floorName);
+            System.out.println("LocateLocationBuildingName "+buildingName);
+            System.out.println("LocateLocationFloorName "+floorName);
             //System.out.println("LocateLocationFinalFloorName "+finalFloorName);
             //System.out.println("LocateLocationfullPathLocation "+fullPathLocation);
 
@@ -1291,8 +1295,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     SpannableString ss1=  new SpannableString(floorName);
                     ss1.setSpan(new RelativeSizeSpan(1.1f), 0,l, 0);
                     ss1.setSpan(new ForegroundColorSpan(Color.BLACK), 0, l, 0);// set color
-                    binding.searchLocate.setText(floorName + "  " + finalFloorName);
-                    //binding.searchLocate.setText(ss1 + "  " + finalFloorName);
+                    //binding.searchLocate.setText(floorName + "  " + finalFloorName);
+                    binding.searchLocate.setText(buildingName + "  " + floorName);
+
                 } else {
                     binding.searchLocate.setText(fullPathLocation);
                 }
@@ -1946,8 +1951,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         //System.out.println("FinalXAndYTitleCoor "+xxx+" "+yyy);
 
-        relativeLayout.leftMargin=xxx+xCoordinatesList.get(0);
-        relativeLayout.topMargin=yyy+yCoordinatesList.get(0)+15;
+        relativeLayout.leftMargin=xxx+xCoordinatesList.get(0)+5;
+        relativeLayout.topMargin=yyy+yCoordinatesList.get(0)+20;
 
         //System.out.println("AfterFinalXAndYTitleCoor "+xxx+" "+yyy);
         //relativeLayout.width = ;
@@ -1960,7 +1965,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         else
             fontSize=10;
 
-        roormTitle.setTextSize(fontSize);
+        //roormTitle.setTextSize(fontSize);
 
         roormTitle.setText(title);
         roormTitle.setLayoutParams(relativeLayout);
@@ -2532,7 +2537,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         relativeLayout.leftMargin = x;
         relativeLayout.topMargin = y;
         relativeLayout.width = 80;
-        relativeLayout.height = 80;
+        relativeLayout.height = 73;
         ivDesk.setLayoutParams(relativeLayout);
 
 
@@ -5423,6 +5428,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
     private void callImediateChildLocationTogetSupportZone(int parentIdCheck){
+        int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
         int supportZoneParentId=SessionHandler.getInstance().getInt(getContext(),AppConstants.SUPPORT_ZONE_ID);
         System.out.println("SupportZoneInLocate "+parentIdCheck+" "+supportZoneParentId);
 
@@ -5610,6 +5616,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     //if (floorAdapter.getSelectedPositionCheck() >= 0) {
                         floorSearchStatus = false;
                         canvasss = 1;
+
+                        SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_ICON_BLINK, 0);
                         //removes desk in layout
                         binding.firstLayout.removeAllViews();
 
@@ -5870,7 +5878,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 //Set Clicked Place To Show Textview
                 bsLocationSearch.setText(SessionHandler.getInstance().get(getContext(),AppConstants.COUNTRY_NAME)+","+SessionHandler.getInstance().get(getContext(),AppConstants.BUILDING)+","+SessionHandler.getInstance().get(getContext(),AppConstants.FLOOR));
 
-                floorColor();
+                //floorColor();
                 break;
 
 
@@ -11151,7 +11159,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     @Override
     public void onDestroy() {
         super.onDestroy();
-
+        getSupportZoneLayoutForCanvas.clear();
+        locateCountryResposeList.clear();
         SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_ICON_BLINK, 0);
 
     }
