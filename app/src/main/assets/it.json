@@ -754,8 +754,8 @@
       "SignInWithSso": "Connectez-vous avec SSO",
       "StartRequestError": "L'heure de début de la demande ne peut pas être antérieure aux heures approuvées.",
       "TrainingStr": "Formation",
-      "workingRemotely": "Travailler à distance"
-
+      "workingRemotely": "Travailler à distance",
+      "ExternalPartipantHint": "Ajoutez chaque participant et confirmez en cliquant sur la barre d'espace"
 
 
     }

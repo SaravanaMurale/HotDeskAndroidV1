@@ -5231,6 +5231,12 @@ public class BookFragment extends Fragment implements
         participantChipGroup = bottomSheetDialog.findViewById(R.id.participantChipGroup);
 
         chipGroup = bottomSheetDialog.findViewById(R.id.room_top_chip_group);
+        try {
+            TextView partiHint = bottomSheetDialog.findViewById(R.id.parti_hint);
+            partiHint.setText(appKeysPage.getExternalPartipantHint());
+        } catch (Exception e){
+
+        }
 
         externalAttendees = bottomSheetDialog.findViewById(R.id.externalAttendees);
         externalAttendeesChipGroup = bottomSheetDialog.findViewById(R.id.externalAttendeesChipGroup);

@@ -5268,8 +5268,19 @@ public class LanguagePOJO {
         @SerializedName("EditHoliday")
         String EditHoliday;
         @SerializedName("EditTraining")
-        String EditTraining; @SerializedName("SettingsTitle")
+        String EditTraining;
+        @SerializedName("SettingsTitle")
         String SettingsTitle;
+        @SerializedName("ExternalPartipantHint")
+        String ExternalPartipantHint;
+
+        public String getExternalPartipantHint() {
+            return ExternalPartipantHint;
+        }
+
+        public void setExternalPartipantHint(String externalPartipantHint) {
+            ExternalPartipantHint = externalPartipantHint;
+        }
 
         public String getStartRequestError() {
             return StartRequestError;

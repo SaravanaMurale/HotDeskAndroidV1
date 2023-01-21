@@ -733,7 +733,7 @@
     "EditSickness": "Edit sickness",
     "EditHoliday": "Edit holiday",
     "EditTraining": "Edit training",
-    "SettingsTitle": "Settings"
-
+    "SettingsTitle": "Settings",
+    "ExternalPartipantHint": "Add each participant and confirm with clicking spacebar"
   }
 }

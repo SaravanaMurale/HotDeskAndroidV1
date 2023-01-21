@@ -768,6 +768,8 @@
     "SignInWithSso": "Iniciar sesión con SSO",
     "StartRequestError": "La hora de inicio de la solicitud no puede ser anterior a las horas aprobadas.",
     "TrainingStr": "Capacitación",
-    "workingRemotely": "Trabajando de forma remota"
+    "workingRemotely": "Trabajando de forma remota",
+    "ExternalPartipantHint": "Agregue cada participante y confirme haciendo clic en la barra espaciadora"
+
   }
 }

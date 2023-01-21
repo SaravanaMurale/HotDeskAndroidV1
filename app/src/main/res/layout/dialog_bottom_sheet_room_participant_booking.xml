@@ -341,11 +341,12 @@
                 android:paddingHorizontal="@dimen/_15sdp"
                 android:paddingVertical="@dimen/_10sdp" />
             <TextView
+                android:id="@+id/parti_hint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Add each participant and confirm with clicking spacebar"
                 android:paddingHorizontal="@dimen/_5sdp"
-                android:paddingVertical="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_5sdp"
                 android:theme="@style/TextRegular"
                 android:textColor="@color/black"
                 />

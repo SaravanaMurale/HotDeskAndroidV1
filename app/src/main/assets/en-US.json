@@ -735,7 +735,7 @@
       "HybridHero" : "The name that will be displayed accross Hybrid Hero",
     "PMO Office":"PMO Office",
     "HealthEating": "health Eating",
-    "Send": "Send"
-
+    "Send": "Send",
+    "ExternalPartipantHint": "Add each participant and confirm with clicking spacebar"
   }
 }
