@@ -805,7 +805,7 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
                         newBookingCallForDesk(editDeskBookingDetails,edComments);
                     else
                         requestBookingCallForDesk(editDeskBookingDetails,edComments);
-                    }
+                }
                 
 
             }

@@ -3976,17 +3976,17 @@ public class BookFragment extends Fragment implements
 */
                 if (code.equals("3")) {
                     //tvRepeat.setText("Daily");
-                    tvRepeat.setText(appKeysPage.getDaily());
+                    repeat.setText(appKeysPage.getDaily());
                     //DeskBookForWholeWeekFromToday
                     //doRepeatBookingForAWeek();
                 } else if (code.equals("4")) {
                     //Meeting Room Booking For Whole Week From Today
                     //doRepeatMeetingRoomBookingForWeek();
-                    tvRepeat.setText(appKeysPage.getDaily());
+                    repeat.setText(appKeysPage.getDaily());
                 } else if (code.equals("5")) {
                     //CarBooking For Whole Week From Today
                     //doRepeatCarBookingForAWeek();
-                    tvRepeat.setText(appKeysPage.getDaily());
+                    repeat.setText(appKeysPage.getDaily());
                 }
 
                 bottomSheetDialog.dismiss();
@@ -4043,17 +4043,17 @@ public class BookFragment extends Fragment implements
 
                 if (code.equals("3")) {
                     //tvRepeat.setText("Daily");
-                    tvRepeat.setText(appKeysPage.getDaily());
+                    repeat.setText(appKeysPage.getDaily());
                     //DeskBookForWholeWeekFromToday
                     //doRepeatBookingForAWeek();
                 } else if (code.equals("4")) {
                     //Meeting Room Booking For Whole Week From Today
                     //doRepeatMeetingRoomBookingForWeek();
-                    tvRepeat.setText(appKeysPage.getDaily());
+                    repeat.setText(appKeysPage.getDaily());
                 } else if (code.equals("5")) {
                     //CarBooking For Whole Week From Today
                     //doRepeatCarBookingForAWeek();
-                    tvRepeat.setText(appKeysPage.getDaily());
+                    repeat.setText(appKeysPage.getDaily());
                 }
 
                 bottomSheetDialog.dismiss();
@@ -5971,11 +5971,14 @@ public class BookFragment extends Fragment implements
     }
     //Select Floor Plan BottomSheeet
     private void CallFloorBottomSheet(List<LocateCountryRespose> locateCountryResposes) {
-
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
-        bottomSheetDialog.setContentView(getLayoutInflater().
-                inflate(R.layout.bottom_sheet_locate_floor_filter_calendar,
-                        new RelativeLayout(getContext())));
+        View view = View.inflate(getContext(), R.layout.bottom_sheet_locate_floor_filter_calendar, null);
+        bottomSheetDialog.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+//        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+
 
         bsLocationSearch = bottomSheetDialog.findViewById(R.id.bsLocationSearch);
         bsGeneralSearch = bottomSheetDialog.findViewById(R.id.bsGeneralSearch);
@@ -6930,10 +6933,17 @@ public class BookFragment extends Fragment implements
     }
     // Repeat Module
     private void repeatBottomSheetDialog(String code) {
+        repeatBottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
+        View view = View.inflate(getContext(), R.layout.dialog_bottom_sheet_repeat_new, null);
+        repeatBottomSheetDialog.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
+        /*
         repeatBottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         repeatBottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_repeat_new,
                 new RelativeLayout(getContext()))));
+        */
 
         //Language
         TextView titleRepeat=repeatBottomSheetDialog.findViewById(R.id.titleRepeat);

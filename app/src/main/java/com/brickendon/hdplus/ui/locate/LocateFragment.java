@@ -1885,7 +1885,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                             pointList = new ArrayList<>();
                             for (int i = 0; i < coordinateList.size(); i++) {
                                 //System.out.println("CoordinateData" + i + "position" + "size " + coordinateList.get(i).size());
-                                Point point = new Point(coordinateList.get(i).get(0) + 40, coordinateList.get(i).get(1) + 40);
+                                Point point = new Point(coordinateList.get(i).get(0) + 40,
+                                        coordinateList.get(i).get(1) + 40);
                                 pointList.add(point);
                             }
                             addDottedLine(pointList);
@@ -1950,8 +1951,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         roormTitle.setVisibility(View.VISIBLE);
 
 
-        relativeLayout.leftMargin = xxx+xCoordinatesList.get(0)+5;
-        relativeLayout.topMargin=yyy+yCoordinatesList.get(0)+20;
+        relativeLayout.leftMargin = xxx + xCoordinatesList.get(0) + 15;
+        relativeLayout.topMargin = yyy + yCoordinatesList.get(0) + 30;
 
         //System.out.println("AfterFinalXAndYTitleCoor "+xxx+" "+yyy);
         //relativeLayout.width = ;
@@ -1964,7 +1965,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         else
             fontSize=8;
 
-        //roormTitle.setTextSize(fontSize);
+        roormTitle.setTextSize(fontSize);
 
         roormTitle.setText(title);
         roormTitle.setLayoutParams(relativeLayout);
@@ -2498,11 +2499,17 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         }
 
-        //Head Facing
-        for (int i = 0; i < valueList.size(); i++) {
 
+
+
+        //Set Image Based on Positionint
+            int x = Integer.parseInt(valueList.get(0));
+            int y = Integer.parseInt(valueList.get(1));
+            //Head Facing
+        for (int i = 0; i < valueList.size(); i++) {
             if (i == 2) {
                 int rotateValue = Integer.parseInt(valueList.get(2));
+
                 if (rotateValue == 1) {
                     ivDesk.setRotation(90);
                 } else if (rotateValue == 2) {
@@ -2510,32 +2517,32 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 } else if (rotateValue == 3) {
                     ivDesk.setRotation(180);
                 } else if (rotateValue == 4) {
+                    x+=4;
+                    y-=3;
                     ivDesk.setRotation(225);
                 } else if (rotateValue == 5) {
+                    x+=5;
                     ivDesk.setRotation(270);
                 } else if (rotateValue == 6) {
+                    x+=3;
+                    y+=4;
                     ivDesk.setRotation(315);
                 } else if (rotateValue == 7) {
+                    y+=5;
                     ivDesk.setRotation(360);
                 } else if (rotateValue == 8) {
                     ivDesk.setRotation(405);
                 }
             }
-
         }
-
-
-        //Set Image Based on Position
-        int x = Integer.parseInt(valueList.get(0));
-        int y = Integer.parseInt(valueList.get(1));
 
         xArrayList.add(x);
         yArrayList.add(y);
 
         relativeLayout.leftMargin = x;
         relativeLayout.topMargin = y;
-        relativeLayout.width = 65;
-        relativeLayout.height = 65;
+        relativeLayout.width = 80;
+        relativeLayout.height = 80;
         ivDesk.setLayoutParams(relativeLayout);
 
 
@@ -2888,8 +2895,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }
 
 
-            binding.firstLayout.setMinimumWidth(5000);
-            binding.firstLayout.setMinimumHeight(5000);
+            binding.firstLayout.setMinimumWidth(7000);
+            binding.firstLayout.setMinimumHeight(7000);
         binding.firstLayout.addView(deskView);
 
         }catch (Exception e){

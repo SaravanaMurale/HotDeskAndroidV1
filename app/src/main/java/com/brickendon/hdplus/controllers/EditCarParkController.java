@@ -823,7 +823,7 @@ public class EditCarParkController {
                 editDeskBookingDetails.setDisplayTime(startTime.getText()+" to "+endTime.getText());
                 if(locationAddress!=null)
                     editDeskBookingDetails.setLocationAddress(locationAddress.getText().toString());
-
+                
                 if (true){
                     if (repeatActvieStatus) {
 

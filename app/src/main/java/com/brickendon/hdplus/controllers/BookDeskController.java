@@ -967,10 +967,17 @@ public class BookDeskController implements
     
     //Repeat Module
     private void repeatBottomSheetDialog(String code) {
+        repeatBottomSheetDialog = new BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme);
+        View view = View.inflate(context, R.layout.dialog_bottom_sheet_repeat_new, null);
+        repeatBottomSheetDialog.setContentView(view);
+        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
+        /*
         repeatBottomSheetDialog = new BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme);
         repeatBottomSheetDialog.setContentView((activityContext.getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_repeat_new,
-                new RelativeLayout(context))));
+                new RelativeLayout(context))));*/
+
 
         //Language
         TextView titleRepeat=repeatBottomSheetDialog.findViewById(R.id.titleRepeat);
@@ -1234,7 +1241,7 @@ public class BookDeskController implements
 
                 if (code.equals("3")) {
                     //tvRepeat.setText("Daily");
-                    tvRepeat.setText(appKeysPage.getDaily());
+                    repeat.setText(appKeysPage.getDaily());
                     //DeskBookForWholeWeekFromToday
                     //doRepeatBookingForAWeek();
                 } else if (code.equals("4")) {
@@ -1244,7 +1251,7 @@ public class BookDeskController implements
                 } else if (code.equals("5")) {
                     //CarBooking For Whole Week From Today
                     //doRepeatCarBookingForAWeek();
-                    tvRepeat.setText(appKeysPage.getDaily());
+                    repeat.setText(appKeysPage.getDaily());
                 }
 
                 bottomSheetDialog.dismiss();
@@ -1300,7 +1307,7 @@ public class BookDeskController implements
                 }*/
                 if (code.equals("3")) {
                     //tvRepeat.setText("Daily");
-                    tvRepeat.setText(appKeysPage.getDaily());
+                    repeat.setText(appKeysPage.getDaily());
                     //DeskBookForWholeWeekFromToday
                     //doRepeatBookingForAWeek();
                 } else if (code.equals("4")) {
@@ -1310,7 +1317,7 @@ public class BookDeskController implements
                 } else if (code.equals("5")) {
                     //CarBooking For Whole Week From Today
                     //doRepeatCarBookingForAWeek();
-                    tvRepeat.setText(appKeysPage.getDaily());
+                    repeat.setText(appKeysPage.getDaily());
                 }
 
                 bottomSheetDialog.dismiss();
