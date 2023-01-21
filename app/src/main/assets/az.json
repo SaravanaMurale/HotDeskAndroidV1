@@ -411,6 +411,8 @@
         "Apply": "Müraciət edin",
         "ChooseLocation": "Yer seçin",
         "Start": "Başlamaq",
+        "StartRequestError": "Sorğunun başlama vaxtı təsdiq edilmiş saatdan tez ola bilməz.",
+        "EndRequestError": "Sorğunun bitmə vaxtı təsdiqlənmiş saatdan gec ola bilməz.",
         "End": "Son",
         "Available": "Mövcuddur",
         "Date": "Tarix",
@@ -724,7 +726,42 @@
         
 
         "HealthEating": "health Eating",
-        "Send": "Send"
+        "Send": "Send",
+        "Booknearby": "réserver à proximité",
+        "BookTraining": "livre de formation",
+        "HealthEating": "Alimentation saine",
+        "Send": "Envoyer",
+        "Calendar Booking": "calendrier de réservation",
+        "Capacity": "Capacité",
+        "Checkin": "Enregistrement",
+        "Checkout": "Vérifier",
+        "Commentsoptional":"Commentaires (optionnel",
+        "Desk Booking": "réservation de bureau",
+        "EditSickness": "modifier la maladie",
+        "EditHoliday": "modifier les jours fériés",
+        "EditTraining": "modifier la formation",
+        "EditWorkingRemotely": "Modifier travailler à distance",
+        "endOfWeek": "Week-end",
+        "EndRequestError": "L'heure de fin de la demande ne peut pas être postérieure aux heures approuvées.",
+        "Externalparticipantsoptional": "Participants externes facultatifs",
+        "Filter": "Filtre",
+        "Holiday": "Des vacances",
+        "Internalparticipantsoptional": "Intervenants internes facultatifs",
+        "logSickness": "dossier de maladie",
+        "Menu": "Menú",
+        "participants(optional)": "Intervenants (facultatif)",
+        "PastEvents": "afficher les événements passés",
+        "Remote": "Télécommande",
+        "Repeatsdaily": "se répète quotidiennement",
+        "SaveChanges": "Enregistrer les modifications",
+        "SettingsTitle": "Les paramètres",
+        "Sick": "Malade",
+        "Signinwithpin": "Connectez-vous avec un code PIN",
+        "SignInWithSso": "Connectez-vous avec SSO",
+        "StartRequestError": "L'heure de début de la demande ne peut pas être antérieure aux heures approuvées.",
+        "TrainingStr": "Formation",
+        "workingRemotely": "Travailler à distance"
+
 
 
     }

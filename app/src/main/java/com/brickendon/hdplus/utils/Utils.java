@@ -97,6 +97,7 @@ public class Utils {
     private static int hour;
     private static int minutes;
 
+
     public static Boolean isThemeChanged(Context mContext) {
         Boolean appTheme = false;
         if (SessionHandler.getInstance().get(mContext, AppConstants.APPTHEME) != null
@@ -436,6 +437,7 @@ public class Utils {
     //Bottom Sheet TimePicker
     public static void bottomSheetTimePicker24Hrs(Context mContext, Activity activity,
                                                   TextView tv, String title, String date, Boolean isrequested) {
+
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(mContext, R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((activity).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet,
                 new RelativeLayout(activity)));
@@ -445,10 +447,11 @@ public class Utils {
         TextView dateTv = bottomSheetDialog.findViewById(R.id.date);
         TextView continueTv = bottomSheetDialog.findViewById(R.id.continue_tv);
         TextView backTv = bottomSheetDialog.findViewById(R.id.tv_back);
-        if (title.equalsIgnoreCase("start time"))
+        if (title.equalsIgnoreCase("start time")||title.equalsIgnoreCase("start"))
             titleTv.setText("Start");
         else
             titleTv.setText("End");
+
         LanguagePOJO.AppKeys appKeysPage = getAppKeysPageScreenData(mContext);
         continueTv.setText(appKeysPage.getContinue());
         backTv.setText(appKeysPage.getBack());
@@ -493,13 +496,13 @@ public class Utils {
 //                Toast.makeText(mContext, "ih"+isrequested+title, Toast.LENGTH_SHORT).show();
                 if (title.equalsIgnoreCase("end time") && isrequested) {
                     if (hour > oldHour || (hour == oldHour && minutes > oldMinutes)) {
-                        Toast.makeText(mContext, "For Request end time cant be more that approved hours", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, Utils.checkStringParms(appKeysPage.getEndRequestError()), Toast.LENGTH_SHORT).show();
                         hour = oldHour;
                         minutes = oldMinutes;
                     }
                 } else if (title.equalsIgnoreCase("start time") && isrequested) {
                     if (hour < oldHour || (hour == oldHour && minutes < oldMinutes)) {
-                        Toast.makeText(mContext, "For Request start time cant be less that approved hours", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, Utils.checkStringParms(appKeysPage.getStartRequestError()), Toast.LENGTH_SHORT).show();
                         hour = oldHour;
                         minutes = oldMinutes;
                     }
@@ -1846,7 +1849,8 @@ public class Utils {
             try {
                 if (langData.getSettings() != null) {
                     String localeData = new Gson().toJson(langData.getSettings());
-                    SessionHandler.getInstance().save(mContext, AppConstants.SETTINGS_PAGE, localeData);
+                    SessionHandler.getInstance().save(mContext, AppConstants.SETTINGS_PAGE,
+                            localeData);
                 }
             } catch (Exception e) {
             }

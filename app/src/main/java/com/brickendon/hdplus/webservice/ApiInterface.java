@@ -106,8 +106,8 @@ public interface ApiInterface {
     @PUT("api/Booking/FullDayBooking")
     Call<BaseResponse> fullDayBooking(@Body JsonObject jsonObject);
 
-//    @POST("api/Account/TokenExchange")
-    @POST("api/Account/TokenExchangeV2Mobile")
+//    @POST("api/Account/TokenExchangeV2Mobile")
+    @POST("api/Account/TokenExchange")
     Call<GetTokenResponse> tokenExchange(@Body JsonObject jsonObject);
 
     @POST("api/settings/PinNumberSetting")
@@ -180,8 +180,8 @@ public interface ApiInterface {
     @POST("api/Account/updategdpracceptancesettings")
     Call<Void> updateGDPR(@Body GDPRrequest request);
 
-    //@POST("api/Account/Token")
-    @POST("api/Account/TokenV2Mobile")
+//    @POST("api/Account/TokenV2Mobile")
+    @POST("api/Account/Token")
     Call<GetTokenResponse> getLoginToken(@Body GetTokenRequest request);
 
 

@@ -4391,18 +4391,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                     if (chip.getText().toString().contains(externalAttendeesEmail.get(i))) {
                                         externalAttendeesEmail.remove(i);
                                         externalAttendeesChipGroup.removeView(chip);
-
                                     }
-
                                 }
-
                             }
-
                         }
                     });
-
                 }
-
             }
 
             @Override
@@ -10528,10 +10522,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             changes.setAttendeesList(attendeesList);
 
-            changes.setFrom(getCurrentDate() + "" + "T" + startTime + ":" + "00" + "." + "000" + "Z");
-            changes.setSubject(subject);
+            if(!meetingListToEditResponse.getFrom().equalsIgnoreCase(startTime))
+                changes.setFrom(getCurrentDate() + "" + "T" + startTime + ":" + "00" + "." + "000" + "Z");
+            if(!meetingListToEditResponse.getSubject().equalsIgnoreCase(subject))
+                changes.setSubject(subject);
             changes.setRequest(false);
-            changes.setTo(getCurrentDate() + "" + "T" + endTime + ":" + "00" + "." + "000" + "Z");
+            if(!meetingListToEditResponse.getTo().equalsIgnoreCase(endTime))
+                changes.setTo(getCurrentDate() + "" + "T" + endTime + ":" + "00" + "." + "000" + "Z");
 
             changesets.setChanges(changes);
 
@@ -10549,9 +10546,26 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 for (int i = 0; i < externalAttendeesEmail.size(); i++) {
                     externalAttendeesListStr.add(externalAttendeesEmail.get(i));
                 }
-
             }
-            changes.setExternalAttendeesList(externalAttendeesListStr);
+
+            boolean check = false;
+            loop:
+            for (int i=0; i<externalAttendeesListStr.size(); i++) {
+                boolean emailBool= false;
+                for (int j=0; j<meetingListToEditResponse.getExternalAttendeesList().size(); j++){
+                    if (externalAttendeesEmail.get(i).
+                            equalsIgnoreCase(meetingListToEditResponse.getExternalAttendeesList().get(j))){
+                        emailBool = true;
+                    }
+                }
+                if (!emailBool){
+                    check=true;
+                    break loop;
+                }
+            }
+
+            if (check)
+                changes.setExternalAttendeesList(externalAttendeesListStr);
 
 
             List<MeetingRoomEditRequest.DeleteIds> deleteIdsList = new ArrayList<>();

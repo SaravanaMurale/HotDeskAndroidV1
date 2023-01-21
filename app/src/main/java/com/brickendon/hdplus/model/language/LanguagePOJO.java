@@ -4286,6 +4286,12 @@ public class LanguagePOJO {
         @SerializedName("Start")
         @Expose
         private String start;
+        @SerializedName("StartRequestError")
+        @Expose
+        private String StartRequestError;
+        @SerializedName("EndRequestError")
+        @Expose
+        private String EndRequestError;
         @SerializedName("End")
         @Expose
         private String end;
@@ -5264,6 +5270,22 @@ public class LanguagePOJO {
         @SerializedName("EditTraining")
         String EditTraining; @SerializedName("SettingsTitle")
         String SettingsTitle;
+
+        public String getStartRequestError() {
+            return StartRequestError;
+        }
+
+        public void setStartRequestError(String startRequestError) {
+            StartRequestError = startRequestError;
+        }
+
+        public String getEndRequestError() {
+            return EndRequestError;
+        }
+
+        public void setEndRequestError(String endRequestError) {
+            EndRequestError = endRequestError;
+        }
 
         public String getPastEvents() {
             return PastEvents;

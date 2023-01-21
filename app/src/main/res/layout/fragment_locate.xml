@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:background="@color/figmaBgGrey"
     tools:context=".ui.locate.LocateFragment">-->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -41,13 +42,11 @@
                 app:gest_maxZoom="8.0"
                 app:gest_minZoom="1.2">
 
-
                 <RelativeLayout
                     android:id="@+id/firstLayout"
                     android:layout_width="1000dp"
                     android:layout_height="1000dp"
                     android:layout_marginTop="@dimen/_70sdp">
-
 
                     <LinearLayout
                         android:id="@+id/secondLayout"

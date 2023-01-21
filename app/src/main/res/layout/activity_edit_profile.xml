@@ -165,7 +165,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint=""
-                android:enabled="true"
+                android:clickable="false"
+                android:enabled="false"
                 android:inputType="text"
                 android:imeOptions="actionDone"
                 android:background="@drawable/edittext_bg"
@@ -466,7 +467,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_marginVertical="@dimen/_5sdp"
-                    android:text="9:00"
+                    tools:text="9:00"
                     android:textColor="@color/figmaBlueText"
                     android:theme="@style/TextBold" />
             </RelativeLayout>

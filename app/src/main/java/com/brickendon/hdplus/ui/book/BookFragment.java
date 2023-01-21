@@ -44,6 +44,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.brickendon.hdplus.adapter.ShowCountryAdapterCalendar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
@@ -142,7 +143,7 @@ public class BookFragment extends Fragment implements
         ParkingSpotListRecyclerAdapter.OnSelectSelected,
         ParticipantNameShowAdapter.OnParticipantSelectable,
         RoomListRecyclerAdapter.OnSelectSelected,
-        ShowCountryAdapter.OnSelectListener,
+        ShowCountryAdapterCalendar.OnSelectListener,
         CustomSpinner.OnSpinnerEventsListener,
         ItemAdapter.selectItemInterface {
 
@@ -261,7 +262,7 @@ public class BookFragment extends Fragment implements
     //BottomSheetData
     TextView country, state, street, floor, back, bsApply,deskStatusText,deskStatusDot;
     RecyclerView rvCountry, rvState, rvStreet, rvFloor;
-    ShowCountryAdapter showCountryAdapter;
+    ShowCountryAdapterCalendar showCountryAdapter;
     FloorAdapter floorAdapter;
     //    LinearLayoutManager linearLayoutManager;
     RelativeLayout countryBlock, statBlock, streetBlock, floorBlock;
@@ -669,7 +670,7 @@ public class BookFragment extends Fragment implements
             doInitMeetingAvalibilityHere(parentId, canvasDrawStatus);*/
 
         } else {
-            Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -2027,6 +2028,9 @@ public class BookFragment extends Fragment implements
                 editDeskBookingDetails,
                 isEditable
         );
+
+        if(bookEditBottomSheet!=null && bookEditBottomSheet.isShowing())
+            bookEditBottomSheet.dismiss();
 /*
         callAmenitiesListForMeetingRoom(editDeskBookingDetails,
                 editDeskBookingDetails.getEditStartTTime(),
@@ -2595,6 +2599,7 @@ public class BookFragment extends Fragment implements
         TextView tv_end=roomBottomSheet.findViewById(R.id.tv_end);
         TextView tv_comment=roomBottomSheet.findViewById(R.id.tv_comment);
         TextView tv_repeat=roomBottomSheet.findViewById(R.id.tv_repeat);
+        TextView tvDesc=roomBottomSheet.findViewById(R.id.tvDesc);
         tv_description=roomBottomSheet.findViewById(R.id.tv_description);
         repeat = roomBottomSheet.findViewById(R.id.repeat);
         deskStatusText = roomBottomSheet.findViewById(R.id.desk_status_text);
@@ -2867,7 +2872,7 @@ public class BookFragment extends Fragment implements
             commentRegistration.setVisibility(View.VISIBLE);
             tvComments.setVisibility(View.GONE);
             if(teamsCheckBoxStatus)
-                teamsBlock.setVisibility(View.VISIBLE);
+                teamsBlock.setVisibility(View.GONE);
             else
                 teamsBlock.setVisibility(View.GONE);
 
@@ -2882,6 +2887,13 @@ public class BookFragment extends Fragment implements
                     locationAddress.setText(""+userAllowedMeetingResponseListUpdated.get(0).getLocationMeeting().getLocationDetails().getBuildingName()
                             +", " +userAllowedMeetingResponseListUpdated.get(0).getLocationMeeting().getLocationDetails().getFloorName());
                     tv_description.setText(Utils.checkStringParms(userAllowedMeetingResponseListUpdated.get(0).getDescription()));
+                    if (tv_description.getText().toString().equalsIgnoreCase("") || tv_description.getText().toString().isEmpty()){
+                        tv_description.setVisibility(View.GONE);
+                        tvDesc.setVisibility(View.GONE);
+                    } else {
+                        tv_description.setVisibility(View.VISIBLE);
+                        tvDesc.setVisibility(View.VISIBLE);
+                    }
                 } catch (Exception c){
 
                 }
@@ -5869,10 +5881,7 @@ public class BookFragment extends Fragment implements
 
     //Global Search MOdel
     private void getLocateCountryList() {
-
-
         if (Utils.isNetworkAvailable(getContext())) {
-
             dialog = ProgressDialog.showProgressBar(getContext());
 //            binding.locateProgressBar.setVisibility(View.VISIBLE);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -5913,7 +5922,7 @@ public class BookFragment extends Fragment implements
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView(getLayoutInflater().
-                inflate(R.layout.bottom_sheet_locate_floor_filter,
+                inflate(R.layout.bottom_sheet_locate_floor_filter_calendar,
                         new RelativeLayout(getContext())));
 
         bsLocationSearch = bottomSheetDialog.findViewById(R.id.bsLocationSearch);
@@ -6097,7 +6106,7 @@ public class BookFragment extends Fragment implements
         rvCountry.setLayoutManager(linearLayoutManager);
         rvCountry.setHasFixedSize(true);
 
-        showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes, this, "COUNTRY");
+        showCountryAdapter = new ShowCountryAdapterCalendar(getContext(), locateCountryResposes, this, "COUNTRY");
         rvCountry.setAdapter(showCountryAdapter);
 
     }
@@ -6146,7 +6155,8 @@ public class BookFragment extends Fragment implements
         rvState.setLayoutManager(linearLayoutManager);
         rvState.setHasFixedSize(true);
 
-        showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes, this, "STATE");
+        showCountryAdapter = new ShowCountryAdapterCalendar(getContext(), locateCountryResposes,
+                this, "STATE");
         rvState.setAdapter(showCountryAdapter);
     }
 
@@ -6198,7 +6208,7 @@ public class BookFragment extends Fragment implements
         rvStreet.setLayoutManager(linearLayoutManager);
         rvStreet.setHasFixedSize(true);
 
-        showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes, this, "FLOOR");
+        showCountryAdapter = new ShowCountryAdapterCalendar(getContext(), locateCountryResposes, this, "FLOOR");
         rvStreet.setAdapter(showCountryAdapter);
 
     }
@@ -6330,7 +6340,7 @@ public class BookFragment extends Fragment implements
 //            doInitMeetingAvalibilityHere(parentId,canvasDrawStatus);
 
         } else {
-            Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
         }
     }
 

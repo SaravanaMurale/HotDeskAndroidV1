@@ -389,6 +389,8 @@
       "Apply": "Apply",
       "ChooseLocation": "Choose location",
       "Start": "Start",
+      "StartRequestError": "Request start time cannot be earlier than the approved hours.",
+      "EndRequestError": "Request end time cannot be later than the approved hours.",
       "End": "End",
       "Available": "Available",
       "Date": "Date",

@@ -45,10 +45,10 @@ import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.brickendon.hdplus.BuildConfig;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
-import com.theartofdev.edmodo.cropper.BuildConfig;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.yalantis.ucrop.UCrop;
 
@@ -1435,7 +1435,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     }
 
     private void makeEnable() {
-        binding.editName.setEnabled(true);
+        binding.editName.setEnabled(false);
         binding.editDisplayName.setEnabled(true);
         binding.editStartTime.setEnabled(true);
         binding.editEndTime.setEnabled(true);
@@ -1475,7 +1475,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
                     || profileData.getHighestRole().equalsIgnoreCase(AppConstants.MeetingManager)) {
 
                 binding.editDisplayName.setEnabled(false);
-                binding.editName.setEnabled(true);
+                binding.editName.setEnabled(false);
 
 
             } else {
@@ -1849,11 +1849,13 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
     private File getImageFile() {
         String imageFileName = "JPEG_" + System.currentTimeMillis() + "_";
         File storageDir = new File(
-                Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_DCIM
-                ), "Camera"
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
+                "Camera"
         );
         File file = null;
+        if(!storageDir.exists())
+            storageDir.mkdir();
+
         try {
             file = File.createTempFile(
                     imageFileName, ".jpg", storageDir

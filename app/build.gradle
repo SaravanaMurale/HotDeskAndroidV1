@@ -9,8 +9,8 @@ android {
         applicationId "com.brickendon.hdplus"
         minSdk 26
         targetSdk 31
-        versionCode 18385
-        versionName "1.0.8385"
+        versionCode 18386
+        versionName "1.0.8386"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {

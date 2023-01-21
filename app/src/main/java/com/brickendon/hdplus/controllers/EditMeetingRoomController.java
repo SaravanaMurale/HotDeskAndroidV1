@@ -1154,7 +1154,8 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
                     doMeetingRoomBooking(meetingRoomId,
                                 startTime.getText().toString(),
                                 endTime.getText().toString(), subject, comment,
-                                isRequest, editDeskBookingDetails.isTeamsChecked(),externalAttendeesEmail,id,newEditStatus);
+                                isRequest, editDeskBookingDetails.isTeamsChecked(),
+                                externalAttendeesEmail,id,newEditStatus,editDeskBookingDetails);
 
                 } else {
                     Toast.makeText(context, "Please Enter All Details", Toast.LENGTH_LONG).show();
@@ -1212,6 +1213,7 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
 
                                 if (chip.getText().toString().contains(externalAttendeesEmail.get(i))) {
                                     externalAttendeesEmail.remove(i);
+
                                     externalAttendeesChipGroup.removeView(chip);
 
                                 }
@@ -1429,7 +1431,8 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
                                       String subject,
                                       String comment,
                                       boolean isRequest,
-                                      boolean isTeamsChecked,List<String> externalAttendeesEmail,int id,String newEditStatus) {
+                                      boolean isTeamsChecked, List<String> externalAttendeesEmail, int id, String newEditStatus,
+                                      EditBookingDetails editDeskBookingDetails) {
 
 //        binding.locateProgressBar.setVisibility(View.VISIBLE);
         dialog= ProgressDialog.showProgressBar(context);
@@ -1444,13 +1447,17 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
 
         MeetingRoomRequest.Changeset m = meetingRoomRequest.new Changeset();
         m.setId(id);
-        m.setDate(Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + "T" + "00:00:00.000" + "Z");
+        m.setDate(Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + "T" + "00:00:00Z");
 
         MeetingRoomRequest.Changeset.Changes changes = m.new Changes();
-        changes.setFrom(getCurrentDate() + "" + "T" + startRoomTime + ":" + "00" + "." + "000" + "Z");
-        changes.setMyto(getCurrentDate() + "" + "T" + endRoomTime + ":" + "00" + "." + "000" + "Z");
-        changes.setComments(comment);
-        changes.setSubject(subject);
+        if(!editDeskBookingDetails.getEditStartTTime().equalsIgnoreCase(startRoomTime))
+            changes.setFrom("2000-01-01" + "T" + startRoomTime + ":" + "00" + "." + "000" + "Z");
+        if(!editDeskBookingDetails.getEditEndTime().equalsIgnoreCase(endRoomTime))
+            changes.setMyto("2000-01-01" + "T" + endRoomTime + ":" + "00" + "." + "000" + "Z");
+        if(!editDeskBookingDetails.getComments().equalsIgnoreCase(comment))
+            changes.setComments(comment);
+        if(!editDeskBookingDetails.getSubject().equalsIgnoreCase(subject))
+            changes.setSubject(subject);
         changes.setRequest(isRequest);
 
         m.setChanges(changes);
@@ -1507,13 +1514,31 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
             }
         }
 
+        if (attendeesList.size()>0)
+            changes.setAttendees(attendeesList);
 
+        boolean check = false;
+        loop:
+        for (int i=0; i<externalAttendeesEmail.size(); i++) {
+            boolean emailBool= false;
+            for (int j=0; j<editDeskBookingDetails.getExternalAttendeesList().size(); j++){
+                if (externalAttendeesEmail.get(i).
+                        equalsIgnoreCase(editDeskBookingDetails.getExternalAttendeesList().get(j))){
+                    emailBool = true;
+                }
+            }
+            if (!emailBool){
+                check=true;
+                break loop;
+            }
+        }
 
-        changes.setAttendees(attendeesList);
-
-
+        if (externalAttendeesEmail.size() != editDeskBookingDetails.getExternalAttendeesList().size()){
+            check=true;
+        }
         //List<String> externalAttendeesList = new ArrayList<>();
-        changes.setExternalAttendees(externalAttendeesEmail);
+        if (check)
+            changes.setExternalAttendees(externalAttendeesEmail);
 
         List<MeetingRoomRequest.DeleteIds> deleteIdsList = new ArrayList<>();
         meetingRoomRequest.setDeletedIds(deleteIdsList);
@@ -1529,8 +1554,12 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
 
                 chipList.clear();
                 String resultString = "";
+                if (isFrom.equalsIgnoreCase(AppConstants.HOMEFRAGMENTINSTANCESTRING)){
+                    ((MainActivity) activityContext).callHomeFragment();
+                }
                 try {
-                    if (response.code()==200 &&response.body().getResultCode()!=null && response.body().getResultCode().equalsIgnoreCase("ok")){
+                    if (response.code()==200 && response.body().getResultCode()!=null
+                            && response.body().getResultCode().equalsIgnoreCase("ok")){
                         if(newEditStatus.equalsIgnoreCase("new") ||
                                 newEditStatus.equalsIgnoreCase("request"))
                             openCheckoutDialog("Booking Created",2);

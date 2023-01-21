@@ -378,9 +378,9 @@
       "About": "À propos de",
       "DarkMode": "Mode sombre"
   },
-  
+
   "AppKeys": {
-      
+
       "SignIn": "S'identifier",
       "SignInWithPin": "Connectez-vous avec un code pin",
       "Tenant": "Locataire",
@@ -404,6 +404,8 @@
       "Apply": "Appliquer",
       "ChooseLocation": "Choisissez l'emplacement",
       "Start": "Commencer",
+    "StartRequestError": "Request start time cannot be earlier than the approved hours.",
+    "EndRequestError": "Request end time cannot be later than the approved hours.",
       "End": "Fin",
       "Available": "Disponible",
       "Date": "Date",
@@ -439,7 +441,9 @@
       "ByRequest": "sur demande",
       "Booked": "réservé",
       "BookedByMe": "réservé par moi",
-      "UnAvilable": "indisponible",
+      "BookedByMeL": "Réservé par moi",
+    "BookHoliday": "Book holiday",
+    "UnAvilable": "indisponible",
       "Teams": "Équipes",
       "EndTime": "Heure de fin",
       "EndOfDay": "Fin de la journée",
@@ -715,10 +719,45 @@
       "AvailableRooms" : "Chambres disponibles",
       "HybridHero" : "Le nom qui sera affiché sur Hybrid Hero",
     "PMO Office":"PMO Office",
-      
+
 
     "HealthEating": "health Eating",
-    "Send": "Send"
+    "Send": "Send",
+
+    "Booknearby": "réserver à proximité",
+    "BookTraining": "livre de formation",
+    "HealthEating": "Alimentation saine",
+    "Send": "Envoyer",
+    "Calendar Booking": "calendrier de réservation",
+    "Capacity": "Capacité",
+    "Checkin": "Enregistrement",
+    "Checkout": "Vérifier",
+    "Commentsoptional":"Commentaires (optionnel",
+    "Desk Booking": "réservation de bureau",
+    "EditSickness": "modifier la maladie",
+    "EditHoliday": "modifier les jours fériés",
+    "EditTraining": "modifier la formation",
+    "EditWorkingRemotely": "Modifier travailler à distance",
+    "endOfWeek": "Week-end",
+    "EndRequestError": "L'heure de fin de la demande ne peut pas être postérieure aux heures approuvées.",
+    "Externalparticipantsoptional": "Participants externes facultatifs",
+    "Filter": "Filtre",
+    "Holiday": "Des vacances",
+    "Internalparticipantsoptional": "Intervenants internes facultatifs",
+    "logSickness": "dossier de maladie",
+    "Menu": "Menú",
+    "participants(optional)": "Intervenants (facultatif)",
+    "PastEvents": "afficher les événements passés",
+    "Remote": "Télécommande",
+    "Repeatsdaily": "se répète quotidiennement",
+    "SaveChanges": "Enregistrer les modifications",
+    "SettingsTitle": "Les paramètres",
+    "Sick": "Malade",
+    "Signinwithpin": "Connectez-vous avec un code PIN",
+    "SignInWithSso": "Connectez-vous avec SSO",
+    "StartRequestError": "L'heure de début de la demande ne peut pas être antérieure aux heures approuvées.",
+    "TrainingStr": "Formation",
+    "workingRemotely": "Travailler à distance"
 
 
   }

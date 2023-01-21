@@ -203,7 +203,9 @@ public class TeamsExpandedNewAdapter extends RecyclerView.Adapter<RecyclerView.V
                 @Override
                 public void onClick(View view) {
                     try {
-                        onProfileClickable.OnProfileClickable(teamMembersListNew.get(holder.getAbsoluteAdapterPosition()).getDaoTeamMember());
+                        final ExpandItem expandItem = (ExpandItem) list.get(holder.getAbsoluteAdapterPosition());
+                        TeamsMemberListDataModel listDataModel = expandItem.getTeamsMemberListDataModel();
+                        onProfileClickable.OnProfileClickable(listDataModel.getDaoTeamMember());
                     } catch (Exception e) {
 
                     }

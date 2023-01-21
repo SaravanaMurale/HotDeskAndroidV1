@@ -756,7 +756,7 @@ public class EditCarParkController {
             public void onClick(View v) {
                 try {
                     if (!startDisabled){
-                        if(editDeskBookingDetails.getStatus().getBookingType().equalsIgnoreCase("REQ"))
+                        if(editDeskBookingDetails.getStatus().getBookingType().equalsIgnoreCase("REQGRN"))
                             Utils.bottomSheetTimePicker24Hrs(context,activityContext,startTime,"Start Time",
                                     Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
                         else
@@ -789,7 +789,7 @@ public class EditCarParkController {
             public void onClick(View v) {
                 try {
                     if(!endDisabled) {
-                        if (editDeskBookingDetails.getStatus().getBookingType().equalsIgnoreCase("REQ"))
+                        if (editDeskBookingDetails.getStatus().getBookingType().equalsIgnoreCase("REQGRN"))
                             Utils.bottomSheetTimePicker24Hrs(context,activityContext,endTime,"End Time",
                                     Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
                         else

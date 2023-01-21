@@ -47,6 +47,8 @@ public class CreatePinActivity extends AppCompatActivity {
     ImageView profile_back;
     @BindView(R.id.old_pin_layout)
     LinearLayout old_pin_layout;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
 
     @BindView(R.id.etOldPin)
     OtpTextView etOldPin;
@@ -340,6 +342,7 @@ public class CreatePinActivity extends AppCompatActivity {
 
                             }else {
                                 old_pin_layout.setVisibility(View.GONE);
+                                tvTitle.setText("");
                                 tvNewPin.setText("Enter your pin");
                                 tvConfirmPin.setText("Re-enter your pin");
 

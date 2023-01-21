@@ -46,6 +46,7 @@ import com.brickendon.hdplus.model.response.LocateCountryRespose;
 import com.brickendon.hdplus.model.response.UsageTypeResponse;
 import com.brickendon.hdplus.utils.AppConstants;
 import com.brickendon.hdplus.utils.ExtendedDataHolder;
+import com.brickendon.hdplus.utils.ProgressDialog;
 import com.brickendon.hdplus.utils.SessionHandler;
 import com.brickendon.hdplus.utils.Utils;
 import com.brickendon.hdplus.webservice.ApiClient;
@@ -573,20 +574,22 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
 
     private void getTeamMembers() {
-
         if (Utils.isNetworkAvailable(getActivity())) {
             View textView = (LinearLayout) View.inflate(getContext(), R.layout.floor_layout_recycler, null);
             binding.locateProgressBar.setVisibility(View.VISIBLE);
+            ProgressDialog.touchLock(getContext(),getActivity());
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<ArrayList<DAOTeamMember>> call = apiService.getTeamMembersWithImage(selectedDate,
-                    "" + SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID),true,true);
+                    "" + SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID),
+                    true,true);
             call.enqueue(new Callback<ArrayList<DAOTeamMember>>() {
                 @Override
                 public void onResponse(Call<ArrayList<DAOTeamMember>> call,
                                        Response<ArrayList<DAOTeamMember>> response) {
-                    try{
+                    try {
                         binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                        ProgressDialog.clearTouchLock(getContext(), getActivity());
                         if (response.body() != null) {
                             if (response.code() == 200) {
 //                            binding.tvExapnd.setVisibility(View.VISIBLE);
@@ -868,9 +871,9 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
                 @Override
                 public void onFailure(Call<ArrayList<DAOTeamMember>> call, Throwable t) {
-//                    Toast.makeText(getActivity(), "on fail", Toast.LENGTH_SHORT).show();
                     Utils.toastShortMessage(getActivity(), "Response Failure: " + t.getMessage());
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
+                    ProgressDialog.clearTouchLock(getContext(), getActivity());
                     Log.d("Search", "onResponse: fail" + t.getMessage());
                 }
             });

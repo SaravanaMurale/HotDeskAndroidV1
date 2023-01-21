@@ -526,7 +526,7 @@ public class BookDeskController implements
         showcheckInDate.setText(Utils.showBottomSheetDate(calSelectedDate));
         checkInDate.setText("");
 
-        if (editDeskBookingDetails.getDeskStatus() == 1){
+        if (editDeskBookingDetails.getDeskStatus() == 1) {
             startTime.setTextColor(activityContext.getResources().getColor(R.color.figmaGrey));
             endTime.setTextColor(activityContext.getResources().getColor(R.color.figmaGrey));
             select.setTextColor(activityContext.getResources().getColor(R.color.figmaGrey));
@@ -535,7 +535,7 @@ public class BookDeskController implements
             endDisabled=true;
             selectDisabled=true;
 //            chipGroup.setVisibility(View.GONE);
-        }else if (editDeskBookingDetails.getDeskStatus() == 2){
+        }else if (editDeskBookingDetails.getDeskStatus() == 2) {
             startTime.setTextColor(activityContext.getResources().getColor(R.color.figmaBlueText));
             endTime.setTextColor(activityContext.getResources().getColor(R.color.figmaBlueText));
             select.setTextColor(activityContext.getResources().getColor(R.color.figmaGrey));
@@ -633,7 +633,7 @@ public class BookDeskController implements
 
             tv_description.setText(editDeskBookingDetails.getDescription());
             if (tv_description.getText().toString().equalsIgnoreCase("")
-                    || tv_description.getText().toString().isEmpty()){
+                    || tv_description.getText().toString().isEmpty()) {
                 tv_description.setVisibility(View.GONE);
                 desc.setVisibility(View.GONE);
             } else {
@@ -641,7 +641,7 @@ public class BookDeskController implements
                 desc.setVisibility(View.VISIBLE);
             }
 
-            if (newEditStatus.equalsIgnoreCase("edit")){
+            if (newEditStatus.equalsIgnoreCase("edit")) {
                 if (editDeskBookingDetails.getDate()!=null)
                     date.setText(""+Utils.calendarDay10thMonthYearformat(editDeskBookingDetails.getDate()));
                 repeatBlock.setVisibility(View.GONE);
@@ -655,7 +655,7 @@ public class BookDeskController implements
                     deskStatusDot.setBackgroundTintList(ContextCompat.getColorStateList(activityContext,R.color.figmaLiteGreen));
                 }
 
-            }else {
+            } else {
                 if (editDeskBookingDetails.getDate()!=null)
                     date.setText(""+Utils.calendarDay10thMonthformat(editDeskBookingDetails.getDate()));
 
@@ -666,7 +666,6 @@ public class BookDeskController implements
                     repeatBlock.setVisibility(View.GONE);
                 }
             }
-
 
             if (newEditStatus.equalsIgnoreCase("edit")
                     && !(editDeskBookingDetails.getUsageTypeId()== 2 ||
