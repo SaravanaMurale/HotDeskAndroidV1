@@ -184,6 +184,9 @@ public interface ApiInterface {
     @POST("api/Account/Token")
     Call<GetTokenResponse> getLoginToken(@Body GetTokenRequest request);
 
+    @POST("api/Account/TokenExchangeV2Mobile")
+    //@POST("api/Account/TokenExchange")
+    Call<GetTokenResponse> tokenExchange(@Body JsonObject jsonObject);
 
     @GET("api/image/user")
     Call<ImageResponse> getUserImage();

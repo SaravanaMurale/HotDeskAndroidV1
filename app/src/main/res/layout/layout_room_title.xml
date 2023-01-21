@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:textColor="#ffb3b3"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:textSize="@dimen/_8sdp"
         />
 
 </RelativeLayout>

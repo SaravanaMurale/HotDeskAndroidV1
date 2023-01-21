@@ -1577,69 +1577,73 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
 
                 List<LocateCountryRespose> locateCountryResposeList = response.body();
 
-                locatebook:
-                for (int i = 0; i < locateCountryResposeList.size(); i++) {
+                if(locateCountryResposeList!=null && locateCountryResposeList.size()>0) {
 
-                    if (desk.equals(AppConstants.DESK)) {
+                    locatebook:
+                    for (int i = 0; i < locateCountryResposeList.size(); i++) {
 
-                        for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getDesks().size(); j++) {
+                        if (desk.equals(AppConstants.DESK)) {
 
-                            if (identifierId == locateCountryResposeList.get(i).getLocationItemLayout().getDesks().get(j).getDesksId()) {
-                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
+                            for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getDesks().size(); j++) {
+
+                                if (identifierId == locateCountryResposeList.get(i).getLocationItemLayout().getDesks().get(j).getDesksId()) {
+                                    SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
 
 
-                                System.out.println("SelectedDeskFloorInLocate " + i + " " + desk + " " + identifierId);
+                                    System.out.println("SelectedDeskFloorInLocate " + i + " " + desk + " " + identifierId);
 
-                                //For Desk Blink and Highlighting
-                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_ICON_BLINK, identifierId);
+                                    //For Desk Blink and Highlighting
+                                    SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_ICON_BLINK, identifierId);
 
-                                ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
-                                break locatebook;
+                                    ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
+                                    break locatebook;
 //                                navController.navigate(R.id.action_navigation_home_to_navigation_locate);
 
+                                }
+
                             }
 
-                        }
 
+                        } else if (desk.equals(AppConstants.MEETING)) {
 
-                    } else if (desk.equals(AppConstants.MEETING)) {
+                            for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getMeetingRoomsList().size(); j++) {
 
-                        for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getMeetingRoomsList().size(); j++) {
+                                if (identifierId == locateCountryResposeList.get(i).getLocationItemLayout().getMeetingRoomsList().get(j).getMeetingRoomId()) {
+                                    SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
 
-                            if (identifierId == locateCountryResposeList.get(i).getLocationItemLayout().getMeetingRoomsList().get(j).getMeetingRoomId()) {
-                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
+                                    System.out.println("SelectedMeetingFloorInLocate " + i + " " + desk + " " + identifierId);
 
-                                System.out.println("SelectedMeetingFloorInLocate " + i + " " + desk + " " + identifierId);
+                                    //For Meeting Blink and Highlighting
+                                    SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_ICON_BLINK, identifierId);
 
-                                //For Meeting Blink and Highlighting
-                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_ICON_BLINK, identifierId);
-
-                                ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
-                                break locatebook;
+                                    ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
+                                    break locatebook;
 //                                navController.navigate(R.id.navigation_locate);
+                                }
+
                             }
 
-                        }
 
+                        } else if (desk.equals(AppConstants.CAR_PARKING)) {
 
-                    } else if (desk.equals(AppConstants.CAR_PARKING)) {
+                            for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getParkingSlotsList().size(); j++) {
 
-                        for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getParkingSlotsList().size(); j++) {
+                                if (identifierId == locateCountryResposeList.get(i).getLocationItemLayout().getParkingSlotsList().get(j).getId()) {
+                                    SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
 
-                            if (identifierId == locateCountryResposeList.get(i).getLocationItemLayout().getParkingSlotsList().get(j).getId()) {
-                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
+                                    System.out.println("SelectedCarFloorInLocate " + i + " " + desk + " " + identifierId);
 
-                                System.out.println("SelectedCarFloorInLocate " + i + " " + desk + " " + identifierId);
+                                    //For Car Blink and Highlighting
+                                    SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_ICON_BLINK, identifierId);
 
-                                //For Car Blink and Highlighting
-                                SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_ICON_BLINK, identifierId);
-
-                                ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
-                                break locatebook;
+                                    ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
+                                    break locatebook;
 //                                navController.navigate(R.id.navigation_locate);
+                                }
                             }
                         }
                     }
+
                 }
             }
 

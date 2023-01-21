@@ -1,13 +1,12 @@
-package dream.guys.hotdeskandroid.ui.book;
+package com.brickendon.hdplus.ui.book;
 
-import static dream.guys.hotdeskandroid.utils.Utils.getCurrentDate;
-import static dream.guys.hotdeskandroid.utils.Utils.getCurrentTime;
+import static com.brickendon.hdplus.utils.Utils.getCurrentDate;
+import static com.brickendon.hdplus.utils.Utils.getCurrentTime;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -45,17 +44,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import com.brickendon.hdplus.adapter.ShowCountryAdapterCalendar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
@@ -65,7 +54,6 @@ import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.microsoft.identity.common.internal.telemetry.TelemetryEventStrings;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -74,78 +62,72 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import butterknife.BindView;
-import dream.guys.hotdeskandroid.MainActivity;
-import dream.guys.hotdeskandroid.R;
-import dream.guys.hotdeskandroid.adapter.ActiveTeamsAdapter;
-import dream.guys.hotdeskandroid.adapter.AssertListAdapter;
-import dream.guys.hotdeskandroid.adapter.BookingListToEditAdapter;
-import dream.guys.hotdeskandroid.adapter.CapacityAdapter;
-import dream.guys.hotdeskandroid.adapter.CarListToEditAdapterBooking;
-import dream.guys.hotdeskandroid.adapter.DeskListRecyclerAdapter;
-import dream.guys.hotdeskandroid.adapter.FloorAdapter;
-import dream.guys.hotdeskandroid.adapter.HomeBookingListAdapter;
-import dream.guys.hotdeskandroid.adapter.LocateMyTeamAdapter;
-import dream.guys.hotdeskandroid.adapter.MeetingListToEditAdapter;
-import dream.guys.hotdeskandroid.adapter.NewDeskListForEditRecyclerAdapter;
-import dream.guys.hotdeskandroid.adapter.NewDeskListRecyclerAdapter;
-import dream.guys.hotdeskandroid.adapter.ParkingSpotListRecyclerAdapter;
-import dream.guys.hotdeskandroid.adapter.ParticipantNameShowAdapter;
-import dream.guys.hotdeskandroid.adapter.RoomListRecyclerAdapter;
-import dream.guys.hotdeskandroid.adapter.ShowCountryAdapter;
-import dream.guys.hotdeskandroid.controllers.BookDeskController;
-import dream.guys.hotdeskandroid.controllers.EditCarParkController;
-import dream.guys.hotdeskandroid.controllers.EditMeetingRoomController;
-import dream.guys.hotdeskandroid.controllers.OtherBookingController;
-import dream.guys.hotdeskandroid.controllers.EditDeskController;
-import dream.guys.hotdeskandroid.databinding.FragmentBookBinding;
-import dream.guys.hotdeskandroid.example.DataModel;
-import dream.guys.hotdeskandroid.example.ItemAdapter;
-import dream.guys.hotdeskandroid.example.ValuesPOJO;
-import dream.guys.hotdeskandroid.model.AssertModel;
-import dream.guys.hotdeskandroid.model.language.LanguagePOJO;
-import dream.guys.hotdeskandroid.model.request.BookingsRequest;
-import dream.guys.hotdeskandroid.model.request.EditBookingDetails;
-import dream.guys.hotdeskandroid.model.request.LocateBookingRequest;
-import dream.guys.hotdeskandroid.model.request.LocateCarParkBookingRequest;
-import dream.guys.hotdeskandroid.model.request.MeetingAmenityStatus;
-import dream.guys.hotdeskandroid.model.request.MeetingRoomRecurrence;
-import dream.guys.hotdeskandroid.model.request.MeetingRoomRequest;
-import dream.guys.hotdeskandroid.model.request.MeetingStatusModel;
-import dream.guys.hotdeskandroid.model.request.Point;
-import dream.guys.hotdeskandroid.model.response.ActiveTeamsResponse;
-import dream.guys.hotdeskandroid.model.response.AmenitiesResponse;
-import dream.guys.hotdeskandroid.model.response.BaseResponse;
-import dream.guys.hotdeskandroid.model.response.BookingForEditResponse;
-import dream.guys.hotdeskandroid.model.response.BookingListResponse;
-import dream.guys.hotdeskandroid.model.response.CarParkListToEditResponse;
-import dream.guys.hotdeskandroid.model.response.CarParkLocationsModel;
-import dream.guys.hotdeskandroid.model.response.CompanyDefaultResponse;
-import dream.guys.hotdeskandroid.model.response.DeskAvaliabilityResponse;
-import dream.guys.hotdeskandroid.model.response.DeskRoomCountResponse;
-import dream.guys.hotdeskandroid.model.response.LocateCountryRespose;
-import dream.guys.hotdeskandroid.model.response.MeetingListToEditResponse;
-import dream.guys.hotdeskandroid.model.response.ParkingSpotModel;
-import dream.guys.hotdeskandroid.model.response.ParticipantDetsilResponse;
-import dream.guys.hotdeskandroid.model.response.RoomListResponse;
-import dream.guys.hotdeskandroid.model.response.TeamsResponse;
-import dream.guys.hotdeskandroid.model.response.UserAllowedMeetingResponse;
-import dream.guys.hotdeskandroid.model.response.UserDetailsResponse;
-import dream.guys.hotdeskandroid.ui.home.EditProfileActivity;
-import dream.guys.hotdeskandroid.ui.login.LoginActivity;
-import dream.guys.hotdeskandroid.ui.wellbeing.NotificationsListActivity;
-import dream.guys.hotdeskandroid.utils.AppConstants;
-import dream.guys.hotdeskandroid.utils.CalendarView;
-import dream.guys.hotdeskandroid.utils.CustomSpinner;
-import dream.guys.hotdeskandroid.utils.LogicHandler;
-import dream.guys.hotdeskandroid.utils.ProgressDialog;
-import dream.guys.hotdeskandroid.utils.SessionHandler;
-import dream.guys.hotdeskandroid.utils.Utils;
-import dream.guys.hotdeskandroid.webservice.ApiClient;
-import dream.guys.hotdeskandroid.webservice.ApiInterface;
+import com.brickendon.hdplus.R;
+import com.brickendon.hdplus.adapter.ActiveTeamsAdapter;
+import com.brickendon.hdplus.adapter.AssertListAdapter;
+import com.brickendon.hdplus.adapter.BookingListToEditAdapter;
+import com.brickendon.hdplus.adapter.CapacityAdapter;
+import com.brickendon.hdplus.adapter.CarListToEditAdapterBooking;
+import com.brickendon.hdplus.adapter.DeskListRecyclerAdapter;
+import com.brickendon.hdplus.adapter.FloorAdapter;
+import com.brickendon.hdplus.adapter.HomeBookingListAdapter;
+import com.brickendon.hdplus.adapter.LocateMyTeamAdapter;
+import com.brickendon.hdplus.adapter.MeetingListToEditAdapter;
+import com.brickendon.hdplus.adapter.NewDeskListForEditRecyclerAdapter;
+import com.brickendon.hdplus.adapter.NewDeskListRecyclerAdapter;
+import com.brickendon.hdplus.adapter.ParkingSpotListRecyclerAdapter;
+import com.brickendon.hdplus.adapter.ParticipantNameShowAdapter;
+import com.brickendon.hdplus.adapter.RoomListRecyclerAdapter;
+import com.brickendon.hdplus.adapter.ShowCountryAdapter;
+import com.brickendon.hdplus.controllers.BookDeskController;
+import com.brickendon.hdplus.controllers.EditCarParkController;
+import com.brickendon.hdplus.controllers.EditMeetingRoomController;
+import com.brickendon.hdplus.controllers.OtherBookingController;
+import com.brickendon.hdplus.controllers.EditDeskController;
+import com.brickendon.hdplus.databinding.FragmentBookBinding;
+import com.brickendon.hdplus.example.DataModel;
+import com.brickendon.hdplus.example.ItemAdapter;
+import com.brickendon.hdplus.example.ValuesPOJO;
+import com.brickendon.hdplus.model.AssertModel;
+import com.brickendon.hdplus.model.language.LanguagePOJO;
+import com.brickendon.hdplus.model.request.BookingsRequest;
+import com.brickendon.hdplus.model.request.EditBookingDetails;
+import com.brickendon.hdplus.model.request.LocateBookingRequest;
+import com.brickendon.hdplus.model.request.LocateCarParkBookingRequest;
+import com.brickendon.hdplus.model.request.MeetingAmenityStatus;
+import com.brickendon.hdplus.model.request.MeetingRoomRecurrence;
+import com.brickendon.hdplus.model.request.MeetingRoomRequest;
+import com.brickendon.hdplus.model.request.MeetingStatusModel;
+import com.brickendon.hdplus.model.request.Point;
+import com.brickendon.hdplus.model.response.ActiveTeamsResponse;
+import com.brickendon.hdplus.model.response.AmenitiesResponse;
+import com.brickendon.hdplus.model.response.BaseResponse;
+import com.brickendon.hdplus.model.response.BookingForEditResponse;
+import com.brickendon.hdplus.model.response.BookingListResponse;
+import com.brickendon.hdplus.model.response.CarParkListToEditResponse;
+import com.brickendon.hdplus.model.response.CarParkLocationsModel;
+import com.brickendon.hdplus.model.response.CompanyDefaultResponse;
+import com.brickendon.hdplus.model.response.DeskAvaliabilityResponse;
+import com.brickendon.hdplus.model.response.DeskRoomCountResponse;
+import com.brickendon.hdplus.model.response.LocateCountryRespose;
+import com.brickendon.hdplus.model.response.MeetingListToEditResponse;
+import com.brickendon.hdplus.model.response.ParkingSpotModel;
+import com.brickendon.hdplus.model.response.ParticipantDetsilResponse;
+import com.brickendon.hdplus.model.response.UserAllowedMeetingResponse;
+import com.brickendon.hdplus.model.response.UserDetailsResponse;
+import com.brickendon.hdplus.ui.login.LoginActivity;
+import com.brickendon.hdplus.utils.AppConstants;
+import com.brickendon.hdplus.utils.CalendarView;
+import com.brickendon.hdplus.utils.CustomSpinner;
+import com.brickendon.hdplus.utils.LogicHandler;
+import com.brickendon.hdplus.utils.ProgressDialog;
+import com.brickendon.hdplus.utils.SessionHandler;
+import com.brickendon.hdplus.utils.Utils;
+import com.brickendon.hdplus.webservice.ApiClient;
+import com.brickendon.hdplus.webservice.ApiInterface;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -161,7 +143,7 @@ public class BookFragment extends Fragment implements
         ParkingSpotListRecyclerAdapter.OnSelectSelected,
         ParticipantNameShowAdapter.OnParticipantSelectable,
         RoomListRecyclerAdapter.OnSelectSelected,
-        ShowCountryAdapter.OnSelectListener,
+        ShowCountryAdapterCalendar.OnSelectListener,
         CustomSpinner.OnSpinnerEventsListener,
         ItemAdapter.selectItemInterface {
 
@@ -280,7 +262,7 @@ public class BookFragment extends Fragment implements
     //BottomSheetData
     TextView country, state, street, floor, back, bsApply,deskStatusText,deskStatusDot;
     RecyclerView rvCountry, rvState, rvStreet, rvFloor;
-    ShowCountryAdapter showCountryAdapter;
+    ShowCountryAdapterCalendar showCountryAdapter;
     FloorAdapter floorAdapter;
     //    LinearLayoutManager linearLayoutManager;
     RelativeLayout countryBlock, statBlock, streetBlock, floorBlock;
@@ -488,11 +470,7 @@ public class BookFragment extends Fragment implements
                         } else {
                         }
                     }else
-<<<<<<< HEAD
-                        Toast.makeText(getContext(), "Bookings cannot be made for dates in the past", Toast.LENGTH_SHORT).show();
-=======
                         Toast.makeText(getContext(), bookindata.getPastDate(), Toast.LENGTH_SHORT).show();
->>>>>>> 111bcc6ff209df6e5f26ffe149f35a74f8a40502
                 } else{
                     if (selectedicon == 4 || selectedicon == 5 || selectedicon == 6 ||
                             selectedicon == 7) {
@@ -692,7 +670,7 @@ public class BookFragment extends Fragment implements
             doInitMeetingAvalibilityHere(parentId, canvasDrawStatus);*/
 
         } else {
-            Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -2050,6 +2028,9 @@ public class BookFragment extends Fragment implements
                 editDeskBookingDetails,
                 isEditable
         );
+
+        if(bookEditBottomSheet!=null && bookEditBottomSheet.isShowing())
+            bookEditBottomSheet.dismiss();
 /*
         callAmenitiesListForMeetingRoom(editDeskBookingDetails,
                 editDeskBookingDetails.getEditStartTTime(),
@@ -2407,7 +2388,8 @@ public class BookFragment extends Fragment implements
 
     private void newDeskBookingSheet(BookingForEditResponse bookingForEditResponse, String code) {
         BookDeskController bookDeskController = new BookDeskController(activityContext, context,bookingForEditResponse,
-                AppConstants.BOOKFRAGMENTINSTANCESTRING,isGlobalLocationSetUP,calSelectedDate);
+                AppConstants.BOOKFRAGMENTINSTANCESTRING,isGlobalLocationSetUP,calSelectedDate,
+                binding.searchGlobal.getText().toString());
 //        bookDeskController.newDeskBookingSheet(bookingForEditResponse,code);
       /*  bookingForEditResponseDesk.clear();
         changedTeamId=0;
@@ -2617,6 +2599,7 @@ public class BookFragment extends Fragment implements
         TextView tv_end=roomBottomSheet.findViewById(R.id.tv_end);
         TextView tv_comment=roomBottomSheet.findViewById(R.id.tv_comment);
         TextView tv_repeat=roomBottomSheet.findViewById(R.id.tv_repeat);
+        TextView tvDesc=roomBottomSheet.findViewById(R.id.tvDesc);
         tv_description=roomBottomSheet.findViewById(R.id.tv_description);
         repeat = roomBottomSheet.findViewById(R.id.repeat);
         deskStatusText = roomBottomSheet.findViewById(R.id.desk_status_text);
@@ -2889,7 +2872,7 @@ public class BookFragment extends Fragment implements
             commentRegistration.setVisibility(View.VISIBLE);
             tvComments.setVisibility(View.GONE);
             if(teamsCheckBoxStatus)
-                teamsBlock.setVisibility(View.VISIBLE);
+                teamsBlock.setVisibility(View.GONE);
             else
                 teamsBlock.setVisibility(View.GONE);
 
@@ -2904,6 +2887,13 @@ public class BookFragment extends Fragment implements
                     locationAddress.setText(""+userAllowedMeetingResponseListUpdated.get(0).getLocationMeeting().getLocationDetails().getBuildingName()
                             +", " +userAllowedMeetingResponseListUpdated.get(0).getLocationMeeting().getLocationDetails().getFloorName());
                     tv_description.setText(Utils.checkStringParms(userAllowedMeetingResponseListUpdated.get(0).getDescription()));
+                    if (tv_description.getText().toString().equalsIgnoreCase("") || tv_description.getText().toString().isEmpty()){
+                        tv_description.setVisibility(View.GONE);
+                        tvDesc.setVisibility(View.GONE);
+                    } else {
+                        tv_description.setVisibility(View.VISIBLE);
+                        tvDesc.setVisibility(View.VISIBLE);
+                    }
                 } catch (Exception c){
 
                 }
@@ -4848,6 +4838,7 @@ public class BookFragment extends Fragment implements
         editDeskBookingDetails.setEditEndTime(Utils.splitTime(bookings.getMyto()));
         editDeskBookingDetails.setDate(Utils.convertStringToDateFormet(bookings.getDate()));
         editDeskBookingDetails.setCalId(bookings.getId());
+        editDeskBookingDetails.setRequestPending(bookings.isPendingRequest());
         editDeskBookingDetails.setDeskCode(bookings.getDeskCode());
         editDeskBookingDetails.setDescription(Utils.checkStringParms(bookings.getDescription()));
 
@@ -5890,10 +5881,7 @@ public class BookFragment extends Fragment implements
 
     //Global Search MOdel
     private void getLocateCountryList() {
-
-
         if (Utils.isNetworkAvailable(getContext())) {
-
             dialog = ProgressDialog.showProgressBar(getContext());
 //            binding.locateProgressBar.setVisibility(View.VISIBLE);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -5934,7 +5922,7 @@ public class BookFragment extends Fragment implements
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView(getLayoutInflater().
-                inflate(R.layout.bottom_sheet_locate_floor_filter,
+                inflate(R.layout.bottom_sheet_locate_floor_filter_calendar,
                         new RelativeLayout(getContext())));
 
         bsLocationSearch = bottomSheetDialog.findViewById(R.id.bsLocationSearch);
@@ -6118,7 +6106,7 @@ public class BookFragment extends Fragment implements
         rvCountry.setLayoutManager(linearLayoutManager);
         rvCountry.setHasFixedSize(true);
 
-        showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes, this, "COUNTRY");
+        showCountryAdapter = new ShowCountryAdapterCalendar(getContext(), locateCountryResposes, this, "COUNTRY");
         rvCountry.setAdapter(showCountryAdapter);
 
     }
@@ -6167,7 +6155,8 @@ public class BookFragment extends Fragment implements
         rvState.setLayoutManager(linearLayoutManager);
         rvState.setHasFixedSize(true);
 
-        showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes, this, "STATE");
+        showCountryAdapter = new ShowCountryAdapterCalendar(getContext(), locateCountryResposes,
+                this, "STATE");
         rvState.setAdapter(showCountryAdapter);
     }
 
@@ -6219,7 +6208,7 @@ public class BookFragment extends Fragment implements
         rvStreet.setLayoutManager(linearLayoutManager);
         rvStreet.setHasFixedSize(true);
 
-        showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes, this, "FLOOR");
+        showCountryAdapter = new ShowCountryAdapterCalendar(getContext(), locateCountryResposes, this, "FLOOR");
         rvStreet.setAdapter(showCountryAdapter);
 
     }
@@ -6351,7 +6340,7 @@ public class BookFragment extends Fragment implements
 //            doInitMeetingAvalibilityHere(parentId,canvasDrawStatus);
 
         } else {
-            Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -6484,7 +6473,9 @@ public class BookFragment extends Fragment implements
                     bookingDeskList.clear();
                     bookingDeskList = response.body();
 //                    //System.out.println("Selecrt id"+selectedTeamId + bookingDeskList.get(0).getDeskCode());
-                    callDeskListBottomSheetDialog(1,editBookingDetails,newEditStatus);
+                    if(deskListBottomSheet == null ||
+                            (deskListBottomSheet != null && !deskListBottomSheet.isShowing()))
+                        callDeskListBottomSheetDialog(1,editBookingDetails,newEditStatus);
 
                 }
 
@@ -8153,7 +8144,7 @@ public class BookFragment extends Fragment implements
         if (tv_description!=null)
             tv_description.setText(Utils.checkStringParms(deskList.getDescription()));
 
-        Toast.makeText(context, "dsj"+request, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "dsj"+request, Toast.LENGTH_SHORT).show();
         if (typeId == 0) {
             editBookingDetailsGlobal.setDeskCode(deskName);
             editBookingDetailsGlobal.setTimeZone(timeZone);
@@ -8182,7 +8173,8 @@ public class BookFragment extends Fragment implements
                         1,0,"new");
             else
                 editBookingUsingBottomSheet(editBookingDetailsGlobal,
-                        1,0,"request");*/
+                        1,0,"request");
+                        */
         } else {
             if (newEditStatus.equalsIgnoreCase("edit")){
                 selectedDeskId = deskId;

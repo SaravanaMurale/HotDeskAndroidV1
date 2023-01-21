@@ -107,12 +107,12 @@ public interface ApiInterface {
     Call<BaseResponse> fullDayBooking(@Body JsonObject jsonObject);
 
 <<<<<<< HEAD
-//    @POST("api/Account/TokenExchange")
-    @POST("api/Account/TokenExchangeV2Mobile")
+//    @POST("api/Account/TokenExchangeV2Mobile")
+    @POST("api/Account/TokenExchange")
     Call<GetTokenResponse> tokenExchange(@Body JsonObject jsonObject);
 =======
 
->>>>>>> 3e1c1223451f0c2e69df0df069f488e40af623e4
+>>>>>>> f2499d86703101f286132797eba84f59b46e7079
 
     @POST("api/settings/PinNumberSetting")
     Call<Boolean> checkPinEnabled();
@@ -184,8 +184,8 @@ public interface ApiInterface {
     @POST("api/Account/updategdpracceptancesettings")
     Call<Void> updateGDPR(@Body GDPRrequest request);
 
-    //@POST("api/Account/Token")
-    @POST("api/Account/TokenV2Mobile")
+//    @POST("api/Account/TokenV2Mobile")
+    @POST("api/Account/Token")
     Call<GetTokenResponse> getLoginToken(@Body GetTokenRequest request);
 
     @POST("api/Account/TokenExchangeV2Mobile")

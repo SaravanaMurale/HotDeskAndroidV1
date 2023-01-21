@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +21,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.brickendon.hdplus.R;
 import com.brickendon.hdplus.model.response.LocateCountryRespose;
+import com.brickendon.hdplus.utils.AppConstants;
+import com.brickendon.hdplus.utils.SessionHandler;
 
 public class ShowCountryAdapter extends RecyclerView.Adapter<ShowCountryAdapter.ShowCountryViewHolder> implements Filterable {
 
@@ -31,17 +35,23 @@ public class ShowCountryAdapter extends RecyclerView.Adapter<ShowCountryAdapter.
     //Search
     List<LocateCountryRespose> countryListAll;
 
+    int pos = -1;
+    int sPos = -1;
+
+    boolean showBuildingList;
+
     public interface  OnSelectListener{
         public void onSelect(LocateCountryRespose locateCountryRespose, String identifier);
     }
 
-    public ShowCountryAdapter(Context context, List<LocateCountryRespose> countryList, OnSelectListener onSelectListener, String identifier) {
+    public ShowCountryAdapter(Context context, List<LocateCountryRespose> countryList, OnSelectListener onSelectListener, String identifier,boolean showBuildingStatus) {
         this.context=context;
         this.countryList=countryList;
         this.onSelectListener=onSelectListener;
         this.identifier=identifier;
-
         this.countryListAll=new ArrayList<>(countryList);
+        this.showBuildingList=showBuildingStatus;
+
 
     }
 
@@ -55,16 +65,68 @@ public class ShowCountryAdapter extends RecyclerView.Adapter<ShowCountryAdapter.
     @Override
     public void onBindViewHolder(@NonNull ShowCountryViewHolder holder, int position) {
 
-        holder.tvCountryName.setText(countryList.get(position).getName());
+        if(!showBuildingList) {
 
-        holder.itemCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            holder.floorBlock.setVisibility(View.GONE);
+            holder.itemCardView.setVisibility(View.VISIBLE);
 
-                onSelectListener.onSelect( countryList.get(holder.getAbsoluteAdapterPosition()),identifier);
+            holder.tvCountryName.setText(countryList.get(position).getName());
 
+            holder.itemCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    onSelectListener.onSelect(countryList.get(holder.getAbsoluteAdapterPosition()), identifier);
+
+                }
+            });
+
+        }else {
+
+            //UI chaging like floor
+            holder.floorBlock.setVisibility(View.VISIBLE);
+            holder.itemCardView.setVisibility(View.GONE);
+
+            holder.locateFloorNames.setText(countryList.get(position).getName());
+
+            holder.floorBlock.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    pos=holder.getAbsoluteAdapterPosition();
+                    notifyDataSetChanged();
+
+                    //onSelectListener.onSelect(countryList.get(holder.getAbsoluteAdapterPosition()), identifier);
+                }
+            });
+
+            if (pos == position) {
+
+                if (pos >= sPos && sPos == pos) {
+
+                    //SessionHandler.getInstance().remove(context, AppConstants.FLOOR_POSITION);
+                    //SessionHandler.getInstance().saveBoolean(context,AppConstants.FLOOR_SELECTED_STATUS,false);
+                    holder.ivLocateFloors.setImageDrawable(context.getDrawable(R.drawable.floor_disable));
+                    sPos = -1;
+                } else {
+                    holder.ivLocateFloors.setImageDrawable(context.getDrawable(R.drawable.floor_enable));
+                    //SessionHandler.getInstance().saveBoolean(context,AppConstants.FLOOR_SELECTED_STATUS,true);
+
+                    sPos=pos;
+
+                    onSelectListener.onSelect(countryList.get(holder.getAbsoluteAdapterPosition()), identifier);
+                }
+
+            } else {
+
+                holder.ivLocateFloors.setImageDrawable(context.getDrawable(R.drawable.floor_disable));
+                //sPos = -1;
             }
-        });
+
+
+        }
+
+
 
     }
 
@@ -126,6 +188,13 @@ public class ShowCountryAdapter extends RecyclerView.Adapter<ShowCountryAdapter.
         CardView itemCardView;
         @BindView(R.id.tvCountryName)
         TextView tvCountryName;
+
+        @BindView(R.id.floorBlocks)
+        RelativeLayout floorBlock;
+        @BindView(R.id.ivLocateFloors)
+        ImageView ivLocateFloors;
+        @BindView(R.id.locateFloorNames)
+        TextView locateFloorNames;
 
         public ShowCountryViewHolder(@NonNull View itemView) {
             super(itemView);
