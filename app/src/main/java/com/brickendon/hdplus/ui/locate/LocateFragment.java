@@ -2536,8 +2536,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         relativeLayout.leftMargin = x;
         relativeLayout.topMargin = y;
-        relativeLayout.width = 80;
-        relativeLayout.height = 73;
+        relativeLayout.width = 65;
+        relativeLayout.height = 65;
         ivDesk.setLayoutParams(relativeLayout);
 
 
@@ -2890,6 +2890,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }
 
 
+            binding.firstLayout.setMinimumWidth(5000);
+            binding.firstLayout.setMinimumHeight(5000);
         binding.firstLayout.addView(deskView);
 
         }catch (Exception e){
