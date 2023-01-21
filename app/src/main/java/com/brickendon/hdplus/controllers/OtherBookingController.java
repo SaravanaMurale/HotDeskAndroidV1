@@ -566,7 +566,7 @@ public class OtherBookingController {
         cl_daily.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tvRepeatTxt.setText(appKeysPage.getDaily());
+//                tvRepeatTxt.setText(appKeysPage.getDaily());
                 repeatType = "daily";
                 iv_none.setVisibility(View.GONE);
                 iv_daily.setVisibility(View.VISIBLE);
@@ -717,6 +717,22 @@ public class OtherBookingController {
         cl_forever.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+/*
+                if (code.equals("3")) {
+                    //tvRepeat.setText("Daily");
+                    tvRepeat.setText(appKeysPage.getDaily());
+                    //DeskBookForWholeWeekFromToday
+                    //doRepeatBookingForAWeek();
+                } else if (code.equals("4")) {
+                    //Meeting Room Booking For Whole Week From Today
+                    //doRepeatMeetingRoomBookingForWeek();
+                    repeat_room.setText(appKeysPage.getDaily());
+                } else if (code.equals("5")) {
+                    //CarBooking For Whole Week From Today
+                    //doRepeatCarBookingForAWeek();
+                    tvRepeat.setText(appKeysPage.getDaily());
+                }*/
+                tvRepeatTxt.setText(appKeysPage.getDaily());
 
                 iv_forever.setVisibility(View.VISIBLE);
                 iv_specific.setVisibility(View.GONE);
@@ -760,6 +776,8 @@ public class OtherBookingController {
                 //Find Difference between 2 date
                 Period difference = Period.between(currentSelectedDate, weekEndDate);
                 enableCurrentWeek = difference.getDays();
+
+                tvRepeatTxt.setText(appKeysPage.getDaily());
 
                 bottomSheetDialog.dismiss();
                 repeatBottomSheetDialog.dismiss();

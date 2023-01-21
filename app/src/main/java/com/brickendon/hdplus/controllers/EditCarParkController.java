@@ -794,7 +794,7 @@ public class EditCarParkController {
                                     Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
                         else
                             Utils.bottomSheetTimePicker24Hrs(context,activityContext,endTime,"End Time",
-                                    Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),true);
+                                    Utils.dayDateMonthFormat(editDeskBookingDetails.getDate()),false);
                     }
                 } catch (Exception c){
 

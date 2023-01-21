@@ -132,33 +132,41 @@
                         android:layout_height="@dimen/_15sdp"
                         android:layout_alignParentRight="true"
                         android:src="@drawable/ic_edit" />
-
-                    <TextView
-                        android:id="@+id/bookingDeskName"
+                    <LinearLayout
+                        android:id="@+id/desk_name_layout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:orientation="horizontal"
                         android:layout_toRightOf="@+id/bookingIvIcon"
-                        android:text="Space-001"
-                        android:textStyle="bold"
-                        android:theme="@style/TextBold" />
+                        android:layout_toLeftOf="@id/bookingIvEdit"
 
-                    <ImageView
-                        android:id="@+id/bookingIvLocationIcon"
-                        android:layout_width="@dimen/_10sdp"
-                        android:layout_height="@dimen/_11sdp"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginTop="1dp"
-                        android:layout_toRightOf="@id/bookingDeskName"
-                        android:src="@drawable/blue_location"
+                        >
+                        <TextView
+                            android:id="@+id/bookingDeskName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:text="Space-001"
+                            android:textStyle="bold"
+                            android:theme="@style/TextBold" />
 
-                        />
+                        <ImageView
+                            android:id="@+id/bookingIvLocationIcon"
+                            android:layout_width="@dimen/_10sdp"
+                            android:layout_height="@dimen/_11sdp"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginTop="1dp"
+                            android:src="@drawable/blue_location"
+
+                            />
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/bookingAddress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/bookingDeskName"
+                        android:layout_below="@id/desk_name_layout"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_3sdp"
                         android:layout_toRightOf="@+id/bookingIvIcon"
@@ -294,6 +302,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_alignParentStart="true"
                         android:orientation="horizontal">
 
                         <TextView
@@ -306,6 +315,8 @@
                             android:textColor="@color/figmaBlack"
                             android:textSize="14sp"
                             android:textStyle="bold"
+                            android:layout_alignParentStart="true"
+                            android:layout_toLeftOf="@id/tv_change"
                             android:theme="@style/TextRegular" />
 
                         <ImageView

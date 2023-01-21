@@ -32,44 +32,52 @@
                 android:src="@drawable/online"
                 android:visibility="gone"
                 />
-
-
-            <TextView
-                android:id="@+id/locateMyTeamName"
+            <LinearLayout
+                android:id="@+id/name_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:text="Space-001"
+                android:orientation="horizontal"
                 android:layout_toRightOf="@+id/locateMyTeamProfiles"
-                android:textColor="@color/figma_dark_black"
-                android:textSize="@dimen/_13sdp" />
+                android:layout_toLeftOf="@id/locateMyTeamLocation"
+                >
+                <TextView
+                    android:id="@+id/locateMyTeamName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:text="Space-001 "
+                    android:textColor="@color/figma_dark_black"
+                    android:textSize="@dimen/_13sdp" />
 
-            <ImageView
-                android:id="@+id/locateMyTeamFireIv"
-                android:layout_width="@dimen/_18sdp"
-                android:layout_height="@dimen/_18sdp"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_toRightOf="@+id/locateMyTeamName"
-                android:src="@drawable/fire"
-                android:visibility="gone" />
+                <ImageView
+                    android:id="@+id/locateMyTeamFireIv"
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_toRightOf="@+id/locateMyTeamName"
+                    android:src="@drawable/fire"
+                    android:visibility="gone"
+                    />
 
-            <ImageView
-                android:id="@+id/locateMyTeamPlusIv"
-                android:layout_width="@dimen/_18sdp"
-                android:layout_height="@dimen/_18sdp"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_marginTop="1dp"
-                android:layout_toRightOf="@id/locateMyTeamFireIv"
-                android:src="@drawable/plus"
-                android:visibility="gone"
+                <ImageView
+                    android:id="@+id/locateMyTeamPlusIv"
+                    android:layout_width="@dimen/_18sdp"
+                    android:layout_height="@dimen/_18sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="1dp"
+                    android:layout_toRightOf="@id/locateMyTeamFireIv"
+                    android:layout_toEndOf="@id/locateMyTeamLocation"
+                    android:src="@drawable/plus"
+                    android:visibility="gone"
+                    />
 
-                />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/locateMyTeamDeskName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/locateMyTeamName"
+                android:layout_below="@+id/name_layout"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_toRightOf="@+id/locateMyTeamProfiles"
@@ -81,7 +89,7 @@
                 android:id="@+id/locateMyTeamLocation"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
-                android:layout_below="@+id/locateMyTeamName"
+                android:layout_below="@+id/name_layout"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:src="@drawable/blue_location" />

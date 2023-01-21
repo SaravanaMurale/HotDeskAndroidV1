@@ -630,15 +630,19 @@ public class BookDeskController implements
                     !editDeskBookingDetails.getLocationAddress().isEmpty()
                     && !editDeskBookingDetails.getLocationAddress().equalsIgnoreCase(""))
                 locationAddress.setText(""+editDeskBookingDetails.getLocationAddress());
+            try {
+                tv_description.setText(editDeskBookingDetails.getDescription());
+                if (tv_description.getText().toString().equalsIgnoreCase("") ||
+                        tv_description.getText().toString().equalsIgnoreCase("null")
+                        || tv_description.getText().toString().isEmpty()){
+                    tv_description.setVisibility(View.GONE);
+                    desc.setVisibility(View.GONE);
+                } else {
+                    tv_description.setVisibility(View.VISIBLE);
+                    desc.setVisibility(View.VISIBLE);
+                }
+            } catch (Exception e){
 
-            tv_description.setText(editDeskBookingDetails.getDescription());
-            if (tv_description.getText().toString().equalsIgnoreCase("")
-                    || tv_description.getText().toString().isEmpty()) {
-                tv_description.setVisibility(View.GONE);
-                desc.setVisibility(View.GONE);
-            } else {
-                tv_description.setVisibility(View.VISIBLE);
-                desc.setVisibility(View.VISIBLE);
             }
 
             if (newEditStatus.equalsIgnoreCase("edit")) {
@@ -1036,8 +1040,16 @@ public class BookDeskController implements
             public void onClick(View view) {
 
                 //repeat.setText("Daily");
+                //Should not set repeat daily status here
+               /* if (code.equals("4")) {
+                    //repeat_room.setText("Daily");
+                    repeat_room.setText(appKeysPage.getDaily());
+                } else {
+                    //tvRepeat.setText("Daily");
+                    tvRepeat.setText(appKeysPage.getDaily());
+                }*/
 
-                repeat.setText(appKeysPage.getDaily());
+//                repeat.setText(appKeysPage.getDaily());
 
                 type = "daily";
                 iv_none.setVisibility(View.GONE);
@@ -1208,7 +1220,7 @@ public class BookDeskController implements
                 calendar_view.setVisibility(View.GONE);
 
                 repeatActvieStatus=true;
-
+/*
                 if(code.equals("3")){
                     //DeskBookForWholeWeekFromToday
 //                    doRepeatDeskBookingForAWeek();
@@ -1218,6 +1230,21 @@ public class BookDeskController implements
                 }else if(code.equals("5")){
                     //CarBooking For Whole Week From Today
                     //doRepeatCarBookingForAWeek();
+                }*/
+
+                if (code.equals("3")) {
+                    //tvRepeat.setText("Daily");
+                    tvRepeat.setText(appKeysPage.getDaily());
+                    //DeskBookForWholeWeekFromToday
+                    //doRepeatBookingForAWeek();
+                } else if (code.equals("4")) {
+                    //Meeting Room Booking For Whole Week From Today
+                    //doRepeatMeetingRoomBookingForWeek();
+//                    repeat_room.setText(appKeysPage.getDaily());
+                } else if (code.equals("5")) {
+                    //CarBooking For Whole Week From Today
+                    //doRepeatCarBookingForAWeek();
+                    tvRepeat.setText(appKeysPage.getDaily());
                 }
 
                 bottomSheetDialog.dismiss();
@@ -1261,7 +1288,7 @@ public class BookDeskController implements
                 Period difference = Period.between(currentSelectedDate,weekEndDate);
                 enableCurrentWeek=difference.getDays();
 
-
+/*
                 if(code.equals("3")){
                     //BookForSelectedDaysInAWeek
 //                    doRepeatDeskBookingForAWeek();
@@ -1270,6 +1297,20 @@ public class BookDeskController implements
                 }else if(code.equals("5")){
                     //BookCarForSelectedDaysInAWeek
                     //doRepeatCarBookingForAWeek();
+                }*/
+                if (code.equals("3")) {
+                    //tvRepeat.setText("Daily");
+                    tvRepeat.setText(appKeysPage.getDaily());
+                    //DeskBookForWholeWeekFromToday
+                    //doRepeatBookingForAWeek();
+                } else if (code.equals("4")) {
+                    //Meeting Room Booking For Whole Week From Today
+                    //doRepeatMeetingRoomBookingForWeek();
+//                    repeat_room.setText(appKeysPage.getDaily());
+                } else if (code.equals("5")) {
+                    //CarBooking For Whole Week From Today
+                    //doRepeatCarBookingForAWeek();
+                    tvRepeat.setText(appKeysPage.getDaily());
                 }
 
                 bottomSheetDialog.dismiss();
@@ -2378,7 +2419,8 @@ public class BookDeskController implements
             desc.setVisibility(View.VISIBLE);
         }
 
-        if (desc != null &&tv_description.getText().toString().equalsIgnoreCase(""))
+        if (desc != null && (tv_description.getText().toString().equalsIgnoreCase("")
+                || tv_description.getText().toString().equalsIgnoreCase("null")))
             desc.setVisibility(View.GONE);
 
 //        Toast.makeText(context, "dsj"+changedDeskId, Toast.LENGTH_SHORT).show();

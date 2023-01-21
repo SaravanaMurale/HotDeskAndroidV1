@@ -798,6 +798,7 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
                     else if (dskRoomParkStatus==3)
                         doRepeatCarBookingForAWeek(edRegistration.getText().toString());*/
                 } else {
+
                     if (newEditStatus.equalsIgnoreCase("edit"))
                         editBookingCallForDesk(editDeskBookingDetails,edComments);
                     else if (newEditStatus.equalsIgnoreCase("new"))
@@ -893,7 +894,8 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
 
         jsonOuterObject.addProperty("teamId",SessionHandler.getInstance().getInt(activityContext,AppConstants.TEAM_ID));
         jsonOuterObject.addProperty("teamMembershipId",SessionHandler.getInstance().getInt(activityContext,AppConstants.TEAMMEMBERSHIP_ID));
-        if (!edComments.getText().toString().trim().equalsIgnoreCase("") || !edComments.getText().toString().trim().isEmpty())
+        if (!edComments.getText().toString().trim().equalsIgnoreCase("")
+                || !edComments.getText().toString().trim().isEmpty())
             jsonChangesObject.addProperty("comments",edComments.getText().toString());
         jsonChangesObject.addProperty("timeZoneId", editDeskBookingDetails.getTimeZone());
         if (changedDeskId>0){
@@ -1111,6 +1113,7 @@ public class EditDeskController implements DeskListBookAdapter.OnChangeSelected 
                     if (isFrom.equalsIgnoreCase(AppConstants.HOMEFRAGMENTINSTANCESTRING)){
                         ((MainActivity) activityContext).callHomeFragment();
                     }
+
                     String resultString="";
                     try {
                         if (response.code()==200 && response.body().getResultCode()!=null){

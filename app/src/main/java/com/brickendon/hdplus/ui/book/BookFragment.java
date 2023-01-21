@@ -2887,7 +2887,9 @@ public class BookFragment extends Fragment implements
                     locationAddress.setText(""+userAllowedMeetingResponseListUpdated.get(0).getLocationMeeting().getLocationDetails().getBuildingName()
                             +", " +userAllowedMeetingResponseListUpdated.get(0).getLocationMeeting().getLocationDetails().getFloorName());
                     tv_description.setText(Utils.checkStringParms(userAllowedMeetingResponseListUpdated.get(0).getDescription()));
-                    if (tv_description.getText().toString().equalsIgnoreCase("") || tv_description.getText().toString().isEmpty()){
+                    if (tv_description.getText().toString().equalsIgnoreCase("") ||
+                            tv_description.getText().toString().equalsIgnoreCase("null")
+                            || tv_description.getText().toString().isEmpty()){
                         tv_description.setVisibility(View.GONE);
                         tvDesc.setVisibility(View.GONE);
                     } else {
@@ -3004,6 +3006,15 @@ public class BookFragment extends Fragment implements
                     locationAddress.setText(""+parkingSpotModelList.get(0).getLocation().getName());
                     locationAddressTop.setText(""+parkingSpotModelList.get(0).getLocation().getName());
                     tv_description.setText(""+parkingSpotModelList.get(0).getDescription());
+                    if (tv_description.getText().toString().equalsIgnoreCase("") ||
+                            tv_description.getText().toString().equalsIgnoreCase("null")
+                            || tv_description.getText().toString().isEmpty()){
+                        tv_description.setVisibility(View.GONE);
+                        tvDesc.setVisibility(View.GONE);
+                    } else {
+                        tv_description.setVisibility(View.VISIBLE);
+                        tvDesc.setVisibility(View.VISIBLE);
+                    }
                 } catch (Exception e){
 
                 }
@@ -3015,6 +3026,15 @@ public class BookFragment extends Fragment implements
                 try {
                     locationAddress.setText(""+editDeskBookingDetails.getLocationAddress());
                     tv_description.setText(""+editDeskBookingDetails.getDescription());
+                    if (tv_description.getText().toString().equalsIgnoreCase("") ||
+                            tv_description.getText().toString().equalsIgnoreCase("null")
+                            || tv_description.getText().toString().isEmpty()){
+                        tv_description.setVisibility(View.GONE);
+                        tvDesc.setVisibility(View.GONE);
+                    } else {
+                        tv_description.setVisibility(View.VISIBLE);
+                        tvDesc.setVisibility(View.VISIBLE);
+                    }
                 }catch (Exception e){
 
                 }
@@ -3942,6 +3962,7 @@ public class BookFragment extends Fragment implements
 
                 repeatActvieStatus=true;
 
+/*
                 if(code.equals("3")){
                     //DeskBookForWholeWeekFromToday
 //                    doRepeatDeskBookingForAWeek();
@@ -3951,6 +3972,21 @@ public class BookFragment extends Fragment implements
                 }else if(code.equals("5")){
                     //CarBooking For Whole Week From Today
                     //doRepeatCarBookingForAWeek();
+                }
+*/
+                if (code.equals("3")) {
+                    //tvRepeat.setText("Daily");
+                    tvRepeat.setText(appKeysPage.getDaily());
+                    //DeskBookForWholeWeekFromToday
+                    //doRepeatBookingForAWeek();
+                } else if (code.equals("4")) {
+                    //Meeting Room Booking For Whole Week From Today
+                    //doRepeatMeetingRoomBookingForWeek();
+                    tvRepeat.setText(appKeysPage.getDaily());
+                } else if (code.equals("5")) {
+                    //CarBooking For Whole Week From Today
+                    //doRepeatCarBookingForAWeek();
+                    tvRepeat.setText(appKeysPage.getDaily());
                 }
 
                 bottomSheetDialog.dismiss();
@@ -3994,7 +4030,7 @@ public class BookFragment extends Fragment implements
                 Period difference = Period.between(currentSelectedDate,weekEndDate);
                 enableCurrentWeek=difference.getDays();
 
-
+/*
                 if(code.equals("3")){
                     //BookForSelectedDaysInAWeek
 //                    doRepeatDeskBookingForAWeek();
@@ -4003,6 +4039,21 @@ public class BookFragment extends Fragment implements
                 }else if(code.equals("5")){
                     //BookCarForSelectedDaysInAWeek
                     //doRepeatCarBookingForAWeek();
+                }*/
+
+                if (code.equals("3")) {
+                    //tvRepeat.setText("Daily");
+                    tvRepeat.setText(appKeysPage.getDaily());
+                    //DeskBookForWholeWeekFromToday
+                    //doRepeatBookingForAWeek();
+                } else if (code.equals("4")) {
+                    //Meeting Room Booking For Whole Week From Today
+                    //doRepeatMeetingRoomBookingForWeek();
+                    tvRepeat.setText(appKeysPage.getDaily());
+                } else if (code.equals("5")) {
+                    //CarBooking For Whole Week From Today
+                    //doRepeatCarBookingForAWeek();
+                    tvRepeat.setText(appKeysPage.getDaily());
                 }
 
                 bottomSheetDialog.dismiss();
@@ -5100,6 +5151,7 @@ public class BookFragment extends Fragment implements
 
             locationAddress.setText(location);
             tv_description.setText(description);
+
 
         } catch (Exception e){
 
@@ -6952,7 +7004,7 @@ public class BookFragment extends Fragment implements
 
                 //repeat.setText("Daily");
 
-                repeat.setText(appKeysPage.getDaily());
+//                repeat.setText(appKeysPage.getDaily());
 
                 type = "daily";
                 iv_none.setVisibility(View.GONE);
