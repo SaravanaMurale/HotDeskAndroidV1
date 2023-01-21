@@ -1949,9 +1949,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 ViewGroup.LayoutParams.MATCH_PARENT);
         roormTitle.setVisibility(View.VISIBLE);
 
-        //System.out.println("FinalXAndYTitleCoor "+xxx+" "+yyy);
 
-        relativeLayout.leftMargin=xxx+xCoordinatesList.get(0)+5;
+        relativeLayout.leftMargin = xxx+xCoordinatesList.get(0)+5;
         relativeLayout.topMargin=yyy+yCoordinatesList.get(0)+20;
 
         //System.out.println("AfterFinalXAndYTitleCoor "+xxx+" "+yyy);
@@ -1961,9 +1960,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         if(fontSize >= 12 && fontSize < 17)
             fontSize = 4;
         else if(fontSize >= 17 && fontSize < 20)
-            fontSize = 8;
+            fontSize = 6;
         else
-            fontSize=10;
+            fontSize=8;
 
         //roormTitle.setTextSize(fontSize);
 
@@ -2522,7 +2521,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     ivDesk.setRotation(405);
                 }
             }
-            //System.out.println("PositionValue" + valueList.get(i));
 
         }
 
