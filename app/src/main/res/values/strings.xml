@@ -43,7 +43,7 @@
     <string name="comment_opt">Comments optional</string>
 
     <string name="subject">Subject</string>
-    <string name="spaceadd">(To add external users type their email address and press space)</string>
+    <string name="spaceadd">Add each participant and confirm with clicking spacebar</string>
     <string name="attendeesInternal">Internal participants optional</string>
     <string name="attendeesExternal">External participants optional</string>
 

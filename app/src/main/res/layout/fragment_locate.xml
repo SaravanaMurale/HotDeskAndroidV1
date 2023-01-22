@@ -20,7 +20,7 @@
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="1000dp"
+        android:layout_height="1500dp"
         android:fillViewport="true"
         android:scrollbars="none">
 
@@ -40,17 +40,17 @@
                 android:background="@color/figmaBgGrey"
                 app:gest_doubleTapEnabled="false"
                 app:gest_maxZoom="8.0"
-                app:gest_minZoom="1.2">
+                app:gest_minZoom="1">
 
                 <RelativeLayout
                     android:id="@+id/firstLayout"
-                    android:layout_width="1000dp"
-                    android:layout_height="1000dp"
+                    android:layout_width="1500dp"
+                    android:layout_height="1500dp"
                     android:layout_marginTop="@dimen/_70sdp">
 
                     <LinearLayout
                         android:id="@+id/secondLayout"
-                        android:layout_width="1000dp"
+                        android:layout_width="1500dp"
                         android:layout_height="match_parent">
 
                         <ImageView

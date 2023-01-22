@@ -458,6 +458,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                 if (parentId > 0) {
 
+                    SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_ICON_BLINK, 0);
                     bottomSheetLocateTimePickerInBooking(getContext(), getActivity(), binding.locateStartTime, "Start", binding.locateCalendearView.getText().toString(), 1);
 
                 } else {
@@ -478,7 +479,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
 
                 if (parentId > 0) {
-
+                    SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_ICON_BLINK, 0);
                     bottomSheetLocateTimePickerInBooking(getContext(), getActivity(), binding.locateEndTime, "End", binding.locateCalendearView.getText().toString(), 2);
 
                 } else {
@@ -502,7 +503,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
 
                 if (parentId > 0) {
-
+                    SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_ICON_BLINK, 0);
                     bottomSheetLocateDatePickerInBooking(getContext(), getActivity(), "", "", binding.locateCalendearView);
 
                 } else {
@@ -912,7 +913,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             for (int j = 0; j < locateMyTeamMemberStatusList.size(); j++) {
 
-                if (firstAidList.get(i) == locateMyTeamMemberStatusList.get(j).getUserId()) {
+                if (firstAidList.get(i) .equals( locateMyTeamMemberStatusList.get(j).getUserId())) {
                     locateMyTeamMemberStatusList.get(j).setIfFirstAidStatus(true);
                     break;
                 }
@@ -927,10 +928,18 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
             for (int j = 0; j < locateMyTeamMemberStatusList.size(); j++) {
 
-                if (firewardenList.get(i) == locateMyTeamMemberStatusList.get(j).getUserId()) {
+                if (firewardenList.get(i).equals( locateMyTeamMemberStatusList.get(j).getUserId())) {
                     locateMyTeamMemberStatusList.get(j).setFireStatus(true);
                     break;
                 }
+                /*int fireUserId=firewardenList.get(i);
+
+                boolean alreadyHasId = locateMyTeamMemberStatusList.stream().anyMatch(m -> m.getUserId() == fireUserId);
+
+                if(alreadyHasId){
+                    locateMyTeamMemberStatusList.get(j).setFireStatus(true);
+                    break;
+                }*/
 
             }
 
@@ -1180,20 +1189,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         if(zoomAppliedStatus) {
-            //binding.firstLayout.removeAllViews();
 
-            //float getMinZoom = binding.zoomView.getController().getSettings().getMinZoom();
-            //System.out.println("BeforeGetMinZoomDataHere "+getMinZoom);
-
-            binding.zoomView.getController().getSettings().setMinZoom(1.3f);
+            binding.zoomView.getController().getSettings().setMinZoom(1f);
             float getMinZoom1 = binding.zoomView.getController().getSettings().getMinZoom();
             System.out.println("AfterGetMinZoomDataHere "+getMinZoom1);
             zoomAppliedStatus=false;
             binding.zoomView.getController().resetState();
             binding.zoomView.getController().updateState();
-
-            //binding.firstLayout.scrollTo(-200,-400);
-
 
         }
 
@@ -1262,7 +1264,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }
 
         //Disable selected location id
-        SessionHandler.getInstance().saveInt(getContext(), AppConstants.SELECTED_LOCATION_FROM_HOME, 0);
+        //SessionHandler.getInstance().saveInt(getContext(), AppConstants.SELECTED_LOCATION_FROM_HOME, 0);
 
         int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
         ProgressDialog.clearTouchLock(getContext(), getActivity());
@@ -1828,10 +1830,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 }
                             });
 
-                            binding.firstLayout.scrollTo(-200,-400);
-                        }/* else {
+                            //binding.firstLayout.scrollTo(-200,-400);
+                        } else {
                             Toast.makeText(getContext(), "No Data", Toast.LENGTH_LONG).show();
-                        }*/
+                        }
 
                         }
 
@@ -1954,9 +1956,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         relativeLayout.leftMargin = xxx + xCoordinatesList.get(0) + 15;
         relativeLayout.topMargin = yyy + yCoordinatesList.get(0) + 30;
 
-        //System.out.println("AfterFinalXAndYTitleCoor "+xxx+" "+yyy);
-        //relativeLayout.width = ;
-        //relativeLayout.height = 100;
 
         if(fontSize >= 12 && fontSize < 17)
             fontSize = 4;
@@ -2541,8 +2540,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         relativeLayout.leftMargin = x;
         relativeLayout.topMargin = y;
-        relativeLayout.width = 80;
-        relativeLayout.height = 80;
+        relativeLayout.width = 65;
+        relativeLayout.height = 65;
         ivDesk.setLayoutParams(relativeLayout);
 
 
@@ -2895,8 +2894,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }
 
 
-            binding.firstLayout.setMinimumWidth(7000);
-            binding.firstLayout.setMinimumHeight(7000);
+            //binding.firstLayout.setMinimumWidth(7000);
+            //binding.firstLayout.setMinimumHeight(7000);
         binding.firstLayout.addView(deskView);
 
         }catch (Exception e){
@@ -4127,7 +4126,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         ChipGroup chipGroup, externalAttendeesChipGroup;
 
         //Language
-        TextView tvRoomStart, tvRoomEnd, tv_teams_room, tv_repeat_room, showTvRoomEndTime,roomLocation;
+        TextView tvRoomStart, tvRoomEnd, tv_teams_room, tv_repeat_room, showTvRoomEndTime,roomLocation,meetingRoomHint;
 
         CheckBox teams_check_box_room;
         ImageView tv_user_status_room;
@@ -4161,6 +4160,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         showtvRoomStartTime = bottomSheetDialog.findViewById(R.id.showtvRoomStartTime);
         showTvRoomEndTime = bottomSheetDialog.findViewById(R.id.showTvRoomEndTime);
         amenitiesBlock = bottomSheetDialog.findViewById(R.id.amenitiesBlock);
+        meetingRoomHint=bottomSheetDialog.findViewById(R.id.meetingRoomHint);
+
+
 
         //Teams
         rl_teams_layout_room = bottomSheetDialog.findViewById(R.id.rl_teams_layout_room);
@@ -11183,6 +11185,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         getSupportZoneLayoutForCanvas.clear();
         locateCountryResposeList.clear();
         SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_ICON_BLINK, 0);
+
+        //Disable selected location id
+        SessionHandler.getInstance().saveInt(getContext(), AppConstants.SELECTED_LOCATION_FROM_HOME, 0);
 
     }
 
