@@ -319,7 +319,8 @@
                 android:id="@+id/rvParticipant"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone" />
+                android:visibility="gone"
+                />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/externalAttendeesChipGroup"
