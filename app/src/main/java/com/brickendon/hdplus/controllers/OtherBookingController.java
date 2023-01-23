@@ -149,7 +149,10 @@ public class OtherBookingController {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 try {
-                    timeZone = response.body();
+                    if (response.body() != null)
+                        timeZone = response.body();
+                    else
+                        timeZone = "UTC";
                 } catch (Exception e) {
                     timeZone = "UTC";
                 }
@@ -1212,7 +1215,7 @@ public class OtherBookingController {
             OtherBookingRequest.Changeset.Changes changes = changeSets.new Changes();
             changes.setFrom("2000-01-01T" + startTimeStr + ":00.000Z");
             changes.setTo("2000-01-01T" + endTimeStr + ":00.000Z");
-
+            changes.setTimeZoneId(timeZone);
             changeSets.setChanges(changes);
 
             List<OtherBookingRequest.Changeset> changeSetsList = new ArrayList<>();
