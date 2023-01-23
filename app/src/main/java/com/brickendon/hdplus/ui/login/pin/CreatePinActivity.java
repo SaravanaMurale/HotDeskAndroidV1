@@ -187,6 +187,7 @@ public class CreatePinActivity extends AppCompatActivity {
             tvRest.setText(settings.getSetUpPinEditPinDescription());
             tvOldPin.setText(appKeysPage.getEnterYourOldPin());
             tvNewPin.setText(appKeysPage.getEnterYourNewPin());
+            tvTitle.setText(settings.getSetUpPinEditPin());
         } catch (Exception e){
 
         }
@@ -262,7 +263,7 @@ public class CreatePinActivity extends AppCompatActivity {
         } else {
             Utils.toastMessage(this, "Please Enable Internet");
         }
-        
+
     }
 
     private void createPinLogin() {
@@ -350,7 +351,7 @@ public class CreatePinActivity extends AppCompatActivity {
     public void onBackPressed() {
 
     }
-    
+
     //New...
 
     private void getUserDetailsUsingToken() {
@@ -375,9 +376,9 @@ public class CreatePinActivity extends AppCompatActivity {
 
                             }else {
                                 old_pin_layout.setVisibility(View.GONE);
-                                tvTitle.setText("");
-                                tvNewPin.setText("Enter your pin");
-                                tvConfirmPin.setText("Re-enter your pin");
+                                tvTitle.setText(settings.getSetUpPin());
+                                tvNewPin.setText(appKeysPage.getEnterYourPin());
+                                tvConfirmPin.setText(appKeysPage.getReEnterNewPin());
 
                             }
 
@@ -404,5 +405,5 @@ public class CreatePinActivity extends AppCompatActivity {
 
 
     }
-    
+
 }

@@ -5482,7 +5482,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void getLocateCountryList() {
 
-
         if (Utils.isNetworkAvailable(getContext())) {
             binding.locateProgressBar.setVisibility(View.VISIBLE);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
