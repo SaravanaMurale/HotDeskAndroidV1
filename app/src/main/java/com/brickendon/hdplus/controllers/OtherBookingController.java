@@ -79,10 +79,11 @@ public class OtherBookingController {
         this.calSelectedDate = calSelectedDate;
         this.isFrom = "book";
         getAddEditDesk(selectedIcon, calSelectedDate);
-        if (SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID).isEmpty())
+        callTimezone();
+        /*if (SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID).isEmpty())
             callTimezone();
         else
-            timeZone = SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID);
+            timeZone = SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID);*/
 
     }
 
@@ -95,11 +96,12 @@ public class OtherBookingController {
         this.calendarEntry = calendarEntry;
         this.date = date;
         this.isFrom = isFrom;
+        callTimezone();
 
-        if (SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID).isEmpty())
+       /* if (SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID).isEmpty())
             callTimezone();
         else
-            timeZone = SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID);
+            timeZone = SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID);*/
 
         try {
             SimpleDateFormat sdf3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
