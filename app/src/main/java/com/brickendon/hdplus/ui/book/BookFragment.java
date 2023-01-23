@@ -355,7 +355,7 @@ public class BookFragment extends Fragment implements
                              Bundle savedInstanceState) {
         binding = FragmentBookBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
+        binding.staticProgress.setVisibility(View.VISIBLE);
         Gson gson = new Gson();
         String json = SessionHandler.getInstance().get(getContext(), AppConstants.LOGIN_RESPONSE);
         if (json!=null){
@@ -375,7 +375,7 @@ public class BookFragment extends Fragment implements
 
         getActiveTeams();
         getAmenities();
-        checkTeamsCheckBox();
+//        checkTeamsCheckBox();
         binding.locateStartTime.setText(getCurrentTime());
         binding.locateStartTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -677,7 +677,6 @@ public class BookFragment extends Fragment implements
     private void getActiveTeams() {
 
         if (Utils.isNetworkAvailable(getActivity())) {
-
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<List<ActiveTeamsResponse>> call = apiService.getActiveTeams();
             call.enqueue(new Callback<List<ActiveTeamsResponse>>() {
@@ -1104,11 +1103,11 @@ public class BookFragment extends Fragment implements
     private void getDeskCount(String month) {
 //        Toast.makeText(context, "just count", Toast.LENGTH_SHORT).show();
         if (Utils.isNetworkAvailable(getActivity())) {
-            dialog= ProgressDialog.showProgressBar(getContext());
+//            dialog= ProgressDialog.showProgressBar(getContext());
+            binding.staticProgress.setVisibility(View.VISIBLE);
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<List<DeskRoomCountResponse>> call = null;
-            Log.d(TAG, "getDeskCount: count");
             switch (selectedicon){
                 case 1:
                     call = apiService.getDailyDeskCount(month, ""+SessionHandler.getInstance().getInt(getActivity(), AppConstants.TEAM_ID));
@@ -1127,7 +1126,7 @@ public class BookFragment extends Fragment implements
                 @Override
                 public void onResponse(Call<List<DeskRoomCountResponse>> call,
                                        Response<List<DeskRoomCountResponse>> response) {
-                    dialog.dismiss();
+                    binding.staticProgress.setVisibility(View.GONE);
                     try {
 
                         if (response.code()==200 && response.body().size()>0){
@@ -1144,20 +1143,21 @@ public class BookFragment extends Fragment implements
                             }
                         } else if(response.code()==401){
                             //Handle if token got expired
-//                        ProgressDialog.dismisProgressBar(getContext(),dialog);
+
                             SessionHandler.getInstance().saveBoolean(getActivity(),
                                     AppConstants.LOGIN_CHECK,false);
                             Utils.showCustomTokenExpiredDialog(getActivity(),"Token Expired");
                         }
                     } catch (Exception exception){
-
+                        binding.staticProgress.setVisibility(View.GONE);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<DeskRoomCountResponse>> call, Throwable t) {
-                    Toast.makeText(getActivity(), "fail "+t.getMessage(), Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
+                    binding.staticProgress.setVisibility(View.GONE);
+//                    Toast.makeText(getActivity(), "fail "+t.getMessage(), Toast.LENGTH_SHORT).show();
+
                 }
             });
 
@@ -1244,9 +1244,6 @@ public class BookFragment extends Fragment implements
                         call = apiService.getDailyParkingCountLocation(month, locationId,"","");
                     break;
                 default:
-                    Log.d(TAG, "getDeskCountLocation: else from"+calSelectedDate);
-                    Log.d(TAG, "getDeskCountLocation: else to"+calSelectedDate);
-
                     if (drawStatus == 2) {
                         String toDate = binding.locateCalendearView.getText().toString() + "T00:00:00Z";
                         String fromTime = Utils.getYearMonthDateFormat(Utils.convertStringToDateFormet(calSelectedDate)) + " " + binding.locateStartTime.getText().toString() + ":00" + ".000Z";
@@ -1266,6 +1263,8 @@ public class BookFragment extends Fragment implements
                 public void onResponse(Call<List<DeskRoomCountResponse>> call, Response<List<DeskRoomCountResponse>> response) {
 //                    ProgressDialog.dismisProgressBar(context,dialog);
 //                    dialog.dismiss();
+                    binding.staticProgress.setVisibility(View.GONE);
+
                     isGlobalLocationSetUP = true;
                     try{
 
@@ -1291,9 +1290,7 @@ public class BookFragment extends Fragment implements
 
                 @Override
                 public void onFailure(Call<List<DeskRoomCountResponse>> call, Throwable t) {
-//                    ProgressDialog.dismisProgressBar(context,dialog);
-                    Toast.makeText(getActivity(), "fail "+t.getMessage(), Toast.LENGTH_SHORT).show();
-//                    dialog.dismiss();
+                    binding.staticProgress.setVisibility(View.GONE);
                 }
             });
 
@@ -7455,6 +7452,7 @@ public class BookFragment extends Fragment implements
             });
 
         }else {
+            ProgressDialog.dismisProgressBar(getContext(),dialog);
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
 

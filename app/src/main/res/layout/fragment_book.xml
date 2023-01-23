@@ -7,6 +7,24 @@
     android:background="@color/white"
     tools:context=".ui.book.BookFragment">
 
+    <RelativeLayout
+        android:id="@+id/staticProgress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:outlineAmbientShadowColor="@color/black"
+            android:outlineSpotShadowColor="@color/figmaGrey" />
+
+        <!-- </RelativeLayout>-->
+    </RelativeLayout>
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
