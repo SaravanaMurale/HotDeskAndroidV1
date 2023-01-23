@@ -380,7 +380,10 @@
       "Whatsnew": "Was gibt's Neues",
       "Help": "Hilfe & Fehlerbehebung",
       "About": "Um",
-      "DarkMode": "Dunkler Modus"
+      "DarkMode": "Dunkler Modus",
+
+    "SetUpPinEditPin": "Configurer et modifier l'épingle",
+    "SetUpPinEditPinDescription": "Une épingle vous permettra de vous connecter rapidement à Hybrid Hero à l'aide d'une épingle unique à six caractères."
   },
   
   "AppKeys": {

@@ -359,6 +359,7 @@
       "ChangeOrganisation": "Change organisation",
       "SetUpPin": "Set up pin",
       "SetUpPinEditPin": "Set up and edit pin",
+      "SetUpPinEditPinDescription": "A pin will allow you to quickly sign in to Hybrid Hero using a unique six character pin.",
       "Feedback": "Feedback",
       "Whatsnew": "What's new",
       "Help": "Help & troubleshooting",

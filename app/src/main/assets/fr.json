@@ -372,6 +372,8 @@
       "Security": "Sécurité",
       "ChangeOrganisation": "Changer d'organisation",
       "SetUpPin": "Configurer et modifier l'épingle",
+      "SetUpPinEditPin": "Configurer et modifier l'épingle",
+      "SetUpPinEditPinDescription": "Une épingle vous permettra de vous connecter rapidement à Hybrid Hero à l'aide d'une épingle unique à six caractères.",
       "Feedback": "Retour d'information",
       "Whatsnew": "Quoi de neuf",
       "Help": "Aide et dépannage",

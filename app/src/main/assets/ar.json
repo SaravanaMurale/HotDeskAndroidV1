@@ -386,7 +386,9 @@
       "Whatsnew": "ما هو الجديد",
       "Feedback": "استجابة",
       "About": "حول",
-      "DarkMode": "الوضع المظلم"
+      "DarkMode": "الوضع المظلم",
+    "SetUpPinEditPin": "Configurer et modifier l'épingle",
+    "SetUpPinEditPinDescription": "Une épingle vous permettra de vous connecter rapidement à Hybrid Hero à l'aide d'une épingle unique à six caractères."
   },
   
   "AppKeys": {

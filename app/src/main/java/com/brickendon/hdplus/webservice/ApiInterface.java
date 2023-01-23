@@ -177,12 +177,12 @@ public interface ApiInterface {
     @POST("api/Account/updategdpracceptancesettings")
     Call<Void> updateGDPR(@Body GDPRrequest request);
 
-//    @POST("api/Account/Token")
-    @POST("api/Account/TokenV2Mobile")
+//    @POST("api/Account/TokenV2Mobile")
+    @POST("api/Account/Token")
     Call<GetTokenResponse> getLoginToken(@Body GetTokenRequest request);
 
-    //@POST("api/Account/TokenExchange")
-    @POST("api/Account/TokenExchangeV2Mobile")
+//    @POST("api/Account/TokenExchangeV2Mobile")
+    @POST("api/Account/TokenExchange")
     Call<GetTokenResponse> tokenExchange(@Body JsonObject jsonObject);
 
     @GET("api/image/user")

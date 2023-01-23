@@ -1,5 +1,7 @@
 package com.brickendon.hdplus.ui.login.pin;
 
+import static com.brickendon.hdplus.utils.Utils.getSettingsPageScreenData;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.brickendon.hdplus.R;
+import com.brickendon.hdplus.model.language.LanguagePOJO;
 import com.brickendon.hdplus.model.request.CreatePinRequest;
 import com.brickendon.hdplus.model.response.BaseResponse;
 import com.brickendon.hdplus.model.response.GetTokenResponse;
@@ -59,7 +62,18 @@ public class CreatePinActivity extends AppCompatActivity {
     TextView tvConfirmPin;
     @BindView(R.id.tvNewPin)
     TextView tvNewPin;
+    @BindView(R.id.tvRest)
+    TextView tvRest;
+    @BindView(R.id.tvOldPin)
+    TextView tvOldPin;
 
+    LanguagePOJO.Login logoinPage;
+    LanguagePOJO.AppKeys appKeysPage;
+    LanguagePOJO.ResetPassword resetPage;
+    LanguagePOJO.ActionOverLays actionOverLays;
+    LanguagePOJO.Booking bookindata;
+    LanguagePOJO.Global global;
+    LanguagePOJO.Settings settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +82,7 @@ public class CreatePinActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         dialog = new Dialog(CreatePinActivity.this);
-
+        setLanguage();
         newPin.setOtpListener(new OTPListener()
         {
             @Override
@@ -157,6 +171,25 @@ public class CreatePinActivity extends AppCompatActivity {
 
         getUserDetailsUsingToken();
 
+
+    }
+    public void setLanguage() {
+
+        LanguagePOJO.Settings wellBeingPage = getSettingsPageScreenData(this);
+        logoinPage = Utils.getLoginScreenData(this);
+        appKeysPage = Utils.getAppKeysPageScreenData(this);
+        resetPage = Utils.getResetPasswordPageScreencreenData(this);
+        actionOverLays = Utils.getActionOverLaysPageScreenData(this);
+        bookindata = Utils.getBookingPageScreenData(this);
+        global = Utils.getGlobalScreenData(this);
+        settings = Utils.getSettingsPageScreenData(this);
+        try {
+            tvRest.setText(settings.getSetUpPinEditPinDescription());
+            tvOldPin.setText(appKeysPage.getEnterYourOldPin());
+            tvNewPin.setText(appKeysPage.getEnterYourNewPin());
+        } catch (Exception e){
+
+        }
 
     }
 

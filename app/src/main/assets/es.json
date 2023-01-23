@@ -397,7 +397,8 @@
     "About": "Sobre",
     "DarkMode": "modo oscuro",
 
-    "SetUpPinEditPin": "Configurar y editar pin"
+    "SetUpPinEditPin": "Configurar y editar pin",
+    "SetUpPinEditPinDescription": "Un pin le permitirá iniciar sesión rápidamente en Hybrid Hero usando un pin único de seis caracteres."
   },
   "AppKeys": {
     "SignIn":"Iniciar sesión",

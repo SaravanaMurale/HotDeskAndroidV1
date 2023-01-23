@@ -11173,22 +11173,28 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         binding.bookedTxt.setText(appKeysPage.getBooked());
         binding.byRequestTxt.setText(appKeysPage.getByRequest());
 
-
         //tvPMOOffice.setText(appKeysPage);
-
 
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        getSupportZoneLayoutForCanvas.clear();
-        locateCountryResposeList.clear();
-        SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_ICON_BLINK, 0);
+        try{
+            if (getSupportZoneLayoutForCanvas != null){
+                getSupportZoneLayoutForCanvas.clear();
+            }
 
-        //Disable selected location id
-        SessionHandler.getInstance().saveInt(getContext(), AppConstants.SELECTED_LOCATION_FROM_HOME, 0);
+            if (locateCountryResposeList != null){
+                locateCountryResposeList.clear();
+            }
 
+            SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_ICON_BLINK, 0);
+            //Disable selected location id
+            SessionHandler.getInstance().saveInt(getContext(), AppConstants.SELECTED_LOCATION_FROM_HOME, 0);
+        } catch (Exception e){
+
+        }
     }
 
 

@@ -375,8 +375,10 @@
       "ViewProfile": "Ver perfil",
       "Security": "Segurança",
       "ChangeOrganisation": "ChangeOrganisation",
-      "SetUpPin": "Configurar e editar pin",
-      "Feedback": "Comentários",
+    "SetUpPinEditPin": "Skonfiguruj i edytuj pin",
+    "SetUpPinEditPinDescription": "Une épingle vous permettra de vous connecter rapidement à Hybrid Hero à l'aide d'une épingle unique à six caractères.",
+
+    "Feedback": "Comentários",
       "Whatsnew": "O que há de novo",
       "Help": "Ajuda e solução de problemas",
       "About": "Sobre",

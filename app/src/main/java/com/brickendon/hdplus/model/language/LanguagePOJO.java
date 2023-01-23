@@ -4027,6 +4027,17 @@ public class LanguagePOJO {
         @SerializedName("SetUpPinEditPin")
         @Expose
         private String SetUpPinEditPin;
+        @SerializedName("SetUpPinEditPinDescription")
+        @Expose
+        private String SetUpPinEditPinDescription;
+
+        public String getSetUpPinEditPinDescription() {
+            return SetUpPinEditPinDescription;
+        }
+
+        public void setSetUpPinEditPinDescription(String setUpPinEditPinDescription) {
+            SetUpPinEditPinDescription = setUpPinEditPinDescription;
+        }
 
         public String getSetUpPinEditPin() {
             return SetUpPinEditPin;

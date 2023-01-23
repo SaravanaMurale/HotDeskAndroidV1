@@ -382,7 +382,10 @@
         "Whatsnew": "Nə yenilik var",
         "Help": "Yardım və problemlərin aradan qaldırılması",
         "About": "Haqqında",
-        "DarkMode": "Qaranlıq rejim"
+        "DarkMode": "Qaranlıq rejim",
+
+        "SetUpPinEditPin": "Configurer et modifier l'épingle",
+        "SetUpPinEditPinDescription": "Une épingle vous permettra de vous connecter rapidement à Hybrid Hero à l'aide d'une épingle unique à six caractères."
     },
     
     "AppKeys": {

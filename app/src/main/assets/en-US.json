@@ -364,7 +364,10 @@
       "Whatsnew": "What's new",
       "Help": "Help & troubleshooting",
       "About": "About",
-      "DarkMode": "Dark mode"
+      "DarkMode": "Dark mode",
+
+    "SetUpPinEditPin": "Configurer et modifier l'épingle",
+    "SetUpPinEditPinDescription": "Une épingle vous permettra de vous connecter rapidement à Hybrid Hero à l'aide d'une épingle unique à six caractères."
   },
   
   "AppKeys": {
@@ -413,6 +416,9 @@
       "SubmitPasswordReset": "Submit password reset",
       "GoBackToSignIn": "Go back to sign in",
       "EnterYourPin": "Enter your pin",
+      "EnterYourPinOld": "Enter your old pin",
+      "EnterYourPinNew": "Enter your new pin",
+      "EnterYourPinReenter": "Re-enter your new pin",
       "UseEmailPassword": "Use Email & Password",
       "Locate": "Locate",
       "Home": "Home",
