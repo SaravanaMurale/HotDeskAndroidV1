@@ -17,17 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import com.brickendon.hdplus.MainActivity;
 import com.brickendon.hdplus.R;
 import com.brickendon.hdplus.adapter.OtherBookingAdapter;
@@ -42,6 +31,20 @@ import com.brickendon.hdplus.utils.SessionHandler;
 import com.brickendon.hdplus.utils.Utils;
 import com.brickendon.hdplus.webservice.ApiClient;
 import com.brickendon.hdplus.webservice.ApiInterface;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -65,7 +68,9 @@ public class OtherBookingController {
     private boolean repeatActiveStatus = false;
     private BottomSheetDialog repeatBottomSheetDialog;
     private String repeatType = "none";
-    LanguagePOJO.Booking bookindata ;
+    LanguagePOJO.Booking bookindata;
+    String timeZone = "";
+
     public OtherBookingController(Context context, int selectedIcon, String calSelectedDate) {
         this.context = context;
         appKeysPage = Utils.getAppKeysPageScreenData(context);
@@ -74,6 +79,11 @@ public class OtherBookingController {
         this.calSelectedDate = calSelectedDate;
         this.isFrom = "book";
         getAddEditDesk(selectedIcon, calSelectedDate);
+        if (SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID).isEmpty())
+            callTimezone();
+        else
+            timeZone = SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID);
+
     }
 
     public OtherBookingController(Context context,
@@ -85,6 +95,12 @@ public class OtherBookingController {
         this.calendarEntry = calendarEntry;
         this.date = date;
         this.isFrom = isFrom;
+
+        if (SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID).isEmpty())
+            callTimezone();
+        else
+            timeZone = SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID);
+
         try {
             SimpleDateFormat sdf3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
             Date d1;
@@ -111,6 +127,41 @@ public class OtherBookingController {
 
         homeEditBooking(calendarEntry.getFrom(), calendarEntry.getMyto());
     }
+
+    private void callTimezone() {
+        try {
+            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault());
+            String timeZone = new SimpleDateFormat("Z").format(calendar.getTime());
+            int firstValue = Integer.parseInt(timeZone.substring(1, 3)) * 60;
+            int finalValue = firstValue + Integer.parseInt(timeZone.substring(3, 5));
+            Log.e("str", "" + finalValue);
+            callTimeZoneApi(finalValue);
+        } catch (Exception e) {
+            callTimeZoneApi(0);
+        }
+    }
+
+    private void callTimeZoneApi(int time) {
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<String> call = apiService.getTimeZoneOffset(time);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                try {
+                    timeZone = response.body();
+                } catch (Exception e) {
+                    timeZone = "UTC";
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                timeZone = "UTC";
+            }
+        });
+    }
+
 
     private void getAddEditDesk(int code, String date) {
         if (Utils.isNetworkAvailable(context)) {
@@ -1079,12 +1130,15 @@ public class OtherBookingController {
                     changes.setFrom("2000-01-01T" + startTimeStr + ":00.000Z");
                     changes.setTo("2000-01-01T" + endTimeStr + ":00.000Z");
 
-                    String timeZone = Utils.getTimeZone();
-                    if (!SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID).isEmpty())
+                    //String timeZone = Utils.getTimeZone();
+
+//                    String timeZone = "Greenwich Mean Time";
+                   /* if (!SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID).isEmpty())
                         changes.setTimeZoneId(SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID));
                     else
-                        changes.setTimeZoneId(timeZone);
+                        changes.setTimeZoneId(timeZone);*/
 
+                    changes.setTimeZoneId(timeZone);
                     changeSets.setChanges(changes);
 
                     List<OtherBookingRequest.Changeset> changeSetsList = new ArrayList<>();
@@ -1102,11 +1156,12 @@ public class OtherBookingController {
                         changes.setUsageTypeId(type);
                         changes.setFrom("2000-01-01T" + startTimeStr + ":00.000Z");
                         changes.setTo("2000-01-01T" + endTimeStr + ":00.000Z");
-                        String timeZone =  Utils.getTimeZone();;
+                       /* String timeZone = Utils.getTimeZone();
                         if (!SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID).isEmpty())
                             changes.setTimeZoneId(SessionHandler.getInstance().get(context, AppConstants.DEFAULT_TIME_ZONE_ID));
                         else
-                            changes.setTimeZoneId(timeZone);
+                            changes.setTimeZoneId(timeZone);*/
+                        changes.setTimeZoneId(timeZone);
 
                         changeset.setChanges(changes);
                         changeSetsList.add(changeset);
@@ -1248,12 +1303,12 @@ public class OtherBookingController {
                     } else if (response.body().getResultCode().toString().equals("INVALID_TIMEPERIOD")) {
                         resultString = bookindata.getInvalidTimePeriod();
                     } else if (response.body().getResultCode().toString().equals("USER_TIME_OVERLAP")) {
-                        resultString =  bookindata.getTimeOverlap();
-                    } else if(response.body().getResultCode().toString().equals("COVID_SYMPTOMS")){
+                        resultString = bookindata.getTimeOverlap();
+                    } else if (response.body().getResultCode().toString().equals("COVID_SYMPTOMS")) {
                         resultString = bookindata.getCOVID_SYMPTOMS();
-                    }else if(response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")){
-                        resultString =  bookindata.getDeskUnavailable();
-                    }else {
+                    } else if (response.body().getResultCode().toString().equals("DESK_UNAVAILABLE")) {
+                        resultString = bookindata.getDeskUnavailable();
+                    } else {
                         resultString = response.body().getResultCode().toString();
                     }
                     Utils.toastShortMessage((Activity) context, resultString);
