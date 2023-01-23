@@ -2,6 +2,7 @@ package com.brickendon.hdplus;
 
 import static com.brickendon.hdplus.utils.MyApp.getContext;
 import static com.brickendon.hdplus.utils.Utils.getCurrentDate;
+import static com.brickendon.hdplus.utils.Utils.getWellBeingScreenData;
 
 import android.app.Dialog;
 import android.app.UiModeManager;
@@ -168,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements
     public HashMap<Integer, Boolean> firstAidList;
     public HashMap<Integer, Boolean> firewardenList;
     LanguagePOJO.Booking bookindata ;
-
+    private LanguagePOJO.AppKeys appKeysPage;
     private static final int TIME_INTERVAL = 2000; // # milliseconds, desired time passed between two back presses.
     private long mBackPressed;
     @Override
@@ -1346,7 +1347,17 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
         deepLinking();
-
+        try {
+            appKeysPage = Utils.getAppKeysPageScreenData(this);
+            LanguagePOJO.WellBeing wellBeingPage = getWellBeingScreenData(this);
+            navView.getMenu().getItem(0).setTitle(appKeysPage.getLocate());
+            navView.getMenu().getItem(1).setTitle(appKeysPage.getBook());
+            navView.getMenu().getItem(2).setTitle(appKeysPage.getHome());
+            navView.getMenu().getItem(3).setTitle(appKeysPage.getTeams());
+            navView.getMenu().getItem(4).setTitle(wellBeingPage.getTabTitle());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
