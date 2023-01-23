@@ -826,6 +826,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 daoTeamMember.setFirstName(daoTeamMemberList.get(i).getFirstName());
                                 daoTeamMember.setLastName(daoTeamMemberList.get(i).getLastName());
                                 daoTeamMember.setProfileImage(daoTeamMemberList.get(i).getProfileImage());
+                                daoTeamMember.setUserId(daoTeamMemberList.get(i).getUserId());
 
                                 ArrayList<DAOTeamMember.DayGroup> dayGroupList = new ArrayList<>();
 
@@ -1832,7 +1833,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                             //binding.firstLayout.scrollTo(-200,-400);
                         } else {
-                            Toast.makeText(getContext(), "No Data", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getContext(), "No Data", Toast.LENGTH_LONG).show();
                         }
 
                         }
@@ -1898,7 +1899,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         }
 
                     }else {
-                        Toast.makeText(getContext(), "No Data", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getContext(), "No Data", Toast.LENGTH_LONG).show();
                     }
 
                     //ProgressDialog.dismisProgressBar(getContext(), dialog);
@@ -11173,13 +11174,16 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         binding.bookedTxt.setText(appKeysPage.getBooked());
         binding.byRequestTxt.setText(appKeysPage.getByRequest());
 
+
         //tvPMOOffice.setText(appKeysPage);
+
 
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         try{
             if (getSupportZoneLayoutForCanvas != null){
                 getSupportZoneLayoutForCanvas.clear();
