@@ -556,6 +556,10 @@ public interface ApiInterface {
 
     @PUT("api/booking/bookings")
     Call<BaseResponse> otherBookings(@Body OtherBookingRequest otherBookingRequest);
+
+
+    @GET("api/Locations/GetTimeZoneIdByOffsets")
+    Call<String> getTimeZoneOffset(@Query("offSetMinutes") int toDate);
 }
 
 
