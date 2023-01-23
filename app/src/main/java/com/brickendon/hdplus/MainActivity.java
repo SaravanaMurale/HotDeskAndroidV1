@@ -251,7 +251,6 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public boolean onScale(ScaleGestureDetector detector) {
 
-                System.out.println("DectorValue" + detector.getScaleFactor());
 
                 float scale = 1 - detector.getScaleFactor();
                 float prevScale = mScale;
@@ -1345,6 +1344,7 @@ public class MainActivity extends AppCompatActivity implements
                 navController.navigate(R.id.action_change_schedule);
             }
         }
+
         deepLinking();
 
 
@@ -1354,7 +1354,7 @@ public class MainActivity extends AppCompatActivity implements
                                              @NonNull NavDestination navDestination,
                                              @Nullable Bundle bundle) {
 
-
+//                binding.navView
                 //System.out.println("TeamIdHere "+teamId);
                 int teamId = SessionHandler.getInstance().getInt(MainActivity.this, AppConstants.TEAM_ID);
                 //int teamId=0;
