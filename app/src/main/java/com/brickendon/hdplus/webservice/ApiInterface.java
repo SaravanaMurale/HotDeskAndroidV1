@@ -552,11 +552,8 @@ public interface ApiInterface {
                                                      @Query("toDate") String toDate,
                                                      @Query("roomId") int locationId);
 
-
-
     @PUT("api/booking/bookings")
     Call<BaseResponse> otherBookings(@Body OtherBookingRequest otherBookingRequest);
-
 
     @GET("api/Locations/GetTimeZoneIdByOffsets")
     Call<String> getTimeZoneOffset(@Query("offSetMinutes") int toDate);
