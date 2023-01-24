@@ -5780,7 +5780,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         locateCountryResposes.sort(Comparator.comparing(LocateCountryRespose::getName, String::compareToIgnoreCase));
 
-        showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes, this, "COUNTRY",false);
+        List<LocateCountryRespose> locateCountryResposes1 = new ArrayList<>();
+        for (int i = 0; i <locateCountryResposes.size() ; i++) {
+            if(locateCountryResposes.get(i).isActive()) {
+                locateCountryResposes1.add(locateCountryResposes.get(i));
+            }
+        }
+
+        showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes1, this, "COUNTRY",false);
         rvCountry.setAdapter(showCountryAdapter);
 
 
@@ -6001,7 +6008,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         locateCountryResposes.sort(Comparator.comparing(LocateCountryRespose::getName, String::compareToIgnoreCase));
 
-        showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes, this, "STATE",false);
+        List<LocateCountryRespose> locateCountryResposes1 = new ArrayList<>();
+        for (int i = 0; i <locateCountryResposes.size() ; i++) {
+            if(locateCountryResposes.get(i).isActive()) {
+                locateCountryResposes1.add(locateCountryResposes.get(i));
+            }
+        }
+
+        showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes1, this, "STATE",false);
         rvState.setAdapter(showCountryAdapter);
     }
 
@@ -6067,12 +6081,17 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         locateCountryResposes.sort(Comparator.comparing(LocateCountryRespose::getName, String::compareToIgnoreCase));
 
+        List<LocateCountryRespose> locateCountryResposes1 = new ArrayList<>();
+        for (int i = 0; i <locateCountryResposes.size() ; i++) {
+            if(locateCountryResposes.get(i).isActive()) {
+                locateCountryResposes1.add(locateCountryResposes.get(i));
+            }
+        }
 
         //Here showing list of buildings so changing UI
         //Show Building Status
-
         boolean showBuildingList=true;
-        showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes, this, "FLOOR",showBuildingList);
+        showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes1, this, "FLOOR",showBuildingList);
         rvStreet.setAdapter(showCountryAdapter);
 
     }
