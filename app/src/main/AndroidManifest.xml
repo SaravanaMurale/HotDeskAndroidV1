@@ -32,6 +32,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HotDeskAndroid"
         tools:replace="android:allowBackup">
+
         <activity
             android:name="com.brickendon.hdplus.ui.home.DefaultLocationActivity"
             android:exported="false"

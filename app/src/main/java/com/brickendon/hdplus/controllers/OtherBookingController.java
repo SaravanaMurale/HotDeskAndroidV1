@@ -136,7 +136,7 @@ public class OtherBookingController {
             String timeZone = new SimpleDateFormat("Z").format(calendar.getTime());
             int firstValue = Integer.parseInt(timeZone.substring(1, 3)) * 60;
             int finalValue = firstValue + Integer.parseInt(timeZone.substring(3, 5));
-            Log.e("str", "" + finalValue);
+            Log.e("timeZoneOffset", "" + finalValue);
             callTimeZoneApi(finalValue);
         } catch (Exception e) {
             callTimeZoneApi(0);

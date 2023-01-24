@@ -6163,8 +6163,14 @@ public class BookFragment extends Fragment implements
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvCountry.setLayoutManager(linearLayoutManager);
         rvCountry.setHasFixedSize(true);
+        List<LocateCountryRespose> locateCountryResposes1=new ArrayList<>();
+        for (int i = 0; i <locateCountryResposes.size() ; i++) {
+            if(locateCountryResposes.get(i).isActive()) {
+                locateCountryResposes1.add(locateCountryResposes.get(i));
+            }
+        }
 
-        showCountryAdapter = new ShowCountryAdapterCalendar(getContext(), locateCountryResposes, this, "COUNTRY");
+        showCountryAdapter = new ShowCountryAdapterCalendar(getContext(), locateCountryResposes1, this, "COUNTRY");
         rvCountry.setAdapter(showCountryAdapter);
 
     }
@@ -6213,7 +6219,15 @@ public class BookFragment extends Fragment implements
         rvState.setLayoutManager(linearLayoutManager);
         rvState.setHasFixedSize(true);
 
-        showCountryAdapter = new ShowCountryAdapterCalendar(getContext(), locateCountryResposes,
+        List<LocateCountryRespose> locateCountryResposes1 = new ArrayList<>();
+        for (int i = 0; i <locateCountryResposes.size() ; i++) {
+            if(locateCountryResposes.get(i).isActive()) {
+                locateCountryResposes1.add(locateCountryResposes.get(i));
+            }
+        }
+
+
+        showCountryAdapter = new ShowCountryAdapterCalendar(getContext(), locateCountryResposes1,
                 this, "STATE");
         rvState.setAdapter(showCountryAdapter);
     }
@@ -6266,7 +6280,14 @@ public class BookFragment extends Fragment implements
         rvStreet.setLayoutManager(linearLayoutManager);
         rvStreet.setHasFixedSize(true);
 
-        showCountryAdapter = new ShowCountryAdapterCalendar(getContext(), locateCountryResposes, this, "FLOOR");
+        List<LocateCountryRespose> locateCountryResposes1 = new ArrayList<>();
+        for (int i = 0; i <locateCountryResposes.size() ; i++) {
+            if(locateCountryResposes.get(i).isActive()) {
+                locateCountryResposes1.add(locateCountryResposes.get(i));
+            }
+        }
+
+        showCountryAdapter = new ShowCountryAdapterCalendar(getContext(), locateCountryResposes1, this, "FLOOR");
         rvStreet.setAdapter(showCountryAdapter);
 
     }

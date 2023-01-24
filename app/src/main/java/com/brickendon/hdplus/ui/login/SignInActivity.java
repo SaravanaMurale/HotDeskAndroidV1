@@ -318,7 +318,7 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
-        promptInfo = new BiometricPrompt.PromptInfo.Builder().setTitle("HotDesk").setDescription("Use Fingerprint To Login").setDeviceCredentialAllowed(true).build();
+        promptInfo = new BiometricPrompt.PromptInfo.Builder().setTitle("HybridHero").setDescription("Use Fingerprint To Login").setDeviceCredentialAllowed(true).build();
 
         biometricPrompt.authenticate(promptInfo);
 

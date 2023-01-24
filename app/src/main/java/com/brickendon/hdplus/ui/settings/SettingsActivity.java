@@ -133,7 +133,7 @@ public class SettingsActivity extends AppCompatActivity {
                     @Override
                     public void onCreated(IMultipleAccountPublicClientApplication application) {
                         b2cApp = application;
-                        System.out.println("sso check oncreate");
+//                        System.out.println("sso check oncreate");
                         loadAccounts();
                     }
 
