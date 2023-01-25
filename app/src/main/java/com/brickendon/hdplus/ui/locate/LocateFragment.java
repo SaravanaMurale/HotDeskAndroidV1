@@ -9174,6 +9174,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         TextView locateFilterCancel, locateFilterApply, tvFilterAmenities;
+        TextView tvFilter;
 
        /* BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((this).getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_locate_filter,
@@ -9195,12 +9196,14 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         tvFilterAmenities = bottomSheetDialog.findViewById(R.id.tvFilter);
         filterSearch = bottomSheetDialog.findViewById(R.id.filterSearch);
         filterTotalSize = bottomSheetDialog.findViewById(R.id.filterTotalSize);
+        tvFilter=bottomSheetDialog.findViewById(R.id.tvFilter);
 
         //setLang
         filterSearch.setHint(" " + appKeysPage.getSearch());
         tvFilterAmenities.setText(appKeysPage.getFilters());
         locateFilterApply.setText(appKeysPage.getApply());
         locateFilterCancel.setText(appKeysPage.getCancel());
+        tvFilter.setText(appKeysPage.getFilters());
 
 
 
