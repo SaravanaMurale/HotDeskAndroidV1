@@ -237,7 +237,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void checkSsoEnabled() {
         if (Utils.isNetworkAvailable(this)) {
-            dialog = ProgressDialog.showProgressBar(LoginActivity.this);
+            if(LoginActivity.this!=null &&!LoginActivity.this.isFinishing())
+                dialog = ProgressDialog.showProgressBar(LoginActivity.this);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             SessionHandler.getInstance().remove(LoginActivity.this, AppConstants.USERTOKEN);
             JsonObject jsonObject = new JsonObject();
@@ -482,8 +483,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void callTokenExachange(String email) {
         if (Utils.isNetworkAvailable(this)) {
-
-            dialog = ProgressDialog.showProgressBar(LoginActivity.this);
+            if(LoginActivity.this!=null &&!LoginActivity.this.isFinishing())
+                dialog = ProgressDialog.showProgressBar(LoginActivity.this);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             JsonObject jsonObject = new JsonObject();
             if (!tentantName.equalsIgnoreCase(""))
@@ -565,7 +566,8 @@ public class LoginActivity extends AppCompatActivity {
     private void doLogin(String companyName, String email, String password) {
 
         if (Utils.isNetworkAvailable(this)) {
-            dialog = ProgressDialog.showProgressBar(LoginActivity.this);
+            if(LoginActivity.this!=null &&!LoginActivity.this.isFinishing())
+                dialog = ProgressDialog.showProgressBar(LoginActivity.this);
             SessionHandler.getInstance().remove(LoginActivity.this, AppConstants.USERTOKEN);
             GetTokenRequest getTokenRequest = new GetTokenRequest(companyName, email, password);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -626,7 +628,8 @@ public class LoginActivity extends AppCompatActivity {
     private void getUserDetailsUsingToken(String token) {
 
         if (Utils.isNetworkAvailable(this)) {
-            dialog = ProgressDialog.showProgressBar(LoginActivity.this);
+            if(LoginActivity.this!=null &&!LoginActivity.this.isFinishing())
+                dialog = ProgressDialog.showProgressBar(LoginActivity.this);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<UserDetailsResponse> call = apiService.getLoginUserDetails();
             call.enqueue(new Callback<UserDetailsResponse>() {

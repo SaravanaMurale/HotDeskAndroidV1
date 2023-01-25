@@ -314,7 +314,11 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             @Override
             public void onClick(View view) {
                 //if (notiList!=null && notiList.size()>0){
+                try {
 
+                } catch (Exception e){
+
+                }
                 if (profileData != null) {
 
                     Intent intent;

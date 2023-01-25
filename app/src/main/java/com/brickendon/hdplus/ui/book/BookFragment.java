@@ -2244,6 +2244,7 @@ public class BookFragment extends Fragment implements
 
     private void deeplinkLoginPopUP() {
         try {
+
             getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
