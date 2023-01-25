@@ -67,10 +67,14 @@ public class ShowCountryAdapter extends RecyclerView.Adapter<ShowCountryAdapter.
 
         if(!showBuildingList) {
 
-            holder.floorBlock.setVisibility(View.GONE);
-            holder.itemCardView.setVisibility(View.VISIBLE);
+            //if(countryList.get(holder.getAbsoluteAdapterPosition()).isActive()) {
 
-            holder.tvCountryName.setText(countryList.get(position).getName());
+                holder.floorBlock.setVisibility(View.GONE);
+                holder.itemCardView.setVisibility(View.VISIBLE);
+
+                holder.tvCountryName.setText(countryList.get(position).getName());
+
+            //}
 
             holder.itemCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -83,11 +87,15 @@ public class ShowCountryAdapter extends RecyclerView.Adapter<ShowCountryAdapter.
 
         }else {
 
-            //UI chaging like floor
-            holder.floorBlock.setVisibility(View.VISIBLE);
-            holder.itemCardView.setVisibility(View.GONE);
+            //if(countryList.get(holder.getAbsoluteAdapterPosition()).isActive()) {
 
-            holder.locateFloorNames.setText(countryList.get(position).getName());
+                //UI chaging like floor
+                holder.floorBlock.setVisibility(View.VISIBLE);
+                holder.itemCardView.setVisibility(View.GONE);
+
+                holder.locateFloorNames.setText(countryList.get(position).getName());
+
+            //}
 
             holder.floorBlock.setOnClickListener(new View.OnClickListener() {
                 @Override
