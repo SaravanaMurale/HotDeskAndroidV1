@@ -86,10 +86,9 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_toRightOf="@+id/ivOnline"
             android:text="Unavaliable"
-            android:textSize="14dp"
             android:textColor="@color/figmaBlack"
-            android:textStyle="bold"
-            />
+            android:textSize="14dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/un_available_desc"

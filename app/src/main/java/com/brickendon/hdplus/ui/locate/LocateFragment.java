@@ -3912,6 +3912,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         TextView unAvalibaleDeskName,unAvaliableDate, tvUnavaliableBack, unAvaliableLocate, tvDescriptionUnAvaliable, unAvailableDesc;
 
+        TextView tvUnaValibale;
+
         BottomSheetDialog locateCheckInBottomSheet = new BottomSheetDialog(getContext());
         View view = View.inflate(getContext(), R.layout.dialog_locate_unavalible_bottomsheet, null);
         locateCheckInBottomSheet.setContentView(view);
@@ -3924,6 +3926,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         unAvaliableLocate = locateCheckInBottomSheet.findViewById(R.id.unAvaliableLocate);
         tvDescriptionUnAvaliable = locateCheckInBottomSheet.findViewById(R.id.tvDescriptionUnAvaliable);
         unAvailableDesc = locateCheckInBottomSheet.findViewById(R.id.un_available_desc);
+        tvUnaValibale=locateCheckInBottomSheet.findViewById(R.id.tvUnaValibale);
 
         if(code.equalsIgnoreCase("4")){
             unAvaliableDate.setVisibility(View.VISIBLE);
@@ -3950,6 +3953,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         }else {
             tvDescriptionUnAvaliable.setVisibility(View.GONE);
         }
+
+        //Language
+        tvUnavaliableBack.setText(appKeysPage.getBack());
+        tvUnaValibale.setText(appKeysPage.getUnavailable());
 
         tvUnavaliableBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -5770,14 +5777,18 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         rvCountry.setLayoutManager(linearLayoutManager);
         rvCountry.setHasFixedSize(true);
 
-        locateCountryResposes.sort(Comparator.comparing(LocateCountryRespose::getName, String::compareToIgnoreCase));
-
-        List<LocateCountryRespose> locateCountryResposes1 = new ArrayList<>();
+        List<LocateCountryRespose> locateCountryResposes1=new ArrayList<>();
         for (int i = 0; i <locateCountryResposes.size() ; i++) {
-            if(locateCountryResposes.get(i).isActive()) {
+
+            if(locateCountryResposes.get(i).isActive()){
                 locateCountryResposes1.add(locateCountryResposes.get(i));
             }
+
         }
+
+        locateCountryResposes1.sort(Comparator.comparing(LocateCountryRespose::getName, String::compareToIgnoreCase));
+
+
 
         showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes1, this, "COUNTRY",false);
         rvCountry.setAdapter(showCountryAdapter);
@@ -5998,7 +6009,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         rvState.setLayoutManager(linearLayoutManager);
         rvState.setHasFixedSize(true);
 
-        locateCountryResposes.sort(Comparator.comparing(LocateCountryRespose::getName, String::compareToIgnoreCase));
+
 
         List<LocateCountryRespose> locateCountryResposes1 = new ArrayList<>();
         for (int i = 0; i <locateCountryResposes.size() ; i++) {
@@ -6006,6 +6017,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 locateCountryResposes1.add(locateCountryResposes.get(i));
             }
         }
+
+        locateCountryResposes1.sort(Comparator.comparing(LocateCountryRespose::getName, String::compareToIgnoreCase));
 
         showCountryAdapter = new ShowCountryAdapter(getContext(), locateCountryResposes1, this, "STATE",false);
         rvState.setAdapter(showCountryAdapter);
@@ -6071,14 +6084,17 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         rvStreet.setLayoutManager(linearLayoutManager);
         rvStreet.setHasFixedSize(true);
 
-        locateCountryResposes.sort(Comparator.comparing(LocateCountryRespose::getName, String::compareToIgnoreCase));
-
-        List<LocateCountryRespose> locateCountryResposes1 = new ArrayList<>();
+        List<LocateCountryRespose> locateCountryResposes1=new ArrayList<>();
         for (int i = 0; i <locateCountryResposes.size() ; i++) {
-            if(locateCountryResposes.get(i).isActive()) {
+
+            if(locateCountryResposes.get(i).isActive()){
                 locateCountryResposes1.add(locateCountryResposes.get(i));
             }
+
         }
+
+        locateCountryResposes1.sort(Comparator.comparing(LocateCountryRespose::getName, String::compareToIgnoreCase));
+
 
         //Here showing list of buildings so changing UI
         //Show Building Status
@@ -9735,7 +9751,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //participantChipGroupInEdit
 
         //Language
-        TextView tvRoomStart, tvRoomEnd, showTvRoomEndTime,roomLocation;
+        TextView tvRoomStart, tvRoomEnd, showTvRoomEndTime,roomLocation,tv_cap;
 
        /* bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_room_booking,
@@ -9770,7 +9786,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         capacityRoomBlock.setVisibility(View.VISIBLE);
 
         meetingRoomStatusBlock.setVisibility(View.VISIBLE);
-        meetingAvaliable.setText("Booked by me");
+        meetingAvaliable.setText(appKeysPage.getBookedByMe());
         tv_user_status_room.setImageDrawable(getResources().getDrawable(R.drawable.status_booked_byme));
 
 
@@ -9824,6 +9840,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         tvMeetingRoomDescription = bottomSheetDialog.findViewById(R.id.meetingRoomDescription);
         roomTitle = bottomSheetDialog.findViewById(R.id.roomTitle);
         //TextView meetingAvaliable = bottomSheetDialog.findViewById(R.id.meetingAvaliable);
+        tv_cap=bottomSheetDialog.findViewById(R.id.tv_cap);
+        tv_cap.setText(appKeysPage.getCapacity());
 
         TextView select = bottomSheetDialog.findViewById(R.id.select_desk_room);
 
@@ -9852,15 +9870,18 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
         //set spannable text
-        String s= "Internal participants optional";
+        //String s= "Internal participants optional";
+        String s=appKeysPage.getInternalParticipant();
         int start=21;
         int end=29;
         Utils.setSPannableStringForParticipants(etParticipants,s,start,end);
 
-        String ex= "External participants optional";
+        //String ex= "External participants optional";
+        String ex= appKeysPage.getExternalParticipants();
         Utils.setSPannableStringForParticipants(externalAttendees,ex,start,end);
 
-        String com="Comments optional";
+        //String com="Comments optional";
+        String com=appKeysPage.getCommentsoptional();
         int start1=9;
         int end1=12;
         Utils.setSPannableStringForParticipants(etComments,com,start1,end1);
@@ -9883,6 +9904,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //Language
         tvMeetingRoomDescription.setText(appKeysPage.getDescription());
 
+        meetingDelete.setText(appKeysPage.getDelete());
         meetingDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -10272,6 +10294,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         });
 
+        editRoomBookingBack.setText(appKeysPage.getBack());
         editRoomBookingBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -10284,8 +10307,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                     child_layout.setVisibility(View.VISIBLE);
                     //roomDate.setText(buildingName + "," + floorName);
 
-                    editRoomBookingContinue.setText("Continue");
-                    editRoomBookingBack.setText("Cancel");
+                    //editRoomBookingContinue.setText("Continue");
+                    //editRoomBookingBack.setText("Cancel");
+
+                    editRoomBookingContinue.setText(appKeysPage.getContinue());
+                    editRoomBookingBack.setText(appKeysPage.getCancel());
 
 
                     page = 1;
@@ -10293,12 +10319,21 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             }
         });
 
+        //editRoomBookingContinue.setText(appKeysPage.getContinue());
+        //editRoomBookingBack.setText(appKeysPage.getCancel());
+
+
         editRoomBookingContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (page == 1) {
-                    editRoomBookingContinue.setText("Continue");
-                    editRoomBookingBack.setText("Cancel");
+                    //editRoomBookingContinue.setText("Continue");
+                    //editRoomBookingBack.setText("Cancel");
+
+                    editRoomBookingContinue.setText(appKeysPage.getContinue());
+                    editRoomBookingBack.setText(appKeysPage.getCancel());
+
+
                     boolean status = true;
 
                     if (startRoomTime.getText().toString().equals("")) {
@@ -10342,8 +10377,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                             startWithAMOrPM + "to" + showTvRoomEndTime.getText().toString());
 
                     page = 2;
-                    editRoomBookingContinue.setText("Save Changes");
-                    editRoomBookingBack.setText("Back");
+
+                    //editRoomBookingContinue.setText("Save Changes");
+                    //editRoomBookingBack.setText("Back");
+
+                    editRoomBookingContinue.setText(appKeysPage.getSaveChanges());
+                    editRoomBookingBack.setText(appKeysPage.getBack());
+
 
                 } else {
                     boolean status = true;
