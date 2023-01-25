@@ -390,7 +390,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     //Zoom
     boolean zoomAppliedStatus=false;
 
-
+    Activity activityContext;
+    Context context;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -414,6 +415,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        activityContext=getActivity();
+        context=getActivity();
 
         binding.locateProgressBar.setVisibility(View.VISIBLE);
         new Handler().postDelayed(new Runnable() {
@@ -1752,7 +1755,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 @Override
                 public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
 
-                    ProgressDialog.clearTouchLock(getContext(), getActivity());
+                    if(getActivity()!=null && getContext()!=null)
+                        ProgressDialog.clearTouchLock(getContext(), getActivity());
+                    else if (context!=null && activityContext!=null)
+                        ProgressDialog.clearTouchLock(context, activityContext);
 
                     if (response.body() != null && response.body().size() > 0) {
 
