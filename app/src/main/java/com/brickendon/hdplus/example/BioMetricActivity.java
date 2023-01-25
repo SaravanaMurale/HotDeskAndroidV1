@@ -65,7 +65,7 @@ public class BioMetricActivity extends AppCompatActivity {
             }
         });
 
-        promptInfo=new BiometricPrompt.PromptInfo.Builder().setTitle("HotDesk")
+        promptInfo=new BiometricPrompt.PromptInfo.Builder().setTitle("HybridHer")
                 .setDescription("Use Fingerprint To Login").setDeviceCredentialAllowed(true).build();
 
         biometricPrompt.authenticate(promptInfo);

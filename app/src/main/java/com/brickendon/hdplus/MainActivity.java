@@ -211,11 +211,16 @@ public class MainActivity extends AppCompatActivity implements
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().length() == 0){
-                    list.clear();
-                    binding.serachBar.clearComposingText();
-                    searchRecyclerAdapter.notifyDataSetChanged();
+                try {
+                    if (s.toString().length() == 0) {
+                        list.clear();
+                        binding.serachBar.clearComposingText();
+                        searchRecyclerAdapter.notifyDataSetChanged();
+                    }
+                } catch (Exception e){
+
                 }
+
             }
 
             @Override

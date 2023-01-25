@@ -434,14 +434,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         binding = FragmentLocateBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-
         setLanguage();
-
-
-
         //New...
         checkVeichleReg();
-
 
         //TeamsCheck
         checkTeamsCheckBox();
@@ -453,14 +448,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         binding.locateStartTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
 
                 if (parentId > 0) {
-
                     SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_ICON_BLINK, 0);
                     bottomSheetLocateTimePickerInBooking(getContext(), getActivity(), binding.locateStartTime, "Start", binding.locateCalendearView.getText().toString(), 1);
-
                 } else {
                     Toast.makeText(getContext(), "Please Select Floor Details", Toast.LENGTH_SHORT).show();
                 }

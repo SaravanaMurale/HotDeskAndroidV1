@@ -748,27 +748,28 @@ public class BookFragment extends Fragment implements
 
     private void deepLinking() {
         // ATTENTION: This was auto-generated to handle app links.
-        Intent appLinkIntent = getActivity().getIntent();
-        String appLinkAction = appLinkIntent.getAction();
-        appLinkData = appLinkIntent.getData();
+        try {
+            Intent appLinkIntent = getActivity().getIntent();
+            String appLinkAction = appLinkIntent.getAction();
+            appLinkData = appLinkIntent.getData();
 
-        if(appLinkData != null && !AppConstants.FIRSTREFERAL) {
-            //NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment_activity_main);
+            if(appLinkData != null && !AppConstants.FIRSTREFERAL) {
+                //NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment_activity_main);
 //            navController.navigate(R.id.navigation_book);
-            String data1= appLinkData.getQueryParameter("typekey"); // you will get the value "value1" from application 1
+                String data1= appLinkData.getQueryParameter("typekey"); // you will get the value "value1" from application 1
 
-            AppConstants.FIRSTREFERAL = true;
+                AppConstants.FIRSTREFERAL = true;
 
-            if (data1.equalsIgnoreCase("desk")){
-                boolean checkIsRequest = false;
-                selectedicon=0;
+                if (data1.equalsIgnoreCase("desk")){
+                    boolean checkIsRequest = false;
+                    selectedicon=0;
 
-                String deskCode = appLinkData.getQueryParameter("deskCode");
-                String deskId = appLinkData.getQueryParameter("deskId");
-                String requestedTeamId = appLinkData.getQueryParameter("teamId");
-                String timeZoneId = appLinkData.getQueryParameter("timeZoneId");
-                timeZoneId = timeZoneId.replace("_"," ");
-                EditBookingDetails editBookingDetails= new EditBookingDetails();
+                    String deskCode = appLinkData.getQueryParameter("deskCode");
+                    String deskId = appLinkData.getQueryParameter("deskId");
+                    String requestedTeamId = appLinkData.getQueryParameter("teamId");
+                    String timeZoneId = appLinkData.getQueryParameter("timeZoneId");
+                    timeZoneId = timeZoneId.replace("_"," ");
+                    EditBookingDetails editBookingDetails= new EditBookingDetails();
                 /*lop :
                 for (int i=0; i<bookingDeskList.size();i++){
                     if (Integer.parseInt(deskId)
@@ -803,77 +804,77 @@ public class BookFragment extends Fragment implements
 
                 }*/
 
-                calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
+                    calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
 //                editBookingDetails.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
-                editBookingDetails.setDate(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
-                editBookingDetails.setCalId(0);
-                editBookingDetails.setDeskCode(deskCode);
-                editBookingDetails.setDesktId(Integer.parseInt(deskId));
-                editBookingDetails.setDeskTeamId(Integer.parseInt(requestedTeamId));
-                editBookingDetails.setTimeZone(timeZoneId);
-                editBookingDetails.setDeskStatus(0);
-                editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
-                editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z",2)));
+                    editBookingDetails.setDate(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
+                    editBookingDetails.setCalId(0);
+                    editBookingDetails.setDeskCode(deskCode);
+                    editBookingDetails.setDesktId(Integer.parseInt(deskId));
+                    editBookingDetails.setDeskTeamId(Integer.parseInt(requestedTeamId));
+                    editBookingDetails.setTimeZone(timeZoneId);
+                    editBookingDetails.setDeskStatus(0);
+                    editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
+                    editBookingDetails.setEditEndTime(Utils.splitTime(Utils.addingHoursToDate(Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z",2)));
 
-                if (bookingDeskList!=null && bookingDeskList.size()>0){
-                    loo :
-                    for (int i=0;i<bookingDeskList.size();i++){
-                        if (deskId.equalsIgnoreCase(""+bookingDeskList.get(i).getTeamDeskId())){
-                            checkIsRequest=true;
-                            break loo;
+                    if (bookingDeskList!=null && bookingDeskList.size()>0){
+                        loo :
+                        for (int i=0;i<bookingDeskList.size();i++){
+                            if (deskId.equalsIgnoreCase(""+bookingDeskList.get(i).getTeamDeskId())){
+                                checkIsRequest=true;
+                                break loo;
+                            }
                         }
                     }
-                }
-                //System.out.println("cajec vava"+bookingDeskList.size() +"  "+checkIsRequest);
-                if (checkIsRequest)
-                    editBookingUsingBottomSheet(editBookingDetails,1,0,"new_deep_link");
-                else if (Integer.parseInt(requestedTeamId) == SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID)) {
-                    editBookingUsingBottomSheet(editBookingDetails,1,0,"new_deep_link");
-                } else
-                    editBookingUsingBottomSheet(editBookingDetails,1,0,"request");
+                    //System.out.println("cajec vava"+bookingDeskList.size() +"  "+checkIsRequest);
+                    if (checkIsRequest)
+                        editBookingUsingBottomSheet(editBookingDetails,1,0,"new_deep_link");
+                    else if (Integer.parseInt(requestedTeamId) == SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID)) {
+                        editBookingUsingBottomSheet(editBookingDetails,1,0,"new_deep_link");
+                    } else
+                        editBookingUsingBottomSheet(editBookingDetails,1,0,"request");
 
-            } else if (data1.equalsIgnoreCase("room")){
-                selectedicon=1;
-                tabToggleViewClicked(selectedicon);
+                } else if (data1.equalsIgnoreCase("room")){
+                    selectedicon=1;
+                    tabToggleViewClicked(selectedicon);
 
-                String roomId = appLinkData.getQueryParameter("meetingRoomId");
-                String roomName = appLinkData.getQueryParameter("meetingRoomName");
-                EditBookingDetails editBookingDetails= new EditBookingDetails();
+                    String roomId = appLinkData.getQueryParameter("meetingRoomId");
+                    String roomName = appLinkData.getQueryParameter("meetingRoomName");
+                    EditBookingDetails editBookingDetails= new EditBookingDetails();
 
-                editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
-                //System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
-                editBookingDetails.setEditEndTime(Utils.addHoursToDate(2));
+                    editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
+                    //System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
+                    editBookingDetails.setEditEndTime(Utils.addHoursToDate(2));
 
-                calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
+                    calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
 
-                editBookingDetails.setDate(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
-                editBookingDetails.setCalId(0);
-                editBookingDetails.setMeetingRoomtId(Integer.parseInt(roomId));
-                editBookingDetails.setRoomName(roomName);
-                getMeetingBookingListToEdit("" + Utils.getCurrentDate()+"T00:00:00.000Z", "new_deep_link");
+                    editBookingDetails.setDate(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
+                    editBookingDetails.setCalId(0);
+                    editBookingDetails.setMeetingRoomtId(Integer.parseInt(roomId));
+                    editBookingDetails.setRoomName(roomName);
+                    getMeetingBookingListToEdit("" + Utils.getCurrentDate()+"T00:00:00.000Z", "new_deep_link");
 //                getRoomlist(editBookingDetails, "new_deep_link");
 
-            } else {
-                selectedicon=2;
-                String parkingId = appLinkData.getQueryParameter("parkingId");
-                String parkingName = appLinkData.getQueryParameter("parkingName");
-                EditBookingDetails editBookingDetails= new EditBookingDetails();
+                } else {
+                    selectedicon=2;
+                    String parkingId = appLinkData.getQueryParameter("parkingId");
+                    String parkingName = appLinkData.getQueryParameter("parkingName");
+                    EditBookingDetails editBookingDetails= new EditBookingDetails();
 
-                editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
-                //System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
-                editBookingDetails.setEditEndTime(Utils.addHoursToDate(2));
+                    editBookingDetails.setEditStartTTime(Utils.getCurrentTime());
+                    //System.out.println("eror check"+Utils.getCurrentDate()+"T"+Utils.getCurrentTime()+":00Z");
+                    editBookingDetails.setEditEndTime(Utils.addHoursToDate(2));
 
-                calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
+                    calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
 //
 //                editBookingDetails.setEditEndTime(Utils.splitTime(bookingForEditResponse.getUserPreferences().getWorkHoursTo()));
-                editBookingDetails.setDate(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
-                editBookingDetails.setCalId(0);
-                editBookingDetails.setParkingSlotId(Integer.parseInt(parkingId));
-                editBookingDetails.setParkingSlotCode(parkingName);
+                    editBookingDetails.setDate(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
+                    editBookingDetails.setCalId(0);
+                    editBookingDetails.setParkingSlotId(Integer.parseInt(parkingId));
+                    editBookingDetails.setParkingSlotCode(parkingName);
 
-                getParkingSpotList(""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID),editBookingDetails,"new_deep_link");
+                    getParkingSpotList(""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID),editBookingDetails,"new_deep_link");
 
-            }
+                }
 //
 //            List<String> params = appLinkData.getPathSegments();
 //
@@ -882,6 +883,9 @@ public class BookFragment extends Fragment implements
 //
 //            //System.out.println("Referal id =" + AppConstants.REFERALID + " Referall Code = " + AppConstants.REFERALCODEE);
 //            Toast.makeText(this, "Referal id =" + AppConstants.REFERALID + " Referall Code = " + AppConstants.REFERALCODEE, Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+
         }
 
     }
@@ -2239,32 +2243,36 @@ public class BookFragment extends Fragment implements
     }
 
     private void deeplinkLoginPopUP() {
-        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        try {
+            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
-        final Dialog dialog = new Dialog(getActivity());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        int width = (int) (getActivity().getResources().getDisplayMetrics().widthPixels * 0.80);
-        int height = (int) (getActivity().getResources().getDisplayMetrics().heightPixels * 0.20);
-        dialog.setCancelable(false);
-        dialog.setContentView(R.layout.dialog_validation);
-        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        TextView text = dialog.findViewById(R.id.tv_err_msg);
-        text.setText("Please Login and then scan the QR Code");
-        TextView dialogButton = dialog.findViewById(R.id.tv_ok);
-        dialogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                getActivity().startActivity(intent);
+            final Dialog dialog = new Dialog(getActivity());
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            int width = (int) (getActivity().getResources().getDisplayMetrics().widthPixels * 0.80);
+            int height = (int) (getActivity().getResources().getDisplayMetrics().heightPixels * 0.20);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.dialog_validation);
+            dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            TextView text = dialog.findViewById(R.id.tv_err_msg);
+            text.setText("Please Login and then scan the QR Code");
+            TextView dialogButton = dialog.findViewById(R.id.tv_ok);
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    getActivity().startActivity(intent);
 
-//                mContext.startActivityForResult(intent, 123);
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        } catch (Exception e) {
+
+        }
+
     }
 
     //    Desk Edit List
