@@ -59,8 +59,8 @@
     "DeskUnavailable": "Emplacement non-disponible",
     "BookingSaved": "Réservation enregistrée",
     "DefaultError": "Une erreur s'est produite lors de l'actualisation de vos reglages, veuillez reessayer.",
-    "DeskZoneMaxUtilization": "Capacité maximale % de la réservation d'emplacement dépassée",
-    "FloorMaxUtilization": "Maximum capacity % for desk booking exceeded"
+    "DeskZoneMaxUtilization": "Capacité maximale % de la réservation d'emplacement dépassée.",
+    "FloorMaxUtilization": "Capacité maximale % de la réservation d'emplacement dépassée. "
   },
   "WellBeing": {
     "TabTitle": "Bien-être",
@@ -191,7 +191,7 @@
     "Edit": "Éditer",
     "NotAvailable": "Indisponible",
     "Approved": "Approuvé(e)",
-    "Rejected": "Refuse(e)",
+    "Rejected": "Refusé(e)",
     "Approve": "Approver",
     "Reject": "Refuser",
     "Comment": "Commentaire",
@@ -260,7 +260,7 @@
     "And": "et ",
     "PrivacyPolicy": "politique de confidentialité",
     "TC2": "je reconnais que mon employeur puisse les utiliser afin d’être conforme à ses obligations légales et pour HotDeskPlus de fournir ses services et que ces données peuvent être transmises à des tiers, tels que d'autres employés, sous-traitants, dans le cadre de l’objectif suivant: ",
-    "HealthData": "Données sur la santé (par exemple, exposition au Covid-19, symptômes, tests, résultats, problèmes de santé sous-jacents)   ",
+    "HealthData": "Données sur la santé (par exemple, exposition au Covid-19, symptômes, tests, résultats, problèmes de santé sous-jacents)  ",
     "CheckBox": "Je comprends que mon identité ne sera pas divulguée concernant ces informations, à moins qu'il ne soit nécessaire de déterminer quels collègues ou autres personnes puissent avoir été exposées à des personnes testées positives.",
     "Disclaimer": "HotDeskPlus fait référence à Hotdeskplus Software Ltd et Hotdeskplus Pty Ltd ",
     "Accept": "J'accepte",
