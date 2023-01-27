@@ -546,6 +546,7 @@ public class LoginActivity extends AppCompatActivity {
 //            removeAccountButton.setEnabled(false);
 //            acquireTokenSilentButton.setEnabled(false);
         }
+
     }
 
     //GetToken
