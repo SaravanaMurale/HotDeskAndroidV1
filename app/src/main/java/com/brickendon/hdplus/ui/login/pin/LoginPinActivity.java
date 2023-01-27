@@ -140,7 +140,8 @@ public class LoginPinActivity extends AppCompatActivity {
                         GetTokenResponse getTokenResponse = response.body();
                         if (getTokenResponse != null) {
                             //Save token
-                            SessionHandler.getInstance().save(LoginPinActivity.this, AppConstants.USERTOKEN, getTokenResponse.getToken());
+                            SessionHandler.getInstance().save(LoginPinActivity.this, AppConstants.USERTOKEN,
+                                    getTokenResponse.getToken());
                             SessionHandler.getInstance().saveBoolean(LoginPinActivity.this, AppConstants.LOGIN_CHECK,true);
                             getUserDetailsUsingToken(SessionHandler.getInstance().get(LoginPinActivity.this,AppConstants.USERTOKEN));
 /*

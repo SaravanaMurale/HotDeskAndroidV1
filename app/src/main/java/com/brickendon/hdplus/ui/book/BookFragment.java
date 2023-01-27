@@ -6141,13 +6141,15 @@ public class BookFragment extends Fragment implements
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                try {
+                    if(!floorSearchStatus) {
+                        showCountryAdapter.getFilter().filter(s.toString());
+                    } else {
+                        floorAdapter.getFilter().filter(s.toString());
+                    }
+                } catch (Exception e){
 
-                if(!floorSearchStatus) {
-                    showCountryAdapter.getFilter().filter(s.toString());
-                } else {
-                    floorAdapter.getFilter().filter(s.toString());
                 }
-
 
             }
 
@@ -6168,19 +6170,22 @@ public class BookFragment extends Fragment implements
 
     }
     private void showCountryListInAdapter(List<LocateCountryRespose> locateCountryResposes) {
-
-        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvCountry.setLayoutManager(linearLayoutManager);
-        rvCountry.setHasFixedSize(true);
-        List<LocateCountryRespose> locateCountryResposes1=new ArrayList<>();
-        for (int i = 0; i <locateCountryResposes.size() ; i++) {
-            if(locateCountryResposes.get(i).isActive()) {
-                locateCountryResposes1.add(locateCountryResposes.get(i));
+        try {
+            linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            rvCountry.setLayoutManager(linearLayoutManager);
+            rvCountry.setHasFixedSize(true);
+            List<LocateCountryRespose> locateCountryResposes1=new ArrayList<>();
+            for (int i = 0; i <locateCountryResposes.size() ; i++) {
+                if(locateCountryResposes.get(i).isActive()) {
+                    locateCountryResposes1.add(locateCountryResposes.get(i));
+                }
             }
-        }
 
-        showCountryAdapter = new ShowCountryAdapterCalendar(getContext(), locateCountryResposes1, this, "COUNTRY");
-        rvCountry.setAdapter(showCountryAdapter);
+            showCountryAdapter = new ShowCountryAdapterCalendar(getContext(), locateCountryResposes1, this, "COUNTRY");
+            rvCountry.setAdapter(showCountryAdapter);
+        } catch (Exception e){
+
+        }
 
     }
 
@@ -6223,22 +6228,26 @@ public class BookFragment extends Fragment implements
     }
 
     private void showCountryChildListInAdapter(List<LocateCountryRespose> locateCountryResposes) {
+        try {
+            linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            rvState.setLayoutManager(linearLayoutManager);
+            rvState.setHasFixedSize(true);
 
-        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvState.setLayoutManager(linearLayoutManager);
-        rvState.setHasFixedSize(true);
-
-        List<LocateCountryRespose> locateCountryResposes1 = new ArrayList<>();
-        for (int i = 0; i <locateCountryResposes.size() ; i++) {
-            if(locateCountryResposes.get(i).isActive()) {
-                locateCountryResposes1.add(locateCountryResposes.get(i));
+            List<LocateCountryRespose> locateCountryResposes1 = new ArrayList<>();
+            for (int i = 0; i <locateCountryResposes.size() ; i++) {
+                if(locateCountryResposes.get(i).isActive()) {
+                    locateCountryResposes1.add(locateCountryResposes.get(i));
+                }
             }
+
+
+            showCountryAdapter = new ShowCountryAdapterCalendar(getContext(), locateCountryResposes1,
+                    this, "STATE");
+            rvState.setAdapter(showCountryAdapter);
+        } catch (Exception e){
+
         }
 
-
-        showCountryAdapter = new ShowCountryAdapterCalendar(getContext(), locateCountryResposes1,
-                this, "STATE");
-        rvState.setAdapter(showCountryAdapter);
     }
 
     private void getFloorDetails(int floorId, boolean findCoordinateStatus) {
@@ -6284,20 +6293,24 @@ public class BookFragment extends Fragment implements
 
     }
     private void showFloorListInAdapter(List<LocateCountryRespose> locateCountryResposes) {
+        try {
 
-        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvStreet.setLayoutManager(linearLayoutManager);
-        rvStreet.setHasFixedSize(true);
+            linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            rvStreet.setLayoutManager(linearLayoutManager);
+            rvStreet.setHasFixedSize(true);
 
-        List<LocateCountryRespose> locateCountryResposes1 = new ArrayList<>();
-        for (int i = 0; i <locateCountryResposes.size() ; i++) {
-            if(locateCountryResposes.get(i).isActive()) {
-                locateCountryResposes1.add(locateCountryResposes.get(i));
+            List<LocateCountryRespose> locateCountryResposes1 = new ArrayList<>();
+            for (int i = 0; i <locateCountryResposes.size() ; i++) {
+                if(locateCountryResposes.get(i).isActive()) {
+                    locateCountryResposes1.add(locateCountryResposes.get(i));
+                }
             }
-        }
 
-        showCountryAdapter = new ShowCountryAdapterCalendar(getContext(), locateCountryResposes1, this, "FLOOR");
-        rvStreet.setAdapter(showCountryAdapter);
+            showCountryAdapter = new ShowCountryAdapterCalendar(getContext(), locateCountryResposes1, this, "FLOOR");
+            rvStreet.setAdapter(showCountryAdapter);
+        } catch (Exception e){
+
+        }
 
     }
 

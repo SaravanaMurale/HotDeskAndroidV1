@@ -483,7 +483,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void callTokenExachange(String email) {
         if (Utils.isNetworkAvailable(this)) {
-            if(LoginActivity.this!=null &&!LoginActivity.this.isFinishing())
+            if(LoginActivity.this!=null && !LoginActivity.this.isFinishing())
                 dialog = ProgressDialog.showProgressBar(LoginActivity.this);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             JsonObject jsonObject = new JsonObject();
@@ -500,31 +500,19 @@ public class LoginActivity extends AppCompatActivity {
                             SessionHandler.getInstance().save(LoginActivity.this, AppConstants.USERTOKEN, getTokenResponse.getToken());
                             SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.TYPE_OF_LOGIN, 2);
 
-                            //System.out.println("ReceivedToken" + getTokenResponse.getToken());
-                            //System.out.println("ReceivedExpiration" + getTokenResponse.getExpiration());
-                            //String token=getTokenResponse.getExpiration();
-
-                            ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
-
                             //GetUser Details Using Token
-
                             SessionHandler.getInstance().saveBoolean(LoginActivity.this, AppConstants.LOGIN_CHECK, true);
                             getUserDetailsUsingToken(getTokenResponse.getToken());
                         } else {
-                            ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
                             Utils.toastMessage(LoginActivity.this, "No Token Found");
                         }
                     } else if (response.code() == 403) {
-                        ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
-
                         Intent intent = new Intent(getApplicationContext(), GDPRActivity.class);
                         intent.putExtra("tenantName", tentantName);
                         intent.putExtra("userName", email);
                         startActivity(intent);
                     } else {
                         signOutAccounts(null);
-
-                        ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
                         Utils.toastShortMessage(LoginActivity.this, "SSO Login is not setup for this email contact admin.");
                     }
                 }
@@ -534,12 +522,11 @@ public class LoginActivity extends AppCompatActivity {
 
                 }
             });
-
+            ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
         } else {
             Utils.toastMessage(this, "Please Enable Internet");
         }
     }
-
 
     /**
      * Display the error message
@@ -559,7 +546,6 @@ public class LoginActivity extends AppCompatActivity {
 //            removeAccountButton.setEnabled(false);
 //            acquireTokenSilentButton.setEnabled(false);
         }
-
     }
 
     //GetToken
@@ -856,8 +842,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
                     SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.SUPPORT_ZONE_ID, getSupportZoneList.get(0).getParentLocationId());
-
-                    System.out.println("LoggedInSupportZoneParentLocatinId "+getSupportZoneList.get(0).getParentLocationId());
 
 
 
