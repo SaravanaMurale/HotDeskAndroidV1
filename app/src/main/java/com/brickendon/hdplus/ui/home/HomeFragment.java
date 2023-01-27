@@ -331,12 +331,12 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     } else {
                         intent = new Intent(getActivity(), UserNotificationActivity.class);
                     }
-                    intent.putExtra(AppConstants.SHOWNOTIFICATION, notiList);
+                 //   intent.putExtra(AppConstants.SHOWNOTIFICATION, notiList);
                     startActivity(intent);
 
                 } else {
                     Intent intent = new Intent(getActivity(), UserNotificationActivity.class);
-                    intent.putExtra(AppConstants.SHOWNOTIFICATION, notiList);
+                   // intent.putExtra(AppConstants.SHOWNOTIFICATION, notiList);
                     startActivity(intent);
                 }
 

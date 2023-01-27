@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.brickendon.hdplus.utils.ExtendedDataHolder;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -43,6 +44,8 @@ import com.brickendon.hdplus.utils.SessionHandler;
 import com.brickendon.hdplus.utils.Utils;
 import com.brickendon.hdplus.webservice.ApiClient;
 import com.brickendon.hdplus.webservice.ApiInterface;
+import com.google.gson.Gson;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -97,26 +100,31 @@ AdapterAdminNotificationReq.AccRejReqInterface{
         tv_manage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+try{
+    if (notiList.size()>0){
+        ArrayList<IncomingRequestResponse.Result> manageList = new ArrayList<>();
 
-                if (notiList.size()>0){
-                    ArrayList<IncomingRequestResponse.Result> manageList = new ArrayList<>();
+        manageList = (ArrayList<IncomingRequestResponse.Result>) notiList.stream().filter(val -> val.getStatus() == 0).collect(Collectors.toList());
+        IncomingRequestResponse.Result result = new IncomingRequestResponse.Result(0);
 
-                    manageList = (ArrayList<IncomingRequestResponse.Result>) notiList.stream().filter(val -> val.getStatus() == 0).collect(Collectors.toList());
-                    IncomingRequestResponse.Result result = new IncomingRequestResponse.Result(0);
+        ArrayList<IncomingRequestResponse.Result> inComingList = new ArrayList<>();
+        inComingList = (ArrayList<IncomingRequestResponse.Result>) manageList.stream().filter(val -> val.getIncoming().equalsIgnoreCase("incoming")).collect(Collectors.toList());
 
-                    ArrayList<IncomingRequestResponse.Result> inComingList = new ArrayList<>();
-                    inComingList = (ArrayList<IncomingRequestResponse.Result>) manageList.stream().filter(val -> val.getIncoming().equalsIgnoreCase("incoming")).collect(Collectors.toList());
+        if (inComingList!=null && inComingList.size()>0){
 
-                    if (inComingList!=null && inComingList.size()>0){
+            int c = Collections.frequency(inComingList, result);
+            Intent intent = new Intent(NotificationsListActivity.this, NotificationManageActivity.class);
 
-                        int c = Collections.frequency(inComingList, result);
-                        Intent intent = new Intent(NotificationsListActivity.this, NotificationManageActivity.class);
-                        intent.putExtra(AppConstants.SHOWNOTIFICATION,inComingList);
-                        intent.putExtra(AppConstants.INCOMING,c);
-                        startActivity(intent);
-                    }else {
-                        Toast.makeText(context, "No Incoming Notifications", Toast.LENGTH_SHORT).show();
-                    }
+            String inComingListStr = new Gson().toJson(inComingList);
+            ExtendedDataHolder extras = ExtendedDataHolder.getInstance();
+            extras.putExtra("inComingList", inComingListStr);
+
+            //   intent.putExtra(AppConstants.SHOWNOTIFICATION,inComingList);
+            intent.putExtra(AppConstants.INCOMING,c);
+            startActivity(intent);
+        }else {
+            Toast.makeText(context, "No Incoming Notifications", Toast.LENGTH_SHORT).show();
+        }
 
                 /*for (int i=0;i<notiList.size();i++) {
 
@@ -126,9 +134,13 @@ AdapterAdminNotificationReq.AccRejReqInterface{
 
                 }*/
 
-                }else {
-                    Toast.makeText(context, "No Incoming Notifications", Toast.LENGTH_SHORT).show();
-                }
+    }else {
+        Toast.makeText(context, "No Incoming Notifications", Toast.LENGTH_SHORT).show();
+    }
+}catch (Exception e){
+    e.printStackTrace();
+}
+
 
             }
         });
