@@ -29,6 +29,7 @@ import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -393,6 +394,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     Activity activityContext;
     Context context;
 
+    //Should not click apply button without selecting floor
+    int applyButtonClickedStatus=0;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -406,6 +410,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         //Before initLoadFloorDetails need to get timezone
         getTimeZoneForBooking(defaultTeamId);
+
+
+
 
 
     }
@@ -1224,6 +1231,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         int parentIdCheck = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID_CHECK);
         int selecctedFloorFromHome = SessionHandler.getInstance().getInt(getContext(), AppConstants.SELECTED_LOCATION_FROM_HOME);
 
+
+
+
         binding.firstLayout.removeAllViews();
 
         //If user clicked location icon from home and teams we need get support zone
@@ -1263,6 +1273,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //SessionHandler.getInstance().saveInt(getContext(), AppConstants.SELECTED_LOCATION_FROM_HOME, 0);
 
         int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+
+        System.out.println("ParentIdToPrint "+parentId);
+        System.out.println("ParentIdToCheckPrint "+parentIdCheck);
+
         ProgressDialog.clearTouchLock(getContext(), getActivity());
         if (parentId > 0) {
             //Disable touch Screen
@@ -5547,6 +5561,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         bottomSheetDialog.setContentView(view);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
         bottomSheetBehavior.setPeekHeight(500);
+        bottomSheetBehavior.setDraggable(false);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
         CoordinatorLayout layout = bottomSheetDialog.findViewById(R.id.parentIdLocate);
@@ -5608,6 +5623,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         bsGeneralSearch.setHint(appKeysPage.getSearch());
 
 
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -5619,7 +5635,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             @Override
             public void onClick(View v) {
 
-                //if (floorAdapter != null) {
+                if (applyButtonClickedStatus==1) {
 
                     //if (floorAdapter.getSelectedPositionCheck() >= 0) {
                         floorSearchStatus = false;
@@ -5629,9 +5645,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         //removes desk in layout
                         binding.firstLayout.removeAllViews();
 
-
                         //used to check default location
                         defaultLocationcheck = 1;
+
+                        applyButtonClickedStatus=0;
 
                         initLoadFloorDetails(canvasss);
                         bottomSheetDialog.dismiss();
@@ -5639,9 +5656,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         Utils.toastMessage(getContext(), "Please Select Floor");
                     }*/
 
-                /*} else {
+                } else {
                     Utils.toastMessage(getContext(), "Please Select Floor");
-                }*/
+                }
 
 
             }
@@ -5838,6 +5855,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 street.setVisibility(View.VISIBLE);
                 street.setText("Floors");
 
+
+
+
+
+
+
                 SessionHandler.getInstance().saveInt(getContext(), AppConstants.SUB_PARENT_ID, locateCountryRespose.getLocateCountryId());
                 getFloorDetails(locateCountryRespose.getLocateCountryId(), false);
 
@@ -5865,6 +5888,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 SessionHandler.getInstance().remove(getContext(), AppConstants.FULLPATHLOCATION);
 
                 //rvStreet.setVisibility(View.GONE);
+
+                applyButtonClickedStatus=1;
 
 
                 //rvFloor.setVisibility(View.VISIBLE);

@@ -836,9 +836,11 @@ public class LoginActivity extends AppCompatActivity {
                     activeLocationArrayList = new ArrayList<>();
                     activeLocationArrayList = response.body();
 
+                    //parentLocationId
                     floorParentID = defaultLocation.getParentLocationId();
 
                     defaultLocationIdForCalendar = defaultLocation.getId();
+                    //Default Location Id
                     Integer id = defaultLocation.getId();
                     floorName = defaultLocation.getName();
 
@@ -850,21 +852,25 @@ public class LoginActivity extends AppCompatActivity {
 
 
                     ArrayList<DAOActiveLocation> getSupportZoneList = new ArrayList<>();
-                    getSupportZoneList = (ArrayList<DAOActiveLocation>)activeLocationArrayList.stream().filter(m -> m.getId() == floorParentID).collect(Collectors.toList());
+                    getSupportZoneList = (ArrayList<DAOActiveLocation>) activeLocationArrayList.stream().filter(m -> m.getId() == floorParentID).collect(Collectors.toList());
 
+                    if(getSupportZoneList!=null && getSupportZoneList.size()>0) {
 
-                    SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.SUPPORT_ZONE_ID, getSupportZoneList.get(0).getParentLocationId());
+                        SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.SUPPORT_ZONE_ID, getSupportZoneList.get(0).getParentLocationId());
 
+                    }
 
+                    if(selectFloors!=null && selectFloors.size()>0) {
 
+                        for (int i = 0; i < selectFloors.size(); i++) {
 
-                    for (int i = 0; i < selectFloors.size(); i++) {
-
-                        if (id.equals(selectFloors.get(i).getId())) {
-                            floorPositon = i;
-                            finFloorName=selectFloors.get(i).getName();
-                            break;
+                            if (id.equals(selectFloors.get(i).getId())) {
+                                floorPositon = i;
+                                finFloorName = selectFloors.get(i).getName();
+                                break;
+                            }
                         }
+
                     }
 
                     //please add this for calendar default locations #Bala
@@ -904,14 +910,24 @@ public class LoginActivity extends AppCompatActivity {
                         CountryName = location.get(0).getName();
                     }
 
-                    System.out.println("LoginLocation "+buildingName+" "+CityName+" "+CountryName+" "+finFloorName);
+                    //System.out.println("LoginLocation "+buildingName+" "+CityName+" "+CountryName+" "+finFloorName);
 
 
                     //To load Default location
+
+                    //Safety Purpose Block
+                    //SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FLOOR_CHECK, defaultLocation.getName());
+                    //SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FLOOR, defaultLocation.getName());
+                    //End Safety Purpose Block
+
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.COUNTRY_NAME_CHECK, CountryName);
 
-                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.BUILDING_CHECK, CityName);
-                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FLOOR_CHECK, buildingName);
+                    if(CityName!=null) {
+                        SessionHandler.getInstance().save(LoginActivity.this, AppConstants.BUILDING_CHECK, CityName);
+                    }
+                    if(buildingName!=null) {
+                        SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FLOOR_CHECK, buildingName);
+                    }
 
                     SessionHandler.getInstance().save(LoginActivity.this,AppConstants.FINAL_FLOOR_CHECK,finFloorName);
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FULLPATHLOCATION_CHECK, fullPathLocation);
@@ -920,8 +936,12 @@ public class LoginActivity extends AppCompatActivity {
 
                     SessionHandler.getInstance().save(LoginActivity.this, AppConstants.COUNTRY_NAME, CountryName);
 
-                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.BUILDING, CityName);
-                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FLOOR, buildingName);
+                    if(CityName!=null) {
+                        SessionHandler.getInstance().save(LoginActivity.this, AppConstants.BUILDING, CityName);
+                    }
+                    if(buildingName!=null) {
+                        SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FLOOR, buildingName);
+                    }
 
                     SessionHandler.getInstance().save(LoginActivity.this,AppConstants.FINAL_FLOOR,finFloorName);
 

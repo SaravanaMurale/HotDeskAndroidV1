@@ -5987,6 +5987,7 @@ public class BookFragment extends Fragment implements
         View view = View.inflate(getContext(), R.layout.bottom_sheet_locate_floor_filter_calendar, null);
         bottomSheetDialog.setContentView(view);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
+        bottomSheetBehavior.setDraggable(false);
 //        bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
