@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.brickendon.hdplus.utils.ExtendedDataHolder;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -43,6 +44,8 @@ import com.brickendon.hdplus.utils.SessionHandler;
 import com.brickendon.hdplus.utils.Utils;
 import com.brickendon.hdplus.webservice.ApiClient;
 import com.brickendon.hdplus.webservice.ApiInterface;
+import com.google.gson.Gson;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -111,7 +114,12 @@ AdapterAdminNotificationReq.AccRejReqInterface{
 
                         int c = Collections.frequency(inComingList, result);
                         Intent intent = new Intent(NotificationsListActivity.this, NotificationManageActivity.class);
-                        intent.putExtra(AppConstants.SHOWNOTIFICATION,inComingList);
+
+                        String inComingListStr = new Gson().toJson(inComingList);
+                        ExtendedDataHolder extras = ExtendedDataHolder.getInstance();
+                        extras.putExtra("inComingList", inComingListStr);
+
+                     //   intent.putExtra(AppConstants.SHOWNOTIFICATION,inComingList);
                         intent.putExtra(AppConstants.INCOMING,c);
                         startActivity(intent);
                     }else {

@@ -318,6 +318,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(IAuthenticationResult authenticationResult) {
+                try{
                 /* Successfully got a token, use it to call a protected resource - MSGraph */
                 Log.d(TAG, "Successfully authenticated");
                 System.out.println("bala sso" + authenticationResult.getAccount());
@@ -328,31 +329,41 @@ public class LoginActivity extends AppCompatActivity {
 
                 /* Reload account asynchronously to get the up-to-date list. */
                 loadAccounts();
-                dialog.dismiss();
+                if(dialog!= null && dialog.isShowing())
+                 dialog.dismiss();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
 
             }
 
             @Override
             public void onError(MsalException exception) {
-                dialog.dismiss();
-                Toast.makeText(LoginActivity.this, "SSO AUth Failed", Toast.LENGTH_SHORT).show();
-                System.out.println("bala sso error" + exception.getMessage());
-                final String B2C_PASSWORD_CHANGE = "AADB2C90118";
-                if (exception.getMessage().contains(B2C_PASSWORD_CHANGE)) {
-                    Log.d(TAG, "onError: The user clicks the 'Forgot Password' link in a sign-up or sign-in user flow.\\n\" +\n" +
-                            "                            \"Your application needs to handle this error code by running a specific user flow that resets the password.");
-                    return;
+                try {
+                    if(dialog!= null && dialog.isShowing())
+                        dialog.dismiss();
+                    Toast.makeText(LoginActivity.this, "SSO AUth Failed", Toast.LENGTH_SHORT).show();
+                    System.out.println("bala sso error" + exception.getMessage());
+                    final String B2C_PASSWORD_CHANGE = "AADB2C90118";
+                    if (exception.getMessage().contains(B2C_PASSWORD_CHANGE)) {
+                        Log.d(TAG, "onError: The user clicks the 'Forgot Password' link in a sign-up or sign-in user flow.\\n\" +\n" +
+                                "                            \"Your application needs to handle this error code by running a specific user flow that resets the password.");
+                        return;
+                    }
+
+                    /* Failed to acquireToken */
+                    Log.d(TAG, "Authentication failed: " + exception.toString());
+                    displayError(exception);
+
+                    if (exception instanceof MsalClientException) {
+                        /* Exception inside MSAL, more info inside MsalError.java */
+                    } else if (exception instanceof MsalServiceException) {
+                        /* Exception when communicating with the STS, likely config issue */
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
 
-                /* Failed to acquireToken */
-                Log.d(TAG, "Authentication failed: " + exception.toString());
-                displayError(exception);
-
-                if (exception instanceof MsalClientException) {
-                    /* Exception inside MSAL, more info inside MsalError.java */
-                } else if (exception instanceof MsalServiceException) {
-                    /* Exception when communicating with the STS, likely config issue */
-                }
             }
 
             @Override
@@ -380,13 +391,13 @@ public class LoginActivity extends AppCompatActivity {
                 /* Reload account asynchronously to get the up-to-date list. */
                 loadAccounts();
                 signOutAccounts(null);
-                dialog.dismiss();
+               // dialog.dismiss();
 
             }
 
             @Override
             public void onError(MsalException exception) {
-                dialog.dismiss();
+              //  dialog.dismiss();
                 Toast.makeText(LoginActivity.this, "SSO AUth Failed", Toast.LENGTH_SHORT).show();
                 System.out.println("bala sso error" + exception.getMessage());
                 final String B2C_PASSWORD_CHANGE = "AADB2C90118";

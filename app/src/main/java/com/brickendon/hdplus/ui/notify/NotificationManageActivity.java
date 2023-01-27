@@ -18,6 +18,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -27,12 +28,17 @@ import com.brickendon.hdplus.databinding.ActivityNotificationManageBinding;
 import com.brickendon.hdplus.model.request.DAODeskAccept;
 import com.brickendon.hdplus.model.request.DAODeskReject;
 import com.brickendon.hdplus.model.response.BaseResponse;
+import com.brickendon.hdplus.model.response.DAOTeamMember;
 import com.brickendon.hdplus.model.response.IncomingRequestResponse;
 import com.brickendon.hdplus.utils.AppConstants;
+import com.brickendon.hdplus.utils.ExtendedDataHolder;
 import com.brickendon.hdplus.utils.SessionHandler;
 import com.brickendon.hdplus.utils.Utils;
 import com.brickendon.hdplus.webservice.ApiClient;
 import com.brickendon.hdplus.webservice.ApiInterface;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -61,7 +67,17 @@ public class NotificationManageActivity extends AppCompatActivity {
         if (intent!=null) {
 
             try {
-                notiList = (ArrayList<IncomingRequestResponse.Result>) intent.getSerializableExtra(AppConstants.SHOWNOTIFICATION);
+                String inComingListStr = "";
+                ExtendedDataHolder extras = ExtendedDataHolder.getInstance();
+                if (extras.hasExtra("inComingList")) {
+                    inComingListStr = (String) extras.getExtra("inComingList");
+                }
+                extras.clear();
+
+                notiList = new Gson().fromJson(inComingListStr, new
+                        TypeToken<List<IncomingRequestResponse.Result>>(){}.getType());
+
+                //notiList = (ArrayList<IncomingRequestResponse.Result>) intent.getSerializableExtra(AppConstants.SHOWNOTIFICATION);
                 cIncoming = intent.getIntExtra(AppConstants.INCOMING,0);
                 setAdapter();
             }catch (Exception e){
