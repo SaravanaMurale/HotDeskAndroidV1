@@ -447,7 +447,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         qrEnabled = response.body();
 //                        qrEnabled = true;
                     } else if (response.code() == 401) {
-                        Utils.showCustomTokenExpiredDialog(getActivity(), "Token Expired");
+                        if(getActivity()!=null)
+                            Utils.showCustomTokenExpiredDialog(getActivity(), "Token Expired");
+                        else if (activityContext!=null)
+                            Utils.showCustomTokenExpiredDialog(activityContext, "Token Expired");
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK, false);
 //                        Utils.finishAllActivity(getContext());
                     }
