@@ -4,6 +4,15 @@ public class AssertModel {
     private Integer id;
     private String assertName;
     private Integer image;
+    private boolean enable;
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
 
     public Integer getId() {
         return id;

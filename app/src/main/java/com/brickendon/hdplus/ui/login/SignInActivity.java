@@ -26,6 +26,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.concurrent.Executor;
 
 import butterknife.BindView;
@@ -372,10 +373,10 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void launchHomeActivity() {
-
         if (Utils.isNetworkAvailable(this)) {
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<BookingListResponse> call = apiService.getUserMyWorkDetails(Utils.getCurrentDate(), true);
+            Call<BookingListResponse> call = apiService.getUserMyWorkDetails(Utils.getCurrentDate(),
+                    true);
             call.enqueue(new Callback<BookingListResponse>() {
                 @Override
                 public void onResponse(Call<BookingListResponse> call, Response<BookingListResponse> response) {
@@ -400,7 +401,6 @@ public class SignInActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     }
-
                 }
 
                 @Override
@@ -408,7 +408,6 @@ public class SignInActivity extends AppCompatActivity {
 
                 }
             });
-
         } else {
             Utils.toastMessage(SignInActivity.this, "Please Enable Internet");
         }

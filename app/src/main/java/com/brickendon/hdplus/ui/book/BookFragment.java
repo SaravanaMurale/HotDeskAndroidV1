@@ -8462,6 +8462,7 @@ public class BookFragment extends Fragment implements
         bg.setBackgroundColor(Color.TRANSPARENT);
 
         selectedicon = assertSpinner.getSelectedItemPosition()+1;
+
         assertSpinner.setBackground(getResources().getDrawable(R.drawable.spinner_outline));
         switch (selectedicon) {
             case 1:
@@ -8488,7 +8489,6 @@ public class BookFragment extends Fragment implements
             default:
                 tabToggleViewClicked(1);
         }
-//        tabToggleViewClicked(selectedicon);
 
     }
 

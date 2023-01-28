@@ -1638,23 +1638,21 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
                     DeskAvaliabilityResponse deskAvaliabilityResponseList = response.body();
                     int teamAvailableCount = 0;
-                    if (deskAvaliabilityResponseList != null) {
+                    if (deskAvaliabilityResponseList != null
+                            && deskAvaliabilityResponseList.getTeamDeskAvaliabilityList()!=null) {
+
                         for (int i = 0; i < deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size(); i++) {
                             if (!deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).isBookedByElse()
                                     && !deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().get(i).isBookedByUser()) {
                                 teamAvailableCount++;
                             }
                         }
-                        System.out.println("tets vals" + teamAvailableCount + "/"
-                                + deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size()
-                                + " desks available");
+
                         list.get(finalI).setDeskAvailability(teamAvailableCount + "/"
                                 + deskAvaliabilityResponseList.getTeamDeskAvaliabilityList().size()
                                 + " desks available");
-                        System.out.println("tets vals : ij" + list.get(finalI).getDeskAvailability() + finalI);
 
                         if (teamsFloorListAdapter != null) {
-                            System.out.println("tets vals : ad" + list.get(0).getDeskAvailability());
                             teamsFloorListAdapter.notifyDataSetChanged();
                         }
                     }

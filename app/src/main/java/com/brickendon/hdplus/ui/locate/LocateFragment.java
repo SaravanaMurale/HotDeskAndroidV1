@@ -411,10 +411,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //Before initLoadFloorDetails need to get timezone
         getTimeZoneForBooking(defaultTeamId);
 
-
-
-
-
     }
 
 
@@ -422,8 +418,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        activityContext=getActivity();
-        context=getActivity();
+        activityContext = getActivity();
+        context = getActivity();
 
         binding.locateProgressBar.setVisibility(View.VISIBLE);
         new Handler().postDelayed(new Runnable() {
@@ -433,7 +429,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
             }
         }, 1000);
-
 
     }
 
@@ -3600,9 +3595,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         tvBookedRoomEndTime = locateBookedBottomSheet.findViewById(R.id.tvBookedRoomEndTime);
         bookedCancel = locateBookedBottomSheet.findViewById(R.id.bookedCancel);
 
-
-
-        //System.out.println("FromAndToTimeOfBooking "+Utils.splitTime(bookedDeskResponseList.get(0).getFrom())+" "+Utils.splitTime(bookedDeskResponseList.get(0).getTo()));
+        //System.out.println("FromAndToTimeOfBooking "+Utils.splitTime(bookedDeskResponseList.get(0).getFrom())+
+        // " "+Utils.splitTime(bookedDeskResponseList.get(0).getTo()));
 
         //setLang
         meetingAvaliable.setText(appKeysPage.getBooked());
@@ -3615,9 +3609,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         tvBookedRoomStartTime.setText(Utils.splitTime(bookedCarResponse.getCarParkBookingsList().get(0).getFrom()));
         tvBookedRoomEndTime.setText(Utils.splitTime(bookedCarResponse.getCarParkBookingsList().get(0).getTo()));
 
-        /*String sDate = binding.locateCalendearView.getText().toString();
+        /*
+        String sDate = binding.locateCalendearView.getText().toString();
         String dateTime = Utils.dateWithDayString(sDate);
-        bookedDeskDate.setText(dateTime);*/
+        bookedDeskDate.setText(dateTime);
+        */
 
         bookedDeskDate.setText(Utils.showCalendarWithFullMonth(binding.locateCalendearView.getText().toString()));
 
@@ -11030,7 +11026,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     private void getFloorAndDeskDetailsToPlaceUser(DAOTeamMember.DayGroup.CalendarEntry.Booking booking, RelativeLayout.LayoutParams relativeLayout, View perSonView, ImageView ivPerson) {
 
-
         int selectedFloorIdInTeam = booking.getLocationBuildingFloor().getFloorID();
 
         int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
@@ -11201,7 +11196,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
     private void getLocateAmenitiesFilterData(boolean calledFromFilter, List<UserAllowedMeetingResponse> userAllowedMeetingResponseList) {
-        if (Utils.isNetworkAvailable(getContext())) {
+
+        if (context != null && Utils.isNetworkAvailable(context)) {
             binding.locateProgressBar.setVisibility(View.VISIBLE);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<List<AmenitiesResponse>> call = apiService.getAmenities();

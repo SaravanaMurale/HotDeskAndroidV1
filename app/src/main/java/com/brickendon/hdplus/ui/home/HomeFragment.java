@@ -821,7 +821,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         popDialog.show();
     }
 
-    public void loadHomeList() {
+    public void loadHomeListOld() {
         if (Utils.isNetworkAvailable(getActivity())) {
             mSwipeRefreshLayout.setRefreshing(true);
 //            dialog= ProgressDialog.showProgressBar(getContext());
@@ -864,6 +864,149 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         } else {
             Utils.toastMessage(getActivity(), "Please Enable Internet");
         }
+    }
+    public void loadHomeList() {
+        if (Utils.isNetworkAvailable(getActivity())) {
+            mSwipeRefreshLayout.setRefreshing(true);
+//            dialog= ProgressDialog.showProgressBar(getContext());
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<BookingListResponse>> call = apiService.getUserMyWorkDetailsNew(Utils.getCurrentDate(),3, true);
+//            Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-07-18",true);
+            //Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-07-04",true);
+            call.enqueue(new Callback<List<BookingListResponse>>() {
+                @Override
+                public void onResponse(Call<List<BookingListResponse>> call,
+                                       Response<List<BookingListResponse>> response) {
+                    if (response.code() == 200) {
+                        if (response.body()!=null ) {
+                            List<BookingListResponse> bookingListResponse = response.body();
+                            if (bookingListResponse!=null && bookingListResponse.size()>0){
+                                teamId = bookingListResponse.get(0).getTeamId();
+                                teamMembershipId = bookingListResponse.get(0).getTeamMembershipId();
+                                createRecyclerListNew(bookingListResponse);
+                                loadDeskList();
+                            }
+                        }
+
+                    } else if (response.code() == 401) {
+                        //Handle if token got expired
+                        SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK, false);
+                        Utils.showCustomTokenExpiredDialog(getActivity(), "Token Expired");
+
+                    }
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+
+                @Override
+                public void onFailure(Call<List<BookingListResponse>> call, Throwable t) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+
+                    Log.d(TAG, "onFailure: " + t.getMessage());
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
+    }
+    private void createRecyclerListNew(List<BookingListResponse> body) {
+        List<BookingListResponse> bookingListResponsesList = body;
+        recyclerModelArrayList = new ArrayList<>();
+        for (int z=0; z<bookingListResponsesList.size(); z++){
+            BookingListResponse bookingListResponses = bookingListResponsesList.get(z);
+//        ArrayList<BookingListResponse> recyclerModelArrayList = new ArrayList<>();
+            if (bookingListResponses.getDayGroups() != null) {
+                for (int i = 0; i < bookingListResponses.getDayGroups().size(); i++) {
+                    boolean dateCheck = true;
+                    Date date = bookingListResponses.getDayGroups().get(i).getDate();
+                    ArrayList<BookingListResponse.DayGroup.CalendarEntry> calendarEntries = null;
+                    ArrayList<BookingListResponse.DayGroup.MeetingBooking> meetingEntries = null;
+                    ArrayList<BookingListResponse.DayGroup.CarParkBooking> carParkEntries = null;
+
+                    if (bookingListResponses.getDayGroups().get(i).getCalendarEntries() != null) {
+                        calendarEntries =
+                                bookingListResponses.getDayGroups().get(i).getCalendarEntries();
+                    }
+                    if (bookingListResponses.getDayGroups().get(i).getMeetingBookings() != null) {
+                        meetingEntries =
+                                bookingListResponses.getDayGroups().get(i).getMeetingBookings();
+                    }
+                    if (bookingListResponses.getDayGroups().get(i).getCarParkBookings() != null) {
+                        carParkEntries =
+                                bookingListResponses.getDayGroups().get(i).getCarParkBookings();
+                    }
+                    if (Utils.compareTwoDate(bookingListResponses.getDayGroups().get(i).getDate(), Utils.getCurrentDate()) != 1 || showPastStatus) {
+                        if (calendarEntries != null) {
+                            for (int j = 0; j < calendarEntries.size(); j++) {
+                                BookingListResponse.DayGroup momdel = new BookingListResponse.DayGroup();
+                                if (dateCheck) {
+                                    momdel.setDateStatus(true);
+                                    momdel.setCalDeskStatus(1);
+                                    momdel.setDate(date);
+                                    momdel.setCalendarEntriesModel(calendarEntries.get(j));
+                                    dateCheck = false;
+                                } else {
+                                    momdel.setDateStatus(false);
+                                    momdel.setCalDeskStatus(1);
+                                    momdel.setDate(date);
+                                    momdel.setCalendarEntriesModel(calendarEntries.get(j));
+                                }
+                                recyclerModelArrayList.add(momdel);
+                            }
+                        }
+                        if (meetingEntries != null) {
+                            for (int j = 0; j < meetingEntries.size(); j++) {
+                                BookingListResponse.DayGroup momdel = new BookingListResponse.DayGroup();
+                                if (dateCheck) {
+                                    momdel.setDateStatus(true);
+                                    momdel.setCalDeskStatus(2);
+                                    momdel.setDate(date);
+                                    momdel.setMeetingBookingsModel(meetingEntries.get(j));
+                                    dateCheck = false;
+                                } else {
+                                    momdel.setDateStatus(false);
+                                    momdel.setCalDeskStatus(2);
+                                    momdel.setDate(date);
+                                    momdel.setMeetingBookingsModel(meetingEntries.get(j));
+                                }
+                                recyclerModelArrayList.add(momdel);
+                            }
+                        }
+                        if (carParkEntries != null) {
+                            for (int j = 0; j < carParkEntries.size(); j++) {
+                                BookingListResponse.DayGroup momdel = new BookingListResponse.DayGroup();
+                                if (dateCheck) {
+                                    momdel.setDateStatus(true);
+                                    momdel.setCalDeskStatus(3);
+                                    momdel.setDate(date);
+                                    momdel.setCarParkBookingsModel(carParkEntries.get(j));
+                                    dateCheck = false;
+                                } else {
+                                    momdel.setDateStatus(false);
+                                    momdel.setCalDeskStatus(3);
+                                    momdel.setDate(date);
+                                    momdel.setCarParkBookingsModel(carParkEntries.get(j));
+                                }
+                                recyclerModelArrayList.add(momdel);
+                            }
+                        }
+
+                    }
+
+                }
+            }
+        }
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvHomeBooking.setLayoutManager(linearLayoutManager);
+        rvHomeBooking.setHasFixedSize(true);
+
+        // homeBookingListAdapter=new HomeBookingListAdapter(getContext(), getActivity(), recyclerModelArrayList);
+        homeBookingListAdapter = new HomeBookingListAdapter(getContext(), this,
+                recyclerModelArrayList, getActivity(), this, meetingRecurenceMap);
+        rvHomeBooking.setAdapter(homeBookingListAdapter);
+
+        ProgressDialog.dismisProgressBar(getContext(), dialog);
+
     }
 
     private void loadDeskListCheckRequest(int id, String date,
