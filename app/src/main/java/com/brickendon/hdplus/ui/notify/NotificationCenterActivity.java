@@ -100,7 +100,7 @@ public class NotificationCenterActivity extends AppCompatActivity {
 
                         //outGoingNotificationList.sort(Comparator.comparing(IncomingRequestResponse.Result::getStatus));
 
-                        notificationList.addAll(outGoingNotificationList);
+                        //notificationList.addAll(outGoingNotificationList);
                         setAdapter();
 
                     }else {

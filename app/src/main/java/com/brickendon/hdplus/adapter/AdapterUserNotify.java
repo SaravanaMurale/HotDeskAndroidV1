@@ -148,7 +148,9 @@ public class AdapterUserNotify extends RecyclerView.Adapter<AdapterUserNotify.vi
                 break;
         }
 
-        if (position == 1) {
+        if (position == 1 && notiList.get(0).getStatus() == 0) {
+            holder.hdr_lay.setVisibility(View.VISIBLE);
+        }else if(notiList.get(0).getStatus() != 0 && position==0 ) {
             holder.hdr_lay.setVisibility(View.VISIBLE);
         }else {
             holder.hdr_lay.setVisibility(View.GONE);
