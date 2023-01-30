@@ -45,6 +45,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.brickendon.hdplus.adapter.ShowCountryAdapterCalendar;
+import com.brickendon.hdplus.model.response.UsageTypeResponse;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
@@ -911,6 +912,7 @@ public class BookFragment extends Fragment implements
 
         assertSpinner = view.findViewById(R.id.assertSpinner);
         loadAssertSpinner();
+//        getBookingUsageTypes();
         companyDefaults();
         loadDefaultLocation();
 //        Toast.makeText(context, "hit"+assertSpinner.getSelectedItemPosition(), Toast.LENGTH_SHORT).show();
@@ -8519,5 +8521,27 @@ public class BookFragment extends Fragment implements
 
         }
 
+    }
+
+    private void getBookingUsageTypes() {
+
+        if (Utils.isNetworkAvailable(getActivity())) {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<UsageTypeResponse>> call = apiService.getBookingUsageTypes();
+            call.enqueue(new Callback<List<UsageTypeResponse>>() {
+                @Override
+                public void onResponse(Call<List<UsageTypeResponse>> call, Response<List<UsageTypeResponse>> response) {
+                    loadAssertSpinner();
+                }
+
+                @Override
+                public void onFailure(Call<List<UsageTypeResponse>> call, Throwable t) {
+
+                }
+            });
+
+        } else {
+            Utils.toastMessage(getActivity(), "Please Enable Internet");
+        }
     }
 }

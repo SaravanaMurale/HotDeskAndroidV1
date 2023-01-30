@@ -821,7 +821,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         popDialog.show();
     }
 
-    public void loadHomeListOld() {
+    public void loadHomeList() {
         if (Utils.isNetworkAvailable(getActivity())) {
             mSwipeRefreshLayout.setRefreshing(true);
 //            dialog= ProgressDialog.showProgressBar(getContext());
@@ -865,7 +865,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             Utils.toastMessage(getActivity(), "Please Enable Internet");
         }
     }
-    public void loadHomeList() {
+    public void loadHomeListNew() {
         if (Utils.isNetworkAvailable(getActivity())) {
             mSwipeRefreshLayout.setRefreshing(true);
 //            dialog= ProgressDialog.showProgressBar(getContext());

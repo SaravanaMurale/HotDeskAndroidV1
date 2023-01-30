@@ -7,7 +7,7 @@
             {"name" : "es", "Text": "Spanish", "imagesrc" : "es"},
             {"name" : "fr", "Text": "French", "imagesrc" : "fr"},
             {"name" : "az", "Text": "Azerbaijani", "imagesrc" : "az"},
-            {"name" : "pt", "Text": "Portugese", "imagesrc" : "pt"},
+            {"name" : "pt", "Text": "Portuguese", "imagesrc" : "pt"},
             {"name" : "de", "Text": "German", "imagesrc" : "de"},
             {"name" : "ru", "Text": "Russian", "imagesrc" : "ru"},
             {"name" : "pl", "Text": "Polish", "imagesrc" : "pl"},
