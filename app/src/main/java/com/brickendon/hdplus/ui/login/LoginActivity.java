@@ -20,6 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.brickendon.hdplus.model.response.LocateCountryRespose;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.microsoft.identity.client.AcquireTokenParameters;
@@ -836,7 +837,7 @@ public class LoginActivity extends AppCompatActivity {
                     activeLocationArrayList = new ArrayList<>();
                     activeLocationArrayList = response.body();
 
-                    //parentLocationId
+                    //parentLocationId from defaultlocation
                     floorParentID = defaultLocation.getParentLocationId();
 
                     defaultLocationIdForCalendar = defaultLocation.getId();
@@ -851,12 +852,18 @@ public class LoginActivity extends AppCompatActivity {
                     String finFloorName="";
 
 
+                    //Check activeLocation API Id==userLoggedin API parentLocationId
                     ArrayList<DAOActiveLocation> getSupportZoneList = new ArrayList<>();
                     getSupportZoneList = (ArrayList<DAOActiveLocation>) activeLocationArrayList.stream().filter(m -> m.getId() == floorParentID).collect(Collectors.toList());
 
                     if(getSupportZoneList!=null && getSupportZoneList.size()>0) {
 
+                        System.out.println("PrintSupportZoneIdHere "+getSupportZoneList.get(0).getParentLocationId());
                         SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.SUPPORT_ZONE_ID, getSupportZoneList.get(0).getParentLocationId());
+
+                    }else {
+
+                        callLocationAPIToGetSupportZoneParentId(defaultLocation.getName());
 
                     }
 
@@ -961,6 +968,49 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void callLocationAPIToGetSupportZoneParentId(String floorChecName) {
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<LocateCountryRespose>> call = apiService.getLocations();
+        call.enqueue(new Callback<List<LocateCountryRespose>>() {
+            @Override
+            public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
+
+
+                if(response.body()!=null){
+
+                    List<LocateCountryRespose> locateCountryRespose=response.body();
+                    List<LocateCountryRespose> getSupportZoneList = new ArrayList<>();
+                    getSupportZoneList =  locateCountryRespose.stream().filter(m -> m.getLocateCountryId() == floorParentID).collect(Collectors.toList());
+
+                    //System.out.println("PrintSupportZoneIdHere2 "+getSupportZoneList.get(0).getParentLocationId());
+                    //System.out.println("PrintSupportZoneIdHere2Place "+getSupportZoneList.get(0).getName());
+                    SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.SUPPORT_ZONE_ID, getSupportZoneList.get(0).getParentLocationId());
+
+                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.BUILDING_CHECK, getSupportZoneList.get(0).getName());
+
+                    SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FLOOR_CHECK, floorChecName);
+
+                   // if(CityName!=null) {
+                        //SessionHandler.getInstance().save(LoginActivity.this, AppConstants.BUILDING, getSupportZoneList.get(0).getName());
+                    //}
+                    //if(buildingName!=null) {
+                        //SessionHandler.getInstance().save(LoginActivity.this, AppConstants.FLOOR, getSupportZoneList.get(0).getName());
+                    //}
+
+
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
+
+            }
+        });
     }
 
 

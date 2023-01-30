@@ -29,7 +29,6 @@ import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -396,6 +395,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
     //Should not click apply button without selecting floor
     int applyButtonClickedStatus=0;
+
+    BottomSheetDialog locateCheckInBottomSheetUn;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -1773,28 +1774,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                         locateCountryResposeList = response.body();
 
-
-                        /*    if (desksCode != null) {
-                            desksCode.clear();
-                        }
-                        if (carCode != null) {
-                            carCode.clear();
-                        }
-
-                        if (meetingCode != null) {
-                            meetingCode.clear();
-                        }
-
-                        if (locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks().size() > 0) {
-                            desksCode = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getDesks();
-                            //System.out.println("NowDeskCodeAvaliable");
-                        } else if (locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList().size() > 0) {
-                            carCode = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getParkingSlotsList();
-                            //System.out.println("NoeCarCodeAvaliable");
-                        } else if (locateCountryResposeList.get(floorPosition).getLocationItemLayout().getMeetingRoomsList().size() > 0) {
-                            meetingCode = locateCountryResposeList.get(floorPosition).getLocationItemLayout().getMeetingRoomsList();
-                            //System.out.println("NoeMeetingCodeAvaliable");
-                        }*/
+                        //checkIfAllFloorActiveStatus(locateCountryResposeList);
 
 
                         //To set desk,car and meeting icon
@@ -1927,6 +1907,28 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             Utils.toastMessage(getActivity(), getResources().getString(R.string.enable_internet));
         }
     }
+
+    private boolean checkIfAllFloorActiveStatus(List<LocateCountryRespose> locateCountryResposeList) {
+
+        boolean allFloorActiveStatus=false;
+        int allFloorActiveStatusCount=0;
+
+        for (int i = 0; i <locateCountryResposeList.size() ; i++) {
+
+            if(!locateCountryResposeList.get(i).isActive()){
+                allFloorActiveStatusCount=allFloorActiveStatusCount+1;
+            }
+
+        }
+
+        if(allFloorActiveStatusCount==locateCountryResposeList.size()){
+            allFloorActiveStatus=true;
+        }
+
+        return allFloorActiveStatus;
+
+    }
+
 
     private void toWriteTitle(List<Integer> xCoordinatesList, List<Integer> yCoordinatesList, String title,int fontSize) {
 
@@ -2200,7 +2202,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
                 deskStatusModel = new DeskStatusModel(key, id, code, 0);
                 if(deskStatusModel!=null) {
-                    deskStatusModelList.add(deskStatusModel);
+
+                    boolean idAvaliableStatus = deskStatusModelList.stream().anyMatch(m -> m.getId() == id);
+
+                    if(!idAvaliableStatus){
+                        deskStatusModelList.add(deskStatusModel);
+                    }
+
                 }
             }
 
@@ -2208,7 +2216,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             if (!deskAddedStatus) {
                 deskStatusModel = new DeskStatusModel(key, id, code, 0);
                 if(deskStatusModel!=null) {
-                    deskStatusModelList.add(deskStatusModel);
+
+                    boolean idAvaliableStatus = deskStatusModelList.stream().anyMatch(m -> m.getId() == id);
+
+                    if(!idAvaliableStatus){
+                        deskStatusModelList.add(deskStatusModel);
+                    }
+
                 }
             }
 
@@ -3930,19 +3944,19 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         TextView tvUnaValibale;
 
-        BottomSheetDialog locateCheckInBottomSheet = new BottomSheetDialog(getContext());
+        locateCheckInBottomSheetUn = new BottomSheetDialog(getContext());
         View view = View.inflate(getContext(), R.layout.dialog_locate_unavalible_bottomsheet, null);
-        locateCheckInBottomSheet.setContentView(view);
+        locateCheckInBottomSheetUn.setContentView(view);
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(((View) view.getParent()));
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
-        unAvaliableDate=locateCheckInBottomSheet.findViewById(R.id.unavaliableDate);
-        unAvalibaleDeskName = locateCheckInBottomSheet.findViewById(R.id.unAvalibaleDeskName);
-        tvUnavaliableBack = locateCheckInBottomSheet.findViewById(R.id.tvUnavaliableBack);
-        unAvaliableLocate = locateCheckInBottomSheet.findViewById(R.id.unAvaliableLocate);
-        tvDescriptionUnAvaliable = locateCheckInBottomSheet.findViewById(R.id.tvDescriptionUnAvaliable);
-        unAvailableDesc = locateCheckInBottomSheet.findViewById(R.id.un_available_desc);
-        tvUnaValibale=locateCheckInBottomSheet.findViewById(R.id.tvUnaValibale);
+        unAvaliableDate=locateCheckInBottomSheetUn.findViewById(R.id.unavaliableDate);
+        unAvalibaleDeskName = locateCheckInBottomSheetUn.findViewById(R.id.unAvalibaleDeskName);
+        tvUnavaliableBack = locateCheckInBottomSheetUn.findViewById(R.id.tvUnavaliableBack);
+        unAvaliableLocate = locateCheckInBottomSheetUn.findViewById(R.id.unAvaliableLocate);
+        tvDescriptionUnAvaliable = locateCheckInBottomSheetUn.findViewById(R.id.tvDescriptionUnAvaliable);
+        unAvailableDesc = locateCheckInBottomSheetUn.findViewById(R.id.un_available_desc);
+        tvUnaValibale=locateCheckInBottomSheetUn.findViewById(R.id.tvUnaValibale);
 
         if(code.equalsIgnoreCase("4")){
             unAvaliableDate.setVisibility(View.VISIBLE);
@@ -3977,11 +3991,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         tvUnavaliableBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                locateCheckInBottomSheet.dismiss();
+                locateCheckInBottomSheetUn.dismiss();
             }
         });
 
-        locateCheckInBottomSheet.show();
+        if(!locateCheckInBottomSheetUn.isShowing())
+            locateCheckInBottomSheetUn.show();
+
 
 
     }
