@@ -1209,15 +1209,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
 
-      /*  if(!amenitiesApplyStatus){
-            meetingAmenityStatusList.clear();
-        }
-
-        for (int i = 0; i <meetingAmenityStatusList.size() ; i++) {
-            System.out.println("InitialInitAmenitiStatus "+meetingAmenityStatusList.get(i).getId()+" "+amenitiesApplyStatus);
-        }*/
-
-
         //To load default location-saved in login Activity
         //defaultLocationcheck-0-loaded from other fragment
         //defaultLocationcheck-1-loaded within fragment
@@ -2906,8 +2897,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         System.out.println("FloorIconBlinkStatus " + floorIconBlick);
         if (floorIconBlick > 0) {
             if (id == floorIconBlick) {
+
+
+               /* deskView = getLayoutInflater().inflate(R.layout.layout_rounded_border, null, false);
+                ImageView roundedBorder = deskView.findViewById(R.id.ivDesk);
+                RelativeLayout.LayoutParams roundedBorderLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);*/
+
                 ivDesk.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-                //ivDesk.setPadding(9,7,7,9);
                 ivDesk.setBackground(getResources().getDrawable(R.drawable.image_border));
                 System.out.println("PaddingAddSuccesfully ");
 
@@ -5465,7 +5461,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
     private void callImediateChildLocationTogetSupportZone(int parentIdCheck){
-        int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
+
         int supportZoneParentId=SessionHandler.getInstance().getInt(getContext(),AppConstants.SUPPORT_ZONE_ID);
         System.out.println("SupportZoneInLocate "+parentIdCheck+" "+supportZoneParentId);
 

@@ -22,6 +22,10 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.brickendon.hdplus.model.response.LocateCountryRespose;
+import com.brickendon.hdplus.ui.login.LoginActivity;
+import com.brickendon.hdplus.webservice.ApiClient;
+import com.brickendon.hdplus.webservice.ApiInterface;
 import com.bumptech.glide.Glide;
 
 import java.text.SimpleDateFormat;
@@ -29,9 +33,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import com.brickendon.hdplus.R;
 import com.brickendon.hdplus.controllers.OtherBookingController;
 import com.brickendon.hdplus.model.response.BookingListResponse;
@@ -757,7 +767,9 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
                         int parentLocationId=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getLocationBuildingFloor().getFloorID();
                         int deskId=list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel().getBooking().getDeskId();
-                        onCheckInClickable.onLocationIconClick(parentLocationId, deskId, AppConstants.DESK);
+
+                        getSupportZoneIdFromLocationAPI(parentLocationId,deskId,AppConstants.DESK);
+                        //onCheckInClickable.onLocationIconClick(parentLocationId, deskId, AppConstants.DESK);
                     }
 
                 }else if(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel()!=null){
@@ -770,7 +782,11 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
                         int parentLocationId=list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel().getLocationBuildingFloor().getFloorID();
                         int meetingRoomId=list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel().getMeetingRoomId();
-                        onCheckInClickable.onLocationIconClick(parentLocationId,meetingRoomId, AppConstants.MEETING);
+
+                        //onCheckInClickable.onLocationIconClick(parentLocationId,meetingRoomId, AppConstants.MEETING);
+                        getSupportZoneIdFromLocationAPI(parentLocationId,meetingRoomId,AppConstants.MEETING);
+
+
 
                     }
 
@@ -783,13 +799,48 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
                         int parentLocationId=list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel().getLocationBuildingFloor().getFloorID();
                         int carParkingId=list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel().getParkingSlotId();
-                        onCheckInClickable.onLocationIconClick(parentLocationId, carParkingId, AppConstants.CAR_PARKING);
+                        //onCheckInClickable.onLocationIconClick(parentLocationId, carParkingId, AppConstants.CAR_PARKING);
+                        getSupportZoneIdFromLocationAPI(parentLocationId,carParkingId,AppConstants.CAR_PARKING);
 
                     }
                 }
 
             }
         });
+    }
+
+    private void getSupportZoneIdFromLocationAPI(int parentLocationId, int meetingRoomId,String deskOrCarOrMeeting) {
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<LocateCountryRespose>> call = apiService.getLocations();
+        call.enqueue(new Callback<List<LocateCountryRespose>>() {
+            @Override
+            public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
+
+
+                if(response.body()!=null) {
+
+                    List<LocateCountryRespose> locateCountryRespose = response.body();
+                    List<LocateCountryRespose> getSupportZoneList = new ArrayList<>();
+                    getSupportZoneList = locateCountryRespose.stream().filter(m -> m.getLocateCountryId() == parentLocationId).collect(Collectors.toList());
+
+                    System.out.println("HomeSupportZoneId "+getSupportZoneList.get(0).getParentLocationId()+" "+getSupportZoneList.get(0).getLocateCountryId());
+
+                    SessionHandler.getInstance().saveInt(context, AppConstants.SUPPORT_ZONE_ID, getSupportZoneList.get(0).getParentLocationId());
+
+                    onCheckInClickable.onLocationIconClick(parentLocationId,meetingRoomId, deskOrCarOrMeeting);
+
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<LocateCountryRespose>> call, Throwable t) {
+
+            }
+        });
+
     }
 
     private void disableColorUpdate(HomeBookingListViewHolder holder) {
