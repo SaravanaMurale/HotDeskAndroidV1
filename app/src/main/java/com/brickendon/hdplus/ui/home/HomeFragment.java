@@ -821,7 +821,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         popDialog.show();
     }
 
-    public void loadHomeList() {
+    public void loadHomeListOld() {
         if (Utils.isNetworkAvailable(getActivity())) {
             mSwipeRefreshLayout.setRefreshing(true);
 //            dialog= ProgressDialog.showProgressBar(getContext());
@@ -865,12 +865,15 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             Utils.toastMessage(getActivity(), "Please Enable Internet");
         }
     }
-    public void loadHomeListNew() {
+    public void loadHomeList() {
         if (Utils.isNetworkAvailable(getActivity())) {
             mSwipeRefreshLayout.setRefreshing(true);
 //            dialog= ProgressDialog.showProgressBar(getContext());
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<List<BookingListResponse>> call = apiService.getUserMyWorkDetailsNew(Utils.getCurrentDate(),3, true);
+            Call<List<BookingListResponse>> call = apiService.getUserMyWorkDetailsNew(
+                    Utils.getPreviousWeeksDate(),
+                    4,
+                    true);
 //            Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-07-18",true);
             //Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-07-04",true);
             call.enqueue(new Callback<List<BookingListResponse>>() {
@@ -909,7 +912,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
             Utils.toastMessage(getActivity(), "Please Enable Internet");
         }
     }
-    private void createRecyclerListNew(List<BookingListResponse> body) {
+    private void createRecyclerListNew (List<BookingListResponse> body) {
         List<BookingListResponse> bookingListResponsesList = body;
         recyclerModelArrayList = new ArrayList<>();
         for (int z=0; z<bookingListResponsesList.size(); z++){

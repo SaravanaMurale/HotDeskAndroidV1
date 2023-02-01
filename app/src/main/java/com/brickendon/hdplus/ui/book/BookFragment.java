@@ -61,6 +61,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -911,7 +913,8 @@ public class BookFragment extends Fragment implements
         this.activityContext=getActivity();
 
         assertSpinner = view.findViewById(R.id.assertSpinner);
-        loadAssertSpinner();
+        getBookingUsageTypes();
+//        loadAssertSpinner();
 //        getBookingUsageTypes();
         companyDefaults();
         loadDefaultLocation();
@@ -8158,53 +8161,73 @@ public class BookFragment extends Fragment implements
     }
 
     //New...
-    public void loadAssertSpinner() {
-//        assertSpinner = activityContext.findViewById(R.id.assertSpinner);
-//        assertList.clear();
-
-        assertList = new ArrayList<>();
-        assertSpinner.setSpinnerEventsListener(this);
-        for (int i=1;i<8;i++){
-            AssertModel assertModel= new AssertModel();
-            assertModel.setId(i);
-            switch (i){
-                case 1:
-                    assertModel.setAssertName(appKeysPage.getWorkSpace());
-                    assertModel.setImage(R.drawable.chair);
-                    break;
-                case 2:
-                    assertModel.setAssertName(appKeysPage.getRoom());
-                    assertModel.setImage(R.drawable.room);
-                    break;
-                case 3:
-                    assertModel.setAssertName(appKeysPage.getParking());
-                    assertModel.setImage(R.drawable.car);
-                    break;
-                case 4:
-                    assertModel.setAssertName(appKeysPage.getRemote());
-                    assertModel.setImage(R.drawable.home);
-                    break;
-                case 5:
-                    assertModel.setAssertName(appKeysPage.getSick());
-                    assertModel.setImage(R.drawable.sick_plus);
-                    break;
-                case 6:
-                    assertModel.setAssertName(appKeysPage.getHoliday());
-                    assertModel.setImage(R.drawable.plane);
-                    break;
-                case 7:
-                    assertModel.setAssertName(appKeysPage.getTrainingStr());
-                    assertModel.setImage(R.drawable.training_book);
-                    break;
-                default:
+    public void loadAssertSpinner(List<UsageTypeResponse> data) {
+        try {
+            assertList = new ArrayList<>();
+            assertSpinner.setSpinnerEventsListener(this);
+            for (int i=1;i<4;i++){
+                AssertModel assertModel= new AssertModel();
+                assertModel.setId(i);
+                switch (i){
+                    case 1:
+                        assertModel.setAssertName(appKeysPage.getWorkSpace());
+                        assertModel.setImage(R.drawable.chair);
+                        break;
+                    case 2:
+                        assertModel.setAssertName(appKeysPage.getRoom());
+                        assertModel.setImage(R.drawable.room);
+                        break;
+                    case 3:
+                        assertModel.setAssertName(appKeysPage.getParking());
+                        assertModel.setImage(R.drawable.car);
+                        break;
+                    default:
+                }
+                assertList.add(assertModel);
             }
 
-            assertList.add(assertModel);
+            if(data!=null && data.size()>0) {
+                for (int i=0; i<data.size(); i++) {
+                    AssertModel assertModel= new AssertModel();
+                    switch (data.get(i).getAbbreviation()){
+                        case "WFH":
+                            assertModel.setId(4);
+                            assertModel.setAssertName(appKeysPage.getRemote());
+                            assertModel.setImage(R.drawable.home);
+                            assertList.add(assertModel);
+                            break;
+                        case "SL":
+                            assertModel.setId(5);
+                            assertModel.setAssertName(appKeysPage.getSick());
+                            assertModel.setImage(R.drawable.sick_plus);
+                            assertList.add(assertModel);
+                            break;
+                        case "OO":
+                            assertModel.setId(6);
+                            assertModel.setAssertName(appKeysPage.getHoliday());
+                            assertModel.setImage(R.drawable.plane);
+                            assertList.add(assertModel);
+                            break;
+                        case "TR":
+                            assertModel.setId(7);
+                            assertModel.setAssertName(appKeysPage.getTrainingStr());
+                            assertModel.setImage(R.drawable.training_book);
+                            assertList.add(assertModel);
+                            break;
+                        default:
+                    }
+                }
+            }
+            Collections.sort(assertList, Comparator.comparing(AssertModel::getId));
+
+            assertListAdapter = new AssertListAdapter(context, assertList,this);
+            assertSpinner.setAdapter(assertListAdapter);
+            assertSpinner.setSelection(0);
+            assertListAdapter.notifyDataSetChanged();
+
+        } catch (Exception e){
+
         }
-        assertListAdapter = new AssertListAdapter(context, assertList,this);
-        assertSpinner.setAdapter(assertListAdapter);
-        assertSpinner.setSelection(0);
-        assertListAdapter.notifyDataSetChanged();
 
         /*
         OnSpinnerEventsListener onSpinnerEventsListener = this;
@@ -8449,7 +8472,6 @@ public class BookFragment extends Fragment implements
         assertSpinner.setSelection(pos);
         assertListAdapter.notifyDataSetChanged();
 
-
     }
 
     @Override
@@ -8462,8 +8484,11 @@ public class BookFragment extends Fragment implements
         whiteLine.setVisibility(View.GONE);
         tick.setVisibility(View.GONE);
         bg.setBackgroundColor(Color.TRANSPARENT);
-
-        selectedicon = assertSpinner.getSelectedItemPosition()+1;
+        int pos = assertSpinner.getSelectedItemPosition();
+        if (assertSpinner.getSelectedItemPosition() > 2)
+            selectedicon = assertList.get(pos).getId();
+        else
+            selectedicon = assertSpinner.getSelectedItemPosition()+1;
 
         assertSpinner.setBackground(getResources().getDrawable(R.drawable.spinner_outline));
         switch (selectedicon) {
@@ -8524,14 +8549,17 @@ public class BookFragment extends Fragment implements
     }
 
     private void getBookingUsageTypes() {
-
         if (Utils.isNetworkAvailable(getActivity())) {
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<List<UsageTypeResponse>> call = apiService.getBookingUsageTypes();
+            Call<List<UsageTypeResponse>> call = apiService.getBookingUsageTypes(0);
             call.enqueue(new Callback<List<UsageTypeResponse>>() {
                 @Override
                 public void onResponse(Call<List<UsageTypeResponse>> call, Response<List<UsageTypeResponse>> response) {
-                    loadAssertSpinner();
+                    try {
+                        loadAssertSpinner(response.body());
+                    } catch (Exception e){
+
+                    }
                 }
 
                 @Override

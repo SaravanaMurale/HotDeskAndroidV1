@@ -1,12 +1,11 @@
 package com.brickendon.hdplus.utils;
 
 public class AppConstants {
-
-    //public static final String BASE_URL="https://hotdeskplus-dev-api.azurewebsites.net";
+//public static final String BASE_URL="https://hotdeskplus-dev-api.azurewebsites.net";
 //    public static final String BASE_URL="https://dev-api.hotdeskplus.com/";
-    //Dev url
+//Dev url
 //    public static final String BASE_URL="https://dev-api.hybridhero.com/";
-    //Production Url
+//Production url
     public static final String BASE_URL = "https://api.hybridhero.com/";
 
     public static final String SODIUM_SECRET_CODE = "89def69f0bdddc995078037539dc6ef4f0bdbdd3fa04ef2d11eea30779d72ac6";

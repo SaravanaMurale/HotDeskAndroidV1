@@ -252,24 +252,6 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
                 }
 
-                /*if (!s.toString().equals("")){
-
-                    filter(s.toString().toLowerCase());
-                }else {
-
-                    teamMembersList = new ArrayList<>();
-                    teamMembersList.addAll(copyTeamMembersList);
-
-                    setDataToExpandAdapter(teamMembersList);
-
-                }
-*/
-                /*if(s.toString().length()==0){
-                    list.clear();
-                    binding.searchRecycler.setVisibility(View.GONE);
-                    searchRecyclerAdapter.notifyDataSetChanged();
-                }*/
-
             }
 
             @Override
@@ -463,7 +445,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
 
             binding.locateProgressBar.setVisibility(View.VISIBLE);
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<List<UsageTypeResponse>> call = apiService.getBookingUsageTypes();
+            Call<List<UsageTypeResponse>> call = apiService.getBookingUsageTypes(0);
             call.enqueue(new Callback<List<UsageTypeResponse>>() {
                 @Override
                 public void onResponse(Call<List<UsageTypeResponse>> call, Response<List<UsageTypeResponse>> response) {

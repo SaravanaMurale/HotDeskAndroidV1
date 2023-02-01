@@ -1013,6 +1013,17 @@ public class Utils {
         }
         return date;
     }
+    public static String getPreviousWeeksDate() {
+        String date = "";
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
+
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        cal.add(Calendar.DAY_OF_WEEK, -7);
+        date = df.format(cal.getTime());
+        return date;
+    }
 
     public static String getCurrentTimeIn24HourFormat() {
         //SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");

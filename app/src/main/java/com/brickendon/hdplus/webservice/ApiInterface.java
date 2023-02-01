@@ -511,7 +511,7 @@ public interface ApiInterface {
                                                          @Query("userId") int userId);
 
     @GET("api/Booking/UsageTypes")
-    Call<List<UsageTypeResponse>>  getBookingUsageTypes();
+    Call<List<UsageTypeResponse>>  getBookingUsageTypes(@Query("UsageTypeType") int type);
 
     //RepeatDeskBookingForCurrrentWeek
     @PUT("api/booking/bookings")
