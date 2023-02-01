@@ -9,6 +9,7 @@
         <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/fragment_locate.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Dreamguys/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/layout_desk_select_adapter.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable-mdpi/login_background_corner_white.xml" value="0.1395" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/bg_transparent_round.xml" value="0.14" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/button_round_corner.xml" value="0.1405" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/circle_date_calender.xml" value="0.1405" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/drawable/ic_home_io_edit.xml" value="0.1175" />
@@ -79,6 +80,7 @@
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/new_desk_room_list_recycler_layout.xml" value="0.25" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/layout/teams_expand_head.xml" value="0.16" />
         <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/menu/bottom_nav_menu.xml" value="0.16417272338606242" />
+        <entry key="..\:/Users/Dreamsuser/AndroidStudioProjects/hotdesk_android/app/src/main/res/xml/network_security_config.xml" value="0.1" />
       </map>
     </option>
   </component>

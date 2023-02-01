@@ -28,6 +28,7 @@ import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -1973,6 +1974,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             fontSize = 6;
         else
             fontSize=8;
+
 
         roormTitle.setTextSize(fontSize);
 
