@@ -7,7 +7,10 @@
     "InvalidCredentials": "Credenciales inválidas",
     "SecondAuthentication": "Segunda autenticación",
     "EnterYourCode": "Ingrese su código de 6 dígitos:",
-    "Authenticate": "Autenticar"
+    "Authenticate": "Autenticar",
+    "PinNotMatched": "Pin no coincidente",
+    "PleaseEnterPin": "Por favor ingrese PIN",
+    "PinShouldDigits": "PIN Debe tener 6 dígitos"
   },
 
   "Me": {

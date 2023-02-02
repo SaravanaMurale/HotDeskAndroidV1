@@ -5,8 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class BookingListResponse {
-
+public class BookingListResponseNew {
     private int teamId;
     private String teamName;
     private int teamMembershipId;

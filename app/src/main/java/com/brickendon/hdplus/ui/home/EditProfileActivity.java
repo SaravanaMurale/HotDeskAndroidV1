@@ -901,7 +901,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
         }
     }
 
-    private void calculateSchedule(BookingListResponse bookingListResponse) {
+    /*private void calculateSchedule(BookingListResponse bookingListResponse) {
         for (int i = 0; i < bookingListResponse.getDayGroups().size(); i++) {
             switch (Utils.getDayFromDate(bookingListResponse.getDayGroups().get(i).getDate())) {
                 case "Mon":
@@ -1123,7 +1123,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditDefaul
             }
         }
     }
-
+*/
     private boolean isValidate(String phone, String email) {
 
         if (phone.isEmpty() || phone.length() <= 6) {

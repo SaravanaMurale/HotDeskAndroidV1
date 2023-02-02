@@ -7,7 +7,10 @@
     "InvalidCredentials": "تم تقديم بيانات اعتماد غير صالحة.",
     "SecondAuthentication": "المصادقة الثانية",
     "EnterYourCode": "أدخل رمزك المكون من 6 أرقام",
-    "Authenticate": "مصادقة"
+    "Authenticate": "مصادقة",
+    "PinNotMatched": "Pin not matched",
+    "PleaseEnterPin": "Please enter Pin",
+    "PinShouldDigits": "Pin Should be 6 digits"
   },
   "Me": {
     "TabTitle": "أنا",

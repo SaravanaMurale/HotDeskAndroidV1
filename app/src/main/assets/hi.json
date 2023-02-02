@@ -7,7 +7,10 @@
     "InvalidCredentials": "गलत क्रेडेंशियल प्रदान किए गए।",
     "SecondAuthentication": "दूसरा प्रमाणीकरण",
     "EnterYourCode": "अपना 6 अंकों का कोड दर्ज करें",
-    "Authenticate": "प्रमाणीकृत करें"
+    "Authenticate": "प्रमाणीकृत करें",
+    "PinNotMatched": "Pin not matched",
+    "PleaseEnterPin": "Please enter Pin",
+    "PinShouldDigits": "Pin Should be 6 digits"
   },
   "Me": {
     "TabTitle": "मैं",

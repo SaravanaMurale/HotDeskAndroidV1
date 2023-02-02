@@ -7,7 +7,10 @@
       "InvalidCredentials": "Podano nieprawidłowe dane logowania",
       "SecondAuthentication": "Ponowna weryfikacja",
       "EnterYourCode": "Wpisz swój 6-cyfrowy kod",
-      "Authenticate": "Uwieżytelniać"
+      "Authenticate": "Uwieżytelniać",
+      "PinNotMatched": "Pin not matched",
+      "PleaseEnterPin": "Please enter Pin",
+      "PinShouldDigits": "Pin Should be 6 digits"
     },
     "Me": {
       "TabTitle": "Ja",

@@ -152,7 +152,6 @@ public class BookDeskController implements
                 public void onResponse(Call<List<ActiveTeamsResponse>> call, Response<List<ActiveTeamsResponse>> response) {
 //                    activeTeamsList = response.body();
                     try {
-
                         for (int i=0;i<response.body().size();i++) {
                             if (response.body().get(i).isLeafTeam()){
                                 activeTeamsList.add(response.body().get(i));
@@ -182,7 +181,6 @@ public class BookDeskController implements
 
     }
     public void setLanguage(){
-
         logoinPage = Utils.getLoginScreenData(context);
         appKeysPage = Utils.getAppKeysPageScreenData(context);
         resetPage = Utils.getResetPasswordPageScreencreenData(context);

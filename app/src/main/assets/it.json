@@ -6,7 +6,10 @@
       "InvalidCredentials": "Sono state fornite credenziali non valide.",
       "SecondAuthentication": "Seconda autenticazione",
       "EnterYourCode": "Inserisci il tuo codice a 6 cifre",
-      "Authenticate": "Autentica"
+      "Authenticate": "Autentica",
+      "PinNotMatched": "Pin not matched",
+      "PleaseEnterPin": "Please enter Pin",
+      "PinShouldDigits": "Pin Should be 6 digits"
     },
     "Me": {
       "TabTitle": "Io",

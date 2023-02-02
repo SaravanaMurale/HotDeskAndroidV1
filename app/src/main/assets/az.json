@@ -7,7 +7,10 @@
         "InvalidCredentials": "Yanlış kredensiallar qeyd edilib.",
         "SecondAuthentication": "İkinci Doğrulama",
         "EnterYourCode": "6 rəqəmli kodunuzu daxil edin",
-        "Authenticate": "Doğrulayın"
+        "Authenticate": "Doğrulayın",
+        "PinNotMatched": "Pin not matched",
+        "PleaseEnterPin": "Please enter Pin",
+        "PinShouldDigits": "Pin Should be 6 digits"
     },
     "Me": {
         "TabTitle": "Mən",

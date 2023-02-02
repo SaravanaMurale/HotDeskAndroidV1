@@ -168,13 +168,10 @@ public class CreatePinActivity extends AppCompatActivity {
                 oldPin = otp;
             }
         });
-
         getUserDetailsUsingToken();
-
-
     }
-    public void setLanguage() {
 
+    public void setLanguage() {
         LanguagePOJO.Settings wellBeingPage = getSettingsPageScreenData(this);
         logoinPage = Utils.getLoginScreenData(this);
         appKeysPage = Utils.getAppKeysPageScreenData(this);
@@ -197,19 +194,24 @@ public class CreatePinActivity extends AppCompatActivity {
     private boolean threePinValidations(String oldPin, String nwPin, String conPin) {
         boolean userDetailStatus = false;
 
-        if (nwPin.equalsIgnoreCase("") || nwPin.isEmpty()
-                || conPin.equalsIgnoreCase("") || conPin.isEmpty()
-                || oldPin.equalsIgnoreCase("") || oldPin.isEmpty() ){
-            Utils.toastMessage(getApplicationContext(),"Please enter Pin");
-            userDetailStatus = false;
-        }else if (nwPin.length() < 6 || conPin.length() < 6 || oldPin.length() < 6 ){
-            Utils.toastMessage(getApplicationContext(),"Pin Should be 6 digits");
-            userDetailStatus = false;
-        }else if (!nwPin.equalsIgnoreCase(conPin)){
-            Utils.toastMessage(getApplicationContext(),"Pin Mismatch");
-            userDetailStatus = false;
-        }else {
-            userDetailStatus = true;
+        try{
+            if (nwPin.equalsIgnoreCase("") || nwPin.isEmpty()
+                    || conPin.equalsIgnoreCase("") || conPin.isEmpty()
+                    || oldPin.equalsIgnoreCase("") || oldPin.isEmpty() ){
+                Utils.toastMessage(getApplicationContext(), logoinPage.getPleaseEnterPin());
+                userDetailStatus = false;
+            }else if (nwPin.length() < 6 || conPin.length() < 6 || oldPin.length() < 6 ){
+                Utils.toastMessage(getApplicationContext(), logoinPage.getPinShouldDigits());
+                userDetailStatus = false;
+            }else if (!nwPin.equalsIgnoreCase(conPin)){
+                Utils.toastMessage(getApplicationContext(),logoinPage.getPinNotMatched());
+                userDetailStatus = false;
+            }else {
+                userDetailStatus = true;
+            }
+
+        } catch (Exception e){
+
         }
 
         return userDetailStatus;

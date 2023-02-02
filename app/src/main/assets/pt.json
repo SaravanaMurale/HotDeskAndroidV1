@@ -7,7 +7,10 @@
     "InvalidCredentials": "Credenciais inválidas fornecidas.",
     "SecondAuthentication": "Segunda autenticação",
     "EnterYourCode": "Introduza o seu código de 6 dígitos",
-    "Authenticate": "Autenticar"
+    "Authenticate": "Autenticar",
+    "PinNotMatched": "Pin not matched",
+    "PleaseEnterPin": "Please enter Pin",
+    "PinShouldDigits": "Pin Should be 6 digits"
   },
   "Me": {
     "TabTitle": "Eu",

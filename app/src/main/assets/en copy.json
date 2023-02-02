@@ -7,7 +7,10 @@
         "InvalidCredentials": "Invalid credentials provided.",
         "SecondAuthentication": "Second Authentication",
         "EnterYourCode": "Enter your 6 digit code:",
-        "Authenticate": "Authenticate"       
+        "Authenticate": "Authenticate",
+        "PinNotMatched": "Pin not matched",
+        "PleaseEnterPin": "Please enter Pin",
+        "PinShouldDigits": "Pin Should be 6 digits"
      },
     "ME": {
         "TAB_TITLE": "Me",

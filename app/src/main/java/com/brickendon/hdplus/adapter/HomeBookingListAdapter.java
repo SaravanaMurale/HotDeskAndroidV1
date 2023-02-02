@@ -98,8 +98,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 //            System.out.println("DateFormatPrintHere"+list.get(position).getDate());
 //            System.out.println("DayInTextAndNumber"+Utils.getDayAndDateFromDateFormat(list.get(position).getDate()));
             try {
-                String day = Utils.getDayAndDateFromDateFormat(list.get(position).getDate()).split(" ")[0];
-                String dateNum = Utils.getDayAndDateFromDateFormat(list.get(position).getDate()).split(" ")[1];
+                String day = Utils.getDayAndDateFromDateFormat(Utils.convertStringToDateFormetHome(list.get(position).getDate())).split(" ")[0];
+                String dateNum = Utils.getDayAndDateFromDateFormat(Utils.convertStringToDateFormetHome(list.get(position).getDate())).split(" ")[1];
                 holder.today_date.setText(""+day+"\n"+dateNum);
                 holder.lineLayout.setVisibility(View.GONE);
             }catch (Exception e){
@@ -112,7 +112,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
         //        System.out.println("check date of today "+list.size());
         //condition displays today string instead od date and disable previous date
-        if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate()) == 1) {
+        if (Utils.compareTwoDate(Utils.convertStringToDateFormetHome(list.get(position).getDate()),
+                Utils.getCurrentDate()) == 1) {
         /*    if (!fragment.showPastStatus){
                 holder.allLayout.setVisibility(View.GONE);
                 holder.allLinearLayout.setVisibility(View.GONE);
@@ -130,8 +131,9 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.tv_change.setVisibility(View.GONE);
             disableColorUpdate(holder);
 
-        } else if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2) {
-//            System.out.println("check date of today present "+list.get(position).getDate());
+        }
+        else if (Utils.compareTwoDate(Utils.convertStringToDateFormetHome(list.get(position).getDate()),Utils.getCurrentDate())==2) {
+//            System.out.println("check date of today present "+Utils.convertStringToDateFormetHome(list.get(position).getDate()));
             if (!fragment.showPastStatus && !pastCheck)
                 holder.tv_past_event.setVisibility(View.VISIBLE);
             else
@@ -146,7 +148,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingIvLocation.setVisibility(View.VISIBLE);
 
         }else {
-//            System.out.println("check date of today future "+list.get(position).getDate());
+//            System.out.println("check date of today future "+Utils.convertStringToDateFormetHome(list.get(position).getDate()));
             holder.tv_past_event.setVisibility(View.GONE);
             holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
             enableColorUpdate(holder);
@@ -159,7 +161,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         if (list.get(position).getCalDeskStatus() ==1 &&
                 list.get(position).getCalendarEntriesModel()
                         .getUsageTypeAbbreviation().equalsIgnoreCase("IO")){
-            if (Utils.compareTwoDate(list.get(position).getDate(), Utils.getCurrentDate())==2){
+            if (Utils.compareTwoDate(Utils.convertStringToDateFormetHome(list.get(position).getDate()), Utils.getCurrentDate())==2){
 //                SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Booked");
             }
 
@@ -187,8 +189,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingCheckOutTime.setText(Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
 
             try{
-                if(Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==1
-                        || (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2
+                if(Utils.compareTwoDate(Utils.convertStringToDateFormetHome(list.get(position).getDate()),Utils.getCurrentDate())==1
+                        || (Utils.compareTwoDate(Utils.convertStringToDateFormetHome(list.get(position).getDate()),Utils.getCurrentDate())==2
                         &&
                         !Utils.compareTimeIfCheckInEnable(
                                 Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()),
@@ -229,7 +231,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
 
                     if (Utils.getCurrentDate()
-                            .equalsIgnoreCase(Utils.getYearMonthDateFormat(list.get(position).getDate()))
+                            .equalsIgnoreCase(Utils.getYearMonthDateFormat(Utils.convertStringToDateFormetHome(list.get(position).getDate())))
                             &&
                             Utils.compareTimeIfCheckInEnable(
                                     f24hours.format(dNow),
@@ -248,7 +250,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
                     if (fragment.expiryCheckInTime>0){
                         if (Utils.getCurrentDate()
-                                .equalsIgnoreCase(Utils.getYearMonthDateFormat(list.get(position).getDate()))
+                                .equalsIgnoreCase(Utils.getYearMonthDateFormat(Utils.convertStringToDateFormetHome(list.get(position).getDate())))
                                 &&
                                 Utils.compareTimeIfCheckInEnable(
                                         Utils.getCurrentTime(),
@@ -268,7 +270,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                 case 2:
                     //show green line if its falls between from and to time of today
                     if (Utils.getCurrentDate()
-                            .equalsIgnoreCase(Utils.getYearMonthDateFormat(list.get(position).getDate())) &&
+                            .equalsIgnoreCase(Utils.getYearMonthDateFormat(Utils.convertStringToDateFormetHome(list.get(position).getDate()))) &&
                             Utils.compareTimeIfCheckInEnable(
                                     Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()),
                                     Utils.getCurrentTime()
@@ -300,8 +302,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
             try{
-                if(Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==1
-                        || (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2
+                if(Utils.compareTwoDate(Utils.convertStringToDateFormetHome(list.get(position).getDate()),Utils.getCurrentDate())==1
+                        || (Utils.compareTwoDate(Utils.convertStringToDateFormetHome(list.get(position).getDate()),Utils.getCurrentDate())==2
                         &&
                         !Utils.compareTimeIfCheckInEnable(
                                 Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()),
@@ -349,7 +351,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 //                    holder.tv_change.setVisibility(View.GONE);
                     holder.tvBookingWorkingRemote.setText("Request for desk");
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("Request for desk");
-                    if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
+                    if (Utils.compareTwoDate(Utils.convertStringToDateFormetHome(list.get(position).getDate()),Utils.getCurrentDate())==2){
 //                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Request for desk");
                     }
                     break;
@@ -365,7 +367,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     holder.endTime.setText(""
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("You’re working remotely");
-                    if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
+                    if (Utils.compareTwoDate(Utils.convertStringToDateFormetHome(list.get(position).getDate()),Utils.getCurrentDate())==2){
 //                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Working remotely");
                     }
 
@@ -387,7 +389,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     holder.endTime.setText(""
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("You're Working in alternative office");
-                    if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
+                    if (Utils.compareTwoDate(Utils.convertStringToDateFormetHome(list.get(position).getDate()),Utils.getCurrentDate())==2){
 //                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Alternative Office");
                     }
                     Glide.with(context)
@@ -409,7 +411,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
 
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("You're training");
-                    if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
+                    if (Utils.compareTwoDate(Utils.convertStringToDateFormetHome(list.get(position).getDate()),Utils.getCurrentDate())==2){
 //                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Training");
                     }
                     Glide.with(context)
@@ -425,7 +427,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     holder.endTime.setText(""
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("Out of office");
-                    if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
+                    if (Utils.compareTwoDate(Utils.convertStringToDateFormetHome(list.get(position).getDate()),Utils.getCurrentDate())==2){
 //                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Out of Office");
                     }
                     Glide.with(context)
@@ -441,7 +443,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     holder.endTime.setText(""
                             +Utils.splitTime(list.get(position).getCalendarEntriesModel().getMyto()));
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("You’re off sick");
-                    if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2){
+                    if (Utils.compareTwoDate(Utils.convertStringToDateFormetHome(list.get(position).getDate()),Utils.getCurrentDate())==2){
 //                        SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"Sick Leave");
                     }
                     Glide.with(context)
@@ -454,7 +456,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             .getCalendarEntriesModel().getUsageTypeName());
                     list.get(position).getCalendarEntriesModel().setUsageTypeName("Not assigned to Team");
                     /*
-                    if (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2) {
+                    if (Utils.compareTwoDate(Utils.convertStringToDateFormetHome(list.get(position).getDate()),Utils.getCurrentDate())==2) {
                         SessionHandler.getInstance().save(context,AppConstants.USER_CURRENT_STATUS,"No Team");
                     }
                     */
@@ -470,8 +472,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
             holder.bookingIvEdit.setVisibility(View.GONE);
             try{
-                if(Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==1
-                        || (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2
+                if(Utils.compareTwoDate(Utils.convertStringToDateFormetHome(list.get(position).getDate()),Utils.getCurrentDate())==1
+                        || (Utils.compareTwoDate(Utils.convertStringToDateFormetHome(list.get(position).getDate()),Utils.getCurrentDate())==2
                         &&
                         !Utils.compareTimeIfCheckInEnable(
                                 Utils.splitTime(list.get(position).getMeetingBookingsModel().getMyto()),
@@ -518,7 +520,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
             //show green line if its falls between from and to time of today
             if(Utils.getCurrentDate()
-                    .equalsIgnoreCase(Utils.getYearMonthDateFormat(list.get(position).getDate()))
+                    .equalsIgnoreCase(Utils.getYearMonthDateFormat(Utils.convertStringToDateFormetHome(list.get(position).getDate())))
                     &&
                     Utils.compareTimeIfCheckInEnable(
                             Utils.getCurrentTime(),
@@ -546,8 +548,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
             try{
-                if(Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==1
-                        || (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2
+                if(Utils.compareTwoDate(Utils.convertStringToDateFormetHome(list.get(position).getDate()),Utils.getCurrentDate())==1
+                        || (Utils.compareTwoDate(Utils.convertStringToDateFormetHome(list.get(position).getDate()),Utils.getCurrentDate())==2
                         &&
                         !Utils.compareTimeIfCheckInEnable(
                                 Utils.splitTime(list.get(position).getCarParkBookingsModel().getMyto()),
@@ -574,7 +576,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             );
             //show green line if its falls between from and to time of today
             if(Utils.getCurrentDate()
-                    .equalsIgnoreCase(Utils.getYearMonthDateFormat(list.get(position).getDate()))
+                    .equalsIgnoreCase(Utils.getYearMonthDateFormat(Utils.convertStringToDateFormetHome(list.get(position).getDate())))
                     &&
                     Utils.compareTimeIfCheckInEnable(
                             Utils.getCurrentTime(),
@@ -605,8 +607,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.bookingBtnCheckIn.setVisibility(View.GONE);
             holder.bookingBtnCheckOut.setVisibility(View.GONE);
             try {
-                if(Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==1
-                        || (Utils.compareTwoDate(list.get(position).getDate(),Utils.getCurrentDate())==2
+                if(Utils.compareTwoDate(Utils.convertStringToDateFormetHome(list.get(position).getDate()),Utils.getCurrentDate())==1
+                        || (Utils.compareTwoDate(Utils.convertStringToDateFormetHome(list.get(position).getDate()),Utils.getCurrentDate())==2
                         &&
                         !Utils.compareTimeIfCheckInEnable(
                                 Utils.splitTime(list.get(position).getCarParkBookingsModel().getMyto()),
@@ -656,17 +658,17 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             public void onClick(View v) {
                 if (list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel()!=null) {
                     String clickedStatus="CHECKIN";
-                    onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(), AppConstants.CHECKIN, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
+                    onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(), AppConstants.CHECKIN, Utils.convertStringToDateFormetHome(list.get(holder.getAbsoluteAdapterPosition()).getDate()),holder.getAbsoluteAdapterPosition());
 //                    fragment.changeCheckIn(list.get(holder.getAbsoluteAdapterPosition()));
 //                    Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
                 }
                 /*else if(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel()!=null){
                     String clickedStatus="CHECKIN";
-                    onCheckInClickable.onCheckInMeetingRoomClick(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel(),AppConstants.CHECKIN, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
+                    onCheckInClickable.onCheckInMeetingRoomClick(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel(),AppConstants.CHECKIN, Utils.convertStringToDateFormetHome(list.get(holder.getAbsoluteAdapterPosition()).getDate()),holder.getAbsoluteAdapterPosition());
                     //Toast.makeText(context, "ROOM CLICKED", Toast.LENGTH_SHORT).show();
                 }else if(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel()!=null){
                     String clickedStatus="CHECKIN";
-                    onCheckInClickable.onCheckInCarParkingClick(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel(),AppConstants.CHECKIN, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
+                    onCheckInClickable.onCheckInCarParkingClick(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel(),AppConstants.CHECKIN, Utils.convertStringToDateFormetHome(list.get(holder.getAbsoluteAdapterPosition()).getDate()),holder.getAbsoluteAdapterPosition());
                     //Toast.makeText(context, "CAR CLICKED", Toast.LENGTH_SHORT).show();
                 }*/
             }
@@ -680,15 +682,15 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                 if (list.get(holder.getAbsoluteAdapterPosition()).getCalDeskStatus() ==1){
                     String clickedStatus="EDIT";
                     onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(),
-                            AppConstants.EDIT,list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
+                            AppConstants.EDIT,Utils.convertStringToDateFormetHome(list.get(holder.getAbsoluteAdapterPosition()).getDate()),holder.getAbsoluteAdapterPosition());
 //                    Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
                 }else if(list.get(holder.getAbsoluteAdapterPosition()).getCalDeskStatus() ==2){
                     String clickedStatus="EDIT";
-                    onCheckInClickable.onCheckInMeetingRoomClick(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel(),AppConstants.EDIT, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
+                    onCheckInClickable.onCheckInMeetingRoomClick(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel(),AppConstants.EDIT, Utils.convertStringToDateFormetHome(list.get(holder.getAbsoluteAdapterPosition()).getDate()),holder.getAbsoluteAdapterPosition());
 //                    Toast.makeText(context, "ROOM CLICKED", Toast.LENGTH_SHORT).show();
                 }else if(list.get(holder.getAbsoluteAdapterPosition()).getCalDeskStatus() ==3){
                     String clickedStatus="EDIT";
-                    onCheckInClickable.onCheckInCarParkingClick(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel(),AppConstants.EDIT, list.get(holder.getAbsoluteAdapterPosition()).getDate(),holder.getAbsoluteAdapterPosition());
+                    onCheckInClickable.onCheckInCarParkingClick(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel(),AppConstants.EDIT, Utils.convertStringToDateFormetHome(list.get(holder.getAbsoluteAdapterPosition()).getDate()),holder.getAbsoluteAdapterPosition());
 //                    Toast.makeText(context, "CAR CLICKED", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -709,7 +711,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                                         .getUsageTypeAbbreviation().equalsIgnoreCase("WFH"))) {
                     new OtherBookingController(context,
                             list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(),
-                            list.get(holder.getAbsoluteAdapterPosition()).getDate(), "home");
+                            Utils.convertStringToDateFormetHome(list.get(holder.getAbsoluteAdapterPosition()).getDate()), "home");
                 } else if(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel() != null &&
                         (list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel()
                                 .getUsageTypeAbbreviation().equalsIgnoreCase("REQ")
@@ -718,15 +720,15 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                     if (list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel() != null) {
                         String clickedStatus = "EDIT";
                         onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(), AppConstants.EDIT,
-                                list.get(holder.getAbsoluteAdapterPosition()).getDate(), holder.getAbsoluteAdapterPosition());
+                                Utils.convertStringToDateFormetHome(list.get(holder.getAbsoluteAdapterPosition()).getDate()), holder.getAbsoluteAdapterPosition());
 //                        Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
                     } else if (list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel() != null) {
                         String clickedStatus = "EDIT";
-                        onCheckInClickable.onCheckInMeetingRoomClick(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel(), AppConstants.EDIT, list.get(holder.getAbsoluteAdapterPosition()).getDate(), holder.getAbsoluteAdapterPosition());
+                        onCheckInClickable.onCheckInMeetingRoomClick(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel(), AppConstants.EDIT, Utils.convertStringToDateFormetHome(list.get(holder.getAbsoluteAdapterPosition()).getDate()), holder.getAbsoluteAdapterPosition());
 //                        Toast.makeText(context, "ROOM CLICKED", Toast.LENGTH_SHORT).show();
                     } else if (list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel() != null) {
                         String clickedStatus = "EDIT";
-                        onCheckInClickable.onCheckInCarParkingClick(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel(), AppConstants.EDIT, list.get(holder.getAbsoluteAdapterPosition()).getDate(), holder.getAbsoluteAdapterPosition());
+                        onCheckInClickable.onCheckInCarParkingClick(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel(), AppConstants.EDIT, Utils.convertStringToDateFormetHome(list.get(holder.getAbsoluteAdapterPosition()).getDate()), holder.getAbsoluteAdapterPosition());
 //                        Toast.makeText(context, "CAR CLICKED", Toast.LENGTH_SHORT).show();
                     }
                 } else {
@@ -734,17 +736,17 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                         String clickedStatus = "EDIT";
                         onCheckInClickable.onCheckInDeskClick(list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel(),
                                 clickedStatus,
-                                list.get(holder.getAbsoluteAdapterPosition()).getDate(), holder.getAbsoluteAdapterPosition());
+                                Utils.convertStringToDateFormetHome(list.get(holder.getAbsoluteAdapterPosition()).getDate()), holder.getAbsoluteAdapterPosition());
                         //Toast.makeText(context, "DESK CLICKED", Toast.LENGTH_SHORT).show();
                     } else if (list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel() != null) {
                         String clickedStatus = "EDIT";
                         onCheckInClickable.onCheckInMeetingRoomClick(list.get(holder.getAbsoluteAdapterPosition()).getMeetingBookingsModel(),
-                                clickedStatus, list.get(holder.getAbsoluteAdapterPosition()).getDate(), holder.getAbsoluteAdapterPosition());
+                                clickedStatus, Utils.convertStringToDateFormetHome(list.get(holder.getAbsoluteAdapterPosition()).getDate()), holder.getAbsoluteAdapterPosition());
                         //Toast.makeText(context, "ROOM CLICKED", Toast.LENGTH_SHORT).show();
                     } else if (list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel() != null) {
                         String clickedStatus = "EDIT";
                         onCheckInClickable.onCheckInCarParkingClick(list.get(holder.getAbsoluteAdapterPosition()).getCarParkBookingsModel(),
-                                clickedStatus, list.get(holder.getAbsoluteAdapterPosition()).getDate(), holder.getAbsoluteAdapterPosition());
+                                clickedStatus, Utils.convertStringToDateFormetHome(list.get(holder.getAbsoluteAdapterPosition()).getDate()), holder.getAbsoluteAdapterPosition());
                         //Toast.makeText(context, "CAR CLICKED", Toast.LENGTH_SHORT).show();
                     }
                 }

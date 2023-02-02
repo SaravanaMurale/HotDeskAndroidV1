@@ -360,7 +360,7 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
 
     }
 
-    private void checkSwitchState(String day, int checkedId, RadioGroup radioGroup) {
+    /*private void checkSwitchState(String day, int checkedId, RadioGroup radioGroup) {
         boolean outerCheck = false;
         for (int i=0; i<bookingListResponse.getDayGroups().size();i++){
             if (!(Utils.compareTwoDate(bookingListResponse.getDayGroups().get(i).getDate(),
@@ -949,7 +949,7 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
         }
 
     }
-
+*/
     private void callBookingForEdit(int usageTypeId) {
         if (Utils.isNetworkAvailable(getActivity())) {
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -1291,7 +1291,7 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
                         teamId = bookingListResponse.getTeamId();
                         teamMembershipId = bookingListResponse.getTeamMembershipId();
                         fragmentChangeScheduleBinding.progrssBar.setVisibility(View.GONE);
-                        calculateSchedule(bookingListResponse);
+//                        calculateSchedule(bookingListResponse);
                     }else if(response.code()==401){
                         //Handle if token got expired
                         SessionHandler.getInstance().saveBoolean(getActivity(), AppConstants.LOGIN_CHECK,false);
@@ -1309,7 +1309,7 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
         }
     }
 
-    private void calculateSchedule(BookingListResponse bookingListResponse) {
+    /*private void calculateSchedule(BookingListResponse bookingListResponse) {
         fragmentChangeScheduleBinding.mondayGroup.setOnCheckedChangeListener(null);
         fragmentChangeScheduleBinding.tuesdayGroup.setOnCheckedChangeListener(null);
         fragmentChangeScheduleBinding.wednesdayGroup.setOnCheckedChangeListener(null);
@@ -1593,14 +1593,14 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
         fragmentChangeScheduleBinding.saturdayGroup.setOnCheckedChangeListener(this::onCheckedChanged);
         fragmentChangeScheduleBinding.sundayGroup.setOnCheckedChangeListener(this::onCheckedChanged);
     }
-
+*/
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         View radio = group.findViewById(checkedId);
         int idx = group.indexOfChild(radio);
         RadioButton r = (RadioButton) group.getChildAt(idx);
-
+/*
         switch (group.getId()){
             case R.id.monday_group:
                 if (bookingListResponse !=null && r.isChecked()){
@@ -1639,6 +1639,6 @@ public class ChangeScheduleFragment extends Fragment implements RadioGroup.OnChe
                 break;
             default:
 
-        }
+        }*/
     }
 }

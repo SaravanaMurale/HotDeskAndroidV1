@@ -7,7 +7,10 @@
     "InvalidCredentials": "Ungültige Anmeldedaten eingegeben.",
     "SecondAuthentication": "Zweite Authentifizierung",
     "EnterYourCode": "Geben Sie Ihren 6-stelligen Code ein",
-    "Authenticate": "Authentifizieren"
+    "Authenticate": "Authentifizieren",
+    "PinNotMatched": "Pin not matched",
+    "PleaseEnterPin": "Please enter Pin",
+    "PinShouldDigits": "Pin Should be 6 digits"
   },
   "Me": {
     "TabTitle": "Ich",

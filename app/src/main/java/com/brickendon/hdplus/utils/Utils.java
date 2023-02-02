@@ -1007,7 +1007,7 @@ public class Utils {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDateTime now = LocalDateTime.now();
-            //System.out.println(dtf.format(now));
+//            System.out.println("current date dat"+dtf.format(now));
             date = dtf.format(now);
 
         }
@@ -1217,8 +1217,28 @@ public class Utils {
     }
 
 
-    public static Date convertStringToDateFormet(String dateInString) {
+    public static Date convertStringToDateFormetHome(String dateInString) {
+        SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy");
+        System.out.println("comperer csocce"+dateInString);
+        //String sDate1="31/12/1998";
+        Date date1 = null;
+        try {
+//            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(dateInString);
+            date1 = sdf.parse(dateInString);
 
+//            SimpleDateFormat print = new SimpleDateFormat("MMM d, yyyy HH:mm:ss");
+//            System.out.println(print.format(parsedDate));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //System.out.println(dateInString+"\t"+date1);
+
+        return date1;
+
+    }
+    public static Date convertStringToDateFormet(String dateInString) {
+        System.out.println("comperer csocce"+dateInString);
         //String sDate1="31/12/1998";
         Date date1 = null;
         try {

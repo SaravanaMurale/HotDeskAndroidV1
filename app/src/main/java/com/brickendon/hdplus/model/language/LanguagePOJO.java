@@ -2273,6 +2273,39 @@ public class LanguagePOJO {
         @SerializedName("Authenticate")
         @Expose
         private String authenticate;
+        @SerializedName("PinNotMatched")
+        @Expose
+        private String PinNotMatched;
+        @SerializedName("PleaseEnterPin")
+        @Expose
+        private String PleaseEnterPin;
+        @SerializedName("PinShouldDigits")
+        @Expose
+        private String PinShouldDigits;
+
+        public String getPinNotMatched() {
+            return PinNotMatched;
+        }
+
+        public void setPinNotMatched(String pinNotMatched) {
+            PinNotMatched = pinNotMatched;
+        }
+
+        public String getPleaseEnterPin() {
+            return PleaseEnterPin;
+        }
+
+        public void setPleaseEnterPin(String pleaseEnterPin) {
+            PleaseEnterPin = pleaseEnterPin;
+        }
+
+        public String getPinShouldDigits() {
+            return PinShouldDigits;
+        }
+
+        public void setPinShouldDigits(String pinShouldDigits) {
+            PinShouldDigits = pinShouldDigits;
+        }
 
         public String getUserName() {
             return userName;
