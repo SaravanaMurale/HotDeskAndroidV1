@@ -1966,7 +1966,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         else
             fontSize=8;
 
-
         roormTitle.setTextSize(fontSize);
 
         roormTitle.setText(title);
