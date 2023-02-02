@@ -1,11 +1,12 @@
 package com.brickendon.hdplus.utils;
 
 public class AppConstants {
-//public static final String BASE_URL="https://hotdeskplus-dev-api.azurewebsites.net";
+
+    //public static final String BASE_URL="https://hotdeskplus-dev-api.azurewebsites.net";
 //    public static final String BASE_URL="https://dev-api.hotdeskplus.com/";
-//Dev url
-//    public static final String BASE_URL="https://dev-api.hybridhero.com/";
-//Production url
+    //Dev url
+    //public static final String BASE_URL="https://dev-api.hybridhero.com/";
+    //Production Url
     public static final String BASE_URL = "https://api.hybridhero.com/";
 
     public static final String SODIUM_SECRET_CODE = "89def69f0bdddc995078037539dc6ef4f0bdbdd3fa04ef2d11eea30779d72ac6";
@@ -63,6 +64,7 @@ public class AppConstants {
     public static final String FINAL_FLOOR="FINAL_FLOOR";
     public static final String FULLPATHLOCATION="FULLPATHLOCATION";
     public static final String SUPPORT_ZONE_ID="SUPPORT_ZONE_ID";
+    public static final String SUPPORT_ZONE_ID_FROM_HOME="SUPPORT_ZONE_ID_FROM_HOME";
     public static final String DESK="3";
     public static final String MEETING="4";
     public static final String CAR_PARKING="5";
