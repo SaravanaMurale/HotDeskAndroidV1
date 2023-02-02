@@ -826,7 +826,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
                     System.out.println("HomeSupportZoneId "+getSupportZoneList.get(0).getParentLocationId()+" "+getSupportZoneList.get(0).getLocateCountryId());
 
-                    SessionHandler.getInstance().saveInt(context, AppConstants.SUPPORT_ZONE_ID, getSupportZoneList.get(0).getParentLocationId());
+                    SessionHandler.getInstance().saveInt(context, AppConstants.SUPPORT_ZONE_ID_FROM_HOME, getSupportZoneList.get(0).getParentLocationId());
 
                     onCheckInClickable.onLocationIconClick(parentLocationId,meetingRoomId, deskOrCarOrMeeting);
 

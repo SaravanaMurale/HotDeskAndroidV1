@@ -1227,13 +1227,13 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //If user clicked location icon from home and teams we need get support zone
         if(selecctedFloorFromHome==1){
             int parentId = SessionHandler.getInstance().getInt(getContext(), AppConstants.PARENT_ID);
-            callImediateChildLocationTogetSupportZone(parentId);
+            callImediateChildLocationTogetSupportZone(parentId,selecctedFloorFromHome);
         }
 
         if (parentIdCheck > 0 && defaultLocationcheck == 0 && selecctedFloorFromHome == 0) {
 
             //Get support zone data for default location from final before API
-            callImediateChildLocationTogetSupportZone(parentIdCheck);
+            callImediateChildLocationTogetSupportZone(parentIdCheck,selecctedFloorFromHome);
 
             int floorPositionCheck = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION_CHECK);
 
@@ -1927,18 +1927,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         Collections.sort(xCoordinatesList);
         Collections.sort(yCoordinatesList);
 
-//        binding.firstLayout.scrollTo(xCoordinatesList.get(0), yCoordinatesList.get(0));
-//        binding.secondLayout.scrollTo(xCoordinatesList.get(0), yCoordinatesList.get(0));
-//        binding.zoomView.scrollTo(xCoordinatesList.get(0), yCoordinatesList.get(0));
-
-        /*for (int i = 0; i <xCoordinatesList.size() ; i++) {
-            System.out.println("xCoordinatesList "+xCoordinatesList.get(i));
-        }
-
-        for (int i = 0; i <yCoordinatesList.size() ; i++) {
-            System.out.println("yCoordinatesList "+yCoordinatesList.get(i));
-        }*/
-
 
         int titleX=xCoordinatesList.get(xCoordinatesList.size()-1)-xCoordinatesList.get(0);
         int titleY=yCoordinatesList.get(yCoordinatesList.size()-1)-yCoordinatesList.get(0);
@@ -1959,15 +1947,18 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         relativeLayout.topMargin = yyy + yCoordinatesList.get(0) + 30;
 
 
-        if(fontSize >= 12 && fontSize < 17)
+       /* if(fontSize >= 12 && fontSize < 17)
             fontSize = 4;
         else if(fontSize >= 17 && fontSize < 20)
             fontSize = 6;
         else
             fontSize=8;
+*/
 
         roormTitle.setTextSize(fontSize);
 
+
+        roormTitle.setTextSize(6);
         roormTitle.setText(title);
         roormTitle.setLayoutParams(relativeLayout);
         binding.firstLayout.addView(roomTitleView);
@@ -2897,14 +2888,25 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         if (floorIconBlick > 0) {
             if (id == floorIconBlick) {
 
+                //borderLocation.setBackground(getResources().getDrawable(R.drawable.image_border));
+                //ivDesk.setScaleType(ImageView.ScaleType.FIT_XY);
+                //ivDesk.setBackground(getResources().getDrawable(R.drawable.image_border));
 
-               /* deskView = getLayoutInflater().inflate(R.layout.layout_rounded_border, null, false);
-                ImageView roundedBorder = deskView.findViewById(R.id.ivDesk);
-                RelativeLayout.LayoutParams roundedBorderLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);*/
 
-                ivDesk.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-                ivDesk.setBackground(getResources().getDrawable(R.drawable.image_border));
-                System.out.println("PaddingAddSuccesfully ");
+
+                View layoutRoundBorder = getLayoutInflater().inflate(R.layout.layout_rounded_border, null, false);
+                ImageView roundedBorder = layoutRoundBorder.findViewById(R.id.borderRed);
+                RelativeLayout.LayoutParams roundedBorderLayout = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+                roundedBorderLayout.leftMargin = x+20;
+                roundedBorderLayout.topMargin = y+13;
+                roundedBorderLayout.width=30;
+                roundedBorderLayout.height=37;
+                roundedBorder.setLayoutParams(roundedBorderLayout);
+
+                binding.firstLayout.addView(layoutRoundBorder);
+
+
 
                 //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.room_bookedbyme));
             } else {
@@ -5459,9 +5461,16 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     }
 
 
-    private void callImediateChildLocationTogetSupportZone(int parentIdCheck){
+    private void callImediateChildLocationTogetSupportZone(int parentIdCheck,int selecctedFloorFromHome){
 
-        int supportZoneParentId=SessionHandler.getInstance().getInt(getContext(),AppConstants.SUPPORT_ZONE_ID);
+        int supportZoneParentId;
+
+        if(selecctedFloorFromHome==1){
+            supportZoneParentId=SessionHandler.getInstance().getInt(getContext(),AppConstants.SUPPORT_ZONE_ID_FROM_HOME);
+        }else {
+            supportZoneParentId=SessionHandler.getInstance().getInt(getContext(),AppConstants.SUPPORT_ZONE_ID);
+        }
+
         System.out.println("SupportZoneInLocate "+parentIdCheck+" "+supportZoneParentId);
 
         if (Utils.isNetworkAvailable(getContext())) {
@@ -5480,8 +5489,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                 if (parentIdCheck == locateCountryResposes.get(i).getLocateCountryId() && supportZoneParentId == locateCountryResposes.get(i).getParentLocationId()) {
 
                                     if(locateCountryResposes.get(i).getSupportZoneLayoutItemsList()!=null && locateCountryResposes.get(i).getSupportZoneLayoutItemsList().size()>0) {
+
                                         getSupportZoneLayoutForCanvas.clear();
                                         getSupportZoneLayoutForCanvas = locateCountryResposes.get(i).getSupportZoneLayoutItemsList();
+
+                                        SessionHandler.getInstance().saveInt(getContext(),AppConstants.SELECTED_LOCATION_FROM_HOME,0);
                                     }
                                     break;
                                 }
