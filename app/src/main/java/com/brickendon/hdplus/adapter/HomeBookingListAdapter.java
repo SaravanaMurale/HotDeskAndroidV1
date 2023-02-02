@@ -818,10 +818,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         call.enqueue(new Callback<List<LocateCountryRespose>>() {
             @Override
             public void onResponse(Call<List<LocateCountryRespose>> call, Response<List<LocateCountryRespose>> response) {
-
-
                 if(response.body()!=null) {
-
                     List<LocateCountryRespose> locateCountryRespose = response.body();
                     List<LocateCountryRespose> getSupportZoneList = new ArrayList<>();
                     getSupportZoneList = locateCountryRespose.stream().filter(m -> m.getLocateCountryId() == parentLocationId).collect(Collectors.toList());
