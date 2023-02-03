@@ -65,8 +65,9 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
     private void showSmallNotification(String title, String messageBody) {
         int notificationID = 0;
         notificationManager = (NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "channel_01");
-        int icon = R.drawable.brickendon_logo;
+        NotificationCompat.Builder mBuilder = new
+                NotificationCompat.Builder(getApplicationContext(), "channel_01");
+        int icon = R.drawable.notification_icon;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel("channel_01",
@@ -94,7 +95,7 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
                 .setWhen(System.currentTimeMillis())
                 .setDefaults(DEFAULT_ALL)
                 .setShowWhen(true)
-                .setSmallIcon(R.drawable.brickendon_logo)
+                .setSmallIcon(R.drawable.notification_icon)
                 .setChannelId("channel_01")
                 .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), icon))
                 .setContentText(messageBody)

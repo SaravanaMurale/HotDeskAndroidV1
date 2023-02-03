@@ -29,6 +29,7 @@ import com.brickendon.hdplus.webservice.ApiClient;
 import com.brickendon.hdplus.webservice.ApiInterface;
 import com.bumptech.glide.Glide;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -149,7 +150,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             holder.tv_change.setVisibility(View.VISIBLE);
             holder.bookingIvLocation.setVisibility(View.VISIBLE);
 
-        }else {
+        } else {
 //            System.out.println("check date of today future "+Utils.convertStringToDateFormetHome(list.get(position).getDate()));
             holder.tv_past_event.setVisibility(View.GONE);
             holder.card.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
@@ -219,16 +220,17 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
             If status id ==2 i will show check out
             If status id ==1 i will remove  checkIn and checkOut
 */
+
             switch (list.get(position).getCalendarEntriesModel().getBooking().getStatus().getId()){
                 case 3:
-                    Date dNow = new Date( ); // Instantiate a Date object
                     Calendar cal = Calendar.getInstance();
-                    cal.setTime(dNow);
+
+//                    System.out.println("checkin show time" + cal.getTime());
+
                     if (fragment.earlyCheckInTime>0)
                         cal.add(Calendar.MINUTE, fragment.earlyCheckInTime);
                     else
                         cal.add(Calendar.MINUTE, 2);
-                    dNow = cal.getTime();
                     SimpleDateFormat f24hours=new SimpleDateFormat("HH:mm");
 
 
@@ -236,7 +238,7 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
                             .equalsIgnoreCase(Utils.getYearMonthDateFormat(Utils.convertStringToDateFormetHome(list.get(position).getDate())))
                             &&
                             Utils.compareTimeIfCheckInEnable(
-                                    f24hours.format(dNow),
+                                    f24hours.format(cal.getTime()),
                                     Utils.splitTime(list.get(position).getCalendarEntriesModel().getFrom())
                             )){
                         holder.greenLine.setVisibility(View.GONE);

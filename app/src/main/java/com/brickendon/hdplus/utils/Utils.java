@@ -1204,7 +1204,7 @@ public class Utils {
         //finishAllActivity(context);
     }
 
-    public static String getCurrentDateInDateFormet() {
+    /*public static String getCurrentDateInDateFormet() {
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
@@ -1216,7 +1216,7 @@ public class Utils {
 
     }
 
-
+*/
     public static Date convertStringToDateFormetHome(String dateInString) {
 //        SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy",Locale.ENGLISH);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
