@@ -333,13 +333,13 @@ public class CreatePinActivity extends AppCompatActivity {
 
         if (nwPin.equalsIgnoreCase("") || nwPin.isEmpty()
                 || conPin.equalsIgnoreCase("") || conPin.isEmpty() ){
-            Utils.toastMessage(getApplicationContext(),"Please enter Pin");
+            Utils.toastMessage(getApplicationContext(),logoinPage.getPleaseEnterPin());
             userDetailStatus = false;
         }else if (nwPin.length() < 6 || conPin.length() < 6){
-            Utils.toastMessage(getApplicationContext(),"Pin Should be 6 digits");
+            Utils.toastMessage(getApplicationContext(),logoinPage.getPinShouldDigits());
             userDetailStatus = false;
         }else if (!nwPin.equalsIgnoreCase(conPin)){
-            Utils.toastMessage(getApplicationContext(),"Pin Mismatch");
+            Utils.toastMessage(getApplicationContext(),logoinPage.getPinNotMatched());
             userDetailStatus = false;
         }else {
             userDetailStatus = true;
