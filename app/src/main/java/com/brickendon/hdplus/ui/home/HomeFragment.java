@@ -49,6 +49,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.brickendon.hdplus.model.response.BookingListResponseNew;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -139,7 +140,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     View view;
     Dialog dialog;
     int teamId = 0, teamMembershipId = 0, selectedDeskId = 0;
-    ArrayList<BookingListResponse.DayGroup> recyclerModelArrayList;
+    ArrayList<BookingListResponseNew.DayGroup> recyclerModelArrayList;
     ArrayList<IncomingRequestResponse.Result> notiList;
     List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponse = new ArrayList<>();
     HashMap<Integer, String> meetingRecurenceMap = new HashMap<Integer, String>();
@@ -764,7 +765,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         }
     }
 
-    public void changeCheckOut(BookingListResponse.DayGroup data, int pos) {
+    public void changeCheckOut(BookingListResponseNew.DayGroup data, int pos) {
         if (Utils.isNetworkAvailable(getActivity())) {
             dialog = ProgressDialog.showProgressBar(getContext());
 
@@ -779,14 +780,10 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 //                    Toast.makeText(getActivity(), ""+response.body().getResultCode(), Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
-                    BookingListResponse.DayGroup.CalendarEntry.Booking.Status calendarEntry = recyclerModelArrayList.get(pos).getCalendarEntriesModel().getBooking().getStatus();
+                    BookingListResponseNew.DayGroup.CalendarEntry.Booking.Status calendarEntry = recyclerModelArrayList.get(pos).getCalendarEntriesModel().getBooking().getStatus();
                     calendarEntry.setId(1);
                     homeBookingListAdapter.notifyItemChanged(pos);
-//                    SessionHandler.getInstance().save(getActivity(), AppConstants.USER_CURRENT_STATUS, "Checked Out");
-//                    userCurrentStatus.setText("Checked Out");
                     currentBookings();
-//                    userStatus.setColorFilter(ContextCompat.getColor(getActivity(), R.color.figmaGrey), android.graphics.PorterDuff.Mode.MULTIPLY);
-
                     openCheckoutDialog("Check-out successful");
                 }
 
@@ -821,7 +818,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         popDialog.show();
     }
 
-    public void loadHomeListOld() {
+    /*public void loadHomeListOld() {
         if (Utils.isNetworkAvailable(getActivity())) {
             mSwipeRefreshLayout.setRefreshing(true);
 //            dialog= ProgressDialog.showProgressBar(getContext());
@@ -864,25 +861,23 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         } else {
             Utils.toastMessage(getActivity(), "Please Enable Internet");
         }
-    }
+    }*/
     public void loadHomeList() {
         if (Utils.isNetworkAvailable(getActivity())) {
             mSwipeRefreshLayout.setRefreshing(true);
 //            dialog= ProgressDialog.showProgressBar(getContext());
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<List<BookingListResponse>> call = apiService.getUserMyWorkDetailsNew(
+            Call<List<BookingListResponseNew>> call = apiService.getUserMyWorkDetailsNew(
                     Utils.getPreviousWeeksDate(),
                     4,
                     true);
-//            Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-07-18",true);
-            //Call<BookingListResponse> call = apiService.getUserMyWorkDetails("2022-07-04",true);
-            call.enqueue(new Callback<List<BookingListResponse>>() {
+            call.enqueue(new Callback<List<BookingListResponseNew>>() {
                 @Override
-                public void onResponse(Call<List<BookingListResponse>> call,
-                                       Response<List<BookingListResponse>> response) {
+                public void onResponse(Call<List<BookingListResponseNew>> call,
+                                       Response<List<BookingListResponseNew>> response) {
                     if (response.code() == 200) {
                         if (response.body()!=null ) {
-                            List<BookingListResponse> bookingListResponse = response.body();
+                            List<BookingListResponseNew> bookingListResponse = response.body();
                             if (bookingListResponse!=null && bookingListResponse.size()>0){
                                 teamId = bookingListResponse.get(0).getTeamId();
                                 teamMembershipId = bookingListResponse.get(0).getTeamMembershipId();
@@ -901,7 +896,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                 }
 
                 @Override
-                public void onFailure(Call<List<BookingListResponse>> call, Throwable t) {
+                public void onFailure(Call<List<BookingListResponseNew>> call, Throwable t) {
                     mSwipeRefreshLayout.setRefreshing(false);
 
                     Log.d(TAG, "onFailure: " + t.getMessage());
@@ -913,20 +908,20 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         }
     }
 
-    private void createRecyclerListNew (List<BookingListResponse> body) {
-        List<BookingListResponse> bookingListResponsesList = body;
+    private void createRecyclerListNew (List<BookingListResponseNew> body) {
+        List<BookingListResponseNew> bookingListResponsesList = body;
         recyclerModelArrayList = new ArrayList<>();
-        for (int z=0; z<bookingListResponsesList.size(); z++){
-            BookingListResponse bookingListResponses = bookingListResponsesList.get(z);
+        for (int z=0; z<bookingListResponsesList.size(); z++) {
+            BookingListResponseNew bookingListResponses = bookingListResponsesList.get(z);
 //        ArrayList<BookingListResponse> recyclerModelArrayList = new ArrayList<>();
             if (bookingListResponses.getDayGroups() != null) {
                 for (int i = 0; i < bookingListResponses.getDayGroups().size(); i++) {
                     boolean dateCheck = true;
-                    Date date = Utils.convertStringToDateFormet(bookingListResponses.getDayGroups().get(i).getDate());
-
-                    ArrayList<BookingListResponse.DayGroup.CalendarEntry> calendarEntries = null;
-                    ArrayList<BookingListResponse.DayGroup.MeetingBooking> meetingEntries = null;
-                    ArrayList<BookingListResponse.DayGroup.CarParkBooking> carParkEntries = null;
+                    String date = bookingListResponses.getDayGroups().get(i).getDate();
+                    System.out.println("cehceakbdsak"+date);
+                    ArrayList<BookingListResponseNew.DayGroup.CalendarEntry> calendarEntries = null;
+                    ArrayList<BookingListResponseNew.DayGroup.MeetingBooking> meetingEntries = null;
+                    ArrayList<BookingListResponseNew.DayGroup.CarParkBooking> carParkEntries = null;
 
                     if (bookingListResponses.getDayGroups().get(i).getCalendarEntries() != null) {
                         calendarEntries =
@@ -944,17 +939,17 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     if (Utils.compareTwoDate(Utils.convertStringToDateFormet(bookingListResponses.getDayGroups().get(i).getDate()), Utils.getCurrentDate()) != 1 || showPastStatus) {
                         if (calendarEntries != null) {
                             for (int j = 0; j < calendarEntries.size(); j++) {
-                                BookingListResponse.DayGroup momdel = new BookingListResponse.DayGroup();
+                                BookingListResponseNew.DayGroup momdel = new BookingListResponseNew.DayGroup();
                                 if (dateCheck) {
                                     momdel.setDateStatus(true);
                                     momdel.setCalDeskStatus(1);
-                                    momdel.setDate(""+date);
+                                    momdel.setDate(date);
                                     momdel.setCalendarEntriesModel(calendarEntries.get(j));
                                     dateCheck = false;
                                 } else {
                                     momdel.setDateStatus(false);
                                     momdel.setCalDeskStatus(1);
-                                    momdel.setDate(""+date);
+                                    momdel.setDate(date);
                                     momdel.setCalendarEntriesModel(calendarEntries.get(j));
                                 }
                                 recyclerModelArrayList.add(momdel);
@@ -962,17 +957,17 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         }
                         if (meetingEntries != null) {
                             for (int j = 0; j < meetingEntries.size(); j++) {
-                                BookingListResponse.DayGroup momdel = new BookingListResponse.DayGroup();
+                                BookingListResponseNew.DayGroup momdel = new BookingListResponseNew.DayGroup();
                                 if (dateCheck) {
                                     momdel.setDateStatus(true);
                                     momdel.setCalDeskStatus(2);
-                                    momdel.setDate(""+date);
+                                    momdel.setDate(date);
                                     momdel.setMeetingBookingsModel(meetingEntries.get(j));
                                     dateCheck = false;
                                 } else {
                                     momdel.setDateStatus(false);
                                     momdel.setCalDeskStatus(2);
-                                    momdel.setDate(""+date);
+                                    momdel.setDate(date);
                                     momdel.setMeetingBookingsModel(meetingEntries.get(j));
                                 }
                                 recyclerModelArrayList.add(momdel);
@@ -980,17 +975,17 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                         }
                         if (carParkEntries != null) {
                             for (int j = 0; j < carParkEntries.size(); j++) {
-                                BookingListResponse.DayGroup momdel = new BookingListResponse.DayGroup();
+                                BookingListResponseNew.DayGroup momdel = new BookingListResponseNew.DayGroup();
                                 if (dateCheck) {
                                     momdel.setDateStatus(true);
                                     momdel.setCalDeskStatus(3);
-                                    momdel.setDate(""+date);
+                                    momdel.setDate(date);
                                     momdel.setCarParkBookingsModel(carParkEntries.get(j));
                                     dateCheck = false;
                                 } else {
                                     momdel.setDateStatus(false);
                                     momdel.setCalDeskStatus(3);
-                                    momdel.setDate(""+date);
+                                    momdel.setDate(date);
                                     momdel.setCarParkBookingsModel(carParkEntries.get(j));
                                 }
                                 recyclerModelArrayList.add(momdel);
@@ -1213,7 +1208,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     }
 
     @Override
-    public void onCheckInDeskClick(BookingListResponse.DayGroup.CalendarEntry calendarEntriesModel, String click, Date date, int position) {
+    public void onCheckInDeskClick(BookingListResponseNew.DayGroup.CalendarEntry calendarEntriesModel, String click, Date date, int position) {
         if (click.equals(AppConstants.CHECKIN) || click.equals(AppConstants.REMOTE)) {
             //Checkin
             System.out.println("BookingNameDest" + calendarEntriesModel.getUsageTypeName());
@@ -1280,7 +1275,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         }
     }
 
-    private void callEditDesk(BookingListResponse.DayGroup.CalendarEntry calendarEntriesModel,Date date) {
+    private void callEditDesk(BookingListResponseNew.DayGroup.CalendarEntry calendarEntriesModel,Date date) {
         if (Utils.isNetworkAvailable(getActivity())) {
 
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -1312,20 +1307,15 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
                     } catch (Exception exception){
 
                     }
-
                 }
-
                 @Override
                 public void onFailure(Call<BookingForEditResponse> call, Throwable t) {
                     Log.d(TAG, "onFailure: "+t.getMessage());
                 }
             });
-
-
         } else {
             Utils.toastMessage(getActivity(), "Please Enable Internet");
         }
-
     }
 
     private void callEditDeskBookingController(BookingForEditResponse.Bookings bookings) {
@@ -1399,7 +1389,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     }
 
     @Override
-    public void onCheckInMeetingRoomClick(BookingListResponse.DayGroup.MeetingBooking meetingEntriesModel, String click, Date date, int position) {
+    public void onCheckInMeetingRoomClick(BookingListResponseNew.DayGroup.MeetingBooking meetingEntriesModel, String click, Date date, int position) {
 
         if (click.equals(AppConstants.CHECKIN)) {
             //Checkin
@@ -1449,15 +1439,17 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         }
     }
 
-    private void callEditMeeting(BookingListResponse.DayGroup.MeetingBooking meetingEntriesModel, Date date) {
+    private void callEditMeeting(BookingListResponseNew.DayGroup.MeetingBooking meetingEntriesModel,
+                                 Date date) {
         if (Utils.isNetworkAvailable(getActivity())) {
             dialog= ProgressDialog.showProgressBar(context);
-
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-            Call<List<MeetingListToEditResponse>> call=apiService.getMeetingListToEdit(Utils.getYearMonthDateFormat(date)+"T00:00:00.000Z",Utils.getYearMonthDateFormat(date)+"T00:00:00.000Z");
+            Call<List<MeetingListToEditResponse>> call=apiService.getMeetingListToEdit(Utils.getYearMonthDateFormat(date)+"T00:00:00.000Z",
+                    Utils.getYearMonthDateFormat(date)+"T00:00:00.000Z");
             call.enqueue(new Callback<List<MeetingListToEditResponse>>() {
                 @Override
-                public void onResponse(Call<List<MeetingListToEditResponse>> call, Response<List<MeetingListToEditResponse>> response) {
+                public void onResponse(Call<List<MeetingListToEditResponse>> call,
+                                       Response<List<MeetingListToEditResponse>> response) {
 
                     List<MeetingListToEditResponse> meetingListToEditResponseList  =response.body();
                     List<MeetingListToEditResponse> meetingListToEditList  =new ArrayList<>();
@@ -1600,7 +1592,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     }
 
     @Override
-    public void onCheckInCarParkingClick(BookingListResponse.DayGroup.CarParkBooking carParkingEntriesModel, String click, Date date, int position) {
+    public void onCheckInCarParkingClick(BookingListResponseNew.DayGroup.CarParkBooking carParkingEntriesModel, String click, Date date, int position) {
 
         if (click.equals(AppConstants.CHECKIN)) {
             //Checkin

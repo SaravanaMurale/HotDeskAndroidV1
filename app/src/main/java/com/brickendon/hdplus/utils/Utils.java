@@ -1218,8 +1218,8 @@ public class Utils {
 
 
     public static Date convertStringToDateFormetHome(String dateInString) {
-        SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy");
-        System.out.println("comperer csocce"+dateInString);
+//        SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy",Locale.ENGLISH);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         //String sDate1="31/12/1998";
         Date date1 = null;
         try {

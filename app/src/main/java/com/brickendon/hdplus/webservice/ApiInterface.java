@@ -219,7 +219,7 @@ public interface ApiInterface {
     Call<BookingListResponse> getUserMyWorkDetails(@Query("dayOfTheWeek") String dayOfTheWeek,
                                                    @Query("includeNonWorkingDays") boolean includeNonWorkingDays);
     @GET("api/MyWork/UserMyWorkStatusMobile")
-    Call<List<BookingListResponse>> getUserMyWorkDetailsNew(@Query("Date") String dayOfTheWeek,
+    Call<List<BookingListResponseNew>> getUserMyWorkDetailsNew(@Query("Date") String dayOfTheWeek,
                                                    @Query("weekCount") int weekCount,
                                                    @Query("includeNonWorkingDays") boolean includeNonWorkingDays);
 

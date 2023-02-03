@@ -53,8 +53,8 @@ public class BookingListResponse {
         this.workingDays = workingDays;
     }
 
-    public static class DayGroup{
-        private String date;
+    public static class DayGroup {
+        private Date date;
         private ArrayList<CalendarEntry> calendarEntries;
         private ArrayList<MeetingBooking> meetingBookings;
         private ArrayList<CarParkBooking> carParkBookings;
@@ -125,11 +125,11 @@ public class BookingListResponse {
             this.dateStatus = dateStatus;
         }
 
-        public String getDate() {
+        public Date getDate() {
             return date;
         }
 
-        public void setDate(String date) {
+        public void setDate(Date date) {
             this.date = date;
         }
 

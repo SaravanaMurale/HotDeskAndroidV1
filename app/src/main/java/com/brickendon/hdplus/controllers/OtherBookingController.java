@@ -25,6 +25,7 @@ import com.brickendon.hdplus.model.request.OtherBookingRequest;
 import com.brickendon.hdplus.model.response.BaseResponse;
 import com.brickendon.hdplus.model.response.BookingForEditResponse;
 import com.brickendon.hdplus.model.response.BookingListResponse;
+import com.brickendon.hdplus.model.response.BookingListResponseNew;
 import com.brickendon.hdplus.utils.AppConstants;
 import com.brickendon.hdplus.utils.ProgressDialog;
 import com.brickendon.hdplus.utils.SessionHandler;
@@ -57,7 +58,7 @@ public class OtherBookingController {
     private String isFrom;
     private BookingForEditResponse bookingForEditResponse;
     private Dialog dialog;
-    private BookingListResponse.DayGroup.CalendarEntry calendarEntry;
+    private BookingListResponseNew.DayGroup.CalendarEntry calendarEntry;
     private Date date;
     private int type = 0;
     private BottomSheetDialog addEditBottomSheet;
@@ -88,7 +89,7 @@ public class OtherBookingController {
     }
 
     public OtherBookingController(Context context,
-                                  BookingListResponse.DayGroup.CalendarEntry calendarEntry,
+                                  BookingListResponseNew.DayGroup.CalendarEntry calendarEntry,
                                   Date date, String isFrom) {
         this.context = context;
         appKeysPage = Utils.getAppKeysPageScreenData(context);
@@ -837,11 +838,8 @@ public class OtherBookingController {
 
                 bottomSheetDialog.dismiss();
                 repeatBottomSheetDialog.dismiss();
-
             }
         });
-
-
         bottomSheetDialog.show();
     }
 

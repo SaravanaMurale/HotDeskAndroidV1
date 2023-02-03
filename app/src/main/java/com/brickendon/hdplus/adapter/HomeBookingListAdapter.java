@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.brickendon.hdplus.model.response.BookingListResponseNew;
 import com.brickendon.hdplus.model.response.LocateCountryRespose;
 import com.brickendon.hdplus.ui.login.LoginActivity;
 import com.brickendon.hdplus.webservice.ApiClient;
@@ -56,13 +57,16 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
     Context context;
     Activity activity;
     HomeFragment fragment;
-    ArrayList<BookingListResponse.DayGroup> list;
+    ArrayList<BookingListResponseNew.DayGroup> list;
 
     public OnCheckInClickable onCheckInClickable;
     HashMap<Integer,String> map;
 
     boolean pastCheck = false;
-    public HomeBookingListAdapter(Context context, OnCheckInClickable onCheckInClickable, ArrayList<BookingListResponse.DayGroup> recyclerModelArrayList, FragmentActivity activity, HomeFragment homeFragment, HashMap<Integer,String> map) {
+    public HomeBookingListAdapter(Context context,
+                                  OnCheckInClickable onCheckInClickable,
+                                  ArrayList<BookingListResponseNew.DayGroup> recyclerModelArrayList,
+                                  FragmentActivity activity, HomeFragment homeFragment, HashMap<Integer,String> map) {
         this.context = context;
         this.onCheckInClickable =  onCheckInClickable;
         this.list = recyclerModelArrayList;
@@ -73,9 +77,9 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
 
 
     public interface  OnCheckInClickable{
-        public void onCheckInDeskClick(BookingListResponse.DayGroup.CalendarEntry calendarEntriesModel, String click, Date date,int position);
-        public void onCheckInMeetingRoomClick(BookingListResponse.DayGroup.MeetingBooking meetingEntriesModel, String click, Date date,int position);
-        public void onCheckInCarParkingClick(BookingListResponse.DayGroup.CarParkBooking carParkingEntriesModel, String click, Date date,int position);
+        public void onCheckInDeskClick(BookingListResponseNew.DayGroup.CalendarEntry calendarEntriesModel, String click, Date date,int position);
+        public void onCheckInMeetingRoomClick(BookingListResponseNew.DayGroup.MeetingBooking meetingEntriesModel, String click, Date date,int position);
+        public void onCheckInCarParkingClick(BookingListResponseNew.DayGroup.CarParkBooking carParkingEntriesModel, String click, Date date,int position);
 
         public void onLocationIconClick(int parentLocationId, int meetingRoomId, String desk);
     }
@@ -95,8 +99,6 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         //conditon is to display date and line accordingly
         if (list.get(position).isDateStatus()) {
             holder.dateLayout.setVisibility(View.VISIBLE);
-//            System.out.println("DateFormatPrintHere"+list.get(position).getDate());
-//            System.out.println("DayInTextAndNumber"+Utils.getDayAndDateFromDateFormat(list.get(position).getDate()));
             try {
                 String day = Utils.getDayAndDateFromDateFormat(Utils.convertStringToDateFormetHome(list.get(position).getDate())).split(" ")[0];
                 String dateNum = Utils.getDayAndDateFromDateFormat(Utils.convertStringToDateFormetHome(list.get(position).getDate())).split(" ")[1];
@@ -648,7 +650,8 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         holder.bookingBtnCheckOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment.changeCheckOut(list.get(holder.getAbsoluteAdapterPosition()),holder.getAbsoluteAdapterPosition());
+                fragment.changeCheckOut(list.get(holder.getAbsoluteAdapterPosition()),
+                        holder.getAbsoluteAdapterPosition());
             }
         });
 
@@ -699,7 +702,6 @@ public class HomeBookingListAdapter extends RecyclerView.Adapter<HomeBookingList
         holder.tv_change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel() != null &&
                         (list.get(holder.getAbsoluteAdapterPosition()).getCalendarEntriesModel()
                                 .getUsageTypeAbbreviation().equalsIgnoreCase("TR") ||
