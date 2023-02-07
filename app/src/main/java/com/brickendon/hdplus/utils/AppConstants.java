@@ -8,6 +8,8 @@ public class AppConstants {
     //public static final String BASE_URL="https://dev-api.hybridhero.com/";
     //Production Url
     public static final String BASE_URL = "https://api.hybridhero.com/";
+    public static String BASE_URL_DYNAMIC = "https://api.hybridhero.com/";
+    public static String BASE_URL_DYNAMIC_SESSION = "BASE_URL_DYNAMIC_SESSION";
 
     public static final String SODIUM_SECRET_CODE = "89def69f0bdddc995078037539dc6ef4f0bdbdd3fa04ef2d11eea30779d72ac6";
     public static final String SODIUM_NONCE = "c88529b087036c035be110e0fa5b6b63041ede30e2e69e90";

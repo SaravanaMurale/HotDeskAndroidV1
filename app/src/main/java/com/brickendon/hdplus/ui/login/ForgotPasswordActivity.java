@@ -1,5 +1,6 @@
 package com.brickendon.hdplus.ui.login;
 
+import static com.brickendon.hdplus.utils.MyApp.getContext;
 import static com.brickendon.hdplus.utils.Utils.getAppKeysPageScreenData;
 import static com.brickendon.hdplus.utils.Utils.getResetPasswordPageScreencreenData;
 
@@ -23,6 +24,9 @@ import com.brickendon.hdplus.utils.SessionHandler;
 import com.brickendon.hdplus.utils.Utils;
 import com.brickendon.hdplus.webservice.ApiClient;
 import com.brickendon.hdplus.webservice.ApiInterface;
+
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -52,6 +56,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         etEmail.setHint(appKeysPage.getEmailAddress());
         gobacktoSignIn.setText(appKeysPage.getGoBackToSignIn());
 
+
+
         gobacktoSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,6 +68,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getLoginRegion(etCompanyName.getText().toString().trim().toLowerCase(),false);
                 if (validateLoginDetails(etCompanyName.getText().toString().trim(),etEmail.getText().toString().trim())){
                     requestPasswordRest();
                 }/*else {
@@ -69,7 +76,82 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 }*/
             }
         });
+    }
 
+    public void getLoginRegion(String tenantName, boolean isSSO) {
+        if (Utils.isNetworkAvailable(getContext())) {
+            AppConstants.BASE_URL_DYNAMIC = AppConstants.BASE_URL;
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<String>> call = apiService.getLoginRegion(tenantName);
+            call.enqueue(new Callback<List<String>>() {
+                @Override
+                public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                    if (response.code() == 200) {
+                        List<String> regionList = response.body();
+                        String baseUrl="";
+                        if (regionList!=null){
+                            if (regionList.size()>0){
+                                baseUrl= regionList.get(regionList.size()-1);
+                                setBaseUrl(baseUrl,isSSO);
+                            } else {
+                                SessionHandler.getInstance().save(getContext(),
+                                        AppConstants.BASE_URL_DYNAMIC,AppConstants.BASE_URL);
+
+                            }
+                        } else {
+                            SessionHandler.getInstance().save(getContext(),
+                                    AppConstants.BASE_URL_DYNAMIC_SESSION,AppConstants.BASE_URL);
+
+                        }
+                    } else {
+                        SessionHandler.getInstance().save(getContext(),
+                                AppConstants.BASE_URL_DYNAMIC_SESSION,AppConstants.BASE_URL);
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<String>> call, Throwable t) {
+                    SessionHandler.getInstance().save(getContext(),
+                            AppConstants.BASE_URL_DYNAMIC_SESSION,AppConstants.BASE_URL);
+
+                }
+            });
+        } else {
+            Utils.toastMessage(getContext(), "Please Enable Internet");
+        }
+    }
+
+    private void setBaseUrl(String baseUrl, boolean isSSO) {
+        switch (baseUrl) {
+            case "DEV":
+                AppConstants.BASE_URL_DYNAMIC ="https://dev-api.hybridhero.com/";
+                SessionHandler.getInstance().save(getContext(),
+                        AppConstants.BASE_URL_DYNAMIC_SESSION,"https://dev-api.hybridhero.com/");
+                break;
+            case "PROD":
+                AppConstants.BASE_URL_DYNAMIC ="https://api.hybridhero.com/";
+                SessionHandler.getInstance().save(getContext(),
+                        AppConstants.BASE_URL_DYNAMIC_SESSION,"https://api.hybridhero.com/");
+                break;
+            case "PREPROD":
+                AppConstants.BASE_URL_DYNAMIC = "https://preprod-api.hotdeskplus.com/";
+                SessionHandler.getInstance().save(getContext(),
+                        AppConstants.BASE_URL_DYNAMIC_SESSION,"https://preprod-api.hotdeskplus.com/");
+                break;
+            case "PRODAUSTRALIA":
+                AppConstants.BASE_URL_DYNAMIC = "https://api.hybridhero.com.au/";
+                SessionHandler.getInstance().save(getContext(),
+                        AppConstants.BASE_URL_DYNAMIC_SESSION,"https://api.hybridhero.com.au/");
+                break;
+            default:
+        }
+
+        if (validateLoginDetails(etCompanyName.getText().toString().trim(),
+                etEmail.getText().toString().trim())){
+            requestPasswordRest();
+        }
     }
 
     private void requestPasswordRest() {

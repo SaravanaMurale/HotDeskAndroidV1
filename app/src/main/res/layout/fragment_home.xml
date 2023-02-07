@@ -189,7 +189,7 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:layout_weight="1"
-                                tools:src="@drawable/default_company_logo" />
+                                />
                         </RelativeLayout>
 
                     </LinearLayout>

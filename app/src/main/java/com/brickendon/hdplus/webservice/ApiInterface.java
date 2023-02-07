@@ -92,12 +92,12 @@ public interface ApiInterface {
     // to check wheter this user can setup pin or not
     @POST("api/settings/PrivacyPolicyURL")
     Call<String> privacyPolicy(@Body JsonObject jsonObject);
-
     @GET("api/settings/setting")
     Call<String> getSettingData(@Query("name") String name);
+    @GET("api/global/region")
+    Call<List<String>> getLoginRegion(@Query("tenantname") String name);
     @GET("/api/Settings/CompanyDefaultSettings")
     Call<CompanyDefaultResponse> getCompanyDefaultSettings();
-
 
     @POST("api/account/TypeOfLogin")
     Call<TypeOfLoginResponse> typeOfLogin(@Body JsonObject jsonObject);

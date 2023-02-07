@@ -74,7 +74,20 @@ public class SignInActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         dialog = new Dialog(this);
 
+        try {
+            String url = SessionHandler.getInstance().get(this,AppConstants.BASE_URL_DYNAMIC_SESSION);
+            if (url != null && !url.isEmpty() && !url.equalsIgnoreCase("")){
+                AppConstants.BASE_URL_DYNAMIC = url;
+            } else {
+                AppConstants.BASE_URL_DYNAMIC = AppConstants.BASE_URL;
+            }
+
+        } catch (Exception e){
+
+        }
+
         setLang();
+
 
 /*
         setNightMode(this,

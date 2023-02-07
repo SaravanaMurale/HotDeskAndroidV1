@@ -1,11 +1,12 @@
 package com.brickendon.hdplus.webservice;
 
-
-
 import static com.brickendon.hdplus.utils.AppConstants.BASE_URL;
+import static com.brickendon.hdplus.utils.AppConstants.BASE_URL_DYNAMIC;
 
 import androidx.annotation.NonNull;
 
+import com.brickendon.hdplus.utils.AppConstants;
+import com.brickendon.hdplus.utils.SessionHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -25,7 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
     private static Retrofit retrofit = null;
-
+    public static String apiBaseUrl = "https://api.hybridhero.com/";
     public static Retrofit getClient() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(Level.BODY);
@@ -38,8 +39,7 @@ public class ApiClient {
                     request = chain.request().newBuilder()
                             .addHeader("Accept", "application/json")
                             .build();
-                }
-                else {
+                } else {
                     request = chain.request().newBuilder()
                             .addHeader("Accept", "application/json")
                             .addHeader("Authorization", "Bearer " + Utils.getToken())
@@ -58,13 +58,17 @@ public class ApiClient {
         httpClient.readTimeout(5, TimeUnit.MINUTES);
         httpClient.writeTimeout(5, TimeUnit.MINUTES);
         Gson gson = new GsonBuilder().setLenient().create();
-        if (retrofit == null) {
-            retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
+        retrofit = new Retrofit.Builder().baseUrl(BASE_URL_DYNAMIC)
                     .client(httpClient.build()).addConverterFactory(GsonConverterFactory.create(gson)).build();
-        }
+
         return retrofit;
     }
+    public static void changeApiBaseUrl(String newApiBaseUrl) {
+        apiBaseUrl = newApiBaseUrl;
+        Gson gson = new GsonBuilder().setLenient().create();
+        retrofit = new Retrofit.Builder().baseUrl(apiBaseUrl)
+                    .addConverterFactory(GsonConverterFactory.create(gson)).build();
 
 
-
+    }
 }

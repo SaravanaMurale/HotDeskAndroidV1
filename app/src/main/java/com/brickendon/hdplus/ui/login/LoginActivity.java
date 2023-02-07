@@ -1,5 +1,6 @@
 package com.brickendon.hdplus.ui.login;
 
+import static com.brickendon.hdplus.utils.MyApp.getContext;
 import static com.brickendon.hdplus.utils.Utils.getAppKeysPageScreenData;
 import static com.brickendon.hdplus.utils.Utils.getLoginScreenData;
 import static com.brickendon.hdplus.utils.Utils.getResetPasswordPageScreencreenData;
@@ -153,30 +154,12 @@ public class LoginActivity extends AppCompatActivity {
         btnLoginWithSso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            /*    Intent intent = new Intent(getApplicationContext(), WebViewActivity.class);
-                startActivity(intent);
-            */
                 loginLayout.setVisibility(View.GONE);
                 tenantLayout.setVisibility(View.VISIBLE);
-//                tenantNamePopUp();
-
-/*
-
-                AcquireTokenParameters parameters = new AcquireTokenParameters.Builder()
-                        .startAuthorizationFromActivity(LoginActivity.this)
-                        .withAuthorizationQueryStringParameters(extraQueryParameters)
-                        .fromAuthority(B2CConfiguration.getAuthorityFromPolicyName("B2C_1A_signup_signin_Multitenant"))
-//                        .fromAuthority(B2CConfiguration.getAuthorityFromPolicyName("B2C_1A_signup_signin_Multitenant"policyListSpinner.getSelectedItem().toString()))
-                        .withScopes(B2CConfiguration.getScopes())
-                        .withPrompt(Prompt.LOGIN)
-                        .withCallback(getAuthInteractiveCallback())
-                        .build();
-
-                b2cApp.acquireToken(parameters);
-*/
 
             }
         });
+
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,17 +169,17 @@ public class LoginActivity extends AppCompatActivity {
                 String password = etPassword.getText().toString().trim();
 
                 //Validate Input User Details
-                if (validateLoginDetails(companyName, email, password)) {
-                    doLogin(companyName, email, password);
-                }
+                getLoginRegion(companyName.toLowerCase(),false);
 
             }
         });
+
         signInSso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!etTenantName.getText().toString().equalsIgnoreCase("") && !etTenantName.getText().toString().isEmpty()) {
-                    tentantName = etTenantName.getText().toString();
+                if (!etTenantName.getText().toString().equalsIgnoreCase("")
+                        && !etTenantName.getText().toString().isEmpty()) {
+                    tentantName = etTenantName.getText().toString().trim();
 
 //                    SessionHandler.getInstance().remove(MyApp.getContext(), AppConstants.USERTOKEN);
                     /*List<Pair<String, String>> extraQueryParameters = new ArrayList<>();
@@ -218,8 +201,8 @@ public class LoginActivity extends AppCompatActivity {
                             .build();
 
                     b2cApp.acquireToken(parameters);*/
+                    getLoginRegion(tentantName.toLowerCase(),true);
 
-                    checkSsoEnabled();
                 } else {
                     Toast.makeText(LoginActivity.this, "Please enter a valid company name.", Toast.LENGTH_SHORT).show();
                 }
@@ -234,6 +217,107 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    public void getLoginRegion(String tenantName, boolean isSSO) {
+        if (Utils.isNetworkAvailable(getContext())) {
+            AppConstants.BASE_URL_DYNAMIC = AppConstants.BASE_URL;
+
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<List<String>> call = apiService.getLoginRegion(tenantName);
+            call.enqueue(new Callback<List<String>>() {
+                @Override
+                public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                    if (response.code() == 200) {
+                        List<String> regionList = response.body();
+                        String baseUrl="";
+                        if (regionList!=null){
+                            if (regionList.size()>0){
+                                baseUrl= regionList.get(regionList.size()-1);
+                                setBaseUrl(baseUrl,isSSO);
+                            } else {
+                                SessionHandler.getInstance().save(getContext(),
+                                        AppConstants.BASE_URL_DYNAMIC,AppConstants.BASE_URL);
+                                if (isSSO)
+                                    checkSsoEnabled();
+                                else
+                                    callLogin();
+                            }
+                        } else {
+                            SessionHandler.getInstance().save(getContext(),
+                                    AppConstants.BASE_URL_DYNAMIC_SESSION,AppConstants.BASE_URL);
+                            if (isSSO)
+                                checkSsoEnabled();
+                            else
+                                callLogin();
+                        }
+                    } else {
+                        SessionHandler.getInstance().save(getContext(),
+                                AppConstants.BASE_URL_DYNAMIC_SESSION,AppConstants.BASE_URL);
+                        if (isSSO)
+                            checkSsoEnabled();
+                        else
+                            callLogin();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<String>> call, Throwable t) {
+                    SessionHandler.getInstance().save(getContext(),
+                            AppConstants.BASE_URL_DYNAMIC_SESSION,AppConstants.BASE_URL);
+                    if (isSSO)
+                        checkSsoEnabled();
+                    else
+                        callLogin();
+                }
+            });
+        } else {
+            Utils.toastMessage(getContext(), "Please Enable Internet");
+        }
+    }
+
+    private void callLogin() {
+        String companyName = etCompanyName.getText().toString().trim();
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+
+        //Validate Input User Details
+//        getLoginRegion(companyName, false);
+        if(validateLoginDetails(companyName,email,password)) {
+            doLogin(companyName,email,password);
+        }
+
+    }
+
+    private void setBaseUrl(String baseUrl,boolean isSSo) {
+        switch (baseUrl) {
+            case "DEV":
+                AppConstants.BASE_URL_DYNAMIC ="https://dev-api.hybridhero.com/";
+                SessionHandler.getInstance().save(getContext(),
+                        AppConstants.BASE_URL_DYNAMIC_SESSION,"https://dev-api.hybridhero.com/");
+                break;
+            case "PROD":
+                AppConstants.BASE_URL_DYNAMIC ="https://api.hybridhero.com/";
+                SessionHandler.getInstance().save(getContext(),
+                        AppConstants.BASE_URL_DYNAMIC_SESSION,"https://api.hybridhero.com/");
+                break;
+            case "PREPROD":
+                AppConstants.BASE_URL_DYNAMIC = "https://preprod-api.hotdeskplus.com/";
+                SessionHandler.getInstance().save(getContext(),
+                        AppConstants.BASE_URL_DYNAMIC_SESSION,"https://preprod-api.hotdeskplus.com/");
+                break;
+            case "PRODAUSTRALIA":
+                AppConstants.BASE_URL_DYNAMIC = "https://api.hybridhero.com.au/";
+                SessionHandler.getInstance().save(getContext(),
+                        AppConstants.BASE_URL_DYNAMIC_SESSION,"https://api.hybridhero.com.au/");
+                break;
+            default:
+        }
+
+        if (isSSo)
+            checkSsoEnabled();
+        else
+            callLogin();
     }
 
     private void checkSsoEnabled() {

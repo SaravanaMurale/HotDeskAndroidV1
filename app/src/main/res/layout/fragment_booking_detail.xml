@@ -239,8 +239,7 @@
                                     android:layout_width="@dimen/_50sdp"
                                     android:layout_height="@dimen/_50sdp"
                                     android:layout_centerInParent="true"
-                                    android:layout_weight="1"
-                                    tools:src="@drawable/default_company_logo" />
+                                    android:layout_weight="1" />
                             </RelativeLayout>
 
                         </LinearLayout>

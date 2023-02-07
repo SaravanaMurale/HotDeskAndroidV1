@@ -11,6 +11,7 @@ import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -74,12 +75,11 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
                     getApplicationContext().getResources().getString(R.string.app_name),
                     NotificationManager.IMPORTANCE_HIGH);
             notificationChannel.enableLights(true);
-            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.setLightColor(Color.WHITE);
             notificationChannel.enableVibration(true);
             notificationChannel.setDescription("channel_01");
             notificationChannel.setShowBadge(true);
             notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
-            //notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
             notificationManager.createNotificationChannel(notificationChannel);
         }
 
@@ -96,6 +96,7 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
                 .setDefaults(DEFAULT_ALL)
                 .setShowWhen(true)
                 .setSmallIcon(R.drawable.notification_icon)
+                .setColor(ContextCompat.getColor(getApplicationContext(),R.color.white))
                 .setChannelId("channel_01")
                 .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), icon))
                 .setContentText(messageBody)
