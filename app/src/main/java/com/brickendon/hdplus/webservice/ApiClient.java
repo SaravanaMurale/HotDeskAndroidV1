@@ -63,12 +63,5 @@ public class ApiClient {
 
         return retrofit;
     }
-    public static void changeApiBaseUrl(String newApiBaseUrl) {
-        apiBaseUrl = newApiBaseUrl;
-        Gson gson = new GsonBuilder().setLenient().create();
-        retrofit = new Retrofit.Builder().baseUrl(apiBaseUrl)
-                    .addConverterFactory(GsonConverterFactory.create(gson)).build();
 
-
-    }
 }

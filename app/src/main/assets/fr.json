@@ -381,22 +381,20 @@
       "About": "À propos de",
       "DarkMode": "Mode sombre"
   },
-
   "AppKeys": {
-
       "SignIn": "S'identifier",
       "SignInWithPin": "Connectez-vous avec un code PIN",
       "Tenant": "Locataire",
       "Username": "Nom d'utilisateur",
       "Password": "Mot de passe",
       "ForgotPassword": "Mot de passe oublié",
-    "PastEvents": "Afficher les événements passés",
-
-    "OrSignInWith": "Ou connectez-vous avec",
+      "PastEvents": "Afficher les événements passés",
+      "OrSignInWith": "Ou connectez-vous avec",
       "TenantName": "Nom du locataire",
       "EmailAddress": "Adresse e-mail",
       "SubmitPasswordReset": "Soumettre la réinitialisation du mot de passe",
       "GoBackToSignIn": "Revenez pour vous connecter",
+      "LoginWithEmailPass": "Connectez-vous avec email & mot de passe",
       "EnterYourPin": "Entrez votre code PIN",
       "UseEmailPassword": "Utiliser l'e-mail et le mot de passe",
       "Locate": "Localiser",
@@ -407,8 +405,8 @@
       "Apply": "Appliquer",
       "ChooseLocation": "Choisissez l'emplacement",
       "Start": "Début",
-    "StartRequestError": "Request start time cannot be earlier than the approved hours.",
-    "EndRequestError": "Request end time cannot be later than the approved hours.",
+      "StartRequestError": "Request start time cannot be earlier than the approved hours.",
+      "EndRequestError": "Request end time cannot be later than the approved hours.",
       "End": "Fin",
       "Available": "Disponible",
       "Date": "Date",
@@ -445,8 +443,8 @@
       "Booked": "réservé",
       "BookedByMe": "Réservé par moi-même",
       "BookedByMeL": "Réservé par moi-même",
-    "BookHoliday": "Book holiday",
-    "UnAvilable": "indisponible",
+      "BookHoliday": "Book holiday",
+      "UnAvilable": "indisponible",
       "Teams": "Équipes",
       "EndTime": "Heure de fin",
       "EndOfDay": "Fin de la journée",
@@ -722,9 +720,7 @@
       "AvailableRooms" : "Salles disponibles",
       "HybridHero" : "Le nom qui sera affiché sur Hybrid Hero",
     "PMO Office":"Bureaux PMO",
-
     "Send": "Send",
-
     "Booknearby": "réserver à proximité",
     "BookTraining": "livre de formation",
     "HealthEating": "Alimentation équilibrée",
@@ -756,11 +752,11 @@
     "Sick": "Malade",
     "Signinwithpin": "Connectez-vous avec un code PIN",
     "SignInWithSso": "Connectez-vous avec SSO",
+    "SsoNotSetUp": "La connexion SSO n'est pas configurée pour cet administrateur de contact de messagerie.",
     "StartRequestError": "L'heure de début de la demande ne peut pas être antérieure aux heures approuvées.",
     "TrainingStr": "Formation",
     "workingRemotely": "Travailler à distance",
     "ExternalPartipantHint": "Ajoutez chaque participant et confirmez en cliquant sur la barre d'espace"
-
   }
 }
 

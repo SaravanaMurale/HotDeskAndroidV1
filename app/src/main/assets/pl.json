@@ -402,7 +402,6 @@
     },
     
     "AppKeys": {
-        
         "SignIn": "Zaloguj się",
         "SignInWithPin": "Zaloguj się za pomocą kodu pin",
         "Tenant": "Najemca",
@@ -415,6 +414,7 @@
         "EmailAddress": "Adres e-mail",
         "SubmitPasswordReset": "Prześlij resetowanie hasła",
         "GoBackToSignIn": "Wróć, aby się zalogować",
+        "LoginWithEmailPass": "Login with email & password",
         "EnterYourPin": "Wprowadź swój pin",
         "UseEmailPassword": "Użyj e-maila i hasła",
         "Locate": "Znajdź",
@@ -775,6 +775,7 @@
       "Sick": "Malade",
       "Signinwithpin": "Connectez-vous avec un code PIN",
       "SignInWithSso": "Connectez-vous avec SSO",
+      "SsoNotSetUp": "SSO Login is not setup for this email contact admin.",
       "StartRequestError": "L'heure de début de la demande ne peut pas être antérieure aux heures approuvées.",
       "TrainingStr": "Formation",
       "workingRemotely": "Travailler à distance",

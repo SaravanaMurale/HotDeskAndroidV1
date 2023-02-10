@@ -4270,6 +4270,9 @@ public class LanguagePOJO {
         @SerializedName("SignInWithSso")
         @Expose
         private String signInWithSso;
+        @SerializedName("SsoNotSetUp")
+        @Expose
+        private String SsoNotSetUp;
         @SerializedName("Tenant")
         @Expose
         private String tenant;
@@ -4300,6 +4303,9 @@ public class LanguagePOJO {
         @SerializedName("GoBackToSignIn")
         @Expose
         private String goBackToSignIn;
+        @SerializedName("LoginWithEmailPass")
+        @Expose
+        private String LoginWithEmailPass;
         @SerializedName("EnterYourPin")
         @Expose
         private String enterYourPin;
@@ -5317,6 +5323,22 @@ public class LanguagePOJO {
         String SettingsTitle;
         @SerializedName("ExternalPartipantHint")
         String ExternalPartipantHint;
+
+        public String getSsoNotSetUp() {
+            return SsoNotSetUp;
+        }
+
+        public void setSsoNotSetUp(String ssoNotSetUp) {
+            SsoNotSetUp = ssoNotSetUp;
+        }
+
+        public String getLoginWithEmailPass() {
+            return LoginWithEmailPass;
+        }
+
+        public void setLoginWithEmailPass(String loginWithEmailPass) {
+            LoginWithEmailPass = loginWithEmailPass;
+        }
 
         public String getExternalPartipantHint() {
             return ExternalPartipantHint;

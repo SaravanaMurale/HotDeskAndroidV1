@@ -64,7 +64,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity
+        extends AppCompatActivity {
     String TAG = "Zure SSo";
 
     Dialog dialog;
@@ -106,15 +107,24 @@ public class LoginActivity extends AppCompatActivity {
 
     //New...
     ArrayList<DAOActiveLocation> activeLocationArrayList = new ArrayList<>();
-    int defaultLocationIdForCalendar=0,floorParentID = 0, cityPlaceID = 0, cityPlaceParentID = 0, cityID = 0, cityParentID = 0, locationID = 0, locationParentID = 0,
+    int defaultLocationIdForCalendar = 0,
+            floorParentID = 0,
+            cityPlaceID = 0,
+            cityPlaceParentID = 0,
+            cityID = 0,
+            cityParentID = 0,
+            locationID = 0,
+            locationParentID = 0,
             floorPositon;
-
     String CountryName = null;
     String CityName = null;
     String buildingName = null;
     String floorName = null;
     String fullPathLocation = null;
 
+    LanguagePOJO.AppKeys appKeysPage;
+    LanguagePOJO.Login  logoinPage;
+    LanguagePOJO.ResetPassword resetPage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,7 +134,6 @@ public class LoginActivity extends AppCompatActivity {
         dialog = new Dialog(LoginActivity.this);
 
         setLanguage();
-
 
         // Creates a PublicClientApplication object with res/raw/auth_config_single_account.json
         PublicClientApplication.createMultipleAccountPublicClientApplication(this,
@@ -320,6 +329,8 @@ public class LoginActivity extends AppCompatActivity {
             callLogin();
     }
 
+    //First method called when click of sso button
+    //check wheather sso is setup or not based on tenant name
     private void checkSsoEnabled() {
         if (Utils.isNetworkAvailable(this)) {
             if(LoginActivity.this!=null &&!LoginActivity.this.isFinishing())
@@ -332,7 +343,8 @@ public class LoginActivity extends AppCompatActivity {
             Call<TypeOfLoginResponse> call = apiService.typeOfLogin(jsonObject);
             call.enqueue(new Callback<TypeOfLoginResponse>() {
                 @Override
-                public void onResponse(Call<TypeOfLoginResponse> call, Response<TypeOfLoginResponse> response) {
+                public void onResponse(Call<TypeOfLoginResponse> call,
+                                       Response<TypeOfLoginResponse> response) {
                     TypeOfLoginResponse typeOfLoginResponse = response.body();
                     if (response.code() == 200 && typeOfLoginResponse != null) {
                         if (typeOfLoginResponse.getTypeOfLogin() == 1) {
@@ -341,11 +353,9 @@ public class LoginActivity extends AppCompatActivity {
                             Utils.toastShortMessage(LoginActivity.this, "SSO Login has not been set up, please contact Admin to Setup");
                         } else {
                             ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
-
                             if (b2cApp == null) {
                                 return;
                             }
-
                             /**
                              * Runs user flow interactively.
                              * <p>
@@ -378,13 +388,14 @@ public class LoginActivity extends AppCompatActivity {
 
                     } else {
                         ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
-                        Utils.toastShortMessage(LoginActivity.this, "SSO Login is not setup for this email contact admin.");
+                        if (appKeysPage!=null)
+                            Utils.toastShortMessage(LoginActivity.this, Utils.checkStringParms(appKeysPage.getSsoNotSetUp()));
+                        else
+                            Utils.toastShortMessage(LoginActivity.this, "SSO Login is not setup for this email contact admin.");
                     }
                 }
-
                 @Override
                 public void onFailure(Call<TypeOfLoginResponse> call, Throwable t) {
-
                 }
             });
 
@@ -573,7 +584,7 @@ public class LoginActivity extends AppCompatActivity {
         if (result.getAccessToken() != null)
             SessionHandler.getInstance().save(LoginActivity.this, AppConstants.USERTOKEN, result.getAccessToken());
         callTokenExachange(result.getAccount().getUsername());
-        signOutAccounts(result.getAccount());
+//        signOutAccounts(result.getAccount());
         Log.d(TAG, "displayResult: " + output);
     }
 
@@ -887,9 +898,9 @@ public class LoginActivity extends AppCompatActivity {
 
     public void setLanguage() {
 
-        LanguagePOJO.Login logoinPage = getLoginScreenData(this);
-        LanguagePOJO.AppKeys appKeysPage = getAppKeysPageScreenData(this);
-        LanguagePOJO.ResetPassword resetPage = getResetPasswordPageScreencreenData(this);
+        logoinPage = getLoginScreenData(this);
+        appKeysPage = getAppKeysPageScreenData(this);
+        resetPage = getResetPasswordPageScreencreenData(this);
 
         if (logoinPage != null) {
 
@@ -900,7 +911,8 @@ public class LoginActivity extends AppCompatActivity {
             tvForgotPassword.setText(appKeysPage.getForgotPassword() + "?");
             signIn.setText(appKeysPage.getSignIn());
             btnLoginWithSso.setText(appKeysPage.getSignInWithSso());
-            //tvBackToLogin.setText(appKeysPage.getGoBackToSignIn());
+            tvBackToLogin.setText(appKeysPage.getLoginWithEmailPass());
+            signInSso.setText(appKeysPage.getSignInWithSso());
             //signInSso.setText(abackToLoginppKeysPage.getSignInWithSso());
             //tvSignInWith.setText(appKeysPage.getOrSignInWith());
         }

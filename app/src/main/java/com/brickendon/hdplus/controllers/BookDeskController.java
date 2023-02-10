@@ -61,10 +61,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BookDeskController implements
-        ActiveTeamsAdapter.OnActiveTeamsSelected,
-        DeskListBookAdapter.OnChangeSelected
-{
+public class BookDeskController
+        implements ActiveTeamsAdapter.OnActiveTeamsSelected,
+        DeskListBookAdapter.OnChangeSelected {
     String TAG="BookDeskController";
     String isFrom;
     Activity activityContext;
@@ -82,7 +81,6 @@ public class BookDeskController implements
     String type="none";
     public int selectedTeamAutoApproveStatus = 0;
     boolean isGlobalLocationSetUP = false;
-
 
     boolean startDisabled = false;
     boolean endDisabled = false;
@@ -116,14 +114,15 @@ public class BookDeskController implements
     LanguagePOJO.Global global;
     LanguagePOJO.MeetingRooms meetingRoomsLanguage;
 
-    List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponseDesk=new ArrayList<>();
+    List<BookingForEditResponse.TeamDeskAvailabilities> bookingForEditResponseDesk = new ArrayList<>();
     List<BookingForEditResponse.TeamDeskAvailabilities> bookingDeskList = new ArrayList<>();
     List<DeskAvaliabilityResponse.LocationDesks> locationDeskList = new ArrayList<>();
 
     EditBookingDetails editBookingDetailsGlobal;
-    public BookDeskController(Activity activityContext, Context context,BookingForEditResponse bookingForEditResponse,
-                              String isFrom,
-                              boolean isGlobalLocationSetUP, String calSelectedDate,String locationGlobal) {
+    public BookDeskController(Activity activityContext, Context context,
+                              BookingForEditResponse bookingForEditResponse, String isFrom,
+                              boolean isGlobalLocationSetUP, String calSelectedDate,
+                              String locationGlobal) {
         this.activityContext = activityContext;
         this.context = context;
         this.locationGlobal = locationGlobal;
@@ -136,20 +135,21 @@ public class BookDeskController implements
         getActiveTeams();
 
         if (isGlobalLocationSetUP)
-            getAvaliableDeskDetails("3",calSelectedDate,bookingForEditResponse);
+            getAvaliableDeskDetails("3" ,calSelectedDate ,bookingForEditResponse);
         else
-            getDeskList("3",calSelectedDate,"new",bookingForEditResponse);
-//        editDeskBooking(editDeskBookingDetails);
+            getDeskList("3" ,calSelectedDate ,"new" ,bookingForEditResponse);
+
+        //editDeskBooking(editDeskBookingDetails);
     }
 
     private void getActiveTeams() {
-
         if (Utils.isNetworkAvailable(activityContext)) {
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<List<ActiveTeamsResponse>> call = apiService.getActiveTeams();
             call.enqueue(new Callback<List<ActiveTeamsResponse>>() {
                 @Override
-                public void onResponse(Call<List<ActiveTeamsResponse>> call, Response<List<ActiveTeamsResponse>> response) {
+                public void onResponse(Call<List<ActiveTeamsResponse>> call,
+                                       Response<List<ActiveTeamsResponse>> response) {
 //                    activeTeamsList = response.body();
                     try {
                         for (int i=0;i<response.body().size();i++) {
@@ -164,14 +164,12 @@ public class BookDeskController implements
                                 selectedTeamAutoApproveStatus = activeTeamsList.get(i).getAutomaticApprovalStatus();
                             }
                         }
-                    } catch (Exception exception){
+                    } catch (Exception exception) {
                         Toast.makeText(context, ""+exception.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
-
                 @Override
                 public void onFailure(Call<List<ActiveTeamsResponse>> call, Throwable t) {
-
                 }
             });
 
@@ -210,9 +208,8 @@ public class BookDeskController implements
         changedDeskId=0;
         selectedDeskId=0;
 
-        if (isGlobalLocationSetUP && bookingDeskList!=null && bookingDeskList.size()>0){
+        if (isGlobalLocationSetUP && bookingDeskList!=null && bookingDeskList.size()>0) {
             for (int i=0; i < bookingDeskList.size(); i++){
-
 //                logic to show booked by else
                 /*if(Utils.compareTwoDate(Utils.convertStringToDateFormet(calSelectedDate),
                         Utils.getCurrentDate())==2 && bookingDeskList.get(i).isBookedByElse()){
@@ -231,14 +228,13 @@ public class BookDeskController implements
                     bookingForEditResponseDesk.add(bookingDeskList.get(i));
                 }
             }
-        }
-        else {
-            try{
-                if (bookingDeskList!=null && bookingDeskList.size()>0){
+        } else {
+            try {
+                if (bookingDeskList!=null && bookingDeskList.size()>0) {
                     for (int i=0; i<bookingDeskList.size(); i++) {
 //                logic to show booked by else
                         if(Utils.compareTwoDate(Utils.convertStringToDateFormet(calSelectedDate),
-                                Utils.getCurrentDate())==2 && bookingDeskList.get(i).isBookedByElse()){
+                                Utils.getCurrentDate())==2 && bookingDeskList.get(i).isBookedByElse()) {
 
                             if(!(Utils.compareTwoDatesandTime(Utils.getYearMonthDateFormat(
                                     Utils.convertStringToDateFormet(calSelectedDate))+"T"+Utils.getCurrentTime()+":00Z",
@@ -1098,17 +1094,12 @@ public class BookDeskController implements
                 openWeeks();
             }
         });
-
-
-
         tv_unit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //openUntil();
             }
         });
-
-
         tv_interval.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1116,7 +1107,6 @@ public class BookDeskController implements
                 //openIntervalsDialog(type);
             }
         });
-
         tv_interval_weekly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1124,9 +1114,6 @@ public class BookDeskController implements
                 openIntervalsDialog(type);
             }
         });
-
-
-
         cl_weekly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1170,10 +1157,9 @@ public class BookDeskController implements
                 cl_weekly_layout.setVisibility(View.GONE);
             }
         });
-
         repeatBottomSheetDialog.show();
-
     }
+
     private void openUntil(String code) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setContentView((activityContext.getLayoutInflater().inflate(R.layout.dialog_bottom_sheet_until,
@@ -2268,7 +2254,6 @@ public class BookDeskController implements
                 iv_8.setVisibility(View.GONE);
                 iv_9.setVisibility(View.GONE);
                 iv_10.setVisibility(View.GONE);
-
             }
         });
 
@@ -2287,7 +2272,6 @@ public class BookDeskController implements
                 iv_8.setVisibility(View.VISIBLE);
                 iv_9.setVisibility(View.GONE);
                 iv_10.setVisibility(View.GONE);
-
             }
         });
 

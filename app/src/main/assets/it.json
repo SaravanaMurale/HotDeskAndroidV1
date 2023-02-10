@@ -398,6 +398,7 @@
         "EmailAddress": "Indirizzo e-mail",
         "SubmitPasswordReset": "Invia reimpostazione password",
         "GoBackToSignIn": "Torna per accedere",
+        "LoginWithEmailPass": "Login with email & password",
         "EnterYourPin": "Inserisci la tua spilla",
         "UseEmailPassword": "Usa e-mail e password",
         "Locate": "Individuare",
@@ -720,7 +721,6 @@
         "AvailableRooms" : "Camere disponibili",
         "HybridHero" : "Il nome che verrà visualizzato su Hybrid Hero",
       "PMO Office":"PMO Office",
-        
 
       "HealthEating": "health Eating",
       "Send": "Send",
@@ -756,6 +756,7 @@
       "Sick": "Malade",
       "Signinwithpin": "Connectez-vous avec un code PIN",
       "SignInWithSso": "Connectez-vous avec SSO",
+      "SsoNotSetUp": "SSO Login is not setup for this email contact admin.",
       "StartRequestError": "L'heure de début de la demande ne peut pas être antérieure aux heures approuvées.",
       "TrainingStr": "Formation",
       "workingRemotely": "Travailler à distance",

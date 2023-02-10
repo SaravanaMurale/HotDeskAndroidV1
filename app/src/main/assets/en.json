@@ -373,6 +373,7 @@
       "SignIn": "Sign in",
       "SignInWithPin": "Sign in with pin",
       "SignInWithSso": "Sign in with SSO",
+      "SsoNotSetUp": "SSO Login is not setup for this email contact admin.",
       "Tenant": "Tenant",
       "Username": "Username",
       "Password": "Password",
@@ -383,6 +384,7 @@
       "EmailAddress": "Email address",
       "SubmitPasswordReset": "Submit password reset",
       "GoBackToSignIn": "Go back to sign in",
+      "LoginWithEmailPass": "Login with email & password",
       "EnterYourPin": "Enter your pin",
       "UseEmailPassword": "Use Email & Password",
       "Locate": "Locate",
@@ -713,8 +715,6 @@
       "AvailableRooms" : "Available Rooms",
       "HybridHero" : "The name that will be displayed accross Hybrid Hero",
       "Filter":"Filter",
-
-
       "PMO Office":"PMO Office",
       "Calendar Booking": "Calendar Booking",
       "Desk Booking": "Desk Booking",

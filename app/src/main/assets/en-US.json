@@ -378,6 +378,8 @@
       "SignIn": "Sign in",
       "SignInWithPin": "Sign in with pin",
       "SignInWithSso": "Sign in with SSO",
+    "SsoNotSetUp": "SSO Login is not setup for this email contact admin.",
+    "LoginWithEmailPass": "Login with email & password",
       "Tenant": "Tenant",
       "Username": "Username",
       "Password": "Password",

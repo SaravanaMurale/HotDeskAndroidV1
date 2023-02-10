@@ -117,6 +117,7 @@ dependencies {
     //QQR Scanner
     implementation 'com.github.yuriy-budiyev:code-scanner:2.3.2'
 
+    //SSO Login Library
     implementation 'com.microsoft.identity.client:msal:2.+'
     implementation 'com.alexvasilkov:gesture-views:2.8.3'
 
