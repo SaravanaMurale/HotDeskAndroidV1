@@ -4273,6 +4273,9 @@ public class LanguagePOJO {
         @SerializedName("SsoNotSetUp")
         @Expose
         private String SsoNotSetUp;
+        @SerializedName("EmailNotSetUp")
+        @Expose
+        private String EmailNotSetUp;
         @SerializedName("Tenant")
         @Expose
         private String tenant;
@@ -5323,6 +5326,14 @@ public class LanguagePOJO {
         String SettingsTitle;
         @SerializedName("ExternalPartipantHint")
         String ExternalPartipantHint;
+
+        public String getEmailNotSetUp() {
+            return EmailNotSetUp;
+        }
+
+        public void setEmailNotSetUp(String emailNotSetUp) {
+            EmailNotSetUp = emailNotSetUp;
+        }
 
         public String getSsoNotSetUp() {
             return SsoNotSetUp;

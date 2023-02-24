@@ -155,6 +155,7 @@ public class TeamsExpandedNewAdapter extends RecyclerView.Adapter<RecyclerView.V
                     */
             }
 
+            // for other booking types remove visibility of check in check out time
             if (listDataModel.getCalendarEntriesModel() != null) {
                 vhItemHolder.timeLayout.setVisibility(View.VISIBLE);
                 vhItemHolder.mbookingCheckInTime.setVisibility(View.VISIBLE);
@@ -281,7 +282,6 @@ public class TeamsExpandedNewAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     class VHHeader extends RecyclerView.ViewHolder {
         TextView headerName;
-
         public VHHeader(@NonNull View itemView) {
             super(itemView);
             headerName = itemView.findViewById(R.id.tvHeaderName);

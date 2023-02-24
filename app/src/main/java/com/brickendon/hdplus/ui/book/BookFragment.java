@@ -369,6 +369,7 @@ public class BookFragment extends Fragment implements
         myTeamId = SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID);
         calSelectedDate=Utils.getISO8601format(Utils.convertStringToDateFormet(Utils.getCurrentDate()));
         setLanguage();
+        // to check wheathr registraion is manditory or not
         checkVeichleReg();
 
         dialog= new Dialog(getActivity());
@@ -376,7 +377,9 @@ public class BookFragment extends Fragment implements
             binding.locateEndTime.setText("23:59");
         }
 
+        // teams list
         getActiveTeams();
+        //amenities lis
         getAmenities();
 //        checkTeamsCheckBox();
         binding.locateStartTime.setText(getCurrentTime());
@@ -391,7 +394,6 @@ public class BookFragment extends Fragment implements
             @Override
             public void onClick(View v) {
                 bottomSheetLocateTimePickerInBooking(getContext(), getActivity(), binding.locateEndTime, "End", binding.locateCalendearView.getText().toString(), 2);
-
             }
         });
         binding.rlFilter.setOnClickListener(new View.OnClickListener() {
@@ -452,6 +454,7 @@ public class BookFragment extends Fragment implements
                 if (countCheck) {
                     if (!(Utils.compareTwoDate(date,Utils.getCurrentDate()) == 1)) {
                         if (selectedicon == 1) {
+                            //Desk Booking starts here
                             if (isGlobalLocationSetUP)
                                 getAvaliableDeskDetails("3",Utils.getISO8601format(date));
                             getAddEditDesk("3",Utils.getISO8601format(date));
@@ -460,9 +463,11 @@ public class BookFragment extends Fragment implements
 //                            else
 //                            ((MainActivity) getActivity()).getAddEditDesk("3",Utils.getISO8601format(date));
                         } else if (selectedicon==2) {
+                            //Meeting Room Booking starts here
                             getMeetingBookingListToEdit("" + Utils.getYearMonthDateFormat(date)+"T00:00:00.000Z", "new");
                             calSelectedDate=Utils.getISO8601format(date);
                         } else if(selectedicon==3) {
+                            //Car park Booking starts here
                             getCarParListToEdit(""+Utils.getISO8601format(date),""+Utils.getISO8601format(date));
                             calSelectedDate=Utils.getISO8601format(date);
                         } else if (selectedicon == 4 || selectedicon == 5 || selectedicon == 6 ||
@@ -589,7 +594,8 @@ public class BookFragment extends Fragment implements
 
             initLoadFloorDetails(canvasss);
 //            getAvaliableDeskDetails("3",calSelectedDate);
-            *//*
+            */
+    /*
             //Used For Desk Avaliability Checking
             getAvaliableDeskDetails(null, 0);
 
@@ -878,14 +884,7 @@ public class BookFragment extends Fragment implements
                     getParkingSpotList(""+SessionHandler.getInstance().getInt(getActivity(),AppConstants.DEFAULT_CAR_PARK_LOCATION_ID),editBookingDetails,"new_deep_link");
 
                 }
-//
-//            List<String> params = appLinkData.getPathSegments();
-//
-//            AppConstants.REFERALID = params.get(params.size() - 1);
-//            AppConstants.REFERALCODEE = params.get(params.size() - 2);
-//
-//            //System.out.println("Referal id =" + AppConstants.REFERALID + " Referall Code = " + AppConstants.REFERALCODEE);
-//            Toast.makeText(this, "Referal id =" + AppConstants.REFERALID + " Referall Code = " + AppConstants.REFERALCODEE, Toast.LENGTH_LONG).show();
+
             }
         } catch (Exception e) {
 
@@ -2199,6 +2198,7 @@ public class BookFragment extends Fragment implements
                                 bookingsList.add(respo);
                             }
                         }
+
                         bookingForEditResponse.setBookings(bookingsList);
 
                         if(bookingDeskList==null)
@@ -2281,7 +2281,7 @@ public class BookFragment extends Fragment implements
 
     }
 
-    //    Desk Edit List
+    //Desk Edit List
     private void callBottomSheetToEdit(BookingForEditResponse bookingForEditResponse, String code) {
         String sDate="";
         RecyclerView rvEditList;
@@ -2291,7 +2291,7 @@ public class BookFragment extends Fragment implements
         try {
             if (isGlobalLocationSetUP && bookingDeskList!=null && bookingDeskList.size()>0) {
                 for (int i=0; i < bookingDeskList.size(); i++){
-//                logic to show booked by else
+//                  logic to show booked by else
                     /*if(Utils.compareTwoDate(Utils.convertStringToDateFormet(calSelectedDate),
                             Utils.getCurrentDate())==2 && bookingDeskList.get(i).isBookedByElse()){
 
@@ -2397,7 +2397,8 @@ public class BookFragment extends Fragment implements
         bookEditBottomSheet.show();
     }
 
-    private void newDeskBookingSheet(BookingForEditResponse bookingForEditResponse, String code) {
+    private void newDeskBookingSheet(BookingForEditResponse bookingForEditResponse,
+                                     String code) {
         BookDeskController bookDeskController = new BookDeskController(activityContext, context,bookingForEditResponse,
                 AppConstants.BOOKFRAGMENTINSTANCESTRING,isGlobalLocationSetUP,calSelectedDate,
                 binding.searchGlobal.getText().toString());
@@ -4904,7 +4905,8 @@ public class BookFragment extends Fragment implements
         editDeskBookingDetails.setDeskCode(bookings.getDeskCode());
         editDeskBookingDetails.setDescription(Utils.checkStringParms(bookings.getDescription()));
 
-        if (bookings.getDeskLocation()!=null && bookings.getDeskLocation().getBuildingName()!=null)
+        if (bookings.getDeskLocation()!=null
+                && bookings.getDeskLocation().getBuildingName()!=null)
             editDeskBookingDetails.setLocationAddress(Utils.checkStringParms(bookings.getDeskLocation().getBuildingName())
                 +", " + Utils.checkStringParms(bookings.getDeskLocation().getfLoorName()));
         else if (bookings.getRequestedDeskLocation()!=null)
@@ -4913,7 +4915,7 @@ public class BookFragment extends Fragment implements
         editDeskBookingDetails.setComments(bookings.getComments());
 
         if (bookings.getDeskLocation()!=null && bookings.getDeskLocation().getBuildingName()!=null)
-            editDeskBookingDetails.setLocationAddress(bookings.getDeskLocation().getfLoorName()+", "+bookings.getDeskLocation().getBuildingName());
+            editDeskBookingDetails.setLocationAddress(bookings.getDeskLocation().getfLoorName()+", " +bookings.getDeskLocation().getBuildingName());
         else if(bookings.getRequestedDeskLocation()!=null)
             editDeskBookingDetails.setLocationAddress(bookings.getRequestedDeskLocation().getfLoorName()+", "+bookings.getRequestedDeskLocation().getBuildingName());
 
@@ -4936,6 +4938,7 @@ public class BookFragment extends Fragment implements
             editDeskBookingDetails.setRequestedTeamDeskId(bookings.getRequestedTeamDeskId());
         else
             editDeskBookingDetails.setRequestedTeamDeskId(0);
+
         if (bookings.getRequestedTeamId()!=null &&bookings.getRequestedTeamId()>0){
             selectedTeamId=bookings.getRequestedTeamId();
             editDeskBookingDetails.setRequestedTeamId(bookings.getRequestedTeamId());
@@ -6220,9 +6223,6 @@ public class BookFragment extends Fragment implements
                 showCountryChildListInAdapter(locateCountryResposes);
 
                 ProgressDialog.dismisProgressBar(getContext(), dialog);
-//                binding.locateProgressBar.setVisibility(View.INVISIBLE);
-
-
             }
 
             @Override

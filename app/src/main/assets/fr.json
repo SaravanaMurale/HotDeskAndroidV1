@@ -753,6 +753,7 @@
     "Signinwithpin": "Connectez-vous avec un code PIN",
     "SignInWithSso": "Connectez-vous avec SSO",
     "SsoNotSetUp": "La connexion SSO n'est pas configurée pour cet administrateur de contact de messagerie.",
+    "EmailNotSetUp": "Wrong user login type. Please log in with SSO.",
     "StartRequestError": "L'heure de début de la demande ne peut pas être antérieure aux heures approuvées.",
     "TrainingStr": "Formation",
     "workingRemotely": "Travailler à distance",

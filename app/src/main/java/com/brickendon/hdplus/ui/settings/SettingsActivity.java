@@ -109,7 +109,7 @@ public class SettingsActivity extends AppCompatActivity {
         try {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
 //            String version = pInfo.versionName;
-            String version = "1.1.5";
+            String version = "1.1.6";
 //            String version = pInfo.versionName;
             //int num = pInfo.versionCode;
              binding.helpIcon.setText("Version " + String.valueOf(version));
@@ -254,10 +254,10 @@ public class SettingsActivity extends AppCompatActivity {
                         } else if (etNewPassword.getText().toString().isEmpty()) {
                             Utils.toastShortMessage(SettingsActivity.this, "New Password Is Empty");
                             return;
-                        }/* else if (etNewPassword.getText().toString().length() <= 6) {
-                            Utils.toastShortMessage(SettingsActivity.this,"New Password Is Less tha");
+                        } else if (!Utils.isValidPassword(etNewPassword.getText().toString())) {
+                            Utils.toastShortMessage(SettingsActivity.this,"Password must have at least 7 characters, at least one uppercase letter ('A'-'Z'), at least one lowercase letter, at least one digit (0-9) and at least one special character");
                             return;
-                        }*/ else if (etConfirmPassword.getText().toString().isEmpty()) {
+                        } else if (etConfirmPassword.getText().toString().isEmpty()) {
                             Utils.toastShortMessage(SettingsActivity.this, "Confirm Password Is Empty");
                             return;
                         } else if (etCurrentPassword.getText().toString().equalsIgnoreCase(etNewPassword.getText().toString()) ||

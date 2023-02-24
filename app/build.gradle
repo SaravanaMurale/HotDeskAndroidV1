@@ -9,8 +9,8 @@ android {
         applicationId "com.brickendon.hdplus"
         minSdk 26
         targetSdk 31
-        versionCode 18401
-        versionName "1.1.5"
+        versionCode 18403
+        versionName "1.1.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

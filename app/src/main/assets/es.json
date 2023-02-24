@@ -771,6 +771,7 @@
     "Signinwithpin": "Iniciar sesión con PIN",
     "SignInWithSso": "Iniciar sesión con SSO",
     "SsoNotSetUp": "El inicio de sesión SSO no está configurado para este administrador de contacto de correo electrónico.",
+    "EmailNotSetUp": "Wrong user login type. Please log in with SSO.",
     "StartRequestError": "La hora de inicio de la solicitud no puede ser anterior a las horas aprobadas.",
     "TrainingStr": "Capacitación",
     "workingRemotely": "Trabajando de forma remota",

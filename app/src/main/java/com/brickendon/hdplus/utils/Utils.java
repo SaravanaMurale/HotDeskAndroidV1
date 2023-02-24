@@ -146,8 +146,9 @@ public class Utils {
         // Regex to check valid password.
         String regex = "^(?=.*[0-9])"
                 + "(?=.*[a-z])(?=.*[A-Z])"
-                + "(?=.*[.@#$%^&+=])"
+                + "(?=.*[!@#$%^&()\\-_=+{}|?>.<,:;~`’])"
                 + "(?=\\S+$).{6,20}$";
+//                + "(?=.*[.@#$%^&+=~{}|':;?.,*!])"
 
         // Compile the ReGex
         Pattern p = Pattern.compile(regex);

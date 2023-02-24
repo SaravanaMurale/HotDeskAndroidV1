@@ -143,6 +143,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         View root = binding.getRoot();
         activityContext = getActivity();
 
+        //custom calendar view done with recycler
         setUpCalendarData();
         uiInit(root);
 
@@ -289,6 +290,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         return root;
     }
 
+    //changes the horizontal layout manager to vertical and reload recycler with old data
     private void loadExpandList() {
         expandListModelsNew= new ArrayList<>();
         if(floorListModelsNewExpand!=null && floorListModelsNewExpand.size() > 0) {
@@ -794,6 +796,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                                             }
                                         }
                                     } else {
+                                        //unknown bookings
                                         try {
                                             TeamsMemberListDataModel daoTeamMember = new TeamsMemberListDataModel();
                                             daoTeamMember.setDaoTeamMember(teamMembersList.get(i));
@@ -821,6 +824,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                                     if (teamMembersInOfficeList.size() > 0) {
                                         System.out.println("check cala" + floorList.size());
                                         if (floorList.size() > 1) {
+                                            //in office recycler
                                             createMultipleFloorRecyler();
                                         } else {
                                             createMultipleFloorRecyler();
@@ -895,6 +899,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                     }
                 }
             }
+
             ArrayList<TeamsMemberListDataModel> teamMembersFloorListnew = new ArrayList<>();
             for (int i = 0; i < teamMembersInOfficeListNew.size(); i++) {
                 if (teamMembersInOfficeListNew.get(i).getCalendarEntriesModel().getBooking() != null
@@ -1141,7 +1146,8 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             binding.recyclerViewUnkown.setVisibility(View.GONE);
             binding.tvTotalAvail.setVisibility(View.VISIBLE);
             binding.tvExapnd.setVisibility(View.GONE);
-            setDataToExpandAdapter(teamMembersList);*/
+            setDataToExpandAdapter(teamMembersList);
+            */
         }
     }
 
@@ -1156,9 +1162,10 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
         //  intent.putExtra(AppConstants.USER_CURRENT_STATUS, daoTeamMember);
         intent.putExtra("DATE", currendate);
         startActivity(intent);
-
-        /*callSearchRecyclerData(fName + " " + lName);
-        callTeamMemberStatus();*/
+        /*
+            callSearchRecyclerData(fName + " " + lName);
+            callTeamMemberStatus();
+        */
     }
 
     @Override
@@ -1519,7 +1526,9 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
             Utils.toastMessage(this, "Please Enable Internet");
         }
     }*/
-    public void onLocationIconClick(int parentLocationId, int identifierId, String desk) {
+    public void onLocationIconClick(int parentLocationId,
+                                    int identifierId,
+                                    String desk) {
 
 //        NavController navController= Navigation.findNavController(view);
 
@@ -1534,14 +1543,10 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                 List<LocateCountryRespose> locateCountryResposeList = response.body();
 
                 for (int i = 0; i < locateCountryResposeList.size(); i++) {
-
                     if (desk.equals(AppConstants.DESK)) {
-
                         for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getDesks().size(); j++) {
-
                             if (identifierId == locateCountryResposeList.get(i).getLocationItemLayout().getDesks().get(j).getDesksId()) {
                                 SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
-
 
                                 System.out.println("SelectedDeskFloorInLocate " + i + " " + desk + " ");
 
@@ -1550,9 +1555,7 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                             }
                         }
                     } else if (desk.equals(AppConstants.MEETING)) {
-
                         for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getMeetingRoomsList().size(); j++) {
-
                             if (identifierId == locateCountryResposeList.get(i).getLocationItemLayout().getMeetingRoomsList().get(j).getMeetingRoomId()) {
                                 SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
 
@@ -1561,17 +1564,11 @@ public class TeamsFragment extends Fragment implements TeamsAdapter.TeamMemberIn
                                 ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
 //                                navController.navigate(R.id.navigation_locate);
                             }
-
                         }
-
-
                     } else if (desk.equals(AppConstants.CAR_PARKING)) {
-
                         for (int j = 0; j < locateCountryResposeList.get(i).getLocationItemLayout().getParkingSlotsList().size(); j++) {
-
                             if (identifierId == locateCountryResposeList.get(i).getLocationItemLayout().getParkingSlotsList().get(j).getId()) {
                                 SessionHandler.getInstance().saveInt(getContext(), AppConstants.FLOOR_POSITION, i);
-
                                 System.out.println("SelectedCarFloorInLocate " + i + " " + desk + " ");
                                 ((MainActivity) getActivity()).callLocateFragmentFromHomeFragment();
 //                                navController.navigate(R.id.navigation_locate);

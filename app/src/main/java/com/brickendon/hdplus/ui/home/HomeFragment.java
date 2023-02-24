@@ -911,7 +911,7 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
     private void createRecyclerListNew (List<BookingListResponseNew> body) {
         List<BookingListResponseNew> bookingListResponsesList = body;
         recyclerModelArrayList = new ArrayList<>();
-        for (int z=0; z<bookingListResponsesList.size(); z++) {
+        for (int z=0; z < bookingListResponsesList.size(); z++) {
             BookingListResponseNew bookingListResponses = bookingListResponsesList.get(z);
 //        ArrayList<BookingListResponse> recyclerModelArrayList = new ArrayList<>();
             if (bookingListResponses.getDayGroups() != null) {

@@ -247,6 +247,7 @@ public class LoginActivity
                             } else {
                                 SessionHandler.getInstance().save(getContext(),
                                         AppConstants.BASE_URL_DYNAMIC,AppConstants.BASE_URL);
+
                                 if (isSSO)
                                     checkSsoEnabled();
                                 else
@@ -293,7 +294,7 @@ public class LoginActivity
         //Validate Input User Details
 //        getLoginRegion(companyName, false);
         if(validateLoginDetails(companyName,email,password)) {
-            doLogin(companyName,email,password);
+            checkTypeOflogin(companyName,email,password);
         }
 
     }
@@ -331,6 +332,51 @@ public class LoginActivity
 
     //First method called when click of sso button
     //check wheather sso is setup or not based on tenant name
+    private void checkTypeOflogin(String tentantName, String email, String pass) {
+        if (Utils.isNetworkAvailable(this)) {
+            if(LoginActivity.this!=null &&!LoginActivity.this.isFinishing())
+                dialog = ProgressDialog.showProgressBar(LoginActivity.this);
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            SessionHandler.getInstance().remove(LoginActivity.this, AppConstants.USERTOKEN);
+            JsonObject jsonObject = new JsonObject();
+            if (!tentantName.equalsIgnoreCase(""))
+                jsonObject.addProperty("tenantName", tentantName);
+            Call<TypeOfLoginResponse> call = apiService.typeOfLogin(jsonObject);
+            call.enqueue(new Callback<TypeOfLoginResponse>() {
+                @Override
+                public void onResponse(Call<TypeOfLoginResponse> call,
+                                       Response<TypeOfLoginResponse> response) {
+                    TypeOfLoginResponse typeOfLoginResponse = response.body();
+                    if (response.code() == 200 && typeOfLoginResponse != null) {
+                        ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
+                        if (typeOfLoginResponse.getTypeOfLogin() == 1 || typeOfLoginResponse.getTypeOfLogin()==5) {
+                            doLogin(tentantName,email,pass);
+                        } else {
+                            if (appKeysPage!=null)
+                                Utils.toastShortMessage(LoginActivity.this, Utils.checkStringParms(appKeysPage.getEmailNotSetUp()));
+                            else
+                                Utils.toastShortMessage(LoginActivity.this, "Wrong user login type. Please log in with SSO.");
+                        }
+                    } else if (response.code() == 403) {
+                        ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
+
+                    } else {
+                        ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
+                        if (appKeysPage!=null)
+                            Utils.toastShortMessage(LoginActivity.this, Utils.checkStringParms(appKeysPage.getEmailNotSetUp()));
+                        else
+                            Utils.toastShortMessage(LoginActivity.this, "Wrong user login type. Please log in with SSO.");
+                    }
+                }
+                @Override
+                public void onFailure(Call<TypeOfLoginResponse> call, Throwable t) {
+                }
+            });
+
+        } else {
+            Utils.toastMessage(this, "Please Enable Internet");
+        }
+    }
     private void checkSsoEnabled() {
         if (Utils.isNetworkAvailable(this)) {
             if(LoginActivity.this!=null &&!LoginActivity.this.isFinishing())
@@ -351,7 +397,8 @@ public class LoginActivity
                             SessionHandler.getInstance().saveInt(LoginActivity.this, AppConstants.TYPE_OF_LOGIN, typeOfLoginResponse.getTypeOfLogin());
                             ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
                             Utils.toastShortMessage(LoginActivity.this, "SSO Login has not been set up, please contact Admin to Setup");
-                        } else {
+                        } else if(typeOfLoginResponse.getTypeOfLogin() == 2
+                                || typeOfLoginResponse.getTypeOfLogin() == 5) {
                             ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
                             if (b2cApp == null) {
                                 return;
@@ -363,13 +410,12 @@ public class LoginActivity
                              * which you can subsequently use to obtain your resources.
                              */
                             List<Pair<String, String>> extraQueryParameters = new ArrayList<>();
-//                            extraQueryParameters.add( new Pair<String, String>("domain_hint", "google.com"));
                             extraQueryParameters.add(new Pair<String, String>("domain_hint",
                                     typeOfLoginResponse.getMobileIdentityProvider()));
-                            System.out.println("domain_hint" + typeOfLoginResponse.getMobileIdentityProvider());
+//                            System.out.println("domain_hint" + typeOfLoginResponse.getMobileIdentityProvider().trim());
 
                             /*extraQueryParameters.add( new Pair<String, String>("domain_hint",
-                                    "okta.com"));*/
+                                    "hdplusdev"));*/
 
                             AcquireTokenParameters parameters = new AcquireTokenParameters.Builder()
                                     .startAuthorizationFromActivity(LoginActivity.this)
@@ -382,16 +428,19 @@ public class LoginActivity
                                     .build();
 
                             b2cApp.acquireToken(parameters);
+                        } else {
+                            Utils.toastShortMessage(LoginActivity.this, "SSO Login has not been set up, please contact Admin to Setup");
                         }
-                    } else if (response.code() == 403) {
+                    } else if (response.code() == 401) {
                         ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
-
+                    } else if (response.code() == 500) {
+                        ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
                     } else {
                         ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
-                        if (appKeysPage!=null)
+                        /*if (appKeysPage!=null)
                             Utils.toastShortMessage(LoginActivity.this, Utils.checkStringParms(appKeysPage.getSsoNotSetUp()));
                         else
-                            Utils.toastShortMessage(LoginActivity.this, "SSO Login is not setup for this email contact admin.");
+                            Utils.toastShortMessage(LoginActivity.this, "SSO Login is not setup for this email contact admin.");*/
                     }
                 }
                 @Override
@@ -425,12 +474,11 @@ public class LoginActivity
 
                 /* Reload account asynchronously to get the up-to-date list. */
                 loadAccounts();
-                if(dialog!= null && dialog.isShowing())
-                 dialog.dismiss();
-                }catch (Exception e){
+                if (dialog!= null && dialog.isShowing())
+                    dialog.dismiss();
+                } catch (Exception e){
                     e.printStackTrace();
                 }
-
             }
 
             @Override
@@ -439,7 +487,7 @@ public class LoginActivity
                     if(dialog!= null && dialog.isShowing())
                         dialog.dismiss();
                     Toast.makeText(LoginActivity.this, "SSO AUth Failed", Toast.LENGTH_SHORT).show();
-                    System.out.println("bala sso error" + exception.getMessage());
+
                     final String B2C_PASSWORD_CHANGE = "AADB2C90118";
                     if (exception.getMessage().contains(B2C_PASSWORD_CHANGE)) {
                         Log.d(TAG, "onError: The user clicks the 'Forgot Password' link in a sign-up or sign-in user flow.\\n\" +\n" +
@@ -653,12 +701,10 @@ public class LoginActivity
 //            removeAccountButton.setEnabled(false);
 //            acquireTokenSilentButton.setEnabled(false);
         }
-
     }
 
     //GetToken
     private void doLogin(String companyName, String email, String password) {
-
         if (Utils.isNetworkAvailable(this)) {
             if(LoginActivity.this!=null &&!LoginActivity.this.isFinishing())
                 dialog = ProgressDialog.showProgressBar(LoginActivity.this);
@@ -687,9 +733,9 @@ public class LoginActivity
                             Utils.toastMessage(LoginActivity.this, "You have entered an incorrect username or password.  Please try again.");
 //                            etEmail.requestFocus();
 //                            etEmail.setError("You have entered the incorrect password. Please try again.");
-
                         }
                     } else if (response.code() == 401) {
+
                         ProgressDialog.dismisProgressBar(LoginActivity.this, dialog);
                         Utils.toastMessage(LoginActivity.this, "You have entered an incorrect username or password.  Please try again.");
 //                        etEmail.requestFocus();
@@ -833,7 +879,6 @@ public class LoginActivity
 
     }
 
-
     private void sendFCMToken() {
         String tokenInSharedPreference = SessionHandler.getInstance().get(getApplicationContext(), AppConstants.SAVETOKEN);
         System.out.println("SharedPreferenceToken"+tokenInSharedPreference);
@@ -849,6 +894,7 @@ public class LoginActivity
         if (Utils.isValiedCompanyName(companyName)) {
             if (Utils.isValidEmail(email)) {
                 if (Utils.isValiedText(password)) {
+                    userDetailStatus = true;
                     if (Utils.isValidPassword(password)) {
                         userDetailStatus = true;
                     } else {

@@ -397,6 +397,7 @@
     "Signinwithpin": "िन से साइन इन करें",
     "SignInWithSso": "एसएसओ के साथ साइन इन करें",
     "SsoNotSetUp": "SSO Login is not setup for this email contact admin.",
+    "EmailNotSetUp": "Wrong user login type. Please log in with SSO.",
       "Tenant": "किरायेदार",
       "Username": "उपयोगकर्ता नाम",
       "Password": "पासवर्ड",

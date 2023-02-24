@@ -117,7 +117,6 @@ public class GDPRActivity extends AppCompatActivity {
                 view.loadUrl(url);
                 return true;
             }
-
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
@@ -126,7 +125,6 @@ public class GDPRActivity extends AppCompatActivity {
                 }
             }
         });
-
         mWebView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
                 if (progress < 100) {
@@ -245,7 +243,7 @@ public class GDPRActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.code()==200){
-                        Utils.toastMessage(getApplicationContext(),"Successfull, Please Login");
+                        Utils.toastMessage(getApplicationContext(),"Successful, Please Login");
                     }
                     Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
                     startActivity(intent);

@@ -767,6 +767,7 @@
     "Signinwithpin": "Connectez-vous avec un code PIN",
     "SignInWithSso": "Connectez-vous avec SSO",
     "SsoNotSetUp": "SSO Login is not setup for this email contact admin.",
+    "EmailNotSetUp": "Wrong user login type. Please log in with SSO.",
     "StartRequestError": "L'heure de début de la demande ne peut pas être antérieure aux heures approuvées.",
     "TrainingStr": "Formation",
     "workingRemotely": "Travailler à distance",
