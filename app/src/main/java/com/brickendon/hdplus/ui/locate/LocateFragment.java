@@ -17,6 +17,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -28,7 +29,9 @@ import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -146,6 +149,10 @@ import com.brickendon.hdplus.utils.SessionHandler;
 import com.brickendon.hdplus.utils.Utils;
 import com.brickendon.hdplus.webservice.ApiClient;
 import com.brickendon.hdplus.webservice.ApiInterface;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -398,6 +405,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
     int applyButtonClickedStatus=0;
 
     BottomSheetDialog locateCheckInBottomSheetUn;
+    int screenHeight=0;
+
+    //FirebaseDatabase firebaseDatabase;
+    //DatabaseReference databaseReference;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -413,6 +424,15 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //Before initLoadFloorDetails need to get timezone
         getTimeZoneForBooking(defaultTeamId);
 
+
+        int userId=SessionHandler.getInstance().getInt(getContext(), AppConstants.USER_ID);
+        //firebaseDatabase=FirebaseDatabase.getInstance();
+        //databaseReference=firebaseDatabase.getReference(""+userId+"_"+System.currentTimeMillis());
+
+
+
+
+
     }
 
 
@@ -422,6 +442,20 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         activityContext = getActivity();
         context = getActivity();
+
+
+        int screenSize = getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK;
+
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        int width = metrics.widthPixels;
+        screenHeight = metrics.heightPixels;
+        //Toast.makeText(context, width+"_"+height, Toast.LENGTH_LONG).show();
+
+        //System.out.println("SystemGetWidthHeith "+width+" "+screenHeight);
 
         binding.locateProgressBar.setVisibility(View.VISIBLE);
         new Handler().postDelayed(new Runnable() {
@@ -1220,7 +1254,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         int selecctedFloorFromHome = SessionHandler.getInstance().getInt(getContext(), AppConstants.SELECTED_LOCATION_FROM_HOME);
 
 
-
+        System.out.println("selecctedFloorFromHome" +selecctedFloorFromHome);
 
         binding.firstLayout.removeAllViews();
 
@@ -1751,6 +1785,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             //int floorPosition = SessionHandler.getInstance().getInt(getContext(), AppConstants.FLOOR_POSITION);
             //.println("SelectedFloorPositionInLocate " + floorPosition);
+
+            //databaseReference.child("ImmediateChildLocations_"+System.currentTimeMillis()).setValue(""+parentId);
+
             Call<List<LocateCountryRespose>> call = apiService.getCountrysChild(parentId);
             call.enqueue(new Callback<List<LocateCountryRespose>>() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -1761,6 +1798,9 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                         ProgressDialog.clearTouchLock(getContext(), getActivity());
                     else if (context!=null && activityContext!=null)
                         ProgressDialog.clearTouchLock(context, activityContext);
+
+                    String jsonStringToFirebase=new Gson().toJson(response.body());
+                    //databaseReference.child("LocateOnSuccess_"+parentId+"_"+System.currentTimeMillis()).setValue(jsonStringToFirebase);
 
                     if (response.body() != null && response.body().size() > 0) {
 
@@ -1813,6 +1853,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                             //binding.firstLayout.scrollTo(-200,-400);
                         } else {
                             //Toast.makeText(getContext(), "No Data", Toast.LENGTH_LONG).show();
+
                         }
 
                         }
@@ -1891,6 +1932,8 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                     binding.locateProgressBar.setVisibility(View.INVISIBLE);
                     //ProgressDialog.dismisProgressBar(getContext(), dialog);
+
+                    //databaseReference.child("LocateOnFailure_"+parentId+"_"+System.currentTimeMillis()).setValue(t.getMessage().toString());
 
                 }
             });
@@ -1989,7 +2032,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         //binding.firstLayout.addView(dottView);
 
-        MyCanvasDraw myCanvasDraw = new MyCanvasDraw(getContext(), pointList);
+                MyCanvasDraw myCanvasDraw = new MyCanvasDraw(getContext(), pointList);
 
         //binding.firstLayout.removeAllViews();
 
@@ -2005,8 +2048,10 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
 
-    @SuppressLint("ResourceType")
+
     private void addView(List<String> valueList, String key, int floorPosition, int itemTotalSize) {
+
+
 
         try {
 
@@ -2100,6 +2145,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                     System.out.println("BookingUnavaliable");
                                     //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
                                     ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
+
                                     deskAddedStatus = true;
                                     deskStatusModel = new DeskStatusModel(key, id, code, 0);
 
@@ -2112,7 +2158,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
                                     } else if (teamDeskAvaliability.isBookedByElse() == true) {
                                         System.out.println("BookingBookedOther");
-                                        //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
                                         ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
                                         deskStatusModel = new DeskStatusModel(key, id, code, 3);
 
@@ -2124,12 +2169,12 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                     } else if (teamDeskAvaliability.getTeamId() == SessionHandler.getInstance().getInt(getContext(), AppConstants.TEAM_ID)) {
                                         System.out.println("BookingAvaliable");
                                         ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_avaliable));
+
                                         deskStatusModel = new DeskStatusModel(key, id, code, 1);
                                     } else {
 
                                         if (teamsResponse != null && teamsResponse.getAutomaticApprovalStatus() == 3) {
                                             System.out.println("BookingUnavaliable");
-                                            //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
                                             ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
 
 
@@ -2153,7 +2198,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                                         deskAddedStatus = true;
                                     } else if (teamDeskAvaliability.isBookedByElse() == true) {
                                         System.out.println("BookingBookedOther");
-                                        //ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_booked));
                                         ivDesk.setImageDrawable(getResources().getDrawable(R.drawable.desk_unavaliable));
                                         deskStatusModel = new DeskStatusModel(key, id, code, 3);
                                         deskAddedStatus = true;
@@ -2543,10 +2587,20 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         xArrayList.add(x);
         yArrayList.add(y);
 
+
+
         relativeLayout.leftMargin = x;
         relativeLayout.topMargin = y;
-        relativeLayout.width = 65;
-        relativeLayout.height = 65;
+
+            if (screenHeight >2800) {
+                relativeLayout.width = 85;
+                relativeLayout.height = 85;
+            }else {
+                relativeLayout.width = 65;
+                relativeLayout.height = 65;
+            }
+
+
         ivDesk.setLayoutParams(relativeLayout);
 
 
@@ -2891,8 +2945,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 //borderLocation.setBackground(getResources().getDrawable(R.drawable.image_border));
                 //ivDesk.setScaleType(ImageView.ScaleType.FIT_XY);
                 //ivDesk.setBackground(getResources().getDrawable(R.drawable.image_border));
-
-
 
                 View layoutRoundBorder = getLayoutInflater().inflate(R.layout.layout_rounded_border, null, false);
                 ImageView roundedBorder = layoutRoundBorder.findViewById(R.id.borderRed);
@@ -5471,7 +5523,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
             supportZoneParentId=SessionHandler.getInstance().getInt(getContext(),AppConstants.SUPPORT_ZONE_ID);
         }
 
-        System.out.println("SupportZoneInLocate "+parentIdCheck+" "+supportZoneParentId);
+        //System.out.println("SupportZoneInLocate "+parentIdCheck+" "+supportZoneParentId);
 
         if (Utils.isNetworkAvailable(getContext())) {
             binding.locateProgressBar.setVisibility(View.VISIBLE);
@@ -5914,7 +5966,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
 
                 //rvFloor.setVisibility(View.VISIBLE);
-                System.out.println("KnowParentIdHere "+locateCountryRespose.getLocateCountryId());
+                //System.out.println("KnowParentIdHere "+locateCountryRespose.getLocateCountryId());
                 SessionHandler.getInstance().saveInt(getContext(), AppConstants.PARENT_ID, locateCountryRespose.getLocateCountryId());
 
                /* if (locateCountryRespose.getSupportZoneLayoutItemsList() == null) {
