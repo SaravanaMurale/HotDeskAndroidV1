@@ -297,7 +297,8 @@
         <activity
             android:name="com.brickendon.hdplus.example.DummyActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name="com.brickendon.hdplus.ui.login.SignInActivity"
             android:exported="true"
@@ -307,7 +308,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
         <service

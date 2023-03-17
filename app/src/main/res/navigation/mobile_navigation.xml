@@ -9,13 +9,14 @@
         android:id="@+id/navigation_home"
         android:name="com.brickendon.hdplus.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_navigation_home_to_bookingDetailFragment"
             app:destination="@id/bookingDetailFragment"
             app:popUpTo="@id/navigation_home"
             app:popUpToInclusive="true"
             />
+
         <action
             android:id="@+id/action_qrFragment"
             app:destination="@id/qrFragment"

@@ -122,6 +122,7 @@ public class QrFragment extends Fragment {
                 });
             }
         });
+
         mCodeScanner.setErrorCallback(new ErrorCallback() {
             @Override
             public void onError(@NonNull Throwable thrown) {

@@ -9,8 +9,8 @@ android {
         applicationId "com.brickendon.hdplus"
         minSdk 26
         targetSdk 31
-        versionCode 18403
-        versionName "1.1.6"
+        versionCode 18405
+        versionName "1.1.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -80,6 +80,8 @@ dependencies {
 
     //Firebase for FCM
     implementation platform('com.google.firebase:firebase-bom:30.3.2')
+
+    implementation 'com.google.firebase:firebase-database'
 
     implementation 'com.google.firebase:firebase-messaging:17.6.0'
     implementation 'com.google.firebase:firebase-analytics'

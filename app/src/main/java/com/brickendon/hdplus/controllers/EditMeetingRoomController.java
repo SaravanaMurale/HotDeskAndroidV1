@@ -977,24 +977,15 @@ public class EditMeetingRoomController implements ParticipantNameShowAdapter.OnP
         //Amenities Block
         List<String> amenitiesList = new ArrayList<>();
         for (int i = 0; i < userAllowedMeetingResponseList.size(); i++) {
-
             if (meetingRoomId == userAllowedMeetingResponseList.get(i).getId()) {
-
                 for (int j = 0; j < userAllowedMeetingResponseList.get(i).getAmenities().size(); j++) {
-                    //System.out.println("MeetingAmenities " + userAllowedMeetingResponseList.get(i).getAmenities().get(j).getId());
-
                     for (int k = 0; k < amenitiesListToShowInMeetingRoomList.size(); k++) {
-
                         if (userAllowedMeetingResponseList.get(i).getAmenities().get(j).getId() == amenitiesListToShowInMeetingRoomList.get(k).getId()) {
                             amenitiesList.add(amenitiesListToShowInMeetingRoomList.get(k).getName());
-                            //System.out.println("TotalAmenitiesForThisRoom " + amenitiesListToShowInMeetingRoomList.get(k).getName());
-
                         }
-
                     }
                 }
             }
-
         }
 
         TextView startRoomTime, endTRoomime, editRoomBookingContinue, editRoomBookingBack, tvMeetingRoomDescription,

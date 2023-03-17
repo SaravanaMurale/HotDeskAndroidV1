@@ -2074,7 +2074,6 @@ public class HomeFragment extends Fragment implements HomeBookingListAdapter.OnC
         ActivityCompat.requestPermissions(getActivity(),
                 new String[]{Manifest.permission.CAMERA},
                 PERMISSION_REQUEST_CODE);
-
     }
 
     private void callDeskBottomSheetDialog() {
