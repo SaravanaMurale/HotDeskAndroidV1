@@ -424,17 +424,11 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         //Before initLoadFloorDetails need to get timezone
         getTimeZoneForBooking(defaultTeamId);
 
-
         int userId=SessionHandler.getInstance().getInt(getContext(), AppConstants.USER_ID);
         //firebaseDatabase=FirebaseDatabase.getInstance();
         //databaseReference=firebaseDatabase.getReference(""+userId+"_"+System.currentTimeMillis());
 
-
-
-
-
     }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -442,7 +436,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
 
         activityContext = getActivity();
         context = getActivity();
-
 
         int screenSize = getResources().getConfiguration().screenLayout &
                 Configuration.SCREENLAYOUT_SIZE_MASK;
@@ -465,7 +458,6 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
                 binding.locateProgressBar.setVisibility(View.INVISIBLE);
             }
         }, 1000);
-
     }
 
     @Override
@@ -2592,7 +2584,7 @@ public class LocateFragment extends Fragment implements ShowCountryAdapter.OnSel
         relativeLayout.leftMargin = x;
         relativeLayout.topMargin = y;
 
-            if (screenHeight >2800) {
+            if (screenHeight >=2340) {
                 relativeLayout.width = 85;
                 relativeLayout.height = 85;
             }else {

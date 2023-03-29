@@ -109,7 +109,7 @@ public class SettingsActivity extends AppCompatActivity {
         try {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
 //            String version = pInfo.versionName;
-            String version = "1.1.6";
+            String version = "1.1.10";
 //            String version = pInfo.versionName;
             //int num = pInfo.versionCode;
              binding.helpIcon.setText("Version " + String.valueOf(version));
